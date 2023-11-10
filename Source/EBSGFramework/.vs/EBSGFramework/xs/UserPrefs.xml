@@ -1,0 +1,28 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
+    <Files>
+      <File FileName="HarmonyPatches.cs" Line="126" Column="1" />
+      <File FileName="EBSGDefOf.cs" Line="12" Column="58" />
+      <File FileName="HediffComp_GainRandomGeneSet.cs" Line="25" Column="14" />
+      <File FileName="RandomXenoGenes.cs" Line="6" Column="24" />
+      <File FileName="HediffCompProperties_GainRandomGeneSet.cs" Line="6" Column="24" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="HarmonyPatches.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

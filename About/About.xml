@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Expanded Biotech Style Genes Framework</name>
+  <author>alite</author>
+  <packageId>EBSG.Framework</packageId>
+  <supportedVersions>
+    <li>1.4</li>
+  </supportedVersions>
+  
+  <modDependencies>
+    <li>
+      <packageId>ludeon.rimworld.royalty</packageId>
+      <displayName>Royalty</displayName>
+    </li>
+    <li>
+      <packageId>ludeon.rimworld.ideology</packageId>
+      <displayName>Ideology</displayName>
+    </li>
+    <li>
+      <packageId>ludeon.rimworld.biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+  </loadAfter>
+
+  <description>
+Expanded Biotech Style Genes(EBSG) is the step beyond [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2985153870]More Biotech Style Genes[/url]. Where that series sought to expand ranges that already exist, this series seeks to add ranges that should exist. You get gene ranges that alter sleep fall rate, but why not a range for changing the rate it recovers? If you can have fire resistance genes, why not have genes to resist other types of damage like frostbite and acid?
+
+This framework contains all the C# that I made that can be utilized for broad purposes. While it mostly contains stuff for the Expanded Biotech Style Genes series, it also has copies of generic code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff.
+
+For the full functionality of the Framework, however little there may be, take a look at the [url=https://github.com/KonradHeinser/]Github Wiki[/url].
+
+
+[url=https://discord.gg/fYP8qkcNDh]Discord link[/url] for those who want an easier way to ask questions, make requests, or just chat. I'll also be posting new releases there.
+
+[url=https://steamcommunity.com/id/alite/myworkshopfiles/?appid=294100]Easy link to all of my Rimworld mods[/url]
+
+
+[url=https://ko-fi.com/alite56114][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
+  </description>
+</ModMetaData>

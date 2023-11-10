@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef>
+        <defName>EBSG_DeathrestEfficiency</defName>
+        <label>deathrest efficiency</label>
+        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.001</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>3401</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef>
+        <defName>EBSG_PawnGestationSpeed</defName>
+        <label>pregnancy speed</label>
+        <description>Changes how fast a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.001</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>3401</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef>
+        <defName>EBSG_BloodlossRecoveryBonus</defName>
+        <label>bloodloss recovery bonus</label>
+        <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <hideAtValue>0</hideAtValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>2202</displayPriorityInCategory>
+    </StatDef>
+
+</Defs>

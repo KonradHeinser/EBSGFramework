@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1C15B537-0A69-4ED9-952B-5435016FA4F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EBSGFramework</RootNamespace>
+    <AssemblyName>EBSGFramework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Assemblies</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Assemblies</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Thought_Situational_PeopleInColony.cs" />
+    <Compile Include="ThoughtWorker_PeopleInColony.cs" />
+    <Compile Include="EBSGExtension.cs" />
+    <Compile Include="CollectExtensionData.cs" />
+    <Compile Include="AbilitiesAtSeverities.cs" />
+    <Compile Include="PeopleStageStarts.cs" />
+    <Compile Include="ThoughtWorker_Precept_GeneExtension_Social.cs" />
+    <Compile Include="ThoughtWorker_Precept_HasRelatedGene.cs" />
+    <Compile Include="RandomXenoGenes.cs" />
+    <Compile Include="HediffCompProperties_GiveAbilityAtSeverity.cs" />
+    <Compile Include="HediffCompProperties_GainRandomGeneSet.cs" />
+    <Compile Include="CompAbilityEffect_RemoveMultipleHediffs.cs" />
+    <Compile Include="RegenSet.cs" />
+    <Compile Include="HediffCompProperties_TieredRegeneration.cs" />
+    <Compile Include="HediffComp_TieredRegeneration.cs" />
+    <Compile Include="CompProperties_AbilityRemoveMultipleHediffs.cs" />
+    <Compile Include="CompProperties_AbilityBloodDrain.cs" />
+    <Compile Include="CompAbilityEffect_BloodDrain.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="HediffComp_GainRandomGeneSet.cs" />
+    <Compile Include="VanishingGene.cs" />
+    <Compile Include="HediffComp_GiveAbilityAtSeverity.cs" />
+    <Compile Include="ThoughtWorker_Precept_RelatedGenePresent.cs" />
+    <Compile Include="ThoughtWorker_Precept_RelatedGeneColonist.cs" />
+    <Compile Include="ThoughtWorker_TreesDesiredNoPrecept.cs" />
+    <Compile Include="EBSGDefOf.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\EBSGFramework.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\EBSGFramework.dll" />
+    <None Include="obj\Debug\EBSGFramework.pdb" />
+    <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
+    <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
