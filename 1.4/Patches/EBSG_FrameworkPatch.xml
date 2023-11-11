@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
+        <value><li Class="EBSGFramework.StatPart_FertilityByGenes" /></value>
+    </Operation>
+</Patch>

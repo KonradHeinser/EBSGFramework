@@ -101,7 +101,7 @@ namespace EBSGFramework
         {
             if (___pawn != null)
             {
-                __result = (int)Math.Round(__result/ ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
+                __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
             }
         }
 

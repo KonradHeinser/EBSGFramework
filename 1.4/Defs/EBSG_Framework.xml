@@ -31,6 +31,7 @@
         <category>BasicsPawn</category>
         <defaultBaseValue>0</defaultBaseValue>
         <hideAtValue>0</hideAtValue>
+        <minValue>-1</minValue>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>2202</displayPriorityInCategory>
     </StatDef>
@@ -71,4 +72,38 @@
         </injuryProps>
     </HediffDef>
 
+    <GeneDef Abstract="True" Name="EBSG_BloodRestoration">
+        <displayCategory>Hemogen</displayCategory>
+        <minAgeActive>3</minAgeActive>
+        <exclusionTags><li>BloodRecovery</li></exclusionTags>
+    </GeneDef>
+
+    <GeneDef ParentName="EBSG_BloodRestoration"> <!--Go to site and find water recycling icon-->
+        <defName>EBSG_SlightBloodRecoveryBonus</defName>
+        <label>blood recovery</label>
+        <description>Carriers of this gene replenish blood a little bit faster than normal. This will only take effect if the pawn is not actively bleeding.</description>
+        <iconPath>UI/Icons/Genes/Gene_Deathrest</iconPath>
+        <biostatMet>-1</biostatMet>
+        <statOffsets>
+            <EBSG_BloodlossRecoveryBonus>0.25</EBSG_BloodlossRecoveryBonus>
+        </statOffsets>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGExtension">
+                <fertilityAgeFactor>
+                    <points>
+                        <li>(14, 0)</li>
+                        <li>(18, 2)</li>
+                        <li>(50, 2)</li>
+                    </points>
+                </fertilityAgeFactor>
+                <minFertilityByAgeFactor>
+                    <points>
+                        <li>(14, 0)</li>
+                        <li>(18, 1)</li>
+                        <li>(50, 1)</li>
+                    </points>
+                </minFertilityByAgeFactor>
+            </li>
+        </modExtensions>
+    </GeneDef>
 </Defs>
