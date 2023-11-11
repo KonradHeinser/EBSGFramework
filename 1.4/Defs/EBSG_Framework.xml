@@ -35,4 +35,40 @@
         <displayPriorityInCategory>2202</displayPriorityInCategory>
     </StatDef>
 
+    <DamageDef>
+        <defName>EBSG_GeneticDeformity</defName>
+        <label>genetic deformity</label>
+        <workerClass>DamageWorker_AddInjury</workerClass>
+        <externalViolence>true</externalViolence>
+        <deathMessage>{0} has been killed by bad genes.</deathMessage>
+        <hediff>EBSG_GeneticDeformity</hediff>
+        <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
+        <hasForcefulImpact>false</hasForcefulImpact>
+        <canInterruptJobs>false</canInterruptJobs>
+        <impactSoundType />
+        <armorCategory />
+    </DamageDef>
+
+    <HediffDef ParentName="InjuryBase">
+        <defName>EBSG_GeneticDeformity</defName>
+        <label>genetic deformity</label>
+        <labelNoun>a genetic deformity</labelNoun>
+        <description>A genetic deformity.</description>
+        <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
+        <comps>
+            <li Class="HediffCompProperties_TendDuration">
+                <labelTendedWell>mended</labelTendedWell>
+                <labelTendedWellInner>mended</labelTendedWellInner>
+                <labelSolidTendedWell>mended</labelSolidTendedWell>
+            </li>
+        </comps>
+        <injuryProps>
+            <painPerSeverity>0</painPerSeverity>
+            <averagePainPerSeverityPermanent>0</averagePainPerSeverityPermanent>
+            <bleedRate>0.00</bleedRate>
+            <canMerge>true</canMerge>
+            <destroyedLabel>Genetically Damaged</destroyedLabel>
+        </injuryProps>
+    </HediffDef>
+
 </Defs>

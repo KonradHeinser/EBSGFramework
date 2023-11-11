@@ -10,5 +10,6 @@ namespace EBSGFramework
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_PawnGestationSpeed;
         public static StatDef EBSG_BloodlossRecoveryBonus;
+        public static DamageDef EBSG_GeneticDeformity;
     }
 }

@@ -113,12 +113,12 @@ namespace EBSGFramework
             }
         }
 
-        public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause, ref HediffDef hediff) // Might need to be HediffDef ___hediff
+        public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause, HediffDef ___hediff)
         {
             HediffSet hediffSet = pawn.health.hediffSet;
             if (hediffSet.BleedRateTotal < 0.1f)
             {
-                HealthUtility.AdjustSeverity(pawn, hediff, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
+                HealthUtility.AdjustSeverity(pawn, ___hediff, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
             }
         }
     }

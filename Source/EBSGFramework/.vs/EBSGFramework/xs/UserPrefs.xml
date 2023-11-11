@@ -1,18 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HediffComp_DamageBodyParts.cs">
     <Files>
-      <File FileName="HarmonyPatches.cs" Line="126" Column="1" />
-      <File FileName="EBSGDefOf.cs" Line="12" Column="58" />
-      <File FileName="HediffComp_GainRandomGeneSet.cs" Line="25" Column="14" />
-      <File FileName="RandomXenoGenes.cs" Line="6" Column="24" />
-      <File FileName="HediffCompProperties_GainRandomGeneSet.cs" Line="6" Column="24" />
+      <File FileName="HediffsAtSeverities.cs" Line="5" Column="1" />
+      <File FileName="HediffCompProperties_CreateOtherHediffs.cs" Line="8" Column="80" />
+      <File FileName="HediffComp_DamageBodyParts.cs" Line="49" Column="18" />
+      <File FileName="EBSGDefOf.cs" Line="13" Column="55" />
+      <File FileName="HediffCompProperties_DamageBodyParts.cs" Line="11" Column="52" />
+      <File FileName="PartToDamage.cs" Line="7" Column="2" />
+      <File FileName="HediffCompProperties_GainRandomGeneSet.cs" Line="33" Column="62" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="HediffComp_DamageBodyParts.cs" selected="True" />
             </Node>
           </Node>
         </State>

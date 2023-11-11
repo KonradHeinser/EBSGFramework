@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>EBSGFramework</RootNamespace>
     <AssemblyName>EBSGFramework</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +69,12 @@
     <Compile Include="ThoughtWorker_Precept_RelatedGeneColonist.cs" />
     <Compile Include="ThoughtWorker_TreesDesiredNoPrecept.cs" />
     <Compile Include="EBSGDefOf.cs" />
+    <Compile Include="HediffsAtSeverities.cs" />
+    <Compile Include="HediffComp_CreateOtherHediffs.cs" />
+    <Compile Include="HediffCompProperties_CreateOtherHediffs.cs" />
+    <Compile Include="HediffCompProperties_DamageBodyParts.cs" />
+    <Compile Include="HediffComp_DamageBodyParts.cs" />
+    <Compile Include="PartToDamage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
