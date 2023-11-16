@@ -16,8 +16,13 @@ namespace EBSGFramework
             }
             StringBuilder stringBuilder = new StringBuilder(32);
             Factor(pawn, stringBuilder);
-            if (CheckForMinimums(pawn)) stringBuilder.AppendLine("At least one gene stops fertility from going below a certain value.");
-            if (CheckForMaximums(pawn)) stringBuilder.AppendLine("At least one gene stops fertility from going above a certain value.");
+            if (pawn.health.hediffSet.HasHediffPreventsPregnancy() && (CheckForMinimums(pawn) || CheckForMaximums(pawn))) {
+                stringBuilder.AppendLine("\nThis pawn has fertility limiting genes that are not active due to sterilization.");
+            }
+            else {
+                if (CheckForMinimums(pawn)) stringBuilder.AppendLine("\nAt least one gene stops fertility from going below a certain value.");
+                if (CheckForMaximums(pawn)) stringBuilder.AppendLine("\nAt least one gene stops fertility from going above a certain value.");
+            }
             return stringBuilder.ToString();
         }
 
@@ -27,6 +32,7 @@ namespace EBSGFramework
             {
                 val *= Factor(pawn);
                 val = Minimum(pawn, val);
+                if (pawn.health.hediffSet.HasHediffPreventsPregnancy()) val = 0f;
             }
         }
 
@@ -42,14 +48,15 @@ namespace EBSGFramework
                     if (extension != null)
                     {
                         float tempNum = 1;
-                        if (pawn.gender == Gender.Male && extension.maleFertilityAgeFactor != null) tempNum *= extension.maleFertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
-                        if (pawn.gender == Gender.Female && extension.femaleFertilityAgeFactor != null) tempNum *= extension.femaleFertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
-                        if (extension.fertilityAgeFactor != null) tempNum *= extension.fertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                        if (pawn.gender == Gender.Male && extension.maleFertilityAgeAdditionalFactor != null) tempNum *= extension.maleFertilityAgeAdditionalFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                        if (pawn.gender == Gender.Female && extension.femaleFertilityAgeAdditionalFactor != null) tempNum *= extension.femaleFertilityAgeAdditionalFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                        if (extension.fertilityAgeAdditionalFactor != null) tempNum *= extension.fertilityAgeAdditionalFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
                         if (tempNum != 1) explanation?.AppendLine(gene.def.label + ": x" + tempNum.ToStringPercent());
                         num *= tempNum;
                     }
                 }
             }
+
             if (num < 0) num = 0;
             return num;
         }

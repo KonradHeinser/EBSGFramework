@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -23,6 +24,9 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
+
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+
         }
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)

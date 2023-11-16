@@ -16,10 +16,15 @@ namespace EBSGFramework
         public List<XenotypeDef> requireOneOfXenotypeToEquip; // Require one of these xenotypes
         public List<XenotypeDef> forbiddenXenotypesToEquip; // Require pawn is not xenotype
 
-        // Curves that can be added to a gene to give pawns an additional age multiplier
+        // Curves that can be added to a gene to alter a pawn's natural age multiplier
         public SimpleCurve maleFertilityAgeFactor;
         public SimpleCurve femaleFertilityAgeFactor;
         public SimpleCurve fertilityAgeFactor;
+
+        // Curves that can be added to a gene to give pawns an additional age multiplier
+        public SimpleCurve maleFertilityAgeAdditionalFactor;
+        public SimpleCurve femaleFertilityAgeAdditionalFactor;
+        public SimpleCurve fertilityAgeAdditionalFactor;
 
         // Sets minimum fertility based on age
         public SimpleCurve minFertilityByAgeFactor;

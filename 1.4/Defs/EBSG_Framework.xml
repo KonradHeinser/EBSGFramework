@@ -87,23 +87,5 @@
         <statOffsets>
             <EBSG_BloodlossRecoveryBonus>0.25</EBSG_BloodlossRecoveryBonus>
         </statOffsets>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGExtension">
-                <fertilityAgeFactor>
-                    <points>
-                        <li>(14, 0)</li>
-                        <li>(18, 2)</li>
-                        <li>(50, 2)</li>
-                    </points>
-                </fertilityAgeFactor>
-                <minFertilityByAgeFactor>
-                    <points>
-                        <li>(14, 0)</li>
-                        <li>(18, 1)</li>
-                        <li>(50, 1)</li>
-                    </points>
-                </minFertilityByAgeFactor>
-            </li>
-        </modExtensions>
     </GeneDef>
 </Defs>
