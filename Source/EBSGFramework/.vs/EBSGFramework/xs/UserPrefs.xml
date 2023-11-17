@@ -1,23 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="StatPart_FertilityByGenes.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
     <Files>
-      <File FileName="EBSGExtension.cs" Line="38" Column="9" />
+      <File FileName="EBSGExtension.cs" Line="38" Column="1" />
       <File FileName="StatPart_FertilityByGenes.cs" Line="22" Column="19" />
       <File FileName="Abilities/CompAbilityEffect_GiveMultipleHediffs.cs" Line="8" Column="55" />
-      <File FileName="HarmonyPatches.cs" Line="12" Column="39" />
+      <File FileName="HarmonyPatches.cs" Line="23" Column="109" />
       <File FileName="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" Line="34" Column="18" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True" selected="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

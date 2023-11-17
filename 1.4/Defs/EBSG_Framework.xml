@@ -15,7 +15,7 @@
     <StatDef>
         <defName>EBSG_PawnGestationSpeed</defName>
         <label>pregnancy speed</label>
-        <description>Changes how fast a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
+        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
         <category>BasicsPawn</category>
         <defaultBaseValue>1</defaultBaseValue>
         <hideAtValue>1</hideAtValue>
@@ -54,7 +54,7 @@
         <defName>EBSG_GeneticDeformity</defName>
         <label>genetic deformity</label>
         <labelNoun>a genetic deformity</labelNoun>
-        <description>A genetic deformity.</description>
+        <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
         <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
         <comps>
             <li Class="HediffCompProperties_TendDuration">
@@ -71,21 +71,4 @@
             <destroyedLabel>Genetically Damaged</destroyedLabel>
         </injuryProps>
     </HediffDef>
-
-    <GeneDef Abstract="True" Name="EBSG_BloodRestoration">
-        <displayCategory>Hemogen</displayCategory>
-        <minAgeActive>3</minAgeActive>
-        <exclusionTags><li>BloodRecovery</li></exclusionTags>
-    </GeneDef>
-
-    <GeneDef ParentName="EBSG_BloodRestoration"> <!--Go to site and find water recycling icon-->
-        <defName>EBSG_SlightBloodRecoveryBonus</defName>
-        <label>blood recovery</label>
-        <description>Carriers of this gene replenish blood a little bit faster than normal. This will only take effect if the pawn is not actively bleeding.</description>
-        <iconPath>UI/Icons/Genes/Gene_Deathrest</iconPath>
-        <biostatMet>-1</biostatMet>
-        <statOffsets>
-            <EBSG_BloodlossRecoveryBonus>0.25</EBSG_BloodlossRecoveryBonus>
-        </statOffsets>
-    </GeneDef>
 </Defs>

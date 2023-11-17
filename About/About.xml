@@ -31,16 +31,25 @@
   <description>
 Expanded Biotech Style Genes(EBSG) is the step beyond [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2985153870]More Biotech Style Genes[/url]. Where that series sought to expand ranges that already exist, this series seeks to add ranges that should exist. You get gene ranges that alter sleep fall rate, but why not a range for changing the rate it recovers? If you can have fire resistance genes, why not have genes to resist other types of damage like frostbite and acid?
 
-This framework contains all the C# that I made that can be utilized for broad purposes. While it mostly contains stuff for the Expanded Biotech Style Genes series, it also has copies of generic code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff.
+This framework contains all the C# that I made that can be utilized for broad purposes. While it mostly contains stuff for the Expanded Biotech Style Genes series, it also has generic copies of some of the code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff. Important note, the code from SHG also still has an SHG equivalent, but there is no guarantee that they will act the same as those ones are intended solely for SHG and any mods that have it as a dependency.
 
-For the full functionality of the Framework, however little there may be, take a look at the [url=https://github.com/KonradHeinser/]Github Wiki[/url].
+Some things this contains includes:
+ - Stats that alter deathrest, pregnancy, and blood recovery speeds.
+ - Locking equipment based on genes and xenotypes, using required or forbidden tags.
+ - Create thoughts that check for trees similar to the Trees Desired precept.
+ - Create mood curves based on how many people are in the colony.
+ - Create hediffs that damage and even completely remove specific parts.
+ - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. The wiki's list will be more extensive.
 
-
-[url=https://discord.gg/fYP8qkcNDh]Discord link[/url] for those who want an easier way to ask questions, make requests, or just chat. I'll also be posting new releases there.
 
 [url=https://steamcommunity.com/id/alite/myworkshopfiles/?appid=294100]Easy link to all of my Rimworld mods[/url]
 
+If you're interested in downloading manually, casually looking at the code, or taking a look at its functions to use in your own mods, click the Github link. While I do encourage looking at it if you want an example on how to do something, you may NOT just copy my code into your own mod. If you want to use something directly from this, make this mod a dependency.
+
+[url=https://github.com/KonradHeinser/https://github.com/KonradHeinser/EBSGFramework/wiki][img]https://i.imgur.com/kTkpTOE.png[/img][/url]
 
 [url=https://ko-fi.com/alite56114][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
+
+[url=https://discord.gg/fYP8qkcNDh][img]https://i.imgur.com/0dG2g3t.png[/img][/url]
   </description>
 </ModMetaData>
