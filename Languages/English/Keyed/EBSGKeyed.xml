@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+    <EBSG_GeneRestrictedEquipment_All>Missing at least one required gene.</EBSG_GeneRestrictedEquipment_All>
+    <EBSG_GeneRestrictedEquipment_AnyOne>Has none of required genes.</EBSG_GeneRestrictedEquipment_AnyOne>
+    <EBSG_GeneRestrictedEquipment_One>Does not have the gene {0}.</EBSG_GeneRestrictedEquipment_One>
+    <EBSG_GeneRestrictedEquipment_None>Has the gene {0}.</EBSG_GeneRestrictedEquipment_None>
+
+    <EBSG_XenoRestrictedEquipment_AnyOne>Is not any of the required xenotypes.</EBSG_XenoRestrictedEquipment_AnyOne>
+    <EBSG_XenoRestrictedEquipment_One>Is not a {0}.</EBSG_XenoRestrictedEquipment_One>
+    <EBSG_XenoRestrictedEquipment_None>Is a {0}.</EBSG_XenoRestrictedEquipment_None>
+
+    <EBSG_GenesNotFound>Genes are required to equip this item.</EBSG_GenesNotFound>
+
+    <EBSG_HediffRestrictedEquipment_All>Missing at least one required hediff.</EBSG_HediffRestrictedEquipment_All>
+    <EBSG_HediffRestrictedEquipment_AnyOne>Has none of required hediffs.</EBSG_HediffRestrictedEquipment_AnyOne>
+    <EBSG_HediffRestrictedEquipment_One>Does not have the hediff {0}.</EBSG_HediffRestrictedEquipment_One>
+    <EBSG_HediffRestrictedEquipment_None>Has the hediff {0}.</EBSG_HediffRestrictedEquipment_None>
+
+    <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+</LanguageData>

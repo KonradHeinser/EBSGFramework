@@ -80,6 +80,8 @@
     <Compile Include="StatPart_FertilityByGenes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
+    <Compile Include="EquipRestrictExtension.cs" />
+    <Compile Include="GRCExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

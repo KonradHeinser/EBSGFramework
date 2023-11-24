@@ -10,13 +10,10 @@ namespace EBSGFramework
         public SimpleCurve peopleToMoodCurve;
         public GeneDef relatedGene;
         public bool checkNotPresent = false;
-        public List<GeneDef> requiredGenesToEquip; // Require all of these on the pawn
-        public List<GeneDef> requireOneOfGenesToEquip; // Require any one of these on the pawn
-        public List<GeneDef> forbiddenGenesToEquip; // Require none of these are on the pawn
-        public List<XenotypeDef> requireOneOfXenotypeToEquip; // Require one of these xenotypes
-        public List<XenotypeDef> forbiddenXenotypesToEquip; // Require pawn is not xenotype
 
         // Curves that can be added to a gene to alter a pawn's natural age multiplier
+        // WARNING: If multiple genes have the age fertility factor, only the first one found will take effect. The additional factors are not subject to this limitation, but will not alter the basic age factor
+        // WARNING 2: fertilityAgeFactor is always checked last, so if you have both a male and female factor, it will never be used
         public SimpleCurve maleFertilityAgeFactor;
         public SimpleCurve femaleFertilityAgeFactor;
         public SimpleCurve fertilityAgeFactor;
