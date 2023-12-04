@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Verse;
 using RimWorld;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -13,11 +14,23 @@ namespace EBSGFramework
             // Checking humanlike stops a weird bug involving owned animals, and spawned stops wasting a bit of performance on something inconsequential
             if (pawn != null && pawn.RaceProps.Humanlike && pawn.Spawned && !pawn.genes.GenesListForReading.NullOrEmpty())
             {
-                foreach (Gene gene in pawn.genes.GenesListForReading)
+                List<Gene> currentGenes = pawn.genes.GenesListForReading;
+                foreach (Gene gene in currentGenes)
                 {
-                    if (gene.def.HasModExtension<EBSGExtension>())
+                    if (gene.def.HasModExtension<FertilityByGenderAgeExtension>())
                     {
-                        EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+                        FertilityByGenderAgeExtension extension = gene.def.GetModExtension<FertilityByGenderAgeExtension>();
+                        if (!extension.overridingGenes.NullOrEmpty())
+                        {
+                            foreach (Gene innerGene in currentGenes)
+                            {
+                                if (extension.overridingGenes.Contains(innerGene.def))
+                                {
+                                    extension = innerGene.def.GetModExtension<FertilityByGenderAgeExtension>();
+                                    break;
+                                }
+                            }
+                        }
                         if (extension.maleFertilityAgeFactor != null && pawn.gender == Gender.Male)
                         {
                             return extension.maleFertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);

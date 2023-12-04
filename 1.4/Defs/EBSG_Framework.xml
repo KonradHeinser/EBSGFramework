@@ -37,12 +37,12 @@
     </StatDef>
 
     <DamageDef>
-        <defName>EBSG_GeneticDeformity</defName>
-        <label>genetic deformity</label>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
         <workerClass>DamageWorker_AddInjury</workerClass>
         <externalViolence>true</externalViolence>
         <deathMessage>{0} has been killed by bad genes.</deathMessage>
-        <hediff>EBSG_GeneticDeformity</hediff>
+        <hediff>EBSG_GeneticDamage</hediff>
         <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
         <hasForcefulImpact>false</hasForcefulImpact>
         <canInterruptJobs>false</canInterruptJobs>
@@ -51,9 +51,9 @@
     </DamageDef>
 
     <HediffDef ParentName="InjuryBase">
-        <defName>EBSG_GeneticDeformity</defName>
-        <label>genetic deformity</label>
-        <labelNoun>a genetic deformity</labelNoun>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
+        <labelNoun>a geneticly damaged part</labelNoun>
         <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
         <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
         <comps>

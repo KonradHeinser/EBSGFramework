@@ -82,6 +82,11 @@
     <Compile Include="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
     <Compile Include="EquipRestrictExtension.cs" />
     <Compile Include="GRCExtension.cs" />
+    <Compile Include="HiveMind\HiveMindGene.cs" />
+    <Compile Include="HiveMind\HiveMindExtension.cs" />
+    <Compile Include="HiveMind\HiveRolesToCheckFor.cs" />
+    <Compile Include="HiveMind\HiveThresholds.cs" />
+    <Compile Include="FertilityByGenderAgeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -96,6 +101,7 @@
     <Folder Include="Hediffs\" />
     <Folder Include="Thoughts\" />
     <Folder Include="Genes\" />
+    <Folder Include="HiveMind\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

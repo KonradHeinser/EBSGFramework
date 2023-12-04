@@ -27,7 +27,7 @@ namespace EBSGFramework
                             }
                         }
                         if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                        Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDeformity, 99999f, 999f, -1f, null, bodyPart));
+                        Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, 99999f, 999f, -1f, null, bodyPart));
                     }
                 }
                 if (!Props.bodyPartsToDamage.NullOrEmpty())
@@ -44,8 +44,8 @@ namespace EBSGFramework
                             }
                         }
                         if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                        if (partToDamage.damagePercentage > 0) Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDeformity, bodyPart.def.hitPoints * partToDamage.damagePercentage, 999f, -1f, null, bodyPart));
-                        else Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDeformity, partToDamage.damageAmount, 999f, -1f, null, bodyPart));
+                        if (partToDamage.damagePercentage > 0) Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, bodyPart.def.hitPoints * partToDamage.damagePercentage, 999f, -1f, null, bodyPart));
+                        else Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, partToDamage.damageAmount, 999f, -1f, null, bodyPart));
                     }
                 }
                 Pawn.health.RemoveHediff(parent);

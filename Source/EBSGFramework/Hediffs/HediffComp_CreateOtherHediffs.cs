@@ -68,7 +68,7 @@ namespace EBSGFramework
             {
                 if (hediffDef == HediffDefOf.MissingBodyPart)
                 {
-                    Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDeformity, 99999f, 999f, -1f, null, bodyPart));
+                    Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, 99999f, 999f, -1f, null, bodyPart));
                     removeHediff = true;
                 }
                 else

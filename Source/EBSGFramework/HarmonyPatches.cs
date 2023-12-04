@@ -208,6 +208,7 @@ namespace EBSGFramework
             if (ModsConfig.BiotechActive && otherPawn.genes != null)
             {
                 List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
+
                 foreach (Gene gene in genesListForReading)
                 {
                     if (gene.def.HasModExtension<GRCExtension>())
