@@ -58,6 +58,7 @@ namespace EBSGFramework
                 foreach (Hediff hediff in Pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
                 {
                     if (hediff.Part == bodyPart && hediff.def == hediffDef) firstHediffOfDef = hediff;
+                    break;
                 }
 
             }

@@ -39,7 +39,7 @@
     <DamageDef>
         <defName>EBSG_GeneticDamage</defName>
         <label>genetic damage</label>
-        <workerClass>DamageWorker_AddInjury</workerClass>
+        <workerClass>EBSGFramework.DamageWorker_PermanentInjury</workerClass>
         <externalViolence>true</externalViolence>
         <deathMessage>{0} has been killed by bad genes.</deathMessage>
         <hediff>EBSG_GeneticDamage</hediff>
@@ -50,17 +50,18 @@
         <armorCategory />
     </DamageDef>
 
-    <HediffDef ParentName="InjuryBase">
+    <HediffDef>
         <defName>EBSG_GeneticDamage</defName>
         <label>genetic damage</label>
+        <hediffClass>Hediff_Injury</hediffClass>
+        <labelNounPretty>{0} in the {1}</labelNounPretty>
         <labelNoun>a geneticly damaged part</labelNoun>
         <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
         <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
         <comps>
-            <li Class="HediffCompProperties_TendDuration">
-                <labelTendedWell>mended</labelTendedWell>
-                <labelTendedWellInner>mended</labelTendedWellInner>
-                <labelSolidTendedWell>mended</labelSolidTendedWell>
+            <li Class="HediffCompProperties_GetsPermanent">
+                <permanentLabel>permanent genetic damage</permanentLabel>
+                <instantlyPermanentLabel>permanent genetic damage</instantlyPermanentLabel>
             </li>
         </comps>
         <injuryProps>

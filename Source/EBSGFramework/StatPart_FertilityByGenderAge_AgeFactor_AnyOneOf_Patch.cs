@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
-using Verse;
+﻿using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
-using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {

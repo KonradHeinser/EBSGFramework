@@ -1,24 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DamageWorker_PermanentInjury.cs">
     <Files>
       <File FileName="HiveMind/HiveMindGene.cs" Line="10" Column="109" />
       <File FileName="HiveMind/HiveMindExtension.cs" Line="18" Column="132" />
       <File FileName="HiveMind/HiveRolesToCheckFor.cs" Line="12" Column="1" />
       <File FileName="HiveMind/HiveThresholds.cs" Line="10" Column="51" />
-      <File FileName="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" Line="31" Column="34" />
-      <File FileName="FertilityByGenderAgeExtension.cs" Line="14" Column="1" />
-      <File FileName="EBSGExtension.cs" Line="9" Column="45" />
-      <File FileName="HarmonyPatches.cs" Line="212" Column="1" />
+      <File FileName="Genes/HediffAdder.cs" Line="8" Column="29" />
+      <File FileName="EBSGExtension.cs" Line="12" Column="51" />
+      <File FileName="Genes/HediffsToParts.cs" Line="15" Column="1" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="297" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="References" expanded="True">
+                <Node name="UnityEngine.CoreModule" selected="True" />
+              </Node>
               <Node name="Genes" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
               <Node name="HiveMind" expanded="True" />
-              <Node name="HarmonyPatches.cs" selected="True" />
             </Node>
           </Node>
         </State>

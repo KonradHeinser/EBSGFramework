@@ -1,4 +1,5 @@
 ﻿using Verse;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -7,6 +8,9 @@ namespace EBSGFramework
         public SimpleCurve peopleToMoodCurve;
         public GeneDef relatedGene;
         public bool checkNotPresent = false;
+
+        public List<HediffsToParts> hediffsToApply;
+        public bool vanishingGene = false;
 
         // Curves that can be added to a gene to give pawns an additional age multiplier
         public SimpleCurve maleFertilityAgeAdditionalFactor;

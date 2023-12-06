@@ -40,6 +40,10 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +91,9 @@
     <Compile Include="HiveMind\HiveRolesToCheckFor.cs" />
     <Compile Include="HiveMind\HiveThresholds.cs" />
     <Compile Include="FertilityByGenderAgeExtension.cs" />
+    <Compile Include="Genes\HediffAdder.cs" />
+    <Compile Include="Genes\HediffsToParts.cs" />
+    <Compile Include="DamageWorker_PermanentInjury.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
