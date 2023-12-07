@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class HiveThresholds
+    public class HiveThreshold
     {
         public int maxCount = 0;
         public HediffDef hediffWhenTooMany;

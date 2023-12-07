@@ -1,25 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DamageWorker_PermanentInjury.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HiveMind/HiveMindGene.cs">
     <Files>
-      <File FileName="HiveMind/HiveMindGene.cs" Line="10" Column="109" />
-      <File FileName="HiveMind/HiveMindExtension.cs" Line="18" Column="132" />
-      <File FileName="HiveMind/HiveRolesToCheckFor.cs" Line="12" Column="1" />
-      <File FileName="HiveMind/HiveThresholds.cs" Line="10" Column="51" />
-      <File FileName="Genes/HediffAdder.cs" Line="8" Column="29" />
-      <File FileName="EBSGExtension.cs" Line="12" Column="51" />
-      <File FileName="Genes/HediffsToParts.cs" Line="15" Column="1" />
-      <File FileName="DamageWorker_PermanentInjury.cs" Line="297" Column="9" />
+      <File FileName="HiveMind/HiveMindGene.cs" Line="37" Column="14" />
+      <File FileName="HiveMind/HiveMindExtension.cs" Line="21" Column="1" />
+      <File FileName="HiveMind/HiveRoleToCheckFor.cs" Line="12" Column="1" />
+      <File FileName="HiveMind/HiveThreshold.cs" Line="6" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="References" expanded="True">
-                <Node name="UnityEngine.CoreModule" selected="True" />
+              <Node name="HiveMind" expanded="True">
+                <Node name="HiveMindGene.cs" selected="True" />
               </Node>
-              <Node name="Genes" expanded="True" />
-              <Node name="HiveMind" expanded="True" />
+              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>

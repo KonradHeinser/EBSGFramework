@@ -15,6 +15,6 @@ namespace EBSGFramework
         /// This can go the other direction as well, with the core gaining hediffs based on specific drone types and counts found in the colony.
 
         public string hiveKey; // This allows for multiple types of hives in the same game. Much like defNames, this should probably be very unique to avoid having two hives end up being treated as the same hive
-        public List<HiveRolesToCheckFor> hiveRolesToCheckFor; // If there is supposed to be a maximum or minimum count of this role, include it in this list
+        public List<HiveRoleToCheckFor> hiveRolesToCheckFor; // If there is supposed to be a maximum or minimum count of this role, include it in this list
     }
 }
