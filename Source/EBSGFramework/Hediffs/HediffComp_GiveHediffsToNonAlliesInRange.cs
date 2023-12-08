@@ -40,18 +40,15 @@ namespace EBSGFramework
                     {
                         continue;
                     }
-                    Log.Message("Checking range");
                     if (Props.rangeStat != null)
                     {
                         if (!(item.Position.DistanceTo(parent.pawn.Position) <= parent.pawn.GetStatValue(Props.rangeStat))) continue;
                     }
                     else if (!(item.Position.DistanceTo(parent.pawn.Position) <= Props.range)) continue;
                     if (Props.psychic && item.GetStatValue(StatDefOf.PsychicSensitivity) == 0) continue;
-                    Log.Message("Checking hediff");
                     Hediff hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
                     if (hediff == null)
                     {
-                        Log.Message("Adding hediff");
                         hediff = item.health.AddHediff(Props.hediff, item.health.hediffSet.GetBrain());
                         hediff.Severity = Props.initialSeverity;
                         HediffComp_Link hediffComp_Link = hediff.TryGetComp<HediffComp_Link>();

@@ -89,13 +89,13 @@
     <Compile Include="HiveMind\HiveMindGene.cs" />
     <Compile Include="HiveMind\HiveMindExtension.cs" />
     <Compile Include="HiveMind\HiveRoleToCheckFor.cs" />
-    <Compile Include="HiveMind\HiveThreshold.cs" />
     <Compile Include="FertilityByGenderAgeExtension.cs" />
     <Compile Include="Genes\HediffAdder.cs" />
     <Compile Include="Genes\HediffsToParts.cs" />
     <Compile Include="DamageWorker_PermanentInjury.cs" />
     <Compile Include="Hediffs\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
     <Compile Include="Hediffs\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
+    <Compile Include="EBSGUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
