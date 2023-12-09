@@ -6,21 +6,6 @@
       <File FileName="HiveMind/HiveRoleToCheckFor.cs" Line="19" Column="1" />
       <File FileName="EBSGUtilities.cs" Line="24" Column="53" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
-              <Node name="HiveMind" expanded="True">
-                <Node name="HiveRoleToCheckFor.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
