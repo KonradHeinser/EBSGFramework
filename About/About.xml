@@ -35,7 +35,7 @@ This framework contains all the C# that I made that can be utilized for broad pu
 
 Some things this contains includes:
  - Stats that alter deathrest, pregnancy, and blood recovery speeds.
- - Create resource genes like Hemogen without having to go through all that C# stuff
+ - Create basic resource genes like Hemogen using just xml
  - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden tags.
  - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.
  - Create thoughts that check for trees similar to the Trees Desired precept.
