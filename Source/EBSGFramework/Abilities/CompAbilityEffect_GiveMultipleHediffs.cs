@@ -31,12 +31,20 @@ namespace EBSGFramework
             {
                 return;
             }
+            Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediffToGive.hediffDef);
             if (hediffToGive.replaceExisting)
             {
-                Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediffToGive.hediffDef);
                 if (firstHediffOfDef != null)
                 {
                     target.health.RemoveHediff(firstHediffOfDef);
+                }
+            }
+            else
+            {
+                if (firstHediffOfDef != null)
+                {
+                    firstHediffOfDef.Severity += hediffToGive.severity;
+                    return;
                 }
             }
             Hediff hediff = HediffMaker.MakeHediff(hediffToGive.hediffDef, target, hediffToGive.onlyBrain ? target.health.hediffSet.GetBrain() : null);
