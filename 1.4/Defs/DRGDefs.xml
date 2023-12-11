@@ -6,7 +6,7 @@
         <insertPriority>100</insertPriority>
         <thinkRoot Class="ThinkNode_Priority">
             <subNodes>
-                <li Class="SuperHeroGenesBase.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
+                <li Class="EBSGFramework.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
             </subNodes>
         </thinkRoot>
     </ThinkTreeDef>
@@ -14,7 +14,7 @@
     <WorkGiverDef>
         <defName>DRG_AdministerResource</defName>
         <label>administer resource pack</label>
-        <giverClass>SuperHeroGenesBase.Workgiver_AdministerResource</giverClass>
+        <giverClass>EBSGFramework.Workgiver_AdministerResource</giverClass>
         <workType>Doctor</workType>
         <verb>administer resource pack to</verb>
         <gerund>administering resource pack to</gerund>
@@ -28,7 +28,7 @@
     <WorkGiverDef>
         <defName>DRG_DeliverResourceToPrisoner</defName>
         <label>deliver resource pack to prisoners</label>
-        <giverClass>SuperHeroGenesBase.WorkGiver_Warden_DeliverResource</giverClass>
+        <giverClass>EBSGFramework.WorkGiver_Warden_DeliverResource</giverClass>
         <workType>Warden</workType>
         <verb>deliver resource pack for</verb>
         <gerund>delivering resource pack for</gerund>
