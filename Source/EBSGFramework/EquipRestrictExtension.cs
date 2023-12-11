@@ -18,5 +18,7 @@ namespace EBSGFramework
         public List<HediffDef> forbiddenHediffsToEquip; // Require none of these are on the pawn
 
         // Attached to genes and xenotypes
+        public List<ThingDef> limitedToEquipments; // If this is not empty, then the xenotype/carriers of the gene will ONLY be able to equip these things
+        public List<ThingDef> forbiddenEquipments; // Stops xenotypes/carriers of the gene from equipping anything on the list
     }
 }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+    <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+
+        <!--Equip Restrict-->
     <EBSG_GeneRestrictedEquipment_All>Missing at least one required gene.</EBSG_GeneRestrictedEquipment_All>
     <EBSG_GeneRestrictedEquipment_AnyOne>Has none of required genes.</EBSG_GeneRestrictedEquipment_AnyOne>
     <EBSG_GeneRestrictedEquipment_One>Does not have the gene {0}.</EBSG_GeneRestrictedEquipment_One>
@@ -16,7 +19,8 @@
     <EBSG_HediffRestrictedEquipment_One>Does not have the hediff {0}.</EBSG_HediffRestrictedEquipment_One>
     <EBSG_HediffRestrictedEquipment_None>Has the hediff {0}.</EBSG_HediffRestrictedEquipment_None>
 
-    <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+    <EBSG_LimitedList>{0} only permits a specific set of equipment.</EBSG_LimitedList>
+    <EBSG_ForbiddenList>{0} can't equip this.</EBSG_ForbiddenList>
 
         <!--DRG Stuff-->
     <ResourceCost>{0} cost</ResourceCost>

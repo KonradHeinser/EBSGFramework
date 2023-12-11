@@ -35,8 +35,10 @@ namespace EBSGFramework
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)
         {
+            if (!__result) return;
             EquipRestrictExtension extension = thing.def.GetModExtension<EquipRestrictExtension>();
-            if (extension != null && __result)
+            bool flag = true;
+            if (extension != null)
             {       // Attempt to get the various limiting lists
                 List<GeneDef> requiredGenesToEquip = extension.requiredGenesToEquip;
                 List<GeneDef> requireOneOfGenesToEquip = extension.requireOneOfGenesToEquip;
@@ -46,15 +48,13 @@ namespace EBSGFramework
                 List<HediffDef> requiredHediffsToEquip = extension.requiredHediffsToEquip;
                 List<HediffDef> requireOneOfHediffsToEquip = extension.requireOneOfHediffsToEquip;
                 List<HediffDef> forbiddenHediffsToEquip = extension.forbiddenHediffsToEquip;
-
-                    // Gene Check
+                // Gene Check
                 if (!pawn.genes.GenesListForReading.NullOrEmpty())
                 {
                     Pawn_GeneTracker currentGenes = pawn.genes;
                     if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() || 
                         !requireOneOfXenotypeToEquip.NullOrEmpty() || !forbiddenXenotypesToEquip.NullOrEmpty())
                     {
-                        bool flag = true;
                         if (!requireOneOfXenotypeToEquip.NullOrEmpty() && !requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype) && flag)
                         {
                             if (requiredGenesToEquip.Count > 1) cantReason = "EBSG_XenoRestrictedEquipment_AnyOne".Translate();
@@ -106,7 +106,7 @@ namespace EBSGFramework
                                 }
                             }
                         }
-                        __result = flag;
+
                     }
                 }
                 else
@@ -114,17 +114,16 @@ namespace EBSGFramework
                     if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !requireOneOfXenotypeToEquip.NullOrEmpty())
                     {
                         cantReason = "EBSG_GenesNotFound".Translate();
-                        __result = false;
+                        flag = false;
                     }
                 }
 
                 // Hediff Check
                 HediffSet hediffSet = pawn.health.hediffSet;
-                if (__result && !hediffSet.hediffs.NullOrEmpty())
+                if (flag && !hediffSet.hediffs.NullOrEmpty())
                 {
                     if (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty())
                     {
-                        bool flag = true;
                         if (!forbiddenHediffsToEquip.NullOrEmpty())
                         {
                             foreach (HediffDef hediffDef in forbiddenHediffsToEquip)
@@ -165,15 +164,52 @@ namespace EBSGFramework
                             if (!requiredHediffsToEquip.NullOrEmpty())
                             {
                                 if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
-                                else "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0]);
+                                else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0]);
                                 flag = false;
                             }
                         }
 
-                        __result = flag;
                     }
                 }
             }
+            if (flag && !pawn.genes.GenesListForReading.NullOrEmpty())
+            {
+                XenotypeDef xenotype = pawn.genes.Xenotype;
+                if (xenotype != null && xenotype.HasModExtension<EquipRestrictExtension>())
+                {
+                    extension = xenotype.GetModExtension<EquipRestrictExtension>();
+                    if (!extension.limitedToEquipments.NullOrEmpty() && !extension.limitedToEquipments.Contains(thing.def))
+                    {
+                        cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
+                        flag = false;
+                    }
+                    if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
+                    {
+                        cantReason = "EBSG_ForbiddenList".Translate(xenotype.LabelCap);
+                        flag = false;
+                    }
+                }
+                if (flag)
+                {
+                    foreach (Gene gene in pawn.genes.GenesListForReading)
+                    {
+                        extension = gene.def.GetModExtension<EquipRestrictExtension>();
+                        if (!extension.limitedToEquipments.NullOrEmpty() && !extension.limitedToEquipments.Contains(thing.def))
+                        {
+                            cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
+                            flag = false;
+                            break;
+                        }
+                        if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
+                        {
+                            cantReason = "EBSG_ForbiddenList".Translate(gene.LabelCap);
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            __result = flag;
         }
             // Need to add a check on the genes and xenotype after checking for thing extension
 
