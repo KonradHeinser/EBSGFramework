@@ -1,5 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GeneGizmo_ResourceGene.cs">
+    <Files>
+      <File FileName="StatPart_FertilityByGenes.cs" Line="1" Column="1" />
+      <File FileName="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" Line="6" Column="24" />
+      <File FileName="DynamicResourceGenes/Alert_LowResource.cs" Line="65" Column="26" />
+      <File FileName="DynamicResourceGenes/GeneGizmo_ResourceGene.cs" Line="45" Column="60" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="References" expanded="True">
+                <Node name="UnityEngine.IMGUIModule" selected="True" />
+              </Node>
+              <Node name="DynamicResourceGenes" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

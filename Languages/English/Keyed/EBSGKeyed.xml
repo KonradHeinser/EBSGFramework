@@ -17,4 +17,17 @@
     <EBSG_HediffRestrictedEquipment_None>Has the hediff {0}.</EBSG_HediffRestrictedEquipment_None>
 
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+
+        <!--DRG Stuff-->
+    <ResourceCost>{0} cost</ResourceCost>
+    <ResourceGain>{0} gain</ResourceGain>
+    <AlertLowResource>Low resource</AlertLowResource>
+    <AlertLowResourceDesc>A colonist is runnning out of a resource</AlertLowResourceDesc>
+    <NoIngredients>No available packs.</NoIngredients>
+    <NotAllowedResource>Resource packs disabled by food restriction.</NotAllowedResource>
+    <AutoTakeResourceDesc>This determines whether {PAWN_nameDef} will automatically ingest {RESOURCE} packs when {PAWN_possessive} {RESOURCE} is below {MIN}.\n\nAutomatic ingestion is currently {ONOFF}.</AutoTakeResourceDesc>
+    <ConsumeResourceBelow>Consume {0} below</ConsumeResourceBelow>
+    <AbilityDisabledNoResourceGene>{0_labelShort} lacks the {1} gene.</AbilityDisabledNoResourceGene>
+    <AbilityDisabledNoResource>{0_labelShort} does not have enough {1}.</AbilityDisabledNoResource>
+
 </LanguageData>

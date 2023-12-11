@@ -44,6 +44,10 @@
       <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +100,22 @@
     <Compile Include="Hediffs\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
     <Compile Include="Hediffs\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
     <Compile Include="EBSGUtilities.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_AbilityConvertResource.cs" />
+    <Compile Include="DynamicResourceGenes\DRGExtension.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ResourceCost.cs" />
+    <Compile Include="DynamicResourceGenes\GeneGizmo_ResourceGene.cs" />
+    <Compile Include="DynamicResourceGenes\HediffCompProperties_SeverityFromResource.cs" />
+    <Compile Include="DynamicResourceGenes\ResourceDrainGene.cs" />
+    <Compile Include="DynamicResourceGenes\JobGiver_GetResourcePack.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_AbilityResourceCost.cs" />
+    <Compile Include="DynamicResourceGenes\ResourceGene.cs" />
+    <Compile Include="DynamicResourceGenes\Hediff_ResourceCraving.cs" />
+    <Compile Include="DynamicResourceGenes\Workgiver_AdministerResource.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ConvertResource.cs" />
+    <Compile Include="DynamicResourceGenes\IngestionOutcomeDoer_OffsetResource.cs" />
+    <Compile Include="DynamicResourceGenes\WorkGiver_Warden_DeliverResource.cs" />
+    <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
+    <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
