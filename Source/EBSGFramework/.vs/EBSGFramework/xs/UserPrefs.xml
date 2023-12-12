@@ -1,25 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HiveMind/HiveRoleToCheckFor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/IngestionOutcomeDoer_OffsetResource.cs">
     <Files>
-      <File FileName="EquipRestrictExtension.cs" Line="17" Column="77" />
-      <File FileName="HarmonyPatches.cs" Line="207" Column="91" />
-      <File FileName="Genes/HediffAdder.cs" Line="1" Column="1" />
-      <File FileName="DynamicResourceGenes/Workgiver_AdministerResource.cs" Line="27" Column="89" />
-      <File FileName="HiveMind/HiveMindGene.cs" Line="122" Column="64" />
-      <File FileName="HiveMind/HiveMindExtension.cs" Line="1" Column="1" />
-      <File FileName="HiveMind/HiveRoleToCheckFor.cs" Line="1" Column="1" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="170" Column="85" />
+      <File FileName="DynamicResourceGenes/DRGExtension.cs" Line="32" Column="48" />
+      <File FileName="DynamicResourceGenes/CompAbilityEffect_ResourceCost.cs" Line="1" Column="1" />
+      <File FileName="DynamicResourceGenes/IngestionOutcomeDoer_OffsetResource.cs" Line="24" Column="80" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
-              <Node name="HiveMind" expanded="True">
-                <Node name="HiveRoleToCheckFor.cs" selected="True" />
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="IngestionOutcomeDoer_OffsetResource.cs" selected="True" />
               </Node>
+              <Node name="Genes" expanded="True" />
             </Node>
           </Node>
         </State>

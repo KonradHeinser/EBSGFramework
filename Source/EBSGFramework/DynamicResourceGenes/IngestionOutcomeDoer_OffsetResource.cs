@@ -17,7 +17,7 @@ namespace EBSGFramework
             else 
             { 
                 ResourceGene resourceGene = (ResourceGene)pawn.genes.GetGene(mainResourceGene);
-                ResourceGene.OffsetResource(pawn, offset * (float)ingested.stackCount, resourceGene, resourceGene.def.GetModExtension<DRGExtension>());
+                ResourceGene.OffsetResource(pawn, offset * (float)ingested.stackCount, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), true);
             }
         }
 

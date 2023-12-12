@@ -167,7 +167,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref resourcePacksAllowed, "resourcePacksAllowed", true);
         }
 
-        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = true, bool dailyValue = false)
+        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false)
         {
             if (offset > 0f && applyStatFactor && extension.gainStat != null)
             {
