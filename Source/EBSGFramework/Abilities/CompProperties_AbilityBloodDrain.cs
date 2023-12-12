@@ -22,8 +22,6 @@ namespace EBSGFramework
         public HediffDef hediffToSelf;      // Applies this hediff to caster. Is optional.
         public bool damageSelf = false;     // When false, aoe's don't impact this pawn.
                                             
-        // Note to self, remember to make an AddMultipleHediffs(hediffsToTarget, hediffsToSelf, hediffsToBoth). Also, remember to delete this note when you do.
-
         public CompProperties_AbilityBloodDrain()
         {
             compClass = typeof(CompAbilityEffect_BloodDrain);

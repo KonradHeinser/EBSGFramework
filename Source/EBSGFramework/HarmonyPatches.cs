@@ -183,18 +183,42 @@ namespace EBSGFramework
                         cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
                         flag = false;
                     }
-                    if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
+                    else if (!thing.def.IsWeapon && !extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
+                    {
+                        cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
+                        flag = false;
+                    }
+                    else if (thing.def.IsApparel && !extension.limitedToApparels.NullOrEmpty() && !extension.limitedToApparels.Contains(thing.def))
+                    {
+                        cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
+                        flag = false;
+                    }
+                    else if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
                     {
                         cantReason = "EBSG_ForbiddenList".Translate(xenotype.LabelCap);
                         flag = false;
                     }
+
                 }
                 if (flag)
                 {
                     foreach (Gene gene in pawn.genes.GenesListForReading)
                     {
+                        if (!gene.def.HasModExtension<EquipRestrictExtension>()) continue;
                         extension = gene.def.GetModExtension<EquipRestrictExtension>();
                         if (!extension.limitedToEquipments.NullOrEmpty() && !extension.limitedToEquipments.Contains(thing.def))
+                        {
+                            cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
+                            flag = false;
+                            break;
+                        }
+                        if (!thing.def.IsWeapon && !extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
+                        {
+                            cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
+                            flag = false;
+                            break;
+                        }
+                        if (thing.def.IsApparel && !extension.limitedToApparels.NullOrEmpty() && !extension.limitedToApparels.Contains(thing.def))
                         {
                             cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
                             flag = false;
