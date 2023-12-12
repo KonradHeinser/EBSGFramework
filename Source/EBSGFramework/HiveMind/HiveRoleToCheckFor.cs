@@ -5,7 +5,7 @@ namespace EBSGFramework
 {
     public class HiveRoleToCheckFor
     {
-        public string checkKey = "Key"; // This can be the same as key if there is supposed to be a maximum or minimum count of this gene
+        public string checkKey = "Core"; // This can be the same as key if there is supposed to be a maximum or minimum count of this gene
 
         public int minCount = 0;
         public HediffDef hediffWhenTooFew = null;
