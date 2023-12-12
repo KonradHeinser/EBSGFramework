@@ -22,11 +22,11 @@ namespace EBSGFramework
                         FertilityByGenderAgeExtension extension = gene.def.GetModExtension<FertilityByGenderAgeExtension>();
                         if (!extension.overridingGenes.NullOrEmpty())
                         {
-                            foreach (Gene innerGene in currentGenes)
+                            foreach (GeneDef geneDef in extension.overridingGenes)
                             {
-                                if (extension.overridingGenes.Contains(innerGene.def))
+                                if (pawn.genes.HasGene(geneDef))
                                 {
-                                    extension = innerGene.def.GetModExtension<FertilityByGenderAgeExtension>();
+                                    extension = geneDef.GetModExtension<FertilityByGenderAgeExtension>();
                                     break;
                                 }
                             }
