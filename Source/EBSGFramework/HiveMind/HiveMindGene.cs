@@ -112,13 +112,17 @@ namespace EBSGFramework
                 bool flag = true;
                 if (!ally.Dead && ally.genes != null)
                 {
-                    List<Gene> genesListForReading = new List<Gene>(ally.genes.GenesListForReading);
-                    foreach (Gene gene in genesListForReading)
+                    if (ally.genes?.GetFirstGeneOfType<HiveMindGene>() != null)
                     {
-                        if (gene.Active && gene.def.HasModExtension<HiveMindExtension>() && gene.def.GetModExtension<HiveMindExtension>().hiveKey == extension.hiveKey)
+                        List<Gene> genesListForReading = new List<Gene>(ally.genes.GenesListForReading);
+                        foreach (Gene gene in genesListForReading)
                         {
-                            hiveGenesPresent.Add(gene.def);
-                            flag = false;
+                            if (gene.Active && gene.def.HasModExtension<HiveMindExtension>() && gene.def.GetModExtension<HiveMindExtension>().hiveKey == extension.hiveKey)
+                            {
+                                hiveGenesPresent.Add(gene.def);
+                                flag = false;
+                                break;
+                            }
                         }
                     }
                 }

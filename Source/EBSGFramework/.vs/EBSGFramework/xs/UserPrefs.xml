@@ -1,17 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HiveMind/HiveMindGene.cs">
     <Files>
-      <File FileName="EquipRestrictExtension.cs" Line="8" Column="40" />
-      <File FileName="HarmonyPatches.cs" Line="191" Column="18" />
+      <File FileName="EquipRestrictExtension.cs" Line="17" Column="77" />
+      <File FileName="HarmonyPatches.cs" Line="207" Column="91" />
+      <File FileName="Genes/HediffAdder.cs" Line="1" Column="1" />
+      <File FileName="DynamicResourceGenes/Workgiver_AdministerResource.cs" Line="1" Column="1" />
+      <File FileName="HiveMind/HiveMindGene.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
+              <Node name="DynamicResourceGenes" expanded="True" />
               <Node name="Genes" expanded="True" />
-              <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="Hediffs" expanded="True" />
+              <Node name="HiveMind" expanded="True">
+                <Node name="HiveMindGene.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
