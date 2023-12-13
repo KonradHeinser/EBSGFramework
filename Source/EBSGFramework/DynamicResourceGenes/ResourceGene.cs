@@ -183,7 +183,6 @@ namespace EBSGFramework
                 }
                 if (resourceGene.Value >= resourceGene.max && extension.overchargeHediff != null && !pawn.health.hediffSet.HasHediff(extension.overchargeHediff))
                 {
-                    if (pawn.health.hediffSet.HasHediff(extension.overchargeHediff)) Log.Error("What the fuck");
                     pawn.health.AddHediff(extension.overchargeHediff);
                 }
             }
