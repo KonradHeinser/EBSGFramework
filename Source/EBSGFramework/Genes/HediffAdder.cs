@@ -17,14 +17,16 @@ namespace EBSGFramework
                 {
                     if (!hediffToParts.bodyParts.NullOrEmpty())
                     {
+                        List<BodyPartRecord> alreadyTargettedParts = new List<BodyPartRecord>();
                         foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
                         {
                             Hediff firstHediffOfDef = null;
                             BodyPartRecord bodyPart = null;
                             foreach (BodyPartRecord notMissingPart in pawn.health.hediffSet.GetNotMissingParts())
                             {
-                                if (notMissingPart.def == bodyPartDef)
+                                if (notMissingPart.def == bodyPartDef && (alreadyTargettedParts.NullOrEmpty() || !alreadyTargettedParts.Contains(notMissingPart)))
                                 {
+                                    alreadyTargettedParts.Add(notMissingPart);
                                     bodyPart = notMissingPart;
                                     break;
                                 }
