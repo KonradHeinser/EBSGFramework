@@ -32,12 +32,14 @@ namespace EBSGFramework
                                 }
                             }
                             if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                            foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                            if (!pawn.health.hediffSet.hediffs.NullOrEmpty())
                             {
-                                if (hediff.Part == bodyPart && hediff.def == hediffToParts.hediff) firstHediffOfDef = hediff;
-                                break;
+                                foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                                {
+                                    if (hediff.Part == bodyPart && hediff.def == hediffToParts.hediff) firstHediffOfDef = hediff;
+                                    break;
+                                }
                             }
-
                             if (firstHediffOfDef != null)
                             {
                                 if (hediffToParts.onlyIfNew) continue;
