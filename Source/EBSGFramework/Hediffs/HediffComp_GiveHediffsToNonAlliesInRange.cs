@@ -36,10 +36,8 @@ namespace EBSGFramework
             {
                 foreach (Pawn item in list)
                 {
-                    if (item.Dead || item.health == null || (Props.targetingParameters != null && !Props.targetingParameters.CanTarget(item)) || allies.Contains(item))
-                    {
-                        continue;
-                    }
+                    if (allies.Contains(item) || (item.Faction != null && item.Faction.AllyOrNeutralTo(Pawn.Faction))) continue; // If it's an ally/non-enemy
+                    if (item.Dead || item.health == null || (Props.targetingParameters != null && !Props.targetingParameters.CanTarget(item))) continue;
                     if (Props.rangeStat != null)
                     {
                         if (!(item.Position.DistanceTo(parent.pawn.Position) <= parent.pawn.GetStatValue(Props.rangeStat))) continue;
