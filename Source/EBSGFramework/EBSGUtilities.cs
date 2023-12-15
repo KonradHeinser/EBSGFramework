@@ -67,5 +67,12 @@ namespace EBSGFramework
             if (!dictionary2.NullOrEmpty()) return false;
             return true;
         }
+
+        public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
+        {
+            if (pawn.health.hediffSet == null) return false;
+            if (pawn.health.hediffSet.HasHediff(hediff)) return true;
+            return false;
+        }
     }
 }

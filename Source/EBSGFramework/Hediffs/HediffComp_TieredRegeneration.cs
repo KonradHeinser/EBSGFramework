@@ -7,8 +7,8 @@ namespace EBSGFramework
     public class HediffComp_TieredRegeneration : HediffComp
     {
         private HediffCompProperties_TieredRegeneration Props => (HediffCompProperties_TieredRegeneration)props;
-        private int regrowTicksRemaining = -1;
-        private int healTicksRemaining = -1;
+        private int regrowTicksRemaining;
+        private int healTicksRemaining;
         private bool healInProgress = false;
         private bool healWhileRegrowing = false;
         private bool prioritizeHeal = false;
@@ -20,6 +20,8 @@ namespace EBSGFramework
         private float tempMaxSeverity;
         public int regrowthInterval;
         public int healInterval;
+        public int regrowTicksPerTick = 1;
+        public int healTicksPerTick = 1;
         private float healAmount;
         private int repeatCount;
         List<Hediff_Injury> wounds;
@@ -29,6 +31,8 @@ namespace EBSGFramework
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
+            regrowTicksRemaining = -1;
+            healTicksRemaining = -1;
             healWhileRegrowing = Props.healWhileRegrowing;
             prioritizeHeal = Props.prioritizeHeal;
             GetSet();
@@ -53,12 +57,12 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        if (regrowTicksRemaining == 0) // Otherwise, if the ticks have hit zero, give the part back
+                        regrowTicksRemaining -= regrowTicksPerTick;
+                        if (regrowTicksRemaining <= 0) // Otherwise, if the ticks have hit zero, give the part back
                         {
                             Pawn.health.RemoveHediff(missingPart);
                             regrowTicksRemaining = -1;
                         }
-                        else { regrowTicksRemaining--; } // If not done with regrowing, then tick on
                     }
                 }
                 // Heal stuff
@@ -72,14 +76,14 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        if (healTicksRemaining == 0) // If done healing, start grabbing random wounds and healing them
+                        healTicksRemaining -= healTicksPerTick;
+                        if (healTicksRemaining <= 0) // If done healing, start grabbing random wounds and healing them
                         {
                             for (int i = 0; i > repeatCount; i++)
                             {
                                 wounds.RandomElement().Severity -= healAmount;
                             }
                         }
-                        else { healTicksRemaining--; } // If not done healing, then tick on
                     }
                 }
 
@@ -180,9 +184,20 @@ namespace EBSGFramework
 
                     tempMinSeverity = regenSet.minSeverity;
                     tempMaxSeverity = regenSet.maxSeverity;
+
+                    healTicksPerTick = regenSet.healTicksPerTick;
+                    regrowTicksPerTick = regenSet.regrowTicksPerTick;
+
                     break;
                 }
             }
+        }
+
+        public override void CompExposeData()
+        {
+            base.CompExposeData();
+            Scribe_Deep.Look(ref healTicksRemaining, "EBSG_healTicksRemaining", Pawn);
+            Scribe_Deep.Look(ref regrowTicksRemaining, "EBSG_regrowTicksRemaining", Pawn);
         }
     }
 }
