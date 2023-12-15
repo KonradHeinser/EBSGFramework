@@ -32,13 +32,15 @@ namespace EBSGFramework
                 }
                 if (!Props.bodyPartsToDamage.NullOrEmpty())
                 {
+                    List<BodyPartRecord> alreadyTargettedParts = new List<BodyPartRecord>();
                     foreach (PartToDamage partToDamage in Props.bodyPartsToDamage)
                     {
                         BodyPartRecord bodyPart = null;
                         foreach (BodyPartRecord notMissingPart in Pawn.health.hediffSet.GetNotMissingParts())
                         {
-                            if (notMissingPart.def == partToDamage.bodyPart)
+                            if (notMissingPart.def == partToDamage.bodyPart && (alreadyTargettedParts.NullOrEmpty() || !alreadyTargettedParts.Contains(notMissingPart)))
                             {
+                                alreadyTargettedParts.Add(notMissingPart);
                                 bodyPart = notMissingPart;
                                 break;
                             }

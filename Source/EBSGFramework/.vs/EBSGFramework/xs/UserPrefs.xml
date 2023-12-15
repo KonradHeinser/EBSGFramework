@@ -1,19 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/ResourceGene.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/HediffComp_DamageBodyParts.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/DRGExtension.cs" Line="1" Column="1" />
-      <File FileName="DynamicResourceGenes/IngestionOutcomeDoer_OffsetResource.cs" Line="1" Column="1" />
-      <File FileName="DynamicResourceGenes/Hediff_ResourceCraving.cs" Line="1" Column="1" />
-      <File FileName="DynamicResourceGenes/HediffComp_SeverityFromResource.cs" Line="35" Column="1" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffCompProperties_CreateOtherHediffs.cs" Line="19" Column="1" />
+      <File FileName="Hediffs/HediffCompProperties_DamageBodyParts.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffCompProperties_GainRandomGeneSet.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffCompProperties_TieredRegeneration.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/PartToDamage.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffComp_DamageBodyParts.cs" Line="1" Column="1" />
+      <File FileName="Genes/HediffAdder.cs" Line="20" Column="97" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="ResourceGene.cs" selected="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="HediffComp_DamageBodyParts.cs" selected="True" />
               </Node>
               <Node name="Thoughts" expanded="True" />
             </Node>
