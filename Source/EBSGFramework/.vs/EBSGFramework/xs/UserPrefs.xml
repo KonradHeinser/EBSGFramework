@@ -6,9 +6,7 @@
       <File FileName="Hediffs/HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" Line="1" Column="1" />
       <File FileName="Hediffs/HediffComp_CreateOtherHediffs.cs" Line="12" Column="72" />
       <File FileName="Hediffs/HediffComp_GiveHediffsToNonAlliesInRange.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/RegenSet.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/HediffCompProperties_TieredRegeneration.cs" Line="12" Column="35" />
-      <File FileName="Hediffs/HediffComp_TieredRegeneration.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/HediffComp_TieredRegeneration.cs" Line="34" Column="47" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
