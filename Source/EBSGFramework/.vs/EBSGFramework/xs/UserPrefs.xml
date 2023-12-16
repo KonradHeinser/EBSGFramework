@@ -1,21 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="StatPart_FertilityByGenes.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/HediffAdder.cs">
     <Files>
       <File FileName="Hediffs/HediffCompProperties_CreateOtherHediffs.cs" Line="8" Column="57" />
       <File FileName="Hediffs/HediffsAtSeverities.cs" Line="16" Column="33" />
       <File FileName="Hediffs/HediffComp_CreateOtherHediffs.cs" Line="44" Column="33" />
       <File FileName="EBSGExtension.cs" Line="25" Column="47" />
       <File FileName="StatPart_FertilityByGenes.cs" Line="43" Column="10" />
+      <File FileName="Genes/HediffAdder.cs" Line="24" Column="60" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
-              <Node name="StatPart_FertilityByGenes.cs" selected="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="HediffAdder.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
