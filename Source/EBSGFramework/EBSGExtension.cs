@@ -13,9 +13,9 @@ namespace EBSGFramework
         public bool vanishingGene = false;
 
         // Curves that can be added to a gene to give pawns an additional age multiplier
+        public SimpleCurve fertilityAgeAdditionalFactor;
         public SimpleCurve maleFertilityAgeAdditionalFactor;
         public SimpleCurve femaleFertilityAgeAdditionalFactor;
-        public SimpleCurve fertilityAgeAdditionalFactor;
 
         // Sets minimum fertility based on age
         public SimpleCurve minFertilityByAgeFactor;

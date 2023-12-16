@@ -118,6 +118,7 @@
     <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
     <Compile Include="Hediffs\HediffCompProperties_HediffWhileMoving.cs" />
     <Compile Include="Hediffs\HediffComp_HediffWhileMoving.cs" />
+    <Compile Include="Genes\AdditionalFertilityByAge.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
