@@ -5,7 +5,7 @@
       <File FileName="Hediffs/HediffsAtSeverities.cs" Line="16" Column="33" />
       <File FileName="Hediffs/HediffComp_CreateOtherHediffs.cs" Line="44" Column="33" />
       <File FileName="EBSGExtension.cs" Line="25" Column="47" />
-      <File FileName="StatPart_FertilityByGenes.cs" Line="31" Column="64" />
+      <File FileName="StatPart_FertilityByGenes.cs" Line="43" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
