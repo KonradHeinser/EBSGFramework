@@ -96,7 +96,6 @@ namespace EBSGFramework
             {
                 Log.Error(def + " could not find the hediffs to add list.");
             }
-            Log.Message("Ending add");
         }
     }
 }
