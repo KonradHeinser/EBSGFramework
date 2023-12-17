@@ -68,6 +68,39 @@ namespace EBSGFramework
             return true;
         }
 
+        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        {
+            if (hediff != null)
+            {
+                if (HasHediff(pawn, hediff))
+                {
+                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityPerTick;
+                }
+                else
+                {
+                    Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn);
+                    newHediff.Severity = initialSeverity;
+                    pawn.health.AddHediff(newHediff);
+                }
+            }
+            if (!hediffs.NullOrEmpty())
+            {
+                foreach (HediffDef hediffDef in hediffs)
+                {
+                    if (HasHediff(pawn, hediffDef))
+                    {
+                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityPerTick;
+                    }
+                    else
+                    {
+                        Hediff newHediff = HediffMaker.MakeHediff(hediffDef, pawn);
+                        newHediff.Severity = initialSeverity;
+                        pawn.health.AddHediff(newHediff);
+                    }
+                }
+            }
+        }
+
         public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
             if (pawn.health.hediffSet == null) return false;
