@@ -2,18 +2,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
       <File FileName="Hediffs/HediffCompProperties_HediffWhileMoving.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/HediffComp_HediffWhileMoving.cs" Line="22" Column="18" />
-      <File FileName="EBSGUtilities.cs" Line="71" Column="24" />
+      <File FileName="Hediffs/HediffComp_HediffWhileMoving.cs" Line="22" Column="6" />
+      <File FileName="EBSGUtilities.cs" Line="66" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Hediffs" expanded="True" />
-              <Node name="EBSGUtilities.cs" selected="True" />
-            </Node>
-          </Node>
+          <Node name="EBSGFramework" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
