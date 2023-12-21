@@ -101,6 +101,27 @@ namespace EBSGFramework
             }
         }
 
+        public static void FadingHediffs(Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        {
+            if (hediff != null)
+            {
+                if (HasHediff(pawn, hediff))
+                {
+                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity -= severityPerTick;
+                }
+            }
+            if (!hediffs.NullOrEmpty())
+            {
+                foreach (HediffDef hediffDef in hediffs)
+                {
+                    if (HasHediff(pawn, hediffDef))
+                    {
+                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity -= severityPerTick;
+                    }
+                }
+            }
+        }
+
         public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
             if (pawn.health.hediffSet == null) return false;
