@@ -1,6 +1,6 @@
 ﻿using Verse;
 using System.Collections.Generic;
-using RimWorld;
+using System;
 
 namespace EBSGFramework
 {
@@ -66,6 +66,50 @@ namespace EBSGFramework
             }
             if (!dictionary2.NullOrEmpty()) return false;
             return true;
+        }
+
+        public static void AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0)
+        {
+            Hediff firstHediffOfDef = null;
+            if (HasHediff(pawn, hediffDef))
+            {
+                Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
+                if (testHediff.Part == bodyPart) firstHediffOfDef = testHediff;
+                else
+                {
+                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                    {
+                        if (hediff.Part == bodyPart && hediff.def == hediffDef) firstHediffOfDef = hediff;
+                        break;
+                    }
+                }
+            }
+
+            if (firstHediffOfDef != null)
+            {
+                try
+                {
+                    try // Try to make it a psylink
+                    {
+                        Hediff_Psylink hediff_Level = (Hediff_Psylink)firstHediffOfDef;
+                        hediff_Level.ChangeLevel((int)Math.Ceiling(severityAdded), false);
+                    }
+                    catch // Try to make it a leveling hediff
+                    {
+                        Hediff_Level hediff_Level = (Hediff_Level)firstHediffOfDef;
+                        hediff_Level.ChangeLevel((int)Math.Ceiling(severityAdded));
+                    }
+                }
+                catch // Just increase the severity
+                {
+                    firstHediffOfDef.Severity += severityAdded;
+                }
+            }
+            else
+            {
+                firstHediffOfDef = pawn.health.AddHediff(hediffDef, bodyPart);
+                firstHediffOfDef.Severity = initialSeverity;
+            }
         }
 
         public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)

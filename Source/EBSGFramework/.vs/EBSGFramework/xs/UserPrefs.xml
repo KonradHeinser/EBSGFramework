@@ -1,10 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/HediffAdder.cs">
     <Files>
-      <File FileName="Hediffs/HediffCompProperties_HediffWhileMoving.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/HediffComp_HediffWhileMoving.cs" Line="22" Column="6" />
-      <File FileName="EBSGUtilities.cs" Line="66" Column="14" />
+      <File FileName="Hediffs/HediffCompProperties_HediffWhileMoving.cs" Line="23" Column="50" />
+      <File FileName="Hediffs/HediffComp_HediffWhileMoving.cs" Line="19" Column="117" />
+      <File FileName="EBSGUtilities.cs" Line="110" Column="81" />
+      <File FileName="Genes/HediffAdder.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="HediffAdder.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

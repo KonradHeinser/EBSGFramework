@@ -7,6 +7,8 @@ namespace EBSGFramework
 {
     public class HediffAdder : Gene
     {
+        public Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
+
         public override void PostAdd()
         {
             base.PostAdd();
@@ -15,68 +17,25 @@ namespace EBSGFramework
             {
                 foreach (HediffsToParts hediffToParts in extension.hediffsToApply)
                 {
+                    foundParts.Clear();
                     if (!hediffToParts.bodyParts.NullOrEmpty())
                     {
-                        List<BodyPartRecord> alreadyTargettedParts = new List<BodyPartRecord>();
                         foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
                         {
-                            Hediff firstHediffOfDef = null;
-                            BodyPartRecord bodyPart = null;
-                            foreach (BodyPartRecord notMissingPart in pawn.health.hediffSet.GetNotMissingParts())
+                            if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
+                            if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                             {
-                                if (notMissingPart.def == bodyPartDef && (alreadyTargettedParts.NullOrEmpty() || !alreadyTargettedParts.Contains(notMissingPart)))
-                                {
-                                    alreadyTargettedParts.Add(notMissingPart);
-                                    bodyPart = notMissingPart;
-                                    break;
-                                }
+                                foundParts.Add(bodyPartDef, 0);
                             }
-                            if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                            if (pawn.health.hediffSet?.HasHediff(hediffToParts.hediff) == true)
-                            {
-                                Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                                if (testHediff.Part.def == bodyPart.def) firstHediffOfDef = testHediff;
-                                else
-                                {
-                                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                                    {
-                                        if (hediff.Part == bodyPart && hediff.def == hediffToParts.hediff) firstHediffOfDef = hediff;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (firstHediffOfDef != null)
-                            {
-                                if (hediffToParts.onlyIfNew) continue;
-                                try
-                                {
-                                    try
-                                    {
-                                        Hediff_Psylink hediff_Level = (Hediff_Psylink)firstHediffOfDef;
-                                        hediff_Level.ChangeLevel((int)Math.Ceiling(hediffToParts.severity), false);
-                                    }
-                                    catch
-                                    {
-                                        Hediff_Level hediff_Level = (Hediff_Level)firstHediffOfDef;
-                                        hediff_Level.ChangeLevel((int)Math.Ceiling(hediffToParts.severity));
-                                    }
-                                }
-                                catch
-                                {
-                                    firstHediffOfDef.Severity += hediffToParts.severity;
-                                }
-                            }
-                            else
-                            {
-                                firstHediffOfDef = pawn.health.AddHediff(hediffToParts.hediff, bodyPart);
-                                firstHediffOfDef.Severity = hediffToParts.severity;
-                            }
+                            Log.Message(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]].Label);
+                            if (hediffToParts.onlyIfNew) EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
+                            else EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
+                            foundParts[bodyPartDef]++;
                         }
                     }
                     else
                     {
-                        if (pawn.health.hediffSet?.HasHediff(hediffToParts.hediff) == true)
+                        if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))
                         {
                             if (hediffToParts.onlyIfNew) continue;
                             Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
@@ -84,9 +43,7 @@ namespace EBSGFramework
                         }
                         else
                         {
-                            pawn.health.AddHediff(hediffToParts.hediff);
-                            Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                            hediff.Severity = hediffToParts.severity;
+                            EBSGUtilities.AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
                         }
                     }
                 }
