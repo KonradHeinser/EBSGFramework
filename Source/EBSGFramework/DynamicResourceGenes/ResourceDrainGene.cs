@@ -58,6 +58,16 @@ namespace EBSGFramework
             if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1, cachedResourceGene, extension, false, true);
         }
 
+        public override void PostAdd()
+        {
+            base.PostAdd();
+            EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+            if (EBSGextension != null && !EBSGextension.hediffsToApply.NullOrEmpty())
+            {
+                HediffAdder.HediffAdding(pawn, this);
+            }
+        }
+
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo resourceDrainGizmo in GeneResourceDrainUtility.GetResourceDrainGizmos(this))

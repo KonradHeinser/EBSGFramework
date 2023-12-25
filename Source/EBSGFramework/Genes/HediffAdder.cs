@@ -7,12 +7,16 @@ namespace EBSGFramework
 {
     public class HediffAdder : Gene
     {
-        public Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-
         public override void PostAdd()
         {
             base.PostAdd();
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
+            HediffAdding(pawn, this);
+        }
+
+        public static void HediffAdding(Pawn pawn, Gene gene)
+        {
+            EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+            Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
             if (extension != null && !extension.hediffsToApply.NullOrEmpty())
             {
                 foreach (HediffsToParts hediffToParts in extension.hediffsToApply)
@@ -47,11 +51,11 @@ namespace EBSGFramework
                         }
                     }
                 }
-                if (extension.vanishingGene) pawn.genes.RemoveGene(this);
+                if (extension.vanishingGene) pawn.genes.RemoveGene(gene);
             }
             else
             {
-                Log.Error(def + " could not find the hediffs to add list.");
+                Log.Error(gene.def + " could not find the hediffs to add list.");
             }
         }
     }

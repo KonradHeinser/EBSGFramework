@@ -63,6 +63,11 @@ namespace EBSGFramework
             base.PostAdd();
             InitializeExtension();
             Reset();
+            EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+            if (EBSGextension != null && !EBSGextension.hediffsToApply.NullOrEmpty())
+            {
+                HediffAdder.HediffAdding(pawn, this);
+            }
         }
 
         private List<IGeneResourceDrain> DrainGenes

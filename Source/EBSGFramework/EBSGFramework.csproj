@@ -119,6 +119,7 @@
     <Compile Include="Hediffs\HediffCompProperties_HediffWhileMoving.cs" />
     <Compile Include="Hediffs\HediffComp_HediffWhileMoving.cs" />
     <Compile Include="Genes\AdditionalFertilityByAge.cs" />
+    <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
