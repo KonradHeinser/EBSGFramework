@@ -1,13 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/ResourceGene.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffect_BloodDrain.cs">
     <Files>
       <File FileName="Hediffs/HediffCompProperties_HediffWhileMoving.cs" Line="23" Column="50" />
       <File FileName="Hediffs/HediffComp_HediffWhileMoving.cs" Line="19" Column="117" />
       <File FileName="EBSGUtilities.cs" Line="3" Column="13" />
-      <File FileName="Genes/HediffAdder.cs" Line="21" Column="14" />
       <File FileName="Genes/Gene_HemoHediffAdder.cs" Line="13" Column="6" />
-      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="68" Column="14" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="1" Column="1" />
+      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="67" Column="54" />
+      <File FileName="Genes/HediffAdder.cs" Line="1" Column="1" />
+      <File FileName="Abilities/CompProperties_AbilityBloodDrain.cs" Line="24" Column="128" />
+      <File FileName="Abilities/CompAbilityEffect_BloodDrain.cs" Line="92" Column="44" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,10 +16,11 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="ResourceGene.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffect_BloodDrain.cs" selected="True" />
               </Node>
               <Node name="Genes" expanded="True" />
+              <Node name="Hediffs" expanded="True" />
             </Node>
           </Node>
         </State>
