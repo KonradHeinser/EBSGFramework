@@ -16,5 +16,7 @@ namespace EBSGFramework
         public bool checkIngredients; // If true, then consuming items with registered ingredients that fall under one of the above lists counts as consuming
 
         // descriptionOverride Note: If the relevant hediff does not use the standard HediffCompProperties_SeverityPerDay, then the hediff will throw errors with the default description, making this required
+
+        // Note for anyone trying to figure out the code behind all this, it uses the same concepts as the ChemicalDependency variants, it's just a lot more robust
     }
 }

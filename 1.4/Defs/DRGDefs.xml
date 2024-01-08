@@ -7,6 +7,7 @@
         <thinkRoot Class="ThinkNode_Priority">
             <subNodes>
                 <li Class="EBSGFramework.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
+                <li Class="EBSGFramework.JobGiver_SatisfyDependency" MayRequire="Ludeon.RimWorld.Biotech" /> <!--Technically for IDG, but no need to make a new tree for that-->
             </subNodes>
         </thinkRoot>
     </ThinkTreeDef>

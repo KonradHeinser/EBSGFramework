@@ -1,22 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Dependencies/JobGiver_SatisfyDependency.cs">
     <Files>
-      <File FileName="Dependencies/Gene_Dependency.cs" Line="180" Column="10" />
+      <File FileName="Dependencies/Gene_Dependency.cs" Line="96" Column="57" />
       <File FileName="Dependencies/IDGExtension.cs" Line="11" Column="54" />
       <File FileName="EBSGDefOf.cs" Line="16" Column="1" />
-      <File FileName="Dependencies/Hediff_Dependency.cs" Line="25" Column="14" />
+      <File FileName="Dependencies/Hediff_Dependency.cs" Line="188" Column="9" />
       <File FileName="GRCExtension.cs" Line="2" Column="13" />
-      <File FileName="Dependencies/JobGiver_SatisfyDependency.cs" Line="2" Column="24" />
+      <File FileName="Dependencies/JobGiver_SatisfyDependency.cs" Line="21" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
               <Node name="Dependencies" expanded="True">
                 <Node name="JobGiver_SatisfyDependency.cs" selected="True" />
               </Node>
+              <Node name="DynamicResourceGenes" expanded="True" />
               <Node name="Genes" expanded="True" />
               <Node name="HiveMind" expanded="True" />
             </Node>

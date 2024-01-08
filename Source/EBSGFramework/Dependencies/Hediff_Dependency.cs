@@ -13,7 +13,9 @@ namespace EBSGFramework
 
         public string AssignedLabel => GetLabel();
 
-        public string linkedGene;
+        public int cachedGeneCount = 0;
+
+        public GeneDef linkedGene;
 
         public IDGExtension cachedExtension;
 
@@ -30,9 +32,10 @@ namespace EBSGFramework
         {
             get
             {
-                if (cachedDependencyGene == null && pawn.genes != null)
+                if (pawn.genes != null && (cachedDependencyGene == null || pawn.genes.GenesListForReading.Count != cachedGeneCount))
                 {
                     List<Gene> genesListForReading = pawn.genes.GenesListForReading;
+                    cachedGeneCount = genesListForReading.Count;
                     for (int i = 0; i < genesListForReading.Count; i++)
                     {
                         if (genesListForReading[i] is Gene_Dependency gene_Dependency)
@@ -45,7 +48,7 @@ namespace EBSGFramework
                                     break;
                                 }
                             }
-                            else if (gene_Dependency.def.ToString() == linkedGene)
+                            else if (gene_Dependency.def == linkedGene)
                             {
                                 cachedDependencyGene = gene_Dependency;
                                 break;
@@ -53,6 +56,7 @@ namespace EBSGFramework
                         }
                     }
                 }
+                if (cachedDependencyGene == null || pawn.genes == null) pawn.health.RemoveHediff(this);
                 return cachedDependencyGene;
             }
         }
@@ -180,6 +184,12 @@ namespace EBSGFramework
             else if(hediff_Dependency.AssignedLabel == AssignedLabel) return base.TryMergeWith(other);
 
             return false;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Defs.Look(ref linkedGene, "linkedGene");
         }
     }
 }
