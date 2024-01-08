@@ -14,7 +14,13 @@ namespace EBSGFramework
             get
             {
                 ResourceGene gene_Resource = (ResourceGene)parent.pawn.genes.GetGene(Props.mainResourceGene);
-                if (gene_Resource == null || gene_Resource.Value < Props.resourceCost)
+                float cost = Props.resourceCost;
+                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (gene_Resource == null || gene_Resource.Value < cost)
+                {
+                    return false;
+                }
+                if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max)
                 {
                     return false;
                 }
@@ -31,7 +37,9 @@ namespace EBSGFramework
             else
             {
                 resourceGene = (ResourceGene)pawn.genes.GetGene(Props.mainResourceGene);
-                ResourceGene.OffsetResource(pawn, 0f - Props.resourceCost, resourceGene, resourceGene.def.GetModExtension<DRGExtension>());
+                float cost = Props.resourceCost;
+                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                ResourceGene.OffsetResource(pawn, 0f - cost, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), storeLimitPassing: !Props.checkMaximum);
             }
         }
 
@@ -43,15 +51,22 @@ namespace EBSGFramework
                 return true;
             }
             ResourceGene gene_Resource = (ResourceGene)parent.pawn.genes.GetGene(Props.mainResourceGene);
+            float cost = Props.resourceCost;
+            if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
 
-            if (gene_Resource.Value < Props.resourceCost)
+            if (gene_Resource.Value < cost)
+            {
+                reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
+                return true;
+            }
+            if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max)
             {
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
             }
             float num = TotalResourceCostOfQueuedAbilities();
-            float num2 = Props.resourceCost + num;
-            if (Props.resourceCost > float.Epsilon && num2 > gene_Resource.Value)
+            float num2 = cost + num;
+            if (cost > float.Epsilon && num2 > gene_Resource.Value)
             {
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
@@ -89,7 +104,9 @@ namespace EBSGFramework
                 {
                     if (comp is CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost)
                     {
-                        return compAbilityEffect_ResourceCost.Props.resourceCost;
+                        float cost = Props.resourceCost;
+                        if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                        return cost;
                     }
                 }
             }

@@ -1,11 +1,30 @@
 ﻿using Verse;
 using System.Collections.Generic;
 using System;
+using RimWorld;
 
 namespace EBSGFramework
 {
     public class EBSGUtilities
     {
+        public static List<PawnCapacityDef> cachedLethalCapacities = new List<PawnCapacityDef>();
+
+        public static List<PawnCapacityDef> LethalCapacities
+        {
+            get
+            {
+                if (cachedLethalCapacities.NullOrEmpty())
+                {
+                    cachedLethalCapacities.Add(PawnCapacityDefOf.BloodPumping);
+                    cachedLethalCapacities.Add(PawnCapacityDefOf.BloodFiltration);
+                    cachedLethalCapacities.Add(PawnCapacityDefOf.Breathing);
+                    cachedLethalCapacities.Add(PawnCapacityDefOf.Consciousness);
+                    cachedLethalCapacities.Add(PawnCapacityDefOf.Metabolism);
+                }
+                return cachedLethalCapacities;
+            }
+        }
+
         public static List<HediffDef> ApplyHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             List<HediffDef> addedHediffs = new List<HediffDef>();

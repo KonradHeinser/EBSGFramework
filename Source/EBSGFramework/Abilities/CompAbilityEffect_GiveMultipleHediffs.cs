@@ -14,11 +14,11 @@ namespace EBSGFramework
             base.Apply(target, dest);
             foreach (HediffToGive hediffToGive in Props.hediffsToGive)
             {
-                if (!hediffToGive.onlyApplyToSelf && hediffToGive.applyToTarget)
+                if (!hediffToGive.onlyApplyToSelf && hediffToGive.applyToTarget && (!Props.psychic || target.Pawn.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
                 {
                     ApplyInner(target.Pawn, parent.pawn, hediffToGive);
                 }
-                if (hediffToGive.applyToSelf || hediffToGive.onlyApplyToSelf)
+                if (hediffToGive.applyToSelf || hediffToGive.onlyApplyToSelf && (!Props.psychic || parent.pawn.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
                 {
                     ApplyInner(parent.pawn, target.Pawn, hediffToGive);
                 }
@@ -31,6 +31,7 @@ namespace EBSGFramework
             {
                 return;
             }
+            if (hediffToGive.psychic && target.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) return;
             Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediffToGive.hediffDef);
             if (hediffToGive.replaceExisting)
             {

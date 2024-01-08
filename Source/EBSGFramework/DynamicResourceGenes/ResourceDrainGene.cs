@@ -41,11 +41,18 @@ namespace EBSGFramework
             }
         }
 
-        public float ResourceLossPerDay => def.resourceLossPerDay;
+        public float ResourceLossPerDay => GetLossPerDay();
 
         public Pawn Pawn => pawn;
 
         public string DisplayLabel => Label + " (" + "Gene".Translate() + ")";
+
+        private float GetLossPerDay()
+        {
+            if (def.GetModExtension<DRGExtension>() == null) return def.resourceLossPerDay;
+            if (def.GetModExtension<DRGExtension>().passiveFactorStat != null) return def.resourceLossPerDay * pawn.GetStatValue(def.GetModExtension<DRGExtension>().passiveFactorStat);
+            return def.resourceLossPerDay;
+        }
 
         public override void Tick()
         {
@@ -55,7 +62,7 @@ namespace EBSGFramework
                 extension = def.GetModExtension<DRGExtension>();
                 extensionAlreadyChecked = true;
             }
-            if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1, cachedResourceGene, extension, false, true);
+            if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1, cachedResourceGene, extension, false, true, true);
         }
 
         public override void PostAdd()

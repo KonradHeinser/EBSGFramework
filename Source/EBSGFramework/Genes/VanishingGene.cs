@@ -17,5 +17,11 @@ namespace EBSGFramework
             }
             ticksUntilVanish--;
         }
+
+        public override void PostAdd()
+        {
+            base.PostAdd();
+            HediffAdder.HediffAdding(pawn, this);
+        }
     }
 }

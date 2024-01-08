@@ -34,17 +34,28 @@ namespace EBSGFramework
 
         public string DisplayLabel => Label + " (" + "Gene".Translate() + ")";
 
-        public float ResourceLossPerDay => def.resourceLossPerDay;
+        public float ResourceLossPerDay => GetLossPerDay();
 
         public override float InitialResourceMax => 1f;
 
         public override float MinLevelForAlert => 0.15f;
 
         public override float MaxLevelOffset => 0.1f;
-        
+
+        public float overchargeLeft = 0;
+
+        public float underchargeLeft = 0;
+
         protected override Color BarColor => GetColor();
 
         protected override Color BarHighlightColor => GetHighlightColor();
+
+        private float GetLossPerDay()
+        {
+            if (extension == null) InitializeExtension();
+            if (extension.passiveFactorStat != null) return def.resourceLossPerDay * pawn.GetStatValue(extension.passiveFactorStat);
+            return def.resourceLossPerDay;
+        }
 
         public Color GetColor()
         {
@@ -61,7 +72,7 @@ namespace EBSGFramework
         public override void PostAdd()
         {
             base.PostAdd();
-            InitializeExtension();
+            if (extension == null) InitializeExtension();
             Reset();
             EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
             if (EBSGextension != null && !EBSGextension.hediffsToApply.NullOrEmpty())
@@ -119,7 +130,7 @@ namespace EBSGFramework
             {
                 if (extension.maxStat != null || extension.maxFactorStat != null) CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
             }
-            OffsetResource(pawn, ResourceLossPerDay * -1, this, extension, false, true);
+            OffsetResource(pawn, ResourceLossPerDay * -1, this, extension, false, true, true);
         }
 
         public void CreateMax(float maximum = 1f, StatDef maxStat = null, StatDef maxFactorStat = null)
@@ -165,23 +176,50 @@ namespace EBSGFramework
             else Log.Error(def + "is missing the DRGExtension modex");
         }
 
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Values.Look(ref resourcePacksAllowed, "resourcePacksAllowed", true);
-        }
-
-        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false)
+        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
         {
             if (offset > 0f && applyStatFactor && extension.gainStat != null)
             {
                 offset *= pawn.GetStatValue(extension.gainStat);
             }
             if (dailyValue) offset /= 60000f;
+            if (checkPassiveStat && extension.passiveFactorStat != null) offset *= pawn.GetStatValue(extension.passiveFactorStat);
             if (resourceGene != null)
             {
-                resourceGene.Value += offset;
+                if (resourceGene.overchargeLeft > 0)
+                {
+                    resourceGene.overchargeLeft += offset;
+                    if (resourceGene.overchargeLeft < 0)
+                    {
+                        resourceGene.Value += resourceGene.overchargeLeft;
+                        resourceGene.overchargeLeft = 0;
+                    }
+                }
+                else if (resourceGene.underchargeLeft > 0)
+                {
+                    resourceGene.underchargeLeft += offset;
+                    if (resourceGene.underchargeLeft < 0)
+                    {
+                        resourceGene.Value += resourceGene.underchargeLeft * -1; // Need the value to rise by whatever remains
+                        resourceGene.underchargeLeft = 0;
+                    }
+                }
+                else
+                {
+                    if (storeLimitPassing)
+                    {
+                        if (resourceGene.Value + offset > resourceGene.Max)
+                        {
+                            resourceGene.overchargeLeft += resourceGene.Value + offset - resourceGene.Max;
+                        }
+                        else if (resourceGene.Value + offset < 0)
+                        {
+                            resourceGene.underchargeLeft += resourceGene.Value + offset * -1;
+                        }
+                    }
+                    resourceGene.Value += offset;
+                }
+
                 if (resourceGene.Value <= 0f && extension.cravingHediff != null && !pawn.health.hediffSet.HasHediff(extension.cravingHediff))
                 {
                     pawn.health.AddHediff(extension.cravingHediff);
@@ -193,5 +231,12 @@ namespace EBSGFramework
             }
         }
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref resourcePacksAllowed, "resourcePacksAllowed", true);
+            Scribe_Values.Look(ref overchargeLeft, "overchargeLeft", 0f);
+            Scribe_Values.Look(ref underchargeLeft, "underchargeLeft", 0f);
+        }
     }
 }

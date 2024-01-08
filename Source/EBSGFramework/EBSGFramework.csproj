@@ -120,6 +120,10 @@
     <Compile Include="Hediffs\HediffComp_HediffWhileMoving.cs" />
     <Compile Include="Genes\AdditionalFertilityByAge.cs" />
     <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
+    <Compile Include="Dependencies\Gene_Dependency.cs" />
+    <Compile Include="Dependencies\IDGExtension.cs" />
+    <Compile Include="Dependencies\Hediff_Dependency.cs" />
+    <Compile Include="Dependencies\JobGiver_SatisfyDependency.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -135,6 +139,7 @@
     <Folder Include="Thoughts\" />
     <Folder Include="Genes\" />
     <Folder Include="HiveMind\" />
+    <Folder Include="Dependencies\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

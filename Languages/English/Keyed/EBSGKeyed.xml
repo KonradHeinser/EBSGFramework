@@ -2,6 +2,13 @@
 <LanguageData>
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
 
+        <!--Ingestible Dependency Genes-->
+    <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive. </EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->
+    <EBSG_DependencyNeedDurationDescriptionFirst>After {1} days without {0}, {PAWN_pronoun} will experience {2}. </EBSG_DependencyNeedDurationDescriptionFirst> <!--The first iteration is the only one that provides the extra context-->
+    <EBSG_DependencyNeedDurationDescription>After {0} days, {PAWN_pronoun} will experience {1}. </EBSG_DependencyNeedDurationDescription> <!--Every stage between the first one and death use this-->
+    <EBSG_DependencyNeedDurationDescriptionDeath>After {0} days, {PAWN_pronoun} will die.</EBSG_DependencyNeedDurationDescriptionDeath> <!--When the code finds a death, this is the last thing that is recorded in the series-->
+    <EBSG_LastIngestedDurationAgo>Last ingested {0} {1} ago.</EBSG_LastIngestedDurationAgo>
+
         <!--Equip Restrict-->
     <EBSG_GeneRestrictedEquipment_All>Missing at least one required gene.</EBSG_GeneRestrictedEquipment_All>
     <EBSG_GeneRestrictedEquipment_AnyOne>Has none of required genes.</EBSG_GeneRestrictedEquipment_AnyOne>
@@ -22,7 +29,7 @@
     <EBSG_LimitedList>{0} only permits a specific set of equipment.</EBSG_LimitedList>
     <EBSG_ForbiddenList>{0} can't equip this.</EBSG_ForbiddenList>
 
-        <!--DRG Stuff-->
+        <!--Dynamic Resource Genes-->
     <ResourceCost>{0} cost</ResourceCost>
     <ResourceGain>{0} gain</ResourceGain>
     <AlertLowResource>Low resource</AlertLowResource>

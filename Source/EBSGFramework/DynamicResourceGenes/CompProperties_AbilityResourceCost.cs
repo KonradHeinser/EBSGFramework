@@ -11,6 +11,10 @@ namespace EBSGFramework
 
         public GeneDef mainResourceGene;
 
+        public StatDef costFactorStat;
+
+        public bool checkMaximum = true; // Causes abilities to be uncastable if they would generate too much of the resource
+
         public CompProperties_AbilityResourceCost()
         {
             compClass = typeof(CompAbilityEffect_ResourceCost);

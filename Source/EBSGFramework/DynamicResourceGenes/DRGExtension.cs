@@ -16,6 +16,7 @@ namespace EBSGFramework
         public HediffDef cravingHediff; // Optional
         public HediffDef overchargeHediff; // Optional
         public StatDef gainStat; // Optional
+        public StatDef passiveFactorStat; // Optional. Mutliplies daily values by this
         public float maximum = 1f; // This is the default for Hemogen. Optional
         public StatDef maxStat; // Overrides maximum. Optional
         public StatDef maxFactorStat; // Works with both maximum options. Optional

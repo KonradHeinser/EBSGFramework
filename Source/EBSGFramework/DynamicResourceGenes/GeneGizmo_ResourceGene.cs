@@ -63,27 +63,30 @@ namespace EBSGFramework
             {
                 labelRect.xMax -= 24f;
                 Rect rect = new Rect(labelRect.xMax, labelRect.y, 24f, 24f);
-                if (resourceGene.def.HasModExtension<DRGExtension>() && resourceGene.def.GetModExtension<DRGExtension>().iconThing != null) Widgets.DefIcon(rect, resourceGene.def.GetModExtension<DRGExtension>().iconThing);
-                else Widgets.DefIcon(rect, ThingDefOf.HemogenPack);
-                GUI.DrawTexture(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f), resourceGene.resourcePacksAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex);
-                if (Widgets.ButtonInvisible(rect))
+                if (resourceGene.def.HasModExtension<DRGExtension>() && !resourceGene.def.GetModExtension<DRGExtension>().resourcePacks.NullOrEmpty())
                 {
-                    resourceGene.resourcePacksAllowed = !resourceGene.resourcePacksAllowed;
-                    if (resourceGene.resourcePacksAllowed)
+                    if (resourceGene.def.GetModExtension<DRGExtension>().iconThing != null) Widgets.DefIcon(rect, resourceGene.def.GetModExtension<DRGExtension>().iconThing);
+                    else Widgets.DefIcon(rect, ThingDefOf.HemogenPack);
+                    GUI.DrawTexture(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f), resourceGene.resourcePacksAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex);
+                    if (Widgets.ButtonInvisible(rect))
                     {
-                        SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                        resourceGene.resourcePacksAllowed = !resourceGene.resourcePacksAllowed;
+                        if (resourceGene.resourcePacksAllowed)
+                        {
+                            SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                        }
+                        else
+                        {
+                            SoundDefOf.Tick_Low.PlayOneShotOnCamera();
+                        }
                     }
-                    else
+                    if (Mouse.IsOver(rect))
                     {
-                        SoundDefOf.Tick_Low.PlayOneShotOnCamera();
+                        Widgets.DrawHighlight(rect);
+                        string onOff = (resourceGene.resourcePacksAllowed ? "On" : "Off").Translate().ToString().UncapitalizeFirst();
+                        TooltipHandler.TipRegion(rect, () => "AutoTakeResourceDesc".Translate(resourceGene.ResourceLabel.Named("RESOURCE"), gene.pawn.Named("PAWN"), resourceGene.PostProcessValue(resourceGene.targetValue).Named("MIN"), onOff.Named("ONOFF")).Resolve(), 828267373);
+                        mouseOverAnyHighlightableElement = true;
                     }
-                }
-                if (Mouse.IsOver(rect))
-                {
-                    Widgets.DrawHighlight(rect);
-                    string onOff = (resourceGene.resourcePacksAllowed ? "On" : "Off").Translate().ToString().UncapitalizeFirst();
-                    TooltipHandler.TipRegion(rect, () => "AutoTakeResourceDesc".Translate(resourceGene.ResourceLabel.Named("RESOURCE"),  gene.pawn.Named("PAWN"), resourceGene.PostProcessValue(resourceGene.targetValue).Named("MIN"), onOff.Named("ONOFF")).Resolve(), 828267373);
-                    mouseOverAnyHighlightableElement = true;
                 }
             }
             base.DrawLabel(labelRect, ref mouseOverAnyHighlightableElement);

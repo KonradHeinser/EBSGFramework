@@ -18,6 +18,7 @@ namespace EBSGFramework
         public override void PostAdd()
         {
             base.PostAdd();
+            HediffAdder.HediffAdding(pawn, this);
             if (def.HasModExtension<HiveMindExtension>()) 
             {
                 extension = def.GetModExtension<HiveMindExtension>();
