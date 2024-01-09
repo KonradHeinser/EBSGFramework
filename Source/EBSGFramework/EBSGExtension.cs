@@ -12,6 +12,8 @@ namespace EBSGFramework
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;
 
+        public List<SkillChange> skillChanges;
+
         // Curves that can be added to a gene to give pawns an additional age multiplier
         public SimpleCurve fertilityAgeAdditionalFactor;
         public SimpleCurve maleFertilityAgeAdditionalFactor;

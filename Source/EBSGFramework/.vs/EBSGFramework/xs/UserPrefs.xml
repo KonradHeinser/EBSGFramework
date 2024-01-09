@@ -1,23 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Dependencies/JobGiver_SatisfyDependency.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SkillChange.cs">
     <Files>
-      <File FileName="Dependencies/Gene_Dependency.cs" Line="96" Column="57" />
-      <File FileName="Dependencies/IDGExtension.cs" Line="11" Column="54" />
-      <File FileName="EBSGDefOf.cs" Line="16" Column="1" />
-      <File FileName="Dependencies/Hediff_Dependency.cs" Line="188" Column="9" />
-      <File FileName="GRCExtension.cs" Line="2" Column="13" />
-      <File FileName="Dependencies/JobGiver_SatisfyDependency.cs" Line="21" Column="17" />
+      <File FileName="Genes/Gene_AptitudeChanging.cs" Line="23" Column="22" />
+      <File FileName="EBSGExtension.cs" Line="13" Column="43" />
+      <File FileName="Genes/SkillChange.cs" Line="10" Column="66" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="JobGiver_SatisfyDependency.cs" selected="True" />
+              <Node name="References" expanded="True" />
+              <Node name="Dependencies" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="SkillChange.cs" selected="True" />
               </Node>
-              <Node name="DynamicResourceGenes" expanded="True" />
-              <Node name="Genes" expanded="True" />
               <Node name="HiveMind" expanded="True" />
             </Node>
           </Node>

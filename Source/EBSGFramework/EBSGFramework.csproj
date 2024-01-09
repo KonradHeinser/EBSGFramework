@@ -124,6 +124,8 @@
     <Compile Include="Dependencies\IDGExtension.cs" />
     <Compile Include="Dependencies\Hediff_Dependency.cs" />
     <Compile Include="Dependencies\JobGiver_SatisfyDependency.cs" />
+    <Compile Include="Genes\Gene_AptitudeChanging.cs" />
+    <Compile Include="Genes\SkillChange.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
