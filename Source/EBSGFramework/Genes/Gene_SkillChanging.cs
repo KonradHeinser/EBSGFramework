@@ -6,7 +6,7 @@ using System;
 
 namespace EBSGFramework
 {
-    public class Gene_AptitudeChanging : HediffAdder
+    public class Gene_SkillChanging : HediffAdder
     {
         public override void PostAdd()
         {
