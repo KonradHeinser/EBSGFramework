@@ -8,6 +8,9 @@ namespace EBSGFramework
 {
     public class Gene_SkillChanging : HediffAdder
     {
+        public List<SkillDef> changedSkills;
+        public List<Passion> originalPassions;
+
         public override void PostAdd()
         {
             base.PostAdd();
@@ -18,7 +21,6 @@ namespace EBSGFramework
                 if (extension.skillChanges.NullOrEmpty()) Log.Error(def + " has EBSGExtension, but has no changes set");
                 else
                 {
-                    List<SkillDef> changedSkills = new List<SkillDef>();
                     foreach (SkillChange skillChange in extension.skillChanges)
                     {
                         SkillRecord skill;
@@ -31,7 +33,8 @@ namespace EBSGFramework
                         else skill = pawn.skills.GetSkill(skillChange.skill);
                         if (skill == null) continue;
 
-                        skill.Level += skillChange.skillIncrease;
+                        skill.Level += skillChange.skillChange;
+                        originalPassions.Add(skill.passion);
 
                         if (skillChange.setPassion)
                         {
@@ -77,9 +80,42 @@ namespace EBSGFramework
             }
         }
 
+        public override void PostRemove()
+        {
+            base.PostRemove();
+            int noSkillCounter = 0;
+            int originalPassionCounter = 0;
+
+            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
+            if (extension != null)
+            {
+                foreach (SkillChange skillChange in extension.skillChanges)
+                {
+                    SkillRecord skill;
+                    if (skillChange.skill == null)
+                    {
+                        skill = pawn.skills.GetSkill(changedSkills[noSkillCounter]);
+                        noSkillCounter++;
+                    }
+                    else skill = pawn.skills.GetSkill(skillChange.skill);
+
+                    skill.Level -= skillChange.skillChange;
+                    skill.passion = originalPassions[originalPassionCounter];
+                    originalPassionCounter++;
+                }
+            }
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref changedSkills, "changedSkills", new List<SkillDef>());
+            Scribe_Values.Look(ref originalPassions, "originalPassions", new List<Passion>());
+        }
+
         private bool Redundant(SkillRecord skill, SkillChange skillChange)
         {
-            if (skillChange.skillIncrease != 0) return false;
+            if (skillChange.skillChange != 0) return false;
             if (skillChange.setPassion)
             {
                 if (skill.passion == skillChange.passion) return true;
