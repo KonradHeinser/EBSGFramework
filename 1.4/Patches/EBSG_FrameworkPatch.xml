@@ -2,6 +2,6 @@
 <Patch>
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
-        <value><li Class="EBSGFramework.StatPart_FertilityByGenes" /></value>
+        <value><li Class="EBSGFramework.StatPart_FertilityByGenes" MayRequire="Ludeon.Rimworld.Biotech" /></value>
     </Operation>
 </Patch>

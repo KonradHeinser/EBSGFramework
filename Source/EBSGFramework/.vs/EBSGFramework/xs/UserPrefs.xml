@@ -1,21 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SkillChange.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties_LongDistanceTeleport.cs">
     <Files>
-      <File FileName="Genes/Gene_AptitudeChanging.cs" Line="23" Column="22" />
+      <File FileName="Genes/Gene_SkillChanging.cs" Line="87" Column="39" />
       <File FileName="EBSGExtension.cs" Line="13" Column="43" />
-      <File FileName="Genes/SkillChange.cs" Line="10" Column="66" />
+      <File FileName="Genes/SkillChange.cs" Line="9" Column="33" />
+      <File FileName="StatPart_FertilityByGenes.cs" Line="1" Column="1" />
+      <File FileName="HarmonyPatches.cs" Line="268" Column="69" />
+      <File FileName="Abilities/CompAbilityEffect_LongDistanceTeleport.cs" Line="77" Column="90" />
+      <File FileName="EBSGUtilities.cs" Line="212" Column="10" />
+      <File FileName="Abilities/CompProperties_LongDistanceTeleport.cs" Line="32" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="Dependencies" expanded="True" />
-              <Node name="Genes" expanded="True">
-                <Node name="SkillChange.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompProperties_LongDistanceTeleport.cs" selected="True" />
               </Node>
-              <Node name="HiveMind" expanded="True" />
             </Node>
           </Node>
         </State>

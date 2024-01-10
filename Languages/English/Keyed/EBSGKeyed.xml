@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+    <AbilityHomeTeleport>Skip to random area in home</AbilityHomeTeleport>
+    <AbilityMapTeleport>Skip to random area in map</AbilityMapTeleport>
+    <AbilityTileTeleport>Skip to tile</AbilityTileTeleport>
+    <AbilityPassableOnly>Only passable tiles can be picked</AbilityPassableOnly>
+    <AbilityTooFarToTeleport>This tile is too far for this teleportation ability</AbilityTooFarToTeleport>
 
         <!--Ingestible Dependency Genes-->
     <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive. </EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->

@@ -126,6 +126,8 @@
     <Compile Include="Dependencies\JobGiver_SatisfyDependency.cs" />
     <Compile Include="Genes\Gene_SkillChanging.cs" />
     <Compile Include="Genes\SkillChange.cs" />
+    <Compile Include="Abilities\CompAbilityEffect_LongDistanceTeleport.cs" />
+    <Compile Include="Abilities\CompProperties_LongDistanceTeleport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
