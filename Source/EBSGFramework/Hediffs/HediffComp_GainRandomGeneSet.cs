@@ -31,9 +31,11 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
+            if (delayTicks < 0) return;
             if (delayTicks == 0)
             {
                 GenerateGenes();
+                delayTicks--;
             }
             else if (parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
             {
@@ -66,15 +68,11 @@ namespace EBSGFramework
                 {
                     if (randomNumber <= xenoGeneSet.weightOfGeneSet)
                     {
-                        Log.Message("Genes added, set at weight of: " + xenoGeneSet.weightOfGeneSet);
                         genesToAdd = xenoGeneSet.geneSet;
                         reverseInheritence = xenoGeneSet.reverseInheritence;
                         break;
                     }
-                    else
-                    {
-                        randomNumber -= xenoGeneSet.weightOfGeneSet;
-                    }
+                    randomNumber -= xenoGeneSet.weightOfGeneSet;
                 }
             }
 
@@ -116,15 +114,12 @@ namespace EBSGFramework
             }
 
             // Add genes if they don't exist, and remove genes if they are on the alway remove list
-            Log.Message("Always added genes");
             if (!alwaysAddedGenes.NullOrEmpty())
             {
                 foreach (GeneDef geneDef in alwaysAddedGenes)
                 {
-                    Log.Message("Checking for" + geneDef.defName);
                     if (!remainingGenes.Contains(geneDef))
                     {
-                        Log.Message("Adding " + geneDef.defName);
                         currentGenes.AddGene(geneDef, !inheritGenes);
                         remainingGenes.Add(geneDef);
                     }
@@ -166,10 +161,16 @@ namespace EBSGFramework
                 else if (!alwaysRemovedGenes.NullOrEmpty()) Messages.Message("Genes successfully removed from pawn!", MessageTypeDefOf.NeutralEvent, false);
                 else Messages.Message("This hediff successfully processed that the mod dev gave me NOTHING to work with. Why?", MessageTypeDefOf.NeutralEvent, false);
             }
-            if (parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def) != null)
+            if (parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def) != null && Props.removeHediffAfterwards)
             {
                 parent.pawn.health.RemoveHediff(parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def));
             }
+        }
+
+        public override void CompExposeData()
+        {
+            base.CompExposeData();
+            Scribe_Values.Look(ref delayTicks, "EBSG_GeneSetDelayTicks", 10);
         }
     }
 }

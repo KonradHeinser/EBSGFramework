@@ -204,7 +204,7 @@ namespace EBSGFramework
             bool homeMap = parent.pawn.Map.IsPlayerHome;
             foreach (Thing item in GenRadial.RadialDistinctThingsAround(parent.pawn.Position, parent.pawn.Map, parent.def.EffectRadius, true))
             {
-                if (item is Pawn pawn && (!pawn.Dead || Props.bringCorpses) && ((Props.onlyAllies && (pawn.IsColonist || pawn.IsPrisonerOfColony)) || (!homeMap && pawn.RaceProps.Animal && pawn.Faction != null && pawn.Faction.IsPlayer)))
+                if (item is Pawn pawn && (!pawn.Dead || Props.bringCorpses) && (!Props.onlyAllies || pawn.Faction == parent.pawn.Faction || (!homeMap && pawn.RaceProps.Animal && pawn.Faction != null && pawn.Faction == parent.pawn.Faction)))
                 {
                     yield return pawn;
                 }

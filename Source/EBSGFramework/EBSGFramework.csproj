@@ -128,6 +128,18 @@
     <Compile Include="Genes\SkillChange.cs" />
     <Compile Include="Abilities\CompAbilityEffect_LongDistanceTeleport.cs" />
     <Compile Include="Abilities\CompProperties_LongDistanceTeleport.cs" />
+    <Compile Include="Hediffs\HediffComp_MultipleLives.cs" />
+    <Compile Include="Hediffs\HediffCompProperties_MultipleLives.cs" />
+    <Compile Include="Abilities\CompProperties_EBSGBurst.cs" />
+    <Compile Include="Abilities\CompAbilityEffect_EBSGBurst.cs" />
+    <Compile Include="Abilities\CompAbilityEffect_LoveTheCaster.cs" />
+    <Compile Include="Abilities\CompProperties_LoveTheCaster.cs" />
+    <Compile Include="Abilities\Hediff_LoveTheCaster.cs" />
+    <Compile Include="Thoughts\ThoughtWorker_Gene_GeneSocial.cs" />
+    <Compile Include="Hediffs\HediffCompProperties_SeverityByNearbyPawns.cs" />
+    <Compile Include="Hediffs\HediffComp_SeverityByNearbyPawns.cs" />
+    <Compile Include="Hediffs\HediffComp_FactionBond.cs" />
+    <Compile Include="Hediffs\HediffCompProperties_FactionBond.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

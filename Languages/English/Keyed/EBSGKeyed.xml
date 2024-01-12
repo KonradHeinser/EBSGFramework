@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
+
+
+        <!--Revival hediff comp-->
+    <EBSG_LastLife>{PAWN_nameDef} is on their last life.</EBSG_LastLife>
+    <EBSG_OneLifeStill>{PAWN_nameDef} still has their extra life.</EBSG_OneLifeStill> <!--This is used if the pawn is only capable of having one extra life-->
+    <EBSG_OneLifeLeft>{PAWN_nameDef} has 1 extra life remaining.</EBSG_OneLifeLeft>
+    <EBSG_LivesLeft>{PAWN_nameDef} has {0} extra lives remaining.</EBSG_LivesLeft> <!--0 is the number of lives-->
+    <EBSG_TimeTillRevival>{PAWN_nameDef} will be revived in {0} hours.</EBSG_TimeTillRevival> <!--0  is the time remaining-->
+    <EBSG_TimeTillLifeGain>{PAWN_nameDef} will gain an extra life in {0} days.</EBSG_TimeTillLifeGain>
+    <EBSG_TimeTillLifeLoss>{PAWN_nameDef} will lose one of their lives in {0} days.</EBSG_TimeTillLifeLoss>
+    <EBSG_RevivalImminent>{PAWN_nameDef} will be revived soon.</EBSG_RevivalImminent>
+    
+        <!--Teleportation-->
     <AbilityHomeTeleport>Skip to random area in home</AbilityHomeTeleport>
     <AbilityMapTeleport>Skip to random area in map</AbilityMapTeleport>
     <AbilityTileTeleport>Skip to tile</AbilityTileTeleport>

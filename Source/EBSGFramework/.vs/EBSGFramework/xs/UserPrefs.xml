@@ -1,23 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties_LongDistanceTeleport.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/HediffCompProperties_FactionBond.cs">
     <Files>
-      <File FileName="Genes/Gene_SkillChanging.cs" Line="87" Column="39" />
-      <File FileName="EBSGExtension.cs" Line="13" Column="43" />
-      <File FileName="Genes/SkillChange.cs" Line="9" Column="33" />
-      <File FileName="StatPart_FertilityByGenes.cs" Line="1" Column="1" />
-      <File FileName="HarmonyPatches.cs" Line="268" Column="69" />
-      <File FileName="Abilities/CompAbilityEffect_LongDistanceTeleport.cs" Line="77" Column="90" />
-      <File FileName="EBSGUtilities.cs" Line="212" Column="10" />
-      <File FileName="Abilities/CompProperties_LongDistanceTeleport.cs" Line="32" Column="6" />
+      <File FileName="Hediffs/HediffCompProperties_MultipleLives.cs" Line="13" Column="58" />
+      <File FileName="Hediffs/HediffComp_MultipleLives.cs" Line="5" Column="24" />
+      <File FileName="Hediffs/HediffCompProperties_CreateOtherHediffs.cs" Line="15" Column="63" />
+      <File FileName="Dependencies/Hediff_Dependency.cs" Line="116" Column="26" />
+      <File FileName="EBSGExtension.cs" Line="16" Column="9" />
+      <File FileName="Abilities/CompProperties_EBSGBurst.cs" Line="31" Column="56" />
+      <File FileName="Hediffs/HediffCompProperties_FactionBond.cs" Line="5" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompProperties_LongDistanceTeleport.cs" selected="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="HediffCompProperties_FactionBond.cs" selected="True" />
               </Node>
+              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>
