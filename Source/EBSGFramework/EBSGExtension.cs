@@ -16,7 +16,6 @@ namespace EBSGFramework
 
         // Used in ThoughtWorker_Gene_GeneSocial
         public bool compoundingHatred = false; // When true, each gene that is found in checked genes increases the stage
-        public int maxStages = 1; // Required if compoundingHatred is true
         public List<GeneDef> checkedGenes; // Genes checked for opinions
         public List<GeneDef> nullifyingGenes; // Genes checked for early nullification. These cause the thought to never appear
 

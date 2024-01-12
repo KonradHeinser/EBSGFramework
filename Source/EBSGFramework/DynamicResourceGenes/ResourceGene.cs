@@ -42,9 +42,9 @@ namespace EBSGFramework
 
         public override float MaxLevelOffset => 0.1f;
 
-        public float overchargeLeft = 0;
+        public float overchargeLeft;
 
-        public float underchargeLeft = 0;
+        public float underchargeLeft;
 
         protected override Color BarColor => GetColor();
 

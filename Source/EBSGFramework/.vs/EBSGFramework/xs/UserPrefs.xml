@@ -1,21 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/HediffCompProperties_FactionBond.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/HediffCompProperties_GainRandomGeneSet.cs">
     <Files>
-      <File FileName="Hediffs/HediffCompProperties_MultipleLives.cs" Line="13" Column="58" />
-      <File FileName="Hediffs/HediffComp_MultipleLives.cs" Line="5" Column="24" />
-      <File FileName="Hediffs/HediffCompProperties_CreateOtherHediffs.cs" Line="15" Column="63" />
-      <File FileName="Dependencies/Hediff_Dependency.cs" Line="116" Column="26" />
-      <File FileName="EBSGExtension.cs" Line="16" Column="9" />
-      <File FileName="Abilities/CompProperties_EBSGBurst.cs" Line="31" Column="56" />
-      <File FileName="Hediffs/HediffCompProperties_FactionBond.cs" Line="5" Column="50" />
+      <File FileName="DynamicResourceGenes/CompProperties_AbilityResourceCost.cs" Line="20" Column="64" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="181" Column="47" />
+      <File FileName="DynamicResourceGenes/DRGExtension.cs" Line="19" Column="41" />
+      <File FileName="DynamicResourceGenes/CompAbilityEffect_ResourceCost.cs" Line="27" Column="29" />
+      <File FileName="Hediffs/HediffCompProperties_GainRandomGeneSet.cs" Line="19" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True" />
+              <Node name="Genes" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="HediffCompProperties_FactionBond.cs" selected="True" />
+                <Node name="HediffCompProperties_GainRandomGeneSet.cs" selected="True" />
               </Node>
               <Node name="Thoughts" expanded="True" />
             </Node>
