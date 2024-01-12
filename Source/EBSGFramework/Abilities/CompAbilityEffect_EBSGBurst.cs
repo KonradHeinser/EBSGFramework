@@ -13,13 +13,15 @@ namespace EBSGFramework
             base.Apply(target, dest);
             List<Thing> ignoreList = new List<Thing>();
             Pawn caster = parent.pawn;
+            float radius = Props.radius;
+            if (Props.statRadius != null && caster.GetStatValue(Props.statRadius) > 0) radius = caster.GetStatValue(Props.statRadius);
             if (!Props.injureSelf)
             {
                 ignoreList.Add(caster);
             }
             if ((int)Props.extraGasType != 1)
             {
-                GenExplosion.DoExplosion(caster.Position, caster.Map, Props.radius, Props.damageDef, caster, Props.damageAmount,
+                GenExplosion.DoExplosion(caster.Position, caster.Map, radius, Props.damageDef, caster, Props.damageAmount,
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, (GasType)(int)Props.extraGasType, Props.applyDamageToExplosionCellsNeighbors,
                     Props.preExplosionThing, Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire,
@@ -28,7 +30,7 @@ namespace EBSGFramework
             }
             else
             {
-                GenExplosion.DoExplosion(caster.Position, caster.Map, Props.radius, Props.damageDef, caster, Props.damageAmount,
+                GenExplosion.DoExplosion(caster.Position, caster.Map, radius, Props.damageDef, caster, Props.damageAmount,
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, null, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionThing,
                     Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, ignoreList,

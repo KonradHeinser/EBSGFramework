@@ -50,7 +50,7 @@
     </HediffDef>
 
     <HediffDef ParentName="EBSG_DependencyHediffBase">
-        <defName>EBSG_GeneticDrugDependency</defName>
+        <defName>EBSG_GeneticDrugDependency</defName> <!--Labels technically aren't needed since it'll use the gene label, but this ensures no errors pop up-->
         <label>chemical dependency</label>
         <description>This person has a genetically-induced biochemical dependency on a specific drug. Without regular consumption of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
         <comps>

@@ -1,5 +1,7 @@
 ﻿using Verse;
 using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 
 namespace EBSGFramework
 {
@@ -9,65 +11,35 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (Props.onlyNonPlayer && Props.onlyPlayer)
+            if (Props.onlyDifferentFaction && Props.onlySameFaction)
             {
-                Log.Error(parent.def + ": has both onlyPlayer and onlyNonPlayer, which makes no sense for obvious reasons");
+                Log.Error(parent.def + ": has both onlySameFaction and onlyDifferentFaction, which makes no sense for obvious reasons");
                 Pawn.health.RemoveHediff(parent);
                 return;
             }
+            float range = Props.range;
+            if (Props.rangeStat != null && parent.pawn.GetStatValue(Props.rangeStat) > 0) range = parent.pawn.GetStatValue(Props.rangeStat);
 
-            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawnsSpawned;
-            List<Pawn> allies = parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction);
-            int severity = 0;
+            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => CheckPawn(p, range)).ToList();
+            parent.Severity = list.Count;
+        }
 
-            if (Props.onlyPlayer)
+        public bool CheckPawn(Pawn p, float range)
+        {
+            if (p.Dead) return false;
+            if (!p.RaceProps.Humanlike && Props.onlyHumanlikes) return false;
+            if (p == parent.pawn)
             {
-                foreach (Pawn pawn in allies)
-                {
-                    if (!pawn.Dead && (pawn == parent.pawn && !Props.includeSelf) || (!pawn.RaceProps.Humanlike && Props.onlyHumanlikes))
-                    {
-                        continue;
-                    }
-                    if (pawn.Position.DistanceTo(parent.pawn.Position) <= Props.range)
-                    {
-                        severity++;
-                    }
-                }
-            }
-            else if (Props.onlyNonPlayer)
-            {
-                foreach (Pawn pawn in list)
-                {
-
-                    if (pawn.Dead || (!pawn.RaceProps.Humanlike && Props.onlyHumanlikes) || allies.Contains(pawn))
-                    {
-                        continue;
-                    }
-                    if (pawn.Position.DistanceTo(parent.pawn.Position) <= Props.range)
-                    {
-                        severity++;
-                    }
-                }
-                if (Props.includeSelf) severity++; // Apparently the basic list doesn't include the pawn themselves
+                if (!Props.includeSelf) return false;
             }
             else
             {
-                foreach (Pawn pawn in list)
-                {
-                    if (!pawn.Dead && (pawn == parent.pawn && !Props.includeSelf) || (!pawn.RaceProps.Humanlike && Props.onlyHumanlikes))
-                    {
-                        continue;
-                    }
-                    if (pawn.Position.DistanceTo(parent.pawn.Position) <= Props.range)
-                    {
-                        severity++;
-                    }
-                }
-                if (Props.includeSelf) severity++; // Apparently the basic list doesn't include the pawn themselves
+                if (Props.onlySameFaction && p.Faction != parent.pawn.Faction) return false;
+                if (Props.onlyDifferentFaction && (p.Faction == null || p.Faction == parent.pawn.Faction)) return false;
+                if (Props.onlyEnemies && !p.HostileTo(parent.pawn)) return false;
             }
-
-
-            parent.Severity = severity;
+            if (p.Position.DistanceTo(parent.pawn.Position) > range) return false;
+            return true;
         }
     }
 }

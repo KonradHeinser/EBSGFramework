@@ -18,6 +18,7 @@ namespace EBSGFramework
         public bool compoundingHatred = false; // When true, each gene that is found in checked genes increases the stage
         public List<GeneDef> checkedGenes; // Genes checked for opinions
         public List<GeneDef> nullifyingGenes; // Genes checked for early nullification. These cause the thought to never appear
+        public List<GeneDef> requiredGenes; // The observer musthave one of these genes to feel anything. Acts as a reverse nullifyingGenes
 
         // Curves that can be added to a gene to give pawns an additional age multiplier
         public SimpleCurve fertilityAgeAdditionalFactor;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Verse;
+using RimWorld.Planet;
 
 namespace EBSGFramework
 {
@@ -7,16 +8,28 @@ namespace EBSGFramework
     {
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (!base.Pawn.IsHashIntervalTick(60))
+            if (!parent.pawn.IsHashIntervalTick(60))
             {
                 return;
             }
             int bondedAllies = 0; // 1 means this pawn is the only one with the hediff
-            List<Pawn> allies = parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction);
-            foreach (Pawn ally in allies)
+            if (parent.pawn.Map != null)
             {
-                if (!ally.Dead && ally.health.hediffSet.HasHediff(parent.def)) bondedAllies++;
+                List<Pawn> allies = parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction);
+                foreach (Pawn ally in allies)
+                {
+                    if (!ally.Dead && EBSGUtilities.HasHediff(ally, parent.def)) bondedAllies++;
+                }
             }
+            else if (parent.pawn.GetCaravan() != null)
+            {
+                Caravan caravan = parent.pawn.GetCaravan();
+                foreach (Pawn pawn in caravan.pawns)
+                {
+                    if (!pawn.Dead && pawn.Faction != null && pawn.Faction == parent.pawn.Faction && EBSGUtilities.HasHediff(pawn, parent.def)) bondedAllies++;
+                }
+            }
+            else bondedAllies = 1;
             parent.Severity = bondedAllies;
         }
     }

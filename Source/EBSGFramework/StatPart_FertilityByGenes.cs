@@ -10,7 +10,7 @@ namespace EBSGFramework
     {
         public override string ExplanationPart(StatRequest req)
         {
-            if (!(req.Thing is Pawn pawn) || pawn.genes == null || pawn.genes.GetFirstGeneOfType<AdditionalFertilityByAge>() == null)
+            if (!(req.Thing is Pawn pawn) || pawn.genes == null || pawn.genes.GetFirstGeneOfType<AdditionalFertilityByAge>() == null || !ModsConfig.BiotechActive)
             {
                 return null;
             }
@@ -28,7 +28,7 @@ namespace EBSGFramework
 
         public override void TransformValue(StatRequest req, ref float val)
         {
-            if (req.Thing is Pawn pawn && pawn.genes != null && pawn.genes.GetFirstGeneOfType<AdditionalFertilityByAge>() != null)
+            if (ModsConfig.BiotechActive && req.Thing is Pawn pawn && pawn.genes != null && pawn.genes.GetFirstGeneOfType<AdditionalFertilityByAge>() != null)
             {
                 if (pawn.health.hediffSet.HasHediffPreventsPregnancy()) val = 0f;
                 else
