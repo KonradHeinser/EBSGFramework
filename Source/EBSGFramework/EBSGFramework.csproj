@@ -61,16 +61,6 @@
     <Compile Include="Abilities\CompProperties_AbilityBloodDrain.cs" />
     <Compile Include="Abilities\CompProperties_AbilityGiveMultipleHediffs.cs" />
     <Compile Include="Abilities\CompProperties_AbilityRemoveMultipleHediffs.cs" />
-    <Compile Include="Hediffs\HediffComp_CreateOtherHediffs.cs" />
-    <Compile Include="Hediffs\HediffComp_DamageBodyParts.cs" />
-    <Compile Include="Hediffs\HediffComp_GainRandomGeneSet.cs" />
-    <Compile Include="Hediffs\HediffComp_GiveAbilityAtSeverity.cs" />
-    <Compile Include="Hediffs\HediffComp_TieredRegeneration.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_CreateOtherHediffs.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_DamageBodyParts.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_GainRandomGeneSet.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_GiveAbilityAtSeverity.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_TieredRegeneration.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Abilities\HediffToGive.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
@@ -97,8 +87,6 @@
     <Compile Include="Genes\HediffAdder.cs" />
     <Compile Include="Genes\HediffsToParts.cs" />
     <Compile Include="DamageWorker_PermanentInjury.cs" />
-    <Compile Include="Hediffs\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
     <Compile Include="EBSGUtilities.cs" />
     <Compile Include="DynamicResourceGenes\CompProperties_AbilityConvertResource.cs" />
     <Compile Include="DynamicResourceGenes\DRGExtension.cs" />
@@ -116,8 +104,6 @@
     <Compile Include="DynamicResourceGenes\WorkGiver_Warden_DeliverResource.cs" />
     <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
     <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_HediffWhileMoving.cs" />
-    <Compile Include="Hediffs\HediffComp_HediffWhileMoving.cs" />
     <Compile Include="Genes\AdditionalFertilityByAge.cs" />
     <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
     <Compile Include="Dependencies\Gene_Dependency.cs" />
@@ -128,18 +114,33 @@
     <Compile Include="Genes\SkillChange.cs" />
     <Compile Include="Abilities\CompAbilityEffect_LongDistanceTeleport.cs" />
     <Compile Include="Abilities\CompProperties_LongDistanceTeleport.cs" />
-    <Compile Include="Hediffs\HediffComp_MultipleLives.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_MultipleLives.cs" />
     <Compile Include="Abilities\CompProperties_EBSGBurst.cs" />
     <Compile Include="Abilities\CompAbilityEffect_EBSGBurst.cs" />
     <Compile Include="Abilities\CompAbilityEffect_LoveTheCaster.cs" />
     <Compile Include="Abilities\CompProperties_LoveTheCaster.cs" />
     <Compile Include="Abilities\Hediff_LoveTheCaster.cs" />
     <Compile Include="Thoughts\ThoughtWorker_Gene_GeneSocial.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_SeverityByNearbyPawns.cs" />
-    <Compile Include="Hediffs\HediffComp_SeverityByNearbyPawns.cs" />
-    <Compile Include="Hediffs\HediffComp_FactionBond.cs" />
-    <Compile Include="Hediffs\HediffCompProperties_FactionBond.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateOtherHediffs.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageBodyParts.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_FactionBond.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GainRandomGeneSet.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveAbilityAtSeverity.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileMoving.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_MultipleLives.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByNearbyPawns.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TieredRegeneration.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_CreateOtherHediffs.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_DamageBodyParts.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_FactionBond.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GainRandomGeneSet.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GiveAbilityAtSeverity.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HediffWhileMoving.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_MultipleLives.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByNearbyPawns.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_TieredRegeneration.cs" />
+    <Compile Include="Hediffs\MultipleLives_Component.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -156,6 +157,8 @@
     <Folder Include="Genes\" />
     <Folder Include="HiveMind\" />
     <Folder Include="Dependencies\" />
+    <Folder Include="Hediffs\CompProperties\" />
+    <Folder Include="Hediffs\Comps\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

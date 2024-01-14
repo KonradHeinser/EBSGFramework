@@ -1,18 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties_EBSGBurst.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/MultipleLives_Component.cs">
     <Files>
-      <File FileName="Abilities/CompProperties_EBSGBurst.cs" Line="33" Column="39" />
-      <File FileName="Abilities/CompAbilityEffect_EBSGBurst.cs" Line="21" Column="14" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="190" Column="22" />
+      <File FileName="Hediffs/MultipleLives_Component.cs" Line="2" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompProperties_EBSGBurst.cs" selected="True" />
+              <Node name="Abilities" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True" />
+                <Node name="MultipleLives_Component.cs" selected="True" />
               </Node>
-              <Node name="Hediffs" expanded="True" />
               <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>

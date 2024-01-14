@@ -173,9 +173,22 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            Log.Message("Tick");
             if (parent.pawn.IsHashIntervalTick(200))
             {
+                if (!Props.useSeverityNotDays)
+                {
+                    if (livesLeft > Props.extraLives) livesLeft = Props.extraLives;
+                    else if (livesLeft < Props.extraLives && Props.daysToRecoverLife > 0)
+                    {
+                        float recoverySpeed = 1 / Props.daysToRecoverLife * 0.003333334f; // For example, a 20 day recover speed creates a progress of 0.000166667% each viable iteration, which happens 300 times per day
+                        progressPercentage += recoverySpeed;
+                        if (progressPercentage >= 1)
+                        {
+                            progressPercentage -= 1;
+                            livesLeft += 1;
+                        }
+                    }
+                }
                 if (pawnReviving)
                 {
                     if (!parent.pawn.Dead) // If revived through some other means, then stop trying to revive
@@ -190,24 +203,6 @@ namespace EBSGFramework
                     if (revivalProgress >= 1)
                     {
                         revivalProgress = 0;
-                        RevivePawn();
-                    }
-                }
-                else
-                {
-                    if (!Props.useSeverityNotDays)
-                    {
-                        if (livesLeft > Props.extraLives) livesLeft = Props.extraLives;
-                        else if (livesLeft < Props.extraLives && Props.daysToRecoverLife > 0)
-                        {
-                            float recoverySpeed = 1 / Props.daysToRecoverLife * 0.003333334f; // For example, a 20 day recover speed creates a progress of 0.000166667% each viable iteration, which happens 300 times per day
-                            progressPercentage += recoverySpeed;
-                            if (progressPercentage >= 1)
-                            {
-                                progressPercentage -= 1;
-                                livesLeft += 1;
-                            }
-                        }
                     }
                 }
             }
@@ -215,31 +210,30 @@ namespace EBSGFramework
 
         public override void Notify_PawnDied()
         {
-            if (Props.extraLives == -666)
+            if (Props.extraLives != -666)
             {
-                if (Props.hoursToRevive > 0) pawnReviving = true;
-                else RevivePawn();
-            }
-            else if (Props.useSeverityNotDays)
-            {
-                float maxSeverity = parent.def.maxSeverity - 0.001f; // To avoid reducing to 0 
-                float severityPerLife = maxSeverity / Props.extraLives;
-                float severity = parent.Severity;
-                if (severity - severityPerLife > 0)
+                if (Props.useSeverityNotDays)
                 {
-                    parent.Severity -= severityPerLife;
-                    if (Props.hoursToRevive > 0) pawnReviving = true;
-                    else ResurrectionUtility.Resurrect(parent.pawn.Corpse.InnerPawn);
+                    float maxSeverity = parent.def.maxSeverity - 0.001f; // To avoid reducing to 0 
+                    float severityPerLife = maxSeverity / Props.extraLives;
+                    float severity = parent.Severity;
+                    if (severity - severityPerLife > 0)
+                    {
+                        parent.Severity -= severityPerLife;
+                    }
+                    else return;
+                }
+                else
+                {
+                    livesLeft--;
+                    if (livesLeft < 0) return;
                 }
             }
-            else
+            MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
+            if (multipleLives != null && multipleLives.loaded)
             {
-                livesLeft--;
-                if (livesLeft < 0) return;
-                Log.Message("Revivng");
-                if (Props.hoursToRevive > 0) pawnReviving = true;
-                else ResurrectionUtility.Resurrect(parent.pawn.Corpse.InnerPawn);
-                Log.Message("Revive done");
+                if (Props.hoursToRevive <= 0) revivalProgress = 1;
+                
             }
         }
 
