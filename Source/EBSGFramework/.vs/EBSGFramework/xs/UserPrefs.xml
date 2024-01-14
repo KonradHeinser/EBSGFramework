@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/MultipleLives_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="190" Column="22" />
-      <File FileName="Hediffs/MultipleLives_Component.cs" Line="2" Column="24" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="10" Column="35" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="258" Column="1" />
+      <File FileName="Hediffs/MultipleLives_Component.cs" Line="140" Column="50" />
+      <File FileName="EBSGUtilities.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,9 +15,8 @@
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True" />
-                <Node name="MultipleLives_Component.cs" selected="True" />
               </Node>
-              <Node name="Thoughts" expanded="True" />
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>

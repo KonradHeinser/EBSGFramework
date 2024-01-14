@@ -76,8 +76,9 @@
                 <severityPerDay>0.067</severityPerDay>
             </li>
             <li Class="EBSGFramework.HediffCompProperties_MultipleLives">
-                <extraLives>1</extraLives>
+                <extraLives>-666</extraLives>
                 <useSeverityNotDays>True</useSeverityNotDays>
+                <hoursToRevive>1</hoursToRevive>
             </li>
         </comps>
     </HediffDef>

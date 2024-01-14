@@ -1,6 +1,8 @@
 ﻿using Verse;
+using Verse.AI.Group;
 using System.Collections.Generic;
 using System;
+using RimWorld.Planet;
 using RimWorld;
 
 namespace EBSGFramework
@@ -216,6 +218,75 @@ namespace EBSGFramework
             if (pawn.health.hediffSet == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
             return false;
+        }
+
+        // Resurrect utility with bug fix
+
+        public static void TryToRevivePawn(Pawn pawn)
+        {
+            if (!pawn.Dead || pawn.Discarded) return; // If these events pass, just silently fail
+
+            Corpse corpse = pawn.Corpse;
+            bool flag = false;
+            IntVec3 loc = IntVec3.Invalid;
+            Map map = null;
+            bool flag2 = Find.Selector.IsSelected(corpse);
+            if (corpse != null)
+            {
+                flag = corpse.Spawned;
+                loc = corpse.Position;
+                map = corpse.Map;
+                corpse.InnerPawn = null;
+                if(!corpse.Destroyed) corpse.Destroy();
+            }
+            if (flag && pawn.IsWorldPawn())
+            {
+                Find.WorldPawns.RemovePawn(pawn);
+            }
+            pawn.ForceSetStateToUnspawned();
+            PawnComponentsUtility.CreateInitialComponents(pawn);
+            pawn.health.Notify_Resurrected();
+            if (pawn.Faction != null && pawn.Faction.IsPlayer)
+            {
+                if (pawn.workSettings != null)
+                {
+                    pawn.workSettings.EnableAndInitialize();
+                }
+                Find.StoryWatcher.watcherPopAdaptation.Notify_PawnEvent(pawn, PopAdaptationEvent.GainedColonist);
+            }
+            if (pawn.RaceProps.IsMechanoid && MechRepairUtility.IsMissingWeapon(pawn))
+            {
+                MechRepairUtility.GenerateWeapon(pawn);
+            }
+            if (flag)
+            {
+                GenSpawn.Spawn(pawn, loc, map);
+                if (pawn.Faction != null && pawn.Faction != Faction.OfPlayer && pawn.HostileTo(Faction.OfPlayer))
+                {
+                    LordMaker.MakeNewLord(pawn.Faction, new LordJob_AssaultColony(pawn.Faction), pawn.Map, Gen.YieldSingle(pawn));
+                }
+                if (pawn.apparel != null)
+                {
+                    List<Apparel> wornApparel = pawn.apparel.WornApparel;
+                    for (int i = 0; i < wornApparel.Count; i++)
+                    {
+                        wornApparel[i].Notify_PawnResurrected();
+                    }
+                }
+            }
+            PawnDiedOrDownedThoughtsUtility.RemoveDiedThoughts(pawn);
+            if (pawn.royalty != null)
+            {
+                pawn.royalty.Notify_Resurrected();
+            }
+            if (pawn.guest != null && pawn.guest.interactionMode == PrisonerInteractionModeDefOf.Execution)
+            {
+                pawn.guest.interactionMode = PrisonerInteractionModeDefOf.NoInteraction;
+            }
+            if (flag2 && pawn != null)
+            {
+                Find.Selector.Select(pawn, false,  false);
+            }
         }
     }
 }

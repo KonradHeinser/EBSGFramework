@@ -12,6 +12,7 @@
     <EBSG_TimeTillLifeGain>{PAWN_nameDef} will gain an extra life in {0} days.</EBSG_TimeTillLifeGain>
     <EBSG_TimeTillLifeLoss>{PAWN_nameDef} will lose one of their lives in {0} days.</EBSG_TimeTillLifeLoss>
     <EBSG_RevivalImminent>{PAWN_nameDef} will be revived soon.</EBSG_RevivalImminent>
+    <EBSG_Immortal>Nothing can permanently kill {PAWN_nameDef}.</EBSG_Immortal>
     
         <!--Teleportation-->
     <AbilityHomeTeleport>Skip to random area in home</AbilityHomeTeleport>

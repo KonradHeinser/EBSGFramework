@@ -6,7 +6,7 @@ namespace EBSGFramework
 {
     public class HediffComp_MultipleLives : HediffComp
     {
-        private HediffCompProperties_MultipleLives Props => (HediffCompProperties_MultipleLives)props;
+        public HediffCompProperties_MultipleLives Props => (HediffCompProperties_MultipleLives)props;
 
         public int livesLeft;
 
@@ -25,7 +25,7 @@ namespace EBSGFramework
                     float maxSeverity = parent.def.maxSeverity - 0.001f; // only used for the severityNotDays
                     float severityPerLife = maxSeverity / Props.extraLives;
                     float severity = parent.Severity;
-                    string tooltipAddition = "";
+                    string tooltipAddition = "\n";
 
                     if (Props.includeProgressOnTooltip)
                     {
@@ -37,9 +37,8 @@ namespace EBSGFramework
                             }
                             else
                             {
-                                tooltipAddition += "EBSG_TimeTillRevival".Translate(Props.hoursToRevive / (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_TimeTillRevival".Translate(Props.hoursToRevive *  (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
                             }
-
                         }
                         else
                         {
@@ -48,6 +47,8 @@ namespace EBSGFramework
                                 if (parent.Severity < parent.def.maxSeverity)
                                 {
                                     float severityPerDay = 0;
+                                    float severityRemaining = 1 - (severity % severityPerLife);
+
                                     foreach (HediffCompProperties compProps in parent.def.comps)
                                     {
                                         if (compProps is HediffCompProperties_SeverityPerDay severityComp)
@@ -59,61 +60,68 @@ namespace EBSGFramework
                                     }
                                     if (severityPerDay > 0)
                                     {
-                                        tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(severity % severityPerLife / severityPerDay, 1), parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(severityRemaining / severityPerDay, 1), parent.pawn.Named("PAWN")).Resolve();
                                     }
                                     else if (severityPerDay < 0)
                                     {
-                                        tooltipAddition += "EBSG_TimeTillLifeLoss".Translate(Math.Round(severity % severityPerLife / severityPerDay * -1, 1), parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_TimeTillLifeLoss".Translate(Math.Round(severityRemaining / severityPerDay * -1, 1), parent.pawn.Named("PAWN")).Resolve();
                                     }
                                 }
                             }
-                            else
+                            else if (progressPercentage > 0)
                             {
                                 tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(Props.daysToRecoverLife * (1 - progressPercentage), 1), parent.pawn.Named("PAWN")).Resolve();
                             }
                         }
-                        if (Props.includeRemainingLivesOnTooltip && Props.extraLives != -666)
+                        if (Props.includeRemainingLivesOnTooltip)
                         {
-                            if (pawnReviving || livesLeft < Props.extraLives) tooltipAddition += "\n\n";
-                            if (Props.useSeverityNotDays)
+                            if (pawnReviving || (livesLeft < Props.extraLives && Props.extraLives != -666) || (Props.useSeverityNotDays && parent.Severity < parent.def.maxSeverity)) tooltipAddition += "\n\n";
+                            if (Props.extraLives != -666)
                             {
+                                if (Props.useSeverityNotDays)
+                                {
 
-                                int livesRemaining = (int)Math.Floor(severity / severityPerLife);
-                                if (livesRemaining == 0)
-                                {
-                                    tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
-                                }
-                                else if (livesRemaining == 1 && Props.extraLives == 1)
-                                {
-                                    tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
-                                }
-                                else if (livesRemaining == 1)
-                                {
-                                    tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    int livesRemaining = (int)Math.Floor(severity / severityPerLife);
+                                    if (livesRemaining == 0)
+                                    {
+                                        tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else if (livesRemaining == 1 && Props.extraLives == 1)
+                                    {
+                                        tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else if (livesRemaining == 1)
+                                    {
+                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else
+                                    {
+                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, parent.pawn.Named("PAWN")).Resolve();
+                                    }
                                 }
                                 else
                                 {
-                                    tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, parent.pawn.Named("PAWN")).Resolve();
+                                    if (livesLeft == 0)
+                                    {
+                                        tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else if (livesLeft == 1 && Props.extraLives == 1)
+                                    {
+                                        tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else if (livesLeft == 1)
+                                    {
+                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                    }
+                                    else
+                                    {
+                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, parent.pawn.Named("PAWN")).Resolve();
+                                    }
                                 }
                             }
                             else
                             {
-                                if (livesLeft == 0)
-                                {
-                                    tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
-                                }
-                                else if (livesLeft == 1 && Props.extraLives == 1)
-                                {
-                                    tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
-                                }
-                                else if (livesLeft == 1)
-                                {
-                                    tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
-                                }
-                                else
-                                {
-                                    tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, parent.pawn.Named("PAWN")).Resolve();
-                                }
+                                tooltipAddition += "EBSG_Immortal".Translate(parent.pawn.Named("PAWN")).Resolve();
                             }
                         }
                     }
@@ -169,6 +177,7 @@ namespace EBSGFramework
         public override void CompPostMake()
         {
             base.CompPostMake();
+            livesLeft = Props.extraLives;
         }
 
         public override void CompPostTick(ref float severityAdjustment)
@@ -185,25 +194,16 @@ namespace EBSGFramework
                         if (progressPercentage >= 1)
                         {
                             progressPercentage -= 1;
-                            livesLeft += 1;
+                            livesLeft++;
                         }
                     }
                 }
-                if (pawnReviving)
+                else
                 {
-                    if (!parent.pawn.Dead) // If revived through some other means, then stop trying to revive
-                    {
-                        revivalProgress = 0;
-                        pawnReviving = false;
-                        return;
-                    }
-                    float revivalSpeed = 0;
-                    if (Props.hoursToRevive > 0) revivalSpeed = 1 / Props.hoursToRevive * 0.08f; // For example, a 24 hour revival adds 0.0033333% progress every viable iteration, which occurs 300 times per day
-                    revivalProgress += revivalSpeed;
-                    if (revivalProgress >= 1)
-                    {
-                        revivalProgress = 0;
-                    }
+                    float maxSeverity = parent.def.maxSeverity - 0.001f; // only used for the severityNotDays
+                    float severityPerLife = maxSeverity / Props.extraLives;
+                    float severity = parent.Severity;
+                    livesLeft = (int)Math.Floor(severity / severityPerLife);
                 }
             }
         }
@@ -220,6 +220,7 @@ namespace EBSGFramework
                     if (severity - severityPerLife > 0)
                     {
                         parent.Severity -= severityPerLife;
+                        livesLeft = (int)Math.Floor(severity / severityPerLife);
                     }
                     else return;
                 }
@@ -230,17 +231,19 @@ namespace EBSGFramework
                 }
             }
             MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
-            if (multipleLives != null && multipleLives.loaded)
+            if (multipleLives != null)
             {
-                if (Props.hoursToRevive <= 0) revivalProgress = 1;
-                
+                if (multipleLives.loaded)
+                {
+                    pawnReviving = true;
+                    if (Props.hoursToRevive <= 0) revivalProgress = 1;
+                    multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1);
+                }
+                else
+                {
+                    Log.Error("The multiple lives game component failed to load. Please let the EBSG Framework dev know something went wrong!");
+                }
             }
-        }
-
-        private void RevivePawn()
-        {
-            pawnReviving = false;
-            if (parent.pawn.Dead && !parent.pawn.Discarded) ResurrectionUtility.Resurrect(parent.pawn.Corpse.InnerPawn);
         }
 
         public override void CompExposeData()
