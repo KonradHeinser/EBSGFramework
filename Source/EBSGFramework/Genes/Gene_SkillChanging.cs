@@ -10,6 +10,7 @@ namespace EBSGFramework
     {
         public List<SkillDef> changedSkills;
         public List<Passion> originalPassions;
+        public int delayTicks;
 
         public override void PostAdd()
         {
@@ -19,63 +20,74 @@ namespace EBSGFramework
             {
                 EBSGExtension extension = def.GetModExtension<EBSGExtension>();
                 if (extension.skillChanges.NullOrEmpty()) Log.Error(def + " has EBSGExtension, but has no changes set");
-                else
+                else delayTicks = 70; // Wait until post spawn plus a little over a second before changing passions to allow for things like the gene randomizer to take effect
+            }
+        }
+
+        public override void Tick()
+        {
+            if (!pawn.Spawned) return;
+            if (delayTicks >= 0) delayTicks--;
+            if (delayTicks == 0)
+            {
+                if (changedSkills == null) changedSkills = new List<SkillDef>();
+                if (originalPassions == null) originalPassions = new List<Passion>();
+
+                EBSGExtension extension = def.GetModExtension<EBSGExtension>();
+                foreach (SkillChange skillChange in extension.skillChanges)
                 {
-                    foreach (SkillChange skillChange in extension.skillChanges)
+                    SkillRecord skill;
+                    if (skillChange.skill == null)
                     {
-                        SkillRecord skill;
-                        if (skillChange.skill == null)
-                        {
-                            IEnumerable<SkillRecord> validSkills = pawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
-                            if (validSkills.EnumerableNullOrEmpty()) continue;
-                            skill = validSkills.RandomElement();
-                        }
-                        else skill = pawn.skills.GetSkill(skillChange.skill);
-                        if (skill == null) continue;
+                        IEnumerable<SkillRecord> validSkills = pawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
+                        if (validSkills.EnumerableNullOrEmpty()) continue;
+                        skill = validSkills.RandomElement();
+                    }
+                    else skill = pawn.skills.GetSkill(skillChange.skill);
+                    if (skill == null) continue;
 
-                        skill.Level += skillChange.skillChange;
-                        originalPassions.Add(skill.passion);
+                    skill.Level += skillChange.skillChange;
+                    originalPassions.Add(skill.passion);
 
-                        if (skillChange.setPassion)
+                    if (skillChange.setPassion)
+                    {
+                        skill.passion = skillChange.passion;
+                    }
+                    else
+                    {
+                        if (skillChange.passionChange < 0)
                         {
-                            skill.passion = skillChange.passion;
+                            switch (skill.passion)
+                            {
+                                case Passion.Major:
+                                    if (skillChange.passionChange == -1)
+                                    {
+                                        skill.passion = Passion.Minor;
+                                    }
+                                    else
+                                    {
+                                        skill.passion = Passion.None;
+                                    }
+                                    break;
+                                case Passion.Minor:
+                                    skill.passion = Passion.None;
+                                    break;
+                                default:
+                                    skill.passion = Passion.None;
+                                    break;
+                            }
                         }
                         else
                         {
-                            if (skillChange.passionChange < 0)
+                            for (int i = 0; i < skillChange.passionChange; i++)
                             {
-                                switch (skill.passion)
-                                {
-                                    case Passion.Major:
-                                        if (skillChange.passionChange == -1)
-                                        {
-                                            skill.passion = Passion.Minor;
-                                        }
-                                        else
-                                        {
-                                            skill.passion = Passion.None;
-                                        }
-                                        break;
-                                    case Passion.Minor:
-                                        skill.passion = Passion.None;
-                                        break;
-                                    default:
-                                        skill.passion = Passion.None;
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < skillChange.passionChange; i++)
-                                {
-                                    if (skill.passion == skill.passion.IncrementPassion()) break;
-                                    skill.passion = skill.passion.IncrementPassion();
-                                }
+                                if (skill.passion == skill.passion.IncrementPassion()) break;
+                                skill.passion = skill.passion.IncrementPassion();
                             }
                         }
-
-                        changedSkills.Add(skill.def);
                     }
+
+                    changedSkills.Add(skill.def);
                 }
             }
         }

@@ -1,22 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/BiomeGene.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="10" Column="35" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="258" Column="1" />
-      <File FileName="Hediffs/MultipleLives_Component.cs" Line="140" Column="50" />
-      <File FileName="EBSGUtilities.cs" Line="1" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="260" Column="13" />
+      <File FileName="Genes/BiomeGene.cs" Line="34" Column="13" />
+      <File FileName="EBSGExtension.cs" Line="30" Column="55" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityOffsetNeed.cs" Line="10" Column="35" />
+      <File FileName="NeedOffset.cs" Line="9" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
-              <Node name="Hediffs" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
               </Node>
-              <Node name="EBSGUtilities.cs" selected="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="BiomeGene.cs" selected="True" />
+              </Node>
+              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>

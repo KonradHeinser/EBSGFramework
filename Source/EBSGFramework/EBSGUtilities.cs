@@ -3,6 +3,7 @@ using Verse.AI.Group;
 using System.Collections.Generic;
 using System;
 using RimWorld.Planet;
+using System.Linq;
 using RimWorld;
 
 namespace EBSGFramework
@@ -189,7 +190,6 @@ namespace EBSGFramework
 
         public static IntVec3 FindDestination(Map targetMap, bool targetCenter = false)
         {
-
             IntVec3 target = IntVec3.Invalid;
             if (targetCenter)
             {
@@ -218,6 +218,48 @@ namespace EBSGFramework
             if (pawn.health.hediffSet == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
             return false;
+        }
+
+        public static void HandleNeedOffsets(Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        {
+            if (needOffsets.NullOrEmpty()) return;
+            List<Need> alreadyPickedNeeds = new List<Need>();
+            foreach (NeedOffset needOffset in needOffsets)
+            {
+                Need need;
+                if (needOffset.need == null && preventRepeats)
+                {
+                    if (preventRepeats) need = pawn.needs.AllNeeds.Where((Need n) => !alreadyPickedNeeds.Contains(n)).RandomElement();
+                    else need = pawn.needs.AllNeeds.RandomElement();
+                }
+                else need = pawn.needs.TryGetNeed(needOffset.need);
+
+                if (need != null)
+                {
+                    alreadyPickedNeeds.Add(need);
+                    float offset = needOffset.offset;
+                    if (needOffset.offsetFactorStat != null) offset *= pawn.GetStatValue(needOffset.offsetFactorStat);
+                    if (hourlyRate) offset *= hashInterval / 2500f;
+                    else if (dailyRate) offset *= hashInterval / 60000f;
+                    need.CurLevel += offset;
+                }
+            }
+        }
+
+        public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
+        {
+            waterCount = 0;
+            if (!pawn.Spawned || pawn.Map == null) return false; // If either of these situations are true, we really need to get out of here
+
+            if (maxDistance <= 0) // If max distance is just the pawn's tile, only need to check the pawn's tile
+            {
+                if (pawn.Position.GetTerrain(pawn.Map).IsWater) waterCount++;
+                if (maxNeededForTrue <= waterCount) return true;
+                return false;
+            }
+
+            List<IntVec3> waterTiles = pawn.Map.AllCells.Where((IntVec3 p) => p.DistanceTo(pawn.Position) <= maxDistance && p.GetTerrain(pawn.Map).IsWater).ToList();
+            return maxNeededForTrue <= waterTiles.Count;
         }
 
         // Resurrect utility with bug fix

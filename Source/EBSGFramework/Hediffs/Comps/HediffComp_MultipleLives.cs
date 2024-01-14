@@ -14,6 +14,8 @@ namespace EBSGFramework
 
         public bool pawnReviving;
 
+        public float hoursToRevive;
+
         public float revivalProgress;
 
         public override string CompTipStringExtra
@@ -37,7 +39,7 @@ namespace EBSGFramework
                             }
                             else
                             {
-                                tooltipAddition += "EBSG_TimeTillRevival".Translate(Props.hoursToRevive *  (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive *  (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
                             }
                         }
                         else
@@ -210,6 +212,7 @@ namespace EBSGFramework
 
         public override void Notify_PawnDied()
         {
+            if (Props.needBrainToRevive && Pawn.health.hediffSet.GetBrain() == null) return;
             if (Props.extraLives != -666)
             {
                 if (Props.useSeverityNotDays)
@@ -231,12 +234,16 @@ namespace EBSGFramework
                 }
             }
             MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
+            if (Props.hoursToRevive <= -1) hoursToRevive = -1;
+            else if (Props.hoursToRevive > 0) hoursToRevive = Props.hoursToRevive;
+            else hoursToRevive = Props.randomHoursToRevive.RandomInRange;
+
             if (multipleLives != null)
             {
                 if (multipleLives.loaded)
                 {
                     pawnReviving = true;
-                    if (Props.hoursToRevive <= 0) revivalProgress = 1;
+                    if (hoursToRevive <= -1) revivalProgress = 1;
                     multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1);
                 }
                 else
@@ -253,6 +260,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref progressPercentage, "EBSG_progressPercentage", 0);
             Scribe_Values.Look(ref pawnReviving, "EBSG_pawnReviving", false);
             Scribe_Values.Look(ref revivalProgress, "EBSG_revivalProgress", 0);
+            Scribe_Values.Look(ref hoursToRevive, "EBSG_hoursToRevive", 0);
         }
     }
 }

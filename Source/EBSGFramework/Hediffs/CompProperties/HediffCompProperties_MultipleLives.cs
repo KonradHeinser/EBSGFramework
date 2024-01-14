@@ -7,7 +7,10 @@ namespace EBSGFramework
         public float daysToRecoverLife = 0; // Ignored if using severity
         public bool useSeverityNotDays = false; // Ignores days to recover and bases lives on max severity. Requires max severity to be set
 
-        public float hoursToRevive = 0; // If 0, revival is instant. Life recovery is paused while the pawn is reviving
+        public float hoursToRevive = 0; // If -1, revival is instant. Life recovery is paused while the pawn is reviving
+        public FloatRange randomHoursToRevive; // Only used if hoursToRevive is not changed
+
+        public bool needBrainToRevive = false; // Checks if the cause of death was brain or head removal
 
         public bool includeProgressOnTooltip = true;
         public bool includeRemainingLivesOnTooltip = true;

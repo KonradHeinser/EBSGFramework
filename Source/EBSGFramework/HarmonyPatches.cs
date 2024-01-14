@@ -25,9 +25,9 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
-                          postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
+                postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
             harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
-                          postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
+                postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 

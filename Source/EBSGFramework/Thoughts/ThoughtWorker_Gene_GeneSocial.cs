@@ -39,6 +39,7 @@ namespace EBSGFramework
                 }
                 if (!extension.compoundingHatred)
                 {
+                    if (extension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
                         foreach (Gene gene in otherPawn.genes.GenesListForReading)
@@ -54,15 +55,18 @@ namespace EBSGFramework
                 else
                 {
                     int num = 0;
+
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
+                        if (extension.opinionOfAllOthers) num++;
                         foreach (Gene gene in otherPawn.genes.GenesListForReading)
                         {
                             if (extension.checkedGenes.Contains(gene.def)) num++;
                             if (num >= def.stages.Count) return ThoughtState.ActiveAtStage(def.stages.Count - 1);
                         }
-                        return ThoughtState.ActiveAtStage(num - 1);
+                        if (num > 0) return ThoughtState.ActiveAtStage(num - 1);
                     }
+                    else if (extension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
                     else
                     {
                         Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");

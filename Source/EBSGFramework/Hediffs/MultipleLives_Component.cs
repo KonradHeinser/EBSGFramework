@@ -73,7 +73,7 @@ namespace EBSGFramework
                             if (multipleLivesComp != null)
                             {
                                 float revivalSpeed = 0;
-                                if (multipleLivesComp.Props.hoursToRevive > 0) revivalSpeed = 1 / multipleLivesComp.Props.hoursToRevive * 0.08f;
+                                if (multipleLivesComp.hoursToRevive > 0) revivalSpeed = 1 / multipleLivesComp.hoursToRevive * 0.08f;
                                 multipleLivesComp.revivalProgress += revivalSpeed;
                                 if (multipleLivesComp.revivalProgress >= 1)
                                 {
