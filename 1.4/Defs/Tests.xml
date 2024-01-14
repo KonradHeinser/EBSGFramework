@@ -111,36 +111,4 @@
             </li>
         </modExtensions>
     </GeneDef>
-
-    <AbilityDef ParentName="EBSG_TestSelfCastBase">
-        <defName>Burner</defName>
-        <label>burner</label>
-        <description>This just burns a need to provide an example.</description>
-        <comps>
-            <li Class="EBSGFramework.CompProperties_AbilityOffsetNeed">
-                <needOffsets>
-                    <li>
-                        <need>Joy</need>
-                        <offset>-0.1</offset>
-                    </li>
-                </needOffsets>
-            </li>
-        </comps>
-    </AbilityDef>
-
-    <AbilityDef ParentName="EBSG_TestSelfCastBase">
-        <defName>Generator</defName>
-        <label>generator</label>
-        <description>This just recovers a need to provide an example.</description>
-        <comps>
-            <li Class="EBSGFramework.CompProperties_AbilityOffsetNeed">
-                <needOffsets>
-                    <li>
-                        <need>Joy</need>
-                        <offset>0.1</offset>
-                    </li>
-                </needOffsets>
-            </li>
-        </comps>
-    </AbilityDef>
 </Defs>
