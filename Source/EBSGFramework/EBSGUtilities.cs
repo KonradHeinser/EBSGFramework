@@ -246,6 +246,12 @@ namespace EBSGFramework
             }
         }
 
+        public static bool BadWeather(Map map)
+        {
+            // Couldn't use the vanilla enjoyable outside, so I just checked the favorability
+            return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
+        }
+
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
             waterCount = 0;

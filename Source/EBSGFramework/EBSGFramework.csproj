@@ -145,6 +145,8 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OffsetNeed.cs" />
     <Compile Include="Genes\BiomeGene.cs" />
     <Compile Include="NeedOffset.cs" />
+    <Compile Include="JoyGiver_RelaxInWater.cs" />
+    <Compile Include="JobDriver_RelaxInWater.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
