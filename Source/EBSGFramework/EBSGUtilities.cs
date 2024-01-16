@@ -252,6 +252,28 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
+        public static bool PawnHasAnyOfGenes(List<GeneDef> genesDefs, List<Gene> genes, Pawn pawn)
+        {
+            if (pawn.genes == null) return false;
+
+            if (!genesDefs.NullOrEmpty())
+            {
+                foreach (Gene gene in pawn.genes.GenesListForReading)
+                {
+                    if (genesDefs.Contains(gene.def)) return true;
+                }
+            }
+            if (!genes.NullOrEmpty())
+            {
+                foreach (Gene gene in pawn.genes.GenesListForReading)
+                {
+                    if (genes.Contains(gene)) return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
             waterCount = 0;
@@ -265,7 +287,25 @@ namespace EBSGFramework
             }
 
             List<IntVec3> waterTiles = pawn.Map.AllCells.Where((IntVec3 p) => p.DistanceTo(pawn.Position) <= maxDistance && p.GetTerrain(pawn.Map).IsWater).ToList();
-            return maxNeededForTrue <= waterTiles.Count;
+            waterCount = waterTiles.Count;
+            return maxNeededForTrue <= waterCount;
+        }
+
+        public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
+        {
+            if (!ModsConfig.BiotechActive || pawn.genes == null) return false;
+            return pawn.genes.HasGene(relatedGene);
+        }
+
+        public static bool HasAnyOfRelatedGene(Pawn pawn, List<GeneDef> relatedGenes)
+        {
+            if (!ModsConfig.BiotechActive || pawn.genes == null) return false;
+
+            foreach (GeneDef gene in relatedGenes)
+            {
+                if (pawn.genes.HasGene(gene)) return true;
+            }
+            return false;
         }
 
         // Resurrect utility with bug fix

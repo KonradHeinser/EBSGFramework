@@ -1,13 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="JoyGiver_RelaxInWater.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Thoughts/ThoughtWorker_NearWater.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="251" Column="94" />
-      <File FileName="EBSGExtension.cs" Line="11" Column="42" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityOffsetNeed.cs" Line="10" Column="35" />
-      <File FileName="NeedOffset.cs" Line="9" Column="40" />
-      <File FileName="JoyGiver_RelaxInWater.cs" Line="23" Column="27" />
-      <File FileName="JobDriver_RelaxInWater.cs" Line="8" Column="40" />
+      <File FileName="EBSGUtilities.cs" Line="280" Column="1" />
+      <File FileName="EBSGExtension.cs" Line="12" Column="45" />
+      <File FileName="Thoughts/ThoughtWorker_NearWater.cs" Line="6" Column="41" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="Genes" expanded="True" />
+              <Node name="Thoughts" expanded="True">
+                <Node name="ThoughtWorker_NearWater.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

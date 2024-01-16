@@ -8,7 +8,7 @@ namespace EBSGFramework
     {
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
-            if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive || p.IsBloodfeeder())
+            if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive || p.MapHeld == null)
             {
                 return ThoughtState.Inactive;
             }
@@ -17,33 +17,21 @@ namespace EBSGFramework
             {
                 foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
                 {
-                    if (HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
+                    if (EBSGUtilities.HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
                     {
                         return ThoughtState.ActiveDefault;
                     }
                 }
                 return ThoughtState.Inactive;
             }
-            else
+            foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
             {
-                foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
+                if (!EBSGUtilities.HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
                 {
-                    if (!HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
-                    {
-                        return ThoughtState.ActiveDefault;
-                    }
+                    return ThoughtState.ActiveDefault;
                 }
-                return ThoughtState.Inactive;
             }
-        }
-
-        public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
-        {
-            if (!ModsConfig.BiotechActive || pawn.genes == null)
-            {
-                return false;
-            }
-            return pawn.genes.HasGene(relatedGene);
+            return ThoughtState.Inactive;
         }
     }
 }
