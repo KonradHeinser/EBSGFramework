@@ -1,5 +1,4 @@
-﻿using System;
-using RimWorld;
+﻿using System.Collections.Generic;
 using Verse;
 
 namespace EBSGFramework
@@ -9,6 +8,8 @@ namespace EBSGFramework
         public HediffDef hediffDef;
 
         public bool onlyBrain;
+
+        public List<BodyPartDef> bodyParts;
 
         public bool applyToSelf;
 

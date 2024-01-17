@@ -27,6 +27,13 @@ namespace EBSGFramework
                 Log.Error(def + " needs the EBSG extension to properly function. Deleting gene to excess errors.");
                 pawn.genes.RemoveGene(this);
             }
+            HediffAdder.HediffAdding(pawn, this);
+        }
+
+        public override void PostRemove()
+        {
+            base.PostRemove();
+            HediffAdder.HediffRemoving(pawn, this);
         }
 
         public override void Tick()

@@ -61,7 +61,6 @@ namespace EBSGFramework
 
         public static void RemoveHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
-
             if (hediff != null)
             {
                 Hediff hediffToRemove = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
@@ -78,6 +77,60 @@ namespace EBSGFramework
             }
         }
 
+        public static void RemoveHediffsFromParts(Pawn pawn, List<HediffsToParts> hediffs = null, HediffsToParts hediffToParts = null)
+        {
+            if (hediffToParts != null && HasHediff(pawn, hediffToParts.hediff))
+            {
+                if (hediffToParts.bodyParts.NullOrEmpty()) RemoveHediffs(pawn, hediffToParts.hediff);
+                else
+                {
+                    foreach (BodyPartDef bodyPart in hediffToParts.bodyParts)
+                    {
+                        Hediff firstHediffOfDef = null;
+                        Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
+
+                        if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
+                        else
+                        {
+                            foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                            {
+                                if (hediff.Part.def == bodyPart && hediff.def == hediffToParts.hediff) firstHediffOfDef = hediff;
+                                break;
+                            }
+                        }
+                        if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
+                    }
+                }
+            }
+            if (!hediffs.NullOrEmpty())
+            {
+                foreach (HediffsToParts hediffPart in hediffs)
+                {
+                    if (!HasHediff(pawn, hediffPart.hediff)) continue;
+                    if (hediffPart.bodyParts.NullOrEmpty()) RemoveHediffs(pawn, hediffPart.hediff);
+                    else
+                    {
+                        foreach (BodyPartDef bodyPart in hediffPart.bodyParts)
+                        {
+                            Hediff firstHediffOfDef = null;
+                            Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffPart.hediff);
+
+                            if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
+                            else
+                            {
+                                foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                                {
+                                    if (hediff.Part.def == bodyPart && hediff.def == hediffPart.hediff) firstHediffOfDef = hediff;
+                                    break;
+                                }
+                            }
+                            if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
+                        }
+                    }
+                }
+            }
+        }
+
         public static bool EqualCountingDictionaries(Dictionary<string, int> dictionary1, Dictionary<string, int> dictionary2)
         {
             foreach (string phrase in dictionary1.Keys)
@@ -90,7 +143,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0)
+        public static Hediff AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0)
         {
             Hediff firstHediffOfDef = null;
             if (HasHediff(pawn, hediffDef))
@@ -132,6 +185,8 @@ namespace EBSGFramework
                 firstHediffOfDef = pawn.health.AddHediff(hediffDef, bodyPart);
                 firstHediffOfDef.Severity = initialSeverity;
             }
+
+            return firstHediffOfDef;
         }
 
         public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)

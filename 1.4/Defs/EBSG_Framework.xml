@@ -36,6 +36,18 @@
         <displayPriorityInCategory>2202</displayPriorityInCategory>
     </StatDef>
 
+    <StatDef>
+        <defName>EBSG_Healthiness</defName>
+        <label>healthiness</label>
+        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.1</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>2202</displayPriorityInCategory>
+    </StatDef>
+
     <DamageDef>
         <defName>EBSG_GeneticDamage</defName>
         <label>genetic damage</label>

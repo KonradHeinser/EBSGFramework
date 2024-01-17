@@ -18,19 +18,22 @@ namespace EBSGFramework
             Harmony harmony = new Harmony("Rimworld.Alite.EBSG.main");
             harmony.Patch(AccessTools.Method(typeof(EquipmentUtility), nameof(EquipmentUtility.CanEquip), new[] { typeof(Thing), typeof(Pawn), typeof(string).MakeByRefType(), typeof(bool) }),
                 postfix: new HarmonyMethod(patchType, nameof(CanEquipPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
+                postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
+            harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
+                postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
+
+            // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
                 postfix: new HarmonyMethod(patchType, nameof(DeathrestEfficiencyPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.BodyResourceGrowthSpeed)),
                 postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
-                postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
-            harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
-                postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.HealthScale)),
+                postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-
         }
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)
@@ -52,7 +55,7 @@ namespace EBSGFramework
                 if (!pawn.genes.GenesListForReading.NullOrEmpty())
                 {
                     Pawn_GeneTracker currentGenes = pawn.genes;
-                    if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() || 
+                    if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() ||
                         !requireOneOfXenotypeToEquip.NullOrEmpty() || !forbiddenXenotypesToEquip.NullOrEmpty())
                     {
                         if (!requireOneOfXenotypeToEquip.NullOrEmpty() && !requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype) && flag)
@@ -131,7 +134,7 @@ namespace EBSGFramework
                                 if (hediffSet.HasHediff(hediffDef))
                                 {
                                     cantReason = "EBSG_HediffRestrictedEquipment_None".Translate(hediffDef.LabelCap);
-                                    flag = false; 
+                                    flag = false;
                                     break;
                                 }
                             }
@@ -144,7 +147,7 @@ namespace EBSGFramework
                             {
                                 if (hediffSet.HasHediff(hediffDef))
                                 {
-                                    flag = true; 
+                                    flag = true;
                                     break;
                                 }
                             }
@@ -235,33 +238,8 @@ namespace EBSGFramework
             }
             __result = flag;
         }
-            // Need to add a check on the genes and xenotype after checking for thing extension
+        // Need to add a check on the genes and xenotype after checking for thing extension
 
-
-        public static void DeathrestEfficiencyPostfix(ref int __result, Pawn ___pawn)
-        {
-            if (___pawn != null)
-            {
-                __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
-            }
-        }
-
-        public static void BodyResourceGrowthSpeedPostfix(ref float __result, Pawn pawn)
-        {
-            if (pawn != null)
-            {
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed);
-            }
-        }
-
-        public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
-        {
-            HediffSet hediffSet = pawn.health.hediffSet;
-            if (hediffSet.BleedRateTotal < 0.1f)
-            {
-                HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
-            }
-        }
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, ref Pawn ___pawn)
         {
@@ -330,6 +308,42 @@ namespace EBSGFramework
                     stringBuilder.AppendLine(" - " + "EBSG_GeneticRomanceChance".Translate() + ": x" + num.ToStringPercent());
                     __result = stringBuilder.ToString();
                 }
+            }
+        }
+
+
+        // Harmony patches for stats
+
+        public static void DeathrestEfficiencyPostfix(ref int __result, Pawn ___pawn)
+        {
+            if (___pawn != null)
+            {
+                __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
+            }
+        }
+
+        public static void BodyResourceGrowthSpeedPostfix(ref float __result, Pawn pawn)
+        {
+            if (pawn != null)
+            {
+                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed);
+            }
+        }
+
+        public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
+        {
+            HediffSet hediffSet = pawn.health.hediffSet;
+            if (hediffSet.BleedRateTotal < 0.1f)
+            {
+                HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
+            }
+        }
+
+        public static void PawnHealthinessPostfix(Pawn __instance, ref float __result)
+        {
+            if (__instance != null)
+            {
+                __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness);
             }
         }
     }

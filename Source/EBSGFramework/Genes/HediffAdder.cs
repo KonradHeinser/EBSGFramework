@@ -13,6 +13,12 @@ namespace EBSGFramework
             HediffAdding(pawn, this);
         }
 
+        public override void PostRemove()
+        {
+            base.PostRemove();
+            HediffRemoving(pawn, this);
+        }
+
         public static void HediffAdding(Pawn pawn, Gene gene)
         {
             EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
@@ -51,6 +57,15 @@ namespace EBSGFramework
                     }
                 }
                 if (extension.vanishingGene) pawn.genes.RemoveGene(gene);
+            }
+        }
+
+        public static void HediffRemoving(Pawn pawn, Gene gene)
+        {
+            EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+            if (extension != null && !extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
+            {
+                EBSGUtilities.RemoveHediffsFromParts(pawn, extension.hediffsToApply);
             }
         }
     }
