@@ -148,6 +148,7 @@
     <Compile Include="JoyGiver_RelaxInWater.cs" />
     <Compile Include="JobDriver_RelaxInWater.cs" />
     <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
+    <Compile Include="GeneticMultiplier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

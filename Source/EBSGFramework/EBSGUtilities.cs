@@ -329,6 +329,27 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool NeedFrozen(Pawn pawn, NeedDef def)
+        {
+            if (pawn.Suspended)
+            {
+                return true;
+            }
+            if (def.freezeWhileSleeping && !pawn.Awake())
+            {
+                return true;
+            }
+            if (def.freezeInMentalState && pawn.InMentalState)
+            {
+                return true;
+            }
+            if (!pawn.SpawnedOrAnyParentSpawned && !pawn.IsCaravanMember() && !PawnUtility.IsTravelingInTransportPodWorldObject(pawn))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
             waterCount = 0;

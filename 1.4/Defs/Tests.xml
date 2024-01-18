@@ -34,5 +34,5 @@
         <hediffClass>HediffWithComps</hediffClass>
 		<scenarioCanAdd>false</scenarioCanAdd>
         <maxSeverity>1.0</maxSeverity>
-    </HediffDef>    
+    </HediffDef>
 </Defs>

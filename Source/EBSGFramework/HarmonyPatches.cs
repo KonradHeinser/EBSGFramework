@@ -4,6 +4,8 @@ using System.Text;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -22,6 +24,22 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
             harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
                 postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
+            harmony.Patch(AccessTools.Method(typeof(Thought), nameof(Thought.MoodOffset)),
+                postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+            harmony.Patch(AccessTools.Method(typeof(Thought_SituationalSocial), nameof(Thought_SituationalSocial.OpinionOffset)),
+                postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+
+            // Needs Harmony patches
+            harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
+            harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
+                postfix: new HarmonyMethod(patchType, nameof(GainJoyPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(JoyIntervalPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Mood), nameof(Need_Mood.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
 
             // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
@@ -175,7 +193,7 @@ namespace EBSGFramework
                     }
                 }
             }
-            if (flag && !pawn.genes.GenesListForReading.NullOrEmpty())
+            if (flag && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
             {
                 XenotypeDef xenotype = pawn.genes.Xenotype;
                 if (xenotype != null && xenotype.HasModExtension<EquipRestrictExtension>())
@@ -238,8 +256,6 @@ namespace EBSGFramework
             }
             __result = flag;
         }
-        // Need to add a check on the genes and xenotype after checking for thing extension
-
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, ref Pawn ___pawn)
         {
@@ -311,6 +327,29 @@ namespace EBSGFramework
             }
         }
 
+        public static void GeneticThoughtMultiplier(Pawn ___pawn, ref float __result, ThoughtDef ___def)
+        {
+            if (___def.HasModExtension<EBSGExtension>() && ___pawn.genes != null)
+            {
+                EBSGExtension extension = ___def.GetModExtension<EBSGExtension>();
+                bool ensureReverse = false;
+                bool positiveValue = __result > 0;
+
+                if (!extension.geneticMultipliers.NullOrEmpty())
+                {
+                    foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
+                    {
+                        if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(geneticMultiplier.nullifyingGenes, null, ___pawn))
+                        {
+                            __result *= geneticMultiplier.multiplier;
+                            if (geneticMultiplier.multiplier < 0) ensureReverse = true;
+                        }
+                    }
+                }
+
+                if (ensureReverse && positiveValue == __result > 0) __result *= -1;
+            }
+        }
 
         // Harmony patches for stats
 
@@ -319,6 +358,100 @@ namespace EBSGFramework
             if (___pawn != null)
             {
                 __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
+            }
+        }
+
+        public static void KillThirstPostfix(Pawn ___pawn)
+        {
+            if (___pawn != null)
+            {
+                Need killThirst = ___pawn.needs.TryGetNeed<Need_KillThirst>();
+                if (killThirst != null)
+                {
+                    ___pawn.needs.TryGetNeed<Need_KillThirst>().CurLevel -= 8.333333E-05f * (___pawn.GetStatValue(EBSGDefOf.EBSG_KillThirstRate) - 1);
+                }
+            }
+        }
+
+        public static void GainJoyPostfix(float amount, JoyKindDef joyKind, Pawn ___pawn, JoyToleranceSet ___tolerances)
+        {
+            if (!(amount <= 0f))
+            {
+                amount *= ___tolerances.JoyFactorFromTolerance(joyKind) * (___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate) - 1);
+                amount = Mathf.Min(amount, 1f - ___pawn.needs.joy.CurLevel);
+                ___pawn.needs.joy.CurLevel += amount;
+            }
+        }
+
+        public static void JoyIntervalPostfix(Pawn ___pawn, NeedDef ___def, int ___lastGainTick)
+        {
+            if (!EBSGUtilities.NeedFrozen(___pawn, ___def) && (Find.TickManager.TicksGame > ___lastGainTick + 10) || ___lastGainTick < 0)
+            {
+                JoyCategory joyCategory = ___pawn.needs.joy.CurCategory;
+                float fallPerInterval = 0;
+                switch (joyCategory)
+                {
+                    case JoyCategory.VeryLow:
+                        fallPerInterval = 0.0006f;
+                        break;
+                    case JoyCategory.Low:
+                        fallPerInterval = 0.00105f;
+                        break;
+                    default:
+                        fallPerInterval = 0.0015f;
+                        break;
+                }
+                ___pawn.needs.joy.CurLevel -= fallPerInterval * (___pawn.GetStatValue(EBSGDefOf.EBSG_JoyFallRate) - 1) * (___pawn.IsFormingCaravan() ? 0.5f : 1f);
+            }
+        }
+
+        public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
+        {
+            float increase = ___def.seekerRisePerHour * 0.06f;
+            float decrease = ___def.seekerFallPerHour * 0.06f;
+            float curInstantLevel;
+            if (EBSGUtilities.NeedFrozen(___pawn, ___def)) return;
+            switch (___def.ToString())
+            {
+                case "Beauty":
+                    curInstantLevel = ___pawn.needs.beauty.CurInstantLevel;
+                    if (curInstantLevel > ___pawn.needs.beauty.CurLevel)
+                    {
+                        ___pawn.needs.beauty.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_BeautyRiseRate) - 1);
+                        ___pawn.needs.beauty.CurLevel = Mathf.Min(___pawn.needs.beauty.CurLevel, curInstantLevel);
+                    }
+                    if (curInstantLevel < ___pawn.needs.beauty.CurLevel)
+                    {
+                        ___pawn.needs.beauty.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_BeautyFallRate) - 1);
+                        ___pawn.needs.beauty.CurLevel = Mathf.Max(___pawn.needs.beauty.CurLevel, curInstantLevel);
+                    }
+                    break;
+                case "Comfort":
+                    curInstantLevel = ___pawn.needs.comfort.CurInstantLevel;
+                    if (curInstantLevel > ___pawn.needs.comfort.CurLevel)
+                    {
+                        ___pawn.needs.comfort.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_ComfortRiseRate) - 1);
+                        ___pawn.needs.comfort.CurLevel = Mathf.Min(___pawn.needs.comfort.CurLevel, curInstantLevel);
+                    }
+                    if (curInstantLevel < ___pawn.needs.comfort.CurLevel)
+                    {
+                        ___pawn.needs.comfort.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_ComfortFallRate) - 1);
+                        ___pawn.needs.comfort.CurLevel = Mathf.Max(___pawn.needs.comfort.CurLevel, curInstantLevel);
+                    }
+                    break;
+                case "Mood":
+                    curInstantLevel = ___pawn.needs.mood.CurInstantLevel;
+                    if (curInstantLevel > ___pawn.needs.mood.CurLevel)
+                    {
+                        ___pawn.needs.mood.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_MoodRiseRate) - 1);
+                        ___pawn.needs.mood.CurLevel = Mathf.Min(___pawn.needs.mood.CurLevel, curInstantLevel);
+                    }
+                    if (curInstantLevel < ___pawn.needs.mood.CurLevel)
+                    {
+                        ___pawn.needs.mood.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_MoodFallRate) - 1);
+                        ___pawn.needs.mood.CurLevel = Mathf.Max(___pawn.needs.mood.CurLevel, curInstantLevel);
+                    }
+                    break;
             }
         }
 

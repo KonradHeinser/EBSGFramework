@@ -11,6 +11,7 @@ namespace EBSGFramework
         public List<GeneDef> relatedGenes;
         public bool checkNotPresent = false;
         public List<int> thresholds;
+        public List<GeneticMultiplier> geneticMultipliers;
 
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;
