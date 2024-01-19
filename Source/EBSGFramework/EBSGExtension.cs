@@ -15,6 +15,10 @@ namespace EBSGFramework
 
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;
+        public FloatRange expectedAges;
+        public FloatRange ageRange;
+        public bool sameBioAndChrono = false;
+        public bool chronicAgeRemoval = true;
 
         public List<SkillChange> skillChanges;
 

@@ -367,6 +367,22 @@ namespace EBSGFramework
             return maxNeededForTrue <= waterCount;
         }
 
+        public static void RemoveChronicHediffs(Pawn pawn)
+        {
+            if (pawn.health.hediffSet != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+            {
+                List<Hediff> hediffsToRemove = new List<Hediff>();
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                {
+                    if (hediff.def.chronic) hediffsToRemove.Add(hediff);
+                }
+                if (!hediffsToRemove.NullOrEmpty())
+                {
+                    foreach (Hediff hediff in hediffsToRemove) pawn.health.RemoveHediff(hediff);
+                }
+            }
+        }
+
         public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
         {
             if (!ModsConfig.BiotechActive || pawn.genes == null) return false;

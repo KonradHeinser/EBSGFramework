@@ -4,7 +4,7 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class VanishingGene : Gene
+    public class VanishingGene : HediffAdder
     {
         public int ticksUntilVanish = 30; // This gene class makes it easier to make genes that trigger at the beginning, then disappear
 
@@ -16,18 +16,6 @@ namespace EBSGFramework
                 Messages.Message(def + " has been successfully removed!", MessageTypeDefOf.NeutralEvent, false);
             }
             ticksUntilVanish--;
-        }
-
-        public override void PostAdd()
-        {
-            base.PostAdd();
-            HediffAdder.HediffAdding(pawn, this);
-        }
-
-        public override void PostRemove()
-        {
-            base.PostRemove();
-            HediffAdder.HediffRemoving(pawn, this);
         }
     }
 }

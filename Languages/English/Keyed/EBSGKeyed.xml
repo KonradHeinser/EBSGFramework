@@ -4,6 +4,13 @@
     <EBSG_NeedOffsets>Base need offsets:</EBSG_NeedOffsets>
     <EBSG_Random>Random option</EBSG_Random>
 
+        <!--Settings menu stuff-->
+    <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
+    <EBSG_ModName>EBSG Framework (assume every change requires a restart)</EBSG_ModName> <!--This is the one used in the settings themselves-->
+    <EBSG_ModDescription>The Expanded Biotech Style Genes(EBSG) Framework is a compilation of all the code used in the EBSG series, generic versions of most code use in the Superhero Genes Series, along with various other bits of convenient code suggested by others or the voice in my head.\n\nBecause this is a framework, there are very few settings to look at. The only things that will ever be added to this list are the optional quality of life patches made to apply this framework's code to vanilla things.\n\nThe checkmark next to the label just hides the group, if you want to do that for whatever reason.</EBSG_ModDescription>
+    <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
+    <EBSG_AgeLimitedAgelessDescription>When the ageless gene is applied (or the pawn spawns with it) a pawn with an age over 30 will have their body instantly rejuvenated to be between 18 and 30 years old.</EBSG_AgeLimitedAgelessDescription>
+
         <!--Revival hediff comp-->
     <EBSG_LastLife>{PAWN_nameDef} is on their last life.</EBSG_LastLife>
     <EBSG_OneLifeStill>{PAWN_nameDef} still has their extra life.</EBSG_OneLifeStill> <!--This is used if the pawn is only capable of having one extra life-->

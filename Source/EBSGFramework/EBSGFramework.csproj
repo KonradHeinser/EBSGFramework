@@ -48,6 +48,10 @@
       <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.Xml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,6 +153,9 @@
     <Compile Include="JobDriver_RelaxInWater.cs" />
     <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
     <Compile Include="GeneticMultiplier.cs" />
+    <Compile Include="Genes\SpawnAgeLimiter.cs" />
+    <Compile Include="EBSG_Settings.cs" />
+    <Compile Include="PatchOperationSetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

@@ -4,7 +4,7 @@ using RimWorld.Planet;
 
 namespace EBSGFramework
 {
-    public class BiomeGene: Gene
+    public class BiomeGene : HediffAdder
     {
         public EBSGExtension cachedEBSGExtension;
 
@@ -22,18 +22,17 @@ namespace EBSGFramework
 
         public override void PostAdd()
         {
+            base.PostAdd();
             if (Extension == null)
             {
                 Log.Error(def + " needs the EBSG extension to properly function. Deleting gene to excess errors.");
                 pawn.genes.RemoveGene(this);
             }
-            HediffAdder.HediffAdding(pawn, this);
         }
 
         public override void PostRemove()
         {
             base.PostRemove();
-            HediffAdder.HediffRemoving(pawn, this);
         }
 
         public override void Tick()

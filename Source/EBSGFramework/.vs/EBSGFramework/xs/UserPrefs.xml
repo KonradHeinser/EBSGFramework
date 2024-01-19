@@ -1,11 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SpawnAgeLimiter.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="339" Column="14" />
-      <File FileName="EBSGExtension.cs" Line="14" Column="58" />
-      <File FileName="HarmonyPatches.cs" Line="402" Column="124" />
-      <File FileName="EBSGDefOf.cs" Line="18" Column="42" />
+      <File FileName="EBSGUtilities.cs" Line="370" Column="48" />
+      <File FileName="EBSGExtension.cs" Line="21" Column="38" />
+      <File FileName="HarmonyPatches.cs" Line="433" Column="116" />
+      <File FileName="Genes/SpawnAgeLimiter.cs" Line="21" Column="59" />
+      <File FileName="EBSG_Settings.cs" Line="18" Column="42" />
+      <File FileName="PatchOperationSetting.cs" Line="18" Column="21" />
+      <File FileName="Genes/Gene_HemoHediffAdder.cs" Line="23" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Genes" expanded="True">
+                <Node name="SpawnAgeLimiter.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
