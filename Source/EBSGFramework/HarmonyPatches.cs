@@ -40,6 +40,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(JoyIntervalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Mood), nameof(Need_Mood.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
+                postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
 
             // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
@@ -358,6 +360,14 @@ namespace EBSGFramework
             if (___pawn != null)
             {
                 __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
+            }
+        }
+
+        public static void GrowthPointStatPostfix(ref float __result, Pawn ___pawn)
+        {
+            if (___pawn != null)
+            {
+                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_GrowthPointRate);
             }
         }
 

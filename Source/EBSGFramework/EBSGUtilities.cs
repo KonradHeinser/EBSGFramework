@@ -28,6 +28,73 @@ namespace EBSGFramework
             }
         }
 
+        public static Hediff GetFirstHediffAttachedToPart(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
+        {
+            if (hediffDef == null) return null;
+            Hediff hediff = null;
+
+            if (HasHediff(pawn, hediffDef))
+            {
+                hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
+                if (bodyPartRecord != null)
+                {
+                    if (hediff.Part != bodyPartRecord)
+                    {
+                        hediff = null;
+                        foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
+                        {
+                            if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part == bodyPartRecord)
+                            {
+                                hediff = hediffOnPawn;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (bodyPartDef != null)
+                {
+                    if (hediff.Part.def != bodyPartDef)
+                    {
+                        hediff = null;
+                        foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
+                        {
+                            if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part.def == bodyPartDef)
+                            {
+                                hediff = hediffOnPawn;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // If there's no set body part, just get the newest version of that hediff def as that's most likely to be the correct one
+                    foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
+                    {
+                        if (hediffOnPawn.def == hediffDef && hediffOnPawn.ageTicks < hediff.ageTicks) hediff = hediffOnPawn;
+                    }
+                }
+            }
+            return hediff;
+        }
+
+        public static void RemoveDamage(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPart, float damageRemoved)
+        {
+            while (damageRemoved > 0)
+            {
+                Hediff hediff = GetFirstHediffAttachedToPart(pawn, hediffDef, bodyPart);
+                //Log.Message("Removing damage of " + hediff.Label + " from " + bodyPart.Label);
+                if (hediff != null)
+                {
+                    float removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;
+                    damageRemoved -= removalAmount;
+                    hediff.Severity -= removalAmount;
+
+                }
+                else break;
+            }
+        }
+
         public static List<HediffDef> ApplyHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             List<HediffDef> addedHediffs = new List<HediffDef>();
@@ -189,13 +256,13 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
-        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             if (hediff != null)
             {
                 if (HasHediff(pawn, hediff))
                 {
-                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityPerTick;
+                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityIncrease;
                 }
                 else
                 {
@@ -210,7 +277,7 @@ namespace EBSGFramework
                 {
                     if (HasHediff(pawn, hediffDef))
                     {
-                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityPerTick;
+                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityIncrease;
                     }
                     else
                     {
@@ -417,7 +484,7 @@ namespace EBSGFramework
                 loc = corpse.Position;
                 map = corpse.Map;
                 corpse.InnerPawn = null;
-                if(!corpse.Destroyed) corpse.Destroy();
+                if (!corpse.Destroyed) corpse.Destroy();
             }
             if (flag && pawn.IsWorldPawn())
             {
@@ -465,7 +532,7 @@ namespace EBSGFramework
             }
             if (flag2 && pawn != null)
             {
-                Find.Selector.Select(pawn, false,  false);
+                Find.Selector.Select(pawn, false, false);
             }
         }
     }

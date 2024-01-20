@@ -46,7 +46,9 @@ namespace EBSGFramework
         // Used in ThoughtWorker_Gene_GeneSocial
         public bool compoundingHatred = false; // When true, each gene that is found in checked genes increases the stage
         public bool opinionOfAllOthers = false; // Makes the thought apply to all others instead of just those with checked genes. Intended for xenophobe/xenophile
+        public bool xenophilobic = true;
         public List<GeneDef> checkedGenes; // Genes checked for opinions
+
         public List<GeneDef> nullifyingGenes; // Genes checked for early nullification. These cause the thought to never appear
         public List<GeneDef> requiredGenes; // The observer musthave one of these genes to feel anything. Acts as a reverse nullifyingGenes
 

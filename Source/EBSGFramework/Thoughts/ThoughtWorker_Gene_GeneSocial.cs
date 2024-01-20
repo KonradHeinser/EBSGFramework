@@ -17,7 +17,7 @@ namespace EBSGFramework
             {
                 EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
-                if (!extension.nullifyingGenes.NullOrEmpty())
+                if (!extension.nullifyingGenes.NullOrEmpty() && !extension.opinionOfAllOthers)
                 {
                     foreach (Gene gene in p.genes.GenesListForReading)
                     {
@@ -39,7 +39,16 @@ namespace EBSGFramework
                 }
                 if (!extension.compoundingHatred)
                 {
-                    if (extension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
+                    if (extension.opinionOfAllOthers)
+                    {
+                        if (EBSGUtilities.PawnHasAnyOfGenes(extension.nullifyingGenes, null, otherPawn)) return ThoughtState.Inactive;
+                        if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
+                        if (!extension.checkedGenes.NullOrEmpty())
+                        {
+                            if (EBSGUtilities.PawnHasAnyOfGenes(extension.checkedGenes, null, otherPawn)) return ThoughtState.ActiveAtStage(0);
+                        }
+                        else return ThoughtState.ActiveAtStage(0);
+                    }
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
                         foreach (Gene gene in otherPawn.genes.GenesListForReading)
@@ -55,7 +64,11 @@ namespace EBSGFramework
                 else
                 {
                     int num = 0;
-
+                    if (extension.opinionOfAllOthers) 
+                    {
+                        if (EBSGUtilities.PawnHasAnyOfGenes(extension.nullifyingGenes, null, otherPawn)) return ThoughtState.Inactive;
+                        if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
+                    }
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
                         if (extension.opinionOfAllOthers) num++;

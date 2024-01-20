@@ -8,6 +8,7 @@ namespace EBSGFramework
     public class HediffComp_DamageBodyParts : HediffComp
     {
         private HediffCompProperties_DamageBodyParts Props => (HediffCompProperties_DamageBodyParts)props;
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);

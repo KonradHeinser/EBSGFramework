@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
     <!--Need to test something? All of these defs should be usable without dlc as a basic parent for testing purposes-->
-    <AbilityDef Name="EBSG_TestSelfCastBase" Abstract="True"> 
+    <AbilityDef Name="EBSG_TestAbilityBase" Abstract="True">
         <iconPath>Things/Mote/SpeechSymbols/Speech</iconPath>
         <category>Psychic</category>
-        <targetRequired>False</targetRequired>
         <cooldownTicksRange>60</cooldownTicksRange>
         <hostile>false</hostile>
         <verbProperties>
             <verbClass>Verb_CastAbility</verbClass>
-            <range>3.9</range>
+            <range>30</range>
             <warmupTime>0.5</warmupTime>
             <requireLineOfSight>False</requireLineOfSight>
+        </verbProperties>
+    </AbilityDef>
+    
+    <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True"> 
+        <targetRequired>False</targetRequired>
+        <cooldownTicksRange>60</cooldownTicksRange>
+        <verbProperties>
+            <range>3.9</range>
             <targetParams>
                 <canTargetSelf>True</canTargetSelf>
             </targetParams>
