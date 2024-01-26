@@ -506,21 +506,15 @@ namespace EBSGFramework
                     {
                         if (dinfo.Def == explodingComp.Props.damageDef && explodingComp.currentlyExploding) return true;
                     }
-                    if (dinfo.Def.isRanged)
+                    HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
+                    if (rangedExplodingComp != null)
                     {
-                        HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                        if (rangedExplodingComp != null)
-                        {
-                            if (dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
-                        }
+                        if (dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
                     }
-                    else
+                    HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
+                    if (meleeExplodingComp != null)
                     {
-                        HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                        if (meleeExplodingComp != null)
-                        {
-                            if (dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
-                        }
+                        if (dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
                     }
                 }
             }
@@ -566,7 +560,6 @@ namespace EBSGFramework
                         }
                     }
                 }
-
             }
             return true;
         }
