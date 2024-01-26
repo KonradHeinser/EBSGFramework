@@ -123,4 +123,16 @@
         <displayPriorityInCategory>3411</displayPriorityInCategory>
     </StatDef>
 
+    <StatDef ParentName="NeedRateChanger">
+        <defName>EBSG_OutgoingDamageFactor</defName>
+        <label>outgoing damage factor</label>
+        <description>A multiplier on all outgoing damage.</description>
+        <category>PawnCombat</category>
+        <toStringStyle>PercentZero</toStringStyle>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.0001</minValue>
+        <displayPriorityInCategory>5201</displayPriorityInCategory>
+    </StatDef>
+
 </Defs>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-    <Operation Class="PatchOperationAdd">
-        <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
-        <value><li Class="EBSGFramework.StatPart_FertilityByGenes" MayRequire="Ludeon.Rimworld.Biotech" /></value>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/Statdef[defName="Fertility"]</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
+            <value><li Class="EBSGFramework.StatPart_FertilityByGenes" MayRequire="Ludeon.Rimworld.Biotech" /></value>
+        </match>
     </Operation>
 
     <Operation Class="EBSGFramework.PatchOperationSetting">

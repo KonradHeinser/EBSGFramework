@@ -80,7 +80,6 @@
     <Compile Include="StatPart_FertilityByGenes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
-    <Compile Include="EquipRestrictExtension.cs" />
     <Compile Include="HiveMind\HiveMindGene.cs" />
     <Compile Include="HiveMind\HiveMindExtension.cs" />
     <Compile Include="HiveMind\HiveRoleToCheckFor.cs" />
@@ -162,8 +161,31 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLearnSkill.cs" />
     <Compile Include="Abilities\SkillXP.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
-    <Compile Include="IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
     <Compile Include="Genes\GRCExtension.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByMentalState.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByMentalState.cs" />
+    <Compile Include="Hediffs\MentalStateEffect.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByColonyGenes.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByColonyGenes.cs" />
+    <Compile Include="Things\EquipRestrictExtension.cs" />
+    <Compile Include="Things\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
+    <Compile Include="Hediffs\BurstHediffPropertiesBase.cs" />
+    <Compile Include="Hediffs\BurstHediffCompBase.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodeOnDeath.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplodeOnDeath.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplodeWhenDamaged.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodeWhenDamaged.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodingAttacks.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplodingAttacks.cs" />
+    <Compile Include="MeleeDPSPostfix.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplodingMeleeAttacks.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodingMeleeAttacks.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplodingRangedAttacks.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodingRangedAttacks.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_ExplosiveRetaliation.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplosiveRetaliation.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -184,6 +206,7 @@
     <Folder Include="Hediffs\Comps\" />
     <Folder Include="Abilities\CompProperties\" />
     <Folder Include="Abilities\CompAbilityEffects\" />
+    <Folder Include="Things\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

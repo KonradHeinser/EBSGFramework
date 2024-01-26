@@ -15,7 +15,10 @@ namespace EBSGFramework
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_KillThirstRate;
+
+        [MayRequireBiotech]
         public static NeedDef KillThirst;
+
         public static StatDef EBSG_ComfortRiseRate;
         public static StatDef EBSG_ComfortFallRate;
         public static StatDef EBSG_BeautyRiseRate;
@@ -25,5 +28,6 @@ namespace EBSGFramework
         public static StatDef EBSG_JoyRiseRate;
         public static StatDef EBSG_JoyFallRate;
         public static StatDef EBSG_GrowthPointRate;
+        public static StatDef EBSG_OutgoingDamageFactor;
     }
 }

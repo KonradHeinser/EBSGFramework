@@ -13,8 +13,8 @@
             <requireLineOfSight>False</requireLineOfSight>
         </verbProperties>
     </AbilityDef>
-    
-    <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True"> 
+
+    <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True">
         <targetRequired>False</targetRequired>
         <cooldownTicksRange>60</cooldownTicksRange>
         <verbProperties>
@@ -28,7 +28,7 @@
     <GeneDef Name="EBSG_TestGeneBase" Abstract="True">
         <label>test gene</label>
         <description>This is just a test of a specific gene class/extension</description>
-        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath> <!--Using a generic icon that's I know will be there-->
+        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath>        <!--Using a generic icon that's I know will be there-->
         <displayCategory>Miscellaneous</displayCategory>
     </GeneDef>
 
@@ -37,9 +37,10 @@
         <description>This is a test hediff</description>
         <everCurableByItem>false</everCurableByItem>
         <initialSeverity>0.001</initialSeverity>
-        <stages><li /></stages>
+        <stages>
+            <li />
+        </stages>
         <hediffClass>HediffWithComps</hediffClass>
-		<scenarioCanAdd>false</scenarioCanAdd>
-        <maxSeverity>1.0</maxSeverity>
+        <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
 </Defs>

@@ -16,7 +16,7 @@ namespace EBSGFramework
                 if (EBSGUtilities.CheckNearbyWater(p, 1, out int waterCount)) return GetThoughtState(1);
                 return GetThoughtState(0);
             }
-            if (!extension.requiredGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfGenes(extension.relatedGenes, null, p)) return ThoughtState.Inactive;
+            if (!extension.requiredGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfGenes(p, extension.relatedGenes)) return ThoughtState.Inactive;
 
             if (!EBSGUtilities.CheckNearbyWater(p, 1, out int count, extension.maxWaterDistance)) return GetThoughtState(0);
             if (extension.thresholds.NullOrEmpty())

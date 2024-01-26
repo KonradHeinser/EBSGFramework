@@ -264,7 +264,7 @@ namespace EBSGFramework
                 {
                     pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityIncrease;
                 }
-                else
+                else if (initialSeverity > 0)
                 {
                     Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn);
                     newHediff.Severity = initialSeverity;
@@ -279,7 +279,7 @@ namespace EBSGFramework
                     {
                         pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityIncrease;
                     }
-                    else
+                    else if (initialSeverity > 0)
                     {
                         Hediff newHediff = HediffMaker.MakeHediff(hediffDef, pawn);
                         newHediff.Severity = initialSeverity;
@@ -287,6 +287,51 @@ namespace EBSGFramework
                     }
                 }
             }
+        }
+
+        public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false)
+        {
+            if (pawn.stances.curStance is Stance_Busy stance_Busy)
+            {
+                Thing thing = stance_Busy.verb.CurrentTarget.Thing;
+                if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
+                if (onlyHostiles && !thing.HostileTo(pawn)) return null;
+                if (onlyInFaction)
+                {
+                    if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
+                    return null;
+                }
+                return thing;
+            }
+            if (pawn.IsAttacking() && pawn.CurJob != null)
+            {
+                Thing thing = pawn.CurJob.targetA.Thing;
+                if (thing != null)
+                {
+                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
+                    if (onlyHostiles && !thing.HostileTo(pawn)) return null;
+                    if (onlyInFaction)
+                    {
+                        if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
+                        return null;
+                    }
+                    return thing;
+                }
+            }
+            if (autoSearch)
+            {
+                List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned;
+                pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
+                foreach (Pawn otherPawn in pawns)
+                {
+                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, otherPawn.Position, pawn.Map)) continue;
+                    if (otherPawn.Dead || otherPawn.Downed) continue;
+                    if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
+                    if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
+                    if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
+                }
+            }
+            return null;
         }
 
         public static void FadingHediffs(Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
@@ -374,7 +419,7 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
-        public static bool PawnHasAnyOfGenes(List<GeneDef> genesDefs, List<Gene> genes, Pawn pawn)
+        public static bool PawnHasAnyOfGenes(Pawn pawn, List<GeneDef> genesDefs = null, List<Gene> genes = null)
         {
             if (pawn.genes == null) return false;
 

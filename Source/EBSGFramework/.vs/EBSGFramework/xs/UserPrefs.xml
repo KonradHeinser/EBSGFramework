@@ -1,16 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="HarmonyPatches.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="273" Column="14" />
-      <File FileName="IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" Line="85" Column="66" />
-      <File FileName="EBSGDefOf.cs" Line="27" Column="52" />
-      <File FileName="HarmonyPatches.cs" Line="1" Column="1" />
+      <File FileName="HarmonyPatches.cs" Line="519" Column="47" />
+      <File FileName="PatchOperationSetting.cs" Line="18" Column="49" />
+      <File FileName="EBSGDefOf.cs" Line="21" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True" />
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="HarmonyPatches.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

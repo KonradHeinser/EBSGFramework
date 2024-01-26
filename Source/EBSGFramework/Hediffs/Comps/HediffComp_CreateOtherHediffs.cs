@@ -1,7 +1,5 @@
-﻿using System;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -42,7 +40,7 @@ namespace EBSGFramework
         {
 
             float severityPerDay = hediffSet.severityPerDay * 0.003333334f;
-            Hediff firstHediffOfDef = null; 
+            Hediff firstHediffOfDef = null;
             BodyPartRecord bodyPart = null;
             if (hediffSet.bodyPart != null) // If you need to target a specific body part, find it
             {
@@ -77,7 +75,7 @@ namespace EBSGFramework
                     firstHediffOfDef = Pawn.health.AddHediff(hediffDef, bodyPart);
                     firstHediffOfDef.Severity = hediffSet.initialSeverity; // Set the hediff severity
                 }
-             }
+            }
         }
     }
 }

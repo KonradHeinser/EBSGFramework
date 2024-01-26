@@ -39,7 +39,7 @@ namespace EBSGFramework
         {
             if (pawn.IsHashIntervalTick(100) & !pawn.Dead)
             {
-                bool biomeFlag = false;  
+                bool biomeFlag = false;
                 if (pawn.Map != null)
                 {
                     if (!Extension.badBiomes.NullOrEmpty() || !Extension.goodBiomes.NullOrEmpty())

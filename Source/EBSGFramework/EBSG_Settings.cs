@@ -77,8 +77,11 @@ namespace EBSGFramework
             optionsMenu.Gap(7f);
             if (showMainOptions)
             {
-                optionsMenu.CheckboxLabeled("EBSG_AgeLimitedAgeless".Translate(), ref ageLimitedAgeless, "EBSG_AgeLimitedAgelessDescription".Translate());
-                optionsMenu.Gap(10f);
+                if (ModsConfig.BiotechActive)
+                {
+                    optionsMenu.CheckboxLabeled("EBSG_AgeLimitedAgeless".Translate(), ref ageLimitedAgeless, "EBSG_AgeLimitedAgelessDescription".Translate());
+                    optionsMenu.Gap(10f);
+                }
             }
 
             optionsMenu.Gap(10f);

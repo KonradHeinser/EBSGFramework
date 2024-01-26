@@ -32,8 +32,11 @@ namespace EBSGFramework
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
-            harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
+            if (ModsConfig.BiotechActive)
+            {
+                harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
+            }
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 postfix: new HarmonyMethod(patchType, nameof(GainJoyPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.NeedInterval)),
@@ -52,6 +55,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.HealthScale)),
                 postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
+                prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -341,7 +346,7 @@ namespace EBSGFramework
                 {
                     foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
                     {
-                        if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(geneticMultiplier.nullifyingGenes, null, ___pawn))
+                        if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, geneticMultiplier.nullifyingGenes))
                         {
                             __result *= geneticMultiplier.multiplier;
                             if (geneticMultiplier.multiplier < 0) ensureReverse = true;
@@ -373,7 +378,7 @@ namespace EBSGFramework
 
         public static void KillThirstPostfix(Pawn ___pawn)
         {
-            if (___pawn != null)
+            if (___pawn != null && ModsConfig.BiotechActive)
             {
                 Need killThirst = ___pawn.needs.TryGetNeed<Need_KillThirst>();
                 if (killThirst != null)
@@ -488,6 +493,82 @@ namespace EBSGFramework
             {
                 __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness);
             }
+        }
+
+        public static bool DoingSpecialExplosion(Pawn pawn, DamageInfo dinfo, Thing mainTarget)
+        {
+            if (pawn.health.hediffSet != null)
+            {
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                {
+                    HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
+                    if (explodingComp != null)
+                    {
+                        if (dinfo.Def == explodingComp.Props.damageDef && explodingComp.currentlyExploding) return true;
+                    }
+                    if (dinfo.Def.isRanged)
+                    {
+                        HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
+                        if (rangedExplodingComp != null)
+                        {
+                            if (dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
+                        }
+                    }
+                    else
+                    {
+                        HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
+                        if (meleeExplodingComp != null)
+                        {
+                            if (dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool TakeDamagePrefix(DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
+        {
+            if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn)
+            {
+                dinfo.SetAmount(Mathf.RoundToInt(dinfo.Amount * pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor)));
+
+                if (!pawn.Dead && !DoingSpecialExplosion(pawn, dinfo, __instance))
+                {
+                    if (pawn.health.hediffSet != null && EBSGUtilities.GetCurrentTarget(pawn, false) == __instance)
+                    {
+                        foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                        {
+                            HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
+                            if (explodingComp != null)
+                            {
+                                explodingComp.currentlyExploding = true;
+                                explodingComp.DoExplosion(__instance.Position);
+                            }
+                            if (dinfo.Def.isRanged)
+                            {
+                                HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
+                                if (rangedExplodingComp != null)
+                                {
+                                    rangedExplodingComp.currentlyExploding = true;
+                                    rangedExplodingComp.DoExplosion(__instance.Position);
+                                }
+                            }
+                            else if (!dinfo.Def.isExplosive)
+                            {
+                                HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
+                                if (meleeExplodingComp != null)
+                                {
+                                    meleeExplodingComp.currentlyExploding = true;
+                                    meleeExplodingComp.DoExplosion(__instance.Position);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            return true;
         }
     }
 }
