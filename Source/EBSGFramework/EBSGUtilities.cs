@@ -462,6 +462,60 @@ namespace EBSGFramework
             return false;
         }
 
+        public static void RemoveGenesFromPawn(Pawn pawn, List<GeneDef> genes = null, GeneDef gene = null)
+        {
+            if (pawn.genes == null) return;
+            if (gene != null)
+            {
+                Gene target = pawn.genes.GetGene(gene);
+                if (target != null) pawn.genes.RemoveGene(target);
+            }
+            if (!genes.NullOrEmpty())
+            {
+                foreach (GeneDef g in genes)
+                {
+                    Gene target = pawn.genes.GetGene(g);
+                    if (target != null) pawn.genes.RemoveGene(target);
+                }
+            }
+        }
+
+        public static List<GeneDef> AddGenesToPawn(Pawn pawn, bool xenogene = true, List<GeneDef> genes = null, GeneDef gene = null)
+        {
+            if (pawn.genes == null) return null;
+            List<GeneDef> addedGenes = new List<GeneDef>();
+
+            if (gene != null)
+            {
+                if (!pawn.genes.HasGene(gene))
+                {
+                    pawn.genes.AddGene(gene, xenogene);
+                    addedGenes.Add(gene);
+                }
+            }
+
+            return addedGenes;
+        }
+
+        public static bool EquivalentGeneLists(List<GeneDef> geneListA, List<GeneDef> geneListB)
+        {
+            if (geneListA.NullOrEmpty()) return geneListB.NullOrEmpty();
+            if (geneListA.Equals(geneListB)) return true;
+
+            foreach (GeneDef gene in geneListA)
+            {
+                if (geneListB.NullOrEmpty()) return false;
+                if (geneListB.Contains(gene))
+                {
+                    geneListB.Remove(gene);
+                }
+                else return false;
+            }
+
+            if (!geneListB.NullOrEmpty()) return false;
+            return true;
+        }
+
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
             waterCount = 0;

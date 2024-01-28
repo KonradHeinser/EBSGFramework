@@ -186,6 +186,9 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplosiveRetaliation.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_TemporaryGenes.cs" />
+    <Compile Include="Hediffs\GenesAtSeverity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
