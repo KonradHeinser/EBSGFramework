@@ -494,14 +494,24 @@ namespace EBSGFramework
                 }
             }
 
+            if (!genes.NullOrEmpty())
+            {
+                foreach (GeneDef geneDef in genes)
+                {
+                    if (!pawn.genes.HasGene(geneDef))
+                    {
+                        pawn.genes.AddGene(geneDef, xenogene);
+                        addedGenes.Add(geneDef);
+                    }
+                }
+            }
+
             return addedGenes;
         }
 
         public static bool EquivalentGeneLists(List<GeneDef> geneListA, List<GeneDef> geneListB)
         {
             if (geneListA.NullOrEmpty()) return geneListB.NullOrEmpty();
-            if (geneListA.Equals(geneListB)) return true;
-
             foreach (GeneDef gene in geneListA)
             {
                 if (geneListB.NullOrEmpty()) return false;
@@ -511,7 +521,6 @@ namespace EBSGFramework
                 }
                 else return false;
             }
-
             if (!geneListB.NullOrEmpty()) return false;
             return true;
         }

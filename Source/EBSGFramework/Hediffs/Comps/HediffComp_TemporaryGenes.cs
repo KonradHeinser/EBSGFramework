@@ -25,38 +25,43 @@ namespace EBSGFramework
 
             foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
             {
-                if (parent.Severity > geneSet.minSeverity && parent.Severity < geneSet.maxSeverity)
+                if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
-                    if (EBSGUtilities.EquivalentGeneLists(addedGenes, geneSet.genes)) return;
+                    if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
                     EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
                     addedGenes.Clear();
                     addedGenes = EBSGUtilities.AddGenesToPawn(parent.pawn, geneSet.xenogenes, geneSet.genes);
-                    return;
+                    break;
                 }
             }
         }
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (!parent.pawn.IsHashIntervalTick(100)) return;
+            if (!parent.pawn.IsHashIntervalTick(50)) return;
 
             foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
             {
-                if (parent.Severity > geneSet.minSeverity && parent.Severity < geneSet.maxSeverity)
+                if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
-                    if (EBSGUtilities.EquivalentGeneLists(addedGenes, geneSet.genes)) return;
+                    if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
                     EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
                     addedGenes.Clear();
                     addedGenes = EBSGUtilities.AddGenesToPawn(parent.pawn, geneSet.xenogenes, geneSet.genes);
-                    return;
+                    break;
                 }
             }
         }
 
+        public override void CompPostPostRemoved()
+        {
+            EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
+            addedGenes.Clear();
+        }
 
         public override void CompExposeData()
         {
-            Scribe_Values.Look(ref addedGenes, "EBSG_AddedGenes", new List<GeneDef>());
+            Scribe_Collections.Look(ref addedGenes, "EBSG_AddedGenes");
         }
     }
 }

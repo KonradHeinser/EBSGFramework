@@ -45,6 +45,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
                 postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_PsychicEntropyTracker), "PsyfocusFallPerDay"),
+                postfix: new HarmonyMethod(patchType, nameof(PsyfocusFallPerDayPostFix)));
 
             // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
@@ -475,6 +477,16 @@ namespace EBSGFramework
             if (pawn != null)
             {
                 __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed);
+            }
+        }
+
+        public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
+        {
+
+            if (___pawn != null && ___pawn.GetPsylinkLevel() > 0)
+            {
+                __result = (__result + ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
+                Log.Message(__result.ToString());
             }
         }
 

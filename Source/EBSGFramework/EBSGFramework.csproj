@@ -61,10 +61,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="CollectExtensionData.cs" />
-    <Compile Include="HarmonyPatches.cs" />
     <Compile Include="EBSGDefOf.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
-    <Compile Include="Abilities\HediffToGive.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
@@ -73,19 +71,14 @@
     <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGeneColonist.cs" />
     <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGenePresent.cs" />
     <Compile Include="Thoughts\ThoughtWorker_TreesDesiredNoPrecept.cs" />
-    <Compile Include="Hediffs\RegenSet.cs" />
-    <Compile Include="Hediffs\RandomXenoGenes.cs" />
-    <Compile Include="Hediffs\PartToDamage.cs" />
     <Compile Include="Genes\VanishingGene.cs" />
     <Compile Include="StatPart_FertilityByGenes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
     <Compile Include="HiveMind\HiveMindGene.cs" />
     <Compile Include="HiveMind\HiveMindExtension.cs" />
     <Compile Include="HiveMind\HiveRoleToCheckFor.cs" />
     <Compile Include="FertilityByGenderAgeExtension.cs" />
     <Compile Include="Genes\HediffAdder.cs" />
-    <Compile Include="Genes\HediffsToParts.cs" />
     <Compile Include="DamageWorker_PermanentInjury.cs" />
     <Compile Include="EBSGUtilities.cs" />
     <Compile Include="DynamicResourceGenes\CompProperties_AbilityConvertResource.cs" />
@@ -150,21 +143,17 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveMultipleHediffs.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OffsetNeed.cs" />
     <Compile Include="Genes\BiomeGene.cs" />
-    <Compile Include="NeedOffset.cs" />
     <Compile Include="JoyGiver_RelaxInWater.cs" />
     <Compile Include="JobDriver_RelaxInWater.cs" />
     <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
-    <Compile Include="GeneticMultiplier.cs" />
     <Compile Include="Genes\SpawnAgeLimiter.cs" />
     <Compile Include="EBSG_Settings.cs" />
     <Compile Include="PatchOperationSetting.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLearnSkill.cs" />
-    <Compile Include="Abilities\SkillXP.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
     <Compile Include="Genes\GRCExtension.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByMentalState.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByMentalState.cs" />
-    <Compile Include="Hediffs\MentalStateEffect.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByColonyGenes.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByColonyGenes.cs" />
     <Compile Include="Things\EquipRestrictExtension.cs" />
@@ -177,7 +166,6 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodeWhenDamaged.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodingAttacks.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_ExplodingAttacks.cs" />
-    <Compile Include="MeleeDPSPostfix.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_ExplodingMeleeAttacks.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_ExplodingMeleeAttacks.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_ExplodingRangedAttacks.cs" />
@@ -188,6 +176,18 @@
     <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryGenes.cs" />
+    <Compile Include="Harmony\StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
+    <Compile Include="Harmony\HarmonyPatches.cs" />
+    <Compile Include="Harmony\MeleeDPSPostfix.cs" />
+    <Compile Include="Generic List Classes\GeneticMultiplier.cs" />
+    <Compile Include="Generic List Classes\NeedOffset.cs" />
+    <Compile Include="Generic List Classes\HediffsToParts.cs" />
+    <Compile Include="Generic List Classes\HediffToGive.cs" />
+    <Compile Include="Generic List Classes\SkillXP.cs" />
+    <Compile Include="Hediffs\RegenSet.cs" />
+    <Compile Include="Generic List Classes\PartToDamage.cs" />
+    <Compile Include="Hediffs\MentalStateEffect.cs" />
+    <Compile Include="Generic List Classes\RandomXenoGenes.cs" />
     <Compile Include="Hediffs\GenesAtSeverity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +210,8 @@
     <Folder Include="Abilities\CompProperties\" />
     <Folder Include="Abilities\CompAbilityEffects\" />
     <Folder Include="Things\" />
+    <Folder Include="Harmony\" />
+    <Folder Include="Generic List Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

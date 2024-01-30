@@ -29,5 +29,8 @@ namespace EBSGFramework
         public static StatDef EBSG_JoyFallRate;
         public static StatDef EBSG_GrowthPointRate;
         public static StatDef EBSG_OutgoingDamageFactor;
+
+        public static StatDef EBSG_PsyfocusFallRateFactor;
+        public static StatDef EBSG_PsyfocusFallRateOffset;
     }
 }
