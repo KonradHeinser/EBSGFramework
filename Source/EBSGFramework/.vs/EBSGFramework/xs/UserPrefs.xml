@@ -1,12 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_TemporaryGenes.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="509" Column="1" />
       <File FileName="Hediffs/CompProperties/HediffCompProperties_TemporaryGenes.cs" Line="8" Column="55" />
       <File FileName="Hediffs/GenesAtSeverity.cs" Line="17" Column="1" />
       <File FileName="Hediffs/Comps/HediffComp_TemporaryGenes.cs" Line="53" Column="14" />
-      <File FileName="EBSGUtilities.cs" Line="564" Column="52" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="172" Column="42" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
+              <Node name="Things" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

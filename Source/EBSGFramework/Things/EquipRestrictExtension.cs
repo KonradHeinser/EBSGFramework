@@ -19,8 +19,11 @@ namespace EBSGFramework
 
         // Attached to genes and xenotypes
         public List<ThingDef> limitedToEquipments; // If this is not empty, then the xenotype/carriers of the gene will ONLY be able to equip these things
+        public bool noEquipment = false; // Stops all items from being equipped
         public List<ThingDef> limitedToApparels; // If this is not empty, then the xenotype/carriers will ONLY be able to equip apparel from this list
+        public bool noApparel = false; // Stops all apparel from being equipped
         public List<ThingDef> limitedToWeapons; // See above, but for weapons
+        public bool noWeapons = false; // Stops all weapons from being equipped
         public List<ThingDef> forbiddenEquipments; // Stops xenotypes/carriers of the gene from equipping anything on the list
     }
 }
