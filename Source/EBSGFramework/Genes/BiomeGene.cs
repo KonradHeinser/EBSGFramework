@@ -6,20 +6,6 @@ namespace EBSGFramework
 {
     public class BiomeGene : HediffAdder
     {
-        public EBSGExtension cachedEBSGExtension;
-
-        public EBSGExtension Extension
-        {
-            get
-            {
-                if (cachedEBSGExtension == null)
-                {
-                    cachedEBSGExtension = def.GetModExtension<EBSGExtension>();
-                }
-                return cachedEBSGExtension;
-            }
-        }
-
         public override void PostAdd()
         {
             base.PostAdd();

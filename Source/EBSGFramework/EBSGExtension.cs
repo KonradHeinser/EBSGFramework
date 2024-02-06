@@ -20,6 +20,13 @@ namespace EBSGFramework
         public bool sameBioAndChrono = false;
         public bool chronicAgeRemoval = true;
 
+        public List<AbilityAndGeneLink> geneAbilities;
+
+        // FOr mutating genes
+        public List<RandomXenoGenes> mutationGeneSets; // Named as such because it was originally solely to create entire xenotypes
+        public bool removeGenesFromOtherLists = true; // This being true means that while activating, the comp will remove any gene that exists on the other list(s), even if they are from the xenotype
+        public bool inheritable = true; // The default behaviour is to make the genes inheritable(germline)
+        public int delayTicks = 10; // How long it waits until triggering. Should wait at least a few ticks
         public List<SkillChange> skillChanges;
 
         // Aquatic Gene Stuff
@@ -48,8 +55,7 @@ namespace EBSGFramework
         public bool opinionOfAllOthers = false; // Makes the thought apply to all others instead of just those with checked genes. Intended for xenophobe/xenophile
         public bool xenophilobic = true;
         public List<GeneDef> checkedGenes; // Genes checked for opinions
-
-        public List<GeneDef> nullifyingGenes; // Genes checked for early nullification. These cause the thought to never appear
+        public List<GeneDef> nullifyingGenes; // Genes checked for early nullification
         public List<GeneDef> requiredGenes; // The observer musthave one of these genes to feel anything. Acts as a reverse nullifyingGenes
 
         // Curves that can be added to a gene to give pawns an additional age multiplier

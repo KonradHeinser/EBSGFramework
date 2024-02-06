@@ -189,6 +189,9 @@
     <Compile Include="Hediffs\MentalStateEffect.cs" />
     <Compile Include="Generic List Classes\RandomXenoGenes.cs" />
     <Compile Include="Hediffs\GenesAtSeverity.cs" />
+    <Compile Include="Generic List Classes\AbilityAndGeneLink.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByAge.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByAge.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

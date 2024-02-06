@@ -97,6 +97,8 @@ namespace EBSGFramework
             base.PostRemove();
             int noSkillCounter = 0;
             int originalPassionCounter = 0;
+            if (changedSkills == null) changedSkills = new List<SkillDef>();
+            if (originalPassions == null) originalPassions = new List<Passion>();
 
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
             if (extension != null)
@@ -106,13 +108,14 @@ namespace EBSGFramework
                     SkillRecord skill;
                     if (skillChange.skill == null)
                     {
+                        if (changedSkills.NullOrEmpty()) continue;
                         skill = pawn.skills.GetSkill(changedSkills[noSkillCounter]);
                         noSkillCounter++;
                     }
                     else skill = pawn.skills.GetSkill(skillChange.skill);
 
                     skill.Level -= skillChange.skillChange;
-                    skill.passion = originalPassions[originalPassionCounter];
+                    if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalPassionCounter];
                     originalPassionCounter++;
                 }
             }
@@ -121,8 +124,8 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref changedSkills, "changedSkills", new List<SkillDef>());
-            Scribe_Values.Look(ref originalPassions, "originalPassions", new List<Passion>());
+            Scribe_Collections.Look(ref changedSkills, "changedSkills");
+            Scribe_Collections.Look(ref originalPassions, "originalPassions");
         }
 
         private bool Redundant(SkillRecord skill, SkillChange skillChange)
