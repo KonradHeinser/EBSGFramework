@@ -42,16 +42,6 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <HediffDef ParentName="EBSG_TestHediffBase">
-        <defName>SeverityByAgeIgnoreLifeExpectancy</defName>
-        <label>severity by age (ignore life expectancy)</label>
-        <comps>
-            <li Class="EBSGFramework.HediffCompProperties_SeverityByAge">
-                <accountForLifeExpectencyDifference>False</accountForLifeExpectencyDifference>
-            </li>
-        </comps>
-    </HediffDef>
 </Defs>
 
 <!-- 
