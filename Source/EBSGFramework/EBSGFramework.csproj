@@ -197,6 +197,8 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByGenes.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerDayByGenes.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByGenes.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBlast.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_EBSGBlast.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

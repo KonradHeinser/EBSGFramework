@@ -3,7 +3,7 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class CompProperties_EBSGBurst : CompProperties_AbilityEffect
+    public class CompProperties_EBSGBlast : CompProperties_AbilityEffect
     {
         public enum Gases
         {
@@ -31,13 +31,13 @@ namespace EBSGFramework
         public float excludeRadius = 0f; // Usability is questionable
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
-        public bool injureSelf = false;
+        public bool injureSelf = true;
         public bool injureAllies = true;
         public bool injureNonHostiles = true;
 
-        public CompProperties_EBSGBurst()
+        public CompProperties_EBSGBlast()
         {
-            compClass = typeof(CompAbilityEffect_EBSGBurst);
+            compClass = typeof(CompAbilityEffect_EBSGBlast);
         }
     }
 }
