@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace EBSGFramework
 {
@@ -18,6 +20,7 @@ namespace EBSGFramework
         static HarmonyPatches()
         {
             Harmony harmony = new Harmony("Rimworld.Alite.EBSG.main");
+
             harmony.Patch(AccessTools.Method(typeof(EquipmentUtility), nameof(EquipmentUtility.CanEquip), new[] { typeof(Thing), typeof(Pawn), typeof(string).MakeByRefType(), typeof(bool) }),
                 postfix: new HarmonyMethod(patchType, nameof(CanEquipPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
@@ -35,7 +38,7 @@ namespace EBSGFramework
             if (ModsConfig.BiotechActive)
             {
                 harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
-                postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
+                    postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
             }
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 postfix: new HarmonyMethod(patchType, nameof(GainJoyPostfix)));

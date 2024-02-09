@@ -192,6 +192,11 @@
     <Compile Include="Generic List Classes\AbilityAndGeneLink.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByAge.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByAge.cs" />
+    <Compile Include="Generic List Classes\GeneEffect.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByGenes.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByGenes.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerDayByGenes.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByGenes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

@@ -28,12 +28,9 @@ namespace EBSGFramework
                 bool biomeFlag = false;
                 if (pawn.Map != null)
                 {
-                    if (!Extension.badBiomes.NullOrEmpty() || !Extension.goodBiomes.NullOrEmpty())
+                    if (pawn.Map.Biome != null)
                     {
-                        if (pawn.Map.Biome != null)
-                        {
-                            biomeFlag = CheckBiome(pawn.Map.Biome);
-                        }
+                        biomeFlag = CheckBiome(pawn.Map.Biome);
                     }
                     if (!biomeFlag || !Extension.biomeOverridesWater)
                     {
@@ -71,6 +68,16 @@ namespace EBSGFramework
 
         public bool CheckBiome(BiomeDef biome)
         {
+            if (!Extension.abysmalBiomes.NullOrEmpty() && Extension.abysmalBiomes.Contains(biome))
+            {
+                AbysmalBiome();
+                return true;
+            }
+            if (!Extension.terribleBiomes.NullOrEmpty() && Extension.terribleBiomes.Contains(biome))
+            {
+                TerribleBiome();
+                return true;
+            }
             if (!Extension.badBiomes.NullOrEmpty() && Extension.badBiomes.Contains(biome))
             {
                 BadBiome();
@@ -81,28 +88,100 @@ namespace EBSGFramework
                 GoodBiome();
                 return true;
             }
+            if (!Extension.greatBiomes.NullOrEmpty() && Extension.greatBiomes.Contains(biome))
+            {
+                GreatBiome();
+                return true;
+            }
+            if (!Extension.amazingBiomes.NullOrEmpty() && Extension.amazingBiomes.Contains(biome))
+            {
+                AmazingBiome();
+                return true;
+            }
             NeutralBiome();
             return false;
         }
 
+        public void AmazingBiome()
+        {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+
+            EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInAmazingBiome, true, 100, true);
+        }
+
+        public void GreatBiome()
+        {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+
+            EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
+            EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInGreatBiome, true, 100, true);
+        }
+
         public void GoodBiome()
         {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
             EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+
             EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
             EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInGoodBiome, true, 100, true);
         }
 
         public void BadBiome()
         {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
             EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+
             EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
             EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInBadBiome, true, 100, true);
         }
 
+        public void TerribleBiome()
+        {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+
+            EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInTerribleBiome, true, 100, true);
+        }
+
+        public void AbysmalBiome()
+        {
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+
+            EBSGUtilities.ApplyHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
+            EBSGUtilities.HandleNeedOffsets(pawn, Extension.needOffsetsPerHourInAbysmalBiome, true, 100, true);
+        }
+
         public void NeutralBiome()
         {
-            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAmazingBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGreatBiome);
             EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInGoodBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInBadBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInTerribleBiome);
+            EBSGUtilities.RemoveHediffs(pawn, null, Extension.hediffsWhileInAbysmalBiome);
         }
 
         public void WaterStuff()

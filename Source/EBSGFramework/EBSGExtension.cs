@@ -22,7 +22,7 @@ namespace EBSGFramework
 
         public List<AbilityAndGeneLink> geneAbilities;
 
-        // FOr mutating genes
+        // For mutating genes
         public List<RandomXenoGenes> mutationGeneSets; // Named as such because it was originally solely to create entire xenotypes
         public bool removeGenesFromOtherLists = true; // This being true means that while activating, the comp will remove any gene that exists on the other list(s), even if they are from the xenotype
         public bool inheritable = true; // The default behaviour is to make the genes inheritable(germline)
@@ -30,8 +30,12 @@ namespace EBSGFramework
         public List<SkillChange> skillChanges;
 
         // Aquatic Gene Stuff
+        public List<BiomeDef> amazingBiomes;
+        public List<BiomeDef> greatBiomes;
         public List<BiomeDef> goodBiomes;
         public List<BiomeDef> badBiomes;
+        public List<BiomeDef> terribleBiomes;
+        public List<BiomeDef> abysmalBiomes;
         public float maxWaterDistance = 0; // If above 0, this extends the search radius
         public bool waterSatisfiedByRain = true; // Causes the carrier to gain the in/out of water effects while standing in the rain
         public float minimumRainAmount = 0; // Checks for any number above, but not including this. Only use if you're really sure of this
@@ -40,14 +44,24 @@ namespace EBSGFramework
 
         public List<HediffDef> hediffsWhileInWater;
         public List<HediffDef> hediffsWhileOutOfWater;
-        public List<HediffDef> hediffsWhileInGoodBiome; // Stacks with in and out of water hediffs
+
+        // Stacks with in and out of water hediffs
+        public List<HediffDef> hediffsWhileInAmazingBiome;
+        public List<HediffDef> hediffsWhileInGreatBiome;
+        public List<HediffDef> hediffsWhileInGoodBiome;
         public List<HediffDef> hediffsWhileInBadBiome;
+        public List<HediffDef> hediffsWhileInTerribleBiome;
+        public List<HediffDef> hediffsWhileInAbysmalBiome;
         public List<HediffDef> hediffsWhileRaining;
 
         public List<NeedOffset> needOffsetsPerHourInWater;
         public List<NeedOffset> needOffsetsPerHourNotInWater;
+        public List<NeedOffset> needOffsetsPerHourInAmazingBiome;
+        public List<NeedOffset> needOffsetsPerHourInGreatBiome;
         public List<NeedOffset> needOffsetsPerHourInGoodBiome;
         public List<NeedOffset> needOffsetsPerHourInBadBiome;
+        public List<NeedOffset> needOffsetsPerHourInTerribleBiome;
+        public List<NeedOffset> needOffsetsPerHourInAbysmalBiome;
         public List<NeedOffset> needOffsetsPerHourWhileRaining;
 
         // Used in ThoughtWorker_Gene_GeneSocial

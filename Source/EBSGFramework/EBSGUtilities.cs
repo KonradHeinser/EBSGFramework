@@ -1,4 +1,5 @@
 ﻿using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 using System.Collections.Generic;
 using System;
@@ -105,7 +106,7 @@ namespace EBSGFramework
                 {
                     addedHediffs.Add(hediff);
                     Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn);
-                    newHediff.Severity = 0.5f;
+                    newHediff.Severity = hediff.initialSeverity;
                     pawn.health.AddHediff(newHediff);
                 }
             }
@@ -118,7 +119,7 @@ namespace EBSGFramework
                     {
                         addedHediffs.Add(hediffDef);
                         Hediff newHediff = HediffMaker.MakeHediff(hediffDef, pawn);
-                        newHediff.Severity = 0.5f;
+                        newHediff.Severity = hediffDef.initialSeverity;
                         pawn.health.AddHediff(newHediff);
                     }
                 }
@@ -692,6 +693,12 @@ namespace EBSGFramework
             return maxNeededForTrue <= waterCount;
         }
 
+        public static float StatFactorOrOne(Pawn pawn, StatDef statDef = null)
+        {
+            if (statDef == null) return 1;
+            return pawn.GetStatValue(statDef);
+        }
+
         public static void RemoveChronicHediffs(Pawn pawn)
         {
             if (pawn.health.hediffSet != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
@@ -710,6 +717,7 @@ namespace EBSGFramework
 
         public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
         {
+            if (relatedGene == null) return true;
             if (!ModsConfig.BiotechActive || pawn.genes == null) return false;
             return pawn.genes.HasGene(relatedGene);
         }
