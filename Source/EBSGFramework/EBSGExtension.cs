@@ -54,8 +54,11 @@ namespace EBSGFramework
         public List<HediffDef> hediffsWhileInAbysmalBiome;
         public List<HediffDef> hediffsWhileRaining;
 
+
         public List<NeedOffset> needOffsetsPerHourInWater;
         public List<NeedOffset> needOffsetsPerHourNotInWater;
+
+        // Stacks with in and out of water need offsets
         public List<NeedOffset> needOffsetsPerHourInAmazingBiome;
         public List<NeedOffset> needOffsetsPerHourInGreatBiome;
         public List<NeedOffset> needOffsetsPerHourInGoodBiome;

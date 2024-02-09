@@ -8,6 +8,7 @@
         <defaultBaseValue>1</defaultBaseValue>
         <hideAtValue>1</hideAtValue>
         <minValue>0.001</minValue>
+        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>2201</displayPriorityInCategory>
     </StatDef>
