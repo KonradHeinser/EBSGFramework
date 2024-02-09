@@ -1,27 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Generic List Classes/GeneEffect.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_GainRandomGeneSet.cs">
     <Files>
       <File FileName="EBSGUtilities.cs" Line="132" Column="32" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityByGenes.cs" Line="9" Column="44" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByGenes.cs" Line="6" Column="2" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityPerDayByGenes.cs" Line="18" Column="9" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityPerDayByGenes.cs" Line="38" Column="14" />
       <File FileName="Genes/BiomeGene.cs" Line="29" Column="38" />
-      <File FileName="EBSGExtension.cs" Line="46" Column="55" />
-      <File FileName="Generic List Classes/GeneEffect.cs" Line="16" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_GainRandomGeneSet.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Generic List Classes" expanded="True">
-                <Node name="GeneEffect.cs" selected="True" />
-              </Node>
+              <Node name="Generic List Classes" expanded="True" />
               <Node name="Genes" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffComp_GainRandomGeneSet.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

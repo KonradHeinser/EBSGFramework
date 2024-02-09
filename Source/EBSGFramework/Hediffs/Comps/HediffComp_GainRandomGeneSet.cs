@@ -21,6 +21,15 @@ namespace EBSGFramework
             {
                 delayTicks = Props.delayTicks;
             }
+
+            // Some semi-arbitrary additions to try to increase randomness. The tick increase is very slight, but 
+            if (Pawn.gender == Gender.Male) delayTicks += 1;
+            else if (Pawn.gender == Gender.Female) delayTicks += 2;
+            if (Pawn.genes != null && Pawn.genes.GenesListForReading.Count() < 30) delayTicks += Pawn.genes.GenesListForReading.Count();
+            if (Pawn.equipment != null && !Pawn.equipment.AllEquipmentListForReading.NullOrEmpty()) delayTicks += Pawn.equipment.AllEquipmentListForReading.Count();
+            if (Pawn.health != null && !Pawn.health.hediffSet.hediffs.NullOrEmpty()) delayTicks += Pawn.health.hediffSet.hediffs.Count();
+            if (Pawn.ageTracker.AgeBiologicalYears < 60) delayTicks += Pawn.ageTracker.AgeBiologicalYears;
+            if (!Pawn.relations.RelatedPawns.EnumerableNullOrEmpty()) delayTicks += Pawn.relations.RelatedPawns.Count();
         }
 
         public override void CompPostTick(ref float severityAdjustment)
