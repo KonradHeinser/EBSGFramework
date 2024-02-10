@@ -11,20 +11,11 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (target.Thing != null && target.Thing is Pawn victim)
+            if (target.Thing != null && target.Thing is Pawn victim && !victim.Dead)
             {
                 float bloodMutliplier = 1;
                 if (Props.multiplyBloodByBodySize) bloodMutliplier = victim.BodySize;
                 IntVec3 initialPosition = victim.Position;
-
-                DamageDef damageToReport = Props.damageDefToReport;
-                if (damageToReport == null)
-                {
-                    if (ModsConfig.BiotechActive) damageToReport = DamageDefOf.Vaporize;
-                    else damageToReport = DamageDefOf.Burn;
-                }
-
-                victim.TakeDamage(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
 
                 int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMutliplier);
                 for (int i = 0; i < randomInRange; i++)
@@ -40,7 +31,7 @@ namespace EBSGFramework
                         while (randomInRange > radiusChecker)
                         {
                             c = c.RandomAdjacentCell8Way();
-                            radiusChecker *= 1.5f;
+                            radiusChecker *= 2f;
                         }
                     }
                     if (c.InBounds(victim.MapHeld))
@@ -58,7 +49,15 @@ namespace EBSGFramework
 
                 if (Props.explosionSound != null) Props.explosionSound.PlayOneShot(new TargetInfo(initialPosition, victim.MapHeld));
 
-                if (Props.deleteCorpse && !victim.Corpse.Destroyed) victim.Corpse.Destroy();
+                DamageDef damageToReport = Props.damageDefToReport;
+                if (damageToReport == null)
+                {
+                    if (ModsConfig.BiotechActive) damageToReport = DamageDefOf.Vaporize;
+                    else damageToReport = DamageDefOf.Burn;
+                }
+                victim.TakeDamage(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
+
+                if (Props.deleteCorpse && victim != null && victim.Corpse != null) victim.Corpse.Destroy(DestroyMode.KillFinalize);
             }
         }
     }

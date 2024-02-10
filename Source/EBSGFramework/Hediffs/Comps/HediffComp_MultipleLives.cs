@@ -10,6 +10,8 @@ namespace EBSGFramework
 
         public int livesLeft;
 
+        public int deathTile;
+
         public float progressPercentage;
 
         public bool pawnReviving;
@@ -39,7 +41,7 @@ namespace EBSGFramework
                             }
                             else
                             {
-                                tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive *  (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive * (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
                             }
                         }
                         else
@@ -213,6 +215,7 @@ namespace EBSGFramework
         public override void Notify_PawnDied()
         {
             if (Props.needBrainToRevive && Pawn.health.hediffSet.GetBrain() == null) return;
+            deathTile = Pawn.Tile;
             if (Props.extraLives != -666)
             {
                 if (Props.useSeverityNotDays)
@@ -261,6 +264,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref pawnReviving, "EBSG_pawnReviving", false);
             Scribe_Values.Look(ref revivalProgress, "EBSG_revivalProgress", 0);
             Scribe_Values.Look(ref hoursToRevive, "EBSG_hoursToRevive", 0);
+            Scribe_Values.Look(ref deathTile, "EBSG_deathTile", 0);
         }
     }
 }
