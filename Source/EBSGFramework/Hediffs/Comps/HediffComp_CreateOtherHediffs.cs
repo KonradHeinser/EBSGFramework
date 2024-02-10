@@ -25,7 +25,6 @@ namespace EBSGFramework
                             int ticker = 1;
                             foreach (HediffDef hediffDef in hediffSet.hediffDefs)
                             {
-                                Log.Message(ticker.ToString() + ": " + hediffDef);
                                 ticker++;
                                 DoHediffStuff(hediffDef, hediffSet);
                             }

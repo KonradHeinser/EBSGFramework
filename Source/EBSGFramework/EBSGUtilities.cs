@@ -84,7 +84,6 @@ namespace EBSGFramework
             while (damageRemoved > 0)
             {
                 Hediff hediff = GetFirstHediffAttachedToPart(pawn, hediffDef, bodyPart);
-                //Log.Message("Removing damage of " + hediff.Label + " from " + bodyPart.Label);
                 if (hediff != null)
                 {
                     float removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;

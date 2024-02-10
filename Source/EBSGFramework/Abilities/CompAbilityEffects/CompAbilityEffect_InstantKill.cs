@@ -11,7 +11,7 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (target.Thing is Pawn victim)
+            if (target.Thing != null && target.Thing is Pawn victim)
             {
                 float bloodMutliplier = 1;
                 if (Props.multiplyBloodByBodySize) bloodMutliplier = victim.BodySize;
@@ -27,7 +27,6 @@ namespace EBSGFramework
                 victim.TakeDamage(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
 
                 int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMutliplier);
-                Log.Message(randomInRange.ToString());
                 for (int i = 0; i < randomInRange; i++)
                 {
                     IntVec3 c = initialPosition;

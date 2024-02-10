@@ -488,7 +488,6 @@ namespace EBSGFramework
             if (___pawn != null && ___pawn.GetPsylinkLevel() > 0)
             {
                 __result = (__result + ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
-                Log.Message(__result.ToString());
             }
         }
 
