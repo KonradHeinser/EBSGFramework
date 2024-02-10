@@ -2,8 +2,8 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/MultipleLives_Component.cs">
     <Files>
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="65" Column="1" />
-      <File FileName="Hediffs/MultipleLives_Component.cs" Line="118" Column="10" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/MultipleLives_Component.cs" Line="90" Column="10" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="13" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,6 +11,9 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+              </Node>
               <Node name="Genes" expanded="True" />
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
