@@ -540,19 +540,21 @@ namespace EBSGFramework
             if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn)
             {
                 dinfo.SetAmount(Mathf.RoundToInt(dinfo.Amount * pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor)));
-
-                if (!pawn.Dead && !DoingSpecialExplosion(pawn, dinfo, __instance))
+                if (!pawn.Dead && pawn.health != null && !DoingSpecialExplosion(pawn, dinfo, __instance))
                 {
                     if (pawn.health.hediffSet != null && EBSGUtilities.GetCurrentTarget(pawn, false) == __instance)
                     {
                         foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                         {
+                            if (hediff.def.comps.NullOrEmpty()) continue;
                             HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
                             if (explodingComp != null)
                             {
                                 explodingComp.currentlyExploding = true;
                                 explodingComp.DoExplosion(__instance.Position);
                             }
+                            if (dinfo.Def == null) continue; // Special catch
+
                             if (dinfo.Def.isRanged)
                             {
                                 HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();

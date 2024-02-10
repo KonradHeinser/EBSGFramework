@@ -56,6 +56,10 @@
       <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="VFECore">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -199,6 +203,9 @@
     <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByGenes.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBlast.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_EBSGBlast.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
+    <Compile Include="VFECompatabilityUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

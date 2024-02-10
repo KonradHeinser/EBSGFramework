@@ -1,24 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs" Line="68" Column="53" />
-      <File FileName="Abilities/CompProperties/CompProperties_EBSGBlast.cs" Line="34" Column="38" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="5" Column="1" />
-      <File FileName="Abilities/CompProperties/CompProperties_EBSGBurst.cs" Line="41" Column="10" />
-      <File FileName="Hediffs/BurstHediffCompBase.cs" Line="31" Column="18" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="65" Column="1" />
+      <File FileName="Abilities/CompProperties/CompProperties_InstantKill.cs" Line="16" Column="44" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="39" Column="46" />
+      <File FileName="Hediffs/Comps/HediffComp_CreateOtherHediffs.cs" Line="72" Column="18" />
+      <File FileName="Hediffs/Comps/HediffComp_DamageBodyParts.cs" Line="31" Column="40" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="559" Column="30" />
+      <File FileName="EBSGUtilities.cs" Line="593" Column="45" />
+      <File FileName="VFECompatabilityUtilities.cs" Line="19" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="References" expanded="True" />
               <Node name="Abilities" expanded="True">
                 <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_EBSGBlast.cs" selected="True" />
+                  <Node name="CompAbilityEffect_InstantKill.cs" selected="True" />
                 </Node>
                 <Node name="CompProperties" expanded="True" />
               </Node>
-              <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
                 <Node name="Comps" expanded="True" />
