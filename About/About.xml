@@ -7,21 +7,6 @@
     <li>1.4</li>
   </supportedVersions>
   
-  <modDependencies>
-    <li>
-      <packageId>ludeon.rimworld.royalty</packageId>
-      <displayName>Royalty</displayName>
-    </li>
-    <li>
-      <packageId>ludeon.rimworld.ideology</packageId>
-      <displayName>Ideology</displayName>
-    </li>
-    <li>
-      <packageId>ludeon.rimworld.biotech</packageId>
-      <displayName>Biotech</displayName>
-    </li>
-  </modDependencies>
-
   <loadAfter>
     <li>Ludeon.RimWorld.Royalty</li>
     <li>Ludeon.RimWorld.Ideology</li>
