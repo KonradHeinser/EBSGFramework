@@ -47,7 +47,7 @@ namespace EBSGFramework
                             }
                         }
                         if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                        if (partToDamage.damagePercentage > 0) Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, bodyPart.def.hitPoints * partToDamage.damagePercentage, 999f, -1f, null, bodyPart));
+                        if (partToDamage.damagePercentage > 0) Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, bodyPart.def.hitPoints * partToDamage.damagePercentage * Pawn.HealthScale, 999f, -1f, null, bodyPart));
                         else Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, partToDamage.damageAmount, 999f, -1f, null, bodyPart));
                     }
                 }

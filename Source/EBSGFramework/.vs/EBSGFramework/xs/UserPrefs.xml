@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/MultipleLives_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="65" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="58" Column="34" />
       <File FileName="Hediffs/MultipleLives_Component.cs" Line="90" Column="10" />
       <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="13" Column="25" />
+      <File FileName="Hediffs/Comps/HediffComp_DamageBodyParts.cs" Line="59" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,13 +13,13 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_InstantKill.cs" selected="True" />
+                </Node>
               </Node>
-              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True" />
-                <Node name="MultipleLives_Component.cs" selected="True" />
               </Node>
             </Node>
           </Node>
