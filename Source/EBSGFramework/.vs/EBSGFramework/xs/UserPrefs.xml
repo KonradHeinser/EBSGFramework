@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="58" Column="34" />
-      <File FileName="Hediffs/MultipleLives_Component.cs" Line="90" Column="10" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="13" Column="25" />
-      <File FileName="Hediffs/Comps/HediffComp_DamageBodyParts.cs" Line="59" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs" Line="79" Column="49" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="79" Column="49" />
+      <File FileName="EBSGUtilities.cs" Line="197" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,13 +13,12 @@
               <Node name="References" expanded="True" />
               <Node name="Abilities" expanded="True">
                 <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_InstantKill.cs" selected="True" />
+                  <Node name="CompAbilityEffect_EBSGBurst.cs" selected="True" />
                 </Node>
+                <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True" />
-              </Node>
+              <Node name="Hediffs" expanded="True" />
             </Node>
           </Node>
         </State>

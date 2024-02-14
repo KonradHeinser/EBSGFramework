@@ -2,6 +2,7 @@
 using RimWorld;
 using Verse;
 using System.Linq;
+using UnityEngine;
 
 namespace EBSGFramework
 {
@@ -71,6 +72,11 @@ namespace EBSGFramework
                     Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, ignoreList,
                     null, true, 1f, Props.excludeRadius, true, Props.postExplosionThingWater, Props.screenShakeFactor);
             }
+        }
+
+        public override void DrawEffectPreview(LocalTargetInfo target)
+        {
+            GenDraw.DrawFieldEdges(EBSGUtilities.AffectedCells(parent.pawn, parent.pawn.Map, parent.pawn, Props.radius).ToList(), Valid(target) ? Color.white : Color.red);
         }
     }
 }

@@ -198,6 +198,21 @@ namespace EBSGFramework
             }
         }
 
+        public static IEnumerable<IntVec3> AffectedCells(LocalTargetInfo target, Map map, Pawn pawn, float radius)
+        {
+            if (target.Cell.Filled(pawn.Map))
+            {
+                yield break;
+            }
+            foreach (IntVec3 item in GenRadial.RadialCellsAround(target.Cell, radius, true))
+            {
+                if (item.InBounds(map) && GenSight.LineOfSightToEdges(target.Cell, item, map, true))
+                {
+                    yield return item;
+                }
+            }
+        }
+
         public static bool EqualCountingDictionaries(Dictionary<string, int> dictionary1, Dictionary<string, int> dictionary2)
         {
             foreach (string phrase in dictionary1.Keys)
