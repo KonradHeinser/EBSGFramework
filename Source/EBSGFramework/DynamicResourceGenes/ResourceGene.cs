@@ -13,6 +13,10 @@ namespace EBSGFramework
 
         DRGExtension extension = null;
 
+        public int cachedGeneCount = 0;
+
+        public List<AbilityDef> addedAbilities;
+
         public bool extensionAlreadyChecked = false;
 
         public Pawn Pawn => pawn;
@@ -75,9 +79,11 @@ namespace EBSGFramework
             if (extension == null) InitializeExtension();
             Reset();
             EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-            if (EBSGextension != null && !EBSGextension.hediffsToApply.NullOrEmpty())
+            HediffAdder.HediffAdding(pawn, this);
+            if (EBSGextension != null)
             {
-                HediffAdder.HediffAdding(pawn, this);
+                if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
 
@@ -122,10 +128,23 @@ namespace EBSGFramework
         public override void Tick()
         {
             base.Tick();
+
+            if (pawn.IsHashIntervalTick(200))
+            {
+                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+                if (EBSGextension != null && !EBSGextension.geneAbilities.NullOrEmpty() && pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                {
+                    if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGextension.geneAbilities, addedAbilities);
+                    cachedGeneCount = pawn.genes.GenesListForReading.Count;
+                }
+            }
+
             if (extension == null && !extensionAlreadyChecked)
             {
                 InitializeExtension();
             }
+
             if (extension != null)
             {
                 if (extension.maxStat != null || extension.maxFactorStat != null) CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
@@ -237,6 +256,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref resourcePacksAllowed, "resourcePacksAllowed", true);
             Scribe_Values.Look(ref overchargeLeft, "overchargeLeft", 0f);
             Scribe_Values.Look(ref underchargeLeft, "underchargeLeft", 0f);
+            Scribe_Collections.Look(ref addedAbilities, "EBSG_DRGAddedAbilities");
         }
     }
 }

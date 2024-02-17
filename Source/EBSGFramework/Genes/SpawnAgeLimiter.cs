@@ -48,6 +48,7 @@ namespace EBSGFramework
                 {
                     if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                     addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
+                    cachedGeneCount = pawn.genes.GenesListForReading.Count;
                 }
             }
 

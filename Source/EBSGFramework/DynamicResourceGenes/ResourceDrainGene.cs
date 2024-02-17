@@ -11,6 +11,10 @@ namespace EBSGFramework
 
         DRGExtension extension = null;
 
+        public List<AbilityDef> addedAbilities;
+
+        public int cachedGeneCount = 0;
+
         public bool extensionAlreadyChecked = false;
 
         public bool CanOffset
@@ -57,6 +61,18 @@ namespace EBSGFramework
         public override void Tick()
         {
             base.Tick();
+
+            if (pawn.IsHashIntervalTick(200))
+            {
+                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+                if (EBSGextension != null && !EBSGextension.geneAbilities.NullOrEmpty() && pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                {
+                    if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGextension.geneAbilities, addedAbilities);
+                    cachedGeneCount = pawn.genes.GenesListForReading.Count;
+                }
+            }
+
             if (extension == null && !extensionAlreadyChecked)
             {
                 extension = def.GetModExtension<DRGExtension>();
@@ -69,9 +85,11 @@ namespace EBSGFramework
         {
             base.PostAdd();
             EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-            if (EBSGextension != null && !EBSGextension.hediffsToApply.NullOrEmpty())
+            HediffAdder.HediffAdding(pawn, this);
+            if (EBSGextension != null)
             {
-                HediffAdder.HediffAdding(pawn, this);
+                if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
 
@@ -81,6 +99,12 @@ namespace EBSGFramework
             {
                 yield return resourceDrainGizmo;
             }
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Collections.Look(ref addedAbilities, "EBSG_DRGDAddedAbilities");
         }
     }
 }
