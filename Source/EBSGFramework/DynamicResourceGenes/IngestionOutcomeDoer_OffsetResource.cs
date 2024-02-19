@@ -14,10 +14,12 @@ namespace EBSGFramework
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested)
         {
             if (mainResourceGene == null) Log.Error(ingested.Label + "is missing the mainResource gene, meaning it can't increase the resource level.");
-            else 
-            { 
-                ResourceGene resourceGene = (ResourceGene)pawn.genes.GetGene(mainResourceGene);
-                ResourceGene.OffsetResource(pawn, offset * (float)ingested.stackCount, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), true);
+            else
+            {
+                if (pawn.genes.GetGene(mainResourceGene) is ResourceGene resourceGene)
+                {
+                    ResourceGene.OffsetResource(pawn, offset * ingested.stackCount, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), true);
+                }
             }
         }
 

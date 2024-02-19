@@ -197,6 +197,7 @@ namespace EBSGFramework
 
         public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
         {
+            if (resourceGene == null) return;
             if (offset > 0f && applyStatFactor && extension.gainStat != null)
             {
                 offset *= pawn.GetStatValue(extension.gainStat);

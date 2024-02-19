@@ -1,5 +1,4 @@
 ﻿using RimWorld;
-using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
@@ -38,7 +37,11 @@ namespace EBSGFramework
                     {
                         ThingDef bloodType = victim.RaceProps.BloodDef;
 
-                        if (ModsConfig.IsActive("OskarPotocki.VanillaFactionsExpanded.Core"))
+                        if (Props.filthReplacement != null && Props.filthReplacement.thingClass == typeof(Filth))
+                        {
+                            bloodType = Props.filthReplacement;
+                        }
+                        else if (ModsConfig.IsActive("OskarPotocki.VanillaFactionsExpanded.Core"))
                         {
                             VFECompatabilityUtilities.BloodType(victim);
                         }

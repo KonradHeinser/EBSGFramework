@@ -11,6 +11,8 @@ namespace EBSGFramework
 
         public SoundDef explosionSound;
 
+        public ThingDef filthReplacement;
+
         public IntRange bloodFilthToSpawnRange;
 
         public bool multiplyBloodByBodySize = true;

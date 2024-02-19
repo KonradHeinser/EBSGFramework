@@ -4,7 +4,7 @@ using VanillaGenesExpanded;
 
 namespace EBSGFramework
 {
-    public class VFECompatabilityUtilities
+    public static class VFECompatabilityUtilities
     {
         public static ThingDef BloodType(Pawn pawn)
         {

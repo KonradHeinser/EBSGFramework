@@ -1,13 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="VFECompatabilityUtilities.cs">
     <Files>
-      <File FileName="Genes/SpawnAgeLimiter.cs" Line="102" Column="10" />
-      <File FileName="Genes/Gene_HemoHediffAdder.cs" Line="11" Column="40" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="16" Column="40" />
-      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="75" Column="13" />
-      <File FileName="Generic List Classes/AbilityAndGeneLink.cs" Line="12" Column="88" />
-      <File FileName="EBSGUtilities.cs" Line="551" Column="9" />
-      <File FileName="EBSGExtension.cs" Line="23" Column="55" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="3" Column="19" />
+      <File FileName="Abilities/CompProperties/CompProperties_InstantKill.cs" Line="2" Column="13" />
+      <File FileName="VFECompatabilityUtilities.cs" Line="7" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,12 +11,16 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
               <Node name="Generic List Classes" expanded="True" />
-              <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
-              <Node name="EBSGExtension.cs" selected="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True" />
+              </Node>
+              <Node name="VFECompatabilityUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>

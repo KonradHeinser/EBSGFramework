@@ -20,7 +20,7 @@ namespace EBSGFramework
                 {
                     return false;
                 }
-                if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max)
+                if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max && cost < 0)
                 {
                     return false;
                 }
@@ -59,7 +59,7 @@ namespace EBSGFramework
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
             }
-            if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max)
+            if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max && cost < 0)
             {
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
