@@ -397,9 +397,43 @@ namespace EBSGFramework
 
         public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
-            if (pawn.health.hediffSet == null) return false;
+            if (pawn.health == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
             return false;
+        }
+
+        public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs)
+        {
+            if (hediffs.NullOrEmpty()) return false;
+            foreach (HediffDef hediff in hediffs)
+            {
+                if (HasHediff(pawn, hediff)) return true;
+            }
+            return false;
+        }
+
+        public static bool PawnHasAllOfHediffs(Pawn pawn, List<HediffDef> hediffs)
+        {
+            if (hediffs.NullOrEmpty()) return true;
+            foreach (HediffDef hediff in hediffs)
+            {
+                if (!HasHediff(pawn, hediff)) return false;
+            }
+            return true;
+        }
+
+        public static bool AllNeedLevelsMet(Pawn pawn, List<NeedLevel> needLevels)
+        {
+            if (needLevels.NullOrEmpty() || pawn.needs == null) return true;
+            foreach (NeedLevel needLevel in needLevels)
+            {
+                Need need = pawn.needs.TryGetNeed(needLevel.need);
+                if (need != null)
+                {
+                    if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel) return false;
+                }
+            }
+            return true;
         }
 
         public static void HandleNeedOffsets(Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)

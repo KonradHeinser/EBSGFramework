@@ -206,6 +206,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
     <Compile Include="VFECompatabilityUtilities.cs" />
+    <Compile Include="Generic List Classes\NeedLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

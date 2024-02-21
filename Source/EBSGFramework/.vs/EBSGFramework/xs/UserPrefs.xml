@@ -1,9 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="VFECompatabilityUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="3" Column="19" />
       <File FileName="Abilities/CompProperties/CompProperties_InstantKill.cs" Line="2" Column="13" />
-      <File FileName="VFECompatabilityUtilities.cs" Line="7" Column="19" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="64" Column="102" />
+      <File FileName="Abilities/CompProperties/CompProperties_EBSGBurst.cs" Line="36" Column="46" />
+      <File FileName="Things/EquipRestrictExtension.cs" Line="18" Column="97" />
+      <File FileName="EBSGUtilities.cs" Line="425" Column="83" />
+      <File FileName="Generic List Classes/NeedLevel.cs" Line="12" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,16 +15,9 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
-              </Node>
               <Node name="Generic List Classes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True" />
-              </Node>
-              <Node name="VFECompatabilityUtilities.cs" selected="True" />
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>
