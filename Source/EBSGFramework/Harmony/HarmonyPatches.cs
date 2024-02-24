@@ -508,6 +508,24 @@ namespace EBSGFramework
             }
         }
 
+        public static bool HasSpecialExplosion(Pawn pawn)
+        {
+            if (!pawn.Dead && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+            {
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                {
+                    HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
+                    if (explodingComp != null) return true;
+                    HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
+                    if (rangedExplodingComp != null) return true;
+                    HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
+                    if (meleeExplodingComp != null) return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool DoingSpecialExplosion(Pawn pawn, DamageInfo dinfo, Thing mainTarget)
         {
             if (pawn.health.hediffSet != null)
@@ -539,9 +557,9 @@ namespace EBSGFramework
             if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn)
             {
                 dinfo.SetAmount(Mathf.RoundToInt(dinfo.Amount * pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor)));
-                if (!pawn.Dead && pawn.health != null && !DoingSpecialExplosion(pawn, dinfo, __instance))
+                if (HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance))
                 {
-                    if (pawn.health.hediffSet != null && EBSGUtilities.GetCurrentTarget(pawn, false) == __instance)
+                    if (EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
                     {
                         foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                         {

@@ -304,6 +304,15 @@ namespace EBSGFramework
             }
         }
 
+        public static bool CastingAbility(Pawn pawn)
+        {
+            if (pawn.stances.curStance is Stance_Busy stance_Busy)
+            {
+                if (stance_Busy.verb.verbProps.verbClass == typeof(Verb_CastAbility)) return true;
+            }
+            return false;
+        }
+
         public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false)
         {
             if (pawn.stances.curStance is Stance_Busy stance_Busy)
@@ -344,6 +353,7 @@ namespace EBSGFramework
                     if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
                     if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
                     if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
+                    if (!onlyHostiles && !onlyInFaction) return otherPawn;
                 }
             }
             return null;

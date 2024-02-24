@@ -1,28 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="3" Column="19" />
-      <File FileName="Abilities/CompProperties/CompProperties_InstantKill.cs" Line="2" Column="13" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="64" Column="102" />
-      <File FileName="Abilities/CompProperties/CompProperties_EBSGBurst.cs" Line="36" Column="46" />
-      <File FileName="Things/EquipRestrictExtension.cs" Line="18" Column="97" />
-      <File FileName="EBSGUtilities.cs" Line="425" Column="83" />
-      <File FileName="Generic List Classes/NeedLevel.cs" Line="12" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="23" Column="14" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="199" Column="25" />
+      <File FileName="Genes/BiomeGene.cs" Line="44" Column="64" />
+      <File FileName="EBSGUtilities.cs" Line="315" Column="9" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_ExplodingMeleeAttacks.cs" Line="10" Column="6" />
+      <File FileName="Hediffs/Comps/HediffComp_ExplodingMeleeAttacks.cs" Line="25" Column="10" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="557" Column="66" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs" Line="23" Column="14" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="EBSGUtilities.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
