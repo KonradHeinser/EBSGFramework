@@ -17,6 +17,7 @@ namespace EBSGFramework
         public float minSeverity = 0; // Sets the minimum severity that the hediff must be at to start gene generation. Once this is reached, the hediff will disappear shortly after
         public float maxSeverity = 999; // If a hediff goes down in severity, use this instead of min
         public bool removeHediffAfterwards = true; // Only set to false if the hediff has other comps that you want to keep around.
+        public bool showMessage = true; // Give message when done
 
         /// For those interested, the order things are done in is 
         ///  1) Random set selection. A random number is selected between 0 and the total weight, and then from that a random set is picked, with lower numbers selecting earlier sets.

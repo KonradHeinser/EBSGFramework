@@ -38,7 +38,7 @@ namespace EBSGFramework
             if (delayTicks == 0)
             {
                 delayTicks--;
-                EBSGUtilities.GainRandomGeneSet(parent.pawn, Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes);
+                EBSGUtilities.GainRandomGeneSet(parent.pawn, Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
                 if (parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def) != null && Props.removeHediffAfterwards)
                 {
                     parent.pawn.health.RemoveHediff(parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def));

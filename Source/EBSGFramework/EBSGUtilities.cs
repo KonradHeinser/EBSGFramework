@@ -649,7 +649,7 @@ namespace EBSGFramework
         }
 
         public static void GainRandomGeneSet(Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
-                List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null)
+                List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null, bool showMessage = true)
         {
             if (pawn.genes == null) return;
             List<GeneDef> genesToAdd = new List<GeneDef>();
@@ -709,7 +709,7 @@ namespace EBSGFramework
             RemoveGenesFromPawn(pawn, alwaysRemovedGenes);
 
             // Wrap things up
-            if (pawn.Faction == Faction.OfPlayer) // If the pawn is in the player faction, give a message based on what is most relevant to the player.
+            if (pawn.Faction == Faction.OfPlayer && showMessage) // If the pawn is in the player faction, give a message based on what is most relevant to the player.
             {
                 if (!geneSets.NullOrEmpty()) Messages.Message("Random genes successfully generated!", MessageTypeDefOf.NeutralEvent, false);
                 else if (!alwaysAddedGenes.NullOrEmpty()) Messages.Message("Genes successfully added to pawn!", MessageTypeDefOf.NeutralEvent, false);
