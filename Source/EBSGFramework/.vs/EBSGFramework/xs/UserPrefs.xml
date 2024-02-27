@@ -1,23 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_GainRandomGeneSet.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/HediffAdder.cs">
     <Files>
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="23" Column="14" />
       <File FileName="DamageWorker_PermanentInjury.cs" Line="199" Column="25" />
       <File FileName="Genes/BiomeGene.cs" Line="44" Column="64" />
-      <File FileName="EBSGUtilities.cs" Line="712" Column="64" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_GainRandomGeneSet.cs" Line="20" Column="66" />
+      <File FileName="EBSGUtilities.cs" Line="199" Column="10" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_GainRandomGeneSet.cs" Line="33" Column="141" />
       <File FileName="Hediffs/Comps/HediffComp_GainRandomGeneSet.cs" Line="42" Column="61" />
+      <File FileName="Genes/HediffAdder.cs" Line="12" Column="28" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_GainRandomGeneSet.cs" selected="True" />
-                </Node>
+              <Node name="Genes" expanded="True">
+                <Node name="HediffAdder.cs" selected="True" />
               </Node>
             </Node>
           </Node>
