@@ -7,7 +7,8 @@ namespace EBSGFramework
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
-            DoExplosion(parent.pawn.Position);
+            if (parent.Severity >= Props.minSeverity && parent.Severity < Props.maxSeverity)
+                DoExplosion(parent.pawn.Position);
         }
     }
 }

@@ -1,27 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/HediffAdder.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBurst.cs" Line="23" Column="14" />
-      <File FileName="DamageWorker_PermanentInjury.cs" Line="199" Column="25" />
-      <File FileName="Genes/BiomeGene.cs" Line="44" Column="64" />
-      <File FileName="EBSGUtilities.cs" Line="199" Column="10" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_GainRandomGeneSet.cs" Line="33" Column="141" />
-      <File FileName="Hediffs/Comps/HediffComp_GainRandomGeneSet.cs" Line="42" Column="61" />
-      <File FileName="Genes/HediffAdder.cs" Line="12" Column="28" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_ExplodeWhenDamaged.cs" Line="9" Column="10" />
+      <File FileName="Hediffs/Comps/HediffComp_ExplodeWhenDamaged.cs" Line="10" Column="92" />
+      <File FileName="Hediffs/Comps/HediffComp_ExplodeOnDeath.cs" Line="11" Column="17" />
+      <File FileName="Hediffs/BurstHediffPropertiesBase.cs" Line="39" Column="51" />
+      <File FileName="Hediffs/Comps/HediffComp_ExplodingMeleeAttacks.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_ExplosiveRetaliation.cs" Line="12" Column="21" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="578" Column="166" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Genes" expanded="True">
-                <Node name="HediffAdder.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

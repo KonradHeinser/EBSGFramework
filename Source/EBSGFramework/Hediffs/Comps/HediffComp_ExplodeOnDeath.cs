@@ -8,7 +8,8 @@ namespace EBSGFramework
 
         public override void Notify_PawnDied()
         {
-            DoExplosion(parent.pawn.Corpse.Position);
+            if (parent.Severity >= Props.minSeverity && parent.Severity < Props.maxSeverity)
+                DoExplosion(parent.pawn.Corpse.Position);
         }
     }
 }

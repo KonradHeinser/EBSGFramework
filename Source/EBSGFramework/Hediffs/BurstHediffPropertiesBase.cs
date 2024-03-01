@@ -31,8 +31,11 @@ namespace EBSGFramework
         public float excludeRadius = 0f; // Usability is questionable
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
+
         public bool injureSelf = false;
         public bool injureAllies = true;
         public bool injureNonHostiles = true;
+        public float minSeverity = 0f;
+        public float maxSeverity = float.MaxValue;
     }
 }

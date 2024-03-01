@@ -515,11 +515,11 @@ namespace EBSGFramework
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null) return true;
+                    if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity) return true;
                     HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                    if (rangedExplodingComp != null) return true;
+                    if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity) return true;
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                    if (meleeExplodingComp != null) return true;
+                    if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity) return true;
                 }
             }
 
@@ -565,7 +565,7 @@ namespace EBSGFramework
                         {
                             if (hediff.def.comps.NullOrEmpty()) continue;
                             HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                            if (explodingComp != null)
+                            if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity)
                             {
                                 explodingComp.currentlyExploding = true;
                                 explodingComp.DoExplosion(__instance.Position);
@@ -575,7 +575,7 @@ namespace EBSGFramework
                             if (dinfo.Def.isRanged)
                             {
                                 HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                                if (rangedExplodingComp != null)
+                                if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity)
                                 {
                                     rangedExplodingComp.currentlyExploding = true;
                                     rangedExplodingComp.DoExplosion(__instance.Position);
@@ -584,7 +584,7 @@ namespace EBSGFramework
                             else if (!dinfo.Def.isExplosive)
                             {
                                 HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                                if (meleeExplodingComp != null)
+                                if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity)
                                 {
                                     meleeExplodingComp.currentlyExploding = true;
                                     meleeExplodingComp.DoExplosion(__instance.Position);
