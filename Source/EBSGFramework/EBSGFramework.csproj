@@ -220,6 +220,25 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityCreateItems.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateItems.cs" />
     <Compile Include="Generic List Classes\ThingPatternPart.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_EnergyBlast.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect_EnergyBlast.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_EnergyBurst.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect_EnergyBurst.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_AbilityResourceToBattery.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ResourceToBattery.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByLightLevel.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangePerAttack.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByOtherHediffSeverities.cs" />
+    <Compile Include="Generic List Classes\HediffSeverityFactor.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsInRangeGeneRestricting.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityChangePerAttack.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByLightLevel.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_DisplaySeverity.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_Aging.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_Aging.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsInRangeGeneRestricting.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DisplaySeverity.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByOtherHediffSeverities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
