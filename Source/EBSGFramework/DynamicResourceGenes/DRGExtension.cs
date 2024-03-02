@@ -8,9 +8,9 @@ namespace EBSGFramework
     public class DRGExtension : DefModExtension
     {
         // Tied to ResourceGene
-// This needs to be set to true on the main gene so some of the things can find the main gene. If vanilla was set up this way, Hemogenic would be True, while HemogenicDrain would be false
-        public bool isMainGene = false; 
-// resourcePacks is for the main resource packs/ingestibles, and should not include generic ingestibles(i.e. meat, eggs, etc.) unless A) those are the primary source, and B) you plan on adding all, or at least a large number, of them
+        // This needs to be set to true on the main gene so some of the things can find the main gene. If vanilla was set up this way, Hemogenic would be True, while HemogenicDrain would be false
+        public bool isMainGene = false;
+        // resourcePacks is for the main resource packs/ingestibles, and should not include generic ingestibles(i.e. meat, eggs, etc.) unless A) those are the primary source, and B) you plan on adding all, or at least a large number, of them
         public List<ThingDef> resourcePacks;
         public bool resourcePacksAllowed = true; // If the resourcePacks is empty because you have no main resource sources, set this to false
         public HediffDef cravingHediff; // Optional
@@ -31,6 +31,16 @@ namespace EBSGFramework
         public float corpseIngestionEffect = 0f; // Still not completely sure if this works
         public float humanlikeIngestionEffect = 0f; // For hemogen this is 0.0375
         public float genericMeatIngestionEffect = 0f; // This is just raw meat
+
+        // Can offset conditions
+        public float minLightLevel = 0f;
+        public float maxLightLevel = 1f;
+        public List<NeedLevel> needLevels;
+        public List<HediffDef> requiredHediffs; // Require all of these on the pawn
+        public List<HediffDef> requireOneOfHediffs; // Require any one of these on the pawn
+        public List<HediffDef> forbiddenHediffs; // Require none of these are on the pawn
+        public float startTime = 0f; // Midnight
+        public float endTime = 1f; // Minute before midnight
 
         // Tied to ResourceDrainGene
         public GeneDef mainResourceGene;

@@ -28,8 +28,23 @@ namespace EBSGFramework
         {
             get
             {
-                if (Active)
+                if (Active && !pawn.Dead)
                 {
+                    if (extension == null && !extensionAlreadyChecked) InitializeExtension();
+                    if (extension != null)
+                    {
+                        float time = GenLocalDate.DayPercent(Pawn);
+                        if (time < extension.startTime || time > extension.endTime) return false;
+
+                        float light = pawn.Map.glowGrid.GameGlowAt(pawn.Position, false);
+                        if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
+
+                        if (!extension.requireOneOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfHediffs(pawn, extension.requireOneOfHediffs)) return false;
+                        if (!EBSGUtilities.PawnHasAllOfHediffs(pawn, extension.requiredHediffs)) return false;
+                        if (EBSGUtilities.PawnHasAnyOfHediffs(pawn, extension.forbiddenHediffs)) return false;
+
+                        if (!EBSGUtilities.AllNeedLevelsMet(pawn, extension.needLevels)) return false;
+                    }
                     return true;
                 }
                 return false;
@@ -84,6 +99,17 @@ namespace EBSGFramework
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                 SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
+            }
+        }
+
+        public override void PostRemove()
+        {
+            base.PostRemove();
+            HediffAdder.HediffRemoving(pawn, this);
+
+            if (!addedAbilities.NullOrEmpty())
+            {
+                EBSGUtilities.RemovePawnAbilities(pawn, addedAbilities);
             }
         }
 

@@ -207,6 +207,19 @@
     <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
     <Compile Include="VFECompatabilityUtilities.cs" />
     <Compile Include="Generic List Classes\NeedLevel.cs" />
+    <Compile Include="Generic List Classes\SkillCheck.cs" />
+    <Compile Include="Generic List Classes\StatCheck.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AbilityValidator.cs" />
+    <Compile Include="Generic List Classes\CapCheck.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityAbilityValidator.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_TriggerGameCondition.cs" />
+    <Compile Include="Generic List Classes\ConditionDuration.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_TriggerGameCondition.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_CreateLinkedHediff.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateLinkedHediff.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityCreateItems.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateItems.cs" />
+    <Compile Include="Generic List Classes\ThingPatternPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

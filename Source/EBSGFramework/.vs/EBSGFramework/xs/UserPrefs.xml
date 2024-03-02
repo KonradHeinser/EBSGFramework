@@ -1,14 +1,28 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/DRGExtension.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_ExplodeWhenDamaged.cs" Line="9" Column="10" />
-      <File FileName="Hediffs/Comps/HediffComp_ExplodeWhenDamaged.cs" Line="10" Column="92" />
-      <File FileName="Hediffs/Comps/HediffComp_ExplodeOnDeath.cs" Line="11" Column="17" />
-      <File FileName="Hediffs/BurstHediffPropertiesBase.cs" Line="39" Column="51" />
-      <File FileName="Hediffs/Comps/HediffComp_ExplodingMeleeAttacks.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_ExplosiveRetaliation.cs" Line="12" Column="21" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="578" Column="166" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="49" Column="18" />
+      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="45" Column="22" />
+      <File FileName="DynamicResourceGenes/DRGExtension.cs" Line="43" Column="61" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="DRGExtension.cs" selected="True" />
+              </Node>
+              <Node name="Generic List Classes" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
