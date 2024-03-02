@@ -15,6 +15,8 @@ namespace EBSGFramework
         public bool includeProgressOnTooltip = true;
         public bool includeRemainingLivesOnTooltip = true;
 
+        public bool indestructibleWhileResurrecting = false;
+
         public HediffCompProperties_MultipleLives()
         {
             compClass = typeof(HediffComp_MultipleLives);

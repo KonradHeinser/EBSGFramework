@@ -239,6 +239,8 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsInRangeGeneRestricting.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_DisplaySeverity.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByOtherHediffSeverities.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DestroyOnDeath.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_DestroyOnDeath.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

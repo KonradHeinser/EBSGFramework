@@ -15,6 +15,32 @@ namespace EBSGFramework
 
         public List<Corpse> deadPawns;
         public List<Corpse> purgeList;
+        public List<string> indestructibleLabels;
+
+        // Using labels has obvious issues, but I deemed this to be the least of all evils, and trust me when I say I had a lot of evils to sort through
+        public List<string> Indestructible
+        {
+            get
+            {
+                if (indestructibleLabels.NullOrEmpty())
+                {
+                    foreach (Corpse corpse in deadPawns)
+                    {
+                        Hediff hediff = corpse.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[corpse.InnerPawn]);
+                        if (hediff != null)
+                        {
+                            HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                            if (multipleLivesComp != null)
+                            {
+
+                                if (multipleLivesComp.Props.indestructibleWhileResurrecting) indestructibleLabels.Add(corpse.Label);
+                            }
+                        }
+                    }
+                }
+                return indestructibleLabels;
+            }
+        }
 
         public MultipleLives_Component(Game game)
         {
@@ -22,6 +48,7 @@ namespace EBSGFramework
             deadPawns = new List<Corpse>();
             deadPawnHediffs = new Dictionary<Pawn, HediffDef>();
             purgeList = new List<Corpse>();
+            indestructibleLabels = new List<string>();
         }
 
         public override void StartedNewGame()
@@ -57,7 +84,7 @@ namespace EBSGFramework
                 tick = 0;
                 foreach (Corpse pawn in deadPawns)
                 {
-                    if (pawn == null || !RecordPawnData(pawn.InnerPawn)) purgeList.Add(pawn);
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn)) purgeList.Add(pawn);
                     else
                     {
                         Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
@@ -139,6 +166,7 @@ namespace EBSGFramework
 
         public void ResurrectPawn(Corpse pawn)
         {
+            indestructibleLabels = new List<string>();
             Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
             if (hediff != null)
             {
@@ -235,6 +263,8 @@ namespace EBSGFramework
             {
                 purgeList = new List<Corpse>();
             }
+
+            indestructibleLabels = new List<string>();
         }
     }
 }

@@ -31,6 +31,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
             harmony.Patch(AccessTools.Method(typeof(Thought_SituationalSocial), nameof(Thought_SituationalSocial.OpinionOffset)),
                 postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
+                prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -60,8 +62,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.HealthScale)),
                 postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
-                prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
+                postfix: new HarmonyMethod(patchType, nameof(DamageInfoAmountPostFix)));
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -554,9 +556,24 @@ namespace EBSGFramework
 
         public static bool TakeDamagePrefix(DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
+            if (__instance is Corpse corpse)
+            {
+                if (corpse.InnerPawn != null && corpse.InnerPawn.health != null && !corpse.InnerPawn.health.hediffSet.hediffs.NullOrEmpty())
+                {
+                    foreach (Hediff hediff in corpse.InnerPawn.health.hediffSet.hediffs)
+                    {
+                        HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                        if (multipleLivesComp != null && multipleLivesComp.pawnReviving && multipleLivesComp.Props.indestructibleWhileResurrecting)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
             if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn)
             {
-                dinfo.SetAmount(Mathf.RoundToInt(dinfo.Amount * pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor)));
+                Log.Message(dinfo.Amount.ToString());
+                Log.Message("");
                 if (HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance))
                 {
                     if (EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
@@ -595,6 +612,14 @@ namespace EBSGFramework
                 }
             }
             return true;
+        }
+
+        public static void DamageInfoAmountPostFix(DamageInfo __instance, float __result)
+        {
+            if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
+            {
+                __result = __result * pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
+            }
         }
     }
 }

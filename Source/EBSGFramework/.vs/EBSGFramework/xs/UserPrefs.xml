@@ -1,30 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityByLightLevel.cs" Line="15" Column="6" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityChangePerAttack.cs" Line="16" Column="6" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByOtherHediffSeverities.cs" Line="33" Column="6" />
-      <File FileName="Generic List Classes/HediffSeverityFactor.cs" Line="9" Column="195" />
-      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs" Line="47" Column="63" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityChangePerAttack.cs" Line="20" Column="6" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="24" Column="6" />
-      <File FileName="Hediffs/Comps/HediffComp_DisplaySeverity.cs" Line="3" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_Aging.cs" Line="3" Column="1" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_Aging.cs" Line="17" Column="6" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_GiveHediffsInRangeGeneRestricting.cs" Line="29" Column="6" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_DisplaySeverity.cs" Line="19" Column="6" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityByOtherHediffSeverities.cs" Line="16" Column="6" />
+      <File FileName="Hediffs/Comps/HediffComp_DestroyOnDeath.cs" Line="30" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs" Line="24" Column="25" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="1" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="607" Column="67" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_GiveHediffsInRangeGeneRestricting.cs" selected="True" />
-                </Node>
+                <Node name="Comps" expanded="True" />
               </Node>
             </Node>
           </Node>
