@@ -24,7 +24,7 @@ namespace EBSGFramework
             }
         }
 
-        private float MaxCost
+        public float MaxCost
         {
             get
             {

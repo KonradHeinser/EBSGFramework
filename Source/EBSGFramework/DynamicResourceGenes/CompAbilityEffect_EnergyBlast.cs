@@ -43,7 +43,7 @@ namespace EBSGFramework
             }
         }
 
-        private float CurrentCost
+        public float CurrentCost
         {
             get
             {

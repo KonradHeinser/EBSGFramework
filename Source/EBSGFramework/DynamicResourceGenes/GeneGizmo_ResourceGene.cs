@@ -38,13 +38,34 @@ namespace EBSGFramework
             {
                 foreach (CompAbilityEffect effectComp in command_Ability.Ability.EffectComps)
                 {
+                    bool flag = true;
+                    float cost = 0;
+
                     if (effectComp is CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost && compAbilityEffect_ResourceCost.Props.mainResourceGene == gene.def && compAbilityEffect_ResourceCost.Props.resourceCost > float.Epsilon)
+                    {
+                        cost = compAbilityEffect_ResourceCost.Props.resourceCost;
+                    }
+                    else if (effectComp is CompAbilityEffect_ResourceToBattery compAbilityEffect_Battery && compAbilityEffect_Battery.Props.mainResourceGene == gene.def && compAbilityEffect_Battery.MaxCost > 0)
+                    {
+                        cost = compAbilityEffect_Battery.MaxCost;
+                    }
+                    else if (effectComp is CompAbilityEffect_EnergyBlast compAbilityEffect_Blast && compAbilityEffect_Blast.Props.mainResourceGene == gene.def && compAbilityEffect_Blast.CurrentCost > 0)
+                    {
+                        cost = compAbilityEffect_Blast.CurrentCost;
+                    }
+                    else if (effectComp is CompAbilityEffect_EnergyBurst compAbilityEffect_Burst && compAbilityEffect_Burst.Props.mainResourceGene == gene.def && compAbilityEffect_Burst.CurrentCost > 0)
+                    {
+                        cost = compAbilityEffect_Burst.CurrentCost;
+                    }
+                    else flag = false;
+
+                    if (flag)
                     {
                         Rect rect = barRect.ContractedBy(3f);
                         float width = rect.width;
                         float num3 = gene.Value / gene.Max;
                         rect.xMax = rect.xMin + width * num3;
-                        float num4 = Mathf.Min(compAbilityEffect_ResourceCost.Props.resourceCost / gene.Max, 1f);
+                        float num4 = Mathf.Min(cost / gene.Max, 1f);
                         rect.xMin = Mathf.Max(rect.xMin, rect.xMax - width * num4);
                         GUI.color = new Color(1f, 1f, 1f, num2 * 0.7f);
                         GenUI.DrawTextureWithMaterial(rect, ResourceCostTex, null);
