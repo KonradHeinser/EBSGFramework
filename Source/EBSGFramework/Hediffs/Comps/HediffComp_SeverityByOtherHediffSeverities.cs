@@ -21,10 +21,10 @@ namespace EBSGFramework
                     if (hediff != null)
                     {
                         float add = hediff.Severity * hediffSet.factor;
-                        if (hediffSet.factor < 0) newSeverity += Math.Min(add, hediffSet.minResult);
-                        else newSeverity += Math.Max(add, hediffSet.minResult);
+                        if (hediffSet.factor < 0) newSeverity += Math.Max(Math.Min(add, hediffSet.minResult), hediffSet.maxResult);
+                        else newSeverity += Math.Min(Math.Max(add, hediffSet.minResult), hediffSet.maxResult);
                     }
-                    else newSeverity += hediffSet.minResult;
+                    else newSeverity += hediffSet.missingHediffResult;
                 }
             }
 
