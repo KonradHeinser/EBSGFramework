@@ -5,6 +5,9 @@
     <EBSG_Random>Random option</EBSG_Random>
     <AbilityCasterNoMap>Caster doesn't have a valid map to target.</AbilityCasterNoMap>
     <AlreadyActiveWeather>Map has this type of weather already: {0}.</AlreadyActiveWeather>
+    <AbilityNotBattery>Must target a battery.</AbilityNotBattery>
+    <AbilityLowBattery>Battery level is too low.</AbilityLowBattery>
+    <AbilityHighBattery>Battery level is too high.</AbilityHighBattery>
 
         <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
@@ -120,5 +123,4 @@
     <ConsumeResourceBelow>Consume {0} below</ConsumeResourceBelow>
     <AbilityDisabledNoResourceGene>{0_labelShort} lacks the {1} gene.</AbilityDisabledNoResourceGene>
     <AbilityDisabledNoResource>{0_labelShort} does not have enough {1}.</AbilityDisabledNoResource>
-    <AbilityNotBattery>Must target a battery.</AbilityNotBattery>
 </LanguageData>

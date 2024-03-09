@@ -7,19 +7,25 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByLightLevel Props => (HediffCompProperties_SeverityByLightLevel)props;
 
+        public override void CompPostPostAdd(DamageInfo? dinfo)
+        {
+            if (Props.lightToSeverityCurve == null)
+                EBSGUtilities.AddedHediffError(parent, Pawn);
+
+            if (Pawn.Map != null)
+                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GameGlowAt(Pawn.Position, false));
+            else if (Props.timeToSeverityCurve != null)
+                parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
+        }
+
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (!parent.pawn.IsHashIntervalTick(200)) return;
-            Pawn pawn = parent.pawn;
+            if (!Pawn.IsHashIntervalTick(200)) return;
 
-            if (pawn.Map != null)
-            {
-                parent.Severity = Props.lightToSeverityCurve.Evaluate(pawn.Map.glowGrid.GameGlowAt(pawn.Position, false));
-            }
+            if (Pawn.Map != null)
+                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GameGlowAt(Pawn.Position, false));
             else if (Props.timeToSeverityCurve != null)
-            {
                 parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
-            }
         }
     }
 }

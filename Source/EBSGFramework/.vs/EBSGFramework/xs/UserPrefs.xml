@@ -1,23 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_TemporarySkillChange.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_CreateOtherHediffs.cs">
     <Files>
-      <File FileName="Generic List Classes/HediffToGive.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_HediffWhileInSeverityRange.cs" Line="53" Column="10" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HediffWhileInSeverityRange.cs" Line="8" Column="61" />
-      <File FileName="Generic List Classes/HediffSeverityLevel.cs" Line="14" Column="1" />
-      <File FileName="Genes/SkillChange.cs" Line="1" Column="1" />
-      <File FileName="Genes/Gene_SkillChanging.cs" Line="122" Column="22" />
-      <File FileName="Hediffs/Comps/HediffComp_TemporarySkillChange.cs" Line="99" Column="69" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityChargeBattery.cs" Line="11" Column="141" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityByTimeOfDay.cs" Line="5" Column="58" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByTimeOfDay.cs" Line="10" Column="45" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="29" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_Aging.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_CreateOtherHediffs.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Genes" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
               <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_TemporarySkillChange.cs" selected="True" />
+                  <Node name="HediffComp_CreateOtherHediffs.cs" selected="True" />
                 </Node>
               </Node>
             </Node>

@@ -248,6 +248,10 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileInSeverityRange.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffWhileInSeverityRange.cs" />
     <Compile Include="Generic List Classes\HediffSeverityLevel.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChargeBattery.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChargeBattery.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByTimeOfDay.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityByTimeOfDay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

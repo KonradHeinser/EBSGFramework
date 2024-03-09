@@ -8,20 +8,16 @@ namespace EBSGFramework
     {
         private HediffCompProperties_SeverityPerDayByGenes Props => (HediffCompProperties_SeverityPerDayByGenes)props;
 
+        public override void CompPostPostAdd(DamageInfo? dinfo)
+        {
+            if (Props.geneEffects.NullOrEmpty())
+                EBSGUtilities.AddedHediffError(parent, parent.pawn);
+        }
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             if (Pawn.IsHashIntervalTick(200))
-            {
-                if (Props.geneEffects.NullOrEmpty())
-                {
-                    Log.Error(Def + " doesn't have any gene effects specified, so severity cannot be assigned.");
-                    parent.Severity = 0;
-                }
-                else
-                {
-                    SetSeverity(parent, Pawn, Props.geneEffects, Props.baseSeverity, Props.baseSeverityStatFactor, Props.geneEffectStatFactor, Props.globalStatFactor);
-                }
-            }
+                SetSeverity(parent, Pawn, Props.geneEffects, Props.baseSeverity, Props.baseSeverityStatFactor, Props.geneEffectStatFactor, Props.globalStatFactor);
         }
 
         public static void SetSeverity(Hediff hediff, Pawn pawn, List<GeneEffect> geneEffects, float baseSeverity = 1,
