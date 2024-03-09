@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using Verse;
 using RimWorld;
 using System.Collections.Generic;
@@ -31,10 +31,8 @@ namespace EBSGFramework
 
         protected void ApplyInner(Pawn target, Pawn other, HediffToGive hediffToGive)
         {
-            if (target == null)
-            {
-                return;
-            }
+            if (target == null) return;
+
             if (hediffToGive.psychic && target.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) return;
 
             if (hediffToGive.bodyParts.NullOrEmpty())
@@ -59,13 +57,11 @@ namespace EBSGFramework
                 Hediff hediff = HediffMaker.MakeHediff(hediffToGive.hediffDef, target, hediffToGive.onlyBrain ? target.health.hediffSet.GetBrain() : null);
                 HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
                 if (hediffComp_Disappears != null)
-                {
                     hediffComp_Disappears.ticksToDisappear = GetDurationSeconds(target).SecondsToTicks();
-                }
+
                 if (hediffToGive.severity >= 0f)
-                {
                     hediff.Severity = hediffToGive.severity;
-                }
+
                 HediffComp_Link hediffComp_Link = hediff.TryGetComp<HediffComp_Link>();
                 if (hediffComp_Link != null)
                 {
@@ -76,8 +72,17 @@ namespace EBSGFramework
             }
             else
             {
-                // Body parts not added yet
-                return;
+                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
+
+                foreach (BodyPartDef bodyPartDef in hediffToGive.bodyParts)
+                {
+                    if (target.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
+                    if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
+                        foundParts.Add(bodyPartDef, 0);
+
+                    EBSGUtilities.AddHediffToPart(target, target.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToGive.hediffDef, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
+                    foundParts[bodyPartDef]++;
+                }
             }
         }
     }

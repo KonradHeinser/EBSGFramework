@@ -3,7 +3,7 @@ using Verse;
 using System.Collections.Generic;
 
 // I made this because the VFE hediff adder makes the hediffs pop up again if a new gene is added through any other method, like a gene randomizing hediff as a wild example.
-namespace EBSGFramework 
+namespace EBSGFramework
 {
     public class HediffAdder : SpawnAgeLimiter
     {
@@ -37,8 +37,7 @@ namespace EBSGFramework
                             {
                                 foundParts.Add(bodyPartDef, 0);
                             }
-                            if (hediffToParts.onlyIfNew) EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
-                            else EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
+                            EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity, hediffToParts.onlyIfNew);
                             foundParts[bodyPartDef]++;
                         }
                     }
@@ -51,9 +50,7 @@ namespace EBSGFramework
                             hediff.Severity += hediffToParts.severity;
                         }
                         else
-                        {
                             EBSGUtilities.AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
-                        }
                     }
                 }
                 if (extension.vanishingGene) pawn.genes.RemoveGene(gene);
@@ -64,9 +61,7 @@ namespace EBSGFramework
         {
             EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
-            {
                 EBSGUtilities.RemoveHediffsFromParts(pawn, extension.hediffsToApply);
-            }
         }
     }
 }

@@ -1,28 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs">
-    <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AddItemToInventory.cs" Line="22" Column="70" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AddItemToInventory.cs" Line="27" Column="14" />
-      <File FileName="Abilities/CompProperties/CompProperties_RemoveItemFromInventory.cs" Line="20" Column="48" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_RemoveItemFromInventory.cs" Line="33" Column="22" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="58" Column="30" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="15" Column="43" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_InstantKill.cs" selected="True" />
-                </Node>
+                <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
               </Node>
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
+              <Node name="Generic List Classes" expanded="True">
+                <Node name="HediffToGive.cs" selected="True" />
               </Node>
+              <Node name="Genes" expanded="True" />
             </Node>
           </Node>
         </State>

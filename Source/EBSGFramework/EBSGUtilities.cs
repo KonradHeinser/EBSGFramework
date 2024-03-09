@@ -256,7 +256,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static Hediff AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0)
+        public static Hediff AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false)
         {
             Hediff firstHediffOfDef = null;
             if (HasHediff(pawn, hediffDef))
@@ -273,7 +273,9 @@ namespace EBSGFramework
                 }
             }
 
-            if (firstHediffOfDef != null)
+            if (firstHediffOfDef != null && onlyNew) pawn.health.RemoveHediff(firstHediffOfDef);
+
+            if (firstHediffOfDef != null && !onlyNew)
             {
                 try
                 {
