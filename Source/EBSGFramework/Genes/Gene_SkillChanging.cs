@@ -9,6 +9,7 @@ namespace EBSGFramework
     public class Gene_SkillChanging : HediffAdder
     {
         public List<SkillDef> changedSkills;
+        public List<int> changedAmounts;
         public List<Passion> originalPassions;
         public int delayTicks;
 
@@ -31,6 +32,7 @@ namespace EBSGFramework
             if (delayTicks == 0)
             {
                 if (changedSkills == null) changedSkills = new List<SkillDef>();
+                if (changedAmounts == null) changedAmounts = new List<int>();
                 if (originalPassions == null) originalPassions = new List<Passion>();
 
                 EBSGExtension extension = def.GetModExtension<EBSGExtension>();
@@ -45,6 +47,10 @@ namespace EBSGFramework
                     }
                     else skill = pawn.skills.GetSkill(skillChange.skill);
                     if (skill == null) continue;
+
+                    if (skill.Level + skillChange.skillChange > 20) changedAmounts.Add(20 - skill.Level);
+                    else if (skill.Level + skillChange.skillChange < 0) changedAmounts.Add(skill.Level * -1);
+                    else changedAmounts.Add(skillChange.skillChange);
 
                     skill.Level += skillChange.skillChange;
                     originalPassions.Add(skill.passion);
@@ -95,14 +101,26 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             base.PostRemove();
-            int noSkillCounter = 0;
-            int originalPassionCounter = 0;
-            if (changedSkills == null) changedSkills = new List<SkillDef>();
-            if (originalPassions == null) originalPassions = new List<Passion>();
+
 
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
             if (extension != null)
             {
+                int noSkillCounter = 0;
+                int originalCounter = 0;
+                if (changedSkills == null) changedSkills = new List<SkillDef>();
+                if (changedAmounts == null) changedAmounts = new List<int>();
+                if (originalPassions == null) originalPassions = new List<Passion>();
+
+                if (changedSkills.Count != changedAmounts.Count)
+                {
+                    changedAmounts.Clear();
+                    foreach (SkillChange skillChange in extension.skillChanges)
+                    {
+                        changedAmounts.Add(skillChange.skillChange);
+                    }
+                }
+
                 foreach (SkillChange skillChange in extension.skillChanges)
                 {
                     SkillRecord skill;
@@ -114,9 +132,9 @@ namespace EBSGFramework
                     }
                     else skill = pawn.skills.GetSkill(skillChange.skill);
 
-                    skill.Level -= skillChange.skillChange;
-                    if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalPassionCounter];
-                    originalPassionCounter++;
+                    skill.Level -= changedAmounts[originalCounter];
+                    if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
+                    originalCounter++;
                 }
             }
         }
@@ -125,6 +143,7 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Collections.Look(ref changedSkills, "changedSkills");
+            Scribe_Collections.Look(ref changedAmounts, "changedAmounts");
             Scribe_Collections.Look(ref originalPassions, "originalPassions");
         }
 

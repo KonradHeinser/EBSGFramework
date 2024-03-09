@@ -39,6 +39,18 @@ namespace EBSGFramework
             }
 
             // Caster map checks
+            if (!CheckRain(out string rainExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + rainExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                return true;
+            }
+            if (!CheckSnow(out string snowExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + snowExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                return true;
+            }
             if (!CheckCondition(out string conditionExplanation))
             {
                 if (throwMessages)
@@ -91,6 +103,16 @@ namespace EBSGFramework
         {
             if (Props.disableGizmo)
             {
+                if (!CheckRain(out string rainExplanation))
+                {
+                    reason = rainExplanation;
+                    return true;
+                }
+                if (!CheckSnow(out string snowExplanation))
+                {
+                    reason = snowExplanation;
+                    return true;
+                }
                 if (!CheckCasterLight(out string casterLightExplanation))
                 {
                     reason = casterLightExplanation;
@@ -124,6 +146,46 @@ namespace EBSGFramework
             }
             reason = null;
             return false;
+        }
+
+        public bool CheckRain(out string explanation)
+        {
+            Map map = parent.pawn.Map;
+            if (map != null)
+            {
+                if (Props.minimumRainRate > map.weatherManager.RainRate)
+                {
+                    explanation = "AbilityLowRain".Translate();
+                    return false;
+                }
+                if (Props.maximumRainRate < map.weatherManager.RainRate)
+                {
+                    explanation = "AbilityHighRain".Translate();
+                    return false;
+                }
+            }
+            explanation = null;
+            return true;
+        }
+
+        public bool CheckSnow(out string explanation)
+        {
+            Map map = parent.pawn.Map;
+            if (map != null)
+            {
+                if (Props.minimumSnowRate > map.weatherManager.SnowRate)
+                {
+                    explanation = "AbilityLowSnow".Translate();
+                    return false;
+                }
+                if (Props.maximumSnowRate < map.weatherManager.SnowRate)
+                {
+                    explanation = "AbilityHighSnow".Translate();
+                    return false;
+                }
+            }
+            explanation = null;
+            return true;
         }
 
         // Caster specific

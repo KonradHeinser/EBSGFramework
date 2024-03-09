@@ -45,6 +45,11 @@ namespace EBSGFramework
         public float maxPartOfDay = 1f;
 
         // Map Condition
+        public float minimumRainRate = 0f;
+        public float maximumRainRate = 9999f;
+        public float minimumSnowRate = 0f;
+        public float maximumSnowRate = 9999f;
+
         public List<WeatherDef> requireOneOfWeather;
         public List<WeatherDef> forbiddenWeather;
         public List<GameConditionDef> requireOneOfCondition;

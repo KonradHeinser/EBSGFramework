@@ -241,6 +241,13 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByOtherHediffSeverities.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_DestroyOnDeath.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_DestroyOnDeath.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeWeather.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeWeather.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporarySkillChange.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_TemporarySkillChange.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileInSeverityRange.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HediffWhileInSeverityRange.cs" />
+    <Compile Include="Generic List Classes\HediffSeverityLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

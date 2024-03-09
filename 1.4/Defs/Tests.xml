@@ -16,9 +16,8 @@
 
     <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True">
         <targetRequired>False</targetRequired>
-        <cooldownTicksRange>60</cooldownTicksRange>
         <verbProperties>
-            <range>3.9</range>
+            <range>0.9</range>
             <targetParams>
                 <canTargetSelf>True</canTargetSelf>
             </targetParams>

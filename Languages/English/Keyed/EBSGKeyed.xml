@@ -3,6 +3,8 @@
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
     <EBSG_NeedOffsets>Base need offsets:</EBSG_NeedOffsets>
     <EBSG_Random>Random option</EBSG_Random>
+    <AbilityCasterNoMap>Caster doesn't have a valid map to target.</AbilityCasterNoMap>
+    <AlreadyActiveWeather>Map has this type of weather already: {0}.</AlreadyActiveWeather>
 
         <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
@@ -59,9 +61,14 @@
     <AbilityGameNoCondition>The map must be experiencing certain conditions for this ability to wrok.</AbilityGameNoCondition>
     <AbilityGameConditionOne>This map is currently experiencing a(n) {0}, which prevents this ability from working.</AbilityGameConditionOne>
 
-    <AbilityWeatherOne>Map currently has bad weather for this ability to work: {0}</AbilityWeatherOne>
+    <AbilityWeatherOne>Map currently has bad weather, stopping this ability from working: {0}</AbilityWeatherOne>
     <AbilityNoWeatherOne>Map needs specific weather for this ability to work: {0}</AbilityNoWeatherOne>
-    <AbilityNoWeather>Map needs specific weather for this ability to work.</AbilityNoWeather>
+    <AbilityNoWeather>This ability only works when the map has certain types of weather.</AbilityNoWeather>
+
+    <AbilityLowRain>It's not raining enough on the caster's map for this ability to work.</AbilityLowRain>
+    <AbilityHighRain>It's raining too much on the caster's map for this ability to work.</AbilityHighRain>
+    <AbilityLowSnow>It's not snowing enough on the caster's map for this ability to work.</AbilityLowSnow>
+    <AbilityHighSnow>It's snowing too much on the caster's map for this ability to work.</AbilityHighSnow>
 
     <AbilityTargetLightLevel>Target must be standing in a location with a light level between {0} and {1}</AbilityTargetLightLevel>
     <AbilityCasterLightLevel>Caster must be standing in a location with a light level between {0} and {1}</AbilityCasterLightLevel>
