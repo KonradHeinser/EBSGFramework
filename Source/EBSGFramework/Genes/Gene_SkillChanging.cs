@@ -117,7 +117,8 @@ namespace EBSGFramework
                     changedAmounts.Clear();
                     foreach (SkillChange skillChange in extension.skillChanges)
                     {
-                        changedAmounts.Add(skillChange.skillChange);
+                        if (skillChange.skill == null || pawn.skills.GetSkill(skillChange.skill) != null)
+                            changedAmounts.Add(skillChange.skillChange);
                     }
                 }
 

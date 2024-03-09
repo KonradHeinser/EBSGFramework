@@ -95,7 +95,8 @@ namespace EBSGFramework
                 changedAmounts.Clear();
                 foreach (SkillChange skillChange in Props.skillChanges)
                 {
-                    changedAmounts.Add(skillChange.skillChange);
+                    if (skillChange.skill == null || Pawn.skills.GetSkill(skillChange.skill) != null)
+                        changedAmounts.Add(skillChange.skillChange);
                 }
             }
 
