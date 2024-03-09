@@ -252,6 +252,10 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChargeBattery.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByTimeOfDay.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByTimeOfDay.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AddItemToInventory.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AddItemToInventory.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_RemoveItemFromInventory.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveItemFromInventory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

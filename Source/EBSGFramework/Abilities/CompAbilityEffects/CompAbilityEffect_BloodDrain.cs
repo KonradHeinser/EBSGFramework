@@ -51,35 +51,27 @@ namespace EBSGFramework
                         if (!pawn.Downed)
                         {
                             if (throwMessages)
-                            {
                                 Messages.Message("MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);
-                            }
                             return false;
                         }
                     }
                     else if (pawn.IsQuestLodger() || pawn.Faction != parent.pawn.Faction)
                     {
                         if (throwMessages)
-                        {
                             Messages.Message("MessageCannotUseOnOtherFactions".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);
-                        }
                         return false;
                     }
                 }
                 if (pawn.IsWildMan() && !pawn.IsPrisonerOfColony && !pawn.Downed)
                 {
                     if (throwMessages)
-                    {
                         Messages.Message("MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);
-                    }
                     return false;
                 }
                 if (pawn.InMentalState)
                 {
                     if (throwMessages)
-                    {
                         Messages.Message("MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);
-                    }
                     return false;
                 }
             }
@@ -93,24 +85,21 @@ namespace EBSGFramework
             {
                 string text = null;
                 if (pawn.HostileTo(parent.pawn) && !pawn.Downed)
-                {
                     text += "MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY"));
-                }
+
                 float num = BloodlossAfterBite(pawn);
                 if (num >= HediffDefOf.BloodLoss.lethalSeverity)
                 {
                     if (!text.NullOrEmpty())
-                    {
                         text += "\n";
-                    }
+
                     text += "WillKill".Translate();
                 }
                 else if (HediffDefOf.BloodLoss.stages[HediffDefOf.BloodLoss.StageAtSeverity(num)].lifeThreatening)
                 {
                     if (!text.NullOrEmpty())
-                    {
                         text += "\n";
-                    }
+
                     text += "WillCauseSeriousBloodloss".Translate();
                 }
                 return text;
@@ -127,9 +116,8 @@ namespace EBSGFramework
             float num = Props.targetBloodLoss;
             Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.BloodLoss);
             if (firstHediffOfDef != null)
-            {
                 num += firstHediffOfDef.Severity;
-            }
+
             return num;
         }
     }

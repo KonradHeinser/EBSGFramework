@@ -8,6 +8,8 @@
     <AbilityNotBattery>Must target a battery.</AbilityNotBattery>
     <AbilityLowBattery>Battery level is too low.</AbilityLowBattery>
     <AbilityHighBattery>Battery level is too high.</AbilityHighBattery>
+    <AbilityTargetInventory>The target's inventory is missing required items.</AbilityTargetInventory>
+    <AbilityCasterInventory>The caster's inventory is missing required items.</AbilityCasterInventory>
 
         <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->

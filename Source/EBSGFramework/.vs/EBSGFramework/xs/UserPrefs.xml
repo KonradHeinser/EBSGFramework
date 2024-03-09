@@ -1,12 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_CreateOtherHediffs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityChargeBattery.cs" Line="11" Column="141" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityByTimeOfDay.cs" Line="5" Column="58" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByTimeOfDay.cs" Line="10" Column="45" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="29" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_Aging.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_CreateOtherHediffs.cs" Line="1" Column="1" />
+      <File FileName="Abilities/CompProperties/CompProperties_AddItemToInventory.cs" Line="22" Column="70" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AddItemToInventory.cs" Line="27" Column="14" />
+      <File FileName="Abilities/CompProperties/CompProperties_RemoveItemFromInventory.cs" Line="20" Column="48" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_RemoveItemFromInventory.cs" Line="33" Column="22" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="58" Column="30" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="15" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,14 +14,14 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_InstantKill.cs" selected="True" />
+                </Node>
                 <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_CreateOtherHediffs.cs" selected="True" />
-                </Node>
+                <Node name="Comps" expanded="True" />
               </Node>
             </Node>
           </Node>
