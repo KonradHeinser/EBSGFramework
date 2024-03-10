@@ -256,6 +256,12 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AddItemToInventory.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_RemoveItemFromInventory.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveItemFromInventory.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_DamageOverTime.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOverTime.cs" />
+    <Compile Include="Things\CompProperties_Regenerating.cs" />
+    <Compile Include="Things\CompRegenerating.cs" />
+    <Compile Include="Things\CompIndestructible.cs" />
+    <Compile Include="Things\CompProperties_Indestructible.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

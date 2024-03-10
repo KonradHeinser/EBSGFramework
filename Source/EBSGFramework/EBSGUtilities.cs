@@ -60,6 +60,24 @@ namespace EBSGFramework
             return false;
         }
 
+        public static BodyPartRecord GetSemiRandomPartFromList(List<BodyPartDef> bodyParts, Pawn pawn)
+        {
+            List<BodyPartRecord> parts = pawn.RaceProps.body.GetPartsWithDef(bodyParts.RandomElement());
+
+
+            if (parts.NullOrEmpty())
+            {
+                bodyParts.Shuffle();
+                foreach (BodyPartDef bodyPart in bodyParts)
+                {
+                    parts = pawn.RaceProps.body.GetPartsWithDef(bodyPart);
+                    if (!parts.NullOrEmpty()) break;
+                }
+            }
+
+            return parts[0];
+        }
+
         public static Hediff GetFirstHediffAttachedToPart(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
         {
             if (hediffDef == null) return null;

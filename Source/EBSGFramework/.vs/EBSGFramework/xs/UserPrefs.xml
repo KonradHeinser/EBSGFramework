@@ -1,5 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompRegenerating.cs">
+    <Files>
+      <File FileName="EBSGUtilities.cs" Line="70" Column="37" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="412" Column="10" />
+      <File FileName="Hediffs/MultipleLives_Component.cs" Line="90" Column="38" />
+      <File FileName="Things/CompProperties_Regenerating.cs" Line="5" Column="45" />
+      <File FileName="Things/CompRegenerating.cs" Line="19" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
@@ -7,12 +14,12 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
                 <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
               </Node>
-              <Node name="Generic List Classes" expanded="True">
-                <Node name="HediffToGive.cs" selected="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="CompRegenerating.cs" selected="True" />
               </Node>
-              <Node name="Genes" expanded="True" />
             </Node>
           </Node>
         </State>

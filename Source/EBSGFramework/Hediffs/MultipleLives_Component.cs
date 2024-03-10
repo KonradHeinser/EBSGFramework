@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
@@ -9,6 +10,7 @@ namespace EBSGFramework
     public class MultipleLives_Component : GameComponent
     {
         public bool loaded;
+        public bool newDead;
         public bool instantRevive;
         public int tick = 0;
         public static Dictionary<Pawn, HediffDef> deadPawnHediffs;
@@ -64,6 +66,43 @@ namespace EBSGFramework
         public override void GameComponentTick()
         {
             tick++;
+
+            if (newDead)
+            {
+                newDead = false;
+                foreach (Corpse pawn in deadPawns)
+                {
+                    bool flag = true;
+                    Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
+                    if (hediff != null)
+                    {
+                        HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                        if (multipleLivesComp != null && multipleLivesComp.Props.indestructibleWhileResurrecting)
+                        {
+                            if (!pawn.AllComps.NullOrEmpty())
+                            {
+                                foreach (ThingComp comp in pawn.AllComps)
+                                {
+                                    if (comp.GetType() == typeof(CompIndestructible))
+                                    {
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else flag = false;
+                    }
+
+                    if (flag)
+                    {
+                        CompIndestructible indestructibleComp = (CompIndestructible)Activator.CreateInstance(typeof(CompIndestructible));
+                        indestructibleComp.parent = pawn;
+                        pawn.AllComps.Add(indestructibleComp);
+                        indestructibleComp.Initialize(new CompProperties_Indestructible());
+                    }
+                }
+            }
 
             if (instantRevive && !deadPawns.NullOrEmpty())
             {
@@ -162,6 +201,7 @@ namespace EBSGFramework
             deadPawns.Add(pawn.Corpse);
             deadPawnHediffs.Add(pawn, hediffDef);
             instantRevive = startRevive;
+            newDead = true;
         }
 
         public void ResurrectPawn(Corpse pawn)
