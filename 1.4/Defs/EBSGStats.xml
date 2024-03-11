@@ -46,6 +46,13 @@
     </StatDef>
 
     <StatDef ParentName="RateChanger">
+        <defName>EBSG_DeathrestFallRate</defName>
+        <label>deathrest fall rate</label>
+        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <displayPriorityInCategory>3400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
         <defName>EBSG_DeathrestEfficiency</defName>
         <label>deathrest efficiency</label>
         <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>

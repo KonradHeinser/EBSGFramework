@@ -1,24 +1,28 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/ResourceDrainGene.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="70" Column="37" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="412" Column="10" />
-      <File FileName="Hediffs/MultipleLives_Component.cs" Line="90" Column="38" />
-      <File FileName="Things/CompProperties_Regenerating.cs" Line="5" Column="45" />
-      <File FileName="Things/CompRegenerating.cs" Line="19" Column="1" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="57" Column="14" />
-      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="54" Column="14" />
+      <File FileName="EBSGDefOf.cs" Line="17" Column="53" />
+      <File FileName="Hediffs/Comps/HediffComp_Aging.cs" Line="20" Column="14" />
+      <File FileName="Hediffs/Comps/HediffComp_TerrainCostOverride.cs" Line="11" Column="1" />
+      <File FileName="Generic List Classes/TerrainLinker.cs" Line="9" Column="32" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_TerrainCostOverride.cs" Line="14" Column="64" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByNearbyPawns.cs" Line="1" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="40" Column="134" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="54" Column="10" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="36" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="ResourceDrainGene.cs" selected="True" />
+              <Node name="GameComponents" expanded="True">
+                <Node name="EBSGCache_Component.cs" selected="True" />
               </Node>
               <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True" />
+              </Node>
               <Node name="Things" expanded="True" />
             </Node>
           </Node>

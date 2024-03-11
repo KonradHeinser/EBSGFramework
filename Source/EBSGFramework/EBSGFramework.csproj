@@ -131,7 +131,6 @@
     <Compile Include="Hediffs\Comps\HediffComp_MultipleLives.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByNearbyPawns.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TieredRegeneration.cs" />
-    <Compile Include="Hediffs\MultipleLives_Component.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityBloodDrain.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMultipleHediffs.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityOffsetNeed.cs" />
@@ -262,6 +261,11 @@
     <Compile Include="Things\CompRegenerating.cs" />
     <Compile Include="Things\CompIndestructible.cs" />
     <Compile Include="Things\CompProperties_Indestructible.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_TerrainCostOverride.cs" />
+    <Compile Include="Generic List Classes\TerrainLinker.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TerrainCostOverride.cs" />
+    <Compile Include="GameComponents\MultipleLives_Component.cs" />
+    <Compile Include="GameComponents\EBSGCache_Component.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -285,6 +289,7 @@
     <Folder Include="Things\" />
     <Folder Include="Harmony\" />
     <Folder Include="Generic List Classes\" />
+    <Folder Include="GameComponents\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,7 +9,6 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static Verse.DamageWorker;
 
 namespace EBSGFramework
 {
@@ -38,6 +37,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(MakeThingPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(ThingFilter), nameof(ThingFilter.AllowedThingDefs)),
                 postfix: new HarmonyMethod(patchType, nameof(AllowedThingDefsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_PathFollower), "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) }),
+                postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -61,6 +62,8 @@ namespace EBSGFramework
             // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
                 postfix: new HarmonyMethod(patchType, nameof(DeathrestEfficiencyPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Deathrest), nameof(Need_Deathrest.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(DeathrestNeedIntervalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.BodyResourceGrowthSpeed)),
                 postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
@@ -414,6 +417,12 @@ namespace EBSGFramework
             {
                 __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
             }
+        }
+
+        public static void DeathrestNeedIntervalPostfix(ref Need_Deathrest __instance, Pawn ___pawn)
+        {
+            if (!__instance.Deathresting)
+                __instance.CurLevel += -1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency) - 1);
         }
 
         public static void GrowthPointStatPostfix(ref float __result, Pawn ___pawn)
