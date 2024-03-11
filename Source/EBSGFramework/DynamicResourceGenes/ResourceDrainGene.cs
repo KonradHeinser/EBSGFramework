@@ -30,12 +30,17 @@ namespace EBSGFramework
                     }
                     if (extension != null)
                     {
-                        float time = GenLocalDate.DayPercent(Pawn);
+                        if (pawn.Spawned)
+                        {
+                            float time = GenLocalDate.DayPercent(Pawn);
+                            if (time < extension.startTime || time > extension.endTime) return false;
 
-                        if (time < extension.startTime || time > extension.endTime) return false;
-
-                        float light = pawn.Map.glowGrid.GameGlowAt(pawn.Position, false);
-                        if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
+                            if (pawn.Map != null)
+                            {
+                                float light = pawn.Map.glowGrid.GameGlowAt(pawn.Position, false);
+                                if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
+                            }
+                        }
 
                         if (!extension.requireOneOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfHediffs(pawn, extension.requireOneOfHediffs)) return false;
                         if (!EBSGUtilities.PawnHasAllOfHediffs(pawn, extension.requiredHediffs)) return false;
