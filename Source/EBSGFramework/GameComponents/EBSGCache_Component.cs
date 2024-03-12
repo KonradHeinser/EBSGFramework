@@ -9,9 +9,17 @@ namespace EBSGFramework
         public bool loaded;
         public Dictionary<Pawn, Hediff> pawnTerrainComps;
 
-        public void RegisterPawn(Pawn pawn, Hediff hediff)
+        public void RegisterTerrainPawn(Pawn pawn, Hediff hediff)
         {
-            pawnTerrainComps.Add(pawn, hediff);
+            if (!pawnTerrainComps.ContainsKey(pawn))
+                pawnTerrainComps.Add(pawn, hediff);
+            else
+                pawnTerrainComps[pawn] = hediff;
+        }
+
+        public void DeRegisterTerrainPawn(Pawn pawn, Hediff hediff)
+        {
+            pawnTerrainComps.Remove(pawn);
         }
 
         public EBSGCache_Component(Game game)
@@ -22,6 +30,14 @@ namespace EBSGFramework
 
         public bool RetrievePawnTerrainComp(Pawn pawn, out HediffCompProperties_TerrainCostOverride comp)
         {
+            // Only the first one applies to the pawn
+
+            if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !EBSGUtilities.HasHediff(pawn, pawnTerrainComps[pawn].def))
+            {
+
+            }
+
+
             comp = null;
             return false;
         }
@@ -38,10 +54,10 @@ namespace EBSGFramework
 
         public void Initialize()
         {
+            // Clears all caches every time
             loaded = true;
 
-            if (pawnTerrainComps == null) pawnTerrainComps = new Dictionary<Pawn, Hediff>();
-            else pawnTerrainComps.Clear();
+            pawnTerrainComps = new Dictionary<Pawn, Hediff>();
         }
     }
 }
