@@ -19,31 +19,6 @@ namespace EBSGFramework
         public List<Corpse> purgeList;
         public List<string> indestructibleLabels;
 
-        // Using labels has obvious issues, but I deemed this to be the least of all evils, and trust me when I say I had a lot of evils to sort through
-        public List<string> Indestructible
-        {
-            get
-            {
-                if (indestructibleLabels.NullOrEmpty())
-                {
-                    foreach (Corpse corpse in deadPawns)
-                    {
-                        Hediff hediff = corpse.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[corpse.InnerPawn]);
-                        if (hediff != null)
-                        {
-                            HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
-                            if (multipleLivesComp != null)
-                            {
-
-                                if (multipleLivesComp.Props.indestructibleWhileResurrecting) indestructibleLabels.Add(corpse.Label);
-                            }
-                        }
-                    }
-                }
-                return indestructibleLabels;
-            }
-        }
-
         public MultipleLives_Component(Game game)
         {
             loaded = false;

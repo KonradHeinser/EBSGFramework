@@ -6,9 +6,13 @@ namespace EBSGFramework
     public class TerrainLinker
     {
         public TerrainDef terrain;
+        public List<TerrainDef> terrains;
 
-        public int newCost = 1;
+        public int newCost = 0;
 
+        public List<NeedLevel> pawnNeedLevels;
+
+        // Pawn Genes
         public List<GeneDef> pawnHasAnyOfGenes;
         public List<GeneDef> pawnHasAllOfGenes;
         public List<GeneDef> pawnHasNoneOfGenes;

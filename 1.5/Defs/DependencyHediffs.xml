@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <HediffDef Name="EBSG_DependencyHediffBase" Abstract="True">
+        <hediffClass>EBSGFramework.Hediff_Dependency</hediffClass>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.001</initialSeverity>
+        <stages>
+            <li>
+            </li>
+            <li>
+                <label>deficiency</label>
+                <minSeverity>1</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.7</setMax>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <setMax>0.8</setMax>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <setMax>0.5</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <overrideLabel>a deficiency coma</overrideLabel>
+                <minSeverity>6</minSeverity>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <minSeverity>12</minSeverity>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticDrugDependency</defName> <!--Labels technically aren't needed since it'll use the gene label, but this ensures no errors pop up-->
+        <label>chemical dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific drug. Without regular consumption of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodDependency</defName>
+        <label>food dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific food/food group. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodGroupDependency</defName>
+        <label>food dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific food group. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticDrugReliance</defName>
+        <label>chemical reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific drug. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodReliance</defName>
+        <label>food reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific food/food group. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodGroupReliance</defName>
+        <label>food reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific food group. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+</Defs>

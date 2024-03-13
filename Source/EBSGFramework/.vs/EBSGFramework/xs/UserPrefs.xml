@@ -1,29 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="EBSGDefOf.cs" Line="17" Column="53" />
-      <File FileName="Hediffs/Comps/HediffComp_TerrainCostOverride.cs" Line="11" Column="1" />
-      <File FileName="Generic List Classes/TerrainLinker.cs" Line="27" Column="1" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_TerrainCostOverride.cs" Line="14" Column="64" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByNearbyPawns.cs" Line="1" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="41" Column="62" />
-      <File FileName="GameComponents/MultipleLives_Component.cs" Line="54" Column="10" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="20" Column="68" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_GiveMultipleHediffs.cs" Line="10" Column="120" />
+      <File FileName="Generic List Classes/HediffToGive.cs" Line="24" Column="30" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_HediffsOnRemoval.cs" Line="8" Column="48" />
+      <File FileName="Hediffs/Comps/HediffComp_HediffsOnRemoval.cs" Line="24" Column="50" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="56" Column="91" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="GameComponents" expanded="True">
-                <Node name="EBSGCache_Component.cs" selected="True" />
-              </Node>
+              <Node name="GameComponents" expanded="True" />
               <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
               <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True" />
               </Node>
               <Node name="Things" expanded="True" />

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -16,6 +16,21 @@ namespace EBSGFramework
     public static class HarmonyPatches
     {
         private static readonly Type patchType = typeof(HarmonyPatches);
+
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
 
         static HarmonyPatches()
         {
@@ -124,9 +139,7 @@ namespace EBSGFramework
                         if (!requiredGenesToEquip.NullOrEmpty() && flag)
                         {
                             foreach (Gene gene in currentGenes.GenesListForReading)
-                            {
                                 if (requiredGenesToEquip.Contains(gene.def)) requiredGenesToEquip.Remove(gene.def);
-                            }
                             if (!requiredGenesToEquip.NullOrEmpty())
                             {
                                 if (extension.requiredGenesToEquip.Count > 1) cantReason = "EBSG_GeneRestrictedEquipment_All".Translate();
@@ -140,16 +153,13 @@ namespace EBSGFramework
                             if (requireOneOfGenesToEquip.Count > 1) cantReason = "EBSG_GeneRestrictedEquipment_AnyOne".Translate();
                             else cantReason = "EBSG_GeneRestrictedEquipment_One".Translate(requireOneOfGenesToEquip[0]);
                             foreach (Gene gene in currentGenes.GenesListForReading)
-                            {
                                 if (requiredGenesToEquip.Contains(gene.def))
                                 {
                                     flag = true;
                                     cantReason = null;
                                     break;
                                 }
-                            }
                         }
-
                     }
                 }
                 else
@@ -168,7 +178,6 @@ namespace EBSGFramework
                     if (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty())
                     {
                         if (!forbiddenHediffsToEquip.NullOrEmpty())
-                        {
                             foreach (HediffDef hediffDef in forbiddenHediffsToEquip)
                             {
                                 if (hediffSet.HasHediff(hediffDef))
@@ -178,7 +187,6 @@ namespace EBSGFramework
                                     break;
                                 }
                             }
-                        }
 
                         if (flag && !requireOneOfHediffsToEquip.NullOrEmpty())
                         {
@@ -192,10 +200,8 @@ namespace EBSGFramework
                                 }
                             }
                             if (!flag)
-                            {
                                 if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
                                 else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
-                            }
                         }
 
                         if (flag && !requiredHediffsToEquip.NullOrEmpty())
@@ -243,7 +249,6 @@ namespace EBSGFramework
                     }
                 }
                 if (flag)
-                {
                     foreach (Gene gene in pawn.genes.GenesListForReading)
                     {
                         if (!gene.def.HasModExtension<EquipRestrictExtension>()) continue;
@@ -273,7 +278,6 @@ namespace EBSGFramework
                             break;
                         }
                     }
-                }
             }
             __result = flag;
         }
@@ -285,7 +289,6 @@ namespace EBSGFramework
                 List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
 
                 foreach (Gene gene in genesListForReading)
-                {
                     if (gene.def.HasModExtension<GRCExtension>())
                     {
                         float num = 1f;
@@ -306,7 +309,6 @@ namespace EBSGFramework
                         }
                         __result *= num;
                     }
-                }
             }
         }
 
@@ -317,8 +319,8 @@ namespace EBSGFramework
                 List<Gene> genesListForReading = romancer.genes.GenesListForReading;
                 float num = 1f;
                 bool flag = false;
+
                 foreach (Gene gene in genesListForReading)
-                {
                     if (gene.def.HasModExtension<GRCExtension>())
                     {
                         GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
@@ -338,7 +340,7 @@ namespace EBSGFramework
                         }
                         flag = true;
                     }
-                }
+
                 if (flag)
                 {
                     StringBuilder stringBuilder = new StringBuilder(__result);
@@ -357,16 +359,12 @@ namespace EBSGFramework
                 bool positiveValue = __result > 0;
 
                 if (!extension.geneticMultipliers.NullOrEmpty())
-                {
                     foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
-                    {
                         if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, geneticMultiplier.nullifyingGenes))
                         {
                             __result *= geneticMultiplier.multiplier;
                             if (geneticMultiplier.multiplier < 0) ensureReverse = true;
                         }
-                    }
-                }
 
                 if (ensureReverse && positiveValue == __result > 0) __result *= -1;
             }
@@ -374,38 +372,65 @@ namespace EBSGFramework
 
         public static void MakeThingPostfix(ref ThingDef def, ref ThingDef stuff, ref Thing __result)
         {
-            if (stuff != null && __result is ThingWithComps compThing && !stuff.comps.NullOrEmpty())
+            if (stuff != null && __result is ThingWithComps compThing && !stuff.comps.NullOrEmpty() && stuff.HasComp(typeof(CompRegenerating)))
             {
-                if (stuff.HasComp(typeof(CompRegenerating)))
-                {
-                    CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
-                    compRegenerating.parent = compThing;
-                    compThing.AllComps.Add(compRegenerating);
-                    compRegenerating.Initialize(stuff.comps.First((CompProperties c) => c.GetType() == typeof(CompProperties_Regenerating)));
-                }
+                CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
+                compRegenerating.parent = compThing;
+                compThing.AllComps.Add(compRegenerating);
+                compRegenerating.Initialize(stuff.comps.First((CompProperties c) => c.GetType() == typeof(CompProperties_Regenerating)));
             }
         }
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
             List<ThingDef> invalidThings = new List<ThingDef>();
-            foreach (ThingDef th in __result)
-            {
-                if (!th.comps.NullOrEmpty())
-                {
-                    foreach (CompProperties comp in th.comps)
+            foreach (ThingDef th in __result.Where((ThingDef t) => !t.comps.NullOrEmpty()))
+                foreach (CompProperties comp in th.comps)
+                    if (comp is CompProperties_Indestructible)
                     {
-                        if (comp is CompProperties_Indestructible)
-                        {
-                            invalidThings.Add(th);
-                            break;
-                        }
+                        invalidThings.Add(th);
+                        break;
                     }
-                }
-            }
             if (!invalidThings.NullOrEmpty())
-            {
                 __result = __result.Where((ThingDef t) => !invalidThings.Contains(t));
+        }
+
+        public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref int __result)
+        {
+            if (pawn.Map != null)
+            {
+                if (__result == 10000 && !pawn.Map.thingGrid.ThingsListAt(c).NullOrEmpty()) return; // If impassable due to a thing, it's probably a wall
+                if (pawn.Map != null && Cache != null && Cache.GetPawnTerrainComp(pawn, out HediffCompProperties_TerrainCostOverride terrainComp))
+                {
+                    if (c.Impassable(pawn.Map)) return; // If the tile is impassable, I don't want to touch that.
+
+                    // Universal Checks
+                    if (!EBSGUtilities.CheckGeneTrio(pawn, terrainComp.pawnHasAnyOfGenes, terrainComp.pawnHasAllOfGenes, terrainComp.pawnHasNoneOfGenes) ||
+                        !EBSGUtilities.CheckHediffTrio(pawn, terrainComp.pawnHasAnyOfHediffs, terrainComp.pawnHasAllOfHediffs, terrainComp.pawnHasNoneOfHediffs) ||
+                        !EBSGUtilities.CheckPawnCapabilitiesTrio(pawn, terrainComp.pawnCapLimiters, terrainComp.pawnSkillLimiters, terrainComp.pawnStatLimiters) ||
+                        !EBSGUtilities.AllNeedLevelsMet(pawn, terrainComp.pawnNeedLevels)) return;
+
+                    int num = ((c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal);
+                    TerrainDef terrainDef = pawn.Map.terrainGrid.TerrainAt(c);
+
+                    if (!terrainComp.terrainSets.NullOrEmpty() && terrainDef != null)
+                        foreach (TerrainLinker terrain in terrainComp.terrainSets)
+                        {
+                            // These check all 10 lists
+                            if (!EBSGUtilities.CheckGeneTrio(pawn, terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) ||
+                                !EBSGUtilities.CheckHediffTrio(pawn, terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) ||
+                                !EBSGUtilities.CheckPawnCapabilitiesTrio(pawn, terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) ||
+                                !EBSGUtilities.AllNeedLevelsMet(pawn, terrain.pawnNeedLevels)) continue;
+
+                            if (terrain.newCost >= 0 && ((terrain.terrain != null && terrain.terrain == terrainDef) ||
+                                (!terrain.terrains.NullOrEmpty() && terrain.terrains.Contains(terrainDef))))
+                            {
+                                __result = num + terrain.newCost;
+                                return;
+                            }
+                        }
+                    if (terrainComp.universalCostOverride >= 0) __result = num + terrainComp.universalCostOverride;
+                }
             }
         }
 
@@ -414,23 +439,19 @@ namespace EBSGFramework
         public static void DeathrestEfficiencyPostfix(ref int __result, Pawn ___pawn)
         {
             if (___pawn != null)
-            {
                 __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
-            }
         }
 
         public static void DeathrestNeedIntervalPostfix(ref Need_Deathrest __instance, Pawn ___pawn)
         {
             if (!__instance.Deathresting)
-                __instance.CurLevel += -1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency) - 1);
+                __instance.CurLevel += -1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestFallRate) - 1);
         }
 
         public static void GrowthPointStatPostfix(ref float __result, Pawn ___pawn)
         {
             if (___pawn != null)
-            {
                 __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_GrowthPointRate);
-            }
         }
 
         public static void KillThirstPostfix(Pawn ___pawn)
@@ -439,9 +460,7 @@ namespace EBSGFramework
             {
                 Need killThirst = ___pawn.needs.TryGetNeed<Need_KillThirst>();
                 if (killThirst != null)
-                {
                     ___pawn.needs.TryGetNeed<Need_KillThirst>().CurLevel -= 8.333333E-05f * (___pawn.GetStatValue(EBSGDefOf.EBSG_KillThirstRate) - 1);
-                }
             }
         }
 
@@ -530,41 +549,32 @@ namespace EBSGFramework
         public static void BodyResourceGrowthSpeedPostfix(ref float __result, Pawn pawn)
         {
             if (pawn != null)
-            {
                 __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed);
-            }
         }
 
         public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
         {
 
             if (___pawn != null && ___pawn.GetPsylinkLevel() > 0)
-            {
                 __result = (__result + ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
-            }
         }
 
         public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
         {
             HediffSet hediffSet = pawn.health.hediffSet;
             if (hediffSet.BleedRateTotal < 0.1f)
-            {
                 HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
-            }
         }
 
         public static void PawnHealthinessPostfix(Pawn __instance, ref float __result)
         {
             if (__instance != null)
-            {
                 __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness);
-            }
         }
 
         public static bool HasSpecialExplosion(Pawn pawn)
         {
             if (!pawn.Dead && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
-            {
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
@@ -574,7 +584,6 @@ namespace EBSGFramework
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
                     if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity) return true;
                 }
-            }
 
             return false;
         }
@@ -582,66 +591,52 @@ namespace EBSGFramework
         public static bool DoingSpecialExplosion(Pawn pawn, DamageInfo dinfo, Thing mainTarget)
         {
             if (pawn.health.hediffSet != null)
-            {
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null)
-                    {
-                        if (dinfo.Def == explodingComp.Props.damageDef && explodingComp.currentlyExploding) return true;
-                    }
+                    if (explodingComp != null && dinfo.Def == explodingComp.Props.damageDef && explodingComp.currentlyExploding) return true;
+
                     HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                    if (rangedExplodingComp != null)
-                    {
-                        if (dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
-                    }
+                    if (rangedExplodingComp != null && dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
+
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                    if (meleeExplodingComp != null)
-                    {
-                        if (dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
-                    }
+                    if (meleeExplodingComp != null && dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
                 }
-            }
             return false;
         }
 
         public static void TakeDamagePostfix(DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
-            if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn)
+            if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance) &&
+                EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
             {
-                if (HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance))
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
-                    if (EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
+                    if (hediff.def.comps.NullOrEmpty()) continue;
+                    HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
+                    if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity)
                     {
-                        foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-                        {
-                            if (hediff.def.comps.NullOrEmpty()) continue;
-                            HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                            if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity)
-                            {
-                                explodingComp.currentlyExploding = true;
-                                explodingComp.DoExplosion(__instance.Position);
-                            }
-                            if (dinfo.Def == null) continue; // Special catch
+                        explodingComp.currentlyExploding = true;
+                        explodingComp.DoExplosion(__instance.Position);
+                    }
+                    if (dinfo.Def == null) continue; // Special catch
 
-                            if (dinfo.Def.isRanged)
-                            {
-                                HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                                if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity)
-                                {
-                                    rangedExplodingComp.currentlyExploding = true;
-                                    rangedExplodingComp.DoExplosion(__instance.Position);
-                                }
-                            }
-                            else if (!dinfo.Def.isExplosive)
-                            {
-                                HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                                if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity)
-                                {
-                                    meleeExplodingComp.currentlyExploding = true;
-                                    meleeExplodingComp.DoExplosion(__instance.Position);
-                                }
-                            }
+                    if (dinfo.Def.isRanged)
+                    {
+                        HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
+                        if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity)
+                        {
+                            rangedExplodingComp.currentlyExploding = true;
+                            rangedExplodingComp.DoExplosion(__instance.Position);
+                        }
+                    }
+                    else if (!dinfo.Def.isExplosive)
+                    {
+                        HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
+                        if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity)
+                        {
+                            meleeExplodingComp.currentlyExploding = true;
+                            meleeExplodingComp.DoExplosion(__instance.Position);
                         }
                     }
                 }
@@ -651,9 +646,7 @@ namespace EBSGFramework
         public static void DamageAmountPostfix(ref float __result, DamageInfo __instance)
         {
             if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
-            {
                 __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
-            }
         }
     }
 }

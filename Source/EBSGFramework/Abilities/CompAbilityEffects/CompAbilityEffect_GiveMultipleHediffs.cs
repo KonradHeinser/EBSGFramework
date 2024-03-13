@@ -26,7 +26,6 @@ namespace EBSGFramework
                     }
                 }
             }
-
         }
 
         protected void ApplyInner(Pawn target, Pawn other, HediffToGive hediffToGive)

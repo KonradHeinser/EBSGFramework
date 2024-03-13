@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/Statdef[defName="Fertility"]</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
+            <value><li Class="EBSGFramework.StatPart_FertilityByGenes" MayRequire="Ludeon.Rimworld.Biotech" /></value>
+        </match>
+    </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>ageLimitedAgeless</setting>
+        <active Class="PatchOperationConditional">
+            <xpath>Defs/GeneDef[defName="Ageless"]/geneClass</xpath>
+            <nomatch Class="PatchOperationConditional">
+                <xpath>Defs/GeneDef[defName="Ageless"]/modExtensions</xpath>
+                <match Class="PatchOperationSequence">
+                    <operations>
+                        <li Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[defName="Ageless"]</xpath>
+                            <value>
+                                <geneClass>EBSGFramework.SpawnAgeLimiter</geneClass>
+                            </value>
+                        </li>
+                        <li Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[defName="Ageless"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <expectedAges>0~30</expectedAges>
+                                    <ageRange>18~30</ageRange>
+                                </li>
+                            </value>
+                        </li>
+                    </operations>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[defName="Ageless"]</xpath>
+                    <value>
+                        <geneClass>EBSGFramework.SpawnAgeLimiter</geneClass>
+                        <modExtensions>
+                            <li Class="EBSGFramework.EBSGExtension">
+                                <expectedAges>0~30</expectedAges>
+                                <ageRange>18~30</ageRange>
+                            </li>
+                        </modExtensions>
+                    </value>
+                </nomatch>
+            </nomatch>
+        </active>
+    </Operation>
+</Patch>

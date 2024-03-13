@@ -266,6 +266,8 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TerrainCostOverride.cs" />
     <Compile Include="GameComponents\MultipleLives_Component.cs" />
     <Compile Include="GameComponents\EBSGCache_Component.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffsOnRemoval.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HediffsOnRemoval.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

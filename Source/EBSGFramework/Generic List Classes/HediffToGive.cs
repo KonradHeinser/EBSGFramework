@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public HediffDef hediffDef;
 
+        public List<HediffDef> hediffDefs;
+
         public bool onlyBrain;
 
         public List<BodyPartDef> bodyParts;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <DamageDef>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
+        <workerClass>EBSGFramework.DamageWorker_PermanentInjury</workerClass>
+        <externalViolence>true</externalViolence>
+        <deathMessage>{0} has been killed by bad genes.</deathMessage>
+        <hediff>EBSG_GeneticDamage</hediff>
+        <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
+        <hasForcefulImpact>false</hasForcefulImpact>
+        <canInterruptJobs>false</canInterruptJobs>
+        <impactSoundType />
+        <armorCategory />
+    </DamageDef>
+
+    <HediffDef>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
+        <hediffClass>Hediff_Injury</hediffClass>
+        <labelNounPretty>{0} in the {1}</labelNounPretty>
+        <labelNoun>a geneticly damaged part</labelNoun>
+        <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
+        <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
+        <comps>
+            <li Class="HediffCompProperties_GetsPermanent">
+                <permanentLabel>permanent genetic damage</permanentLabel>
+                <instantlyPermanentLabel>permanent genetic damage</instantlyPermanentLabel>
+            </li>
+        </comps>
+        <injuryProps>
+            <painPerSeverity>0</painPerSeverity>
+            <averagePainPerSeverityPermanent>0</averagePainPerSeverityPermanent>
+            <bleedRate>0.00</bleedRate>
+            <canMerge>true</canMerge>
+            <destroyedLabel>Genetically Damaged</destroyedLabel>
+        </injuryProps>
+    </HediffDef>
+</Defs>

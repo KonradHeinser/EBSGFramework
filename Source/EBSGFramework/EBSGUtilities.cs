@@ -355,6 +355,97 @@ namespace EBSGFramework
             }
         }
 
+        public static bool CheckGeneTrio(Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
+        {
+            if (pawn == null || pawn.genes == null) return false;
+
+            if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, oneOfGenes)) return false;
+            if (!allOfGenes.NullOrEmpty() && !PawnHasAllOfGenes(pawn, allOfGenes)) return false;
+            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, noneOfGenes)) return false;
+
+            return true;
+        }
+
+        public static bool CheckHediffTrio(Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null)
+        {
+            if (pawn == null || pawn.health == null) return false;
+
+            if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs)) return false;
+            if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs)) return false;
+            if (!noneOfHediffs.NullOrEmpty() && PawnHasAnyOfHediffs(pawn, noneOfHediffs)) return false;
+
+            return true;
+        }
+
+        public static bool CheckPawnCapabilitiesTrio(Pawn pawn, List<CapCheck> capChecks = null, List<SkillCheck> skillChecks = null, List<StatCheck> statChecks = null)
+        {
+            if (pawn == null) return false;
+
+            if (!capChecks.NullOrEmpty())
+            {
+                foreach (CapCheck capCheck in capChecks)
+                {
+                    if (!pawn.health.capacities.CapableOf(capCheck.capacity))
+                    {
+                        if (capCheck.minCapValue > 0)
+                        {
+                            return false;
+                        }
+                        continue;
+                    }
+                    float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                    if (capValue < capCheck.minCapValue)
+                    {
+                        return false;
+                    }
+                    if (capValue > capCheck.maxCapValue)
+                    {
+                        return false;
+                    }
+                }
+            }
+            if (!skillChecks.NullOrEmpty())
+            {
+                foreach (SkillCheck skillCheck in skillChecks)
+                {
+                    SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
+                    if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
+                    {
+                        if (skillCheck.minLevel > 0)
+                        {
+                            return false;
+                        }
+                        continue;
+                    }
+                    if (skill.Level < skillCheck.minLevel)
+                    {
+                        return false;
+                    }
+                    if (skill.Level > skillCheck.maxLevel)
+                    {
+                        return false;
+                    }
+                }
+            }
+            if (!statChecks.NullOrEmpty())
+            {
+                foreach (StatCheck statCheck in statChecks)
+                {
+                    float statValue = pawn.GetStatValue(statCheck.stat);
+                    if (statValue < statCheck.minStatValue)
+                    {
+                        return false;
+                    }
+                    if (statValue > statCheck.maxStatValue)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         public static bool CastingAbility(Pawn pawn)
         {
             if (pawn.stances.curStance is Stance_Busy stance_Busy)
@@ -465,11 +556,9 @@ namespace EBSGFramework
 
         public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs)
         {
-            if (hediffs.NullOrEmpty()) return false;
+            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
             foreach (HediffDef hediff in hediffs)
-            {
                 if (HasHediff(pawn, hediff)) return true;
-            }
             return false;
         }
 
@@ -477,9 +566,8 @@ namespace EBSGFramework
         {
             if (hediffs.NullOrEmpty()) return true;
             foreach (HediffDef hediff in hediffs)
-            {
-                if (!HasHediff(pawn, hediff)) return false;
-            }
+                if (!HasHediff(pawn, hediff))
+                    return false;
             return true;
         }
 
@@ -490,9 +578,8 @@ namespace EBSGFramework
             {
                 Need need = pawn.needs.TryGetNeed(needLevel.need);
                 if (need != null)
-                {
-                    if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel) return false;
-                }
+                    if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel)
+                        return false;
             }
             return true;
         }

@@ -1,5 +1,4 @@
 ﻿using Verse;
-using RimWorld;
 using System.Collections.Generic;
 
 namespace EBSGFramework
@@ -17,9 +16,10 @@ namespace EBSGFramework
                 pawnTerrainComps[pawn] = hediff;
         }
 
-        public void DeRegisterTerrainPawn(Pawn pawn, Hediff hediff)
+        public void DeRegisterTerrainPawn(Pawn pawn)
         {
-            pawnTerrainComps.Remove(pawn);
+            if (pawnTerrainComps.ContainsKey(pawn))
+                pawnTerrainComps.Remove(pawn);
         }
 
         public EBSGCache_Component(Game game)
@@ -28,15 +28,34 @@ namespace EBSGFramework
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
         }
 
-        public bool RetrievePawnTerrainComp(Pawn pawn, out HediffCompProperties_TerrainCostOverride comp)
+        public bool GetPawnTerrainComp(Pawn pawn, out HediffCompProperties_TerrainCostOverride comp)
         {
             // Only the first one applies to the pawn
 
-            if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !EBSGUtilities.HasHediff(pawn, pawnTerrainComps[pawn].def))
-            {
+            bool flag = true;
 
+            if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !EBSGUtilities.HasHediff(pawn, pawnTerrainComps[pawn].def) || pawnTerrainComps[pawn].TryGetComp<HediffComp_TerrainCostOverride>() == null)
+            {
+                DeRegisterTerrainPawn(pawn);
+                flag = false;
+
+                if (pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+                {
+                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                        if (hediff.TryGetComp<HediffComp_TerrainCostOverride>() != null)
+                        {
+                            RegisterTerrainPawn(pawn, hediff);
+                            flag = true;
+                            break;
+                        }
+                }
             }
 
+            if (flag)
+            {
+                comp = pawnTerrainComps[pawn].TryGetComp<HediffComp_TerrainCostOverride>().Props;
+                return true;
+            }
 
             comp = null;
             return false;

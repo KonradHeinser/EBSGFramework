@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef>
+        <defName>EBSG_PawnGestationSpeed</defName>
+        <label>pregnancy speed</label>
+        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.001</minValue>
+        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>2201</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef>
+        <defName>EBSG_BloodlossRecoveryBonus</defName>
+        <label>bloodloss recovery bonus</label>
+        <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <hideAtValue>0</hideAtValue>
+        <minValue>-1</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>2202</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef>
+        <defName>EBSG_Healthiness</defName>
+        <label>healthiness</label>
+        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.1</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>2203</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef Name="RateChanger" Abstract="True">
+        <category>BasicsPawn</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.0001</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_DeathrestFallRate</defName>
+        <label>deathrest fall rate</label>
+        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <displayPriorityInCategory>3400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_DeathrestEfficiency</defName>
+        <label>deathrest efficiency</label>
+        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <displayPriorityInCategory>3401</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_KillThirstRate</defName>
+        <label>kill satiety rate</label>
+        <description>Alters how long it takes for a pawn to reach peak murderous tendencies. The higher this is, the more often the pawn must kill pawns to remain happy.</description>
+        <displayPriorityInCategory>3402</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_ComfortRiseRate</defName>
+        <label>comfort rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3403</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_ComfortFallRate</defName>
+        <label>comfort fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3404</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_BeautyRiseRate</defName>
+        <label>beauty rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3405</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_BeautyFallRate</defName>
+        <label>beauty fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3406</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_MoodRiseRate</defName>
+        <label>mood rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3407</displayPriorityInCategory>
+    </StatDef>
+    
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_MoodFallRate</defName>
+        <label>mood fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3408</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_JoyRiseRate</defName>
+        <label>recreation rise rate</label>
+        <description>Alters how much this pawn gains from recreational activities.</description>
+        <displayPriorityInCategory>3409</displayPriorityInCategory>
+    </StatDef>
+    
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_JoyFallRate</defName>
+        <label>recreation fall rate</label>
+        <description>Alters how often this pawn needs to participate in recreational activities.</description>
+        <displayPriorityInCategory>3410</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_GrowthPointRate</defName>
+        <label>growth point rate</label>
+        <description>Multiplies how quickly this pawn gains growth points. The higher this multiplier is, the greater the effects of things like growth vats and high learning values.</description>
+        <minValue>0</minValue>
+        <showDevelopmentalStageFilter>Child</showDevelopmentalStageFilter>
+        <displayPriorityInCategory>3411</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_OutgoingDamageFactor</defName>
+        <label>outgoing damage factor</label>
+        <description>A multiplier on all outgoing damage.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5201</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_PsyfocusFallRateOffset</defName>
+        <label>psyfocus fall rate offset</label>
+        <description>An offset on the psyfocus change rate. This takes effect before psyfocus fall rate factor, and when negative it can cause the pawn to regenerate focus without meditating, assuming its value is low enough.</description>
+        <defaultBaseValue>0</defaultBaseValue>
+        <hideAtValue>0</hideAtValue>
+        <minValue>-999999</minValue>
+        <displayPriorityInCategory>4011</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="RateChanger">
+        <defName>EBSG_PsyfocusFallRateFactor</defName>
+        <label>psyfocus fall rate factor</label>
+        <description>A multiplier on the psyfocus change rate. This takes effect after psyfocus fall rate offset.</description>
+        <minValue>0</minValue>
+        <displayPriorityInCategory>4012</displayPriorityInCategory>
+    </StatDef>  
+</Defs>
