@@ -395,7 +395,7 @@ namespace EBSGFramework
                 __result = __result.Where((ThingDef t) => !invalidThings.Contains(t));
         }
 
-        public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref int __result)
+        public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref float __result)
         {
             if (pawn.Map != null)
             {
@@ -410,7 +410,7 @@ namespace EBSGFramework
                         !EBSGUtilities.CheckPawnCapabilitiesTrio(pawn, terrainComp.pawnCapLimiters, terrainComp.pawnSkillLimiters, terrainComp.pawnStatLimiters) ||
                         !EBSGUtilities.AllNeedLevelsMet(pawn, terrainComp.pawnNeedLevels)) return;
 
-                    int num = ((c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal);
+                    float num = (c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal;
                     TerrainDef terrainDef = pawn.Map.terrainGrid.TerrainAt(c);
 
                     if (!terrainComp.terrainSets.NullOrEmpty() && terrainDef != null)

@@ -1,25 +1,28 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs">
     <Files>
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_GiveMultipleHediffs.cs" Line="10" Column="120" />
-      <File FileName="Generic List Classes/HediffToGive.cs" Line="24" Column="30" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HediffsOnRemoval.cs" Line="8" Column="48" />
-      <File FileName="Hediffs/Comps/HediffComp_HediffsOnRemoval.cs" Line="24" Column="50" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="56" Column="91" />
+      <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="40" Column="93" />
+      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs" Line="32" Column="138" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="468" Column="10" />
+      <File FileName="DynamicResourceGenes/JobGiver_GetResourcePack.cs" Line="138" Column="161" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="21" Column="57" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+              </Node>
+              <Node name="DynamicResourceGenes" expanded="True" />
               <Node name="GameComponents" expanded="True" />
               <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
-              </Node>
+              <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffComp_SeverityByLightLevel.cs" selected="True" />
+                </Node>
               </Node>
               <Node name="Things" expanded="True" />
             </Node>

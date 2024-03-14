@@ -13,7 +13,7 @@ namespace EBSGFramework
                 EBSGUtilities.AddedHediffError(parent, Pawn);
 
             if (Pawn.Map != null)
-                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GameGlowAt(Pawn.Position, false));
+                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GroundGlowAt(Pawn.Position));
             else if (Props.timeToSeverityCurve != null)
                 parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
         }
@@ -23,7 +23,7 @@ namespace EBSGFramework
             if (!Pawn.IsHashIntervalTick(200)) return;
 
             if (Pawn.Map != null)
-                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GameGlowAt(Pawn.Position, false));
+                parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GroundGlowAt(Pawn.Position));
             else if (Props.timeToSeverityCurve != null)
                 parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
         }

@@ -18,7 +18,7 @@ namespace EBSGFramework
             }
 
             // Get all a list of all pawns, and a list of all player pawns
-            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawnsSpawned;
+            List<Pawn> list = (List<Pawn>)parent.pawn.Map.mapPawns.AllPawnsSpawned;
             List<Pawn> allies = parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction);
             if (!Props.hideMoteWhenNotDrafted || parent.pawn.Drafted)
             {

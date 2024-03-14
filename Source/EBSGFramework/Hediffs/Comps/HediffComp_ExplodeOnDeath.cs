@@ -6,10 +6,9 @@ namespace EBSGFramework
     {
         public new HediffCompProperties_ExplodeOnDeath Props => (HediffCompProperties_ExplodeOnDeath)props;
 
-        public override void Notify_PawnDied()
+        public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
         {
-            if (parent.Severity >= Props.minSeverity && parent.Severity < Props.maxSeverity)
-                DoExplosion(parent.pawn.Corpse.Position);
+            DoExplosion(parent.pawn.Corpse.Position);
         }
     }
 }

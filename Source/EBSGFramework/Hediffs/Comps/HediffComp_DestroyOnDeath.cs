@@ -7,9 +7,8 @@ namespace EBSGFramework
     {
         private HediffCompProperties_DestroyOnDeath Props => (HediffCompProperties_DestroyOnDeath)props;
 
-        public override void Notify_PawnDied()
+        public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
         {
-            base.Notify_PawnDied();
             if (parent.pawn.Corpse == null || parent.pawn.Corpse.Destroyed) return;
             Map map = parent.pawn.Corpse.Map;
             if (map == null) map = parent.pawn.Corpse.MapHeld;

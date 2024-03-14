@@ -26,7 +26,7 @@ namespace EBSGFramework
 
         public bool multiplyByGeneToleranceFactors;
 
-        protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested)
+        protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
             float effect = 0;
             if (checkedHediffDef != null)
@@ -96,7 +96,7 @@ namespace EBSGFramework
             }
 
             if (divideByBodySize) effect /= pawn.BodySize;
-            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize_NewTemp(pawn, toleranceChemical, ref effect, multiplyByGeneToleranceFactors);
+            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref effect, multiplyByGeneToleranceFactors);
 
             EBSGUtilities.AddOrAppendHediffs(pawn, effect, effect, hediffDef);
         }

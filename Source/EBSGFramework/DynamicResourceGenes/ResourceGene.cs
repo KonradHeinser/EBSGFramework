@@ -40,7 +40,7 @@ namespace EBSGFramework
 
                             if (pawn.Map != null)
                             {
-                                float light = pawn.Map.glowGrid.GameGlowAt(pawn.Position, false);
+                                float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
                                 if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
                             }
                         }

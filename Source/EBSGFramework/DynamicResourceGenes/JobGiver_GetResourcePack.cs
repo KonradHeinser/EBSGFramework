@@ -34,7 +34,7 @@ namespace EBSGFramework
                             cachedResourcePackResourceGain = ingestionOutcomeDoer_OffsetResource.offset;
                         }
 
-                            // Checks if inventory has the thing because if so it'll be the default anyway
+                        // Checks if inventory has the thing because if so it'll be the default anyway
                         if (carriedThing != null && carriedThing.def == thing)
                         {
                             return cachedResourcePackResourceGain.Value;
@@ -135,7 +135,7 @@ namespace EBSGFramework
             {
                 return "CannotFeedOnWouldKill".Translate(prisoner.Named("PAWN"));
             }
-            if (!prisoner.IsPrisonerOfColony || !prisoner.guest.PrisonerIsSecure || prisoner.guest.interactionMode != PrisonerInteractionModeDefOf.Bloodfeed || prisoner.IsForbidden(bloodfeeder) || !bloodfeeder.CanReserveAndReach(prisoner, PathEndMode.OnCell, bloodfeeder.NormalMaxDanger()) || prisoner.InAggroMentalState)
+            if (!prisoner.IsPrisonerOfColony || !prisoner.guest.PrisonerIsSecure || !prisoner.guest.IsInteractionEnabled(PrisonerInteractionModeDefOf.Bloodfeed) || prisoner.IsForbidden(bloodfeeder) || !bloodfeeder.CanReserveAndReach(prisoner, PathEndMode.OnCell, bloodfeeder.NormalMaxDanger()) || prisoner.InAggroMentalState)
             {
                 return false;
             }
