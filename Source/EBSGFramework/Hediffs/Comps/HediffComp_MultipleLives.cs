@@ -212,7 +212,7 @@ namespace EBSGFramework
             }
         }
 
-        public override void Notify_PawnDied()
+        public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
         {
             if (Props.needBrainToRevive && Pawn.health.hediffSet.GetBrain() == null) return;
             deathTile = Pawn.Tile;

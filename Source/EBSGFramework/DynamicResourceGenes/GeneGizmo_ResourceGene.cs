@@ -109,7 +109,7 @@ namespace EBSGFramework
                     }
                 }
             }
-            base.DrawLabel(headerRect, ref mouseOverElement);
+            base.DrawHeader(headerRect, ref mouseOverElement);
         }
 
         protected override string GetTooltip()

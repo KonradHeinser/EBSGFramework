@@ -29,7 +29,7 @@ namespace EBSGFramework
                 }
             }
             List<Pawn> list = null;
-            list = ((!Props.onlyPawnsInSameFaction || parent.pawn.Faction == null) ? (List<Pawn>)parent.pawn.Map.mapPawns.AllPawnsSpawned : parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction));
+            list = ((!Props.onlyPawnsInSameFaction || parent.pawn.Faction == null) ? parent.pawn.Map.mapPawns.AllPawns : parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction));
             foreach (Pawn item in list)
             {
                 if (!item.RaceProps.Humanlike || item.Dead || item.health == null || item == parent.pawn || !(item.Position.DistanceTo(parent.pawn.Position) <= Props.range) || !Props.targetingParameters.CanTarget(item) || (!Props.forbiddenGenes.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfGenes(item, Props.forbiddenGenes)))

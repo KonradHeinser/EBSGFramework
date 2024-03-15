@@ -12,6 +12,8 @@ namespace EBSGFramework
         public static StatDef EBSG_Healthiness;
         public static DamageDef EBSG_GeneticDamage;
 
+        public static PawnCapacityDef Metabolism;
+
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_DeathrestFallRate;

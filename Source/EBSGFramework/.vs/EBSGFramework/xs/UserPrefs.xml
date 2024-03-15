@@ -1,11 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DamageWorker_PermanentInjury.cs">
     <Files>
       <File FileName="DynamicResourceGenes/ResourceDrainGene.cs" Line="40" Column="93" />
-      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs" Line="32" Column="138" />
+      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsInRangeGeneRestricting.cs" Line="1" Column="1" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="468" Column="10" />
       <File FileName="DynamicResourceGenes/JobGiver_GetResourcePack.cs" Line="138" Column="161" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="21" Column="57" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByLightLevel.cs" Line="30" Column="6" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="212" Column="14" />
+      <File FileName="EBSGUtilities.cs" Line="486" Column="14" />
+      <File FileName="EBSGDefOf.cs" Line="15" Column="23" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByNearbyPawns.cs" Line="23" Column="64" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityByColonyGenes.cs" Line="21" Column="66" />
+      <File FileName="Hediffs/BurstHediffCompBase.cs" Line="37" Column="26" />
+      <File FileName="DynamicResourceGenes/GeneGizmo_ResourceGene.cs" Line="114" Column="9" />
+      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsToNonAlliesInRange.cs" Line="21" Column="64" />
+      <File FileName="Dependencies/Hediff_Dependency.cs" Line="83" Column="45" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="163" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,16 +25,16 @@
               <Node name="Abilities" expanded="True">
                 <Node name="CompAbilityEffects" expanded="True" />
               </Node>
+              <Node name="Dependencies" expanded="True" />
               <Node name="DynamicResourceGenes" expanded="True" />
               <Node name="GameComponents" expanded="True" />
               <Node name="Generic List Classes" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_SeverityByLightLevel.cs" selected="True" />
-                </Node>
+                <Node name="Comps" expanded="True" />
               </Node>
               <Node name="Things" expanded="True" />
+              <Node name="DamageWorker_PermanentInjury.cs" selected="True" />
             </Node>
           </Node>
         </State>

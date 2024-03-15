@@ -23,7 +23,7 @@ namespace EBSGFramework
                     cachedLethalCapacities.Add(PawnCapacityDefOf.BloodFiltration);
                     cachedLethalCapacities.Add(PawnCapacityDefOf.Breathing);
                     cachedLethalCapacities.Add(PawnCapacityDefOf.Consciousness);
-                    cachedLethalCapacities.Add(PawnCapacityDefOf.Metabolism);
+                    cachedLethalCapacities.Add(EBSGDefOf.Metabolism);
                 }
                 return cachedLethalCapacities;
             }
@@ -486,7 +486,7 @@ namespace EBSGFramework
             }
             if (autoSearch)
             {
-                List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned;
+                List<Pawn> pawns = pawn.Map.mapPawns.AllPawns;
                 pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
                 foreach (Pawn otherPawn in pawns)
                 {
@@ -979,7 +979,7 @@ namespace EBSGFramework
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;
                     for (int i = 0; i < wornApparel.Count; i++)
                     {
-                        wornApparel[i].Notify_PawnResurrected();
+                        wornApparel[i].Notify_PawnResurrected(pawn);
                     }
                 }
             }
@@ -988,10 +988,10 @@ namespace EBSGFramework
             {
                 pawn.royalty.Notify_Resurrected();
             }
-            if (pawn.guest != null && pawn.guest.interactionMode == PrisonerInteractionModeDefOf.Execution)
-            {
-                pawn.guest.interactionMode = PrisonerInteractionModeDefOf.NoInteraction;
-            }
+
+            if (pawn.guest != null && pawn.guest.IsInteractionEnabled(PrisonerInteractionModeDefOf.Execution))
+                pawn.guest.SetNoInteraction();
+
             if (flag2 && pawn != null)
             {
                 Find.Selector.Select(pawn, false, false);

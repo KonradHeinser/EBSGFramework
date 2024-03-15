@@ -4,3 +4,5 @@
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/Assemblies/EBSGFramework.pdb
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/Source/EBSGFramework/obj/Debug/EBSGFramework.dll
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/Source/EBSGFramework/obj/Debug/EBSGFramework.pdb
+/home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/1.5/Assemblies/EBSGFramework.dll
+/home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/1.5/Assemblies/EBSGFramework.pdb

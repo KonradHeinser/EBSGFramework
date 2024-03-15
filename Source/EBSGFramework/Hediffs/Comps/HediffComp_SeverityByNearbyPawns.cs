@@ -20,7 +20,7 @@ namespace EBSGFramework
             float range = Props.range;
             if (Props.rangeStat != null && parent.pawn.GetStatValue(Props.rangeStat) > 0) range = parent.pawn.GetStatValue(Props.rangeStat);
 
-            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => CheckPawn(p, range)).ToList();
+            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawns.Where((Pawn p) => CheckPawn(p, range)).ToList();
             parent.Severity = list.Count;
         }
 

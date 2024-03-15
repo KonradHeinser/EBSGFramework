@@ -80,7 +80,7 @@ namespace EBSGFramework
                 string text = "";
                 foreach (StatDrawEntry item in HediffStatsUtility.SpecialDisplayStats(CurStage, this))
                 {
-                    if (item.ShouldDisplay)
+                    if (item.ShouldDisplay())
                     {
                         text += ("\n  - " + item.LabelCap + ": " + item.ValueString);
                     }
@@ -178,10 +178,10 @@ namespace EBSGFramework
             if (!(other is Hediff_Dependency hediff_Dependency)) return false;
 
             if (chemical != null)
-            {            
+            {
                 if (hediff_Dependency.chemical == chemical) return base.TryMergeWith(other);
             }
-            else if(hediff_Dependency.AssignedLabel == AssignedLabel) return base.TryMergeWith(other);
+            else if (hediff_Dependency.AssignedLabel == AssignedLabel) return base.TryMergeWith(other);
 
             return false;
         }

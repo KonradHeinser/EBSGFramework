@@ -3,7 +3,7 @@ namespace EBSGFramework
 {
     public class CompIndestructible : ThingComp
     {
-        public override void PostPreApplyDamage(DamageInfo dinfo, out bool absorbed)
+        public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             absorbed = true;
         }

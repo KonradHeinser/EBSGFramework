@@ -160,7 +160,7 @@ namespace EBSGFramework
             HediffDef hediffDefFromDamage = HealthUtility.GetHediffDefFromDamage(dinfo.Def, pawn, dinfo.HitPart);
             Hediff_Injury hediff_Injury = (Hediff_Injury)HediffMaker.MakeHediff(hediffDefFromDamage, pawn);
             hediff_Injury.Part = dinfo.HitPart;
-            hediff_Injury.source = dinfo.Weapon;
+            hediff_Injury.sourceDef = dinfo.Weapon;
             hediff_Injury.sourceBodyPartGroup = dinfo.WeaponBodyPartGroup;
             hediff_Injury.sourceHediffDef = dinfo.WeaponLinkedHediff;
             hediff_Injury.Severity = totalDamage;
@@ -225,7 +225,7 @@ namespace EBSGFramework
                 {
                     Hediff_Injury hediff_Injury = (Hediff_Injury)HediffMaker.MakeHediff(HealthUtility.GetHediffDefFromDamage(dinfo.Def, pawn, parent), pawn);
                     hediff_Injury.Part = parent;
-                    hediff_Injury.source = dinfo.Weapon;
+                    hediff_Injury.sourceDef = dinfo.Weapon;
                     hediff_Injury.sourceBodyPartGroup = dinfo.WeaponBodyPartGroup;
                     hediff_Injury.Severity = totalDamage;
                     if (hediff_Injury.Severity <= 0f)
@@ -271,7 +271,8 @@ namespace EBSGFramework
         {
             if (!pawn.Dead && pawn.SpawnedOrAnyParentSpawned && dinfo.Def.ExternalViolenceFor(pawn))
             {
-                LifeStageUtility.PlayNearestLifestageSound(pawn, (LifeStageAge ls) => ls.soundWounded, (GeneDef g) => g.soundWounded);
+
+                LifeStageUtility.PlayNearestLifestageSound(pawn, (LifeStageAge ls) => ls.soundWounded, (GeneDef g) => g.soundWounded, (MutantDef m) => m.soundWounded);
             }
         }
 

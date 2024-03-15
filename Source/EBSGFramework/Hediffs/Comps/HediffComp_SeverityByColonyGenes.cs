@@ -18,7 +18,7 @@ namespace EBSGFramework
 
             if (pawn.Map != null)
             {
-                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == pawn.Faction).ToList());
+                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => p.Faction != null && p.Faction == pawn.Faction).ToList());
             }
             else
             {
