@@ -18,6 +18,21 @@
     <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
     <EBSG_AgeLimitedAgelessDescription>When the ageless gene is applied (or the pawn spawns with it) to a pawn with an age over 30, their body will be instantly rejuvenated to be between 18 and 30 years old.</EBSG_AgeLimitedAgelessDescription>
 
+    <!--These settings are for all of the EBSG mods-->
+    <EBSGAiO_ModName>Expanded Biotech Style Genes - All in One</EBSGAiO_ModName>
+    <EBSGAiO_ModDescription>Expanded Biotech Style Genes is a mod series that seeks to provide massive amounts of customization options for pawns, from how they fight to what kind of work they are skilled in to how long they live. While I'm not going to claim the list is completely exhaustive, the hundreds of options will leave you thinking "maybe the dev needs another hobby?", and the bad artwork will make you think "well at least I'm more here for the gameplay".</EBSGAiO_ModDescription>
+
+    <EBSGBleed_ModName>EBSG - Bleed Genes</EBSGBleed_ModName>
+    <SuperclottingArchite>    Superclotting uses archite, not metabolic efficiency</SuperclottingArchite>
+
+    <EBSGPsychic_ModName>EBSG - Expanded Psychic Genes</EBSGPsychic_ModName>
+    <PsychicInsulationMood>    Psychic Insulation removes Psychic Bond mood bonuses and penalties.</PsychicInsulationMood>
+    <PsychicInsulationOpinion>    Psychic Insulation removes the Psychic Bond opinion bonus.</PsychicInsulationOpinion>
+
+    <EAG_ModName>Expanded Archite Genes</EAG_ModName>
+    <EAG_ModDescription>Expanded Archite Genes gives a bunch of archite level genes for any genes added through the Biotech Style Genes series.</EAG_ModDescription>
+    <ArchitePsychicInfluencer>     Archite Psychic Influencer removes the Psychic Bond Torn mood.</ArchitePsychicInfluencer>
+
         <!--Revival hediff comp-->
     <EBSG_LastLife>{PAWN_nameDef} is on their last life.</EBSG_LastLife>
     <EBSG_OneLifeStill>{PAWN_nameDef} still has their extra life.</EBSG_OneLifeStill> <!--This is used if the pawn is only capable of having one extra life-->

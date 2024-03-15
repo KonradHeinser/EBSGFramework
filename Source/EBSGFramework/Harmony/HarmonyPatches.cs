@@ -65,8 +65,6 @@ namespace EBSGFramework
             }
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 postfix: new HarmonyMethod(patchType, nameof(GainJoyPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.NeedInterval)),
-                postfix: new HarmonyMethod(patchType, nameof(JoyIntervalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Mood), nameof(Need_Mood.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
@@ -471,28 +469,6 @@ namespace EBSGFramework
                 amount *= ___tolerances.JoyFactorFromTolerance(joyKind) * (___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate) - 1);
                 amount = Mathf.Min(amount, 1f - ___pawn.needs.joy.CurLevel);
                 ___pawn.needs.joy.CurLevel += amount;
-            }
-        }
-
-        public static void JoyIntervalPostfix(Pawn ___pawn, NeedDef ___def, int ___lastGainTick)
-        {
-            if (!EBSGUtilities.NeedFrozen(___pawn, ___def) && (Find.TickManager.TicksGame > ___lastGainTick + 10) || ___lastGainTick < 0)
-            {
-                JoyCategory joyCategory = ___pawn.needs.joy.CurCategory;
-                float fallPerInterval = 0;
-                switch (joyCategory)
-                {
-                    case JoyCategory.VeryLow:
-                        fallPerInterval = 0.0006f;
-                        break;
-                    case JoyCategory.Low:
-                        fallPerInterval = 0.00105f;
-                        break;
-                    default:
-                        fallPerInterval = 0.0015f;
-                        break;
-                }
-                ___pawn.needs.joy.CurLevel -= fallPerInterval * (___pawn.GetStatValue(EBSGDefOf.EBSG_JoyFallRate) - 1) * (___pawn.IsFormingCaravan() ? 0.5f : 1f);
             }
         }
 

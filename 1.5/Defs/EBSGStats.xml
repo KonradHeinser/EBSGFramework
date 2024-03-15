@@ -116,13 +116,6 @@
     </StatDef>
     
     <StatDef ParentName="RateChanger">
-        <defName>EBSG_JoyFallRate</defName>
-        <label>recreation fall rate</label>
-        <description>Alters how often this pawn needs to participate in recreational activities.</description>
-        <displayPriorityInCategory>3410</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="RateChanger">
         <defName>EBSG_GrowthPointRate</defName>
         <label>growth point rate</label>
         <description>Multiplies how quickly this pawn gains growth points. The higher this multiplier is, the greater the effects of things like growth vats and high learning values.</description>

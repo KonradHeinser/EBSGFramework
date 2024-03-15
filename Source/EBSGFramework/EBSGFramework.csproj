@@ -150,8 +150,6 @@
     <Compile Include="JobDriver_RelaxInWater.cs" />
     <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
     <Compile Include="Genes\SpawnAgeLimiter.cs" />
-    <Compile Include="EBSG_Settings.cs" />
-    <Compile Include="PatchOperationSetting.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLearnSkill.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
     <Compile Include="Genes\GRCExtension.cs" />
@@ -268,6 +266,8 @@
     <Compile Include="GameComponents\EBSGCache_Component.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffsOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffsOnRemoval.cs" />
+    <Compile Include="Settings\EBSG_Settings.cs" />
+    <Compile Include="Settings\PatchOperationSetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -292,6 +292,7 @@
     <Folder Include="Harmony\" />
     <Folder Include="Generic List Classes\" />
     <Folder Include="GameComponents\" />
+    <Folder Include="Settings\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
