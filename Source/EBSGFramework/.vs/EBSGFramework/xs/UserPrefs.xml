@@ -1,25 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/Gene_SkillChanging.cs">
     <Files>
-      <File FileName="Settings/EBSG_Settings.cs" Line="53" Column="21" />
-      <File FileName="Settings/PatchOperationSetting.cs" Line="20" Column="62" />
-      <File FileName="Genes/HediffAdder.cs" Line="28" Column="33" />
-      <File FileName="Generic List Classes/HediffsToParts.cs" Line="7" Column="18" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="66" Column="90" />
-      <File FileName="EBSGDefOf.cs" Line="14" Column="9" />
+      <File FileName="Genes/Gene_SkillChanging.cs" Line="15" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Dependencies" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" selected="True" />
+              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="Gene_SkillChanging.cs" selected="True" />
               </Node>
+              <Node name="Harmony" expanded="True" />
               <Node name="Settings" expanded="True" />
               <Node name="Things" expanded="True" />
             </Node>

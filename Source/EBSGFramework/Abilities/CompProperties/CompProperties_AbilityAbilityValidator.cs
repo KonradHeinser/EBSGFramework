@@ -23,16 +23,18 @@ namespace EBSGFramework
         public List<CapCheck> targetCapLimiters;
         public List<SkillCheck> targetSkillLimiters;
         public List<StatCheck> targetStatLimiters;
+        public List<NeedLevel> targetNeedLevels;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;
         public List<HediffDef> casterHasAllOfHediffs;
         public List<HediffDef> casterHasNoneOfHediffs;
 
-        // Target Pawn Checks
+        // Caster Pawn Checks
         public List<CapCheck> casterCapLimiters;
         public List<SkillCheck> casterSkillLimiters;
         public List<StatCheck> casterStatLimiters;
+        public List<NeedLevel> casterNeedLevels;
 
         // % Light
         public float minTargetLightLevel = 0f;

@@ -327,6 +327,14 @@ namespace EBSGFramework
                     }
                 }
             }
+            if (!Props.casterNeedLevels.NullOrEmpty())
+            {
+                if (!EBSGUtilities.AllNeedLevelsMet(pawn, Props.casterNeedLevels))
+                {
+                    explanation = "AbilityCasterNeedsCheck".Translate();
+                    return false;
+                }
+            }
 
             explanation = null;
             return true;
@@ -659,6 +667,14 @@ namespace EBSGFramework
                         }
                     }
                 }
+                if (!Props.targetNeedLevels.NullOrEmpty())
+                {
+                    if (!EBSGUtilities.AllNeedLevelsMet(pawn, Props.targetNeedLevels))
+                    {
+                        explanation = "AbilityTargetNeedsCheck".Translate();
+                        return false;
+                    }
+                }
             }
             else
             {
@@ -668,7 +684,7 @@ namespace EBSGFramework
                     {
                         if (capCheck.minCapValue > 0)
                         {
-                            explanation = "AbilityTargetNoneCheck".Translate(capCheck.capacity.LabelCap);
+                            explanation = "AbilityTargetMustBePawn".Translate();
                             return false;
                         }
                     }
@@ -679,7 +695,7 @@ namespace EBSGFramework
                     {
                         if (skillCheck.minLevel > 0)
                         {
-                            explanation = "AbilityTargetNoneCheck".Translate(skillCheck.skill.LabelCap);
+                            explanation = "AbilityTargetMustBePawn".Translate();
                             return false;
                         }
                     }
@@ -694,7 +710,7 @@ namespace EBSGFramework
                         {
                             if (statCheck.minStatValue > 0)
                             {
-                                explanation = "AbilityTargetNoneCheck".Translate(statCheck.stat.LabelCap);
+                                explanation = "AbilityTargetMustBePawn".Translate();
                                 return false;
                             }
                         }
@@ -713,6 +729,15 @@ namespace EBSGFramework
                             }
                         }
                     }
+                }
+                if (!Props.targetNeedLevels.NullOrEmpty())
+                {
+                    foreach (NeedLevel needLevel in Props.targetNeedLevels)
+                        if (needLevel.minNeedLevel > 0)
+                        {
+                            explanation = "AbilityTargetMustBePawn".Translate();
+                            return false;
+                        }
                 }
             }
 
