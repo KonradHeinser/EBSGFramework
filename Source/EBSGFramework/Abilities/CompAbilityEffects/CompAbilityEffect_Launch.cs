@@ -48,6 +48,8 @@ namespace EBSGFramework
         {
             if (!parent.pawn.Spawned || parent.pawn.Map == null) return false;
 
+            GenDraw.DrawWorldRadiusRing(parent.pawn.Map.Tile, Props.maxDistance);
+
             if (Find.WorldGrid.TraversalDistanceBetween(parent.pawn.Map.Tile, target.Tile) > Props.maxDistance) return false;
             if (Find.World.Impassable(target.Tile)) return false;
 

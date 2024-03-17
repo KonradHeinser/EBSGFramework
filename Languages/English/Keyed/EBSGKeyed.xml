@@ -137,7 +137,9 @@
 
         <!--Dynamic Resource Genes-->
     <ResourceCost>{0} cost</ResourceCost>
-    <ResourceGain>{0} gain</ResourceGain>
+    <ResourceGain>{0} generation</ResourceGain>
+    <ResourceCostPerTile>{0} cost per tile</ResourceCostPerTile>
+    <ResourceGainPerTile>{0} generation per tile</ResourceGainPerTile>
     <AlertLowResource>Low resource</AlertLowResource>
     <AlertLowResourceDesc>A colonist is runnning out of a resource</AlertLowResourceDesc>
     <NoIngredients>No available packs.</NoIngredients>

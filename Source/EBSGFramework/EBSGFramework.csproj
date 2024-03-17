@@ -85,18 +85,14 @@
     <Compile Include="Genes\HediffAdder.cs" />
     <Compile Include="DamageWorker_PermanentInjury.cs" />
     <Compile Include="EBSGUtilities.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_AbilityConvertResource.cs" />
     <Compile Include="DynamicResourceGenes\DRGExtension.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ResourceCost.cs" />
     <Compile Include="DynamicResourceGenes\GeneGizmo_ResourceGene.cs" />
     <Compile Include="DynamicResourceGenes\HediffCompProperties_SeverityFromResource.cs" />
     <Compile Include="DynamicResourceGenes\ResourceDrainGene.cs" />
     <Compile Include="DynamicResourceGenes\JobGiver_GetResourcePack.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_AbilityResourceCost.cs" />
     <Compile Include="DynamicResourceGenes\ResourceGene.cs" />
     <Compile Include="DynamicResourceGenes\Hediff_ResourceCraving.cs" />
     <Compile Include="DynamicResourceGenes\Workgiver_AdministerResource.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ConvertResource.cs" />
     <Compile Include="DynamicResourceGenes\IngestionOutcomeDoer_OffsetResource.cs" />
     <Compile Include="DynamicResourceGenes\WorkGiver_Warden_DeliverResource.cs" />
     <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
@@ -217,12 +213,6 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityCreateItems.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateItems.cs" />
     <Compile Include="Generic List Classes\ThingPatternPart.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_EnergyBlast.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect_EnergyBlast.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_EnergyBurst.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect_EnergyBurst.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_AbilityResourceToBattery.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect_ResourceToBattery.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityByLightLevel.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangePerAttack.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityByOtherHediffSeverities.cs" />
@@ -271,6 +261,18 @@
     <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_Launch.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Launch.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityConvertResource.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceCost.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceToBattery.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBlast.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBurst.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_DRGLaunch.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ConvertResource.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBlast.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBurst.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceCost.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceToBattery.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_DRGLaunch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -296,6 +298,8 @@
     <Folder Include="Generic List Classes\" />
     <Folder Include="GameComponents\" />
     <Folder Include="Settings\" />
+    <Folder Include="DynamicResourceGenes\CompProperties_Ability\" />
+    <Folder Include="DynamicResourceGenes\CompAbilityEffect\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

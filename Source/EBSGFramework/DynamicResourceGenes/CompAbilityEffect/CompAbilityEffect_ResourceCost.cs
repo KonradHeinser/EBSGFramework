@@ -50,7 +50,13 @@ namespace EBSGFramework
                 reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
                 return true;
             }
-            ResourceGene gene_Resource = (ResourceGene)parent.pawn.genes.GetGene(Props.mainResourceGene);
+
+            if (!(parent.pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene gene_Resource))
+            {
+                reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
+                return true;
+            }
+
             float cost = Props.resourceCost;
             if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
 

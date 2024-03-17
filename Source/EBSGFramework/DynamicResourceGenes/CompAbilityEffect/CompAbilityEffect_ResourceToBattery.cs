@@ -76,6 +76,24 @@ namespace EBSGFramework
             }
         }
 
+        public override bool GizmoDisabled(out string reason)
+        {
+            if (!parent.pawn.genes.HasGene(Props.mainResourceGene))
+            {
+                reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
+                return true;
+            }
+
+            if (!(parent.pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene resourceGene))
+            {
+                reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
+                return true;
+            }
+
+            reason = null;
+            return false;
+        }
+
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {
             return Valid(target, true);

@@ -26,6 +26,8 @@ namespace EBSGFramework
 
         public List<AbilityAndGeneLink> geneAbilities;
 
+        public float newBaseValue = -1f;
+
         // For mutating genes
         public List<RandomXenoGenes> mutationGeneSets; // Named as such because it was originally solely to create entire xenotypes
         public bool removeGenesFromOtherLists = true; // This being true means that while activating, the comp will remove any gene that exists on the other list(s), even if they are from the xenotype
@@ -57,7 +59,6 @@ namespace EBSGFramework
         public List<HediffDef> hediffsWhileInTerribleBiome;
         public List<HediffDef> hediffsWhileInAbysmalBiome;
         public List<HediffDef> hediffsWhileRaining;
-
 
         public List<NeedOffset> needOffsetsPerHourInWater;
         public List<NeedOffset> needOffsetsPerHourNotInWater;

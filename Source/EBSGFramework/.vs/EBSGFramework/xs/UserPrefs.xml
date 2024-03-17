@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/CompProperties_Ability/CompProperties_DRGLaunch.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_Launch.cs" Line="8" Column="31" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="34" Column="94" />
-      <File FileName="EBSGDefOf.cs" Line="10" Column="1" />
+      <File FileName="DynamicResourceGenes/CompProperties_Ability/CompProperties_DRGLaunch.cs" Line="17" Column="9" />
+      <File FileName="DynamicResourceGenes/CompAbilityEffect/CompAbilityEffect_DRGLaunch.cs" Line="81" Column="13" />
+      <File FileName="DynamicResourceGenes/CompProperties_Ability/CompProperties_AbilityResourceCost.cs" Line="7" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,10 +11,14 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_Launch.cs" selected="True" />
-                </Node>
+                <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="CompAbilityEffect" expanded="True" />
+                <Node name="CompProperties_Ability" expanded="True">
+                  <Node name="CompProperties_DRGLaunch.cs" selected="True" />
+                </Node>
               </Node>
               <Node name="Harmony" expanded="True" />
             </Node>
