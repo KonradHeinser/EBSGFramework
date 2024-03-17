@@ -10,5 +10,7 @@ namespace EBSGFramework
         public HediffDef hediff;
         public bool onlyIfNew = false;
         public float severity = 0.5f;
+        public float minAge = 0;
+        public float maxAge = 9999f;
     }
 }

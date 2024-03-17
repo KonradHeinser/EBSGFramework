@@ -20,6 +20,10 @@ namespace EBSGFramework
         public bool sameBioAndChrono = false;
         public bool chronicAgeRemoval = true;
 
+        public float maxAgeActive = -1f;
+        public float removePastAge = -1f;
+        public List<HediffsToParts> hediffsToApplyAtAges;
+
         public List<AbilityAndGeneLink> geneAbilities;
 
         // For mutating genes

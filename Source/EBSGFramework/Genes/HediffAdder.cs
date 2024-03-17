@@ -7,6 +7,8 @@ namespace EBSGFramework
 {
     public class HediffAdder : SpawnAgeLimiter
     {
+        public EBSGExtension extension;
+
         public override void PostAdd()
         {
             base.PostAdd();
