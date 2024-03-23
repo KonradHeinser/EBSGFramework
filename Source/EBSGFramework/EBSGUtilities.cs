@@ -222,6 +222,7 @@ namespace EBSGFramework
             {
                 foreach (HediffsToParts hediffPart in hediffs)
                 {
+                    if (!hediffPart.removeOnRemove) continue;
                     if (!HasHediff(pawn, hediffPart.hediff)) continue;
                     if (hediffPart.bodyParts.NullOrEmpty()) RemoveHediffs(pawn, hediffPart.hediff);
                     else

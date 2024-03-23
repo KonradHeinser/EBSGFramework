@@ -1,31 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/CompProperties_Ability/CompProperties_DRGLaunch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/Gene_CustomizableClotting.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/CompProperties_Ability/CompProperties_DRGLaunch.cs" Line="17" Column="9" />
-      <File FileName="DynamicResourceGenes/CompAbilityEffect/CompAbilityEffect_DRGLaunch.cs" Line="81" Column="13" />
-      <File FileName="DynamicResourceGenes/CompProperties_Ability/CompProperties_AbilityResourceCost.cs" Line="7" Column="2" />
+      <File FileName="Needs/Need_Murderous.cs" Line="133" Column="54" />
+      <File FileName="EBSGExtension.cs" Line="122" Column="37" />
+      <File FileName="Genes/Gene_CustomizableClotting.cs" Line="12" Column="69" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="444" Column="22" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="CompAbilityEffect" expanded="True" />
-                <Node name="CompProperties_Ability" expanded="True">
-                  <Node name="CompProperties_DRGLaunch.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="Harmony" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

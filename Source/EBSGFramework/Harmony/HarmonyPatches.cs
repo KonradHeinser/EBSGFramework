@@ -54,6 +54,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(AllowedThingDefsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_PathFollower), "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) }),
                 postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn), "DoKillSideEffects"),
+                postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -428,6 +430,21 @@ namespace EBSGFramework
                             }
                         }
                     if (terrainComp.universalCostOverride >= 0) __result = num + terrainComp.universalCostOverride;
+                }
+            }
+        }
+
+        public static void DoKillSideEffectsPostfix(DamageInfo? dinfo, Hediff exactCulprit, bool spawned, Pawn __instance)
+        {
+            if (dinfo?.Instigator != null && dinfo.Value.Instigator is Pawn pawn)
+            {
+                if (pawn.needs != null && !pawn.needs.AllNeeds.NullOrEmpty())
+                {
+                    foreach (Need need in pawn.needs.AllNeeds)
+                    {
+                        if (need is Need_Murderous murderNeed)
+                            murderNeed.Notify_KilledPawn(dinfo, __instance);
+                    }
                 }
             }
         }

@@ -99,10 +99,10 @@
     <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
     <Compile Include="Genes\AdditionalFertilityByAge.cs" />
     <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
-    <Compile Include="Dependencies\Gene_Dependency.cs" />
-    <Compile Include="Dependencies\IDGExtension.cs" />
-    <Compile Include="Dependencies\Hediff_Dependency.cs" />
-    <Compile Include="Dependencies\JobGiver_SatisfyDependency.cs" />
+    <Compile Include="DependencyGenes\Gene_Dependency.cs" />
+    <Compile Include="DependencyGenes\IDGExtension.cs" />
+    <Compile Include="DependencyGenes\Hediff_Dependency.cs" />
+    <Compile Include="DependencyGenes\JobGiver_SatisfyDependency.cs" />
     <Compile Include="Genes\Gene_SkillChanging.cs" />
     <Compile Include="Genes\SkillChange.cs" />
     <Compile Include="Abilities\Hediff_LoveTheCaster.cs" />
@@ -273,6 +273,8 @@
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceCost.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceToBattery.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_DRGLaunch.cs" />
+    <Compile Include="Needs\Need_Murderous.cs" />
+    <Compile Include="Genes\Gene_CustomizableClotting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -288,7 +290,7 @@
     <Folder Include="Thoughts\" />
     <Folder Include="Genes\" />
     <Folder Include="HiveMind\" />
-    <Folder Include="Dependencies\" />
+    <Folder Include="DependencyGenes\" />
     <Folder Include="Hediffs\CompProperties\" />
     <Folder Include="Hediffs\Comps\" />
     <Folder Include="Abilities\CompProperties\" />
@@ -300,6 +302,7 @@
     <Folder Include="Settings\" />
     <Folder Include="DynamicResourceGenes\CompProperties_Ability\" />
     <Folder Include="DynamicResourceGenes\CompAbilityEffect\" />
+    <Folder Include="Needs\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

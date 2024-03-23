@@ -27,6 +27,16 @@ namespace EBSGFramework
         public List<AbilityAndGeneLink> geneAbilities;
 
         public float newBaseValue = -1f;
+        public int clotCheckInterval = 360; // Shouldn't be below 60, but I won't force it. This just determines how often it tries to heal, so a lower number means it's less likely that there will be a delay in clotting
+        public float minTendQuality = 0.2f; // Never below 0
+        public float maxTendQuality = 0.7f; // Never over 1
+
+        // Raceprop conditionals
+        public bool allowHumanlikes = true;
+        public bool allowDryads = true;
+        public bool allowInsects = true;
+        public bool allowAnimals = true;
+        public bool allowMechanoids = true;
 
         // For mutating genes
         public List<RandomXenoGenes> mutationGeneSets; // Named as such because it was originally solely to create entire xenotypes
@@ -104,5 +114,13 @@ namespace EBSGFramework
         public float maxFertility = 999999;
         public float maxMaleFertility = 999999;
         public float maxFemaleFertility = 999999;
+
+        // For Needs
+        public float fallPerDay = 0.0333f;
+        public float minAgeForNeed = 13f;
+        public float maxAgeForNeed = 9999f;
+        public float increasePerKill = 1f;
+        public float increasePerMeleeKill = 0f;
+        public float increasePerRangedKill = 0f;
     }
 }
