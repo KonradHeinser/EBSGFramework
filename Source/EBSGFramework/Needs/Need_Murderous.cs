@@ -8,6 +8,8 @@ namespace EBSGFramework
     {
         public bool alreadyChecked;
 
+        public bool setThresholds;
+
         public float FallPerDay
         {
             get
@@ -113,6 +115,12 @@ namespace EBSGFramework
 
         public override void NeedInterval()
         {
+            if (!setThresholds && Extension != null)
+            {
+                threshPercents = Extension.thresholdPercentages;
+                setThresholds = true;
+            }
+
             if (!IsFrozen)
                 CurLevel -= FallPerDay / 400f;
         }

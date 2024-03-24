@@ -41,40 +41,6 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <GeneDef>
-        <defName>Murderous</defName>
-        <label>murderous</label>
-        <labelShortAdj>murderous</labelShortAdj>
-        <description>This person just wants to kill things and doesn't really care how.</description>
-        <displayCategory>Violence</displayCategory>
-        <displayOrderInCategory>61</displayOrderInCategory>
-        <iconPath>UI/Icons/Genes/Gene_Killthirst</iconPath>
-        <geneClass>EBSGFramework.HediffAdder</geneClass>
-        <causesNeed>Murderous</causesNeed> <!--Any need adding method works, gene was just easiest here-->
-        <biostatMet>3</biostatMet>
-        <minAgeActive>13</minAgeActive>
-        <exclusionTags>
-            <li>KillThirst</li>
-        </exclusionTags>
-    </GeneDef>
-    
-    <NeedDef>
-        <defName>Murderous</defName>
-        <needClass>EBSGFramework.Need_Murderous</needClass>
-        <label>murderous</label>
-        <description>This person just wants to kill things and doesn't really care how.</description>
-        <baseLevel>0</baseLevel>
-        <minIntelligence>ToolUser</minIntelligence>
-        <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
-        <onlyIfCausedByGene>true</onlyIfCausedByGene>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGExtension">
-                <IncreasePerKill>1</IncreasePerKill>
-            </li>
-        </modExtensions>
-    </NeedDef>
-    
 </Defs>
 
 <!-- 

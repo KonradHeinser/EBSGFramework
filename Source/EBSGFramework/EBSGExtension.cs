@@ -116,11 +116,14 @@ namespace EBSGFramework
         public float maxFemaleFertility = 999999;
 
         // For Needs
+        public List<float> thresholdPercentages = new List<float> { 0.3f };
         public float fallPerDay = 0.0333f;
         public float minAgeForNeed = 13f;
         public float maxAgeForNeed = 9999f;
         public float increasePerKill = 1f;
         public float increasePerMeleeKill = 0f;
         public float increasePerRangedKill = 0f;
+        public NeedDef need;
+        public SimpleCurve moodOffsetCurve;
     }
 }

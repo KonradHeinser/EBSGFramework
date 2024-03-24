@@ -1,11 +1,34 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/Gene_CustomizableClotting.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs">
     <Files>
-      <File FileName="Needs/Need_Murderous.cs" Line="133" Column="54" />
-      <File FileName="EBSGExtension.cs" Line="122" Column="37" />
-      <File FileName="Genes/Gene_CustomizableClotting.cs" Line="12" Column="69" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="444" Column="22" />
+      <File FileName="Needs/Thought_Situational_BasicCurveNeedMood.cs" Line="23" Column="42" />
+      <File FileName="Needs/ThoughtWorker_BasicCurveNeedMood.cs" Line="24" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="575" Column="28" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="205" Column="14" />
+      <File FileName="Needs/Need_Murderous.cs" Line="117" Column="10" />
+      <File FileName="EBSGExtension.cs" Line="119" Column="76" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="14" Column="41" />
+      <File FileName="Hediffs/Comps/HediffComp_DestroyOnDeath.cs" Line="15" Column="13" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="308" Column="59" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True">
+                  <Node name="HediffCompProperties_MultipleLives.cs" selected="True" />
+                </Node>
+                <Node name="Comps" expanded="True" />
+              </Node>
+              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

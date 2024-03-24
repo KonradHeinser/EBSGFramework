@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 using System;
+using Verse.Sound;
 
 namespace EBSGFramework
 {
@@ -215,6 +216,44 @@ namespace EBSGFramework
         public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
         {
             if (Props.needBrainToRevive && Pawn.health.hediffSet.GetBrain() == null) return;
+
+            if (!Rand.Chance(Props.revivalChance))
+            {
+                if (Props.extraLives == -666 || Props.onlyOneChance)
+                {
+                    FlashyDeath();
+                    return;
+                }
+                if (Props.useSeverityNotDays)
+                    while (true)
+                    {
+                        float maxSeverity = parent.def.maxSeverity - 0.001f; // To avoid reducing to 0 
+                        float severityPerLife = maxSeverity / Props.extraLives;
+                        float severity = parent.Severity;
+                        if (severity - severityPerLife > 0)
+                        {
+                            parent.Severity -= severityPerLife;
+                            livesLeft = (int)Math.Floor(severity / severityPerLife);
+                        }
+                        else
+                        {
+                            FlashyDeath();
+                            return;
+                        }
+                        if (Rand.Chance(Props.revivalChance)) break;
+                    }
+                else
+                    while (true)
+                    {
+                        livesLeft--;
+                        if (livesLeft < 0)
+                        {
+                            FlashyDeath();
+                            return;
+                        }
+                        if (Rand.Chance(Props.revivalChance)) break;
+                    }
+            }
             deathTile = Pawn.Tile;
             if (Props.extraLives != -666)
             {
@@ -228,31 +267,53 @@ namespace EBSGFramework
                         parent.Severity -= severityPerLife;
                         livesLeft = (int)Math.Floor(severity / severityPerLife);
                     }
-                    else return;
+                    else
+                    {
+                        FlashyDeath();
+                        return;
+                    }
                 }
                 else
                 {
                     livesLeft--;
-                    if (livesLeft < 0) return;
+                    if (livesLeft < 0)
+                    {
+                        FlashyDeath();
+                        return;
+                    }
                 }
             }
+
             MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
             if (Props.hoursToRevive <= -1) hoursToRevive = -1;
             else if (Props.hoursToRevive > 0) hoursToRevive = Props.hoursToRevive;
             else hoursToRevive = Props.randomHoursToRevive.RandomInRange;
 
-            if (multipleLives != null)
+            if (multipleLives != null && multipleLives.loaded)
             {
-                if (multipleLives.loaded)
-                {
-                    pawnReviving = true;
-                    if (hoursToRevive <= -1) revivalProgress = 1;
-                    multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1);
-                }
-                else
-                {
-                    Log.Error("The multiple lives game component failed to load. Please let the EBSG Framework dev know something went wrong!");
-                }
+                pawnReviving = true;
+                if (hoursToRevive <= -1) revivalProgress = 1;
+                multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1);
+            }
+            else
+                Log.Error("The multiple lives game component failed to load. Please let the EBSG Framework dev know something went wrong!");
+        }
+
+        private void FlashyDeath()
+        {
+            if (!Props.deleteOnFailedRevive || parent.pawn.Corpse == null || parent.pawn.Corpse.Destroyed) return;
+            Map map = parent.pawn.Corpse.Map;
+            if (map == null) map = parent.pawn.Corpse.MapHeld;
+
+            if (map != null && parent.pawn.Corpse != null)
+            {
+                if (Props.thingSpawn != null)
+                    GenSpawn.Spawn(ThingMaker.MakeThing(Props.thingSpawn), parent.pawn.Corpse.Position, map);
+                if (!Props.thingsToSpawn.NullOrEmpty())
+                    foreach (ThingDef thing in Props.thingsToSpawn)
+                        GenSpawn.Spawn(ThingMaker.MakeThing(thing), parent.pawn.Corpse.Position, map);
+                if (Props.extraDeathSound != null) Props.extraDeathSound.PlayOneShot(new TargetInfo(parent.pawn.Corpse.Position, map));
+                parent.pawn.Corpse.Destroy();
             }
         }
 

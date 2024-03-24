@@ -24,6 +24,8 @@ namespace EBSGFramework
         public bool noApparel = false; // Stops all apparel from being equipped
         public List<ThingDef> limitedToWeapons; // See above, but for weapons
         public bool noWeapons = false; // Stops all weapons from being equipped
+        public bool onlyRanged = false; // Won't stop melee attacks from fists and weapon tools, but will stop melee weapons
+        public bool onlyMelee = false; // Won't stop ranged abilities from being used
         public List<ThingDef> forbiddenEquipments; // Stops xenotypes/carriers of the gene from equipping anything on the list
     }
 }

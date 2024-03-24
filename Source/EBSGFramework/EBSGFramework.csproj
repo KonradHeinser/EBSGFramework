@@ -275,6 +275,8 @@
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_DRGLaunch.cs" />
     <Compile Include="Needs\Need_Murderous.cs" />
     <Compile Include="Genes\Gene_CustomizableClotting.cs" />
+    <Compile Include="Needs\Thought_Situational_BasicCurveNeedMood.cs" />
+    <Compile Include="Needs\ThoughtWorker_BasicCurveNeedMood.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

@@ -13,7 +13,7 @@ namespace EBSGFramework
             Map map = parent.pawn.Corpse.Map;
             if (map == null) map = parent.pawn.Corpse.MapHeld;
 
-            if (parent.pawn.Corpse != null)
+            if (map != null && parent.pawn.Corpse != null)
             {
                 if (Props.thingSpawn != null)
                     GenSpawn.Spawn(ThingMaker.MakeThing(Props.thingSpawn), parent.pawn.Corpse.Position, map);

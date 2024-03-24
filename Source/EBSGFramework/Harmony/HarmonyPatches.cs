@@ -232,7 +232,8 @@ namespace EBSGFramework
                         cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
                         flag = false;
                     }
-                    if (thing.def.IsWeapon && (extension.noWeapons || (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))))
+                    if (thing.def.IsWeapon && (extension.noWeapons || (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
+                        || (extension.onlyMelee && !thing.def.IsMeleeWeapon) || (extension.onlyRanged && thing.def.IsRangedWeapon)))
                     {
                         cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
                         flag = false;
@@ -242,7 +243,7 @@ namespace EBSGFramework
                         cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
                         flag = false;
                     }
-                    if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
+                    if (!extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
                     {
                         cantReason = "EBSG_ForbiddenList".Translate(xenotype.LabelCap);
                         flag = false;
@@ -259,7 +260,8 @@ namespace EBSGFramework
                             flag = false;
                             break;
                         }
-                        if (thing.def.IsWeapon && (extension.noWeapons || (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))))
+                        if (thing.def.IsWeapon && (extension.noWeapons || (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
+                            || (extension.onlyMelee && !thing.def.IsMeleeWeapon) || (extension.onlyRanged && thing.def.IsRangedWeapon)))
                         {
                             cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
                             flag = false;
@@ -271,7 +273,7 @@ namespace EBSGFramework
                             flag = false;
                             break;
                         }
-                        if (extension != null && !extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
+                        if (!extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
                         {
                             cantReason = "EBSG_ForbiddenList".Translate(gene.LabelCap);
                             flag = false;
