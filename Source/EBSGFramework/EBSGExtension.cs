@@ -123,6 +123,10 @@ namespace EBSGFramework
         public float increasePerKill = 1f;
         public float increasePerMeleeKill = 0f;
         public float increasePerRangedKill = 0f;
+        public HediffDef hediffWhenEmpty;
+        public float initialSeverity = 0.001f;
+        public float risePerDayWhenEmpty = 0.2f;
+        public float fallPerDayWhenNotEmpty = 0.1f;
         public NeedDef need;
         public SimpleCurve moodOffsetCurve;
     }
