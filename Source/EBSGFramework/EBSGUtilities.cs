@@ -47,6 +47,35 @@ namespace EBSGFramework
             pawn.health.RemoveHediff(hediff);
         }
 
+        public static int RemoveAllOfHediffs(Pawn pawn, List<Hediff> hediffs)
+        {
+            int removeCount = 0;
+            if (pawn != null && !hediffs.NullOrEmpty() && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+                foreach (Hediff hediff in hediffs)
+                    if (HediffInHediffSet(pawn, hediff))
+                    {
+                        removeCount++;
+                        pawn.health.RemoveHediff(hediff);
+                    }
+            return removeCount;
+        }
+
+        public static bool PawnHasAnyHediff(Corpse corpse)
+        {
+            return PawnHasAnyHediff(corpse.InnerPawn);
+        }
+
+        public static bool PawnHasAnyHediff(Pawn pawn)
+        {
+            return pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty();
+        }
+
+        private static bool HediffInHediffSet(Pawn pawn, Hediff hediff)
+        {
+            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
+            return pawn.health.hediffSet.hediffs.Contains(hediff);
+        }
+
         public static bool ConditionOrExclusiveIsActive(GameConditionDef gameCondition, Map map)
         {
             if (map.GameConditionManager != null && !map.GameConditionManager.ActiveConditions.NullOrEmpty())

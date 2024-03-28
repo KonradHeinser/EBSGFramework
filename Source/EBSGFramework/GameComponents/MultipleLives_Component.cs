@@ -9,15 +9,14 @@ namespace EBSGFramework
 {
     public class MultipleLives_Component : GameComponent
     {
-        public bool loaded;
-        public bool newDead;
-        public bool instantRevive;
+        public bool loaded = false;
+        public bool newDead = false;
+        public bool instantRevive = false;
         public int tick = 0;
         public static Dictionary<Pawn, HediffDef> deadPawnHediffs;
 
         public List<Corpse> deadPawns;
         public List<Corpse> purgeList;
-        public List<string> indestructibleLabels;
 
         public MultipleLives_Component(Game game)
         {
@@ -25,7 +24,6 @@ namespace EBSGFramework
             deadPawns = new List<Corpse>();
             deadPawnHediffs = new Dictionary<Pawn, HediffDef>();
             purgeList = new List<Corpse>();
-            indestructibleLabels = new List<string>();
         }
 
         public override void StartedNewGame()
@@ -41,14 +39,16 @@ namespace EBSGFramework
         public override void GameComponentTick()
         {
             tick++;
-
-            if (newDead)
+            if (newDead && !deadPawns.NullOrEmpty())
             {
                 newDead = false;
                 foreach (Corpse pawn in deadPawns)
                 {
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) continue;
+
                     bool flag = true;
                     Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
+
                     if (hediff != null)
                     {
                         HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
@@ -78,12 +78,13 @@ namespace EBSGFramework
                     }
                 }
             }
-
             if (instantRevive && !deadPawns.NullOrEmpty())
             {
                 instantRevive = false;
                 foreach (Corpse pawn in deadPawns)
                 {
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) continue;
+
                     Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
                     if (hediff != null)
                     {
@@ -98,7 +99,7 @@ namespace EBSGFramework
                 tick = 0;
                 foreach (Corpse pawn in deadPawns)
                 {
-                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn)) purgeList.Add(pawn);
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) purgeList.Add(pawn);
                     else
                     {
                         Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
@@ -122,32 +123,33 @@ namespace EBSGFramework
                 }
                 if (!purgeList.NullOrEmpty())
                 {
-                    foreach (Corpse pawn in purgeList)
+                    if (purgeList.Count == deadPawns.Count)
                     {
-                        deadPawns.Remove(pawn);
+                        deadPawns.Clear();
+                        deadPawnHediffs.Clear();
                     }
+                    else
+                        foreach (Corpse pawn in purgeList)
+                        {
+                            RemovePawnFromLists(pawn);
+                        }
                 }
             }
         }
 
         public static bool RecordPawnData(Pawn pawn)
         {
-            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
-
+            if (!EBSGUtilities.PawnHasAnyHediff(pawn)) return false;
             if (deadPawnHediffs.ContainsKey(pawn))
             {
                 Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn]);
                 if (hediff == null)
-                {
                     deadPawnHediffs.Remove(pawn);
-                }
                 else
                 {
                     HediffComp_MultipleLives comp = hediff.TryGetComp<HediffComp_MultipleLives>();
                     if (comp != null && comp.pawnReviving)
-                    {
                         return true;
-                    }
 
                     deadPawnHediffs.Remove(pawn);
                 }
@@ -173,16 +175,33 @@ namespace EBSGFramework
         public void AddPawnToLists(Pawn pawn, HediffDef hediffDef, bool startRevive = false)
         {
             if (!pawn.Dead) return; // Not sure how this would happen, but I ain't messin with Murphy that often
-            deadPawns.Add(pawn.Corpse);
+            if (!deadPawns.Contains(pawn.Corpse))
+                deadPawns.Add(pawn.Corpse);
+            if (deadPawnHediffs.ContainsKey(pawn))
+                deadPawnHediffs.Remove(pawn);
+
             deadPawnHediffs.Add(pawn, hediffDef);
             instantRevive = startRevive;
             newDead = true;
         }
 
+        public void RemovePawnFromLists(Corpse pawn)
+        {
+            if (pawn != null)
+            {
+                if (deadPawns.Contains(pawn))
+                    deadPawns.Remove(pawn);
+                if (pawn.InnerPawn != null && deadPawnHediffs.ContainsKey(pawn.InnerPawn))
+                    deadPawnHediffs.Remove(pawn.InnerPawn);
+            }
+        }
+
         public void ResurrectPawn(Corpse pawn)
         {
-            indestructibleLabels = new List<string>();
             Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
+
+            bool removeAllInjuries = false;
+
             if (hediff != null)
             {
                 HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
@@ -190,7 +209,15 @@ namespace EBSGFramework
                 {
                     multipleLivesComp.revivalProgress = 0;
                     multipleLivesComp.pawnReviving = false;
+                    removeAllInjuries = multipleLivesComp.Props.removeAllInjuriesAfterRevival;
                 }
+            }
+
+            // This is separate because I may be adding more ways to set up injury removal in the future (i.e. remove only in certain conditions)
+            if (removeAllInjuries)
+            {
+                List<Hediff> hediffs = new List<Hediff>(pawn.InnerPawn.health.hediffSet.hediffs.Where((Hediff h) => h.def.injuryProps != null).ToList());
+                EBSGUtilities.RemoveAllOfHediffs(pawn.InnerPawn, hediffs);
             }
 
             if (pawn != null && pawn.InnerPawn.Dead)
@@ -241,8 +268,7 @@ namespace EBSGFramework
                         if (caravan != null) caravan.AddPawn(pawn.InnerPawn, false);
                         else if (pawn.Faction.IsPlayer)
                         {
-                            List<Pawn> pawns = new List<Pawn>();
-                            pawns.Add(pawn.InnerPawn);
+                            List<Pawn> pawns = new List<Pawn> { pawn.InnerPawn };
                             Hediff revivalHediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
                             if (revivalHediff != null)
                             {
@@ -278,8 +304,6 @@ namespace EBSGFramework
             {
                 purgeList = new List<Corpse>();
             }
-
-            indestructibleLabels = new List<string>();
         }
     }
 }

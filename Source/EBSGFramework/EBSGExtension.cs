@@ -129,5 +129,8 @@ namespace EBSGFramework
         public float fallPerDayWhenNotEmpty = 0.1f;
         public NeedDef need;
         public SimpleCurve moodOffsetCurve;
+
+        // Building
+        public List<NeedOffset> needOffsets;
     }
 }

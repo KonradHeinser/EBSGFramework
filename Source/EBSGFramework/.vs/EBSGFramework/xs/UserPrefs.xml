@@ -1,17 +1,31 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Needs/Need_Murderous.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/MultipleLives_Component.cs">
     <Files>
-      <File FileName="Needs/Need_Murderous.cs" Line="116" Column="44" />
-      <File FileName="EBSGExtension.cs" Line="128" Column="47" />
+      <File FileName="Needs/Need_Murderous.cs" Line="87" Column="10" />
+      <File FileName="EBSGExtension.cs" Line="133" Column="20" />
+      <File FileName="Needs/Building_PawnNeedCharger.cs" Line="72" Column="16" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="291" Column="1" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="27" Column="28" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="172" Column="44" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="618" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Needs" expanded="True">
-                <Node name="Need_Murderous.cs" selected="True" />
+              <Node name="GameComponents" expanded="True">
+                <Node name="MultipleLives_Component.cs" selected="True" />
               </Node>
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True" />
+              </Node>
+              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

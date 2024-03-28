@@ -47,6 +47,8 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(Thought_SituationalSocial), nameof(Thought_SituationalSocial.OpinionOffset)),
                 postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
+                prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
+            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
                 postfix: new HarmonyMethod(patchType, nameof(TakeDamagePostfix)));
             harmony.Patch(AccessTools.Method(typeof(ThingMaker), nameof(ThingMaker.MakeThing)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeThingPostfix)));
@@ -600,7 +602,23 @@ namespace EBSGFramework
             return false;
         }
 
-        public static void TakeDamagePostfix(DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
+        public static bool TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
+        {
+            if (__instance is Corpse corpse && corpse.InnerPawn != null && EBSGUtilities.PawnHasAnyHediff(corpse))
+            {
+                foreach (Hediff hediff in corpse.InnerPawn.health.hediffSet.hediffs)
+                {
+                    HediffComp_MultipleLives comp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                    if (comp != null && comp.pawnReviving && comp.Props.indestructibleWhileResurrecting)
+                    {
+                        dinfo.SetAmount(0);
+                    }
+                }
+            }
+            return true;
+        }
+
+        public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
             if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance) &&
                 EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))

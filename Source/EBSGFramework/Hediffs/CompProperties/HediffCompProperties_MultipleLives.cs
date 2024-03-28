@@ -25,6 +25,7 @@ namespace EBSGFramework
         public bool includeRemainingLivesOnTooltip = true;
 
         public bool indestructibleWhileResurrecting = false;
+        public bool removeAllInjuriesAfterRevival = false;
 
         public HediffCompProperties_MultipleLives()
         {
