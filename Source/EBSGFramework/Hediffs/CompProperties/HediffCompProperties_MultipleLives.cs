@@ -33,6 +33,7 @@ namespace EBSGFramework
         public bool includeRemainingLivesOnTooltip = true;
 
         public bool indestructibleWhileResurrecting = false;
+        public bool alwaysForbiddenWhileResurrecting = true; // Only applicable if indestructible. This avoids various situations where the corpse could end up destroyed
         public bool removeAllInjuriesAfterRevival = false;
 
         public HediffCompProperties_MultipleLives()

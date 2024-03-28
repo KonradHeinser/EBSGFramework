@@ -4,29 +4,12 @@
       <File FileName="Needs/Need_Murderous.cs" Line="87" Column="10" />
       <File FileName="EBSGExtension.cs" Line="133" Column="20" />
       <File FileName="Needs/Building_PawnNeedCharger.cs" Line="72" Column="16" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="30" Column="38" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="274" Column="167" />
-      <File FileName="GameComponents/MultipleLives_Component.cs" Line="287" Column="10" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="36" Column="170" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="261" Column="45" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="44" Column="97" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="618" Column="25" />
       <File FileName="EBSGUtilities.cs" Line="281" Column="125" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="GameComponents" expanded="True">
-                <Node name="MultipleLives_Component.cs" selected="True" />
-              </Node>
-              <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

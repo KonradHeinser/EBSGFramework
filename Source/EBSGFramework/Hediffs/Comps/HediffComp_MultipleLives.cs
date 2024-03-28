@@ -258,7 +258,7 @@ namespace EBSGFramework
             {
                 pawnReviving = true;
                 if (hoursToRevive <= -1) revivalProgress = 1;
-                multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1);
+                multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1, Props.indestructibleWhileResurrecting && Props.alwaysForbiddenWhileResurrecting);
                 OnReviveStart();
             }
             else

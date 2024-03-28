@@ -16,6 +16,7 @@ namespace EBSGFramework
         public static Dictionary<Pawn, HediffDef> deadPawnHediffs;
 
         public List<Corpse> deadPawns;
+        public List<Corpse> forbiddenCorpses;
         public List<Corpse> purgeList;
 
         public MultipleLives_Component(Game game)
@@ -39,6 +40,15 @@ namespace EBSGFramework
         public override void GameComponentTick()
         {
             tick++;
+
+            if (tick % 50 == 0) // Set to just under a second to attempt to avoid player fuckery
+            {
+                if (!forbiddenCorpses.NullOrEmpty())
+                    foreach (Corpse corpse in forbiddenCorpses)
+                        if (corpse != null)
+                            corpse.SetForbidden(true);
+            }
+
             if (newDead && !deadPawns.NullOrEmpty())
             {
                 newDead = false;
@@ -116,6 +126,8 @@ namespace EBSGFramework
                                     ResurrectPawn(pawn);
                                     purgeList.Add(pawn);
                                 }
+                                if (!pawn.IsForbidden(Faction.OfPlayer) && multipleLivesComp.Props.indestructibleWhileResurrecting && multipleLivesComp.Props.alwaysForbiddenWhileResurrecting && (pawn.Faction == null || !pawn.Faction.IsPlayer))
+                                    pawn.SetForbidden(true, false);
                             }
                         }
                         else purgeList.Add(pawn);
@@ -127,6 +139,7 @@ namespace EBSGFramework
                     {
                         deadPawns.Clear();
                         deadPawnHediffs.Clear();
+                        forbiddenCorpses.Clear();
                     }
                     else
                         foreach (Corpse pawn in purgeList)
@@ -172,13 +185,16 @@ namespace EBSGFramework
             Scribe_Collections.Look(ref deadPawns, "EBSG_deadPawns", LookMode.Reference);
         }
 
-        public void AddPawnToLists(Pawn pawn, HediffDef hediffDef, bool startRevive = false)
+        public void AddPawnToLists(Pawn pawn, HediffDef hediffDef, bool startRevive = false, bool forbidden = false)
         {
-            if (!pawn.Dead) return; // Not sure how this would happen, but I ain't messin with Murphy that often
+            if (!pawn.Dead || pawn.Corpse == null) return; // Not sure how this would happen, but I ain't messin with Murphy that often
             if (!deadPawns.Contains(pawn.Corpse))
                 deadPawns.Add(pawn.Corpse);
             if (deadPawnHediffs.ContainsKey(pawn))
                 deadPawnHediffs.Remove(pawn);
+
+            if (forbidden && !forbiddenCorpses.Contains(pawn.Corpse))
+                forbiddenCorpses.Add(pawn.Corpse);
 
             deadPawnHediffs.Add(pawn, hediffDef);
             instantRevive = startRevive;
@@ -193,6 +209,8 @@ namespace EBSGFramework
                     deadPawns.Remove(pawn);
                 if (pawn.InnerPawn != null && deadPawnHediffs.ContainsKey(pawn.InnerPawn))
                     deadPawnHediffs.Remove(pawn.InnerPawn);
+                if (forbiddenCorpses.Contains(pawn))
+                    forbiddenCorpses.Remove(pawn);
             }
         }
 
@@ -293,19 +311,16 @@ namespace EBSGFramework
 
             // The expose data's should prevent this, but Murphy Murphy yada yada
             if (deadPawns == null)
-            {
                 deadPawns = new List<Corpse>();
-            }
 
             if (deadPawnHediffs == null)
-            {
                 deadPawnHediffs = new Dictionary<Pawn, HediffDef>();
-            }
 
             if (purgeList == null)
-            {
                 purgeList = new List<Corpse>();
-            }
+
+            if (forbiddenCorpses == null)
+                forbiddenCorpses = new List<Corpse>();
         }
     }
 }
