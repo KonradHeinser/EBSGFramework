@@ -41,14 +41,6 @@ namespace EBSGFramework
         {
             tick++;
 
-            if (tick % 50 == 0) // Set to just under a second to attempt to avoid player fuckery
-            {
-                if (!forbiddenCorpses.NullOrEmpty())
-                    foreach (Corpse corpse in forbiddenCorpses)
-                        if (corpse != null)
-                            corpse.SetForbidden(true);
-            }
-
             if (newDead && !deadPawns.NullOrEmpty())
             {
                 newDead = false;
@@ -148,6 +140,12 @@ namespace EBSGFramework
                         }
                 }
             }
+        }
+
+        public static bool RecordPawnData(Corpse corpse)
+        {
+            if (corpse == null || corpse.InnerPawn == null) return false;
+            return RecordPawnData(corpse.InnerPawn);
         }
 
         public static bool RecordPawnData(Pawn pawn)
@@ -320,7 +318,26 @@ namespace EBSGFramework
                 purgeList = new List<Corpse>();
 
             if (forbiddenCorpses == null)
+            {
                 forbiddenCorpses = new List<Corpse>();
+                if (!deadPawns.NullOrEmpty())
+                {
+                    foreach (Corpse pawn in deadPawns)
+                    {
+                        if (RecordPawnData(pawn))
+                        {
+                            Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
+
+                            if (hediff != null)
+                            {
+                                HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                                if (multipleLivesComp != null)
+                                    forbiddenCorpses.Add(pawn);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

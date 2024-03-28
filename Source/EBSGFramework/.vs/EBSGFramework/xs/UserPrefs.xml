@@ -1,15 +1,35 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/MultipleLives_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/Gene_CustomizableClotting.cs">
     <Files>
       <File FileName="Needs/Need_Murderous.cs" Line="87" Column="10" />
       <File FileName="EBSGExtension.cs" Line="133" Column="20" />
       <File FileName="Needs/Building_PawnNeedCharger.cs" Line="72" Column="16" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="36" Column="170" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="261" Column="45" />
-      <File FileName="GameComponents/MultipleLives_Component.cs" Line="44" Column="97" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="618" Column="25" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_MultipleLives.cs" Line="27" Column="35" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="263" Column="106" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="44" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="465" Column="14" />
       <File FileName="EBSGUtilities.cs" Line="281" Column="125" />
+      <File FileName="Genes/Gene_CustomizableClotting.cs" Line="23" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="Gene_CustomizableClotting.cs" selected="True" />
+              </Node>
+              <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

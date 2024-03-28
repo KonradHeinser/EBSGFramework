@@ -58,6 +58,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "DoKillSideEffects"),
                 postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
+                postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -450,6 +452,16 @@ namespace EBSGFramework
                             murderNeed.Notify_KilledPawn(dinfo, __instance);
                     }
                 }
+            }
+        }
+
+        public static void IsForbiddenPostfix(Thing t, Pawn pawn, ref bool __result)
+        {
+            if (!__result && (t.Faction == null || pawn.Faction == null || t.Faction != pawn.Faction) && t is Corpse corpse)
+            {
+                MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
+                if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty())
+                    __result = multipleLives.forbiddenCorpses.Contains(corpse);
             }
         }
 

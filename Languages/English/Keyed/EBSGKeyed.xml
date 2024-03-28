@@ -45,7 +45,7 @@
     <EBSG_TimeTillLifeLoss>{PAWN_nameDef} will lose one of their lives in {0} days.</EBSG_TimeTillLifeLoss>
     <EBSG_RevivalImminent>{PAWN_nameDef} will be revived soon.</EBSG_RevivalImminent>
     <EBSG_Immortal>Nothing should ever be able to permanently kill {PAWN_nameDef}.</EBSG_Immortal>
-    <EBSG_FailReviveOnHeadRemoval>If {PAWN_labelShort} loses {PAWN_possessive} head or brain, this will always fail to revive {PAWN_possessive}.</EBSG_FailReviveOnHeadRemoval>
+    <EBSG_FailReviveOnHeadRemoval>If {PAWN_labelShort} loses {PAWN_possessive} head or brain, this will always fail to revive {PAWN_objective}.</EBSG_FailReviveOnHeadRemoval>
     <EBSG_ReviveFailOneChance>There is a {0} chance that this will fail to activate, causes the pawn to not revive on death.</EBSG_ReviveFailOneChance>
     <EBSG_ReviveFailChance>There is a {0} chance that this will fail to activate, which will cause it to consume additional lives until it passes or the pawn runs out of extra lives.</EBSG_ReviveFailChance>
 

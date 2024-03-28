@@ -40,6 +40,7 @@ namespace EBSGFramework
                                 tooltipAddition += "EBSG_RevivalImminent".Translate(parent.pawn.Named("PAWN")).Resolve();
                             else
                                 tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive * (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
+                            tooltipAddition += " ";
                         }
                         else
                         {
@@ -61,10 +62,14 @@ namespace EBSGFramework
                                         tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(severityRemaining / severityPerDay, 1), parent.pawn.Named("PAWN")).Resolve();
                                     else if (severityPerDay < 0)
                                         tooltipAddition += "EBSG_TimeTillLifeLoss".Translate(Math.Round(severityRemaining / severityPerDay * -1, 1), parent.pawn.Named("PAWN")).Resolve();
+                                    tooltipAddition += " ";
                                 }
                             }
                             else if (progressPercentage > 0)
+                            {
                                 tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(Props.daysToRecoverLife * (1 - progressPercentage), 1), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += " ";
+                            }
                         }
                         if (Props.includeRemainingLivesOnTooltip)
                         {
@@ -97,6 +102,7 @@ namespace EBSGFramework
                             }
                             else
                                 tooltipAddition += "EBSG_Immortal".Translate(parent.pawn.Named("PAWN")).Resolve();
+                            tooltipAddition += " ";
                         }
                     }
                     else if (Props.extraLives != -666)
@@ -124,18 +130,23 @@ namespace EBSGFramework
                             else
                                 tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, parent.pawn.Named("PAWN")).Resolve();
                         }
+                        tooltipAddition += " ";
                     }
 
-                    if (Props.revivalChance < 1 && livesLeft > 0)
+                    if (!pawnReviving)
                     {
-                        if (Props.onlyOneChance || livesLeft == 1 || Props.extraLives == -666)
-                            tooltipAddition += "EBSG_ReviveFailOneChance".Translate(Props.revivalChance.ToStringPercent()).Resolve();
-                        else
-                            tooltipAddition += "EBSG_ReviveFailChance".Translate(Props.revivalChance.ToStringPercent()).Resolve();
-                    }
+                        if (Props.revivalChance < 1 && livesLeft != 0)
+                        {
+                            if (Props.onlyOneChance || livesLeft == 1 || Props.extraLives == -666)
+                                tooltipAddition += "EBSG_ReviveFailOneChance".Translate(Props.revivalChance.ToStringPercent()).Resolve();
+                            else
+                                tooltipAddition += "EBSG_ReviveFailChance".Translate(Props.revivalChance.ToStringPercent()).Resolve();
+                            tooltipAddition += " ";
+                        }
 
-                    if (Props.needBrainToRevive)
-                        tooltipAddition += "EBSG_FailReviveOnHeadRemoval".Translate(parent.pawn.Named("PAWN")).Resolve();
+                        if (Props.needBrainToRevive && livesLeft != 0)
+                            tooltipAddition += "EBSG_FailReviveOnHeadRemoval".Translate(parent.pawn.Named("PAWN")).Resolve();
+                    }
 
                     if (tooltipAddition == "\n") return "";
                     return tooltipAddition;
