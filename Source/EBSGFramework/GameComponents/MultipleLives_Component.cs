@@ -198,13 +198,19 @@ namespace EBSGFramework
 
         public void ResurrectPawn(Corpse pawn)
         {
+            if (pawn == null || pawn.InnerPawn == null || !RecordPawnData(pawn.InnerPawn)) return;
             Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
 
             bool removeAllInjuries = false;
 
+            Map map = null;
+            IntVec3 position = IntVec3.Invalid;
+
+            HediffComp_MultipleLives multipleLivesComp = null;
+
             if (hediff != null)
             {
-                HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
+                multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
                 if (multipleLivesComp != null)
                 {
                     multipleLivesComp.revivalProgress = 0;
@@ -224,6 +230,9 @@ namespace EBSGFramework
             {
                 if (pawn.MapHeld != null && pawn.Spawned)
                 {
+                    map = pawn.MapHeld;
+                    if (pawn.Position.IsValid)
+                        position = pawn.Position;
                     EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
                 }
                 else
@@ -243,44 +252,37 @@ namespace EBSGFramework
                         Caravan caravan = null;
                         Thing storage = pawn.StoringThing(); // Be sure there's no weird container business involved
                         if (storage != null)
-                        {
                             GenSpawn.Spawn(pawn, storage.Position, storage.Map);
-                        }
 
                         tile = pawn.Tile;
 
                         // See if a caravan is holding onto the corpse. Starts by checking tile because it's probably faster than checking each container
                         List<Caravan> caravans = Find.World.worldObjects.Caravans.Where((Caravan c) => c.Tile == pawn.Tile && c.AllThings.Contains(pawn)).ToList();
                         if (!caravans.NullOrEmpty())
-                        {
                             caravan = caravans[0];
-                        }
                         else
                         {
                             // If no caravan was found that way, see if there happens to be any caravan on the tile in the pawn's faction
                             caravans = Find.World.worldObjects.Caravans.Where((Caravan c) => c.Tile == pawn.Tile && c.Faction == pawn.Faction).ToList();
                             if (!caravans.NullOrEmpty())
-                            {
                                 caravan = caravans[0];
-                            }
                         }
                         EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
                         if (caravan != null) caravan.AddPawn(pawn.InnerPawn, false);
                         else if (pawn.Faction.IsPlayer)
                         {
                             List<Pawn> pawns = new List<Pawn> { pawn.InnerPawn };
-                            Hediff revivalHediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
-                            if (revivalHediff != null)
-                            {
-                                HediffComp_MultipleLives comp = revivalHediff.TryGetComp<HediffComp_MultipleLives>();
-                                if (comp != null)
-                                {
-                                    CaravanMaker.MakeCaravan(pawns, pawn.Faction, comp.deathTile, false); // Creates caravan on death tile if all else fails
-                                }
-                            }
+                            if (multipleLivesComp != null)
+                                CaravanMaker.MakeCaravan(pawns, pawn.Faction, multipleLivesComp.deathTile, false); // Creates caravan on death tile if all else fails
                         }
                     }
                 }
+            }
+
+            if (multipleLivesComp != null && position.IsValid)
+            {
+                EBSGUtilities.ThingAndSoundMaker(position, map, multipleLivesComp.Props.thingSpawnOnReviveEnd, multipleLivesComp.Props.thingsToSpawnOnReviveEnd,
+                        multipleLivesComp.Props.reviveEndSound);
             }
         }
 

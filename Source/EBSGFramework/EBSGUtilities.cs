@@ -1,6 +1,7 @@
 ﻿using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Verse.Sound;
 using System.Collections.Generic;
 using System;
 using RimWorld.Planet;
@@ -274,6 +275,19 @@ namespace EBSGFramework
                         }
                     }
                 }
+            }
+        }
+
+        public static void ThingAndSoundMaker(IntVec3 position, Map map, ThingDef thing = null, List<ThingDef> things = null, SoundDef sound = null)
+        {
+            if (position.IsValid && map != null)
+            {
+                if (thing != null)
+                    GenSpawn.Spawn(ThingMaker.MakeThing(thing), position, map);
+                if (!things.NullOrEmpty())
+                    foreach (ThingDef newThing in things)
+                        GenSpawn.Spawn(ThingMaker.MakeThing(newThing), position, map);
+                if (sound != null) sound.PlayOneShot(new TargetInfo(position, map));
             }
         }
 
