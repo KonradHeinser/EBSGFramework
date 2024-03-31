@@ -3,7 +3,7 @@
   <name>Expanded Biotech Style Genes Framework</name>
   <author>alite</author>
   <packageId>EBSG.Framework</packageId>
-  <modIconPath IgnoreIfNoMatchingField="True">UI/EBSG/BSGIcon</modIconPath>
+  <modIconPath IgnoreIfNoMatchingField="True">EBSG/BSGIcon</modIconPath>
   <supportedVersions>
     <li>1.4</li>
     <li>1.5</li>
