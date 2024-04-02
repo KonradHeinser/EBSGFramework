@@ -369,11 +369,13 @@ namespace EBSGFramework
                         if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, geneticMultiplier.nullifyingGenes))
                         {
                             __result *= geneticMultiplier.multiplier;
-                            if (geneticMultiplier.multiplier < 0) ensureReverse = true;
+                            ensureReverse |= geneticMultiplier.multiplier < 0;
                         }
 
                 if (ensureReverse && positiveValue == __result > 0) __result *= -1;
             }
+
+            if (__result != 0 && Cache != null) __result *= Cache.GetGeneMoodFactor(___pawn);
         }
 
         public static void MakeThingPostfix(ref ThingDef def, ref ThingDef stuff, ref Thing __result)

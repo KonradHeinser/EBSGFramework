@@ -7,6 +7,50 @@ namespace EBSGFramework
     {
         public bool loaded;
         public Dictionary<Pawn, Hediff> pawnTerrainComps;
+        public Dictionary<Pawn, int> geneCountAtLastCache;
+        public Dictionary<Pawn, float> cachedGeneMoodFactor;
+
+        // Gene result caching
+
+        public float GetGeneMoodFactor(Pawn pawn)
+        {
+            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return 1f;
+
+            // Regularly does a recheck on the off-chance that genes have changed without changing count
+            if (geneCountAtLastCache.NullOrEmpty() || !geneCountAtLastCache.ContainsKey(pawn) || pawn.genes.GenesListForReading.Count != geneCountAtLastCache[pawn]
+                    || pawn.IsHashIntervalTick(60000) || cachedGeneMoodFactor.NullOrEmpty() || !cachedGeneMoodFactor.ContainsKey(pawn))
+            {
+                float num = 1f;
+
+                foreach (Gene gene in pawn.genes.GenesListForReading)
+                {
+                    EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+                    if (extension != null)
+                    {
+                        if (extension.universalMoodFactor == 0)
+                        {
+                            num = 0;
+                            break;
+                        }
+                        num *= extension.universalMoodFactor;
+                    }
+                }
+
+                if (geneCountAtLastCache.ContainsKey(pawn))
+                    geneCountAtLastCache[pawn] = pawn.genes.GenesListForReading.Count;
+                else
+                    geneCountAtLastCache.Add(pawn, pawn.genes.GenesListForReading.Count);
+
+                if (cachedGeneMoodFactor.ContainsKey(pawn))
+                    cachedGeneMoodFactor[pawn] = num;
+                else
+                    cachedGeneMoodFactor.Add(pawn, num);
+            }
+
+            return cachedGeneMoodFactor[pawn];
+        }
+
+        // Terrain cost cache
 
         public void RegisterTerrainPawn(Pawn pawn, Hediff hediff)
         {
@@ -18,14 +62,8 @@ namespace EBSGFramework
 
         public void DeRegisterTerrainPawn(Pawn pawn)
         {
-            if (pawnTerrainComps.ContainsKey(pawn))
+            if (!pawnTerrainComps.NullOrEmpty() && pawnTerrainComps.ContainsKey(pawn))
                 pawnTerrainComps.Remove(pawn);
-        }
-
-        public EBSGCache_Component(Game game)
-        {
-            loaded = false;
-            pawnTerrainComps = new Dictionary<Pawn, Hediff>();
         }
 
         public bool GetPawnTerrainComp(Pawn pawn, out HediffCompProperties_TerrainCostOverride comp)
@@ -61,6 +99,9 @@ namespace EBSGFramework
             return false;
         }
 
+
+        // Initializers
+
         public override void StartedNewGame()
         {
             Initialize();
@@ -71,12 +112,22 @@ namespace EBSGFramework
             Initialize();
         }
 
+        public EBSGCache_Component(Game game)
+        {
+            loaded = false;
+            pawnTerrainComps = new Dictionary<Pawn, Hediff>();
+            geneCountAtLastCache = new Dictionary<Pawn, int>();
+            cachedGeneMoodFactor = new Dictionary<Pawn, float>();
+        }
+
         public void Initialize()
         {
             // Clears all caches every time
             loaded = true;
 
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
+            geneCountAtLastCache = new Dictionary<Pawn, int>();
+            cachedGeneMoodFactor = new Dictionary<Pawn, float>();
         }
     }
 }

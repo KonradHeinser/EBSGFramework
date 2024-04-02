@@ -6,6 +6,7 @@ namespace EBSGFramework
     {
         public NeedDef need;
         public float offset;
+        public float factor;
         public StatDef offsetFactorStat;
     }
 }
