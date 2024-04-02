@@ -118,19 +118,25 @@ namespace EBSGFramework
         public float maxFemaleFertility = 999999;
 
         // For Needs
+        public bool displayLowAlert = false;
         public List<float> thresholdPercentages = new List<float> { 0.3f };
+
         public float fallPerDay = 0.0333f;
-        public float minAgeForNeed = 13f;
+        public float minAgeForNeed = 13f; // Only used for need classes like murderous, which wouldn't work very well on children
         public float maxAgeForNeed = 9999f;
         public float increasePerKill = 1f;
         public float increasePerMeleeKill = 0f;
         public float increasePerRangedKill = 0f;
+
         public HediffDef hediffWhenEmpty;
         public float initialSeverity = 0.001f;
         public float risePerDayWhenEmpty = 0.2f;
         public float fallPerDayWhenNotEmpty = 0.1f;
+        public StatDef fallStat;
+
         public NeedDef need;
         public SimpleCurve moodOffsetCurve;
+        public StatDef riseStat;
 
         // Building
         public List<NeedOffset> needOffsets;

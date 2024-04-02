@@ -1,4 +1,5 @@
 ﻿using Verse;
+using RimWorld;
 using System.Collections.Generic;
 
 namespace EBSGFramework
@@ -6,33 +7,70 @@ namespace EBSGFramework
     public class EBSGCache_Component : GameComponent
     {
         public bool loaded;
-        public Dictionary<Pawn, Hediff> pawnTerrainComps;
-        public Dictionary<Pawn, int> geneCountAtLastCache;
-        public Dictionary<Pawn, float> cachedGeneMoodFactor;
+
+        // Terrain hediff comp cache
+        private Dictionary<Pawn, Hediff> pawnTerrainComps;
+        private Dictionary<Pawn, int> geneCountAtLastCache;
+        private Dictionary<Pawn, float> cachedGeneMoodFactor;
+
+        // Cached genes of interest
+        private List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
+
+        private bool needNeedAlert = false;
+        private bool checkedNeedAlert = false;
+
+        // Other
+
+        public bool NeedNeedAlert()
+        {
+            // Checks the def database to see if there are any needs that use displayLowAlert
+            if (!checkedNeedAlert)
+            {
+                foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
+                {
+                    if (need.HasModExtension<EBSGExtension>())
+                    {
+                        EBSGExtension extension = need.GetModExtension<EBSGExtension>();
+                        if (extension.displayLowAlert)
+                        {
+                            needNeedAlert = true;
+                            break;
+                        }
+                    }
+                }
+
+                checkedNeedAlert = true;
+            }
+
+            return needNeedAlert;
+        }
 
         // Gene result caching
 
         public float GetGeneMoodFactor(Pawn pawn)
         {
-            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return 1f;
+            if (moodMultiplyingGenes.NullOrEmpty() || pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return 1f;
 
-            // Regularly does a recheck on the off-chance that genes have changed without changing count
+            // Regularly tries to do a recheck on the off-chance that genes have changed without changing count
             if (geneCountAtLastCache.NullOrEmpty() || !geneCountAtLastCache.ContainsKey(pawn) || pawn.genes.GenesListForReading.Count != geneCountAtLastCache[pawn]
                     || pawn.IsHashIntervalTick(60000) || cachedGeneMoodFactor.NullOrEmpty() || !cachedGeneMoodFactor.ContainsKey(pawn))
             {
                 float num = 1f;
 
-                foreach (Gene gene in pawn.genes.GenesListForReading)
+                foreach (GeneDef gene in moodMultiplyingGenes)
                 {
-                    EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
-                    if (extension != null)
+                    if (pawn.genes.HasGene(gene))
                     {
-                        if (extension.universalMoodFactor == 0)
+                        EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
+                        if (extension != null)
                         {
-                            num = 0;
-                            break;
+                            if (extension.universalMoodFactor == 0)
+                            {
+                                num = 0;
+                                break;
+                            }
+                            num *= extension.universalMoodFactor;
                         }
-                        num *= extension.universalMoodFactor;
                     }
                 }
 
@@ -99,7 +137,6 @@ namespace EBSGFramework
             return false;
         }
 
-
         // Initializers
 
         public override void StartedNewGame()
@@ -115,9 +152,12 @@ namespace EBSGFramework
         public EBSGCache_Component(Game game)
         {
             loaded = false;
+
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
             geneCountAtLastCache = new Dictionary<Pawn, int>();
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
+
+            CacheGenesOfInterest();
         }
 
         public void Initialize()
@@ -128,6 +168,20 @@ namespace EBSGFramework
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
             geneCountAtLastCache = new Dictionary<Pawn, int>();
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
+        }
+
+        public void CacheGenesOfInterest()
+        {
+            foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
+            {
+                if (gene.HasModExtension<EBSGExtension>())
+                {
+                    EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
+
+                    if (extension.universalMoodFactor != 1)
+                        moodMultiplyingGenes.Add(gene);
+                }
+            }
         }
     }
 }

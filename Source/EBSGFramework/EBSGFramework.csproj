@@ -278,6 +278,8 @@
     <Compile Include="Needs\Thought_Situational_BasicCurveNeedMood.cs" />
     <Compile Include="Needs\ThoughtWorker_BasicCurveNeedMood.cs" />
     <Compile Include="Needs\Building_PawnNeedCharger.cs" />
+    <Compile Include="Needs\Need_GenericNeed.cs" />
+    <Compile Include="Needs\Alert_LowGenericNeed.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

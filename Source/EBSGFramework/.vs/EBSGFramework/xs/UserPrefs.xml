@@ -1,29 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGExtension.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="374" Column="17" />
-      <File FileName="Things/CompProperties_Regenerating.cs" Line="1" Column="1" />
-      <File FileName="Things/CompRegenerating.cs" Line="1" Column="1" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="34" Column="26" />
-      <File FileName="EBSGExtension.cs" Line="16" Column="46" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="139" Column="9" />
+      <File FileName="EBSGExtension.cs" Line="134" Column="44" />
+      <File FileName="Needs/Need_GenericNeed.cs" Line="60" Column="89" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="GameComponents" expanded="True">
-                <Node name="EBSGCache_Component.cs" selected="True" />
-              </Node>
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Things" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

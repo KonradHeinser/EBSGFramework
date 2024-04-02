@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
-    <EBSG_NeedOffsets>Base need offsets:</EBSG_NeedOffsets>
+    <EBSG_NeedOffsets>Base target need offsets:</EBSG_NeedOffsets>
+    <EBSG_CasterNeedOffsets>Base caster need offsets:</EBSG_CasterNeedOffsets>
     <EBSG_Random>Random option</EBSG_Random>
     <AbilityCasterNoMap>Caster doesn't have a valid map to target.</AbilityCasterNoMap>
     <AlreadyActiveWeather>Map has this type of weather already: {0}.</AlreadyActiveWeather>
@@ -12,6 +13,9 @@
     <AbilityCasterInventory>The caster's inventory is missing required items.</AbilityCasterInventory>
     <AbilityTargetTooFar>Target is out of range.</AbilityTargetTooFar>
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
+
+    <EBSG_NeedLow>Low Need(s)</EBSG_NeedLow>
+    <EBSG_NeedLowDescription>Low need(s): \n {0} \n\n At least one pawn has a dangerously low need. The method to fix this depends on the specific need in question.</EBSG_NeedLowDescription>
 
         <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
