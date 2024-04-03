@@ -180,6 +180,8 @@ namespace EBSGFramework
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
 
             CacheGenesOfInterest();
+
+            Log.Message("The EBSG Framework has successfully prepared itself.");
         }
 
         public void Initialize()

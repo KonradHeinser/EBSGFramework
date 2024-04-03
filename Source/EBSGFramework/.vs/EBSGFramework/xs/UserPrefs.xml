@@ -1,24 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_PawnNeedCharger.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/Alert_LowResource.cs">
     <Files>
-      <File FileName="EBSGExtension.cs" Line="151" Column="64" />
-      <File FileName="Things/Building_PawnNeedCharger.cs" Line="275" Column="111" />
-      <File FileName="Things/JobDriver_PawnNeedCharger.cs" Line="41" Column="22" />
+      <File FileName="EBSGExtension.cs" Line="149" Column="55" />
+      <File FileName="Things/Building_PawnNeedCharger.cs" Line="251" Column="38" />
+      <File FileName="Things/JobDriver_PawnNeedCharger.cs" Line="26" Column="1" />
       <File FileName="Things/JobGiver_PawnNeedCharger.cs" Line="102" Column="1" />
       <File FileName="DynamicResourceGenes/Workgiver_AdministerResource.cs" Line="9" Column="46" />
       <File FileName="Needs/Alert_LowGenericNeed.cs" Line="29" Column="10" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="185" Column="10" />
+      <File FileName="Generic List Classes/GeneEffect.cs" Line="14" Column="28" />
+      <File FileName="DynamicResourceGenes/Alert_LowResource.cs" Line="73" Column="95" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="Alert_LowResource.cs" selected="True" />
+              </Node>
               <Node name="GameComponents" expanded="True" />
               <Node name="Needs" expanded="True" />
-              <Node name="Things" expanded="True">
-                <Node name="Building_PawnNeedCharger.cs" selected="True" />
-              </Node>
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>
