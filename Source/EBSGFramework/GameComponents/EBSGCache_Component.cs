@@ -19,6 +19,9 @@ namespace EBSGFramework
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
 
+        private bool needRechargerJob = false;
+        private bool checkedRechargerJob = false;
+
         // Other
 
         public bool NeedNeedAlert()
@@ -43,6 +46,25 @@ namespace EBSGFramework
             }
 
             return needNeedAlert;
+        }
+
+        public bool NeedRechargerJob()
+        {
+            if (!checkedRechargerJob)
+            {
+                foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefsListForReading)
+                {
+                    if (thing.thingClass == typeof(Building_PawnNeedCharger))
+                    {
+                        needRechargerJob = true;
+                        break;
+                    }
+                }
+
+                checkedRechargerJob = true;
+            }
+
+            return needRechargerJob;
         }
 
         // Gene result caching

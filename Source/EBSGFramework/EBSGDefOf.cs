@@ -14,6 +14,8 @@ namespace EBSGFramework
 
         public static PawnCapacityDef Metabolism;
 
+        public static JobDef EBSG_NeedCharge;
+
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_DeathrestFallRate;

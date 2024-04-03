@@ -139,6 +139,15 @@ namespace EBSGFramework
         public StatDef riseStat;
 
         // Building
-        public List<NeedOffset> needOffsets;
+        public List<NeedOffset> needOffsetsPerHour;
+        public SoundDef startSound;
+        public SoundDef sustainerSound;
+        public ThingDef chargeMote;
+        public ThingDef chargeMotePulse;
+        public EffecterDef wasteProducedEffecter;
+        public int wastePerHourOfUse; // Only applies if there's a WasteProducer comp
+        public List<GeneEffect> resourceOffsetsPerHour; // For DRG in the pawn need charger
+        public bool negativeNeedOffsetsAreNotCosts = false;
+        public bool negativeResourceOffsetsAreNotCosts = false;
     }
 }

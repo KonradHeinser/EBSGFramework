@@ -11,5 +11,6 @@ namespace EBSGFramework
         public List<GeneDef> allOfGene;
         public float effect = 1;
         public StatDef statFactor;
+        public float offset = 0;
     }
 }

@@ -1,10 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_PawnNeedCharger.cs">
     <Files>
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="139" Column="9" />
-      <File FileName="EBSGExtension.cs" Line="134" Column="44" />
-      <File FileName="Needs/Need_GenericNeed.cs" Line="60" Column="89" />
+      <File FileName="EBSGExtension.cs" Line="151" Column="64" />
+      <File FileName="Things/Building_PawnNeedCharger.cs" Line="275" Column="111" />
+      <File FileName="Things/JobDriver_PawnNeedCharger.cs" Line="41" Column="22" />
+      <File FileName="Things/JobGiver_PawnNeedCharger.cs" Line="102" Column="1" />
+      <File FileName="DynamicResourceGenes/Workgiver_AdministerResource.cs" Line="9" Column="46" />
+      <File FileName="Needs/Alert_LowGenericNeed.cs" Line="29" Column="10" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="Building_PawnNeedCharger.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

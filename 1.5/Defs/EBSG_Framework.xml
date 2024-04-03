@@ -36,4 +36,10 @@
             <destroyedLabel>Genetically Damaged</destroyedLabel>
         </injuryProps>
     </HediffDef>
+
+    <JobDef>
+        <defName>EBSG_NeedCharge</defName>
+        <driverClass>EBSGFramework.JobDriver_PawnNeedCharger</driverClass>
+        <reportString>using recharger.</reportString>
+    </JobDef>
 </Defs>

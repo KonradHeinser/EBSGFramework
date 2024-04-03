@@ -10,7 +10,7 @@ using RimWorld;
 
 namespace EBSGFramework
 {
-    public class EBSGUtilities
+    public static class EBSGUtilities
     {
         public static List<PawnCapacityDef> cachedLethalCapacities = new List<PawnCapacityDef>();
 
@@ -630,7 +630,7 @@ namespace EBSGFramework
 
         public static void HandleNeedOffsets(Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
         {
-            if (needOffsets.NullOrEmpty()) return;
+            if (needOffsets.NullOrEmpty() || pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) return;
             List<Need> alreadyPickedNeeds = new List<Need>();
             foreach (NeedOffset needOffset in needOffsets)
             {
@@ -650,6 +650,23 @@ namespace EBSGFramework
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
                     need.CurLevel += offset;
+                }
+            }
+        }
+
+        public static void HandleDRGOffsets(Pawn pawn, List<GeneEffect> geneEffects, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        {
+            if (geneEffects.NullOrEmpty() || pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return;
+
+            foreach (GeneEffect geneEffect in geneEffects)
+            {
+                if (pawn.genes.HasGene(geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
+                {
+                    float offset = geneEffect.offset;
+                    if (geneEffect.statFactor != null) offset *= pawn.GetStatValue(geneEffect.statFactor);
+                    if (hourlyRate) offset *= hashInterval / 2500f;
+                    else if (dailyRate) offset *= hashInterval / 60000f;
+                    ResourceGene.OffsetResource(pawn, offset, resourceGene);
                 }
             }
         }

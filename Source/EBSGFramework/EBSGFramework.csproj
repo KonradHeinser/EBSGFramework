@@ -277,9 +277,11 @@
     <Compile Include="Genes\Gene_CustomizableClotting.cs" />
     <Compile Include="Needs\Thought_Situational_BasicCurveNeedMood.cs" />
     <Compile Include="Needs\ThoughtWorker_BasicCurveNeedMood.cs" />
-    <Compile Include="Needs\Building_PawnNeedCharger.cs" />
     <Compile Include="Needs\Need_GenericNeed.cs" />
     <Compile Include="Needs\Alert_LowGenericNeed.cs" />
+    <Compile Include="Things\Building_PawnNeedCharger.cs" />
+    <Compile Include="Things\JobDriver_PawnNeedCharger.cs" />
+    <Compile Include="Things\JobGiver_PawnNeedCharger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
