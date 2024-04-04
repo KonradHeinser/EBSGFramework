@@ -41,69 +41,6 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <ThingDef ParentName="BuildingBase">
-        <defName>EBSG_FoodReplenisher</defName>
-        <label>food replenisher</label>
-        <description>A food replenishing building that looks suspiciously like a mech recharger.</description>
-        <thingClass>EBSGFramework.Building_PawnNeedCharger</thingClass>
-        <tickerType>Normal</tickerType>
-        <altitudeLayer>Building</altitudeLayer>
-        <hasInteractionCell>true</hasInteractionCell>
-        <canOverlapZones>false</canOverlapZones>
-        <designationCategory>Production</designationCategory>
-        <uiOrder>2410</uiOrder>
-        <drawerType>MapMeshAndRealTime</drawerType>
-        <graphicData>
-          <texPath>Things/Building/Production/BasicRecharger</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>(2.9,1.25)</drawSize>
-          <shadowData>
-            <volume>(2.9, 0.5, 0.9)</volume>
-          </shadowData>
-        </graphicData>
-        <interactionCellOffset>(0,0,1)</interactionCellOffset>
-        <passability>PassThroughOnly</passability>
-        <statBases>
-          <MaxHitPoints>150</MaxHitPoints>
-          <WorkToBuild>8000</WorkToBuild>
-          <Mass>25</Mass>
-          <Flammability>0.5</Flammability>
-        </statBases>
-        <size>(3,1)</size>
-        <fillPercent>0.3</fillPercent>
-        <building>
-            <ai_chillDestination>false</ai_chillDestination>
-        </building>
-        <costList>
-          <Steel>125</Steel>
-          <ComponentIndustrial>1</ComponentIndustrial>
-        </costList>
-        <comps>
-          <li Class="CompProperties_Power">
-            <compClass>CompPowerTrader</compClass>
-            <basePowerConsumption>200</basePowerConsumption>
-          </li>
-          <li Class="CompProperties_Flickable"/>
-          <li Class="CompProperties_Forbiddable"/>
-        </comps>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGExtension">
-                <needOffsetsPerHour>
-                    <li>
-                        <need>Food</need>
-                        <offset>0.5</offset> <!--Only takes 2 hours to satisfy most fully grown pawns-->
-                    </li>
-                </needOffsetsPerHour>
-                <resourceOffsetsPerHour>
-                    <li>
-                        <gene>SHG_Archetypes_Radiomancer</gene>
-                        <offset>1</offset>
-                    </li>
-                </resourceOffsetsPerHour>
-            </li>
-        </modExtensions>
-    </ThingDef>
 </Defs>
 
 <!-- 
