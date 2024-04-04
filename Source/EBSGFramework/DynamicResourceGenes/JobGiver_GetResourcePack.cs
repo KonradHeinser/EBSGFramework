@@ -9,6 +9,21 @@ namespace EBSGFramework
 {
     public class JobGiver_GetResourcePack : ThinkNode_JobGiver
     {
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         private static float? cachedResourcePackResourceGain;
 
         public static float ResourcePackResourceGain(Pawn pawn, List<ThingDef> resourcePacks)
@@ -59,20 +74,15 @@ namespace EBSGFramework
 
         public override float GetPriority(Pawn pawn)
         {
-            if (!ModsConfig.BiotechActive)
-            {
-                return 0f;
-            }
-            if (pawn.genes?.GetFirstGeneOfType<ResourceGene>() == null)
-            {
-                return 0f;
-            }
+            if (!ModsConfig.BiotechActive || pawn.genes?.GetFirstGeneOfType<ResourceGene>() == null
+                || (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())) return 0f;
             return 9.1f;
         }
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!ModsConfig.BiotechActive) return null;
+            if (!ModsConfig.BiotechActive || (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())) return null;
+
             ResourceGene resourceGene = pawn.genes?.GetFirstGeneOfType<ResourceGene>(); // Verifies that any resource gene exists
             if (resourceGene == null)
             {
@@ -80,10 +90,18 @@ namespace EBSGFramework
             }
 
             List<ResourceGene> resourcesPresent = new List<ResourceGene>(); // Creates list of all resource genes
-            foreach (Gene gene in pawn.genes?.GenesListForReading)
+            if (Cache != null)
             {
-                if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
+                foreach (GeneDef gene in Cache.dynamicResourceGenes)
+                    if (pawn.genes.HasGene(gene))
+                        resourcesPresent.Add(pawn.genes.GetGene(gene) as ResourceGene);
             }
+            else
+                foreach (Gene gene in pawn.genes?.GenesListForReading)
+                {
+                    if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
+                }
+
             foreach (ResourceGene resource in resourcesPresent) // Check each resource gene, and the moment a viable one appears, return job
             {
                 if (!resource.ShouldConsumeResourceNow()) continue;

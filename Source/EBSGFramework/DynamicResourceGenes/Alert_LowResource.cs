@@ -11,6 +11,21 @@ namespace EBSGFramework
 
         private List<string> targetLabels = new List<string>();
 
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         private List<GlobalTargetInfo> Targets
         {
             get
@@ -33,13 +48,13 @@ namespace EBSGFramework
         {
             targets.Clear();
             targetLabels.Clear();
-            if (!ModsConfig.BiotechActive)
+            if (!ModsConfig.BiotechActive || (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty()))
             {
                 return;
             }
             foreach (Pawn item in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive)
             {
-                if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer)
+                if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer && item.genes != null)
                 {
                     ResourceGene resourceGene = item.genes?.GetFirstGeneOfType<ResourceGene>();
                     if (resourceGene == null) continue;
@@ -50,19 +65,31 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        foreach (Gene gene in item.genes.GenesListForReading)
+                        if (Cache != null)
                         {
-                            if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene)
+                            foreach (GeneDef gene in Cache.dynamicResourceGenes)
+                                if (item.genes.HasGene(gene) && item.genes.GetGene(gene) is ResourceGene resource)
+                                    if (resource.Value < resource.MinLevelForAlert)
+                                    {
+                                        targets.Add(item);
+                                        targetLabels.Add(item.NameShortColored.Resolve());
+                                        break;
+                                    }
+                        }
+                        else
+                            foreach (Gene gene in item.genes.GenesListForReading)
                             {
-                                resourceGene = (ResourceGene)gene;
-                                if (resourceGene.Value < resourceGene.MinLevelForAlert)
+                                if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene)
                                 {
-                                    targets.Add(item);
-                                    targetLabels.Add(item.NameShortColored.Resolve());
-                                    break;
+                                    resourceGene = (ResourceGene)gene;
+                                    if (resourceGene.Value < resourceGene.MinLevelForAlert)
+                                    {
+                                        targets.Add(item);
+                                        targetLabels.Add(item.NameShortColored.Resolve());
+                                        break;
+                                    }
                                 }
                             }
-                        }
                     }
                 }
             }
@@ -75,6 +102,8 @@ namespace EBSGFramework
 
         public override AlertReport GetReport()
         {
+            if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
+                return AlertReport.Inactive;
             return AlertReport.CulpritsAre(Targets);
         }
     }

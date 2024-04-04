@@ -7,6 +7,21 @@ namespace EBSGFramework
 {
     public class WorkGiver_Warden_DeliverResource : WorkGiver_Warden
     {
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
@@ -18,6 +33,9 @@ namespace EBSGFramework
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
+            if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
+                return null;
+
             if (!ModsConfig.BiotechActive) return null;
             Pawn prisoner = (Pawn)t;
             ResourceGene resourceGene = prisoner.genes?.GetFirstGeneOfType<ResourceGene>(); // Checks if there's even a resource gene present

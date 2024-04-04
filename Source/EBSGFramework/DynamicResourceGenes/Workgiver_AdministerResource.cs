@@ -8,6 +8,21 @@ namespace EBSGFramework
 {
     public class Workgiver_AdministerResource : WorkGiver_Scanner
     {
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         private const float MinLevelForFeedingResourceUnforced = 0.25f;
 
         private const float ResourcePctMax = 0.95f;
@@ -23,15 +38,26 @@ namespace EBSGFramework
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
+            if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
+                return false;
+
             if (!(t is Pawn pawn2) || pawn2 == pawn || !FeedPatientUtility.ShouldBeFed(pawn2)) return false;
             ResourceGene resourceGene = pawn2.genes?.GetFirstGeneOfType<ResourceGene>();
             if (resourceGene == null) return false;
 
             List<ResourceGene> resourcesPresent = new List<ResourceGene>(); // Creates list of all resource genes
-            foreach (Gene gene in pawn2.genes?.GenesListForReading)
+            if (Cache != null)
             {
-                if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
+                foreach (GeneDef gene in Cache.dynamicResourceGenes)
+                    if (pawn2.genes.HasGene(gene))
+                        resourcesPresent.Add(pawn2.genes.GetGene(gene) as ResourceGene);
             }
+            else
+                foreach (Gene gene in pawn2.genes?.GenesListForReading)
+                {
+                    if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
+                }
+
             bool flag = false;
             bool flag2 = false;
             foreach (ResourceGene resource in resourcesPresent)
@@ -61,6 +87,9 @@ namespace EBSGFramework
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
+            if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
+                return null;
+
             Pawn pawn2 = (Pawn)t;
             ResourceGene resourceGene = pawn2.genes?.GetFirstGeneOfType<ResourceGene>();
             if (resourceGene == null) return null;

@@ -14,7 +14,8 @@ namespace EBSGFramework
         private Dictionary<Pawn, float> cachedGeneMoodFactor;
 
         // Cached genes of interest
-        private List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
+        public List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
+        public List<GeneDef> dynamicResourceGenes = new List<GeneDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -180,8 +181,6 @@ namespace EBSGFramework
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
 
             CacheGenesOfInterest();
-
-            Log.Message("The EBSG Framework has successfully prepared itself.");
         }
 
         public void Initialize()
@@ -204,6 +203,10 @@ namespace EBSGFramework
 
                     if (extension.universalMoodFactor != 1)
                         moodMultiplyingGenes.Add(gene);
+                }
+                if (gene.geneClass == typeof(ResourceGene))
+                {
+                    dynamicResourceGenes.Add(gene);
                 }
             }
         }
