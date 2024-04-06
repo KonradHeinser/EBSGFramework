@@ -15,7 +15,7 @@ namespace EBSGFramework
         protected override IEnumerable<Toil> MakeNewToils()
         {
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
-            Toil toil = ToilMaker.MakeToil("MakeNewToils");
+            Toil toil = ToilMaker.MakeToil("RelaxInWater");
             toil.initAction = delegate
             {
                 pawn.jobs.posture = PawnPosture.LayingOnGroundFaceUp;

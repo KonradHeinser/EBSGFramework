@@ -284,6 +284,10 @@
     <Compile Include="DynamicResourceGenes\GetResourceAI\JobGiver_GetResourcePack.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\Comp_DRGConsumable.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\CompProperties_DRGConsumable.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGFeedPatient.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGConsume.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

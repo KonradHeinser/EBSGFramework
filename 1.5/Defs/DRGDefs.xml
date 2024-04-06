@@ -13,6 +13,27 @@
         </thinkRoot>
     </ThinkTreeDef>
 
+    <JobDef>
+        <defName>DRG_Consume</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGConsume</driverClass>
+        <reportString>consuming TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>DRG_Deliver</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGDeliver</driverClass>
+        <reportString>giving TargetA to TargetB.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>DRG_FeedPatient</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGFeedPatient</driverClass>
+        <reportString>giving TargetA to TargetB.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
     <WorkGiverDef>
         <defName>DRG_AdministerResource</defName>
         <label>administer resource pack</label>

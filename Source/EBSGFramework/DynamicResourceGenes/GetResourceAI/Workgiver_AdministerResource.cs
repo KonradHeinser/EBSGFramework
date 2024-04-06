@@ -104,9 +104,16 @@ namespace EBSGFramework
                 Thing thing = FindViableResource(resource.def.GetModExtension<DRGExtension>().resourcePacks, pawn);
                 if (thing != null)
                 {
-                    Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, thing, pawn2);
-                    job.count = 1;
-                    return job;
+                    if (thing.HasComp<Comp_DRGConsumable>())
+                    {
+                        Comp_DRGConsumable comp = thing.TryGetComp<Comp_DRGConsumable>();
+                    }
+                    else
+                    {
+                        Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, thing, pawn2);
+                        job.count = 1;
+                        return job;
+                    }
                 }
             }
             return null;

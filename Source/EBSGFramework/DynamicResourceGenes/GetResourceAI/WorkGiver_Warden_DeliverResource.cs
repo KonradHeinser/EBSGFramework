@@ -59,10 +59,17 @@ namespace EBSGFramework
                 {
                     Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
                     if (thing == null) continue; // If the individual item doesn't exist, try the next one
-                    Job job = JobMaker.MakeJob(JobDefOf.DeliverFood, thing, prisoner);
-                    job.count = 1;
-                    job.targetC = RCellFinder.SpotToChewStandingNear(prisoner, thing);
-                    return job;
+                    if (thing.HasComp<Comp_DRGConsumable>())
+                    {
+                        Comp_DRGConsumable comp = thing.TryGetComp<Comp_DRGConsumable>();
+                    }
+                    else
+                    {
+                        Job job = JobMaker.MakeJob(JobDefOf.DeliverFood, thing, prisoner);
+                        job.count = 1;
+                        job.targetC = RCellFinder.SpotToChewStandingNear(prisoner, thing);
+                        return job;
+                    }
                 }
             }
             return null; // If none of the existing resources require packs/have packs available, no job for you

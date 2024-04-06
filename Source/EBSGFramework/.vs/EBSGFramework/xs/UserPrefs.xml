@@ -1,13 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="113" Column="22" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/CompProperties_DRGConsumable.cs" Line="16" Column="1" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Comp_DRGConsumable.cs" Line="7" Column="83" />
-      <File FileName="Things/CompRegenerating.cs" Line="8" Column="88" />
-      <File FileName="EBSGDefOf.cs" Line="40" Column="53" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="94" Column="87" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="196" Column="9" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="145" Column="18" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="113" Column="72" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/WorkGiver_Warden_DeliverResource.cs" Line="72" Column="22" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGFeedPatient.cs" Line="2" Column="24" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGConsume.cs" Line="2" Column="24" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="2" Column="24" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="7" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,11 +15,11 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="GetResourceAI" expanded="True" />
+                <Node name="GetResourceAI" expanded="True">
+                  <Node name="Toils_DRGConsume.cs" selected="True" />
+                </Node>
               </Node>
-              <Node name="GameComponents" expanded="True">
-                <Node name="EBSGCache_Component.cs" selected="True" />
-              </Node>
+              <Node name="GameComponents" expanded="True" />
               <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Things" expanded="True" />

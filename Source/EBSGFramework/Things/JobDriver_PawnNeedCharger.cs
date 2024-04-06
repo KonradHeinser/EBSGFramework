@@ -26,7 +26,7 @@ namespace EBSGFramework
             this.FailOnDespawnedOrNull(TargetIndex.A);
             this.FailOn(() => !NeedCharger.PawnCanUse(pawn));
             yield return Toils_Goto.Goto(TargetIndex.A, PathEndMode.InteractionCell).FailOnForbidden(TargetIndex.A);
-            Toil toil = ToilMaker.MakeToil("MakeNewToils");
+            Toil toil = ToilMaker.MakeToil("ChargingNeed");
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.initAction = delegate
             {

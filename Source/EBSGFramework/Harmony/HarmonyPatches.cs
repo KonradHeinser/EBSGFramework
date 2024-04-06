@@ -93,8 +93,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
                 postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
-            //harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
-            //    postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
+                postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
 
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
