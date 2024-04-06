@@ -89,12 +89,9 @@
     <Compile Include="DynamicResourceGenes\GeneGizmo_ResourceGene.cs" />
     <Compile Include="DynamicResourceGenes\HediffCompProperties_SeverityFromResource.cs" />
     <Compile Include="DynamicResourceGenes\ResourceDrainGene.cs" />
-    <Compile Include="DynamicResourceGenes\JobGiver_GetResourcePack.cs" />
     <Compile Include="DynamicResourceGenes\ResourceGene.cs" />
     <Compile Include="DynamicResourceGenes\Hediff_ResourceCraving.cs" />
-    <Compile Include="DynamicResourceGenes\Workgiver_AdministerResource.cs" />
     <Compile Include="DynamicResourceGenes\IngestionOutcomeDoer_OffsetResource.cs" />
-    <Compile Include="DynamicResourceGenes\WorkGiver_Warden_DeliverResource.cs" />
     <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
     <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
     <Compile Include="Genes\AdditionalFertilityByAge.cs" />
@@ -282,6 +279,11 @@
     <Compile Include="Things\Building_PawnNeedCharger.cs" />
     <Compile Include="Things\JobDriver_PawnNeedCharger.cs" />
     <Compile Include="Things\JobGiver_PawnNeedCharger.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\Workgiver_AdministerResource.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\WorkGiver_Warden_DeliverResource.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\JobGiver_GetResourcePack.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\Comp_DRGConsumable.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\CompProperties_DRGConsumable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -310,6 +312,7 @@
     <Folder Include="DynamicResourceGenes\CompProperties_Ability\" />
     <Folder Include="DynamicResourceGenes\CompAbilityEffect\" />
     <Folder Include="Needs\" />
+    <Folder Include="DynamicResourceGenes\GetResourceAI\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

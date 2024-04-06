@@ -91,6 +91,11 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
                 postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
+                postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
+            //harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
+            //    postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
+
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -674,6 +679,20 @@ namespace EBSGFramework
         {
             if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
                 __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
+        }
+
+        public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result, GeneDef ___def)
+        {
+            if (___def.geneClass == typeof(Gene_Hemogen))
+            {
+                __result += ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxOffset);
+                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxFactor);
+            }
+        }
+
+        public static void PostAddGenePostfix(Pawn ___pawn)
+        {
+            if (Cache != null) Cache.CachePawnWithGene(___pawn);
         }
     }
 }

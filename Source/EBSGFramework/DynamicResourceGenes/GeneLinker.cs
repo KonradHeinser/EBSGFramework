@@ -1,4 +1,5 @@
 ﻿using Verse;
+using RimWorld;
 
 namespace EBSGFramework
 {
@@ -6,6 +7,8 @@ namespace EBSGFramework
     {
         public GeneDef mainResourceGene;
 
-        public float offset = 0f;
+        public float amount = 0f;
+
+        public StatDef statFactor;
     }
 }

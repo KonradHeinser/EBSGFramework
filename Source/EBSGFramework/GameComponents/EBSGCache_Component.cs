@@ -7,6 +7,7 @@ namespace EBSGFramework
     public class EBSGCache_Component : GameComponent
     {
         public bool loaded;
+        public int tick = 0;
 
         // Terrain hediff comp cache
         private Dictionary<Pawn, Hediff> pawnTerrainComps;
@@ -24,6 +25,8 @@ namespace EBSGFramework
         private bool checkedRechargerJob = false;
 
         // Other
+
+        public List<Pawn> cachedHemogenicPawns = new List<Pawn>();
 
         public bool NeedNeedAlert()
         {
@@ -111,6 +114,13 @@ namespace EBSGFramework
             return cachedGeneMoodFactor[pawn];
         }
 
+        public void CachePawnWithGene(Pawn pawn)
+        {
+            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return;
+            if (pawn.genes.GetFirstGeneOfType<Gene_Hemogen>() != null)
+                cachedHemogenicPawns.Add(pawn);
+        }
+
         // Terrain cost cache
 
         public void RegisterTerrainPawn(Pawn pawn, Hediff hediff)
@@ -191,6 +201,17 @@ namespace EBSGFramework
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
             geneCountAtLastCache = new Dictionary<Pawn, int>();
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
+
+            RebuildCaches();
+        }
+
+        // Rather than saving them, they are just cached like this to minimize the risk of weird save fuckery caused by mod changes
+        public void RebuildCaches()
+        {
+            cachedHemogenicPawns = new List<Pawn>();
+
+            foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
+                CachePawnWithGene(pawn);
         }
 
         public void CacheGenesOfInterest()
@@ -207,6 +228,42 @@ namespace EBSGFramework
                 if (gene.geneClass == typeof(ResourceGene))
                 {
                     dynamicResourceGenes.Add(gene);
+                }
+            }
+        }
+
+        public override void GameComponentTick()
+        {
+            tick++;
+            if (tick % 200 == 0)
+            {
+                if (!cachedHemogenicPawns.NullOrEmpty())
+                {
+                    List<Pawn> purgePawns = new List<Pawn>();
+                    foreach (Pawn pawn in cachedHemogenicPawns)
+                    {
+                        if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty() || pawn.genes.GetFirstGeneOfType<Gene_Hemogen>() == null)
+                            purgePawns.Add(pawn);
+                        else if (!pawn.Dead)
+                        {
+                            float baseAmount = 1f;
+                            Gene_Deathrest deathrest = pawn.genes.GetFirstGeneOfType<Gene_Deathrest>();
+                            if (deathrest != null && !deathrest.BoundBuildings.NullOrEmpty())
+                            {
+                                foreach (Thing thing in deathrest.BoundBuildings)
+                                    if (thing.HasComp<CompDeathrestBindable>())
+                                    {
+                                        CompDeathrestBindable bindable = thing.TryGetComp<CompDeathrestBindable>();
+                                        baseAmount += bindable.Props.hemogenLimitOffset;
+                                    }
+                            }
+                            Gene_Hemogen gene = pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
+                            gene.SetMax((baseAmount + pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxOffset)) * pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxFactor));
+                        }
+                    }
+                    if (!purgePawns.NullOrEmpty())
+                        foreach (Pawn pawn in purgePawns)
+                            cachedHemogenicPawns.Remove(pawn);
                 }
             }
         }

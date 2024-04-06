@@ -31,10 +31,12 @@ namespace EBSGFramework
         public static StatDef EBSG_MoodRiseRate;
         public static StatDef EBSG_MoodFallRate;
         public static StatDef EBSG_JoyRiseRate;
+
         public static StatDef EBSG_GrowthPointRate;
         public static StatDef EBSG_OutgoingDamageFactor;
-
         public static StatDef EBSG_PsyfocusFallRateFactor;
         public static StatDef EBSG_PsyfocusFallRateOffset;
+        public static StatDef EBSG_HemogenMaxOffset;
+        public static StatDef EBSG_HemogenMaxFactor;
     }
 }
