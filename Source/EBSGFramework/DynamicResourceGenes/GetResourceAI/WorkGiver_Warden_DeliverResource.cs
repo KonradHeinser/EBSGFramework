@@ -61,7 +61,10 @@ namespace EBSGFramework
                     if (thing == null) continue; // If the individual item doesn't exist, try the next one
                     if (thing.HasComp<Comp_DRGConsumable>())
                     {
-                        Comp_DRGConsumable comp = thing.TryGetComp<Comp_DRGConsumable>();
+                        Job job = JobMaker.MakeJob(EBSGDefOf.DRG_Deliver, thing, prisoner);
+                        job.count = 1;
+                        job.targetC = RCellFinder.SpotToChewStandingNear(prisoner, thing);
+                        return job;
                     }
                     else
                     {

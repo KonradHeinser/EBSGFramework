@@ -106,7 +106,9 @@ namespace EBSGFramework
                 {
                     if (thing.HasComp<Comp_DRGConsumable>())
                     {
-                        Comp_DRGConsumable comp = thing.TryGetComp<Comp_DRGConsumable>();
+                        Job job = JobMaker.MakeJob(EBSGDefOf.DRG_FeedPatient, thing, pawn2);
+                        job.count = 1;
+                        return job;
                     }
                     else
                     {
@@ -114,6 +116,7 @@ namespace EBSGFramework
                         job.count = 1;
                         return job;
                     }
+
                 }
             }
             return null;

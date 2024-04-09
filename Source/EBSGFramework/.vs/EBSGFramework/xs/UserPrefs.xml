@@ -1,13 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="145" Column="18" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="113" Column="72" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/WorkGiver_Warden_DeliverResource.cs" Line="72" Column="22" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGFeedPatient.cs" Line="2" Column="24" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGConsume.cs" Line="2" Column="24" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="2" Column="24" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="7" Column="1" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/WorkGiver_Warden_DeliverResource.cs" Line="71" Column="54" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="21" Column="10" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="159" Column="60" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="104" Column="49" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGFeedPatient.cs" Line="51" Column="81" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="276" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,13 +15,11 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="DynamicResourceGenes" expanded="True">
                 <Node name="GetResourceAI" expanded="True">
-                  <Node name="Toils_DRGConsume.cs" selected="True" />
+                  <Node name="JobDriver_DRGDeliver.cs" selected="True" />
                 </Node>
               </Node>
               <Node name="GameComponents" expanded="True" />
-              <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

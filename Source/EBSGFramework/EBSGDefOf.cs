@@ -12,6 +12,10 @@ namespace EBSGFramework
         public static StatDef EBSG_Healthiness;
         public static DamageDef EBSG_GeneticDamage;
 
+        public static JobDef DRG_Consume;
+        public static JobDef DRG_Deliver;
+        public static JobDef DRG_FeedPatient;
+
         public static PawnCapacityDef Metabolism;
 
         public static JobDef EBSG_NeedCharge;

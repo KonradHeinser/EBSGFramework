@@ -24,6 +24,8 @@ namespace EBSGFramework
         [Unsaved(false)]
         private List<IGeneResourceDrain> tmpDrainGenes = new List<IGeneResourceDrain>();
 
+        public float AmountMissing => Max - Value;
+
         public bool CanOffset
         {
             get
@@ -230,10 +232,11 @@ namespace EBSGFramework
         public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
         {
             if (resourceGene == null) return;
+            if (extension == null)
+                extension = resourceGene.def.GetModExtension<DRGExtension>();
             if (offset > 0f && applyStatFactor && extension.gainStat != null)
-            {
                 offset *= pawn.GetStatValue(extension.gainStat);
-            }
+
             if (dailyValue) offset /= 60000f;
             if (checkPassiveStat && extension.passiveFactorStat != null) offset *= pawn.GetStatValue(extension.passiveFactorStat);
             if (resourceGene != null)
@@ -259,27 +262,17 @@ namespace EBSGFramework
                 else
                 {
                     if (storeLimitPassing)
-                    {
                         if (resourceGene.Value + offset > resourceGene.Max)
-                        {
                             resourceGene.overchargeLeft += resourceGene.Value + offset - resourceGene.Max;
-                        }
                         else if (resourceGene.Value + offset < 0)
-                        {
                             resourceGene.underchargeLeft += resourceGene.Value + offset * -1;
-                        }
-                    }
                     resourceGene.Value += offset;
                 }
 
                 if (resourceGene.Value <= 0f && extension.cravingHediff != null && !pawn.health.hediffSet.HasHediff(extension.cravingHediff))
-                {
                     pawn.health.AddHediff(extension.cravingHediff);
-                }
                 if (resourceGene.Value >= resourceGene.max && extension.overchargeHediff != null && !pawn.health.hediffSet.HasHediff(extension.overchargeHediff))
-                {
                     pawn.health.AddHediff(extension.overchargeHediff);
-                }
             }
         }
 

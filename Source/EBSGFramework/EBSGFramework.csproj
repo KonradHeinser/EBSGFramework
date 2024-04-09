@@ -28,10 +28,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -58,6 +54,10 @@
     </Reference>
     <Reference Include="VFECore">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -288,6 +288,7 @@
     <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGConsume.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
+    <Compile Include="EBSGRecorder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

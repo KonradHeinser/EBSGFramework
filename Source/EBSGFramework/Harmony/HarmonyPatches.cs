@@ -60,6 +60,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(GeneUtility), nameof(GeneUtility.IsBloodfeeder)),
+                postfix: new HarmonyMethod(patchType, nameof(IsBloodfeederPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -470,6 +472,12 @@ namespace EBSGFramework
                 if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty())
                     __result = multipleLives.forbiddenCorpses.Contains(corpse);
             }
+        }
+
+        public static void IsBloodfeederPostfix(Pawn pawn, ref bool __result)
+        {
+            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null && !DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder").bloodfeederGenes.NullOrEmpty())
+                __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder").bloodfeederGenes);
         }
 
         // Harmony patches for stats

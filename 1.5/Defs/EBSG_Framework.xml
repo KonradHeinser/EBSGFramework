@@ -42,4 +42,10 @@
         <driverClass>EBSGFramework.JobDriver_PawnNeedCharger</driverClass>
         <reportString>using recharger.</reportString>
     </JobDef>
+
+    <EBSGFramework.EBSGRecorder>
+        <defName>EBSG_Recorder</defName>
+        <label>EBSG recorder</label>
+        <bloodfeederGenes />
+    </EBSGFramework.EBSGRecorder>
 </Defs>

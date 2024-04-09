@@ -39,22 +39,28 @@ namespace EBSGFramework
                     {
                         if (thing.HasComp<Comp_DRGConsumable>())
                         {
-                            List<CompProperties> comps = thing.comps.Where((CompProperties c) => c.compClass == typeof(CompProperties_DRGConsumable)).ToList();
-                            if (comps[0] is CompProperties_DRGConsumable comp)
+                            CompProperties_DRGConsumable comp = null;
+
+                            foreach (CompProperties compProp in thing.comps)
                             {
-                                if (comp.resourceOffsets.NullOrEmpty())
+                                if (compProp is CompProperties_DRGConsumable)
                                 {
-                                    Log.Error(thing.defName + " is using CompProperties_DRGConsumable, but doesn't have any genes listed.");
-                                    cachedResourcePackResourceGain = 0f;
+                                    comp = (CompProperties_DRGConsumable)compProp;
+                                    break;
                                 }
-                                else
-                                    foreach (GeneLinker geneLinker in comp.resourceOffsets)
-                                        if (geneLinker.mainResourceGene == resource.def)
-                                        {
-                                            cachedResourcePackResourceGain = geneLinker.amount * (geneLinker.statFactor != null ? pawn.GetStatValue(geneLinker.statFactor) : 1f);
-                                            break;
-                                        }
                             }
+                            if (comp.resourceOffsets.NullOrEmpty())
+                            {
+                                Log.Error(thing.defName + " is using CompProperties_DRGConsumable, but doesn't have any genes listed.");
+                                cachedResourcePackResourceGain = 0f;
+                            }
+                            else
+                                foreach (GeneLinker geneLinker in comp.resourceOffsets)
+                                    if (geneLinker.mainResourceGene == resource.def)
+                                    {
+                                        cachedResourcePackResourceGain = geneLinker.amount * (geneLinker.statFactor != null ? pawn.GetStatValue(geneLinker.statFactor) : 1f);
+                                        break;
+                                    }
                         }
                         else if (!(thing.ingestible?.outcomeDoers?.FirstOrDefault((IngestionOutcomeDoer x) => x is IngestionOutcomeDoer_OffsetResource ix && (ix).mainResourceGene == resource.def) is IngestionOutcomeDoer_OffsetResource ingestionOutcomeDoer_OffsetResource))
                             cachedResourcePackResourceGain = 0f;
@@ -125,23 +131,21 @@ namespace EBSGFramework
                 {
                     Thing resourcePack = GetResourcePack(pawn, extension.resourcePacks);
                     int num = Mathf.FloorToInt((resource.Max - resource.Value) / ResourcePackResourceGain(pawn, extension.resourcePacks, resource, resourcePack));
-                    if (num > 0)
-                    {
-                        if (resourcePack != null)
+                    if (num > 0 && resourcePack != null)
+                        if (resourcePack.HasComp<Comp_DRGConsumable>())
                         {
-                            if (resourcePack.HasComp<Comp_DRGConsumable>())
-                            {
-                                Comp_DRGConsumable comp = resourcePack.TryGetComp<Comp_DRGConsumable>();
-                            }
-                            else
-                            {
-                                Job job = JobMaker.MakeJob(JobDefOf.Ingest, resourcePack);
-                                job.count = Mathf.Min(resourcePack.stackCount, num);
-                                job.ingestTotalCount = true;
-                                return job;
-                            }
+                            Job job = JobMaker.MakeJob(EBSGDefOf.DRG_Consume, resourcePack);
+                            job.count = Mathf.Min(resourcePack.stackCount, num);
+                            job.ingestTotalCount = true;
+                            return job;
                         }
-                    }
+                        else
+                        {
+                            Job job = JobMaker.MakeJob(JobDefOf.Ingest, resourcePack);
+                            job.count = Mathf.Min(resourcePack.stackCount, num);
+                            job.ingestTotalCount = true;
+                            return job;
+                        }
                 }
             }
             return null;
