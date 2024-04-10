@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/GeneLinker.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/GetResourceAI/WorkGiver_Warden_DeliverResource.cs" Line="71" Column="54" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="21" Column="10" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="159" Column="60" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="104" Column="49" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGFeedPatient.cs" Line="51" Column="81" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="276" Column="1" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="112" Column="39" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="76" Column="38" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGConsume.cs" Line="53" Column="10" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="20" Column="29" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="49" Column="43" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="24" Column="47" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/GeneLinker.cs" Line="22" Column="87" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,7 +16,7 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="DynamicResourceGenes" expanded="True">
                 <Node name="GetResourceAI" expanded="True">
-                  <Node name="JobDriver_DRGDeliver.cs" selected="True" />
+                  <Node name="GeneLinker.cs" selected="True" />
                 </Node>
               </Node>
               <Node name="GameComponents" expanded="True" />

@@ -63,7 +63,8 @@ namespace EBSGFramework
             foreach (ResourceGene resource in resourcesPresent)
             {
                 // Check resource values and reservation
-                if (resource.ValuePercent >= 0.95f || (!forced && resource.Value >= 0.25f) || !pawn.CanReserve(t, 1, -1, null, forced) || !resource.ShouldConsumeResourceNow()) continue;
+                if (resource.ValuePercent >= 0.95f || (!forced && resource.Value >= resource.targetValue) || !pawn.CanReserve(t, 1, -1, null, forced)
+                        || !resource.ShouldConsumeResourceNow()) continue;
                 // Check resource pack permission
                 if (!resource.resourcePacksAllowed)
                 {
@@ -90,7 +91,8 @@ namespace EBSGFramework
             if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
                 return null;
 
-            Pawn pawn2 = (Pawn)t;
+            if (!(t is Pawn pawn2)) return null;
+
             ResourceGene resourceGene = pawn2.genes?.GetFirstGeneOfType<ResourceGene>();
             if (resourceGene == null) return null;
 

@@ -255,7 +255,6 @@
     <Compile Include="Hediffs\Comps\HediffComp_HediffsOnRemoval.cs" />
     <Compile Include="Settings\EBSG_Settings.cs" />
     <Compile Include="Settings\PatchOperationSetting.cs" />
-    <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_Launch.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Launch.cs" />
     <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityConvertResource.cs" />
@@ -289,6 +288,7 @@
     <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
     <Compile Include="EBSGRecorder.cs" />
+    <Compile Include="DynamicResourceGenes\GetResourceAI\GeneLinker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

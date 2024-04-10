@@ -1,5 +1,8 @@
 ﻿using Verse;
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Verse.AI;
 using UnityEngine;
 
 namespace EBSGFramework
@@ -30,6 +33,46 @@ namespace EBSGFramework
                         num = Mathf.FloorToInt(resourceGene.AmountMissing / linker.amount);
 
             return num;
+        }
+
+        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+        {
+            bool flag = false;
+
+            string text = "DRG_Consuming".Translate(parent.LabelShort);
+
+            foreach (GeneLinker linker in Props.resourceOffsets)
+                if (EBSGUtilities.HasRelatedGene(selPawn, linker.mainResourceGene))
+                {
+                    flag = true;
+                    if (linker.consumptionReportString != null)
+                    {
+                        text = linker.floatMenuString.Formatted(parent.LabelShort, parent);
+                        break;
+                    }
+                }
+
+            if (flag)
+            {
+                if (!selPawn.CanReach(parent, PathEndMode.Touch, Danger.Deadly))
+                {
+                    yield return new FloatMenuOption(text + ": " + "NoPath".Translate().CapitalizeFirst(), null);
+                    yield break;
+                }
+
+                if (!selPawn.CanReserve(parent))
+                {
+                    yield return new FloatMenuOption(text + ": " + "Reserved".Translate().CapitalizeFirst(), null);
+                    yield break;
+                }
+
+                yield return new FloatMenuOption(text, delegate
+                {
+                    Job job = JobMaker.MakeJob(EBSGDefOf.DRG_Consume, parent);
+                    job.count = 1;
+                    selPawn.jobs.TryTakeOrderedJob(job, JobTag.SatisfyingNeeds);
+                });
+            }
         }
     }
 }

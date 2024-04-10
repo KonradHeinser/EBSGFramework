@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 using Verse.AI;
+using System;
 
 namespace EBSGFramework
 {
@@ -10,6 +11,8 @@ namespace EBSGFramework
         private bool consumingFromInventory;
 
         private Pawn Deliveree => (Pawn)job.targetB.Thing;
+
+        protected Thing Item => job.targetA.Thing;
 
         public override void ExposeData()
         {
@@ -25,7 +28,10 @@ namespace EBSGFramework
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed);
+            if (Item == null || Item.TryGetComp<Comp_DRGConsumable>() == null)
+                return false;
+            int numberToTake = Math.Min(Item.TryGetComp<Comp_DRGConsumable>().NumberToConsume(Deliveree), job.count);
+            return pawn.Reserve(Deliveree, job, 1, numberToTake, null, errorOnFailed);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()

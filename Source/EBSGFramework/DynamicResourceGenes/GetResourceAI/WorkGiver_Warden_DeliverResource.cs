@@ -33,10 +33,9 @@ namespace EBSGFramework
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
+            if (!ModsConfig.BiotechActive || Cache != null && Cache.dynamicResourceGenes.NullOrEmpty())
                 return null;
 
-            if (!ModsConfig.BiotechActive) return null;
             Pawn prisoner = (Pawn)t;
             ResourceGene resourceGene = prisoner.genes?.GetFirstGeneOfType<ResourceGene>(); // Checks if there's even a resource gene present
             if (resourceGene == null || !ShouldTakeCareOfPrisoner(pawn, prisoner) || !prisoner.guest.CanBeBroughtFood || !prisoner.Position.IsInPrisonCell(prisoner.Map) || WardenFeedUtility.ShouldBeFed(prisoner))
@@ -46,9 +45,7 @@ namespace EBSGFramework
             }
             List<ResourceGene> resourcesPresent = new List<ResourceGene>(); // Creates list of all resource genes
             foreach (Gene gene in prisoner.genes?.GenesListForReading)
-            {
                 if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
-            }
 
             foreach (ResourceGene gene in resourcesPresent) // Go through all of the present resources to find any that need resupply
             {
@@ -82,25 +79,15 @@ namespace EBSGFramework
         {
             foreach (ThingDef thing in resourcePacks)
             {
-                if (prisoner.carryTracker.CarriedCount(thing) > 0)
-                {
+                if (prisoner.carryTracker.CarriedCount(thing) > 0 || prisoner.inventory.Count(thing) > 0)
                     return true;
-                }
-                if (prisoner.inventory.Count(thing) > 0)
-                {
-                    return true;
-                }
                 Room room = prisoner.GetRoom();
                 if (room != null)
                 {
                     List<Region> regions = room.Regions;
                     for (int i = 0; i < regions.Count; i++)
-                    {
                         if (regions[i].ListerThings.ThingsOfDef(thing).Count > 0)
-                        {
                             return true;
-                        }
-                    }
                 }
             }
             return false;

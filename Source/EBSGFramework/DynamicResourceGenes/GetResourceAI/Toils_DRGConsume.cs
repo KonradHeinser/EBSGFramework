@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
-using System;
-using UnityEngine;
 
 namespace EBSGFramework
 {
@@ -18,44 +17,43 @@ namespace EBSGFramework
 
         private static List<IntVec3> diagonals = GenAdj.DiagonalDirections.ToList();
 
-        public static Toil ConsumeConsumable(Pawn consumer, TargetIndex consumeInd, TargetIndex eatSurfaceInd = TargetIndex.None)
+        public static Toil ConsumeConsumable(Pawn consumer, Pawn deliverer, TargetIndex consumeInd, TargetIndex eatSurfaceInd = TargetIndex.None)
         {
             Toil toil = ToilMaker.MakeToil("ConsumeConsumable");
-            GeneLinker relatedLinker = toil.actor.CurJob.GetTarget(consumeInd).Thing?.TryGetComp<Comp_DRGConsumable>()?.GetRelatedLinker(toil.actor);
+            GeneLinker relatedLinker = deliverer.CurJob.GetTarget(consumeInd).Thing?.TryGetComp<Comp_DRGConsumable>()?.GetRelatedLinker(consumer);
             toil.initAction = delegate
             {
-                Pawn actor = toil.actor;
-                Thing thing4 = actor.CurJob.GetTarget(consumeInd).Thing;
+                Thing thing4 = deliverer.CurJob.GetTarget(consumeInd).Thing;
 
                 if (thing4.IsBurning() || !thing4.HasComp<Comp_DRGConsumable>() || relatedLinker == null)
                     consumer.jobs.EndCurrentJob(JobCondition.Incompletable);
                 else
                 {
-                    toil.actor.pather.StopDead();
-                    actor.jobs.curDriver.ticksLeftThisToil = relatedLinker.ticks;
+                    deliverer.pather.StopDead();
+                    deliverer.jobs.curDriver.ticksLeftThisToil = relatedLinker.ticks;
                     if (thing4.Spawned)
-                        thing4.Map.physicalInteractionReservationManager.Reserve(consumer, actor.CurJob, thing4);
+                        thing4.Map.physicalInteractionReservationManager.Reserve(consumer, deliverer.CurJob, thing4);
                 }
             };
             toil.tickAction = delegate
             {
-                if (consumer != toil.actor)
-                    toil.actor.rotationTracker.FaceCell(consumer.Position);
+                if (consumer != deliverer)
+                    deliverer.rotationTracker.FaceCell(consumer.Position);
                 else
                 {
-                    Thing thing3 = toil.actor.CurJob.GetTarget(consumeInd).Thing;
+                    Thing thing3 = deliverer.CurJob.GetTarget(consumeInd).Thing;
                     if (thing3 != null && thing3.Spawned)
-                        toil.actor.rotationTracker.FaceCell(thing3.Position);
+                        deliverer.rotationTracker.FaceCell(thing3.Position);
 
-                    else if (eatSurfaceInd != 0 && toil.actor.CurJob.GetTarget(eatSurfaceInd).IsValid)
-                        toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(eatSurfaceInd).Cell);
+                    else if (eatSurfaceInd != 0 && deliverer.CurJob.GetTarget(eatSurfaceInd).IsValid)
+                        deliverer.rotationTracker.FaceCell(deliverer.CurJob.GetTarget(eatSurfaceInd).Cell);
                 }
-                toil.actor.GainComfortFromCellIfPossible();
+                deliverer.GainComfortFromCellIfPossible();
             };
             toil.WithProgressBar(consumeInd, delegate
             {
-                Thing thing2 = toil.actor.CurJob.GetTarget(consumeInd).Thing;
-                return (thing2 == null) ? 1f : (1f - (float)toil.actor.jobs.curDriver.ticksLeftThisToil / relatedLinker.ticks);
+                Thing thing2 = deliverer.CurJob.GetTarget(consumeInd).Thing;
+                return (thing2 == null) ? 1f : (1f - (float)deliverer.jobs.curDriver.ticksLeftThisToil / relatedLinker.ticks);
             });
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.FailOnDestroyedOrNull(consumeInd);
@@ -63,43 +61,46 @@ namespace EBSGFramework
             {
                 Thing thing = consumer?.CurJob?.GetTarget(consumeInd).Thing;
                 if (thing != null && consumer.Map.physicalInteractionReservationManager.IsReservedBy(consumer, thing))
-                    consumer.Map.physicalInteractionReservationManager.Release(consumer, toil.actor.CurJob, thing);
+                    consumer.Map.physicalInteractionReservationManager.Release(consumer, deliverer.CurJob, thing);
             });
             toil.handlingFacing = true;
-            AddConsumptionEffects(toil, consumer, consumeInd, eatSurfaceInd, relatedLinker);
+            AddConsumptionEffects(toil, consumer, deliverer, consumeInd, eatSurfaceInd, relatedLinker);
             return toil;
         }
 
-        public static Toil AddConsumptionEffects(Toil toil, Pawn consumer, TargetIndex consumeInd, TargetIndex eatSurfaceInd, GeneLinker relatedLinker)
+        public static Toil AddConsumptionEffects(Toil toil, Pawn consumer, Pawn deliverer, TargetIndex consumeInd, TargetIndex eatSurfaceInd, GeneLinker relatedLinker)
         {
             toil.WithEffect(delegate
             {
-                LocalTargetInfo target2 = toil.actor.CurJob.GetTarget(consumeInd);
-                if (!target2.HasThing || relatedLinker.consumeEffect == null)
+                LocalTargetInfo target2 = deliverer.CurJob.GetTarget(consumeInd);
+                if (!target2.HasThing)
                     return null;
 
-                EffecterDef result = relatedLinker.consumeEffect;
+                EffecterDef result = null;
+
+                if (relatedLinker.consumeEffect == null)
+                    foreach (GeneLinker linker in target2.Thing.TryGetComp<Comp_DRGConsumable>().Props.resourceOffsets)
+                        if (linker.consumeEffect != null && EBSGUtilities.HasRelatedGene(consumer, linker.mainResourceGene))
+                            result = linker.consumeEffect;
                 return result;
             }, delegate
             {
-                if (!toil.actor.CurJob.GetTarget(consumeInd).HasThing)
-                    return null;
-
-                Thing thing = toil.actor.CurJob.GetTarget(consumeInd).Thing;
-                if (consumer != toil.actor)
-                {
+                if (consumer != deliverer)
                     return consumer;
-                }
-                return (eatSurfaceInd != 0 && toil.actor.CurJob.GetTarget(eatSurfaceInd).IsValid) ? toil.actor.CurJob.GetTarget(eatSurfaceInd) : ((LocalTargetInfo)thing);
-            });
-            toil.PlaySustainerOrSound(delegate
-            {
-                if (!consumer.RaceProps.Humanlike)
-                    return consumer.RaceProps.soundEating;
 
-                LocalTargetInfo target = toil.actor.CurJob.GetTarget(consumeInd);
-                return (!target.HasThing || relatedLinker.consumeSound == null) ? null : relatedLinker.consumeSound;
+                if (!deliverer.CurJob.GetTarget(consumeInd).HasThing)
+                    return null;
+                Thing thing = deliverer.CurJob.GetTarget(consumeInd).Thing;
+
+                return (eatSurfaceInd != 0 && deliverer.CurJob.GetTarget(eatSurfaceInd).IsValid) ? deliverer.CurJob.GetTarget(eatSurfaceInd) : (thing);
             });
+            if (!consumer.RaceProps.Humanlike || relatedLinker.consumeSound != null)
+                toil.PlaySustainerOrSound(delegate
+                {
+                    if (!consumer.RaceProps.Humanlike)
+                        return consumer.RaceProps.soundEating;
+                    return relatedLinker.consumeSound;
+                });
             return toil;
         }
 
@@ -161,7 +162,12 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    int count = Mathf.Min(thing.stackCount, curJob.count);
+                    int count = thing.stackCount;
+                    if (thing.HasComp<Comp_DRGConsumable>())
+                        count = Math.Min(count, thing.TryGetComp<Comp_DRGConsumable>().NumberToConsume(eater));
+                    else
+                        count = Math.Min(count, curJob.count);
+
                     actor.carryTracker.TryStartCarry(thing, count);
                     if (thing != actor.carryTracker.CarriedThing && actor.Map.reservationManager.ReservedBy(thing, actor, curJob))
                         actor.Map.reservationManager.Release(thing, actor, curJob);
@@ -179,20 +185,20 @@ namespace EBSGFramework
             toil.initAction = delegate
             {
                 if (ingester == null)
-                {
                     ingester = toil.actor;
-                }
-                int stackCount = -1;
+
                 LocalTargetInfo target = toil.actor.jobs.curJob.GetTarget(ind);
-                if (target.HasThing && target.Thing.SpawnedOrAnyParentSpawned && target.Thing.IsBurning() && target.Thing.HasComp<Comp_DRGConsumable>())
+
+                int stackCount = -1;
+
+                if (target.HasThing && target.Thing.SpawnedOrAnyParentSpawned && !target.Thing.IsBurning() && target.Thing.HasComp<Comp_DRGConsumable>())
                 {
                     int b = target.Thing.TryGetComp<Comp_DRGConsumable>().NumberToConsume(ingester);
-                    stackCount = Mathf.Min(target.Thing.stackCount, b);
+                    stackCount = Math.Min(target.Thing.stackCount, b);
                 }
-                if (!target.HasThing || !toil.actor.CanReserve(target, 10, stackCount))
-                {
+                if (!target.HasThing || stackCount == -1 || !toil.actor.CanReserve(target, 10, stackCount))
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
-                }
+
                 toil.actor.Reserve(target, toil.actor.CurJob, 10, stackCount);
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
@@ -212,8 +218,8 @@ namespace EBSGFramework
 
                 if (compProps != null)
                     foreach (GeneLinker linker in compProps.resourceOffsets)
-                        if (EBSGUtilities.HasRelatedGene(actor, linker.mainResourceGene) && actor.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
-                            ResourceGene.OffsetResource(actor, linker.amount * thing.stackCount, resource, null, true);
+                        if (EBSGUtilities.HasRelatedGene(ingester, linker.mainResourceGene) && ingester.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
+                            ResourceGene.OffsetResource(ingester, linker.amount * thing.stackCount, resource, null, true);
                 thing.Destroy();
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;

@@ -21,6 +21,8 @@ namespace EBSGFramework
 
         public Pawn Pawn => pawn;
 
+        public StatDef statFactor => extension?.gainStat;
+
         [Unsaved(false)]
         private List<IGeneResourceDrain> tmpDrainGenes = new List<IGeneResourceDrain>();
 

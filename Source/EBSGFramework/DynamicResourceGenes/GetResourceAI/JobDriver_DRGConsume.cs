@@ -36,11 +36,15 @@ namespace EBSGFramework
 
             if (thing.HasComp<Comp_DRGConsumable>())
             {
-                GeneLinker relatedLinker = thing.TryGetComp<Comp_DRGConsumable>()?.GetRelatedLinker(pawn);
+                GeneLinker relatedLinker = thing.TryGetComp<Comp_DRGConsumable>().GetRelatedLinker(pawn);
                 if (relatedLinker == null)
                     return base.GetReport();
                 if (relatedLinker.consumptionReportString != null)
                     return relatedLinker.consumptionReportString.Formatted(thing.LabelShort, thing);
+
+                foreach (GeneLinker linker in thing.TryGetComp<Comp_DRGConsumable>().Props.resourceOffsets)
+                    if (linker.consumptionReportString != null && EBSGUtilities.HasRelatedGene(pawn, linker.mainResourceGene))
+                        return linker.consumptionReportString.Formatted(thing.LabelShort, thing);
             }
             return "DRG_Consuming".Translate(thing.LabelShort);
         }
@@ -56,7 +60,7 @@ namespace EBSGFramework
             if (pawn.Faction != null)
             {
                 int maxAmountToPickup = Math.Min(ConsumableSource.TryGetComp<Comp_DRGConsumable>().NumberToConsume(pawn), job.count);
-                if (!pawn.Reserve(ConsumableSource, job, 10, maxAmountToPickup, null, errorOnFailed))
+                if (!pawn.Reserve(ConsumableSource, job, 1, maxAmountToPickup, null, errorOnFailed))
                     return false;
             }
             return true;
@@ -64,7 +68,7 @@ namespace EBSGFramework
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Toil consume = Toils_DRGConsume.ConsumeConsumable(pawn, TargetIndex.A, TargetIndex.B).FailOn((Toil x) => !ConsumableSource.Spawned && (pawn.carryTracker == null || pawn.carryTracker.CarriedThing != ConsumableSource)).FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+            Toil consume = Toils_DRGConsume.ConsumeConsumable(pawn, pawn, TargetIndex.A, TargetIndex.B).FailOn((Toil x) => !ConsumableSource.Spawned && (pawn.carryTracker == null || pawn.carryTracker.CarriedThing != ConsumableSource)).FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
             foreach (Toil item in PrepareToIngestToils(consume))
                 yield return item;
             yield return consume;
@@ -148,7 +152,7 @@ namespace EBSGFramework
                         int maxAmountToPickup = Math.Min(thing.TryGetComp<Comp_DRGConsumable>().NumberToConsume(pawn), job.count);
                         if (maxAmountToPickup != 0)
                         {
-                            if (!pawn.Reserve(thing, job, 10, maxAmountToPickup))
+                            if (!pawn.Reserve(thing, job, 1, maxAmountToPickup))
                             {
                                 Log.Error(string.Concat("Pawn reservation for ", pawn, " on job ", this, " failed, because it could not register from ", thing, " - amount: ", maxAmountToPickup));
                                 pawn.jobs.EndCurrentJob(JobCondition.Errored);

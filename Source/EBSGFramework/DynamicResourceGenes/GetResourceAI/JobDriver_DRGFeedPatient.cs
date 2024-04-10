@@ -26,17 +26,18 @@ namespace EBSGFramework
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            if (!pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed))
-            {
+            if (Item == null || Item.TryGetComp<Comp_DRGConsumable>() == null)
                 return false;
-            }
+            int numberToTake = Math.Min(Item.TryGetComp<Comp_DRGConsumable>().NumberToConsume(Deliveree), job.count);
+            if (!pawn.Reserve(Deliveree, job, 1, numberToTake, null, errorOnFailed))
+                return false;
+
             if (pawn.inventory == null || !pawn.inventory.Contains(base.TargetThingA))
             {
-                int maxAmountToPickup = Math.Min(Item.TryGetComp<Comp_DRGConsumable>().NumberToConsume(pawn), job.count);
-                if (!pawn.Reserve(Item, job, 10, maxAmountToPickup, null, errorOnFailed))
+                if (!pawn.Reserve(Item, job, 10, numberToTake, null, errorOnFailed))
                     return false;
 
-                job.count = maxAmountToPickup;
+                job.count = numberToTake;
             }
             return true;
         }
@@ -59,7 +60,7 @@ namespace EBSGFramework
             yield return carryItemFromInventory;
             yield return Toils_Jump.Jump(carryItemToPatient);
             yield return carryItemToPatient;
-            yield return Toils_DRGConsume.ConsumeConsumable(Deliveree, TargetIndex.A).FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);
+            yield return Toils_DRGConsume.ConsumeConsumable(Deliveree, pawn, TargetIndex.A).FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);
             Toil toil = Toils_DRGConsume.FinalizeConsume(Deliveree, TargetIndex.A);
             yield return toil;
         }
