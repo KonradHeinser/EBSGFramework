@@ -56,14 +56,14 @@
     <StatDef ParentName="EBSG_FactoringStat">
         <defName>EBSG_DeathrestFallRate</defName>
         <label>deathrest fall rate</label>
-        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <description>Changes the rate that a pawn requires deathrest. The higher this value, the more often they need to deathrest.</description>
         <displayPriorityInCategory>3400</displayPriorityInCategory>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
         <defName>EBSG_DeathrestEfficiency</defName>
         <label>deathrest efficiency</label>
-        <description>Changes the rate that a pawn progresses through deathrest. The higher this value, the less time spent in deathrest.</description>
+        <description>Changes the rate that a pawn progresses through deathrest. Higher values mean the minimum time a pawn needs to deathrest to avoid a debuff is decreased.</description>
         <displayPriorityInCategory>3401</displayPriorityInCategory>
     </StatDef>
 
