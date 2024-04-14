@@ -24,9 +24,9 @@
     <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
     <EBSG_AgeLimitedAgelessDescription>When the ageless gene is applied (or the pawn spawns with it) to a pawn with an age over 30, their body will be instantly rejuvenated to be between 18 and 30 years old.</EBSG_AgeLimitedAgelessDescription>
     <EBSG_HideSkinGenes>    Hide Inactive Skin Color Genes</EBSG_HideSkinGenes>
-    <EBSG_HideSkinGenesDescription>This setting will cause all inactive skin color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's skin color when it can only have one at any time anyway.</EBSG_HideSkinGenesDescription>
+    <EBSG_HideSkinGenesDescription>This setting will cause all inactive skin color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's skin color when it can only have one at any time anyway.\n\nNote: It's still there, it's just hidden.</EBSG_HideSkinGenesDescription>
     <EBSG_HideHairGenes>    Hide Inactive Hair Color Genes</EBSG_HideHairGenes>
-    <EBSG_HideHairGenesDescription>This setting will cause all inactive hair color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's hair color when it can only have one at any time anyway.</EBSG_HideHairGenesDescription>
+    <EBSG_HideHairGenesDescription>This setting will cause all inactive hair color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's hair color when it can only have one at any time anyway.\n\nNote: It's still there, it's just hidden.</EBSG_HideHairGenesDescription>
 
     <!--These settings are for all of the EBSG mods-->
     <EBSGAiO_ModName>Expanded Biotech Style Genes - All in One</EBSGAiO_ModName>
