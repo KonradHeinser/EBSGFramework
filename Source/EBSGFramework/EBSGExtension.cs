@@ -10,9 +10,12 @@ namespace EBSGFramework
         public GeneDef relatedGene;
         public List<GeneDef> relatedGenes;
         public bool checkNotPresent = false;
+        public bool hideInGeneTabWhenInactive = false;
+        public bool hideAllInactiveGenesForXenotype = false;
+        public bool hideAllInactiveSkinColorGenesForXenotype = false;
+        public bool hideAllInactiveHairColorGenesForXenotype = false;
         public List<int> thresholds;
         public List<GeneticMultiplier> geneticMultipliers;
-
         public float universalMoodFactor = 1;
 
         public List<HediffsToParts> hediffsToApply;

@@ -17,6 +17,7 @@ namespace EBSGFramework
         // Cached genes of interest
         public List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
         public List<GeneDef> dynamicResourceGenes = new List<GeneDef>();
+        public List<GeneDef> hiddenWhenInactive = new List<GeneDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -216,6 +217,10 @@ namespace EBSGFramework
 
         public void CacheGenesOfInterest()
         {
+            moodMultiplyingGenes = new List<GeneDef>();
+            hiddenWhenInactive = new List<GeneDef>();
+            dynamicResourceGenes = new List<GeneDef>();
+
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
                 if (gene.HasModExtension<EBSGExtension>())
@@ -224,11 +229,12 @@ namespace EBSGFramework
 
                     if (extension.universalMoodFactor != 1)
                         moodMultiplyingGenes.Add(gene);
+
+                    if (extension.hideInGeneTabWhenInactive)
+                        hiddenWhenInactive.Add(gene);
                 }
                 if (gene.geneClass == typeof(ResourceGene))
-                {
                     dynamicResourceGenes.Add(gene);
-                }
             }
         }
 

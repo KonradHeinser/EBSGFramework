@@ -1,32 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_OffsetNeed.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/PatchOperationSetting.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="112" Column="39" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Toils_DRGConsume.cs" Line="76" Column="38" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGConsume.cs" Line="53" Column="10" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobDriver_DRGDeliver.cs" Line="20" Column="29" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="49" Column="43" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="24" Column="47" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/GeneLinker.cs" Line="22" Column="87" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityOffsetNeed.cs" Line="10" Column="50" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_OffsetNeed.cs" Line="1" Column="1" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="216" Column="10" />
+      <File FileName="EBSGExtension.cs" Line="15" Column="61" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="514" Column="22" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="56" Column="10" />
+      <File FileName="Settings/PatchOperationSetting.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_OffsetNeed.cs" selected="True" />
-                </Node>
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="GetResourceAI" expanded="True" />
-              </Node>
               <Node name="GameComponents" expanded="True" />
               <Node name="Harmony" expanded="True" />
+              <Node name="Settings" expanded="True">
+                <Node name="PatchOperationSetting.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

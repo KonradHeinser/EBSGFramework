@@ -62,6 +62,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GeneUtility), nameof(GeneUtility.IsBloodfeeder)),
                 postfix: new HarmonyMethod(patchType, nameof(IsBloodfeederPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(GeneUIUtility), "RecacheGenes"),
+                postfix: new HarmonyMethod(patchType, nameof(RecacheGenesPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -478,6 +480,62 @@ namespace EBSGFramework
         {
             if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null && !DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder").bloodfeederGenes.NullOrEmpty())
                 __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder").bloodfeederGenes);
+        }
+
+        public static void RecacheGenesPostfix(Thing target, GeneSet genesOverride, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
+        {
+            if (target is Pawn pawn)
+            {
+                if (pawn.genes.Xenotype != null && pawn.genes.Xenotype.HasModExtension<EBSGExtension>() && pawn.genes.Xenotype.GetModExtension<EBSGExtension>().hideAllInactiveGenesForXenotype)
+                {
+                    foreach (Gene gene in pawn.genes.Xenogenes)
+                        if (gene.Overridden && ___xenogenes.Contains(gene))
+                            ___xenogenes.Remove(gene);
+
+                    foreach (Gene gene in pawn.genes.Endogenes)
+                        if (gene.Overridden && ___endogenes.Contains(gene))
+                            ___endogenes.Remove(gene);
+                }
+                else
+                {
+                    if (pawn.genes.Xenotype != null && pawn.genes.Xenotype.HasModExtension<EBSGExtension>())
+                    {
+                        EBSGExtension extension = pawn.genes.Xenotype.GetModExtension<EBSGExtension>();
+                        if (extension.hideAllInactiveSkinColorGenesForXenotype)
+                        {
+                            foreach (Gene gene in pawn.genes.Xenogenes)
+                                if (gene.def.skinColorOverride != null && gene.Overridden && ___xenogenes.Contains(gene))
+                                    ___xenogenes.Remove(gene);
+
+                            foreach (Gene gene in pawn.genes.Endogenes)
+                                if (gene.def.skinColorOverride != null && gene.Overridden && ___endogenes.Contains(gene))
+                                    ___endogenes.Remove(gene);
+                        }
+
+                        if (extension.hideAllInactiveHairColorGenesForXenotype)
+                        {
+                            foreach (Gene gene in pawn.genes.Xenogenes)
+                                if (gene.def.endogeneCategory == EndogeneCategory.HairColor && gene.Overridden && ___xenogenes.Contains(gene))
+                                    ___xenogenes.Remove(gene);
+
+                            foreach (Gene gene in pawn.genes.Endogenes)
+                                if (gene.def.endogeneCategory == EndogeneCategory.HairColor && gene.Overridden && ___endogenes.Contains(gene))
+                                    ___endogenes.Remove(gene);
+                        }
+                    }
+
+                    if (Cache != null && !Cache.hiddenWhenInactive.NullOrEmpty())
+                    {
+                        foreach (Gene gene in pawn.genes.Xenogenes)
+                            if (gene.Overridden && ___xenogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
+                                ___xenogenes.Remove(gene);
+
+                        foreach (Gene gene in pawn.genes.Endogenes)
+                            if (gene.Overridden && ___endogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
+                                ___endogenes.Remove(gene);
+                    }
+                }
+            }
         }
 
         // Harmony patches for stats

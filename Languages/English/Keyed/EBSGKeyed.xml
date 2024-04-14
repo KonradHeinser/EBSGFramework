@@ -23,6 +23,10 @@
     <EBSG_ModDescription>The Expanded Biotech Style Genes(EBSG) Framework is a compilation of all the code used in the EBSG series, generic versions of most code use in the Superhero Genes Series, along with various other bits of convenient code suggested by others or the voice in my head.\n\nBecause this is a framework, there are very few settings to look at. The only things that will ever be added to this list are the optional quality of life patches made to apply this framework's code to vanilla things.\n\nThe checkmark next to the label just hides the group, if you want to do that for whatever reason.</EBSG_ModDescription>
     <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
     <EBSG_AgeLimitedAgelessDescription>When the ageless gene is applied (or the pawn spawns with it) to a pawn with an age over 30, their body will be instantly rejuvenated to be between 18 and 30 years old.</EBSG_AgeLimitedAgelessDescription>
+    <EBSG_HideSkinGenes>    Hide Inactive Skin Color Genes</EBSG_HideSkinGenes>
+    <EBSG_HideSkinGenesDescription>This setting will cause all inactive skin color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's skin color when it can only have one at any time anyway.</EBSG_HideSkinGenesDescription>
+    <EBSG_HideHairGenes>    Hide Inactive Hair Color Genes</EBSG_HideHairGenes>
+    <EBSG_HideHairGenesDescription>This setting will cause all inactive hair color genes to not show up in the genes section. No more having to look at all 4 options for the xenotype's hair color when it can only have one at any time anyway.</EBSG_HideHairGenesDescription>
 
     <!--These settings are for all of the EBSG mods-->
     <EBSGAiO_ModName>Expanded Biotech Style Genes - All in One</EBSGAiO_ModName>

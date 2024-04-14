@@ -17,6 +17,14 @@ namespace EBSGFramework
             {
                 if (ModsConfig.BiotechActive && EBSG_Settings.ageLimitedAgeless && active != null) return active.Apply(xml);
             }
+            else if (setting == "hideInactiveSkinGenes")
+            {
+                if (ModsConfig.BiotechActive && EBSG_Settings.hideInactiveSkinGenes && active != null) return active.Apply(xml);
+            }
+            else if (setting == "hideInactiveHairGenes")
+            {
+                if (ModsConfig.BiotechActive && EBSG_Settings.hideInactiveHairGenes && active != null) return active.Apply(xml);
+            }
             else if (setting == "psychicInsulationBondOpinion")
             {
                 if (EBSG_Settings.psychicInsulationBondOpinion && active != null) return active.Apply(xml);

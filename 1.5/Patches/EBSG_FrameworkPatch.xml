@@ -48,4 +48,101 @@
             </nomatch>
         </active>
     </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>hideInactiveSkinGenes</setting>
+        <active Class="PatchOperationSequence">
+            <operations>
+                <li Class="PatchOperationConditional">
+                    <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions</xpath>
+                    <match Class="PatchOperationConditional">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                        <match Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                            <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                        </match>
+                        <nomatch Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </value>
+                        </nomatch>
+                    </match>
+                    <nomatch Class="PatchOperationAdd">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]</xpath>
+                        <value>
+                            <modExtensions>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </modExtensions>
+                        </value>
+                    </nomatch>
+                </li>
+
+                <li Class="PatchOperationConditional">
+                    <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions</xpath>
+                    <match Class="PatchOperationConditional">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                        <match Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                            <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                        </match>
+                        <nomatch Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </value>
+                        </nomatch>
+                    </match>
+                    <nomatch Class="PatchOperationAdd">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]</xpath>
+                        <value>
+                            <modExtensions>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </modExtensions>
+                        </value>
+                    </nomatch>
+                </li>
+            </operations>
+        </active>
+    </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>hideInactiveHairGenes</setting>
+        <active Class="PatchOperationConditional">
+            <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions</xpath>
+            <match Class="PatchOperationConditional">
+                <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                <match Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                    <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions</xpath>
+                    <value>
+                        <li Class="EBSGFramework.EBSGExtension">
+                            <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                        </li>
+                    </value>
+                </nomatch>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]</xpath>
+                <value>
+                    <modExtensions>
+                        <li Class="EBSGFramework.EBSGExtension">
+                            <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                        </li>
+                    </modExtensions>
+                </value>
+            </nomatch>
+        </active>
+    </Operation>
 </Patch>

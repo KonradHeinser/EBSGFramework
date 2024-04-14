@@ -41,6 +41,8 @@ namespace EBSGFramework
         private static bool showEAGOptions = true;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
+        public static bool hideInactiveSkinGenes = false;
+        public static bool hideInactiveHairGenes = false;
 
         public static bool psychicInsulationBondOpinion = true;
         public static bool psychicInsulationBondMood = true;
@@ -56,6 +58,8 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
+            Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
+            Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
             Scribe_Values.Look(ref psychicInsulationBondOpinion, "psychicInsulationBondOpinion", true);
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
@@ -89,7 +93,8 @@ namespace EBSGFramework
 
             // Find out how much room is needed
             int numberOfOptions = 1;
-            if (showMainOptions) numberOfOptions += 1;
+            if (showMainOptions) numberOfOptions += 3;
+
             if (EBSGAllInOneActive)
             {
                 numberOfOptions += 1;
@@ -138,6 +143,10 @@ namespace EBSGFramework
                 if (ModsConfig.BiotechActive)
                 {
                     optionsMenu.CheckboxLabeled("EBSG_AgeLimitedAgeless".Translate(), ref ageLimitedAgeless, "EBSG_AgeLimitedAgelessDescription".Translate());
+                    optionsMenu.Gap(10f);
+                    optionsMenu.CheckboxLabeled("EBSG_HideSkinGenes".Translate(), ref hideInactiveSkinGenes, "EBSG_HideSkinGenesDescription".Translate());
+                    optionsMenu.Gap(10f);
+                    optionsMenu.CheckboxLabeled("EBSG_HideHairGenes".Translate(), ref hideInactiveHairGenes, "EBSG_HideHairGenesDescription".Translate());
                     optionsMenu.Gap(10f);
                 }
             }
