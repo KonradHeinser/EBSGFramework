@@ -1,26 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
     <Files>
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="216" Column="10" />
       <File FileName="EBSGExtension.cs" Line="15" Column="48" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="515" Column="79" />
-      <File FileName="Settings/EBSG_Settings.cs" Line="152" Column="14" />
-      <File FileName="Settings/PatchOperationSetting.cs" Line="20" Column="18" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="481" Column="91" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="71" Column="16" />
+      <File FileName="EBSGRecorder.cs" Line="9" Column="46" />
+      <File FileName="VFECompatabilityUtilities.cs" Line="37" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Settings" expanded="True" />
-              <Node name="EBSGExtension.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

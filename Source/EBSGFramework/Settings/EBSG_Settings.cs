@@ -1,6 +1,9 @@
 ﻿using RimWorld;
 using UnityEngine;
 using Verse;
+using System;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -21,7 +24,13 @@ namespace EBSGFramework
         public override void DoSettingsWindowContents(Rect inRect)
         {
             base.DoSettingsWindowContents(inRect);
-            settings.DoWindowContents(inRect);
+            settings.DoWindowContents(inRect, out bool activeSettings);
+            if (activeSettings)
+            {
+                if (!settings.AsexualHediffs.NullOrEmpty())
+                    VFECompatabilityUtilities.SetAsexualRates(settings.AsexualHediffs, settings.asexualDaysSettings);
+            }
+
         }
 
         public override void WriteSettings()
@@ -39,6 +48,7 @@ namespace EBSGFramework
         private static bool showEBSGBleedOptions = true;
         private static bool showEBSGPsychicOptions = true;
         private static bool showEAGOptions = true;
+        private static bool showCustomizableOptions = true;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
         public static bool hideInactiveSkinGenes = false;
@@ -51,12 +61,55 @@ namespace EBSGFramework
 
         public static bool architePsychicInfluencerBondTorn = false;
 
+        public Dictionary<string, int> asexualDaysSettings;
 
-        public EBSG_Settings() { }
+        private List<HediffDef> cachedAsexualHediffs = new List<HediffDef>();
+        public bool checkedAsexual = false;
+
+        public List<HediffDef> AsexualHediffs
+        {
+            get
+            {
+                if (!checkedAsexual && cachedAsexualHediffs.NullOrEmpty())
+                {
+                    if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
+                    if (Recorder != null && !Recorder.asexualHediffs.NullOrEmpty())
+                        foreach (HediffDef hediff in Recorder.asexualHediffs)
+                            if (!hediff.comps.NullOrEmpty())
+                                foreach (HediffCompProperties comp in hediff.comps)
+                                    if (comp.compClass.FullName == "AnimalBehaviours.HediffCompProperties_AsexualReproduction")
+                                    {
+                                        cachedAsexualHediffs.Add(hediff);
+                                        if (!asexualDaysSettings.ContainsKey(hediff.defName))
+                                            asexualDaysSettings.Add(hediff.defName, VFECompatabilityUtilities.GetDefaultAsexualRate(comp));
+                                        break;
+                                    }
+                    checkedAsexual = true;
+                }
+
+                return cachedAsexualHediffs;
+            }
+        }
+
+        public bool NeedCustomizationSection
+        {
+            get
+            {
+                if (!AsexualHediffs.NullOrEmpty()) return true;
+                return false;
+            }
+        }
+
+        private EBSGRecorder Recorder => DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+
+        public EBSG_Settings()
+        { }
 
         public override void ExposeData()
         {
             base.ExposeData();
+            if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
+
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
             Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
@@ -64,12 +117,15 @@ namespace EBSGFramework
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
+
+            //Scribe_Collections.Look(ref asexualDaysSettings, "EBSG_asexualDaysSettings", LookMode.Value, LookMode.Value);
         }
 
-        public void DoWindowContents(Rect inRect)
+        public void DoWindowContents(Rect inRect, out bool activeSettings)
         {
             Listing_Standard optionsMenu = new Listing_Standard();
 
+            activeSettings = false;
             var scrollContainer = inRect.ContractedBy(10);
             scrollContainer.height -= optionsMenu.CurHeight;
             scrollContainer.y += optionsMenu.CurHeight;
@@ -130,6 +186,17 @@ namespace EBSGFramework
                 }
             }
 
+            if (NeedCustomizationSection)
+            {
+                numberOfOptions += 1;
+                if (showCustomizableOptions)
+                {
+                    // This is where the individual customization categories belong
+                    if (!AsexualHediffs.NullOrEmpty())
+                        numberOfOptions += AsexualHediffs.Count;
+                }
+            }
+
             contentRect.height = numberOfOptions * 35; // To avoid weird white space, height is based off of option count of present mods
 
             Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
@@ -166,6 +233,8 @@ namespace EBSGFramework
                     optionsMenu.Gap(10f);
                     optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
                     optionsMenu.Gap(10f);
+
+
                 }
             }
             else
@@ -225,7 +294,19 @@ namespace EBSGFramework
             }
 
             optionsMenu.Gap(10f);
+            /*
+            // Checks all the lists to see if any make this worth it.
+            if (NeedCustomizationSection)
+            {
+                optionsMenu.CheckboxLabeled("EBSG_CustomizableThings".Translate(), ref showCustomizableOptions, "EBSG_CustomizableThingsDescription".Translate());
 
+                if (showCustomizableOptions)
+                {
+                    // Column 1
+                    if ()
+                }
+            }
+            */
             optionsMenu.End();
             Widgets.EndScrollView();
             base.Write();

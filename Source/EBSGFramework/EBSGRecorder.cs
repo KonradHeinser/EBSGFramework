@@ -6,5 +6,6 @@ namespace EBSGFramework
     public class EBSGRecorder : Def
     {
         public List<GeneDef> bloodfeederGenes;
+        public List<HediffDef> asexualHediffs;
     }
 }
