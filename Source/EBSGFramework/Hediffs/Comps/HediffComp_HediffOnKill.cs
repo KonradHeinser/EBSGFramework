@@ -15,31 +15,40 @@ namespace EBSGFramework
 
             if (victim.RaceProps.Humanlike)
             {
-                if (Props.allowHumanoids) EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+                if (Props.allowHumanoids) AddHediffs(victim);
             }
             else if (victim.RaceProps.Dryad)
             {
-                if (Props.allowDryads) EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+                if (Props.allowDryads) AddHediffs(victim);
             }
             else if (victim.RaceProps.Insect)
             {
-                if (Props.allowInsects) EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+                if (Props.allowInsects) AddHediffs(victim);
             }
             else if (victim.RaceProps.Animal)
             {
-                if (Props.allowAnimals) EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+                if (Props.allowAnimals) AddHediffs(victim);
             }
             else if (victim.RaceProps.IsMechanoid)
             {
-                if (Props.allowMechanoids) EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+                if (Props.allowMechanoids) AddHediffs(victim, false);
+            }
+            else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
+            {
+                if (Props.allowEntities) AddHediffs(victim);
             }
             else // As a default, just assume it's a viable target. This is for generic hopeful mod compatability
-            {
                 EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
-            }
         }
 
-        public bool CheckGenderViability(Pawn victim)
+        // Check gender is primarily for mechanoids, but may be used for other genderless things in the future
+        private void AddHediffs(Pawn victim, bool checkGender = true)
+        {
+            if (checkGender && !CheckGenderViability(victim)) return;
+            EBSGUtilities.AddOrAppendHediffs(parent.pawn, Props.severityForFirstKill, Props.severityPerExtraKill, Props.hediff);
+        }
+
+        private bool CheckGenderViability(Pawn victim)
         {
             if (!Props.onlyMaleVictims && !Props.onlyFemaleVictims) return true;
             if (Props.onlyMaleVictims && Props.onlyFemaleVictims) return false;

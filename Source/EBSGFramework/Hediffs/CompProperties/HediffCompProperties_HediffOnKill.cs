@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool allowAnimals = true;
 
+        public bool allowEntities = true;
+
         public bool onlyMaleVictims = false;
 
         public bool onlyFemaleVictims = false;

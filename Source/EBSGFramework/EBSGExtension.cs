@@ -42,6 +42,7 @@ namespace EBSGFramework
         public bool allowInsects = true;
         public bool allowAnimals = true;
         public bool allowMechanoids = true;
+        public bool allowEntities = true;
 
         // For mutating genes
         public List<RandomXenoGenes> mutationGeneSets; // Named as such because it was originally solely to create entire xenotypes
