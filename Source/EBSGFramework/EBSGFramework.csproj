@@ -290,6 +290,7 @@
     <Compile Include="EBSGRecorder.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\GeneLinker.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenOnKill.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HemogenOnKill.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

@@ -26,16 +26,8 @@ namespace EBSGFramework
                 }
                 if (!extension.requiredGenes.NullOrEmpty())
                 {
-                    bool flag = true;
-                    foreach (Gene gene in p.genes.GenesListForReading)
-                    {
-                        if (extension.requiredGenes.Contains(gene.def))
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) return ThoughtState.Inactive;
+                    if (!EBSGUtilities.HasAnyOfRelatedGene(p, extension.requiredGenes))
+                        return ThoughtState.Inactive;
                 }
                 if (!extension.compoundingHatred)
                 {
@@ -52,14 +44,10 @@ namespace EBSGFramework
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
                         foreach (Gene gene in otherPawn.genes.GenesListForReading)
-                        {
                             if (extension.checkedGenes.Contains(gene.def)) return ThoughtState.ActiveAtStage(0);
-                        }
                     }
                     else
-                    {
                         Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");
-                    }
                 }
                 else
                 {
@@ -81,9 +69,7 @@ namespace EBSGFramework
                     }
                     else if (extension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
                     else
-                    {
                         Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");
-                    }
                 }
             }
 

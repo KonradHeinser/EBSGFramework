@@ -13,6 +13,7 @@ namespace EBSGFramework
 
         public HediffCompProperties_HemogenOnKill()
         {
+            compClass = typeof(HediffComp_HemogenOnKill);
         }
     }
 }

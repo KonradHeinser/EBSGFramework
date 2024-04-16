@@ -1,25 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Thoughts/ThoughtWorker_Gene_GeneSocial.cs">
     <Files>
       <File FileName="Hediffs/CompProperties/HediffCompProperties_HediffOnKill.cs" Line="22" Column="42" />
       <File FileName="Hediffs/Comps/HediffComp_HediffOnKill.cs" Line="53" Column="81" />
       <File FileName="EBSGUtilities.cs" Line="369" Column="28" />
       <File FileName="Needs/Need_Murderous.cs" Line="132" Column="108" />
       <File FileName="EBSGExtension.cs" Line="45" Column="42" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="8" Column="127" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="20" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="10" Column="51" />
+      <File FileName="Thoughts/ThoughtWorker_Gene_GeneSocial.cs" Line="54" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True">
-                  <Node name="HediffCompProperties_HemogenOnKill.cs" selected="True" />
-                </Node>
-                <Node name="Comps" expanded="True" />
+              <Node name="Thoughts" expanded="True">
+                <Node name="ThoughtWorker_Gene_GeneSocial.cs" selected="True" />
               </Node>
-              <Node name="Needs" expanded="True" />
             </Node>
           </Node>
         </State>
