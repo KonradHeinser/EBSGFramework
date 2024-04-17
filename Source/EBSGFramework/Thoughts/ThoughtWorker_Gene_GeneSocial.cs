@@ -38,8 +38,9 @@ namespace EBSGFramework
                         if (!extension.checkedGenes.NullOrEmpty())
                         {
                             if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, extension.checkedGenes)) return ThoughtState.ActiveAtStage(0);
+                            return ThoughtState.Inactive;
                         }
-                        else return ThoughtState.ActiveAtStage(0);
+                        return ThoughtState.ActiveAtStage(0);
                     }
                     if (!extension.checkedGenes.NullOrEmpty())
                     {
