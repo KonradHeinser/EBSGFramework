@@ -41,19 +41,6 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <HediffDef ParentName="EBSG_TestHediffBase">
-        <defName>JustASip</defName>
-        <label>just a sip</label>
-        <description>Any time this pawn kills a pawn that can bleed, it gains hemogen.</description>
-        <comps>
-            <li Class="EBSGFramework.HediffCompProperties_HemogenOnKill">
-                <hemogenEfficiency>2</hemogenEfficiency>
-                <maxGainableHemogen>0.3</maxGainableHemogen>
-                <maxDistance>-1</maxDistance>
-            </li>
-        </comps>
-    </HediffDef>
 </Defs>
 
 <!-- 
