@@ -1,4 +1,5 @@
 ﻿using Verse;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -27,6 +28,8 @@ namespace EBSGFramework
         public bool allowAnimals = true;
 
         public bool allowEntities = true;
+
+        public List<GeneDef> forbiddenTargetGenes;
 
         public HediffCompProperties_HemogenOnKill()
         {
