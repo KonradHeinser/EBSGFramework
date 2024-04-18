@@ -83,7 +83,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PsyfocusFallPerDayPostFix)));
 
             // Stat Harmony patches
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.MinDeathrestTicks)),
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.DeathrestEfficiency)),
                 postfix: new HarmonyMethod(patchType, nameof(DeathrestEfficiencyPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Deathrest), nameof(Need_Deathrest.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(DeathrestNeedIntervalPostfix)));
@@ -540,10 +540,10 @@ namespace EBSGFramework
 
         // Harmony patches for stats
 
-        public static void DeathrestEfficiencyPostfix(ref int __result, Pawn ___pawn)
+        public static void DeathrestEfficiencyPostfix(ref float __result, Pawn ___pawn)
         {
             if (___pawn != null)
-                __result = (int)Math.Round(__result / ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency), 0);
+                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency);
         }
 
         public static void DeathrestNeedIntervalPostfix(ref Need_Deathrest __instance, Pawn ___pawn)
