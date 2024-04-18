@@ -56,7 +56,7 @@
     <StatDef ParentName="EBSG_FactoringStat">
         <defName>EBSG_DeathrestRiseRate</defName>
         <label>deathrest rise rate</label>
-        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes.</description>
+        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes. This should stack with deathrest efficiency.</description>
         <displayPriorityInCategory>3999</displayPriorityInCategory>
     </StatDef>
 
