@@ -22,6 +22,7 @@ namespace EBSGFramework
 
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
+        public static StatDef EBSG_DeathrestRiseRate;
         public static StatDef EBSG_DeathrestFallRate;
         public static StatDef EBSG_KillThirstRate;
 

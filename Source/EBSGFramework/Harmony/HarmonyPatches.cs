@@ -550,6 +550,8 @@ namespace EBSGFramework
         {
             if (!__instance.Deathresting)
                 __instance.CurLevel += -1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestFallRate) - 1);
+            else
+                __instance.CurLevel += 1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestRiseRate) - 1);
         }
 
         public static void GrowthPointStatPostfix(ref float __result, Pawn ___pawn)
