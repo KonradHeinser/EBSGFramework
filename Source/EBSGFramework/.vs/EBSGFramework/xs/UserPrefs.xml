@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGDefOf.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_HemogenOnKill.cs">
     <Files>
       <File FileName="EBSGUtilities.cs" Line="680" Column="40" />
       <File FileName="Needs/Need_Murderous.cs" Line="132" Column="108" />
       <File FileName="EBSGExtension.cs" Line="45" Column="42" />
       <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="25" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="16" Column="140" />
+      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="17" Column="13" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="554" Column="112" />
       <File FileName="EBSGDefOf.cs" Line="25" Column="27" />
     </Files>
@@ -15,7 +15,10 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Harmony" expanded="True" />
-              <Node name="EBSGDefOf.cs" selected="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
