@@ -260,7 +260,6 @@
     <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
     <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
     <Compile Include="EBSGRecorder.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\GeneLinker.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HemogenOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByAge.cs" />
@@ -291,6 +290,9 @@
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingMeleeAttacks.cs" />
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingRangedAttacks.cs" />
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosiveRetaliation.cs" />
+    <Compile Include="DynamicResourceGenes\HediffComp_DRGOnKill.cs" />
+    <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGOnKill.cs" />
+    <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

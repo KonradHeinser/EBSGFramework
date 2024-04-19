@@ -15,26 +15,10 @@ namespace EBSGFramework
 
             if (!Props.forbiddenTargetGenes.NullOrEmpty() && EBSGUtilities.HasAnyOfRelatedGene(victim, Props.forbiddenTargetGenes)) return;
 
-            if (victim.RaceProps.Humanlike)
-            {
-                if (!Props.allowHumanoids) return;
-            }
-            else if (victim.RaceProps.Dryad)
-            {
-                if (!Props.allowDryads) return;
-            }
-            else if (victim.RaceProps.Insect)
-            {
-                if (!Props.allowInsects) return;
-            }
-            else if (victim.RaceProps.Animal)
-            {
-                if (!Props.allowAnimals) return;
-            }
-            else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
-            {
-                if (!Props.allowEntities) return;
-            }
+            if ((victim.RaceProps.Humanlike && !Props.allowHumanoids) || (victim.RaceProps.Animal && !Props.allowAnimals) ||
+                (victim.RaceProps.Dryad && !Props.allowDryads) || (victim.RaceProps.Insect && !Props.allowInsects) ||
+                (victim.RaceProps.Insect && !Props.allowAnimals) || (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity && !Props.allowEntities))
+                return;
 
             Gene_Hemogen hemogen = Pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
             if (hemogen == null) return;

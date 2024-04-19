@@ -1,5 +1,6 @@
 ﻿using Verse;
 using RimWorld;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -8,6 +9,8 @@ namespace EBSGFramework
         public GeneDef mainResourceGene;
 
         public float amount = 0f;
+
+        public bool usesGainStat = true;
 
         public int ticks = 100;
 
@@ -20,5 +23,25 @@ namespace EBSGFramework
         public string floatMenuString; // Uses similar syntax as consumptionReportString, but is what is displayed when someone right clicks the consumable
 
         public HoldOffsetSet consumeHoldOffset; // Similar to ingestHoldOffsetStanding
+
+        public float minSeverity = 0f;
+
+        public float maxSeverity = 99999f;
+
+        public float maxDistance = 4.9f;
+
+        public bool allowHumanoids = true;
+
+        public bool allowDryads = true;
+
+        public bool allowMechanoids = true;
+
+        public bool allowInsects = true;
+
+        public bool allowAnimals = true;
+
+        public bool allowEntities = true;
+
+        public List<GeneDef> forbiddenTargetGenes;
     }
 }
