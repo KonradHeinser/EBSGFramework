@@ -293,6 +293,8 @@
     <Compile Include="DynamicResourceGenes\HediffComp_DRGOnKill.cs" />
     <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGOnKill.cs" />
     <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenPerHour.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HemogenPerHour.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

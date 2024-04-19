@@ -1,13 +1,33 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GeneLinker.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_HemogenPerHour.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="19" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="22" Column="1" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="12" Column="43" />
+      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="13" Column="140" />
       <File FileName="DynamicResourceGenes/GeneLinker.cs" Line="11" Column="34" />
       <File FileName="DynamicResourceGenes/HediffCompProperties_DRGOnKill.cs" Line="16" Column="1" />
-      <File FileName="DynamicResourceGenes/HediffComp_DRGOnKill.cs" Line="28" Column="125" />
+      <File FileName="DynamicResourceGenes/HediffComp_DRGOnKill.cs" Line="23" Column="130" />
       <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="234" Column="146" />
+      <File FileName="EBSGUtilities.cs" Line="1026" Column="9" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenPerHour.cs" Line="5" Column="53" />
+      <File FileName="Hediffs/Comps/HediffComp_HemogenPerHour.cs" Line="42" Column="60" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffComp_HemogenPerHour.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

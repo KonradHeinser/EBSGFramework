@@ -1,12 +1,12 @@
 ﻿using Verse;
-using Verse.AI;
+using UnityEngine;
 using Verse.AI.Group;
 using Verse.Sound;
 using System.Collections.Generic;
-using System;
 using RimWorld.Planet;
 using System.Linq;
 using RimWorld;
+using System;
 
 namespace EBSGFramework
 {
@@ -344,12 +344,12 @@ namespace EBSGFramework
                     try // Try to make it a psylink
                     {
                         Hediff_Psylink hediff_Level = (Hediff_Psylink)firstHediffOfDef;
-                        hediff_Level.ChangeLevel((int)Math.Ceiling(severityAdded), false);
+                        hediff_Level.ChangeLevel(Mathf.CeilToInt(severityAdded), false);
                     }
                     catch // Try to make it a leveling hediff
                     {
                         Hediff_Level hediff_Level = (Hediff_Level)firstHediffOfDef;
-                        hediff_Level.ChangeLevel((int)Math.Ceiling(severityAdded));
+                        hediff_Level.ChangeLevel(Mathf.CeilToInt(severityAdded));
                     }
                 }
                 catch // Just increase the severity
@@ -869,7 +869,7 @@ namespace EBSGFramework
                     totalWeight += xenoGeneSet.weightOfGeneSet;
                 }
 
-                double randomNumber = new Random().NextDouble() * totalWeight;
+                double randomNumber = new System.Random().NextDouble() * totalWeight;
                 foreach (RandomXenoGenes xenoGeneSet in geneSets)
                 {
                     if (randomNumber <= xenoGeneSet.weightOfGeneSet)
@@ -989,6 +989,40 @@ namespace EBSGFramework
             }
             return false;
         }
+
+        public static List<IntVec3> GetCone(LocalTargetInfo target, Pawn pawn, float minDistance, float maxDistance, float minAngle, float maxAngle)
+        {
+            var affectedCells = new List<IntVec3>();
+            Vector3 targetPos = target.Cell.ToVector3Shifted();
+            Vector3 startPosition = pawn.Position.ToVector3Shifted();
+
+            // If the targetPos is closer than the min distance, push it out to that distance.
+            if ((targetPos - startPosition).magnitude < minDistance)
+                targetPos = startPosition + (targetPos - startPosition).normalized * minDistance;
+
+            float distanceToTarget = (targetPos - startPosition).magnitude;
+
+            float percentOfMaxDistnace = distanceToTarget / maxDistance;
+
+            float angleAtDistance = Mathf.Lerp(maxAngle, minAngle, percentOfMaxDistnace);
+
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(pawn.Position, distanceToTarget, true))
+            {
+                Vector3 cellPos = cell.ToVector3Shifted();
+                Vector3 direction = (cellPos - startPosition).normalized;
+                float currentDistance = (targetPos - startPosition).magnitude;
+                float angle = Vector3.Angle(direction, targetPos - startPosition);
+
+                if (angle <= angleAtDistance / 2f &&
+                    GenSight.LineOfSight(startPosition.ToIntVec3(), cell, pawn.Map, true) &&
+                    !cell.Equals(pawn.Position)) // Check if it's not the cell the pawn is standing on
+                {
+                    affectedCells.Add(cell);
+                }
+            }
+            return affectedCells;
+        }
+
 
         // Resurrect utility with bug fix
 
