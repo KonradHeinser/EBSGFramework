@@ -47,5 +47,6 @@
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>
         <bloodfeederGenes />
+        <geneEvents />
     </EBSGFramework.EBSGRecorder>
 </Defs>

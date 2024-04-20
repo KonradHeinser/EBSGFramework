@@ -23,7 +23,7 @@ namespace EBSGFramework
                                     Pawn.health.RemoveHediff(parent);
                                     return;
                                 }
-                                else continue;
+                                continue;
                             }
                             if (parent.Severity < linker.minSeverity || parent.Severity > linker.maxSeverity)
                                 continue;

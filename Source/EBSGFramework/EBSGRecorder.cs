@@ -7,5 +7,6 @@ namespace EBSGFramework
     {
         public List<GeneDef> bloodfeederGenes;
         public List<HediffDef> asexualHediffs;
+        public List<GeneEvent> geneEvents;
     }
 }

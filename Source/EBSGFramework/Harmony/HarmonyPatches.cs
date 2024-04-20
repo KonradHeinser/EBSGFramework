@@ -64,6 +64,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(IsBloodfeederPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GeneUIUtility), "RecacheGenes"),
                 postfix: new HarmonyMethod(patchType, nameof(RecacheGenesPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant)),
+                 postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
+                 postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -534,6 +538,42 @@ namespace EBSGFramework
                             if (gene.Overridden && ___endogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
                                 ___endogenes.Remove(gene);
                     }
+                }
+            }
+        }
+
+        public static void PawnIdeoCanAcceptReimplantPostfix(ref bool __result, Pawn implanter, Pawn implantee)
+        {
+            if (__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
+            {
+                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
+                if (!recorder.geneEvents.NullOrEmpty())
+                {
+                    foreach (GeneEvent geneEvent in recorder.geneEvents)
+                        if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, implantee) &&
+                            implanter.genes.GenesListForReading.Any((Gene x) => x.def == geneEvent.gene))
+                        {
+                            __result = false;
+                            break;
+                        }
+                }
+            }
+        }
+
+        public static void PawnIdeoDisallowsImplantingPostFix(ref bool __result, Pawn selPawn, ref Xenogerm __instance)
+        {
+            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
+            {
+                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
+                if (!recorder.geneEvents.NullOrEmpty())
+                {
+                    foreach (GeneEvent geneEvent in recorder.geneEvents)
+                        if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, selPawn) &&
+                            __instance.GeneSet.GenesListForReading.Any((GeneDef x) => x == geneEvent.gene))
+                        {
+                            __result = true;
+                            break;
+                        }
                 }
             }
         }
