@@ -295,6 +295,8 @@
     <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenPerHour.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HemogenPerHour.cs" />
+    <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGPerHour.cs" />
+    <Compile Include="DynamicResourceGenes\HediffComp_DRGPerHour.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

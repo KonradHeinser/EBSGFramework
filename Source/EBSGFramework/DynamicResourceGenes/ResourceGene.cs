@@ -231,16 +231,17 @@ namespace EBSGFramework
             else Log.Error(def + "is missing the DRGExtension modex");
         }
 
-        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyStatFactor = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
+        public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyGainStat = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
         {
             if (resourceGene == null) return;
             if (extension == null)
                 extension = resourceGene.def.GetModExtension<DRGExtension>();
-            if (offset > 0f && applyStatFactor && extension.gainStat != null)
+            if (offset > 0f && applyGainStat && extension.gainStat != null)
                 offset *= pawn.GetStatValue(extension.gainStat);
 
             if (dailyValue) offset /= 60000f;
-            if (checkPassiveStat && extension.passiveFactorStat != null) offset *= pawn.GetStatValue(extension.passiveFactorStat);
+            if (checkPassiveStat && extension.passiveFactorStat != null)
+                offset *= pawn.GetStatValue(extension.passiveFactorStat);
             if (resourceGene != null)
             {
                 if (resourceGene.overchargeLeft > 0)

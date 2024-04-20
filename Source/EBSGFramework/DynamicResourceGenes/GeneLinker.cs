@@ -10,7 +10,9 @@ namespace EBSGFramework
 
         public float amount = 0f;
 
-        public bool usesGainStat = true;
+        public bool usesGainStat;
+
+        public bool usePassiveStat;
 
         public int ticks = 100;
 
@@ -27,6 +29,12 @@ namespace EBSGFramework
         public float minSeverity = 0f;
 
         public float maxSeverity = 99999f;
+
+        public float minResource = 0f;
+
+        public float maxResource = 1f;
+
+        public bool removeWhenLimitsPassed = false;
 
         public float maxDistance = 4.9f;
 
