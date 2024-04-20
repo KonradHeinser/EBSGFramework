@@ -1,26 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs">
     <Files>
-      <File FileName="DynamicResourceGenes/GeneLinker.cs" Line="13" Column="33" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenPerHour.cs" Line="5" Column="53" />
-      <File FileName="Hediffs/Comps/HediffComp_HemogenPerHour.cs" Line="32" Column="21" />
-      <File FileName="DynamicResourceGenes/HediffCompProperties_DRGPerHour.cs" Line="6" Column="49" />
-      <File FileName="DynamicResourceGenes/HediffComp_DRGPerHour.cs" Line="38" Column="1" />
-      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="242" Column="1" />
-      <File FileName="EBSGRecorder.cs" Line="13" Column="1" />
-      <File FileName="Generic List Classes/GeneEvent.cs" Line="6" Column="27" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="554" Column="106" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="747" Column="29" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="89" Column="63" />
+      <File FileName="Abilities/CompProperties/CompProperties_Launch.cs" Line="14" Column="118" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True" />
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_Launch.cs" selected="True" />
+                </Node>
+                <Node name="CompProperties" expanded="True" />
               </Node>
+              <Node name="Harmony" expanded="True" />
             </Node>
           </Node>
         </State>

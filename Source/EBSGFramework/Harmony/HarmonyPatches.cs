@@ -742,6 +742,10 @@ namespace EBSGFramework
                     }
                 }
             }
+            if (__instance is Pawn pawn && Cache != null)
+            {
+                return true;
+            }
             return true;
         }
 
