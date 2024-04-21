@@ -139,14 +139,6 @@
         <displayPriorityInCategory>3411</displayPriorityInCategory>
     </StatDef>
 
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor</defName>
-        <label>outgoing damage factor</label>
-        <description>A multiplier on all outgoing damage.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5201</displayPriorityInCategory>
-    </StatDef>
-
     <StatDef ParentName="EBSG_OffsetingStat">
         <defName>EBSG_PsyfocusFallRateOffset</defName>
         <label>psyfocus fall rate offset</label>
@@ -173,5 +165,92 @@
         <label>maximum hemogen multiplier</label>
         <description>A multiplier on maximum hemogen, with a value of 200% allowing pawns to store 200 hemogen instead of 100. This also multiplies the maximum hemogen offset when applicable.</description>
         <minValue>0</minValue>
+    </StatDef>
+
+    <!--Outgoing damage stats-->
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor</defName>
+        <label>outgoing damage factor</label>
+        <description>A multiplier on all outgoing damage.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5201</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Humanlike</defName>
+        <label>outgoing damage factor (humanlike)</label>
+        <description>A multiplier on outgoing damage against humanlike targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5202</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowHumanlikes>True</allowHumanlikes>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Dryad</defName>
+        <label>outgoing damage factor (dryad)</label>
+        <description>A multiplier on outgoing damage against dryad targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5203</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowDryads>True</allowDryads>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Insect</defName>
+        <label>outgoing damage factor (insect)</label>
+        <description>A multiplier on outgoing damage against insect targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5204</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowInsects>True</allowInsects>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Animal</defName>
+        <label>outgoing damage factor (animal)</label>
+        <description>A multiplier on outgoing damage against animal targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5205</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowAnimals>True</allowAnimals>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Mechanoid</defName>
+        <label>outgoing damage factor (mechanoid)</label>
+        <description>A multiplier on outgoing damage against mechanoid targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5206</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowMechanoids>True</allowMechanoids>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Entity</defName>
+        <label>outgoing damage factor (entity)</label>
+        <description>A multiplier on outgoing damage against entity targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5207</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowEntities>True</allowEntities>
+            </li>
+        </modExtensions>
     </StatDef>
 </Defs>

@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/MultipleLives_Component.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="747" Column="29" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="89" Column="63" />
-      <File FileName="Abilities/CompProperties/CompProperties_Launch.cs" Line="14" Column="118" />
+      <File FileName="DynamicResourceGenes/GeneLinker.cs" Line="1" Column="1" />
+      <File FileName="DynamicResourceGenes/HediffComp_DRGPerHour.cs" Line="19" Column="107" />
+      <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="239" Column="64" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,12 +12,14 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_Launch.cs" selected="True" />
-                </Node>
                 <Node name="CompProperties" expanded="True" />
               </Node>
+              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="GameComponents" expanded="True">
+                <Node name="MultipleLives_Component.cs" selected="True" />
+              </Node>
               <Node name="Harmony" expanded="True" />
+              <Node name="Stats" expanded="True" />
             </Node>
           </Node>
         </State>

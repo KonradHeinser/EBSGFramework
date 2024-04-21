@@ -9,6 +9,18 @@ namespace EBSGFramework
         public bool loaded;
         public int tick = 0;
 
+        // Stat caches
+        public List<StatDef> humanoidSlayingStats = new List<StatDef>();
+        public List<StatDef> dryadSlayingStats = new List<StatDef>();
+        public List<StatDef> insectSlayingStats = new List<StatDef>();
+        public List<StatDef> animalSlayingStats = new List<StatDef>();
+        public List<StatDef> mechanoidSlayingStats = new List<StatDef>();
+        public List<StatDef> entitySlayingStats = new List<StatDef>();
+
+        // Tabled due to complications, but kept as potential cache just in case
+        public List<StatDef> bleedingSlayingStats = new List<StatDef>();
+        public List<StatDef> nonBleedingSlayingStats = new List<StatDef>();
+
         // Terrain hediff comp cache
         private Dictionary<Pawn, Hediff> pawnTerrainComps;
         private Dictionary<Pawn, int> geneCountAtLastCache;
@@ -190,8 +202,6 @@ namespace EBSGFramework
             pawnTerrainComps = new Dictionary<Pawn, Hediff>();
             geneCountAtLastCache = new Dictionary<Pawn, int>();
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
-
-            CacheGenesOfInterest();
         }
 
         public void Initialize()
@@ -213,9 +223,12 @@ namespace EBSGFramework
 
             foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
                 CachePawnWithGene(pawn);
+
+            CacheGenesOfInterest();
+            CacheStatsOfInterest();
         }
 
-        public void CacheGenesOfInterest()
+        private void CacheGenesOfInterest()
         {
             moodMultiplyingGenes = new List<GeneDef>();
             hiddenWhenInactive = new List<GeneDef>();
@@ -237,6 +250,34 @@ namespace EBSGFramework
                     dynamicResourceGenes.Add(gene);
             }
         }
+
+        private void CacheStatsOfInterest()
+        {
+            humanoidSlayingStats = new List<StatDef>();
+            dryadSlayingStats = new List<StatDef>();
+            insectSlayingStats = new List<StatDef>();
+            animalSlayingStats = new List<StatDef>();
+            mechanoidSlayingStats = new List<StatDef>();
+            entitySlayingStats = new List<StatDef>();
+            // bleedingSlayingStats = new List<StatDef>();
+            // nonBleedingSlayingStats = new List<StatDef>();
+
+            foreach (StatDef stat in DefDatabase<StatDef>.AllDefs)
+                if (stat.HasModExtension<EBSGDamageExtension>())
+                {
+                    EBSGDamageExtension extension = stat.GetModExtension<EBSGDamageExtension>();
+                    if (extension.allowHumanlikes) humanoidSlayingStats.Add(stat);
+                    if (extension.allowDryads) dryadSlayingStats.Add(stat);
+                    if (extension.allowInsects) insectSlayingStats.Add(stat);
+                    if (extension.allowAnimals) animalSlayingStats.Add(stat);
+                    if (extension.allowMechanoids) mechanoidSlayingStats.Add(stat);
+                    if (extension.allowEntities) entitySlayingStats.Add(stat);
+                    // if (extension.allowBleedable) bleedingSlayingStats.Add(stat);
+                    // if (extension.allowNonBleedable) nonBleedingSlayingStats.Add(stat);
+                }
+        }
+
+        // Post load
 
         public override void GameComponentTick()
         {

@@ -76,7 +76,6 @@
     <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGenePresent.cs" />
     <Compile Include="Thoughts\ThoughtWorker_TreesDesiredNoPrecept.cs" />
     <Compile Include="Genes\VanishingGene.cs" />
-    <Compile Include="StatPart_FertilityByGenes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HiveMind\HiveMindGene.cs" />
     <Compile Include="HiveMind\HiveMindExtension.cs" />
@@ -298,6 +297,8 @@
     <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGPerHour.cs" />
     <Compile Include="DynamicResourceGenes\HediffComp_DRGPerHour.cs" />
     <Compile Include="Generic List Classes\GeneEvent.cs" />
+    <Compile Include="Stats\StatPart_FertilityByGenes.cs" />
+    <Compile Include="Stats\EBSGDamageExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -331,6 +332,7 @@
     <Folder Include="Hediffs\CompProperties\SeveritySetters\" />
     <Folder Include="Hediffs\CompProperties\Explosive\" />
     <Folder Include="Hediffs\Comps\Explosive\" />
+    <Folder Include="Stats\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

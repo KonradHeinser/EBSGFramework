@@ -27,9 +27,11 @@ namespace EBSGFramework
                 try
                 {
                     if (Gene.Value < Props.minHemogen || Gene.Value > Props.maxHemogen)
+                    {
                         if (Props.removeWhenLimitsPassed)
                             Pawn.health.RemoveHediff(parent);
-                    return;
+                        return;
+                    }
                 }
                 catch // On the off chance that cachedGene is holding an invalid gene
                 {

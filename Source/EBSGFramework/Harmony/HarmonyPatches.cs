@@ -739,12 +739,48 @@ namespace EBSGFramework
                     if (comp != null && comp.pawnReviving && comp.Props.indestructibleWhileResurrecting)
                     {
                         dinfo.SetAmount(0);
+                        return true;
                     }
                 }
             }
-            if (__instance is Pawn pawn && Cache != null)
+            if (__instance is Pawn victim && dinfo.Instigator is Pawn attacker && Cache != null)
             {
-                return true;
+                if (victim.RaceProps.Humanlike)
+                {
+                    if (!Cache.humanoidSlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.humanoidSlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
+                else if (victim.RaceProps.Animal)
+                {
+                    if (!Cache.animalSlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.animalSlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
+                else if (victim.RaceProps.IsMechanoid)
+                {
+                    if (!Cache.mechanoidSlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.mechanoidSlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
+                else if (victim.RaceProps.Insect)
+                {
+                    if (!Cache.insectSlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.insectSlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
+                else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
+                {
+                    if (!Cache.entitySlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.entitySlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
+                else if (victim.RaceProps.Dryad)
+                {
+                    if (!Cache.dryadSlayingStats.NullOrEmpty())
+                        foreach (StatDef stat in Cache.dryadSlayingStats)
+                            dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                }
             }
             return true;
         }
