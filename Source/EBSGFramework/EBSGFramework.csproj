@@ -307,6 +307,8 @@
     <None Include="obj\Debug\EBSGFramework.pdb" />
     <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
     <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
+    <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
+    <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abilities\" />
@@ -333,6 +335,7 @@
     <Folder Include="Hediffs\CompProperties\Explosive\" />
     <Folder Include="Hediffs\Comps\Explosive\" />
     <Folder Include="Stats\" />
+    <Folder Include="Storytime\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

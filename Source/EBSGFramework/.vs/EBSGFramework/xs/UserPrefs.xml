@@ -1,25 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/MultipleLives_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
     <Files>
       <File FileName="DynamicResourceGenes/GeneLinker.cs" Line="1" Column="1" />
       <File FileName="DynamicResourceGenes/HediffComp_DRGPerHour.cs" Line="19" Column="107" />
       <File FileName="DynamicResourceGenes/ResourceGene.cs" Line="239" Column="64" />
-      <File FileName="GameComponents/MultipleLives_Component.cs" Line="1" Column="1" />
+      <File FileName="GameComponents/MultipleLives_Component.cs" Line="22" Column="50" />
+      <File FileName="Storytime/StoryTellerComp_StorytellerAffinity.cs" Line="75" Column="1" />
+      <File FileName="Storytime/StoryTellerCompProperties_StorytellerAffinity.cs" Line="18" Column="34" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="214" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="DependencyGenes" expanded="True" />
               <Node name="GameComponents" expanded="True">
-                <Node name="MultipleLives_Component.cs" selected="True" />
+                <Node name="EBSGCache_Component.cs" selected="True" />
               </Node>
               <Node name="Harmony" expanded="True" />
+              <Node name="Needs" expanded="True" />
+              <Node name="Settings" expanded="True" />
               <Node name="Stats" expanded="True" />
+              <Node name="Storytime" expanded="True" />
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>
