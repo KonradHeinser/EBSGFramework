@@ -299,6 +299,7 @@
     <Compile Include="Generic List Classes\GeneEvent.cs" />
     <Compile Include="Stats\StatPart_FertilityByGenes.cs" />
     <Compile Include="Stats\EBSGDamageExtension.cs" />
+    <Compile Include="Settings\EBSG_ModderDebugger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
