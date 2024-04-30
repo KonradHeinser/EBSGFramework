@@ -1,19 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameComponents/EBSGCache_Component.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs">
     <Files>
       <File FileName="Needs/Thought_Situational_BasicCurveNeedMood.cs" Line="31" Column="1" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="254" Column="10" />
-      <File FileName="Settings/EBSG_ModderDebugger.cs" Line="6" Column="9" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="248" Column="44" />
+      <File FileName="Settings/EBSG_ModderDebugger.cs" Line="14" Column="13" />
+      <File FileName="Harmony/StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" Line="21" Column="22" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True" selected="True">
+              <Node name="References" expanded="True" />
               <Node name="DependencyGenes" expanded="True" />
-              <Node name="GameComponents" expanded="True">
-                <Node name="EBSGCache_Component.cs" selected="True" />
-              </Node>
+              <Node name="GameComponents" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Settings" expanded="True" />
               <Node name="Stats" expanded="True" />
