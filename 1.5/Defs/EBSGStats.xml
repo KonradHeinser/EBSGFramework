@@ -189,7 +189,7 @@
         </modExtensions>
     </StatDef>
 
-    <StatDef ParentName="EBSG_FactoringStat">
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Ideology">
         <defName>EBSG_OutgoingDamageFactor_Dryad</defName>
         <label>outgoing damage factor (dryad)</label>
         <description>A multiplier on outgoing damage against dryad targets.</description>
@@ -241,7 +241,7 @@
         </modExtensions>
     </StatDef>
 
-    <StatDef ParentName="EBSG_FactoringStat">
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Anomaly">
         <defName>EBSG_OutgoingDamageFactor_Entity</defName>
         <label>outgoing damage factor (entity)</label>
         <description>A multiplier on outgoing damage against entity targets.</description>
