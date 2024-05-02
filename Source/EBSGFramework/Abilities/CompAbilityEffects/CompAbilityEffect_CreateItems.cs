@@ -29,7 +29,7 @@ namespace EBSGFramework
             {
                 if (partList[item2].thing == null) continue;
                 Thing thing = ThingMaker.MakeThing(partList[item2].thing);
-                thing.stackCount = Math.Max(partList[item2].count, partList[item2].thing.stackLimit);
+                thing.stackCount = Math.Min(partList[item2].count, partList[item2].thing.stackLimit);
                 GenSpawn.Spawn(thing, item2, map);
                 if (Props.sendSkipSignal) CompAbilityEffect_Teleport.SendSkipUsedSignal(item2, parent.pawn);
             }
