@@ -1,345 +1,348 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C15B537-0A69-4ED9-952B-5435016FA4F7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>EBSGFramework</RootNamespace>
-    <AssemblyName>EBSGFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\1.5\Assemblies</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\1.5\Assemblies</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.Xml.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VFECore">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EBSGExtension.cs" />
-    <Compile Include="CollectExtensionData.cs" />
-    <Compile Include="EBSGDefOf.cs" />
-    <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
-    <Compile Include="Hediffs\HediffsAtSeverities.cs" />
-    <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Precept_GeneExtension_Social.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Precept_HasRelatedGene.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGeneColonist.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGenePresent.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_TreesDesiredNoPrecept.cs" />
-    <Compile Include="Genes\VanishingGene.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HiveMind\HiveMindGene.cs" />
-    <Compile Include="HiveMind\HiveMindExtension.cs" />
-    <Compile Include="HiveMind\HiveRoleToCheckFor.cs" />
-    <Compile Include="FertilityByGenderAgeExtension.cs" />
-    <Compile Include="Genes\HediffAdder.cs" />
-    <Compile Include="DamageWorker_PermanentInjury.cs" />
-    <Compile Include="EBSGUtilities.cs" />
-    <Compile Include="DynamicResourceGenes\DRGExtension.cs" />
-    <Compile Include="DynamicResourceGenes\GeneGizmo_ResourceGene.cs" />
-    <Compile Include="DynamicResourceGenes\HediffCompProperties_SeverityFromResource.cs" />
-    <Compile Include="DynamicResourceGenes\ResourceDrainGene.cs" />
-    <Compile Include="DynamicResourceGenes\ResourceGene.cs" />
-    <Compile Include="DynamicResourceGenes\Hediff_ResourceCraving.cs" />
-    <Compile Include="DynamicResourceGenes\IngestionOutcomeDoer_OffsetResource.cs" />
-    <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
-    <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
-    <Compile Include="Genes\AdditionalFertilityByAge.cs" />
-    <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
-    <Compile Include="DependencyGenes\Gene_Dependency.cs" />
-    <Compile Include="DependencyGenes\IDGExtension.cs" />
-    <Compile Include="DependencyGenes\Hediff_Dependency.cs" />
-    <Compile Include="DependencyGenes\JobGiver_SatisfyDependency.cs" />
-    <Compile Include="Genes\Gene_SkillChanging.cs" />
-    <Compile Include="Genes\SkillChange.cs" />
-    <Compile Include="Abilities\Hediff_LoveTheCaster.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Gene_GeneSocial.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateOtherHediffs.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageBodyParts.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_FactionBond.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GainRandomGeneSet.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveAbilityAtSeverity.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileMoving.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_MultipleLives.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TieredRegeneration.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_CreateOtherHediffs.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_DamageBodyParts.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_FactionBond.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_GainRandomGeneSet.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_GiveAbilityAtSeverity.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HediffWhileMoving.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_MultipleLives.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_TieredRegeneration.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityBloodDrain.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMultipleHediffs.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityOffsetNeed.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityRemoveMultipleHediffs.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_EBSGBurst.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_LongDistanceTeleport.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_LoveTheCaster.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_BloodDrain.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBurst.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveMultipleHediffs.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LongDistanceTeleport.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LoveTheCaster.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveMultipleHediffs.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OffsetNeed.cs" />
-    <Compile Include="Genes\BiomeGene.cs" />
-    <Compile Include="JoyGiver_RelaxInWater.cs" />
-    <Compile Include="JobDriver_RelaxInWater.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
-    <Compile Include="Genes\SpawnAgeLimiter.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityLearnSkill.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
-    <Compile Include="Genes\GRCExtension.cs" />
-    <Compile Include="Things\EquipRestrictExtension.cs" />
-    <Compile Include="Things\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
-    <Compile Include="Hediffs\BurstHediffPropertiesBase.cs" />
-    <Compile Include="Hediffs\BurstHediffCompBase.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_TemporaryGenes.cs" />
-    <Compile Include="Harmony\StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
-    <Compile Include="Harmony\HarmonyPatches.cs" />
-    <Compile Include="Harmony\MeleeDPSPostfix.cs" />
-    <Compile Include="Generic List Classes\GeneticMultiplier.cs" />
-    <Compile Include="Generic List Classes\NeedOffset.cs" />
-    <Compile Include="Generic List Classes\HediffsToParts.cs" />
-    <Compile Include="Generic List Classes\HediffToGive.cs" />
-    <Compile Include="Generic List Classes\SkillXP.cs" />
-    <Compile Include="Hediffs\RegenSet.cs" />
-    <Compile Include="Generic List Classes\PartToDamage.cs" />
-    <Compile Include="Hediffs\MentalStateEffect.cs" />
-    <Compile Include="Generic List Classes\RandomXenoGenes.cs" />
-    <Compile Include="Hediffs\GenesAtSeverity.cs" />
-    <Compile Include="Generic List Classes\AbilityAndGeneLink.cs" />
-    <Compile Include="Generic List Classes\GeneEffect.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerDayByGenes.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByGenes.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBlast.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_EBSGBlast.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
-    <Compile Include="VFECompatabilityUtilities.cs" />
-    <Compile Include="Generic List Classes\NeedLevel.cs" />
-    <Compile Include="Generic List Classes\SkillCheck.cs" />
-    <Compile Include="Generic List Classes\StatCheck.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AbilityValidator.cs" />
-    <Compile Include="Generic List Classes\CapCheck.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityAbilityValidator.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_TriggerGameCondition.cs" />
-    <Compile Include="Generic List Classes\ConditionDuration.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_TriggerGameCondition.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_CreateLinkedHediff.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateLinkedHediff.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityCreateItems.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateItems.cs" />
-    <Compile Include="Generic List Classes\ThingPatternPart.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangePerAttack.cs" />
-    <Compile Include="Generic List Classes\HediffSeverityFactor.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsInRangeGeneRestricting.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_SeverityChangePerAttack.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_DisplaySeverity.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_Aging.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_Aging.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsInRangeGeneRestricting.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DisplaySeverity.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DestroyOnDeath.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_DestroyOnDeath.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeWeather.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeWeather.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporarySkillChange.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_TemporarySkillChange.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileInSeverityRange.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HediffWhileInSeverityRange.cs" />
-    <Compile Include="Generic List Classes\HediffSeverityLevel.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChargeBattery.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChargeBattery.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AddItemToInventory.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_AddItemToInventory.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_RemoveItemFromInventory.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveItemFromInventory.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_DamageOverTime.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOverTime.cs" />
-    <Compile Include="Things\CompProperties_Regenerating.cs" />
-    <Compile Include="Things\CompRegenerating.cs" />
-    <Compile Include="Things\CompIndestructible.cs" />
-    <Compile Include="Things\CompProperties_Indestructible.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_TerrainCostOverride.cs" />
-    <Compile Include="Generic List Classes\TerrainLinker.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TerrainCostOverride.cs" />
-    <Compile Include="GameComponents\MultipleLives_Component.cs" />
-    <Compile Include="GameComponents\EBSGCache_Component.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffsOnRemoval.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HediffsOnRemoval.cs" />
-    <Compile Include="Settings\EBSG_Settings.cs" />
-    <Compile Include="Settings\PatchOperationSetting.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_Launch.cs" />
-    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Launch.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityConvertResource.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceCost.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceToBattery.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBlast.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBurst.cs" />
-    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_DRGLaunch.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ConvertResource.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBlast.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBurst.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceCost.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceToBattery.cs" />
-    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_DRGLaunch.cs" />
-    <Compile Include="Needs\Need_Murderous.cs" />
-    <Compile Include="Genes\Gene_CustomizableClotting.cs" />
-    <Compile Include="Needs\Thought_Situational_BasicCurveNeedMood.cs" />
-    <Compile Include="Needs\ThoughtWorker_BasicCurveNeedMood.cs" />
-    <Compile Include="Needs\Need_GenericNeed.cs" />
-    <Compile Include="Needs\Alert_LowGenericNeed.cs" />
-    <Compile Include="Things\Building_PawnNeedCharger.cs" />
-    <Compile Include="Things\JobDriver_PawnNeedCharger.cs" />
-    <Compile Include="Things\JobGiver_PawnNeedCharger.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\Workgiver_AdministerResource.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\WorkGiver_Warden_DeliverResource.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\JobGiver_GetResourcePack.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\Comp_DRGConsumable.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\CompProperties_DRGConsumable.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGFeedPatient.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGConsume.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
-    <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
-    <Compile Include="EBSGRecorder.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenOnKill.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HemogenOnKill.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByAge.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByColonyGenes.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGenes.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByLightLevel.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByMentalState.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByNearbyPawns.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByOtherHediffSeverities.cs" />
-    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByTimeOfDay.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByAge.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByColonyGenes.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGenes.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByLightLevel.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByMentalState.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNearbyPawns.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByOtherHediffSeverities.cs" />
-    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByTimeOfDay.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodeOnDeath.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodeWhenDamaged.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingAttacks.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingMeleeAttacks.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingRangedAttacks.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplosiveRetaliation.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeOnDeath.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeWhenDamaged.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingAttacks.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingMeleeAttacks.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingRangedAttacks.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosiveRetaliation.cs" />
-    <Compile Include="DynamicResourceGenes\HediffComp_DRGOnKill.cs" />
-    <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGOnKill.cs" />
-    <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenPerHour.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_HemogenPerHour.cs" />
-    <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGPerHour.cs" />
-    <Compile Include="DynamicResourceGenes\HediffComp_DRGPerHour.cs" />
-    <Compile Include="Generic List Classes\GeneEvent.cs" />
-    <Compile Include="Stats\StatPart_FertilityByGenes.cs" />
-    <Compile Include="Stats\EBSGDamageExtension.cs" />
-    <Compile Include="Settings\EBSG_ModderDebugger.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\EBSGFramework.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\EBSGFramework.dll" />
-    <None Include="obj\Debug\EBSGFramework.pdb" />
-    <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
-    <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
-    <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
-    <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abilities\" />
-    <Folder Include="Hediffs\" />
-    <Folder Include="Thoughts\" />
-    <Folder Include="Genes\" />
-    <Folder Include="HiveMind\" />
-    <Folder Include="DependencyGenes\" />
-    <Folder Include="Hediffs\CompProperties\" />
-    <Folder Include="Hediffs\Comps\" />
-    <Folder Include="Abilities\CompProperties\" />
-    <Folder Include="Abilities\CompAbilityEffects\" />
-    <Folder Include="Things\" />
-    <Folder Include="Harmony\" />
-    <Folder Include="Generic List Classes\" />
-    <Folder Include="GameComponents\" />
-    <Folder Include="Settings\" />
-    <Folder Include="DynamicResourceGenes\CompProperties_Ability\" />
-    <Folder Include="DynamicResourceGenes\CompAbilityEffect\" />
-    <Folder Include="Needs\" />
-    <Folder Include="DynamicResourceGenes\GetResourceAI\" />
-    <Folder Include="Hediffs\Comps\HediffSetters\" />
-    <Folder Include="Hediffs\CompProperties\SeveritySetters\" />
-    <Folder Include="Hediffs\CompProperties\Explosive\" />
-    <Folder Include="Hediffs\Comps\Explosive\" />
-    <Folder Include="Stats\" />
-    <Folder Include="Storytime\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{1C15B537-0A69-4ED9-952B-5435016FA4F7}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <RootNamespace>EBSGFramework</RootNamespace>
+        <AssemblyName>EBSGFramework</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
+        <DefineConstants>DEBUG;</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <ConsolePause>false</ConsolePause>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <Optimize>true</Optimize>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <ConsolePause>false</ConsolePause>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="System">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="System.Xml">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.Xml.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="0Harmony">
+            <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="VFECore">
+            <HintPath>..\..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="EBSGExtension.cs" />
+        <Compile Include="CollectExtensionData.cs" />
+        <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
+        <Compile Include="Hediffs\HediffsAtSeverities.cs" />
+        <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_Precept_GeneExtension_Social.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_Precept_HasRelatedGene.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGeneColonist.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_Precept_RelatedGenePresent.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_TreesDesiredNoPrecept.cs" />
+        <Compile Include="Genes\VanishingGene.cs" />
+        <Compile Include="GlobalSuppressions.cs" />
+        <Compile Include="HiveMind\HiveMindGene.cs" />
+        <Compile Include="HiveMind\HiveMindExtension.cs" />
+        <Compile Include="HiveMind\HiveRoleToCheckFor.cs" />
+        <Compile Include="FertilityByGenderAgeExtension.cs" />
+        <Compile Include="Genes\HediffAdder.cs" />
+        <Compile Include="DamageWorker_PermanentInjury.cs" />
+        <Compile Include="EBSGUtilities.cs" />
+        <Compile Include="DynamicResourceGenes\DRGExtension.cs" />
+        <Compile Include="DynamicResourceGenes\GeneGizmo_ResourceGene.cs" />
+        <Compile Include="DynamicResourceGenes\HediffCompProperties_SeverityFromResource.cs" />
+        <Compile Include="DynamicResourceGenes\ResourceDrainGene.cs" />
+        <Compile Include="DynamicResourceGenes\ResourceGene.cs" />
+        <Compile Include="DynamicResourceGenes\Hediff_ResourceCraving.cs" />
+        <Compile Include="DynamicResourceGenes\IngestionOutcomeDoer_OffsetResource.cs" />
+        <Compile Include="DynamicResourceGenes\HediffComp_SeverityFromResource.cs" />
+        <Compile Include="DynamicResourceGenes\Alert_LowResource.cs" />
+        <Compile Include="Genes\AdditionalFertilityByAge.cs" />
+        <Compile Include="Genes\Gene_HemoHediffAdder.cs" />
+        <Compile Include="DependencyGenes\Gene_Dependency.cs" />
+        <Compile Include="DependencyGenes\IDGExtension.cs" />
+        <Compile Include="DependencyGenes\Hediff_Dependency.cs" />
+        <Compile Include="DependencyGenes\JobGiver_SatisfyDependency.cs" />
+        <Compile Include="Genes\Gene_SkillChanging.cs" />
+        <Compile Include="Genes\SkillChange.cs" />
+        <Compile Include="Abilities\Hediff_LoveTheCaster.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_Gene_GeneSocial.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateOtherHediffs.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageBodyParts.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_FactionBond.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_GainRandomGeneSet.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveAbilityAtSeverity.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsToNonAlliesInRange.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileMoving.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_MultipleLives.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_TieredRegeneration.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_CreateOtherHediffs.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_DamageBodyParts.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_FactionBond.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_GainRandomGeneSet.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_GiveAbilityAtSeverity.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsToNonAlliesInRange.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HediffWhileMoving.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_MultipleLives.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_TieredRegeneration.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityBloodDrain.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMultipleHediffs.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityOffsetNeed.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityRemoveMultipleHediffs.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_EBSGBurst.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_LongDistanceTeleport.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_LoveTheCaster.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_BloodDrain.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBurst.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveMultipleHediffs.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LongDistanceTeleport.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LoveTheCaster.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveMultipleHediffs.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OffsetNeed.cs" />
+        <Compile Include="Genes\BiomeGene.cs" />
+        <Compile Include="JoyGiver_RelaxInWater.cs" />
+        <Compile Include="JobDriver_RelaxInWater.cs" />
+        <Compile Include="Thoughts\ThoughtWorker_NearWater.cs" />
+        <Compile Include="Genes\SpawnAgeLimiter.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityLearnSkill.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
+        <Compile Include="Genes\GRCExtension.cs" />
+        <Compile Include="Things\EquipRestrictExtension.cs" />
+        <Compile Include="Things\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
+        <Compile Include="Hediffs\BurstHediffPropertiesBase.cs" />
+        <Compile Include="Hediffs\BurstHediffCompBase.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_TemporaryGenes.cs" />
+        <Compile Include="Harmony\StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
+        <Compile Include="Harmony\HarmonyPatches.cs" />
+        <Compile Include="Harmony\MeleeDPSPostfix.cs" />
+        <Compile Include="Generic List Classes\GeneticMultiplier.cs" />
+        <Compile Include="Generic List Classes\NeedOffset.cs" />
+        <Compile Include="Generic List Classes\HediffsToParts.cs" />
+        <Compile Include="Generic List Classes\HediffToGive.cs" />
+        <Compile Include="Generic List Classes\SkillXP.cs" />
+        <Compile Include="Hediffs\RegenSet.cs" />
+        <Compile Include="Generic List Classes\PartToDamage.cs" />
+        <Compile Include="Hediffs\MentalStateEffect.cs" />
+        <Compile Include="Generic List Classes\RandomXenoGenes.cs" />
+        <Compile Include="Hediffs\GenesAtSeverity.cs" />
+        <Compile Include="Generic List Classes\AbilityAndGeneLink.cs" />
+        <Compile Include="Generic List Classes\GeneEffect.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerDayByGenes.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByGenes.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_EBSGBlast.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_EBSGBlast.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
+        <Compile Include="VFECompatabilityUtilities.cs" />
+        <Compile Include="Generic List Classes\NeedLevel.cs" />
+        <Compile Include="Generic List Classes\SkillCheck.cs" />
+        <Compile Include="Generic List Classes\StatCheck.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AbilityValidator.cs" />
+        <Compile Include="Generic List Classes\CapCheck.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityAbilityValidator.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_TriggerGameCondition.cs" />
+        <Compile Include="Generic List Classes\ConditionDuration.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_TriggerGameCondition.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_CreateLinkedHediff.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateLinkedHediff.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityCreateItems.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_CreateItems.cs" />
+        <Compile Include="Generic List Classes\ThingPatternPart.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangePerAttack.cs" />
+        <Compile Include="Generic List Classes\HediffSeverityFactor.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_GiveHediffsInRangeGeneRestricting.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_SeverityChangePerAttack.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_DisplaySeverity.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_Aging.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_Aging.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffsInRangeGeneRestricting.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_DisplaySeverity.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_DestroyOnDeath.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_DestroyOnDeath.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeWeather.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeWeather.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporarySkillChange.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_TemporarySkillChange.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffWhileInSeverityRange.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HediffWhileInSeverityRange.cs" />
+        <Compile Include="Generic List Classes\HediffSeverityLevel.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityChargeBattery.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChargeBattery.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AddItemToInventory.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AddItemToInventory.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_RemoveItemFromInventory.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveItemFromInventory.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_DamageOverTime.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOverTime.cs" />
+        <Compile Include="Things\CompProperties_Regenerating.cs" />
+        <Compile Include="Things\CompRegenerating.cs" />
+        <Compile Include="Things\CompIndestructible.cs" />
+        <Compile Include="Things\CompProperties_Indestructible.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_TerrainCostOverride.cs" />
+        <Compile Include="Generic List Classes\TerrainLinker.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_TerrainCostOverride.cs" />
+        <Compile Include="GameComponents\MultipleLives_Component.cs" />
+        <Compile Include="GameComponents\EBSGCache_Component.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffsOnRemoval.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HediffsOnRemoval.cs" />
+        <Compile Include="Settings\EBSG_Settings.cs" />
+        <Compile Include="Settings\PatchOperationSetting.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_Launch.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Launch.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityConvertResource.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceCost.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityResourceToBattery.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBlast.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_EnergyBurst.cs" />
+        <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_DRGLaunch.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ConvertResource.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBlast.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_EnergyBurst.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceCost.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_ResourceToBattery.cs" />
+        <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_DRGLaunch.cs" />
+        <Compile Include="Needs\Need_Murderous.cs" />
+        <Compile Include="Genes\Gene_CustomizableClotting.cs" />
+        <Compile Include="Needs\Thought_Situational_BasicCurveNeedMood.cs" />
+        <Compile Include="Needs\ThoughtWorker_BasicCurveNeedMood.cs" />
+        <Compile Include="Needs\Need_GenericNeed.cs" />
+        <Compile Include="Needs\Alert_LowGenericNeed.cs" />
+        <Compile Include="Things\Building_PawnNeedCharger.cs" />
+        <Compile Include="Things\JobDriver_PawnNeedCharger.cs" />
+        <Compile Include="Things\JobGiver_PawnNeedCharger.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\Workgiver_AdministerResource.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\WorkGiver_Warden_DeliverResource.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\JobGiver_GetResourcePack.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\Comp_DRGConsumable.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\CompProperties_DRGConsumable.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGFeedPatient.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGConsume.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\JobDriver_DRGDeliver.cs" />
+        <Compile Include="DynamicResourceGenes\GetResourceAI\Toils_DRGConsume.cs" />
+        <Compile Include="EBSGRecorder.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenOnKill.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HemogenOnKill.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByAge.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByColonyGenes.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGenes.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByLightLevel.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByMentalState.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByNearbyPawns.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByOtherHediffSeverities.cs" />
+        <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByTimeOfDay.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByAge.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByColonyGenes.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGenes.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByLightLevel.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByMentalState.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNearbyPawns.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByOtherHediffSeverities.cs" />
+        <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByTimeOfDay.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodeOnDeath.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodeWhenDamaged.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingAttacks.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingMeleeAttacks.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodingRangedAttacks.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplosiveRetaliation.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeOnDeath.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeWhenDamaged.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingAttacks.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingMeleeAttacks.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodingRangedAttacks.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosiveRetaliation.cs" />
+        <Compile Include="DynamicResourceGenes\HediffComp_DRGOnKill.cs" />
+        <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGOnKill.cs" />
+        <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenPerHour.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_HemogenPerHour.cs" />
+        <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGPerHour.cs" />
+        <Compile Include="DynamicResourceGenes\HediffComp_DRGPerHour.cs" />
+        <Compile Include="Generic List Classes\GeneEvent.cs" />
+        <Compile Include="Stats\StatPart_FertilityByGenes.cs" />
+        <Compile Include="Stats\EBSGDamageExtension.cs" />
+        <Compile Include="Settings\EBSG_ModderDebugger.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OrbitalStrike.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_OrbitalStrike.cs" />
+        <Compile Include="Things\CustomizeableOrbitalStrike.cs" />
+        <Compile Include="EBSGDefOf.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
+        <None Include="obj\Debug\EBSGFramework.csproj.CoreCompileInputs.cache" />
+        <None Include="obj\Debug\EBSGFramework.dll" />
+        <None Include="obj\Debug\EBSGFramework.pdb" />
+        <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
+        <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
+        <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
+        <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Abilities\" />
+        <Folder Include="Hediffs\" />
+        <Folder Include="Thoughts\" />
+        <Folder Include="Genes\" />
+        <Folder Include="HiveMind\" />
+        <Folder Include="DependencyGenes\" />
+        <Folder Include="Hediffs\CompProperties\" />
+        <Folder Include="Hediffs\Comps\" />
+        <Folder Include="Abilities\CompProperties\" />
+        <Folder Include="Abilities\CompAbilityEffects\" />
+        <Folder Include="Things\" />
+        <Folder Include="Harmony\" />
+        <Folder Include="Generic List Classes\" />
+        <Folder Include="GameComponents\" />
+        <Folder Include="Settings\" />
+        <Folder Include="DynamicResourceGenes\CompProperties_Ability\" />
+        <Folder Include="DynamicResourceGenes\CompAbilityEffect\" />
+        <Folder Include="Needs\" />
+        <Folder Include="DynamicResourceGenes\GetResourceAI\" />
+        <Folder Include="Hediffs\Comps\HediffSetters\" />
+        <Folder Include="Hediffs\CompProperties\SeveritySetters\" />
+        <Folder Include="Hediffs\CompProperties\Explosive\" />
+        <Folder Include="Hediffs\Comps\Explosive\" />
+        <Folder Include="Stats\" />
+        <Folder Include="Storytime\" />
+    </ItemGroup>
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

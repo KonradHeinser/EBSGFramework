@@ -1,0 +1,258 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+
+namespace EBSGFramework
+{
+    [StaticConstructorOnStartup]
+    public class CustomizeableOrbitalStrike : OrbitalStrike
+    {
+        public class OrbitalProjectile : IExposable
+        {
+            private int lifeTime;
+
+            private int maxLifeTime;
+
+            public IntVec3 targetCell;
+
+            private const float StartZ = 60f;
+
+            private const float Scale = 2.5f;
+
+            private const float Angle = 180f;
+
+            public int LifeTime => lifeTime;
+
+            public OrbitalProjectile()
+            {
+            }
+
+            public OrbitalProjectile(int lifeTime, IntVec3 targetCell)
+            {
+                this.lifeTime = lifeTime;
+                maxLifeTime = lifeTime;
+                this.targetCell = targetCell;
+            }
+
+            public void Tick()
+            {
+                lifeTime--;
+            }
+
+            public void Draw(Material material)
+            {
+                if (lifeTime > 0)
+                {
+                    Vector3 pos = targetCell.ToVector3() + Vector3.forward * Mathf.Lerp(60f, 0f, 1f - lifeTime / maxLifeTime);
+                    pos.z += 1.25f;
+                    pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
+                    Matrix4x4 matrix = Matrix4x4.TRS(pos, Quaternion.Euler(0f, 180f, 0f), new Vector3(2.5f, 1f, 2.5f));
+                    Graphics.DrawMesh(MeshPool.plane10, matrix, material, 0);
+                }
+            }
+
+            public void ExposeData()
+            {
+                Scribe_Values.Look(ref lifeTime, "lifeTime", 0);
+                Scribe_Values.Look(ref maxLifeTime, "maxLifeTime", 0);
+                Scribe_Values.Look(ref targetCell, "targetCell");
+            }
+        }
+
+        public float impactAreaRadius = 15f;
+
+        public FloatRange explosionRadiusRange = new FloatRange(6f, 8f);
+
+        public SoundDef preImpactSound;
+
+        public int randomFireRadius = 25;
+
+        public int bombIntervalTicks = 18;
+
+        public int warmupTicks = 60;
+
+        public int explosionCount = 30;
+
+        public float fireChance = 1f;
+
+        public DamageDef damage;
+
+        public string damageDef;
+
+        public string projectileTexPath = "Things/Projectile/Bullet_Big";
+
+        public Color projectileColor = Color.white;
+
+        private int ticksToNextEffect;
+
+        private IntVec3 nextExplosionCell = IntVec3.Invalid;
+
+        private List<OrbitalProjectile> projectiles = new List<OrbitalProjectile>();
+
+        public const int EffectiveAreaRadius = 23;
+
+        private const int StartRandomFireEveryTicks = 20;
+
+        private const int EffectDuration = 60;
+
+        public static readonly SimpleCurve DistanceChanceFactor = new SimpleCurve
+    {
+        new CurvePoint(0f, 1f),
+        new CurvePoint(1f, 0.1f)
+    };
+
+        public override void SpawnSetup(Map map, bool respawningAfterReload)
+        {
+            base.SpawnSetup(map, respawningAfterReload);
+            if (!respawningAfterReload)
+            {
+                GetNextExplosionCell();
+            }
+        }
+
+        public override void StartStrike()
+        {
+            duration = bombIntervalTicks * explosionCount;
+            base.StartStrike();
+        }
+
+        public override void Tick()
+        {
+            if (Destroyed || !Spawned)
+                return;
+
+            if (warmupTicks > 0)
+            {
+                warmupTicks--;
+                if (warmupTicks == 0)
+                    StartStrike();
+            }
+            else
+            {
+                base.Tick();
+                if (Find.TickManager.TicksGame % 20 == 0 && TicksLeft > 0)
+                    StartRandomFire();
+            }
+            EffectTick();
+        }
+
+        private void EffectTick()
+        {
+            if (!nextExplosionCell.IsValid)
+            {
+                ticksToNextEffect = warmupTicks - bombIntervalTicks;
+                GetNextExplosionCell();
+            }
+            ticksToNextEffect--;
+            if (ticksToNextEffect <= 0 && TicksLeft >= bombIntervalTicks)
+            {
+                if (preImpactSound != null)
+                    preImpactSound.PlayOneShot(new TargetInfo(nextExplosionCell, Map));
+                projectiles.Add(new OrbitalProjectile(60, nextExplosionCell));
+                ticksToNextEffect = bombIntervalTicks;
+                GetNextExplosionCell();
+            }
+
+            List<OrbitalProjectile> spentProjectiles = new List<OrbitalProjectile>();
+
+            if (!projectiles.NullOrEmpty())
+                foreach (OrbitalProjectile orbital in projectiles)
+                {
+                    orbital.Tick();
+                    if (orbital.LifeTime <= 0)
+                    {
+                        TryDoExplosion(orbital);
+                        spentProjectiles.Add(orbital);
+                    }
+                }
+
+            if (!spentProjectiles.NullOrEmpty())
+                foreach (OrbitalProjectile orbital in spentProjectiles)
+                    projectiles.Remove(orbital);
+        }
+
+        private void TryDoExplosion(OrbitalProjectile proj)
+        {
+            if (Intercepted(proj.targetCell)) return;
+
+            if (damage == null)
+                damage = DamageDefOf.Bomb;
+
+            GenExplosion.DoExplosion(proj.targetCell, Map, explosionRadiusRange.RandomInRange, damage, instigator, -1, -1f, null, projectile: def, weapon: weaponDef);
+        }
+
+        protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+        {
+            base.DrawAt(drawLoc, flip);
+            if (!projectiles.NullOrEmpty())
+                foreach (OrbitalProjectile orbital in projectiles)
+                    orbital.Draw(MaterialPool.MatFrom(projectileTexPath, ShaderDatabase.Transparent, projectileColor));
+        }
+
+        private bool Intercepted(IntVec3 targetCell)
+        {
+            List<Thing> list = Map.listerThings.ThingsInGroup(ThingRequestGroup.ProjectileInterceptor).Where((Thing t) => t.HasComp<CompProjectileInterceptor>()).ToList();
+
+            if (!list.NullOrEmpty())
+                foreach (Thing thing in list)
+                {
+                    CompProjectileInterceptor comp = thing.TryGetComp<CompProjectileInterceptor>();
+                    if (comp.Active && comp.Props.interceptAirProjectiles && targetCell.InHorDistOf(thing.Position, comp.Props.radius) &&
+                        (comp.Props.interceptNonHostileProjectiles || instigator.HostileTo(thing)))
+                        return true;
+                }
+
+            return false;
+        }
+
+        private void StartRandomFire()
+        {
+            if (!Rand.Chance(fireChance))
+                return;
+
+            IntVec3 intVec = (from x in GenRadial.RadialCellsAround(Position, randomFireRadius, true)
+                              where x.InBounds(Map)
+                              select x).RandomElementByWeight((IntVec3 x) => DistanceChanceFactor.Evaluate(x.DistanceTo(Position)));
+
+            if (Intercepted(intVec)) return;
+            FireUtility.TryStartFireIn(intVec, Map, Rand.Range(0.1f, 0.925f), instigator);
+        }
+
+        private void GetNextExplosionCell()
+        {
+            nextExplosionCell = (from x in GenRadial.RadialCellsAround(Position, impactAreaRadius, true)
+                                 where x.InBounds(Map)
+                                 select x).RandomElementByWeight((IntVec3 x) => DistanceChanceFactor.Evaluate(x.DistanceTo(Position) / impactAreaRadius));
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref impactAreaRadius, "impactAreaRadius", 15f);
+            Scribe_Values.Look(ref explosionRadiusRange, "explosionRadiusRange", new FloatRange(6f, 8f));
+            Scribe_Values.Look(ref randomFireRadius, "randomFireRadius", 25);
+            Scribe_Values.Look(ref bombIntervalTicks, "bombIntervalTicks", 18);
+            Scribe_Values.Look(ref warmupTicks, "warmupTicks", 0);
+            Scribe_Values.Look(ref ticksToNextEffect, "ticksToNextEffect", 0);
+            Scribe_Values.Look(ref nextExplosionCell, "nextExplosionCell");
+            Scribe_Values.Look(ref fireChance, "fireChance", 1f);
+            Scribe_Values.Look(ref damageDef, "damageDef", "Bomb");
+            Scribe_Values.Look(ref projectileTexPath, "projectileTexPath", "Things/Projectile/Bullet_Big");
+            Scribe_Values.Look(ref projectileColor, "projectileColor", Color.white);
+            Scribe_Collections.Look(ref projectiles, "projectiles", LookMode.Deep);
+
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if (!nextExplosionCell.IsValid)
+                    GetNextExplosionCell();
+                if (projectiles == null)
+                    projectiles = new List<OrbitalProjectile>();
+            }
+
+            damage = DefDatabase<DamageDef>.GetNamed(damageDef);
+        }
+    }
+}

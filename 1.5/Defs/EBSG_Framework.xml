@@ -43,6 +43,114 @@
         <reportString>using recharger.</reportString>
     </JobDef>
 
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Red">
+        <defName>EBSG_OrbitalCenter_Red</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(255, 20, 20, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Yellow">
+        <defName>EBSG_OrbitalCenter_Yellow</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(255, 255, 20, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Orange">
+        <defName>EBSG_OrbitalCenter_Orange</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(255, 128, 20, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Blue">
+        <defName>EBSG_OrbitalCenter_Blue</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(20, 20, 255, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Green">
+        <defName>EBSG_OrbitalCenter_Green</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(20, 255, 20, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Purple">
+        <defName>EBSG_OrbitalCenter_Purple</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(20, 255, 255, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_White">
+        <defName>EBSG_OrbitalCenter_White</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(255, 255, 255, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase" Name="EBSG_OrbitalCenter_Black">
+        <defName>EBSG_OrbitalCenter_Black</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(1, 1, 1, 242)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="OrbitalStrikeBase">
+        <defName>EBSG_OrbitalCenter_Colorless</defName>
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(1, 1, 1, 0)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

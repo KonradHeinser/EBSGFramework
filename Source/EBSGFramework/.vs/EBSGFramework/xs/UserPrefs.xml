@@ -1,28 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Needs/Thought_Situational_BasicCurveNeedMood.cs" Line="31" Column="1" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="248" Column="44" />
-      <File FileName="Settings/EBSG_ModderDebugger.cs" Line="14" Column="13" />
-      <File FileName="Harmony/StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" Line="21" Column="22" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="28" Column="66" />
-      <File FileName="EBSGUtilities.cs" Line="496" Column="14" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="356" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-              </Node>
-              <Node name="DependencyGenes" expanded="True" />
+              <Node name="References" expanded="True" />
+              <Node name="Abilities" expanded="True" />
               <Node name="GameComponents" expanded="True" />
-              <Node name="Harmony" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
               <Node name="Settings" expanded="True" />
               <Node name="Stats" expanded="True" />
               <Node name="Storytime" expanded="True" />
-              <Node name="EBSGUtilities.cs" selected="True" />
+              <Node name="Things" expanded="True" />
+              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>

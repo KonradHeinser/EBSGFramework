@@ -33,7 +33,7 @@ namespace EBSGFramework
 
                 // maxGain represents the maximum amount the pawn has a reason to store, while maxToTake represents the hard cap caused by the properties or the maxGain. maxToTake is the bloodloss added
                 float maxGain = (hemogen.Max - hemogen.Value) / Props.hemogenEfficiency;
-                float maxToTake = Props.maxGainableHemogen / Props.hemogenEfficiency;
+                float maxToTake = Props.maxGainableHemogen / Props.hemogenEfficiency / BodySizeFactor(victim);
                 if (maxToTake > 1) maxToTake = 1; // Can never take more than 100% of the victim's blood for obvious reasons
 
                 if (maxToTake > maxGain) maxToTake = maxGain;
@@ -44,7 +44,7 @@ namespace EBSGFramework
                     Hediff bloodloss = HediffMaker.MakeHediff(HediffDefOf.BloodLoss, victim);
                     bloodloss.Severity = maxToTake;
                     victim.health.AddHediff(bloodloss);
-                    hemogen.Value += maxToTake * Props.hemogenEfficiency;
+                    hemogen.Value += maxToTake * Props.hemogenEfficiency * BodySizeFactor(victim);
                 }
                 else
                 {
@@ -56,15 +56,21 @@ namespace EBSGFramework
                     {
                         maxToTake = 1 - bloodloss.Severity;
                         bloodloss.Severity = 1;
-                        hemogen.Value += maxToTake * Props.hemogenEfficiency;
+                        hemogen.Value += maxToTake * Props.hemogenEfficiency * BodySizeFactor(victim);
                     }
                     else
                     {
                         bloodloss.Severity += maxToTake;
-                        hemogen.Value += maxToTake * Props.hemogenEfficiency;
+                        hemogen.Value += maxToTake * Props.hemogenEfficiency * BodySizeFactor(victim);
                     }
                 }
             }
+        }
+
+        public float BodySizeFactor(Pawn victim)
+        {
+            if (!Props.useRelativeBodySize) return 1;
+            return victim.BodySize / parent.pawn.BodySize;
         }
     }
 }

@@ -68,6 +68,8 @@ namespace EBSGFramework
                  postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
                  postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
+                postfix: new HarmonyMethod(patchType, nameof(TryGenerateNewPawnInternalPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -299,6 +301,59 @@ namespace EBSGFramework
                     }
             }
             __result = flag;
+        }
+
+        public static void TryGenerateNewPawnInternalPostfix(ref Pawn __result)
+        {
+            bool flagApparel = true; // Need for apparel check
+            bool flagWeapon = true; // Need for weapon check
+            if (__result.genes != null)
+            {
+                if (__result.genes.Xenotype != null && __result.genes.Xenotype.HasModExtension<EquipRestrictExtension>())
+                {
+                    EquipRestrictExtension extension = __result.genes.Xenotype.GetModExtension<EquipRestrictExtension>();
+                    if (extension.noEquipment)
+                    {
+                        if (__result.equipment != null) __result.equipment.DestroyAllEquipment();
+                        return;
+                    }
+
+                    if (extension.noApparel)
+                    {
+                        if (__result.apparel != null) __result.apparel.DestroyAll();
+                        flagApparel = false;
+                    }
+
+                    if (extension.noWeapons)
+                    {
+                        if (__result.equipment != null && __result.equipment.Primary != null) __result.equipment.DestroyEquipment(__result.equipment.Primary);
+                        flagWeapon = false;
+                    }
+                }
+
+                if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
+
+                if (!__result.genes.GenesListForReading.NullOrEmpty())
+                    foreach (Gene gene in __result.genes.GenesListForReading)
+                    {
+                        if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
+                        EquipRestrictExtension extension = gene.def.GetModExtension<EquipRestrictExtension>();
+                        if (extension != null)
+                        {
+                            if (flagApparel && extension.noApparel)
+                            {
+                                if (__result.apparel != null) __result.apparel.DestroyAll();
+                                flagApparel = false;
+                            }
+
+                            if (flagWeapon && extension.noWeapons)
+                            {
+                                if (__result.equipment != null && __result.equipment.Primary != null) __result.equipment.DestroyEquipment(__result.equipment.Primary);
+                                flagWeapon = false;
+                            }
+                        }
+                    }
+            }
         }
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, ref Pawn ___pawn)

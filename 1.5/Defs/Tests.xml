@@ -2,6 +2,8 @@
 <Defs>
     <!--Need to test something? All of these defs should be usable without dlc as a basic parent for testing purposes-->
     <AbilityDef Name="EBSG_TestAbilityBase" Abstract="True">
+        <label>test ability</label>
+        <description>This ability is testing the functionality of something, and if you see this description in a final product please notify the mod author.</description>
         <iconPath>Things/Mote/SpeechSymbols/Speech</iconPath>
         <category>Psychic</category>
         <cooldownTicksRange>60</cooldownTicksRange>
@@ -41,6 +43,24 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
+
+    <AbilityDef ParentName="EBSG_TestAbilityBase">
+        <defName>BombardmentTest</defName>
+        <verbProperties>
+            <targetParams>
+                <canTargetLocations>true</canTargetLocations>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetPlants>true</canTargetPlants>
+              </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="EBSGFramework.CompProperties_OrbitalStrike">
+                <centerMarker>EBSG_OrbitalCenter_White</centerMarker>
+            </li>
+        </comps>
+    </AbilityDef>
 </Defs>
 
 <!-- 

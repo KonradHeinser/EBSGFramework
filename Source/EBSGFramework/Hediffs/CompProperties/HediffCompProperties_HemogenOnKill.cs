@@ -31,6 +31,8 @@ namespace EBSGFramework
 
         public List<GeneDef> forbiddenTargetGenes;
 
+        public bool useRelativeBodySize; // Causes the body size of the target and the killer to impact how much can be gained
+
         public HediffCompProperties_HemogenOnKill()
         {
             compClass = typeof(HediffComp_HemogenOnKill);
