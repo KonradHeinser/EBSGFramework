@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using HarmonyLib;
 using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -70,6 +69,10 @@ namespace EBSGFramework
                  postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
                 postfix: new HarmonyMethod(patchType, nameof(TryGenerateNewPawnInternalPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
+                prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
+            harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
+                postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -502,6 +505,49 @@ namespace EBSGFramework
                         if (flagApparel && __result.apparel.WornApparel.NullOrEmpty()) flagApparel = false;
                         if (flagWeapon && __result.equipment.AllEquipmentListForReading.NullOrEmpty()) flagWeapon = false;
                     }
+            }
+        }
+
+        public static bool DrawGenePrefix(GeneDef geneDef, ref bool __result)
+        {
+            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+            if (recorder != null)
+            {
+                if (!recorder.hiddenGenes.NullOrEmpty() && recorder.hiddenGenes.Contains(geneDef))
+                {
+                    __result = false;
+                    return false;
+                }
+                if (!recorder.hiddenTemplates.NullOrEmpty())
+                    foreach (GeneTemplateDef template in recorder.hiddenTemplates)
+                        if (geneDef.defName.StartsWith(template.defName + "_", StringComparison.Ordinal))
+                        {
+                            __result = false;
+                            return false;
+                        }
+            }
+            return true;
+        }
+
+        public static void GeneConflictsWithPostfix(GeneDef other, GeneDef __instance, ref bool __result)
+        {
+            if (!__result)
+            {
+                if (__instance.HasModExtension<EBSGExtension>())
+                {
+                    EBSGExtension extension = __instance.GetModExtension<EBSGExtension>();
+                    if (!extension.conflictingGenes.NullOrEmpty() && extension.conflictingGenes.Contains(other))
+                    {
+                        __result = true;
+                        return;
+                    }
+                }
+                if (other.HasModExtension<EBSGExtension>())
+                {
+                    EBSGExtension extension = other.GetModExtension<EBSGExtension>();
+                    if (!extension.conflictingGenes.NullOrEmpty() && extension.conflictingGenes.Contains(__instance))
+                        __result = true;
+                }
             }
         }
 

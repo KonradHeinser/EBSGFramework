@@ -1,9 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_SeverityChangeWhenDamaged.cs">
     <Files>
-      <File FileName="Things/EquipRestrictExtension.cs" Line="22" Column="32" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="362" Column="67" />
-      <File FileName="EBSGUtilities.cs" Line="692" Column="22" />
+      <File FileName="EBSGExtension.cs" Line="27" Column="9" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="551" Column="14" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityChangeWhenDamaged.cs" Line="21" Column="51" />
+      <File FileName="Hediffs/Comps/HediffComp_SeverityChangeWhenDamaged.cs" Line="24" Column="78" />
+      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="295" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,9 +16,15 @@
               <Node name="GameComponents" expanded="True" />
               <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Things" expanded="True" />
-              <Node name="Thoughts" expanded="True" />
-              <Node name="EBSGUtilities.cs" selected="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True">
+                  <Node name="Explosive" expanded="True" />
+                  <Node name="HediffCompProperties_SeverityChangeWhenDamaged.cs" selected="True" />
+                </Node>
+                <Node name="Comps" expanded="True">
+                  <Node name="Explosive" expanded="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
         </State>

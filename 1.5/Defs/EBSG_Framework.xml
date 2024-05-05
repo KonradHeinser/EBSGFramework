@@ -156,5 +156,7 @@
         <label>EBSG recorder</label>
         <bloodfeederGenes />
         <geneEvents />
+        <hiddenGenes />
+        <hiddenTemplates />
     </EBSGFramework.EBSGRecorder>
 </Defs>

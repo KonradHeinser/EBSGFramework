@@ -30,6 +30,7 @@ namespace EBSGFramework
         public List<HediffsToParts> hediffsToApplyAtAges;
 
         public List<AbilityAndGeneLink> geneAbilities;
+        public List<GeneDef> conflictingGenes; // List of very specific genes to make it incompatible with
 
         public float newBaseValue = -1f;
         public int clotCheckInterval = 360; // Shouldn't be below 60, but I won't force it. This just determines how often it tries to heal, so a lower number means it's less likely that there will be a delay in clotting

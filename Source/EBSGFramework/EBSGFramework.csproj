@@ -306,6 +306,8 @@
         <Compile Include="Abilities\CompProperties\CompProperties_OrbitalStrike.cs" />
         <Compile Include="Things\CustomizeableOrbitalStrike.cs" />
         <Compile Include="EBSGDefOf.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangeWhenDamaged.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_SeverityChangeWhenDamaged.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
