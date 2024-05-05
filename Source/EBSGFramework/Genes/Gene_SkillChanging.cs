@@ -15,6 +15,7 @@ namespace EBSGFramework
 
         public override void PostAdd()
         {
+            if (!Active || Overridden) return;
             base.PostAdd();
             if (!def.HasModExtension<EBSGExtension>()) Log.Error(def + " is missing EBSGExtension");
             else

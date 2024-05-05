@@ -48,6 +48,7 @@ namespace EBSGFramework
 
         public override void PostAdd()
         {
+            if (!Active || Overridden) return;
             base.PostAdd();
             if (Extension != null)
             {
