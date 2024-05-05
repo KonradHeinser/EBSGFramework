@@ -560,13 +560,13 @@ namespace EBSGFramework
                         else explanation = "AbilityNoTargetGene".Translate();
                         return false;
                     }
-                    if (!Props.targetHasAnyOfGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfGenes(targetPawn, Props.targetHasAnyOfGenes))
+                    if (!Props.targetHasAnyOfGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfGenes(targetPawn, out var anyOfGene, Props.targetHasAnyOfGenes))
                     {
                         if (Props.targetHasAnyOfGenes.Count == 1) explanation = "AbilityNoTargetGeneOne".Translate(Props.targetHasAnyOfGenes[0].label);
                         else explanation = "AbilityNoTargetGene".Translate();
                         return false;
                     }
-                    if (!Props.targetHasNoneOfGenes.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfGenes(targetPawn, Props.targetHasNoneOfGenes))
+                    if (!Props.targetHasNoneOfGenes.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfGenes(targetPawn, out var noneOfGene, Props.targetHasNoneOfGenes))
                     {
                         if (Props.targetHasNoneOfGenes.Count == 1) explanation = "AbilityTargetGeneOne".Translate(Props.targetHasNoneOfGenes[0].label);
                         else explanation = "AbilityTargetGene".Translate();

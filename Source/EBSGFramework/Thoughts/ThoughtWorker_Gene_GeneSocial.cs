@@ -33,11 +33,11 @@ namespace EBSGFramework
                 {
                     if (extension.opinionOfAllOthers)
                     {
-                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, extension.nullifyingGenes)) return ThoughtState.Inactive;
+                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var nullifyingGene, extension.nullifyingGenes)) return ThoughtState.Inactive;
                         if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
                         if (!extension.checkedGenes.NullOrEmpty())
                         {
-                            if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, extension.checkedGenes)) return ThoughtState.ActiveAtStage(0);
+                            if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var gene, extension.checkedGenes)) return ThoughtState.ActiveAtStage(0);
                             return ThoughtState.Inactive;
                         }
                         return ThoughtState.ActiveAtStage(0);
@@ -55,7 +55,7 @@ namespace EBSGFramework
                     int num = 0;
                     if (extension.opinionOfAllOthers)
                     {
-                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, extension.nullifyingGenes)) return ThoughtState.Inactive;
+                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var gene, extension.nullifyingGenes)) return ThoughtState.Inactive;
                         if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
                     }
                     if (!extension.checkedGenes.NullOrEmpty())

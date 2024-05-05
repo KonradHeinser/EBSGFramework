@@ -1,6 +1,6 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -87,6 +87,80 @@ namespace EBSGFramework
                         else
                             EBSGUtilities.RemoveHediffsFromParts(pawn, null, hediffToParts);
             }
+            if (def.HasModExtension<EquipRestrictExtension>() && (pawn.equipment != null || pawn.apparel != null))
+            {
+                EquipRestrictExtension equipRestrict = def.GetModExtension<EquipRestrictExtension>();
+
+                if (equipRestrict.noEquipment)
+                {
+                    if (pawn.equipment != null)
+                        if (pawn.Position.IsValid)
+                            pawn.equipment.DropAllEquipment(pawn.Position);
+                        else // In theory this should never occur, but it's the final backup for if a pawn happens to somehow gain a gene without having a position
+                            pawn.equipment.DestroyAllEquipment();
+                    if (pawn.apparel != null) pawn.apparel.DropAllOrMoveAllToInventory();
+                }
+                else
+                {
+                    if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
+                    {
+                        if (pawn.apparel != null && !pawn.apparel.WornApparel.NullOrEmpty())
+                        {
+                            List<Apparel> apparels = new List<Apparel>(pawn.apparel.WornApparel);
+                            foreach (Apparel apparel in apparels)
+                                if (equipRestrict.forbiddenEquipments.Contains(apparel.def))
+                                    pawn.apparel.TryDrop(apparel);
+                        }
+                        if (pawn.equipment != null && !pawn.equipment.AllEquipmentListForReading.NullOrEmpty())
+                        {
+                            List<ThingWithComps> equipment = new List<ThingWithComps>(pawn.equipment.AllEquipmentListForReading);
+                            foreach (ThingWithComps thing in equipment)
+                                if (equipRestrict.forbiddenEquipments.Contains(thing.def))
+                                    if (pawn.Position.IsValid)
+                                        pawn.equipment.TryDropEquipment(thing, out var droppedEquip, pawn.Position);
+                                    else
+                                        pawn.equipment.DestroyEquipment(thing);
+                        }
+                    }
+
+
+                    if (pawn.apparel != null)
+                        if (equipRestrict.noApparel)
+                            pawn.apparel.DropAllOrMoveAllToInventory();
+                        else if ((!equipRestrict.limitedToApparels.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !pawn.apparel.WornApparel.NullOrEmpty())
+                        {
+                            List<Apparel> apparels = new List<Apparel>(pawn.apparel.WornApparel);
+                            foreach (Apparel apparel in apparels)
+                                if (!CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def))
+                                    pawn.apparel.TryDrop(apparel);
+                        }
+
+                    if (pawn.equipment != null)
+                        if (equipRestrict.noWeapons)
+                            if (pawn.Position.IsValid)
+                                pawn.equipment.DropAllEquipment(pawn.Position);
+                            else
+                                pawn.equipment.DestroyAllEquipment();
+                        else if ((!equipRestrict.limitedToWeapons.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !pawn.equipment.AllEquipmentListForReading.NullOrEmpty())
+                        {
+                            List<ThingWithComps> equipment = new List<ThingWithComps>(pawn.equipment.AllEquipmentListForReading);
+                            foreach (ThingWithComps thing in equipment)
+                                if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
+                                    if (pawn.Position.IsValid)
+                                        pawn.equipment.TryDropEquipment(thing, out var droppedEquip, pawn.Position);
+                                    else
+                                        pawn.equipment.DestroyEquipment(thing);
+                        }
+                }
+            }
+        }
+
+        // Things represents the temporary list, while equipment represents the universal one. thing is the item in question. False means it wasn't in either list
+        public bool CheckEquipLists(List<ThingDef> things, List<ThingDef> equipment, ThingDef thing)
+        {
+            if (!things.NullOrEmpty() && things.Contains(thing)) return true;
+            if (!equipment.NullOrEmpty() && equipment.Contains(thing)) return true;
+            return false;
         }
 
         public override void Tick()
@@ -193,7 +267,7 @@ namespace EBSGFramework
             foreach (AbilityAndGeneLink link in geneAbilities)
             {
                 if (link.abilities.NullOrEmpty()) continue;
-                if (EBSGUtilities.PawnHasAnyOfGenes(pawn, link.requireOneOfGenes) && (link.forbiddenGenes.NullOrEmpty() || !EBSGUtilities.PawnHasAnyOfGenes(pawn, link.forbiddenGenes)) && EBSGUtilities.PawnHasAllOfGenes(pawn, link.requiredGenes))
+                if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var anyOfGene, link.requireOneOfGenes) && (link.forbiddenGenes.NullOrEmpty() || !EBSGUtilities.PawnHasAnyOfGenes(pawn, out var noneOfGene, link.forbiddenGenes)) && EBSGUtilities.PawnHasAllOfGenes(pawn, link.requiredGenes))
                 {
                     foreach (AbilityDef ability in link.abilities) abilitiesToAdd.Add(ability);
                 }

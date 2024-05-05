@@ -403,9 +403,9 @@ namespace EBSGFramework
         {
             if (pawn == null || pawn.genes == null) return false;
 
-            if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, oneOfGenes)) return false;
+            if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, out var oneOfGene, oneOfGenes)) return false;
             if (!allOfGenes.NullOrEmpty() && !PawnHasAllOfGenes(pawn, allOfGenes)) return false;
-            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, noneOfGenes)) return false;
+            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, out var noneOfGene, noneOfGenes)) return false;
 
             return true;
         }
@@ -677,8 +677,9 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
-        public static bool PawnHasAnyOfGenes(Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool PawnHasAnyOfGenes(Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
+            firstMatch = null;
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
             if (pawn.genes == null) return false;
 
@@ -686,14 +687,24 @@ namespace EBSGFramework
             {
                 foreach (Gene gene in pawn.genes.GenesListForReading)
                 {
-                    if (geneDefs.Contains(gene.def)) return true;
+                    if (!gene.Active || gene.Overridden) continue;
+                    if (geneDefs.Contains(gene.def))
+                    {
+                        firstMatch = gene.def;
+                        return true;
+                    }
                 }
             }
             if (!genes.NullOrEmpty())
             {
                 foreach (Gene gene in pawn.genes.GenesListForReading)
                 {
-                    if (genes.Contains(gene)) return true;
+                    if (!gene.Active || gene.Overridden) continue;
+                    if (genes.Contains(gene))
+                    {
+                        firstMatch = gene.def;
+                        return true;
+                    }
                 }
             }
 

@@ -45,7 +45,7 @@ namespace EBSGFramework
                             }
                             if (flag) count++;
                         }
-                        else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, Props.genes)) count++;
+                        else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
                     }
                 }
             }
@@ -77,7 +77,7 @@ namespace EBSGFramework
                     }
                     if (flag) count++;
                 }
-                else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, Props.genes)) count++;
+                else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
             }
 
             return count;

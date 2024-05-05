@@ -1,7 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="356" Column="14" />
+      <File FileName="Things/EquipRestrictExtension.cs" Line="22" Column="32" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="602" Column="13" />
+      <File FileName="EBSGUtilities.cs" Line="673" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -9,16 +11,15 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="References" expanded="True" />
-              <Node name="Abilities" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
               </Node>
-              <Node name="Settings" expanded="True" />
-              <Node name="Stats" expanded="True" />
-              <Node name="Storytime" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
               <Node name="Things" expanded="True" />
               <Node name="Thoughts" expanded="True" />
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>

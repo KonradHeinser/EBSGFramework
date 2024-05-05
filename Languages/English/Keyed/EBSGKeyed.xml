@@ -147,6 +147,11 @@
     <EBSG_HediffRestrictedEquipment_One>Does not have the hediff {0}.</EBSG_HediffRestrictedEquipment_One>
     <EBSG_HediffRestrictedEquipment_None>Has the hediff {0}.</EBSG_HediffRestrictedEquipment_None>
 
+    <EBSG_NoEquipment>{0} prevents all equipment from being equipped.</EBSG_NoEquipment>
+    <EBSG_NoWeapon>{0} prevents all weapons from being equipped.</EBSG_NoWeapon>
+    <EBSG_OnlyRanged>{0} only permits ranged weapons.</EBSG_OnlyRanged>
+    <EBSG_OnlyMelee>{0} only permits melee weapons.</EBSG_OnlyMelee>
+    <EBSG_NoApparel>{0} prevents all apparel from being equipped.</EBSG_NoApparel>
     <EBSG_LimitedList>{0} only permits a specific set of equipment.</EBSG_LimitedList>
     <EBSG_ForbiddenList>{0} can't equip this.</EBSG_ForbiddenList>
 

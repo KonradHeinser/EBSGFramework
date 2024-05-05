@@ -31,6 +31,10 @@ namespace EBSGFramework
         public List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
         public List<GeneDef> dynamicResourceGenes = new List<GeneDef>();
         public List<GeneDef> hiddenWhenInactive = new List<GeneDef>();
+        public List<GeneDef> noEquipment = new List<GeneDef>();
+        public List<GeneDef> noApparel = new List<GeneDef>();
+        public List<GeneDef> noWeapon = new List<GeneDef>();
+        public List<GeneDef> equipRestricting = new List<GeneDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -83,6 +87,11 @@ namespace EBSGFramework
             }
 
             return needRechargerJob;
+        }
+
+        public bool NeedEquipRestrictGeneCheck()
+        {
+            return !(noEquipment.NullOrEmpty() && noWeapon.NullOrEmpty() && noApparel.NullOrEmpty() && equipRestricting.NullOrEmpty());
         }
 
         // Gene result caching
@@ -250,6 +259,10 @@ namespace EBSGFramework
             moodMultiplyingGenes = new List<GeneDef>();
             hiddenWhenInactive = new List<GeneDef>();
             dynamicResourceGenes = new List<GeneDef>();
+            noEquipment = new List<GeneDef>();
+            noApparel = new List<GeneDef>();
+            noWeapon = new List<GeneDef>();
+            equipRestricting = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -265,6 +278,19 @@ namespace EBSGFramework
                 }
                 if (gene.geneClass == typeof(ResourceGene))
                     dynamicResourceGenes.Add(gene);
+                if (gene.HasModExtension<EquipRestrictExtension>())
+                {
+                    EquipRestrictExtension equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
+
+                    if (equipRestrict.noEquipment || (equipRestrict.noWeapons && equipRestrict.noApparel))
+                        noEquipment.Add(gene);
+                    else if (equipRestrict.noApparel)
+                        noApparel.Add(gene);
+                    else if (equipRestrict.noWeapons)
+                        noWeapon.Add(gene);
+                    else
+                        equipRestricting.Add(gene);
+                }
             }
         }
 
