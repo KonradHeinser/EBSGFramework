@@ -46,6 +46,28 @@
 
     <AbilityDef ParentName="EBSG_TestAbilityBase">
         <defName>BombardmentTest</defName>
+        <label>bombardment</label>
+        <verbProperties>
+            <targetParams>
+                <canTargetLocations>true</canTargetLocations>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetPlants>true</canTargetPlants>
+              </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="EBSGFramework.CompProperties_OrbitalStrike">
+                <centerMarker>EBSG_OrbitalCenter_Red</centerMarker>
+                <fireChance>0</fireChance>
+                <damageFalloff>True</damageFalloff>
+            </li>
+        </comps>
+    </AbilityDef>
+
+    <AbilityDef ParentName="EBSG_TestAbilityBase">
+        <defName>Bombardment_Smoke</defName>
+        <label>bombardment (smoke)</label>
         <verbProperties>
             <targetParams>
                 <canTargetLocations>true</canTargetLocations>
@@ -58,6 +80,32 @@
         <comps>
             <li Class="EBSGFramework.CompProperties_OrbitalStrike">
                 <centerMarker>EBSG_OrbitalCenter_White</centerMarker>
+                <projectileTexPath>Things/Projectile/LauncherShot</projectileTexPath>
+                <extraGasType>Smoke</extraGasType> <!--This creates the smoke-->
+                <damageDef>Smoke</damageDef> <!--This changes explosion color and prevents damage-->
+                <fireChance>0</fireChance>
+            </li>
+        </comps>
+    </AbilityDef>
+
+    <AbilityDef ParentName="EBSG_TestAbilityBase">
+        <defName>Bombardment_FireStarter</defName>
+        <label>bombardment (firestarter)</label>
+        <verbProperties>
+            <targetParams>
+                <canTargetLocations>true</canTargetLocations>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetPlants>true</canTargetPlants>
+              </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="EBSGFramework.CompProperties_OrbitalStrike">
+                <centerMarker>EBSG_OrbitalCenter_Clear</centerMarker>
+                <projectileColor>(1,1,1,0)</projectileColor> <!--Removes the visual portion of the projectile-->
+                <damageAmount>1</damageAmount>
+                <fireChance>1</fireChance>
             </li>
         </comps>
     </AbilityDef>

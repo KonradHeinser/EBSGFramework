@@ -151,6 +151,18 @@
         </comps>
     </ThingDef>
 
+    <ThingDef ParentName="OrbitalStrikeBase">
+        <defName>EBSG_OrbitalCenter_Clear</defName> <!--It's the same as colorless, just uses a different defname that people may try to use-->
+        <label>orital strike ability center</label>
+        <thingClass>EBSGFramework.CustomizeableOrbitalStrike</thingClass>
+        <comps>
+            <li Class="CompProperties_OrbitalBeam">
+                <width>0.2</width>
+                <color>(1, 1, 1, 0)</color>
+            </li>
+        </comps>
+    </ThingDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

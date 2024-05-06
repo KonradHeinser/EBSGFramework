@@ -1,35 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_SeverityChangeWhenDamaged.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_OrbitalStrike.cs">
     <Files>
-      <File FileName="EBSGExtension.cs" Line="27" Column="9" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="551" Column="14" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SeverityChangeWhenDamaged.cs" Line="21" Column="51" />
-      <File FileName="Hediffs/Comps/HediffComp_SeverityChangeWhenDamaged.cs" Line="24" Column="78" />
-      <File FileName="Hediffs/Comps/HediffComp_MultipleLives.cs" Line="295" Column="42" />
+      <File FileName="Abilities/CompProperties/CompProperties_OrbitalStrike.cs" Line="9" Column="26" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_OrbitalStrike.cs" Line="100" Column="17" />
+      <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="103" Column="32" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs" Line="71" Column="17" />
+      <File FileName="Abilities/CompProperties/CompProperties_EBSGBlast.cs" Line="12" Column="21" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True">
-                  <Node name="Explosive" expanded="True" />
-                  <Node name="HediffCompProperties_SeverityChangeWhenDamaged.cs" selected="True" />
-                </Node>
-                <Node name="Comps" expanded="True">
-                  <Node name="Explosive" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

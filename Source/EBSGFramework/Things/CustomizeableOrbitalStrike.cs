@@ -14,15 +14,7 @@ namespace EBSGFramework
         {
             private int lifeTime;
 
-            private int maxLifeTime;
-
             public IntVec3 targetCell;
-
-            private const float StartZ = 60f;
-
-            private const float Scale = 2.5f;
-
-            private const float Angle = 180f;
 
             public int LifeTime => lifeTime;
 
@@ -33,7 +25,6 @@ namespace EBSGFramework
             public OrbitalProjectile(int lifeTime, IntVec3 targetCell)
             {
                 this.lifeTime = lifeTime;
-                maxLifeTime = lifeTime;
                 this.targetCell = targetCell;
             }
 
@@ -46,7 +37,7 @@ namespace EBSGFramework
             {
                 if (lifeTime > 0)
                 {
-                    Vector3 pos = targetCell.ToVector3() + Vector3.forward * Mathf.Lerp(60f, 0f, 1f - lifeTime / maxLifeTime);
+                    Vector3 pos = targetCell.ToVector3() + Vector3.forward * Mathf.Lerp(60, 0f, 1f - (float)lifeTime / 60f);
                     pos.z += 1.25f;
                     pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
                     Matrix4x4 matrix = Matrix4x4.TRS(pos, Quaternion.Euler(0f, 180f, 0f), new Vector3(2.5f, 1f, 2.5f));
@@ -57,7 +48,6 @@ namespace EBSGFramework
             public void ExposeData()
             {
                 Scribe_Values.Look(ref lifeTime, "lifeTime", 0);
-                Scribe_Values.Look(ref maxLifeTime, "maxLifeTime", 0);
                 Scribe_Values.Look(ref targetCell, "targetCell");
             }
         }
@@ -68,6 +58,38 @@ namespace EBSGFramework
 
         public SoundDef preImpactSound;
 
+        public int damageAmount = -1;
+
+        public float armorPenetration = -1f;
+
+        public SoundDef explosionSound;
+
+        public string explosionSoundDef;
+
+        public ThingDef postExplosionThing;
+
+        public string postExplosionThingDef;
+
+        public float postExplosionThingChance = 0f;
+
+        public int postExplosionSpawnThingCount = 1;
+
+        public ThingDef preExplosionThing;
+
+        public string preExplosionThingDef;
+
+        public float preExplosionThingChance = 0f;
+
+        public bool damageFalloff;
+
+        public int preExplosionSpawnThingCount = 1;
+
+        public ThingDef postExplosionThingWater;
+
+        public string postExplosionThingWaterDef;
+
+        public float screenShakeFactor = 0;
+
         public int randomFireRadius = 25;
 
         public int bombIntervalTicks = 18;
@@ -76,11 +98,15 @@ namespace EBSGFramework
 
         public int explosionCount = 30;
 
+        public int explosionsRemaining;
+
         public float fireChance = 1f;
 
         public DamageDef damage;
 
         public string damageDef;
+
+        public int extraGasType = 1;
 
         public string projectileTexPath = "Things/Projectile/Bullet_Big";
 
@@ -115,7 +141,8 @@ namespace EBSGFramework
 
         public override void StartStrike()
         {
-            duration = bombIntervalTicks * explosionCount;
+            duration = bombIntervalTicks * (explosionCount + 5); // To ensure the last few have a chance to land
+            explosionsRemaining = explosionCount;
             base.StartStrike();
         }
 
@@ -131,11 +158,8 @@ namespace EBSGFramework
                     StartStrike();
             }
             else
-            {
                 base.Tick();
-                if (Find.TickManager.TicksGame % 20 == 0 && TicksLeft > 0)
-                    StartRandomFire();
-            }
+
             EffectTick();
         }
 
@@ -147,11 +171,12 @@ namespace EBSGFramework
                 GetNextExplosionCell();
             }
             ticksToNextEffect--;
-            if (ticksToNextEffect <= 0 && TicksLeft >= bombIntervalTicks)
+            if (ticksToNextEffect <= 0 && TicksLeft >= bombIntervalTicks && explosionsRemaining > 0)
             {
                 if (preImpactSound != null)
                     preImpactSound.PlayOneShot(new TargetInfo(nextExplosionCell, Map));
                 projectiles.Add(new OrbitalProjectile(60, nextExplosionCell));
+                explosionsRemaining--;
                 ticksToNextEffect = bombIntervalTicks;
                 GetNextExplosionCell();
             }
@@ -176,12 +201,25 @@ namespace EBSGFramework
 
         private void TryDoExplosion(OrbitalProjectile proj)
         {
-            if (Intercepted(proj.targetCell)) return;
+            if (proj == null || Intercepted(proj.targetCell)) return;
 
-            if (damage == null)
+            if (damage == null) // Used just in case all the other catches somehow fail
                 damage = DamageDefOf.Bomb;
 
-            GenExplosion.DoExplosion(proj.targetCell, Map, explosionRadiusRange.RandomInRange, damage, instigator, -1, -1f, null, projectile: def, weapon: weaponDef);
+            if (extraGasType != 1)
+            {
+                GenExplosion.DoExplosion(proj.targetCell, Map, explosionRadiusRange.RandomInRange, damage, instigator, damageAmount, armorPenetration, explosionSound,
+                    null, null, null, postExplosionThing, postExplosionThingChance, postExplosionSpawnThingCount, (GasType)extraGasType, false, preExplosionThing,
+                    preExplosionThingChance, preExplosionSpawnThingCount, fireChance, damageFalloff, null, null, null, true, 1f, 0, true, postExplosionThingWater,
+                    screenShakeFactor);
+            }
+            else
+            {
+                GenExplosion.DoExplosion(proj.targetCell, Map, explosionRadiusRange.RandomInRange, damage, instigator, damageAmount, armorPenetration,
+                    explosionSound, null, null, null, postExplosionThing, postExplosionThingChance, postExplosionSpawnThingCount, null, false, preExplosionThing,
+                    preExplosionThingChance, preExplosionSpawnThingCount, fireChance, damageFalloff, null, null, null, true, 1f, 0, true, postExplosionThingWater,
+                    screenShakeFactor);
+            }
         }
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
@@ -194,31 +232,19 @@ namespace EBSGFramework
 
         private bool Intercepted(IntVec3 targetCell)
         {
+            if (!targetCell.IsValid || Map == null) return true;
             List<Thing> list = Map.listerThings.ThingsInGroup(ThingRequestGroup.ProjectileInterceptor).Where((Thing t) => t.HasComp<CompProjectileInterceptor>()).ToList();
 
             if (!list.NullOrEmpty())
                 foreach (Thing thing in list)
                 {
                     CompProjectileInterceptor comp = thing.TryGetComp<CompProjectileInterceptor>();
-                    if (comp.Active && comp.Props.interceptAirProjectiles && targetCell.InHorDistOf(thing.Position, comp.Props.radius) &&
+                    if (comp != null && comp.Active && comp.Props.interceptAirProjectiles && targetCell.InHorDistOf(thing.Position, comp.Props.radius) &&
                         (comp.Props.interceptNonHostileProjectiles || instigator.HostileTo(thing)))
                         return true;
                 }
 
             return false;
-        }
-
-        private void StartRandomFire()
-        {
-            if (!Rand.Chance(fireChance))
-                return;
-
-            IntVec3 intVec = (from x in GenRadial.RadialCellsAround(Position, randomFireRadius, true)
-                              where x.InBounds(Map)
-                              select x).RandomElementByWeight((IntVec3 x) => DistanceChanceFactor.Evaluate(x.DistanceTo(Position)));
-
-            if (Intercepted(intVec)) return;
-            FireUtility.TryStartFireIn(intVec, Map, Rand.Range(0.1f, 0.925f), instigator);
         }
 
         private void GetNextExplosionCell()
@@ -232,17 +258,32 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref impactAreaRadius, "impactAreaRadius", 15f);
+            Scribe_Values.Look(ref explosionsRemaining, "explosionsRemaining", 0);
             Scribe_Values.Look(ref explosionRadiusRange, "explosionRadiusRange", new FloatRange(6f, 8f));
             Scribe_Values.Look(ref randomFireRadius, "randomFireRadius", 25);
             Scribe_Values.Look(ref bombIntervalTicks, "bombIntervalTicks", 18);
             Scribe_Values.Look(ref warmupTicks, "warmupTicks", 0);
             Scribe_Values.Look(ref ticksToNextEffect, "ticksToNextEffect", 0);
-            Scribe_Values.Look(ref nextExplosionCell, "nextExplosionCell");
-            Scribe_Values.Look(ref fireChance, "fireChance", 1f);
-            Scribe_Values.Look(ref damageDef, "damageDef", "Bomb");
             Scribe_Values.Look(ref projectileTexPath, "projectileTexPath", "Things/Projectile/Bullet_Big");
             Scribe_Values.Look(ref projectileColor, "projectileColor", Color.white);
             Scribe_Collections.Look(ref projectiles, "projectiles", LookMode.Deep);
+
+            Scribe_Values.Look(ref damageAmount, "damageAmount", -1);
+            Scribe_Values.Look(ref nextExplosionCell, "nextExplosionCell");
+            Scribe_Values.Look(ref fireChance, "fireChance", 1f);
+            Scribe_Values.Look(ref extraGasType, "extraGasType", 1);
+            Scribe_Values.Look(ref damageDef, "damageDef", "Bomb");
+            Scribe_Values.Look(ref armorPenetration, "armorPenetration", -1f);
+            Scribe_Values.Look(ref explosionSoundDef, "explosionSoundDef", null);
+            Scribe_Values.Look(ref postExplosionThingDef, "postExplosionThingDef", null);
+            Scribe_Values.Look(ref postExplosionThingChance, "postExplosionThingChance", 0f);
+            Scribe_Values.Look(ref postExplosionSpawnThingCount, "postExplosionSpawnThingCount", 1);
+            Scribe_Values.Look(ref preExplosionThingDef, "preExplosionThingDef", null);
+            Scribe_Values.Look(ref preExplosionThingChance, "preExplosionThingChance", 0f);
+            Scribe_Values.Look(ref preExplosionSpawnThingCount, "preExplosionSpawnThingCount", 1);
+            Scribe_Values.Look(ref damageFalloff, "damageFalloff", false);
+            Scribe_Values.Look(ref postExplosionThingWaterDef, "postExplosionThingWaterDef", null);
+            Scribe_Values.Look(ref screenShakeFactor, "screenShakeFactor", 0f);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -252,7 +293,22 @@ namespace EBSGFramework
                     projectiles = new List<OrbitalProjectile>();
             }
 
-            damage = DefDatabase<DamageDef>.GetNamed(damageDef);
+            if (DefDatabase<DamageDef>.GetNamedSilentFail(damageDef) != null)
+                damage = DefDatabase<DamageDef>.GetNamed(damageDef);
+            else
+                damage = DamageDefOf.Bomb;
+
+            if (explosionSoundDef != null && DefDatabase<SoundDef>.GetNamedSilentFail(explosionSoundDef) != null)
+                explosionSound = DefDatabase<SoundDef>.GetNamed(explosionSoundDef);
+
+            if (postExplosionThingDef != null && DefDatabase<ThingDef>.GetNamedSilentFail(postExplosionThingDef) != null)
+                postExplosionThing = DefDatabase<ThingDef>.GetNamed(postExplosionThingDef);
+
+            if (preExplosionThingDef != null && DefDatabase<ThingDef>.GetNamedSilentFail(preExplosionThingDef) != null)
+                preExplosionThing = DefDatabase<ThingDef>.GetNamed(preExplosionThingDef);
+
+            if (postExplosionThingWaterDef != null && DefDatabase<ThingDef>.GetNamedSilentFail(postExplosionThingWaterDef) != null)
+                postExplosionThingWater = DefDatabase<ThingDef>.GetNamed(postExplosionThingWaterDef);
         }
     }
 }
