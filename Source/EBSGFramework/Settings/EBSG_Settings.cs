@@ -48,11 +48,12 @@ namespace EBSGFramework
         private static bool showEBSGBleedOptions = true;
         private static bool showEBSGPsychicOptions = true;
         private static bool showEAGOptions = true;
-        private static bool showCustomizableOptions = true;
+        //private static bool showCustomizableOptions = true;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
         public static bool hideInactiveSkinGenes = false;
         public static bool hideInactiveHairGenes = false;
+        public static bool defaultToRecipeIcon = true;
 
         public static bool psychicInsulationBondOpinion = true;
         public static bool psychicInsulationBondMood = true;
@@ -117,6 +118,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
+            Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
             //Scribe_Collections.Look(ref asexualDaysSettings, "EBSG_asexualDaysSettings", LookMode.Value, LookMode.Value);
         }
@@ -149,7 +151,12 @@ namespace EBSGFramework
 
             // Find out how much room is needed
             int numberOfOptions = 1;
-            if (showMainOptions) numberOfOptions += 3;
+            if (showMainOptions)
+            {
+                if (ModsConfig.BiotechActive)
+                    numberOfOptions += 3;
+                numberOfOptions += 1;
+            }
 
             if (EBSGAllInOneActive)
             {
@@ -185,7 +192,7 @@ namespace EBSGFramework
                     }
                 }
             }
-
+            /*
             if (NeedCustomizationSection)
             {
                 numberOfOptions += 1;
@@ -196,7 +203,7 @@ namespace EBSGFramework
                         numberOfOptions += AsexualHediffs.Count;
                 }
             }
-
+            */
             contentRect.height = numberOfOptions * 35; // To avoid weird white space, height is based off of option count of present mods
 
             Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
@@ -216,6 +223,7 @@ namespace EBSGFramework
                     optionsMenu.CheckboxLabeled("EBSG_HideHairGenes".Translate(), ref hideInactiveHairGenes, "EBSG_HideHairGenesDescription".Translate());
                     optionsMenu.Gap(10f);
                 }
+                optionsMenu.CheckboxLabeled("EBSG_DefaultToRecipeIcon".Translate(), ref defaultToRecipeIcon, "EBSG_DefaultToRecipeIconDescription".Translate());
             }
 
             optionsMenu.Gap(10f);

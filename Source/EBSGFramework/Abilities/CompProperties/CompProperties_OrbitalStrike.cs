@@ -27,16 +27,17 @@ namespace EBSGFramework
         public FloatRange explosionRadius = new FloatRange(6f, 8f);
         public int damageAmount = -1;
         public float armorPenetration = -1f;
+        public bool damageFalloff = false;
+        public float fireChance = 1f;
+        public Gases extraGasType = Gases.None; // Converted to int in the comp and to gas type in the orbital strike thing
+
         public SoundDef explosionSound = null;
         public ThingDef postExplosionThing = null; // This is usually what you want
         public float postExplosionThingChance = 0f;
         public int postExplosionSpawnThingCount = 1;
-        public Gases extraGasType = Gases.None; // Converted to int in the comp and to gas type in the orbital strike thing
         public ThingDef preExplosionThing = null;
         public float preExplosionThingChance = 0f;
-        public bool damageFalloff = false;
         public int preExplosionSpawnThingCount = 1;
-        public float fireChance = 1f;
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
 

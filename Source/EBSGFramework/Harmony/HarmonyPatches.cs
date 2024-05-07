@@ -109,8 +109,22 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
                 postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
 
+            // Vanilla code bug fixes
+            harmony.Patch(AccessTools.Method(typeof(Widgets), nameof(Widgets.DefIcon)),
+                prefix: new HarmonyMethod(patchType, nameof(DefIconPrefix)));
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+
+        // Bug fixes
+        public static bool DefIconPrefix(Rect rect, Def def, float scale = 1f, Material material = null)
+        {
+            if (EBSG_Settings.defaultToRecipeIcon && def is RecipeDef recipe && recipe.UIIconThing != null && recipe.UIIcon != null)
+            {
+                Widgets.DrawTextureFitted(rect, recipe.UIIcon, scale, material);
+                return false;
+            }
+            return true;
         }
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)

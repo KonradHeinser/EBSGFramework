@@ -1,12 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Storytime/StoryTellerComp_StorytellerAffinity.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_OrbitalStrike.cs" Line="27" Column="68" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_OrbitalStrike.cs" Line="15" Column="13" />
-      <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="187" Column="67" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_EBSGBlast.cs" Line="71" Column="17" />
-      <File FileName="Abilities/CompProperties/CompProperties_EBSGBlast.cs" Line="12" Column="21" />
-      <File FileName="Storytime/StoryTellerComp_StorytellerAffinity.cs" Line="64" Column="17" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="110" Column="10" />
+      <File FileName="Settings/PatchOperationSetting.cs" Line="44" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="129" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
