@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
     <Files>
-      <File FileName="Settings/EBSG_Settings.cs" Line="110" Column="10" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="227" Column="38" />
       <File FileName="Settings/PatchOperationSetting.cs" Line="44" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="129" Column="9" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="129" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

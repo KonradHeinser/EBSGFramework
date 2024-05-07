@@ -224,6 +224,7 @@ namespace EBSGFramework
                     optionsMenu.Gap(10f);
                 }
                 optionsMenu.CheckboxLabeled("EBSG_DefaultToRecipeIcon".Translate(), ref defaultToRecipeIcon, "EBSG_DefaultToRecipeIconDescription".Translate());
+                optionsMenu.Gap(10f);
             }
 
             optionsMenu.Gap(10f);
