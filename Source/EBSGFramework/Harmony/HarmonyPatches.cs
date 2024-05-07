@@ -117,12 +117,15 @@ namespace EBSGFramework
         }
 
         // Bug fixes
-        public static bool DefIconPrefix(Rect rect, Def def, float scale = 1f, Material material = null)
+        public static bool DefIconPrefix(Rect rect, ref Def def, float scale = 1f, Material material = null, int? graphicIndexOverride = null)
         {
-            if (EBSG_Settings.defaultToRecipeIcon && def is RecipeDef recipe && recipe.UIIconThing != null && recipe.UIIcon != null)
+            if (EBSG_Settings.defaultToRecipeIcon && !(def is BuildableDef))
             {
-                Widgets.DrawTextureFitted(rect, recipe.UIIcon, scale, material);
-                return false;
+                if (def is RecipeDef recipe && recipe.UIIconThing != null && recipe.UIIcon != null)
+                {
+                    Widgets.DrawTextureFitted(rect, recipe.UIIcon, scale, material);
+                    return false;
+                }
             }
             return true;
         }

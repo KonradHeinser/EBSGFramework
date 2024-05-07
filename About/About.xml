@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Expanded Biotech Style Genes Framework</name>
+  <name>EBSG Framework</name>
   <author>alite</author>
   <packageId>EBSG.Framework</packageId>
   <modIconPath IgnoreIfNoMatchingField="True">EBSG/BSGIcon</modIconPath>
