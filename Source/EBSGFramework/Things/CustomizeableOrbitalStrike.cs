@@ -171,7 +171,7 @@ namespace EBSGFramework
                 GetNextExplosionCell();
             }
             ticksToNextEffect--;
-            if (ticksToNextEffect <= 0 && TicksLeft >= bombIntervalTicks && explosionsRemaining > 0)
+            if (ticksToNextEffect <= 0 && TicksLeft >= bombIntervalTicks && explosionsRemaining > 0) // Uses two checks on how many bombs left to make just to be safe
             {
                 if (preImpactSound != null)
                     preImpactSound.PlayOneShot(new TargetInfo(nextExplosionCell, Map));

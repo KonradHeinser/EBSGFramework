@@ -83,7 +83,6 @@ namespace EBSGFramework
                         if (pawn == parent.pawn) continue;
 
                         maxMass -= pawn.GetStatValue(StatDefOf.Mass);
-                        if (throwMessages) Log.Message(maxMass + " / " + parent.pawn.GetStatValue(StatDefOf.CarryingCapacity));
                         if (maxMass < 0) return false;
                     }
                     foreach (Thing thing in caravan.AllThings)
