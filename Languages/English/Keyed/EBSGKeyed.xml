@@ -85,6 +85,8 @@
     <AbilityNoTargetGene>Target is missing a required gene for this ability to work.</AbilityNoTargetGene>
     <AbilityTargetGeneOne>Target has the {0} gene, preventing this ability from working.</AbilityTargetGeneOne>
     <AbilityTargetGene>Target has a gene  preventing this ability from working.</AbilityTargetGene>
+    <AbilityTargetXenotype>Target is a {0}.</AbilityTargetXenotype>
+    <AbilityTargetXenotypeOne>Target is not a {0}.</AbilityTargetXenotypeOne>
 
     <AbilityNoTargetHediffOne>Target must have the {0} hediff for this ability to work.</AbilityNoTargetHediffOne>
     <AbilityNoTargetHediff>Target is missing a required hediff for this ability to work.</AbilityNoTargetHediff>

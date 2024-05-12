@@ -554,6 +554,20 @@ namespace EBSGFramework
                 }
                 else
                 {
+                    if (targetPawn.genes.Xenotype != null)
+                    {
+                        if (!Props.targetIsNoneOfXenotype.NullOrEmpty() && Props.targetIsNoneOfXenotype.Contains(targetPawn.genes.Xenotype))
+                        {
+                            explanation = "AbilityTargetXenotype".Translate(targetPawn.genes.Xenotype.label);
+                            return false;
+                        }
+                        if (!Props.targetIsOneOfXenotype.NullOrEmpty() && !Props.targetIsOneOfXenotype.Contains(targetPawn.genes.Xenotype))
+                        {
+                            if (Props.targetIsOneOfXenotype.Count == 1) explanation = "AbilityTargetXenotypeOne".Translate(Props.targetIsOneOfXenotype[0].label);
+                            else explanation = "AbilityTargetXenotype".Translate(targetPawn.genes.Xenotype.label);
+                            return false;
+                        }
+                    }
                     if (!Props.targetHasAllOfGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAllOfGenes(targetPawn, Props.targetHasAllOfGenes))
                     {
                         if (Props.targetHasAllOfGenes.Count == 1 && Props.targetHasAnyOfGenes.NullOrEmpty()) explanation = "AbilityNoTargetGeneOne".Translate(Props.targetHasAllOfGenes[0].label);

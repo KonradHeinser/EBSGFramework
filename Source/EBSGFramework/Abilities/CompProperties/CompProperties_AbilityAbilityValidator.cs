@@ -13,6 +13,8 @@ namespace EBSGFramework
         public List<GeneDef> targetHasAnyOfGenes;
         public List<GeneDef> targetHasAllOfGenes;
         public List<GeneDef> targetHasNoneOfGenes;
+        public List<XenotypeDef> targetIsOneOfXenotype;
+        public List<XenotypeDef> targetIsNoneOfXenotype;
 
         // Target Hediffs
         public List<HediffDef> targetHasAnyOfHediffs;

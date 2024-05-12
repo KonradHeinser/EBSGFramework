@@ -1,12 +1,31 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs">
     <Files>
-      <File FileName="Settings/EBSG_Settings.cs" Line="227" Column="38" />
-      <File FileName="Settings/PatchOperationSetting.cs" Line="44" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="130" Column="25" />
-      <File FileName="Hediffs/Comps/HediffComp_HemogenOnKill.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_HemogenOnKill.cs" Line="34" Column="47" />
+      <File FileName="Needs/Thought_Situational_BasicCurveNeedMood.cs" Line="31" Column="1" />
+      <File FileName="Needs/ThoughtWorker_BasicCurveNeedMood.cs" Line="1" Column="1" />
+      <File FileName="Needs/Need_Murderous.cs" Line="7" Column="32" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="688" Column="31" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="17" Column="57" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="547" Column="22" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_AbilityValidator.cs" selected="True" />
+                </Node>
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="Needs" expanded="True" />
+              <Node name="Thoughts" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
