@@ -689,6 +689,16 @@ namespace EBSGFramework
                         return false;
                     }
                 }
+                if (pawn.BodySize < Props.minBodySize)
+                {
+                    explanation = "TargetTooSmall".Translate();
+                    return false;
+                }
+                if (pawn.BodySize > Props.maxBodySize)
+                {
+                    explanation = "TargetTooLarge".Translate();
+                    return false;
+                }
             }
             else
             {

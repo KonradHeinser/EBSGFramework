@@ -26,6 +26,8 @@ namespace EBSGFramework
         public List<SkillCheck> targetSkillLimiters;
         public List<StatCheck> targetStatLimiters;
         public List<NeedLevel> targetNeedLevels;
+        public float minBodySize = 0f;
+        public float maxBodySize = 999f;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;

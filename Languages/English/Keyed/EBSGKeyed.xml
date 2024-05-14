@@ -119,6 +119,8 @@
     <AbilityTargetLowCheck>Target's {0} is too low.</AbilityTargetLowCheck>
     <AbilityTargetHighCheck>Target's {0} is too high.</AbilityTargetHighCheck>
     <AbilityTargetNeedsCheck>Target's needs are not in the correct ranges.</AbilityTargetNeedsCheck>
+    <TargetTooLarge>Too large</TargetTooLarge>
+    <TargetTooSmall>Too small</TargetTooSmall>
     
     <AbilityCasterNoneCheck>Caster can't use {0}.</AbilityCasterNoneCheck>
     <AbilityCasterLowCheck>Caster's {0} is too low.</AbilityCasterLowCheck>
