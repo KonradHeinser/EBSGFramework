@@ -18,6 +18,7 @@ namespace EBSGFramework
         public List<GeneticMultiplier> geneticMultipliers;
         public float universalMoodFactor = 1;
 
+        public HediffDef alternativePregnancyHediff;
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;
         public FloatRange expectedAges;

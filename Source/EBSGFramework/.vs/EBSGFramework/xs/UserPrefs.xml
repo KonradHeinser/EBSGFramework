@@ -1,23 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_GiveHediffsToNonAlliesInRange.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Needs/Need_GenericNeed.cs">
     <Files>
-      <File FileName="Needs/Thought_Situational_BasicCurveNeedMood.cs" Line="31" Column="1" />
-      <File FileName="Needs/ThoughtWorker_BasicCurveNeedMood.cs" Line="1" Column="1" />
-      <File FileName="Needs/Need_Murderous.cs" Line="7" Column="32" />
+      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsToNonAlliesInRange.cs" Line="7" Column="2" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="3" Column="19" />
+      <File FileName="EBSGExtension.cs" Line="26" Column="46" />
+      <File FileName="EBSGUtilities.cs" Line="663" Column="39" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="688" Column="31" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="17" Column="56" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="690" Column="22" />
-      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsToNonAlliesInRange.cs" Line="1" Column="1" />
+      <File FileName="HiveMind/HiveMindGene.cs" Line="105" Column="1" />
+      <File FileName="Needs/Need_GenericNeed.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_GiveHediffsToNonAlliesInRange.cs" selected="True" />
-                </Node>
+              <Node name="HiveMind" expanded="True" />
+              <Node name="Needs" expanded="True">
+                <Node name="Need_GenericNeed.cs" selected="True" />
               </Node>
             </Node>
           </Node>
