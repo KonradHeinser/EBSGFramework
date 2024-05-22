@@ -47,7 +47,7 @@ namespace EBSGFramework
         private bool needRechargerJob = false;
         private bool checkedRechargerJob = false;
 
-        // Hot Caching
+        // "Hot" Caching
 
         public List<TerrainDef> ViableGatheringSpots(ThingDef thing)
         {

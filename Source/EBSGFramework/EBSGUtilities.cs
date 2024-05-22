@@ -892,17 +892,28 @@ namespace EBSGFramework
 
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
+
+            if (!pawn.Spawned || pawn.Map == null)
+            {
+                waterCount = 0;
+                return false; // If either of these situations are true, we really need to get out of here
+            }
+
+            return CheckNearbyWater(pawn.Position, pawn.Map, maxNeededForTrue, out waterCount, maxDistance);
+        }
+
+        public static bool CheckNearbyWater(IntVec3 pos, Map map, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
+        {
             waterCount = 0;
-            if (!pawn.Spawned || pawn.Map == null) return false; // If either of these situations are true, we really need to get out of here
 
             if (maxDistance <= 0) // If max distance is just the pawn's tile, only need to check the pawn's tile
             {
-                if (pawn.Position.GetTerrain(pawn.Map).IsWater) waterCount++;
+                if (pos.GetTerrain(map).IsWater) waterCount++;
                 if (maxNeededForTrue <= waterCount) return true;
                 return false;
             }
 
-            List<IntVec3> waterTiles = pawn.Map.AllCells.Where((IntVec3 p) => p.DistanceTo(pawn.Position) <= maxDistance && p.GetTerrain(pawn.Map).IsWater).ToList();
+            List<IntVec3> waterTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= maxDistance && p.GetTerrain(map).IsWater).ToList();
             waterCount = waterTiles.Count;
             return maxNeededForTrue <= waterCount;
         }

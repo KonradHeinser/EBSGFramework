@@ -13,6 +13,7 @@
     <AbilityCasterInventory>The caster's inventory is missing required items.</AbilityCasterInventory>
     <AbilityTargetTooFar>Target is out of range.</AbilityTargetTooFar>
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
+    <PlaceWorkerWater>Requires more water around it.</PlaceWorkerWater>
 
     <EBSG_NeedLow>Low Need(s)</EBSG_NeedLow>
     <EBSG_NeedLowDescription>Low need(s): \n {0} \n\n At least one pawn has a dangerously low need. The method to fix this depends on the specific need in question.</EBSG_NeedLowDescription>

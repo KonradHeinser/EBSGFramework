@@ -67,7 +67,6 @@
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="EBSGExtension.cs" />
-        <Compile Include="CollectExtensionData.cs" />
         <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
         <Compile Include="Hediffs\HediffsAtSeverities.cs" />
         <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
@@ -331,7 +330,7 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalValidTargetForAbility.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalCurrentRainRate.cs" />
-        <Compile Include="Things\PlaceWorker_NearbyTerrain.cs" />
+        <Compile Include="Things\PlaceWorker_GathererTerrain.cs" />
         <Compile Include="Things\CompProperties_GathererSpot.cs" />
         <Compile Include="Things\GatherOption.cs" />
         <Compile Include="Things\CompGathererSpot.cs" />
