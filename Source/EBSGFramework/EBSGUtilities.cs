@@ -7,6 +7,7 @@ using RimWorld.Planet;
 using System.Linq;
 using RimWorld;
 using System;
+using Verse.AI;
 
 namespace EBSGFramework
 {
@@ -488,61 +489,6 @@ namespace EBSGFramework
             }
 
             return true;
-        }
-
-        public static bool CastingAbility(Pawn pawn)
-        {
-            if (pawn.stances.curStance is Stance_Busy stance_Busy)
-            {
-                if (stance_Busy.verb.verbProps.verbClass == typeof(Verb_CastAbility)) return true;
-            }
-            return false;
-        }
-
-        public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false)
-        {
-            if (pawn.stances.curStance is Stance_Busy stance_Busy && stance_Busy.verb.CurrentTarget.Thing != null)
-            {
-                Thing thing = stance_Busy.verb.CurrentTarget.Thing;
-                if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
-                if (onlyHostiles && !thing.HostileTo(pawn)) return null;
-                if (onlyInFaction)
-                {
-                    if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
-                    return null;
-                }
-                return thing;
-            }
-            if (pawn.IsAttacking() && pawn.CurJob != null)
-            {
-                Thing thing = pawn.CurJob.targetA.Thing;
-                if (thing != null)
-                {
-                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
-                    if (onlyHostiles && !thing.HostileTo(pawn)) return null;
-                    if (onlyInFaction)
-                    {
-                        if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
-                        return null;
-                    }
-                    return thing;
-                }
-            }
-            if (autoSearch)
-            {
-                List<Pawn> pawns = pawn.Map.mapPawns.AllPawns;
-                pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
-                foreach (Pawn otherPawn in pawns)
-                {
-                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, otherPawn.Position, pawn.Map)) continue;
-                    if (otherPawn.Dead || otherPawn.Downed) continue;
-                    if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
-                    if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
-                    if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
-                    if (!onlyHostiles && !onlyInFaction) return otherPawn;
-                }
-            }
-            return null;
         }
 
         public static void FadingHediffs(Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
@@ -1102,6 +1048,117 @@ namespace EBSGFramework
             {
                 Find.Selector.Select(pawn, false, false);
             }
+        }
+
+        // EBSGAI Utilities
+
+        public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false)
+        {
+            if (pawn.stances.curStance is Stance_Busy stance_Busy && stance_Busy.verb.CurrentTarget.Thing != null)
+            {
+                Thing thing = stance_Busy.verb.CurrentTarget.Thing;
+                if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
+                if (onlyHostiles && !thing.HostileTo(pawn)) return null;
+                if (onlyInFaction)
+                {
+                    if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
+                    return null;
+                }
+                return thing;
+            }
+            if (pawn.IsAttacking() && pawn.CurJob != null)
+            {
+                Thing thing = pawn.CurJob.targetA.Thing;
+                if (thing != null)
+                {
+                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
+                    if (onlyHostiles && !thing.HostileTo(pawn)) return null;
+                    if (onlyInFaction)
+                    {
+                        if (thing is Pawn otherPawn && otherPawn.Faction == pawn.Faction) return thing;
+                        return null;
+                    }
+                    return thing;
+                }
+            }
+            if (autoSearch)
+            {
+                List<Pawn> pawns = pawn.Map.mapPawns.AllPawns;
+                pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
+                foreach (Pawn otherPawn in pawns)
+                {
+                    if (LoSRequired && !GenSight.LineOfSight(pawn.Position, otherPawn.Position, pawn.Map)) continue;
+                    if (otherPawn.Dead || otherPawn.Downed) continue;
+                    if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
+                    if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
+                    if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
+                    if (!onlyHostiles && !onlyInFaction) return otherPawn;
+                }
+            }
+            return null;
+        }
+
+        public static bool NeedToMove(Ability ability, Pawn pawn, Pawn targetPawn = null)
+        {
+            if (ability.verb.verbProps.rangeStat != null) // If there's a range stat and the target is at risk for becoming too far away, move closer
+            {
+                if (targetPawn.pather.Moving)
+                {
+                    if (targetPawn.Position.DistanceTo(pawn.Position) > pawn.GetStatValue(ability.verb.verbProps.rangeStat))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (targetPawn.Position.DistanceTo(pawn.Position) > Math.Ceiling(pawn.GetStatValue(ability.verb.verbProps.rangeStat) / 2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else // If there's no range stat, just try to get in normal range
+            {
+                if (targetPawn.pather.Moving)
+                {
+                    if (targetPawn.Position.DistanceTo(pawn.Position) > ability.verb.verbProps.range)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (targetPawn.Position.DistanceTo(pawn.Position) > Math.Ceiling(ability.verb.verbProps.range / 2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool CastingAbility(Pawn pawn)
+        {
+            if (pawn.stances.curStance is Stance_Busy stance_Busy)
+            {
+                if (stance_Busy.verb.verbProps.verbClass == typeof(Verb_CastAbility)) return true;
+            }
+            return false;
+        }
+
+        public static Job GoToTarget(LocalTargetInfo target)
+        {
+            Job job = JobMaker.MakeJob(JobDefOf.Goto, target);
+            job.checkOverrideOnExpire = true;
+            job.expiryInterval = 500;
+            job.collideWithPawns = true;
+            return job;
+        }
+
+        public static bool AutoAttackingColonist(Pawn pawn)
+        {
+            if (pawn.playerSettings != null && pawn.playerSettings.UsesConfigurableHostilityResponse && pawn.playerSettings.hostilityResponse == HostilityResponseMode.Attack) return true;
+            return false;
         }
     }
 }

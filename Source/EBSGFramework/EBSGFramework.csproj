@@ -308,6 +308,34 @@
         <Compile Include="EBSGDefOf.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityChangeWhenDamaged.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_SeverityChangeWhenDamaged.cs" />
+        <Compile Include="EBSGAI\JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalHighResourceLevels.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalNeedTending.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalUsingRangedWeapon.cs" />
+        <Compile Include="EBSGAI\JobGiver_AIResurrectHumanoid.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalAboveMood.cs" />
+        <Compile Include="EBSGAI\JobGiver_AICastBerserkAbility.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalConcerningBleeding.cs" />
+        <Compile Include="EBSGAI\JobGiver_AITeleportEscapeEnemies.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalTargetIsMechanoid.cs" />
+        <Compile Include="EBSGAI\JobGiver_AICastAbilityGoToTarget.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalHasAnyOfHediff.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalColonistShouldFlee.cs" />
+        <Compile Include="EBSGAI\JobGiver_AICastHealingAbility.cs" />
+        <Compile Include="EBSGAI\ThinkNode_RecordPassage.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalAnyActiveEnemyInMap.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalPawnDraftedAndFree.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalTooManyNearbyThreats.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalTendableAlly.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyEnemyTarget.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalValidTargetForAbility.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalCurrentRainRate.cs" />
+        <Compile Include="Things\PlaceWorker_NearbyTerrain.cs" />
+        <Compile Include="Things\CompProperties_GathererSpot.cs" />
+        <Compile Include="Things\GatherOption.cs" />
+        <Compile Include="Things\CompGathererSpot.cs" />
+        <Compile Include="Generic List Classes\TerrainDistance.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

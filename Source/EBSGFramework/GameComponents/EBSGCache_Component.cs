@@ -10,6 +10,11 @@ namespace EBSGFramework
         public int tick = 0;
         public int storyTellerAffinity;
 
+        // Hot Caches (caches only made mid-game when called)
+
+        private Dictionary<string, List<TerrainDef>> viableGatheringSpots;
+        private Dictionary<string, List<BiomeDef>> viableGatheringBiomes;
+
         // Stat caches
         public List<StatDef> humanoidSlayingStats = new List<StatDef>();
         public List<StatDef> dryadSlayingStats = new List<StatDef>();
@@ -41,6 +46,114 @@ namespace EBSGFramework
 
         private bool needRechargerJob = false;
         private bool checkedRechargerJob = false;
+
+        // Hot Caching
+
+        public List<TerrainDef> ViableGatheringSpots(ThingDef thing)
+        {
+            if (viableGatheringSpots.NullOrEmpty()) viableGatheringSpots = new Dictionary<string, List<TerrainDef>>();
+            else if (viableGatheringSpots.ContainsKey(thing.defName)) return viableGatheringSpots[thing.defName];
+
+            if (thing == null || thing.comps.NullOrEmpty() || !thing.HasComp(typeof(CompGatherSpot))) return null;
+
+            CompProperties_GathererSpot gatherProps = thing.GetCompProperties<CompProperties_GathererSpot>();
+
+            List<TerrainDef> cachedViableTerrain = new List<TerrainDef>();
+            if (gatherProps.options.NullOrEmpty())
+            {
+                viableGatheringSpots.Add(thing.defName, cachedViableTerrain);
+                return cachedViableTerrain;
+            }
+
+            bool forbiddenOnly = true;
+
+            foreach (GatherOption option in gatherProps.options)
+            {
+                if (!option.viableTerrain.NullOrEmpty())
+                {
+                    forbiddenOnly = false;
+                    foreach (TerrainDef terrain in option.viableTerrain)
+                        if (!cachedViableTerrain.Contains(terrain)) cachedViableTerrain.Add(terrain);
+                }
+                if (forbiddenOnly && option.forbiddenTerrain.NullOrEmpty()) // If at least one of them has no forbidden terrains, then the forbidden check code is just a performance waster, and it will be assumed that all terrain works
+                    forbiddenOnly = false;
+            }
+
+            if (cachedViableTerrain.NullOrEmpty())
+                cachedViableTerrain = new List<TerrainDef>(DefDatabase<TerrainDef>.AllDefs);
+
+            if (forbiddenOnly)
+            {
+                // This is checking for any terrain that all of them forbid by comparing the list of the first one with every other list
+                foreach (TerrainDef terrain in gatherProps.options[0].forbiddenTerrain)
+                {
+                    bool flag = true; // If this remains true then it is a terrain forbidden by all options
+                    foreach (GatherOption option in gatherProps.options)
+                        if (!option.forbiddenTerrain.Contains(terrain))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    if (flag) cachedViableTerrain.Remove(terrain);
+                }
+            }
+
+            viableGatheringSpots.Add(thing.defName, cachedViableTerrain);
+            return cachedViableTerrain;
+        }
+
+        public List<BiomeDef> ViableGatheringBiomes(ThingDef thing)
+        {
+            if (viableGatheringSpots.NullOrEmpty()) viableGatheringBiomes = new Dictionary<string, List<BiomeDef>>();
+            else if (viableGatheringSpots.ContainsKey(thing.defName)) return viableGatheringBiomes[thing.defName];
+
+            if (thing == null || thing.comps.NullOrEmpty() || !thing.HasComp(typeof(CompGatherSpot))) return null;
+
+            CompProperties_GathererSpot gatherProps = thing.GetCompProperties<CompProperties_GathererSpot>();
+
+            List<BiomeDef> cachedViableBiome = new List<BiomeDef>();
+            if (gatherProps.options.NullOrEmpty())
+            {
+                viableGatheringBiomes.Add(thing.defName, cachedViableBiome);
+                return cachedViableBiome;
+            }
+
+            bool forbiddenOnly = true;
+
+            foreach (GatherOption option in gatherProps.options)
+            {
+                if (!option.validBiomes.NullOrEmpty())
+                {
+                    forbiddenOnly = false;
+                    foreach (BiomeDef biome in option.validBiomes)
+                        if (!cachedViableBiome.Contains(biome)) cachedViableBiome.Add(biome);
+                }
+                if (forbiddenOnly && option.forbiddenBiomes.NullOrEmpty()) // If at least one of them has no forbidden biomes, then the forbidden check code is just a performance waster, and it will be assumed that all biome works
+                    forbiddenOnly = false;
+            }
+
+            if (cachedViableBiome.NullOrEmpty())
+                cachedViableBiome = new List<BiomeDef>(DefDatabase<BiomeDef>.AllDefs);
+
+            if (forbiddenOnly)
+            {
+                // This is checking for any biome that all of them forbid by comparing the list of the first one with every other list
+                foreach (BiomeDef biome in gatherProps.options[0].forbiddenBiomes)
+                {
+                    bool flag = true; // If this remains true then it is a biome forbidden by all options
+                    foreach (GatherOption option in gatherProps.options)
+                        if (!option.forbiddenBiomes.Contains(biome))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    if (flag) cachedViableBiome.Remove(biome);
+                }
+            }
+
+            viableGatheringBiomes.Add(thing.defName, cachedViableBiome);
+            return cachedViableBiome;
+        }
 
         // Other
 

@@ -1,22 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Needs/Need_GenericNeed.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/PlaceWorker_NearbyTerrain.cs">
     <Files>
-      <File FileName="Hediffs/Comps/HediffComp_GiveHediffsToNonAlliesInRange.cs" Line="7" Column="2" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="3" Column="19" />
-      <File FileName="EBSGExtension.cs" Line="26" Column="46" />
-      <File FileName="EBSGUtilities.cs" Line="663" Column="39" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="688" Column="31" />
-      <File FileName="HiveMind/HiveMindGene.cs" Line="105" Column="1" />
-      <File FileName="Needs/Need_GenericNeed.cs" Line="1" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="33" Column="9" />
+      <File FileName="EBSGUtilities.cs" Line="1148" Column="9" />
+      <File FileName="Things/PlaceWorker_NearbyTerrain.cs" Line="14" Column="1" />
+      <File FileName="Things/CompProperties_GathererSpot.cs" Line="23" Column="59" />
+      <File FileName="Things/GatherOption.cs" Line="23" Column="47" />
+      <File FileName="Things/CompGathererSpot.cs" Line="10" Column="1" />
+      <File FileName="Generic List Classes/TerrainDistance.cs" Line="12" Column="1" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="50" Column="23" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="HiveMind" expanded="True" />
-              <Node name="Needs" expanded="True">
-                <Node name="Need_GenericNeed.cs" selected="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="PlaceWorker_NearbyTerrain.cs" selected="True" />
               </Node>
             </Node>
           </Node>
