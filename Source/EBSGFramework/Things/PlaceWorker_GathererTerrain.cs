@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-using Verse;
+﻿using Verse;
 
 namespace EBSGFramework
 {
@@ -8,14 +6,31 @@ namespace EBSGFramework
     {
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
         {
-            if (!checkingDef.blueprintDef.comps.NullOrEmpty() && checkingDef.blueprintDef.HasComp(typeof(CompGathererSpot)))
+            try
             {
-                CompProperties_GathererSpot gatherComp = checkingDef.blueprintDef.GetCompProperties<CompProperties_GathererSpot>();
-                if (gatherComp.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(loc, map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
+                ThingDef thingy = checkingDef as ThingDef;
+                if (!thingy.comps.NullOrEmpty() && thingy.HasComp(typeof(CompGathererSpot)))
                 {
-                    return new AcceptanceReport("PlaceWorkerWater".Translate());
+                    CompProperties_GathererSpot gatherComp = thingy.GetCompProperties<CompProperties_GathererSpot>();
+                    if (gatherComp.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(loc, map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
+                    {
+                        return new AcceptanceReport("PlaceWorkerMoreWater".Translate());
+                    }
+                    if (!EBSGUtilities.CheckNearbyTerrain(loc, map, gatherComp.nearbyTerrainsNeeded, out TerrainDef missingTerrain, out bool negativeTerrain, gatherComp.onlyOneTerrainTypeNeeded))
+                    {
+                        if (negativeTerrain)
+                            return new AcceptanceReport("PlaceWorkerAvoidTerrain".Translate(missingTerrain.label));
+                        else if (missingTerrain != null)
+                            return new AcceptanceReport("PlaceWorkerMoreTerrain".Translate(missingTerrain.label));
+                        return new AcceptanceReport("PlaceWorkerTerrain".Translate());
+                    }
                 }
             }
+            catch
+            {
+                Log.Error("The EBSG Framework tried to turn " + checkingDef.defName + " into a ThingDef for the GathererTerrain place worker, but instead ended up in the fetal position. Please let the EBSG developer know.");
+            }
+
             return base.AllowsPlacing(checkingDef, loc, rot, map, thingToIgnore, thing);
         }
     }

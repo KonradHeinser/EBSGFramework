@@ -12,7 +12,7 @@ namespace EBSGFramework
 
         public int nearbyWaterTilesNeeded = 0; // Makes a requirement that some type of water be nearby when above 0. Used for requiring the thing be near a lake, ocean, etc
 
-        public float maxWaterDistance = 1; // Sets the search radius
+        public float maxWaterDistance = 1.9f; // Sets the search radius
 
         public bool allowOverForLastItem = false; // Allows the last item to ignore maxAllowance
 
@@ -21,6 +21,8 @@ namespace EBSGFramework
         public bool displayColors = true;
 
         public List<TerrainDistance> nearbyTerrainsNeeded;
+
+        public bool onlyOneTerrainTypeNeeded = false;
 
         public CompProperties_GathererSpot()
         {

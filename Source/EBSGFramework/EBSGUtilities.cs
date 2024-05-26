@@ -1,13 +1,13 @@
-﻿using Verse;
-using UnityEngine;
-using Verse.AI.Group;
-using Verse.Sound;
+﻿using System;
 using System.Collections.Generic;
-using RimWorld.Planet;
 using System.Linq;
 using RimWorld;
-using System;
+using RimWorld.Planet;
+using UnityEngine;
+using Verse;
 using Verse.AI;
+using Verse.AI.Group;
+using Verse.Sound;
 
 namespace EBSGFramework
 {
@@ -916,6 +916,104 @@ namespace EBSGFramework
             List<IntVec3> waterTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= maxDistance && p.GetTerrain(map).IsWater).ToList();
             waterCount = waterTiles.Count;
             return maxNeededForTrue <= waterCount;
+        }
+
+        public static bool CheckNearbyTerrain(Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain, bool onlyOneTerrainNeeded = false)
+        {
+            if (!pawn.Spawned || pawn.Map == null)
+            {
+                missingTerrain = null;
+                negativeTerrain = false;
+                return false; // If either of these situations are true, we really need to get out of here
+            }
+
+            return CheckNearbyTerrain(pawn.Position, pawn.Map, terrains, out missingTerrain, out negativeTerrain, onlyOneTerrainNeeded);
+        }
+
+        public static bool CheckNearbyTerrain(IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain, bool onlyOneTerrainNeeded = false)
+        {
+            negativeTerrain = false;
+            missingTerrain = null;
+
+            if (terrains.NullOrEmpty())
+            {
+                missingTerrain = null;
+                return true;
+            }
+
+            bool flag = onlyOneTerrainNeeded;
+
+            foreach (TerrainDistance terrain in terrains)
+            {
+                if (terrain.count <= 0)
+                {
+                    if (pos.GetTerrain(map) == terrain.terrain)
+                    {
+                        negativeTerrain = true;
+                        missingTerrain = terrain.terrain;
+                        return false;
+                    }
+                    List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
+                    if (!terrainTiles.NullOrEmpty())
+                    {
+                        negativeTerrain = true;
+                        missingTerrain = terrain.terrain;
+                        return false;
+                    }
+                }
+                else if (flag || !onlyOneTerrainNeeded)
+                {
+                    // Checks the center tile first to try to avoid having to deal with all map tiles
+                    if (terrain.count == 1 && pos.GetTerrain(map) == terrain.terrain)
+                    {
+                        if (flag) flag = false;
+                        continue;
+                    }
+                    if (terrain.maxDistance == 0)
+                    {
+                        if (pos.GetTerrain(map) != terrain.terrain)
+                        {
+                            missingTerrain = terrain.terrain;
+                            if (!onlyOneTerrainNeeded)
+                            {
+                                return false;
+                            }
+                            continue;
+                        }
+                        if (flag)
+                        {
+                            flag = false;
+                            continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
+                        }
+                    }
+                    else
+                    {
+                        List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
+                        if (terrainTiles.NullOrEmpty() || terrainTiles.Count < terrain.count)
+                        {
+                            missingTerrain = terrain.terrain;
+                            if (!onlyOneTerrainNeeded)
+                            {
+                                return false;
+                            }
+                            continue;
+                        }
+                        if (flag)
+                        {
+                            flag = false;
+                            continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
+                        }
+                    }
+                }
+            }
+
+            if (!flag)
+            {
+                missingTerrain = null;
+                return true;
+            }
+
+            return false;
         }
 
         public static float StatFactorOrOne(Pawn pawn, StatDef statDef = null)

@@ -43,6 +43,111 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>GoldPanningSpot</defName>
+        <label>gold panning spot</label>
+        <description>Designates a spot for panning gold. The spot in question needs to be a location adjacent to shallow moving water, and must be placed on or next to soil/sand that can be used to easily embed tools with minimal risk of losing them.</description>
+        <graphicData>
+            <texPath>Things/Building/Production/CraftingSpot</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <altitudeLayer>FloorEmplacement</altitudeLayer>
+        <statBases>
+            <WorkToBuild>0</WorkToBuild>
+        </statBases>
+        <rotatable>false</rotatable>
+        <scatterableOnMapGen>false</scatterableOnMapGen>
+        <useHitPoints>False</useHitPoints>
+        <designationCategory>Production</designationCategory>
+        <passability>Standable</passability>
+        <placeWorkers>
+            <li>EBSGFramework.PlaceWorker_GathererTerrain</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CompProperties_Forbiddable" />
+            <li Class="EBSGFramework.CompProperties_GathererSpot">
+                <nearbyWaterTilesNeeded>2</nearbyWaterTilesNeeded>
+                <onlyOneTerrainTypeNeeded>True</onlyOneTerrainTypeNeeded>
+                <nearbyTerrainsNeeded>
+                    <li> <!--Not being near an ocean is always a requirement, and meeting this has no influece on the soil condition-->
+                        <terrain>WaterOceanShallow</terrain>
+                        <count>0</count>
+                        <maxDistance>5</maxDistance>
+                    </li>
+                    <li>
+                        <terrain>Soil</terrain>
+                        <count>1</count>
+                        <maxDistance>0.9</maxDistance>
+                    </li>
+                    <li>
+                        <terrain>SoilRich</terrain>
+                        <count>1</count>
+                        <maxDistance>0.9</maxDistance>
+                    </li>
+                    <li>
+                        <terrain>Sand</terrain>
+                        <count>1</count>
+                        <maxDistance>0.9</maxDistance>
+                    </li>
+                </nearbyTerrainsNeeded>
+            </li>
+        </comps>
+        <building>
+            <sowTag>SupportPlantsOnly</sowTag>
+            <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+            <ai_chillDestination>false</ai_chillDestination>
+            <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+        </building>
+        <designationHotKey>Misc11</designationHotKey>
+    </ThingDef>
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>BeachForagingSpot</defName>
+        <label>beach foraging spot</label>
+        <description>Designates a spot for foraging along the beachside, finding random materials as the pawn goes along.</description>
+        <graphicData>
+            <texPath>Things/Building/Production/CraftingSpot</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <altitudeLayer>FloorEmplacement</altitudeLayer>
+        <statBases>
+            <WorkToBuild>0</WorkToBuild>
+        </statBases>
+        <rotatable>false</rotatable>
+        <scatterableOnMapGen>false</scatterableOnMapGen>
+        <useHitPoints>False</useHitPoints>
+        <designationCategory>Production</designationCategory>
+        <passability>Standable</passability>
+        <placeWorkers>
+            <li>EBSGFramework.PlaceWorker_GathererTerrain</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CompProperties_Forbiddable" />
+            <li Class="EBSGFramework.CompProperties_GathererSpot">
+                <nearbyTerrainsNeeded>
+                    <li> <!--Needs to be really close to the ocean-->
+                        <terrain>WaterOceanShallow</terrain>
+                        <count>3</count>
+                        <maxDistance>5</maxDistance>
+                    </li>
+                    <li>
+                        <terrain>Sand</terrain>
+                        <count>1</count>
+                        <maxDistance>0</maxDistance>
+                    </li>
+                </nearbyTerrainsNeeded>
+            </li>
+        </comps>
+        <building>
+            <sowTag>SupportPlantsOnly</sowTag>
+            <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+            <ai_chillDestination>false</ai_chillDestination>
+            <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+        </building>
+        <designationHotKey>Misc11</designationHotKey>
+    </ThingDef>
+
 </Defs>
 
 <!-- 
