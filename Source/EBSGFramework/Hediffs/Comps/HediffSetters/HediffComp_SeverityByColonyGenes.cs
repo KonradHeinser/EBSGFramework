@@ -31,21 +31,17 @@ namespace EBSGFramework
                 {
                     if (pawn.genes != null)
                     {
-                        if (Props.gene != null && pawn.genes.HasGene(Props.gene)) count++;
-                        else if (Props.mustHaveAllGenes && !Props.genes.NullOrEmpty())
+                        if (Props.gene != null)
                         {
-                            bool flag = false;
-                            foreach (GeneDef gene in Props.genes)
-                            {
-                                if (!pawn.genes.HasGene(gene))
-                                {
-                                    flag = false;
-                                    break;
-                                }
-                            }
-                            if (flag) count++;
+                            if (EBSGUtilities.HasRelatedGene(pawn, Props.gene))
+                                count++;
                         }
-                        else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
+                        if (!Props.genes.NullOrEmpty())
+                            if (Props.mustHaveAllGenes)
+                            {
+                                if (EBSGUtilities.PawnHasAllOfGenes(pawn, Props.genes)) count++;
+                            }
+                            else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
                     }
                 }
             }
@@ -63,21 +59,18 @@ namespace EBSGFramework
             foreach (Pawn pawn in pawns)
             {
                 if (pawn.genes == null) continue;
-                if (Props.gene != null && pawn.genes.HasGene(Props.gene)) count++;
-                else if (Props.mustHaveAllGenes && !Props.genes.NullOrEmpty())
+
+                if (Props.gene != null)
                 {
-                    bool flag = false;
-                    foreach (GeneDef gene in Props.genes)
-                    {
-                        if (!pawn.genes.HasGene(gene))
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) count++;
+                    if (EBSGUtilities.HasRelatedGene(pawn, Props.gene))
+                        count++;
                 }
-                else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
+                if (!Props.genes.NullOrEmpty())
+                    if (Props.mustHaveAllGenes)
+                    {
+                        if (EBSGUtilities.PawnHasAllOfGenes(pawn, Props.genes)) count++;
+                    }
+                    else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
             }
 
             return count;

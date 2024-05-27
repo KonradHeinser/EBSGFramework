@@ -11,7 +11,7 @@ namespace EBSGFramework
         private GeneDef gene = null;
         protected override bool Satisfied(Pawn pawn)
         {
-            if (gene == null || !pawn.genes.HasGene(gene)) return false;
+            if (!EBSGUtilities.HasRelatedGene(pawn, gene)) return false;
 
             if (pawn.genes.GetGene(gene) is Gene_Resource resourceGene)
             {

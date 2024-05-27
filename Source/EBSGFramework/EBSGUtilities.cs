@@ -606,7 +606,7 @@ namespace EBSGFramework
 
             foreach (GeneEffect geneEffect in geneEffects)
             {
-                if (pawn.genes.HasGene(geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
+                if (HasRelatedGene(pawn, geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
                 {
                     float offset = geneEffect.offset;
                     if (geneEffect.statFactor != null) offset *= pawn.GetStatValue(geneEffect.statFactor);
@@ -626,7 +626,7 @@ namespace EBSGFramework
         public static bool PawnHasAnyOfGenes(Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
             firstMatch = null;
-            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
+            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return false;
             if (pawn.genes == null) return false;
 
             if (!geneDefs.NullOrEmpty())
@@ -666,14 +666,14 @@ namespace EBSGFramework
             {
                 foreach (GeneDef gene in geneDefs)
                 {
-                    if (!pawn.genes.HasGene(gene)) return false;
+                    if (!HasRelatedGene(pawn, gene)) return false;
                 }
             }
             if (!genes.NullOrEmpty())
             {
                 foreach (Gene gene in genes)
                 {
-                    if (!pawn.genes.HasGene(gene.def)) return false;
+                    if (!HasRelatedGene(pawn, gene.def)) return false;
                 }
             }
 
@@ -726,7 +726,7 @@ namespace EBSGFramework
 
             if (gene != null)
             {
-                if (!pawn.genes.HasGene(gene))
+                if (!HasRelatedGene(pawn, gene))
                 {
                     pawn.genes.AddGene(gene, xenogene);
                     addedGenes.Add(gene);
@@ -737,7 +737,7 @@ namespace EBSGFramework
             {
                 foreach (GeneDef geneDef in genes)
                 {
-                    if (!pawn.genes.HasGene(geneDef))
+                    if (!HasRelatedGene(pawn, gene))
                     {
                         pawn.genes.AddGene(geneDef, xenogene);
                         addedGenes.Add(geneDef);
@@ -1040,18 +1040,17 @@ namespace EBSGFramework
 
         public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
         {
-            if (relatedGene == null) return true;
-            if (!ModsConfig.BiotechActive || pawn.genes == null) return false;
-            return pawn.genes.HasGene(relatedGene);
+            if (!ModsConfig.BiotechActive || pawn.genes == null || relatedGene == null) return false;
+            return pawn.genes.HasActiveGene(relatedGene);
         }
 
         public static bool HasAnyOfRelatedGene(Pawn pawn, List<GeneDef> relatedGenes)
         {
-            if (!ModsConfig.BiotechActive || pawn.genes == null) return false;
+            if (!ModsConfig.BiotechActive || pawn == null || relatedGenes.NullOrEmpty() || pawn.genes == null) return false;
 
             foreach (GeneDef gene in relatedGenes)
             {
-                if (pawn.genes.HasGene(gene)) return true;
+                if (pawn.genes.HasActiveGene(gene)) return true;
             }
             return false;
         }

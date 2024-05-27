@@ -14,9 +14,13 @@ namespace EBSGFramework
 
         public float allowanceUsed = 1;
 
-        public List<TerrainDef> viableTerrain;
+        public List<TerrainDef> viableTerrain; // This is specifically for the terrain it is on
 
         public List<TerrainDef> forbiddenTerrain;
+
+        public List<TerrainDistance> nearbyTerrainsNeeded;
+
+        public bool onlyOneTerrainTypeNeeded = false;
 
         public List<BiomeDef> validBiomes;
 

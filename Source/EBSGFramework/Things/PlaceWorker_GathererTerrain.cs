@@ -20,7 +20,7 @@ namespace EBSGFramework
                     {
                         if (negativeTerrain)
                             return new AcceptanceReport("PlaceWorkerAvoidTerrain".Translate(missingTerrain.label));
-                        else if (missingTerrain != null)
+                        if (missingTerrain != null)
                             return new AcceptanceReport("PlaceWorkerMoreTerrain".Translate(missingTerrain.label));
                         return new AcceptanceReport("PlaceWorkerTerrain".Translate());
                     }

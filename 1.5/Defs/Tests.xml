@@ -125,18 +125,45 @@
         <comps>
             <li Class="CompProperties_Forbiddable" />
             <li Class="EBSGFramework.CompProperties_GathererSpot">
+                <nearbyWaterTilesNeeded>3</nearbyWaterTilesNeeded>
+                <maxWaterDistance>5</maxWaterDistance>
+                <onlyOneTerrainTypeNeeded>True</onlyOneTerrainTypeNeeded> <!--Must be true when multiple options are available-->
                 <nearbyTerrainsNeeded>
-                    <li> <!--Needs to be really close to the ocean-->
-                        <terrain>WaterOceanShallow</terrain>
-                        <count>3</count>
-                        <maxDistance>5</maxDistance>
-                    </li>
-                    <li>
+                    <li> <!--Designates type of terrain it needs to be in. Ideally it's the same as what the options are searching for.-->
                         <terrain>Sand</terrain>
                         <count>1</count>
                         <maxDistance>0</maxDistance>
                     </li>
+                    <li>
+                        <terrain>SoftSand</terrain>
+                        <count>1</count>
+                        <maxDistance>0</maxDistance>
+                    </li>
                 </nearbyTerrainsNeeded>
+                <options>
+                    <li>
+                        <amountOnFind>0~2</amountOnFind><!--How many to generate, with values zero and below being duds. In this case, there's only a 66% chance to find an item when this is picked-->
+                        <thing>WoodLog</thing>
+                        <nearbyTerrainsNeeded>
+                            <li> <!--Only findable near the ocean-->
+                                <terrain>WaterOceanShallow</terrain>
+                                <count>1</count>
+                                <maxDistance>10</maxDistance>
+                            </li>
+                        </nearbyTerrainsNeeded>
+                    </li>
+                    <li>
+                        <amountOnFind>1</amountOnFind> <!--Unlike the driftwood, this always succeeds-->
+                        <thing>Steel</thing>
+                        <nearbyTerrainsNeeded>
+                            <li> <!--Only findable near ponds and rivers-->
+                                <terrain>WaterShallow</terrain>
+                                <count>1</count>
+                                <maxDistance>3</maxDistance>
+                            </li>
+                        </nearbyTerrainsNeeded>
+                    </li>
+                </options>
             </li>
         </comps>
         <building>

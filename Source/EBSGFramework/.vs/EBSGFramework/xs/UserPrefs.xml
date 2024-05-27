@@ -1,16 +1,37 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="33" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="924" Column="14" />
-      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="38" Column="1" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="33" Column="1" />
-      <File FileName="Things/GatherOption.cs" Line="18" Column="1" />
-      <File FileName="Things/CompGathererSpot.cs" Line="10" Column="1" />
-      <File FileName="Generic List Classes/TerrainDistance.cs" Line="9" Column="33" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="78" Column="185" />
-      <File FileName="Thoughts/ThoughtWorker_NearWater.cs" Line="21" Column="39" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="225" Column="22" />
+      <File FileName="Things/GatherOption.cs" Line="17" Column="96" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="54" Column="14" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="CompAbilityEffect" expanded="True" />
+                <Node name="GetResourceAI" expanded="True">
+                  <Node name="Workgiver_AdministerResource.cs" selected="True" />
+                </Node>
+              </Node>
+              <Node name="EBSGAI" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffSetters" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Things" expanded="True" />
+              <Node name="Thoughts" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

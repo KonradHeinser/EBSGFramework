@@ -24,7 +24,7 @@ namespace EBSGFramework
                         {
                             foreach (GeneDef geneDef in extension.overridingGenes)
                             {
-                                if (pawn.genes.HasGene(geneDef))
+                                if (EBSGUtilities.HasRelatedGene(pawn, geneDef))
                                 {
                                     extension = geneDef.GetModExtension<FertilityByGenderAgeExtension>();
                                     break;

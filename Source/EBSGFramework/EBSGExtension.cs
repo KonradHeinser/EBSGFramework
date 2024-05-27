@@ -155,5 +155,7 @@ namespace EBSGFramework
         public List<GeneEffect> resourceOffsetsPerHour; // For DRG in the pawn need charger
         public bool negativeNeedOffsetsAreNotCosts = false;
         public bool negativeResourceOffsetsAreNotCosts = false;
+
+        public ThingDef relatedThing;
     }
 }

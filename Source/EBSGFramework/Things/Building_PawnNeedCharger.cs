@@ -187,9 +187,9 @@ namespace EBSGFramework
 
             if (!Extension.resourceOffsetsPerHour.NullOrEmpty() && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
                 foreach (GeneEffect geneEffect in Extension.resourceOffsetsPerHour)
-                    if (geneEffect.offset > 0 && pawn.genes.HasGene(geneEffect.gene))
+                    if (geneEffect.offset > 0 && EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
                         return true;
-                    else if (!Extension.negativeResourceOffsetsAreNotCosts && geneEffect.offset < 0 && !pawn.genes.HasGene(geneEffect.gene))
+                    else if (!Extension.negativeResourceOffsetsAreNotCosts && geneEffect.offset < 0 && !EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
                         return false; // If the offset is negative, then treat it as a required cost for use
 
             return false;
@@ -276,7 +276,7 @@ namespace EBSGFramework
             if (!Extension.resourceOffsetsPerHour.NullOrEmpty() && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
                 foreach (GeneEffect geneEffect in Extension.resourceOffsetsPerHour)
                 {
-                    if (!pawn.genes.HasGene(geneEffect.gene))
+                    if (!EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
                     {
                         if (geneEffect.offset > 0) continue;
                         if (!Extension.negativeResourceOffsetsAreNotCosts) return true;

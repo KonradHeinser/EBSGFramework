@@ -34,8 +34,8 @@ namespace EBSGFramework
             Pawn pawn = parent.pawn;
             ResourceGene giverGene;
             ResourceGene receiverGene;
-            if (Props.giver == null) Log.Error("A casted ability is missing a designated giver, meaning it can't alter the resource levels");
-            else if (Props.receiver == null) Log.Error("A casted ability is missing a designated receiver, meaning it can't alter the resource levels");
+            if (Props.giver == null) Log.Error(parent.def.defName + " is missing a designated giver, meaning it can't alter the resource levels");
+            else if (Props.receiver == null) Log.Error(parent.def.defName + " is missing a designated receiver, meaning it can't alter the resource levels");
             else
             {
                 giverGene = (ResourceGene)pawn.genes.GetGene(Props.giver);
@@ -47,12 +47,12 @@ namespace EBSGFramework
 
         public override bool GizmoDisabled(out string reason)
         {
-            if (!parent.pawn.genes.HasGene(Props.giver))
+            if (!EBSGUtilities.HasRelatedGene(parent.pawn, Props.giver))
             {
                 reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.giver.LabelCap);
                 return true;
             }
-            if (!parent.pawn.genes.HasGene(Props.receiver))
+            if (!EBSGUtilities.HasRelatedGene(parent.pawn, Props.receiver))
             {
                 reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.receiver.LabelCap);
                 return true;

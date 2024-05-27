@@ -654,7 +654,7 @@ namespace EBSGFramework
 
                 if (!extension.geneticMultipliers.NullOrEmpty())
                     foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
-                        if (___pawn.genes.HasGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, out var gene, geneticMultiplier.nullifyingGenes))
+                        if (EBSGUtilities.HasRelatedGene(___pawn, geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, out var gene, geneticMultiplier.nullifyingGenes))
                         {
                             __result *= geneticMultiplier.multiplier;
                             ensureReverse |= geneticMultiplier.multiplier < 0;
