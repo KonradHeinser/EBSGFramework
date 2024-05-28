@@ -169,9 +169,9 @@ namespace EBSGFramework
         }
 
         // Left just in case I add this in the future
-        public static AcceptanceReport CanFeedOnPrisoner(Pawn bloodfeeder, Pawn prisoner)
+        public static AcceptanceReport CanFeedOnPrisoner(Pawn bloodfeeder, Pawn prisoner, float bloodlossAmount = 0.49999f)
         {
-            if (prisoner.WouldDieFromAdditionalBloodLoss(0.4499f))
+            if (prisoner.WouldDieFromAdditionalBloodLoss(bloodlossAmount))
                 return "CannotFeedOnWouldKill".Translate(prisoner.Named("PAWN"));
 
             if (!prisoner.IsPrisonerOfColony || !prisoner.guest.PrisonerIsSecure || !prisoner.guest.IsInteractionEnabled(PrisonerInteractionModeDefOf.Bloodfeed) || prisoner.IsForbidden(bloodfeeder) || !bloodfeeder.CanReserveAndReach(prisoner, PathEndMode.OnCell, bloodfeeder.NormalMaxDanger()) || prisoner.InAggroMentalState)

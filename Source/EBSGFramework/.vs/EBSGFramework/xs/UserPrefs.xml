@@ -4,6 +4,7 @@
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="225" Column="22" />
       <File FileName="Things/GatherOption.cs" Line="17" Column="96" />
       <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="54" Column="14" />
+      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="22" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
