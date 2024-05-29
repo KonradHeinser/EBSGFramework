@@ -1,33 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/WorkGiver_Gather.cs">
     <Files>
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="225" Column="22" />
       <File FileName="Things/GatherOption.cs" Line="17" Column="96" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/Workgiver_AdministerResource.cs" Line="54" Column="14" />
-      <File FileName="DynamicResourceGenes/GetResourceAI/JobGiver_GetResourcePack.cs" Line="22" Column="34" />
+      <File FileName="Things/CompProperties_GathererSpot.cs" Line="20" Column="1" />
+      <File FileName="Things/WorkGiver_Gather.cs" Line="18" Column="1" />
+      <File FileName="Things/JobDriver_Gather.cs" Line="16" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="CompAbilityEffect" expanded="True" />
-                <Node name="GetResourceAI" expanded="True">
-                  <Node name="Workgiver_AdministerResource.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="EBSGAI" expanded="True" />
               <Node name="GameComponents" expanded="True" />
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffSetters" expanded="True" />
-                </Node>
+              <Node name="Things" expanded="True">
+                <Node name="WorkGiver_Gather.cs" selected="True" />
               </Node>
-              <Node name="Things" expanded="True" />
-              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>

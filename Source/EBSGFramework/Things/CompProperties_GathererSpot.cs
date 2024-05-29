@@ -18,8 +18,6 @@ namespace EBSGFramework
 
         public bool justDoOneOfEachOption = false; // Ignores allowance and attempts to spawn each option once
 
-        public bool displayColors = true;
-
         public List<TerrainDistance> nearbyTerrainsNeeded;
 
         public bool onlyOneTerrainTypeNeeded = false;
