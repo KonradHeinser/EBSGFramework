@@ -920,14 +920,26 @@ namespace EBSGFramework
 
         public static bool CheckNearbyTerrain(Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
-            if (!pawn.Spawned || pawn.Map == null)
+            if (!pawn.Spawned || pawn.Map == null || !pawn.Position.IsValid)
             {
                 missingTerrain = null;
                 negativeTerrain = false;
-                return false; // If either of these situations are true, we really need to get out of here
+                return false; // If any of these situations are true, we really need to get out of here
             }
 
             return CheckNearbyTerrain(pawn.Position, pawn.Map, terrains, out missingTerrain, out negativeTerrain);
+        }
+
+        public static bool CheckNearbyTerrain(Thing thing, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
+        {
+            if (!thing.Spawned || thing.Map == null || !thing.Position.IsValid)
+            {
+                missingTerrain = null;
+                negativeTerrain = false;
+                return false; // If any of these situations are true, we really need to get out of here
+            }
+
+            return CheckNearbyTerrain(thing.Position, thing.Map, terrains, out missingTerrain, out negativeTerrain);
         }
 
         public static bool CheckNearbyTerrain(IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)

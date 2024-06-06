@@ -22,7 +22,13 @@ namespace EBSGFramework
 
         public float gatherRadius = 10f; // The area pawns can wander to. Usually not worth changing unless the terrain checks have a notably wider radius
 
+        public bool focusWanderInWater = false; // When true, the gathering will tend towards walking through water
+
         public IntRange ticksNeededToFindSomething = new IntRange(1500, 2500); // Defaults to taking anywhere from just over half an hour to an hour
+
+        public SoundDef gatheringSound; // Sustainer
+
+        public SoundDef gatheringFinishedSound; // One shot
 
         public CompProperties_GathererSpot()
         {

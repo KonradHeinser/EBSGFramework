@@ -162,10 +162,12 @@
                         <amountOnFind>-1~2</amountOnFind><!--How many to generate, with values zero and below being duds. In this case, there's only a 50% chance to find something when this is picked-->
                         <thing>WoodLog</thing>
                         <nearbyTerrainsNeeded>
-                            <li> <!--Only findable near the ocean-->
-                                <terrain>WaterOceanShallow</terrain>
-                                <count>1</count>
-                                <maxDistance>5</maxDistance>
+                            <li>
+                                <li> <!--Only findable near an ocean-->
+                                    <terrain>WaterOceanShallow</terrain>
+                                    <count>1</count>
+                                    <maxDistance>5</maxDistance>
+                                </li>
                             </li>
                         </nearbyTerrainsNeeded>
                     </li>
@@ -173,10 +175,12 @@
                         <amountOnFind>1</amountOnFind> <!--Unlike the driftwood, this always succeeds-->
                         <thing>Steel</thing>
                         <nearbyTerrainsNeeded>
-                            <li> <!--Only findable near ponds and rivers-->
-                                <terrain>WaterShallow</terrain>
-                                <count>1</count>
-                                <maxDistance>5</maxDistance>
+                            <li>
+                                <li> <!--Only findable near ponds and rivers-->
+                                    <terrain>WaterShallow</terrain>
+                                    <count>1</count>
+                                    <maxDistance>5</maxDistance>
+                                </li>
                             </li>
                         </nearbyTerrainsNeeded>
                     </li>
@@ -184,10 +188,12 @@
                         <amountOnFind>1~2</amountOnFind> <!--Causes a chance for a different item when gathering stuff at the river edge-->
                         <thing>WoodLog</thing>
                         <nearbyTerrainsNeeded>
-                            <li> <!--Only findable near ponds and rivers-->
-                                <terrain>WaterShallow</terrain>
-                                <count>1</count>
-                                <maxDistance>5</maxDistance>
+                            <li>
+                                <li> <!--Only findable near ponds and rivers-->
+                                    <terrain>WaterShallow</terrain>
+                                    <count>1</count>
+                                    <maxDistance>5</maxDistance>
+                                </li>
                             </li>
                         </nearbyTerrainsNeeded>
                     </li>

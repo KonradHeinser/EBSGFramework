@@ -10,6 +10,8 @@ namespace EBSGFramework
 
         public ThingDef thing;
 
+        public ThingDef stuff = null; // Should remain null unless the find is stuffable
+
         public float weight = 1;
 
         public float allowanceUsed = 1;
@@ -22,9 +24,7 @@ namespace EBSGFramework
 
         public List<TerrainDef> forbiddenTerrain;
 
-        public List<TerrainDistance> nearbyTerrainsNeeded;
-
-        public bool onlyOneTerrainTypeNeeded = false;
+        public List<List<TerrainDistance>> nearbyTerrainsNeeded;
 
         public List<BiomeDef> validBiomes;
 

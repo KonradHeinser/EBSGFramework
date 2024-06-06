@@ -1,14 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/PlaceWorker_GathererTerrain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/JobDriver_Gatherer.cs">
     <Files>
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="128" Column="67" />
-      <File FileName="Things/GatherOption.cs" Line="28" Column="9" />
-      <File FileName="Things/WorkGiver_Gather.cs" Line="19" Column="13" />
-      <File FileName="Things/JobDriver_Gather.cs" Line="16" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="907" Column="28" />
-      <File FileName="Things/CompGathererSpot.cs" Line="10" Column="1" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="31" Column="1" />
-      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="18" Column="22" />
+      <File FileName="Things/GatherOption.cs" Line="13" Column="89" />
+      <File FileName="Things/CompProperties_GathererSpot.cs" Line="31" Column="60" />
+      <File FileName="Things/WorkGiver_Gatherer.cs" Line="31" Column="6" />
+      <File FileName="Things/JobDriver_Gatherer.cs" Line="89" Column="36" />
+      <File FileName="EBSGUtilities.cs" Line="968" Column="175" />
+      <File FileName="Things/CompGathererSpot.cs" Line="4" Column="1" />
+      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="30" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +17,7 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="GameComponents" expanded="True" />
               <Node name="Things" expanded="True">
-                <Node name="PlaceWorker_GathererTerrain.cs" selected="True" />
+                <Node name="JobDriver_Gatherer.cs" selected="True" />
               </Node>
             </Node>
           </Node>

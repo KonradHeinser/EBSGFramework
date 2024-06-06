@@ -13,14 +13,13 @@ namespace EBSGFramework
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!pawn.CanReserveAndReach(t, PathEndMode, Danger.Deadly))
-            {
                 return false;
-            }
 
             if (!t.HasComp<CompGathererSpot>())
-            {
                 JobFailReason.Is("EBSG_MissingGathererComp".Translate(t.Label));
-            }
+
+            if (t.TryGetComp<CompGathererSpot>().ViableOptions.NullOrEmpty())
+                JobFailReason.Is("EBSG_NoValidTarget".Translate(pawn.LabelShort, t.Label) + " " + "EBSG_TryAnotherLocation".Translate());
 
             return true;
         }
