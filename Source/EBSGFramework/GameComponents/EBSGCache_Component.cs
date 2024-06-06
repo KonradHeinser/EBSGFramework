@@ -104,8 +104,8 @@ namespace EBSGFramework
 
         public List<BiomeDef> ViableGatheringBiomes(ThingDef thing)
         {
-            if (viableGatheringSpots.NullOrEmpty()) viableGatheringBiomes = new Dictionary<string, List<BiomeDef>>();
-            else if (viableGatheringSpots.ContainsKey(thing.defName)) return viableGatheringBiomes[thing.defName];
+            if (viableGatheringBiomes.NullOrEmpty()) viableGatheringBiomes = new Dictionary<string, List<BiomeDef>>();
+            else if (viableGatheringBiomes.ContainsKey(thing.defName)) return viableGatheringBiomes[thing.defName];
 
             if (thing == null || thing.comps.NullOrEmpty() || !thing.HasComp(typeof(CompGatherSpot))) return null;
 

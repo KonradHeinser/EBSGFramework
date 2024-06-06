@@ -22,10 +22,10 @@
         </modExtensions>
     </JoyGiverDef>
 
-    <!--<JobDef>
+    <JobDef>
         <defName>EBSG_GathererJob</defName>
-        <driverClass>EBSGFramework.JobDriver_Gather</driverClass>
+        <driverClass>EBSGFramework.JobDriver_Gatherer</driverClass>
         <reportString>looking around TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-    </JobDef>-->
+    </JobDef>
 </Defs>

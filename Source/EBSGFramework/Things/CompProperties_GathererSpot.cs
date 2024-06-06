@@ -18,9 +18,11 @@ namespace EBSGFramework
 
         public bool justDoOneOfEachOption = false; // Ignores allowance and attempts to spawn each option once
 
-        public List<TerrainDistance> nearbyTerrainsNeeded;
+        public List<List<TerrainDistance>> nearbyTerrainsNeeded;
 
-        public bool onlyOneTerrainTypeNeeded = false;
+        public float gatherRadius = 10f; // The area pawns can wander to. Usually not worth changing unless the terrain checks have a notably wider radius
+
+        public IntRange ticksNeededToFindSomething = new IntRange(1500, 2500); // Defaults to taking anywhere from just over half an hour to an hour
 
         public CompProperties_GathererSpot()
         {

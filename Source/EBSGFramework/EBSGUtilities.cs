@@ -918,7 +918,7 @@ namespace EBSGFramework
             return maxNeededForTrue <= waterCount;
         }
 
-        public static bool CheckNearbyTerrain(Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain, bool onlyOneTerrainNeeded = false)
+        public static bool CheckNearbyTerrain(Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
             if (!pawn.Spawned || pawn.Map == null)
             {
@@ -927,10 +927,10 @@ namespace EBSGFramework
                 return false; // If either of these situations are true, we really need to get out of here
             }
 
-            return CheckNearbyTerrain(pawn.Position, pawn.Map, terrains, out missingTerrain, out negativeTerrain, onlyOneTerrainNeeded);
+            return CheckNearbyTerrain(pawn.Position, pawn.Map, terrains, out missingTerrain, out negativeTerrain);
         }
 
-        public static bool CheckNearbyTerrain(IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain, bool onlyOneTerrainNeeded = false)
+        public static bool CheckNearbyTerrain(IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
             negativeTerrain = false;
             missingTerrain = null;
@@ -941,7 +941,7 @@ namespace EBSGFramework
                 return true;
             }
 
-            bool flag = onlyOneTerrainNeeded;
+            bool flag = false;
 
             foreach (TerrainDistance terrain in terrains)
             {
@@ -961,12 +961,12 @@ namespace EBSGFramework
                         return false;
                     }
                 }
-                else if (flag || !onlyOneTerrainNeeded)
+                else if (!flag)
                 {
                     // Checks the center tile first to try to avoid having to deal with all map tiles
                     if (terrain.count == 1 && pos.GetTerrain(map) == terrain.terrain)
                     {
-                        if (flag) flag = false;
+                        flag = true;
                         continue;
                     }
                     if (terrain.maxDistance == 0)
@@ -974,17 +974,12 @@ namespace EBSGFramework
                         if (pos.GetTerrain(map) != terrain.terrain)
                         {
                             missingTerrain = terrain.terrain;
-                            if (!onlyOneTerrainNeeded)
-                            {
-                                return false;
-                            }
                             continue;
                         }
-                        if (flag)
-                        {
-                            flag = false;
-                            continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
-                        }
+
+                        flag = true;
+                        continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
+
                     }
                     else
                     {
@@ -992,22 +987,16 @@ namespace EBSGFramework
                         if (terrainTiles.NullOrEmpty() || terrainTiles.Count < terrain.count)
                         {
                             missingTerrain = terrain.terrain;
-                            if (!onlyOneTerrainNeeded)
-                            {
-                                return false;
-                            }
                             continue;
                         }
-                        if (flag)
-                        {
-                            flag = false;
-                            continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
-                        }
+
+                        flag = true;
+                        continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
                     }
                 }
             }
 
-            if (!flag)
+            if (flag)
             {
                 missingTerrain = null;
                 return true;

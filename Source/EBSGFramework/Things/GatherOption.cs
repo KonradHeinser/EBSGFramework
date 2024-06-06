@@ -16,6 +16,10 @@ namespace EBSGFramework
 
         public List<TerrainDef> viableTerrain; // This is specifically for the terrain it is on
 
+        public int minTemp = -100;
+
+        public int maxTemp = 100;
+
         public List<TerrainDef> forbiddenTerrain;
 
         public List<TerrainDistance> nearbyTerrainsNeeded;

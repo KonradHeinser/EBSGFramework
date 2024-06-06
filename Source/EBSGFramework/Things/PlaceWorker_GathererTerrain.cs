@@ -1,4 +1,5 @@
 ﻿using Verse;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -16,14 +17,15 @@ namespace EBSGFramework
                     {
                         return new AcceptanceReport("PlaceWorkerMoreWater".Translate());
                     }
-                    if (!EBSGUtilities.CheckNearbyTerrain(loc, map, gatherComp.nearbyTerrainsNeeded, out TerrainDef missingTerrain, out bool negativeTerrain, gatherComp.onlyOneTerrainTypeNeeded))
-                    {
-                        if (negativeTerrain)
-                            return new AcceptanceReport("PlaceWorkerAvoidTerrain".Translate(missingTerrain.label));
-                        if (missingTerrain != null)
-                            return new AcceptanceReport("PlaceWorkerMoreTerrain".Translate(missingTerrain.label));
-                        return new AcceptanceReport("PlaceWorkerTerrain".Translate());
-                    }
+                    foreach (List<TerrainDistance> terrains in gatherComp.nearbyTerrainsNeeded)
+                        if (!EBSGUtilities.CheckNearbyTerrain(loc, map, terrains, out TerrainDef missingTerrain, out bool negativeTerrain))
+                        {
+                            if (negativeTerrain)
+                                return new AcceptanceReport("PlaceWorkerAvoidTerrain".Translate(missingTerrain.label));
+                            if (missingTerrain != null)
+                                return new AcceptanceReport("PlaceWorkerMoreTerrain".Translate(missingTerrain.label));
+                            return new AcceptanceReport("PlaceWorkerTerrain".Translate());
+                        }
                 }
             }
             catch

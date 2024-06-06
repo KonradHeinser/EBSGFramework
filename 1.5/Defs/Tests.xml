@@ -68,27 +68,30 @@
             <li Class="CompProperties_Forbiddable" />
             <li Class="EBSGFramework.CompProperties_GathererSpot">
                 <nearbyWaterTilesNeeded>2</nearbyWaterTilesNeeded>
-                <onlyOneTerrainTypeNeeded>True</onlyOneTerrainTypeNeeded>
                 <nearbyTerrainsNeeded>
-                    <li> <!--Not being near an ocean is always a requirement, and meeting this has no influece on the soil condition-->
-                        <terrain>WaterOceanShallow</terrain>
-                        <count>0</count>
-                        <maxDistance>5</maxDistance>
-                    </li>
                     <li>
-                        <terrain>Soil</terrain>
-                        <count>1</count>
-                        <maxDistance>0.9</maxDistance>
+                        <li> <!--Can't be near an ocean-->
+                            <terrain>WaterOceanShallow</terrain>
+                            <count>0</count>
+                            <maxDistance>5</maxDistance>
+                        </li>
                     </li>
-                    <li>
-                        <terrain>SoilRich</terrain>
-                        <count>1</count>
-                        <maxDistance>0.9</maxDistance>
-                    </li>
-                    <li>
-                        <terrain>Sand</terrain>
-                        <count>1</count>
-                        <maxDistance>0.9</maxDistance>
+                    <li> <!--Needs to be on or next to certain types of terrain-->
+                        <li>
+                            <terrain>Soil</terrain>
+                            <count>1</count>
+                            <maxDistance>0.9</maxDistance>
+                        </li>
+                        <li>
+                            <terrain>SoilRich</terrain>
+                            <count>1</count>
+                            <maxDistance>0.9</maxDistance>
+                        </li>
+                        <li>
+                            <terrain>Sand</terrain>
+                            <count>1</count>
+                            <maxDistance>0.9</maxDistance>
+                        </li>
                     </li>
                 </nearbyTerrainsNeeded>
             </li>
@@ -125,30 +128,44 @@
         <comps>
             <li Class="CompProperties_Forbiddable" />
             <li Class="EBSGFramework.CompProperties_GathererSpot">
-                <nearbyWaterTilesNeeded>3</nearbyWaterTilesNeeded>
+                <nearbyWaterTilesNeeded>3</nearbyWaterTilesNeeded> <!--Used in addition to the below water requirement to minimize the chance that it's not just one randomly generated bit of water-->
                 <maxWaterDistance>5</maxWaterDistance>
-                <onlyOneTerrainTypeNeeded>True</onlyOneTerrainTypeNeeded> <!--Must be true when multiple options are available-->
-                <nearbyTerrainsNeeded>
-                    <li> <!--Designates type of terrain it needs to be in. Ideally it's the same as what the options are searching for.-->
-                        <terrain>Sand</terrain>
-                        <count>1</count>
-                        <maxDistance>0</maxDistance>
-                    </li>
+                <nearbyTerrainsNeeded> <!--A list of options that are required.-->
                     <li>
-                        <terrain>SoftSand</terrain>
-                        <count>1</count>
-                        <maxDistance>0</maxDistance>
+                        <li> <!--Designates type of terrain it needs to be in. This is picking between one of the types of sand.-->
+                            <terrain>Sand</terrain>
+                            <count>1</count>
+                            <maxDistance>0</maxDistance>
+                        </li>
+                        <li>
+                            <terrain>SoftSand</terrain>
+                            <count>1</count>
+                            <maxDistance>0</maxDistance>
+                        </li>
+                    </li>
+                    <li> <!--This requires specific types of nearby water to ensure something can be gathered-->
+                        <li>
+                            <terrain>WaterOceanShallow</terrain>
+                            <count>1</count>
+                            <maxDistance>5</maxDistance>
+                        </li>
+                        <li>
+                            <terrain>WaterShallow</terrain>
+                            <count>1</count>
+                            <maxDistance>5</maxDistance>
+                        </li>
                     </li>
                 </nearbyTerrainsNeeded>
                 <options>
+                     <!--nearbyTerrainsNeeded on the options is still in relation to the building itself, these just allow for more specific situations involving specific types of water or the specific terrain the thing is sitting near.-->
                     <li>
-                        <amountOnFind>0~2</amountOnFind><!--How many to generate, with values zero and below being duds. In this case, there's only a 66% chance to find an item when this is picked-->
+                        <amountOnFind>-1~2</amountOnFind><!--How many to generate, with values zero and below being duds. In this case, there's only a 50% chance to find something when this is picked-->
                         <thing>WoodLog</thing>
                         <nearbyTerrainsNeeded>
                             <li> <!--Only findable near the ocean-->
                                 <terrain>WaterOceanShallow</terrain>
                                 <count>1</count>
-                                <maxDistance>10</maxDistance>
+                                <maxDistance>5</maxDistance>
                             </li>
                         </nearbyTerrainsNeeded>
                     </li>
@@ -159,7 +176,18 @@
                             <li> <!--Only findable near ponds and rivers-->
                                 <terrain>WaterShallow</terrain>
                                 <count>1</count>
-                                <maxDistance>3</maxDistance>
+                                <maxDistance>5</maxDistance>
+                            </li>
+                        </nearbyTerrainsNeeded>
+                    </li>
+                    <li>
+                        <amountOnFind>1~2</amountOnFind> <!--Causes a chance for a different item when gathering stuff at the river edge-->
+                        <thing>WoodLog</thing>
+                        <nearbyTerrainsNeeded>
+                            <li> <!--Only findable near ponds and rivers-->
+                                <terrain>WaterShallow</terrain>
+                                <count>1</count>
+                                <maxDistance>5</maxDistance>
                             </li>
                         </nearbyTerrainsNeeded>
                     </li>

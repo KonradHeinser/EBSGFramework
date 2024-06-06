@@ -335,8 +335,8 @@
         <Compile Include="Things\GatherOption.cs" />
         <Compile Include="Things\CompGathererSpot.cs" />
         <Compile Include="Generic List Classes\TerrainDistance.cs" />
-        <Compile Include="Things\WorkGiver_Gather.cs" />
-        <Compile Include="Things\JobDriver_Gather.cs" />
+        <Compile Include="Things\WorkGiver_Gatherer.cs" />
+        <Compile Include="Things\JobDriver_Gatherer.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
