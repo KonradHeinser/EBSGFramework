@@ -1,29 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/JobDriver_Gatherer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties_GathererSpot.cs">
     <Files>
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="128" Column="67" />
-      <File FileName="Things/GatherOption.cs" Line="13" Column="89" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="31" Column="60" />
-      <File FileName="Things/WorkGiver_Gatherer.cs" Line="31" Column="6" />
-      <File FileName="Things/JobDriver_Gatherer.cs" Line="89" Column="36" />
-      <File FileName="EBSGUtilities.cs" Line="968" Column="175" />
-      <File FileName="Things/CompGathererSpot.cs" Line="4" Column="1" />
-      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="30" Column="14" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="12" Column="1" />
+      <File FileName="Things/GatherOption.cs" Line="16" Column="1" />
+      <File FileName="Things/CompProperties_GathererSpot.cs" Line="19" Column="39" />
+      <File FileName="Things/WorkGiver_Gatherer.cs" Line="35" Column="1" />
+      <File FileName="Things/JobDriver_Gatherer.cs" Line="72" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="1026" Column="10" />
+      <File FileName="Things/CompGathererSpot.cs" Line="36" Column="55" />
+      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="20" Column="62" />
+      <File FileName="EBSGExtension.cs" Line="124" Column="50" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Things" expanded="True">
-                <Node name="JobDriver_Gatherer.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

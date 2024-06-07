@@ -25,7 +25,7 @@
     <JobDef>
         <defName>EBSG_GathererJob</defName>
         <driverClass>EBSGFramework.JobDriver_Gatherer</driverClass>
-        <reportString>looking around TargetA.</reportString>
+        <reportString>Finding things near TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 </Defs>

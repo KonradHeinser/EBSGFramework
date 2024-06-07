@@ -14,20 +14,14 @@ namespace EBSGFramework
 
         public float weight = 1;
 
-        public float allowanceUsed = 1;
-
-        public List<TerrainDef> viableTerrain; // This is specifically for the terrain it is on
-
         public int minTemp = -100;
 
         public int maxTemp = 100;
 
-        public List<TerrainDef> forbiddenTerrain;
-
         public List<List<TerrainDistance>> nearbyTerrainsNeeded;
 
-        public List<BiomeDef> validBiomes;
+        public List<BiomeDef> validBiomes; // Not presently in use. Left for potential expansion in the future
 
-        public List<BiomeDef> forbiddenBiomes;
+        public List<BiomeDef> forbiddenBiomes; // Not presently in use. Left for potential expansion in the future
     }
 }

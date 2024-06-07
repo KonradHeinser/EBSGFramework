@@ -26,6 +26,8 @@ namespace EBSGFramework
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
+            if (def.GetModExtension<EBSGExtension>().relatedJob != null)
+                return JobMaker.MakeJob(def.GetModExtension<EBSGExtension>().relatedJob, t);
             return JobMaker.MakeJob(EBSGDefOf.EBSG_GathererJob, t);
         }
     }

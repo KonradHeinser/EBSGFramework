@@ -157,5 +157,6 @@ namespace EBSGFramework
         public bool negativeResourceOffsetsAreNotCosts = false;
 
         public ThingDef relatedThing;
+        public JobDef relatedJob;
     }
 }

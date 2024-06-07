@@ -953,7 +953,8 @@ namespace EBSGFramework
                 return true;
             }
 
-            bool flag = false;
+            bool flag = false; // Checks for desired terrain
+            bool flag2 = true; // Checks for only negative
 
             foreach (TerrainDistance terrain in terrains)
             {
@@ -975,6 +976,7 @@ namespace EBSGFramework
                 }
                 else if (!flag)
                 {
+                    flag2 = false;
                     // Checks the center tile first to try to avoid having to deal with all map tiles
                     if (terrain.count == 1 && pos.GetTerrain(map) == terrain.terrain)
                     {
@@ -988,10 +990,8 @@ namespace EBSGFramework
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-
                         flag = true;
                         continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
-
                     }
                     else
                     {
@@ -1001,14 +1001,13 @@ namespace EBSGFramework
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-
                         flag = true;
                         continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
                     }
                 }
             }
 
-            if (flag)
+            if (flag || flag2) // If one viable terrain was found, or if only checking for negative terrains and none were found
             {
                 missingTerrain = null;
                 return true;

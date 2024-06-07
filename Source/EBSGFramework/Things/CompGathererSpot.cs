@@ -32,6 +32,8 @@ namespace EBSGFramework
                                 }
                             if (flag) viableOptions.Add(option);
                         }
+                        else
+                            viableOptions.Add(option);
 
                     position = parent.Position;
                 }

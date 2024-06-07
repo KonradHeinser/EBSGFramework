@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThinkTreeDef>
+        <defName>EBSG_BasicThinkTree</defName>
+        <insertTag>Humanlike_PostMentalState</insertTag>
+        <insertPriority>100</insertPriority>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>EBSGAI_Pawn</insertTag>
+                </li>
+                <li Class="ThinkNode_ConditionalColonist">
+                    <subNodes>
+                        <li Class="ThinkNode_SubtreesByTag">
+                            <insertTag>EBSGAI_Colonist</insertTag>
+                        </li>
+                        <li Class="ThinkNode_ConditionalCanDoConstantThinkTreeJobNow">
+                            <subNodes>
+                                <li Class="ThinkNode_SubtreesByTag">
+                                    <insertTag>EBSGAI_UndraftedAndFreePawn</insertTag>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
+                                    <invert>true</invert>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_NoEnemyOnMap</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalNearbyEnemyTarget">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_NearbyEnemy</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="ThinkNode_ConditionalShotRecently">
+                                    <thresholdTicks>600</thresholdTicks>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_ShotRecently</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                    <dangerRadius>20</dangerRadius>
+                                    <minCount>5</minCount>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_ManyNearbyThreats</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_MeleeThreat</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_UndraftedPawn_EnemyOnMap</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                            </subNodes>
+                        </li>
+                        <li Class="EBSGFramework.ThinkNode_ConditionalPawnDraftedAndFree">
+                            <subNodes>
+                                <li Class="ThinkNode_SubtreesByTag">
+                                    <insertTag>EBSGAI_DraftedAndFreePawn</insertTag>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalNearbyEnemyTarget">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_DraftedPawn_NearbyEnemy</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="ThinkNode_ConditionalShotRecently">
+                                    <thresholdTicks>600</thresholdTicks>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_DraftedPawn_ShotRecently</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                    <dangerRadius>20</dangerRadius>
+                                    <minCount>5</minCount>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_DraftedPawn_ManyNearbyThreats</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_DraftedPawn_MeleeThreat</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                                <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_DraftedPawn_EnemyOnMap</insertTag>
+                                        </li>
+                                    </subNodes>
+                                </li>
+                            </subNodes>
+                        </li>
+                    </subNodes>
+                </li>
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+</Defs>

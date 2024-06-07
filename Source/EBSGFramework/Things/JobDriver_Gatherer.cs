@@ -44,7 +44,7 @@ namespace EBSGFramework
                 defaultCompleteMode = ToilCompleteMode.Never
             };
 
-            prepare.WithProgressBar(TargetIndex.A, () => progress / progressNeeded);
+            prepare.WithProgressBar(TargetIndex.A, () => (float)progress / (float)progressNeeded);
             prepare.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
             yield return prepare;
@@ -56,37 +56,50 @@ namespace EBSGFramework
                 {
                     progress++;
 
-                    if (progress > progressNeeded)
-                    {
-                        GatherOption option = comp.ViableOptions.RandomElementByWeight((GatherOption o) => o.weight);
-
-                        if (option.thing != null)
-                        {
-                            int count = option.amountOnFind.RandomInRange;
-
-                            if (count > 0)
-                            {
-                                Thing find = ThingMaker.MakeThing(option.thing, option.stuff);
-                                find.stackCount = count;
-                                GenSpawn.Spawn(find, pawn.Position, Map);
-                            }
-                        }
-
-                        if (comp.Props.gatheringFinishedSound != null) comp.Props.gatheringFinishedSound.PlayOneShot(pawn);
-
+                    if (progress >= progressNeeded)
                         ReadyForNextToil();
+                    else if (progress % 600 == 0) // If the duration is long enough, occassionally move to another location to make it a little less weird to watch
+                    {
+                        SetNextDestination();
+                        pawn.pather.StartPath(pawn.jobs.curJob.GetTarget(TargetIndex.B), PathEndMode.OnCell);
                     }
-                }
+                },
+                handlingFacing = false
             };
 
-            gathering.WithProgressBar(TargetIndex.B, () => progress / progressNeeded);
+            gathering.WithProgressBar(TargetIndex.A, () => (float)progress / (float)progressNeeded);
             gathering.defaultCompleteMode = ToilCompleteMode.Never;
-            gathering.handlingFacing = false;
 
             if (comp.Props.gatheringSound != null)
                 gathering.PlaySustainerOrSound(comp.Props.gatheringSound);
 
             yield return gathering;
+            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
+            Toil finish = new Toil
+            {
+                initAction = () =>
+                {
+                    GatherOption option = comp.ViableOptions.RandomElementByWeight((GatherOption o) => o.weight);
+
+                    if (option.thing != null)
+                    {
+                        int count = option.amountOnFind.RandomInRange;
+
+                        if (count > 0)
+                        {
+                            Thing find = ThingMaker.MakeThing(option.thing, option.stuff);
+                            find.stackCount = count;
+                            GenSpawn.Spawn(find, pawn.Position, Map);
+                        }
+                    }
+
+                    if (comp.Props.gatheringFinishedSound != null) comp.Props.gatheringFinishedSound.PlayOneShot(pawn);
+
+                    ReadyForNextToil();
+                }
+            };
+
+            yield return finish;
         }
 
         private void SetNextDestination()

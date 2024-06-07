@@ -14,9 +14,8 @@ namespace EBSGFramework
                 {
                     CompProperties_GathererSpot gatherComp = thingy.GetCompProperties<CompProperties_GathererSpot>();
                     if (gatherComp.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(loc, map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
-                    {
                         return new AcceptanceReport("PlaceWorkerMoreWater".Translate());
-                    }
+
                     foreach (List<TerrainDistance> terrains in gatherComp.nearbyTerrainsNeeded)
                         if (!EBSGUtilities.CheckNearbyTerrain(loc, map, terrains, out TerrainDef missingTerrain, out bool negativeTerrain))
                         {
