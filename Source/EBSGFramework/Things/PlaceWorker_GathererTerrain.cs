@@ -16,6 +16,9 @@ namespace EBSGFramework
                     if (gatherComp.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(loc, map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
                         return new AcceptanceReport("PlaceWorkerMoreWater".Translate());
 
+                    if (gatherComp.nearbyWaterTilesNeeded < 0 && EBSGUtilities.CheckNearbyWater(loc, map, 1, out int countB, gatherComp.maxWaterDistance))
+                        return new AcceptanceReport("PlaceWorkerLessWater".Translate());
+
                     foreach (List<TerrainDistance> terrains in gatherComp.nearbyTerrainsNeeded)
                         if (!EBSGUtilities.CheckNearbyTerrain(loc, map, terrains, out TerrainDef missingTerrain, out bool negativeTerrain))
                         {

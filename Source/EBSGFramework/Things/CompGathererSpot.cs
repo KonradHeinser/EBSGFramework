@@ -16,11 +16,21 @@ namespace EBSGFramework
         {
             get
             {
-                if (!position.IsValid || position != parent.Position)
+                // The hash is for creating a chance for a random "audit", where it redoes everything to check that no weird terrain stuff has been happening. While it can happen up to once per in-game hour, it usually does not
+                if (!position.IsValid || position != parent.Position || parent.IsHashIntervalTick(2500))
                 {
                     viableOptions = new List<GatherOption>();
 
                     foreach (GatherOption option in Props.options)
+                    {
+                        // Checks for situations where nearby water is needed
+                        if (option.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(parent.Position, parent.Map, option.nearbyWaterTilesNeeded, out int countA, option.maxWaterDistance))
+                            continue;
+
+                        // Checks for situations where a lack of nearby water is needed
+                        if (option.nearbyWaterTilesNeeded < 0 && EBSGUtilities.CheckNearbyWater(parent.Position, parent.Map, 1, out int countB, option.maxWaterDistance))
+                            continue;
+
                         if (!option.nearbyTerrainsNeeded.NullOrEmpty())
                         {
                             bool flag = true;
@@ -34,6 +44,7 @@ namespace EBSGFramework
                         }
                         else
                             viableOptions.Add(option);
+                    }
 
                     position = parent.Position;
                 }

@@ -16,6 +16,7 @@
 
     <!--Generic Building Stuff-->
     <PlaceWorkerMoreWater>Requires more water near it.</PlaceWorkerMoreWater>
+    <PlaceWorkerLessWater>Requires area with no water around.</PlaceWorkerLessWater>
     <PlaceWorkerMoreTerrain>Requires more {0} near it.</PlaceWorkerMoreTerrain>
     <PlaceWorkerTerrain>Needs to be on or near certain types of terrain.</PlaceWorkerTerrain>
     <PlaceWorkerAvoidTerrain>Can't be placed near {0}.</PlaceWorkerAvoidTerrain>
