@@ -26,7 +26,12 @@ namespace EBSGFramework
             CompGathererSpot comp = GathererCenter.TryGetComp<CompGathererSpot>();
             progressNeeded = comp.Props.ticksNeededToFindSomething.RandomInRange;
 
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell);
+            if (GathererCenter.def.hasInteractionCell)
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
+            else if (GathererCenter.def.passability == Traversability.Standable)
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell);
+            else
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 
             Toil prepare = new Toil
             {
@@ -74,7 +79,13 @@ namespace EBSGFramework
                 gathering.PlaySustainerOrSound(comp.Props.gatheringSound);
 
             yield return gathering;
-            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
+
+            if (GathererCenter.def.hasInteractionCell)
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
+            else
+                yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
+
+
             Toil finish = new Toil
             {
                 initAction = () =>
