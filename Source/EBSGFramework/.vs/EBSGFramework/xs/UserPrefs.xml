@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/JobDriver_Gatherer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/GatherOption.cs">
     <Files>
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="12" Column="1" />
-      <File FileName="Things/GatherOption.cs" Line="23" Column="72" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="15" Column="65" />
+      <File FileName="Generic List Classes/TerrainDistance.cs" Line="9" Column="33" />
+      <File FileName="Things/GatherOption.cs" Line="21" Column="35" />
+      <File FileName="Things/CompProperties_GathererSpot.cs" Line="25" Column="47" />
       <File FileName="Things/WorkGiver_Gatherer.cs" Line="25" Column="10" />
-      <File FileName="Things/JobDriver_Gatherer.cs" Line="35" Column="13" />
-      <File FileName="EBSGUtilities.cs" Line="1032" Column="73" />
+      <File FileName="Things/JobDriver_Gatherer.cs" Line="35" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="1004" Column="13" />
       <File FileName="Things/CompGathererSpot.cs" Line="26" Column="78" />
       <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="23" Column="114" />
       <File FileName="EBSGExtension.cs" Line="124" Column="50" />

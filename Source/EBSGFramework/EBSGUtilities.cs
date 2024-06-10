@@ -954,7 +954,6 @@ namespace EBSGFramework
             }
 
             bool flag = false; // Checks for desired terrain
-            bool flag2 = true; // Checks for only negative
 
             foreach (TerrainDistance terrain in terrains)
             {
@@ -964,53 +963,43 @@ namespace EBSGFramework
                     {
                         negativeTerrain = true;
                         missingTerrain = terrain.terrain;
-                        return false;
+                        continue;
                     }
                     List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
-                    if (!terrainTiles.NullOrEmpty())
-                    {
-                        negativeTerrain = true;
-                        missingTerrain = terrain.terrain;
-                        return false;
-                    }
+                    if (terrainTiles.NullOrEmpty())
+                        return true;
+
+                    negativeTerrain = true;
+                    missingTerrain = terrain.terrain;
                 }
                 else if (!flag)
                 {
-                    flag2 = false;
                     // Checks the center tile first to try to avoid having to deal with all map tiles
                     if (terrain.count == 1 && pos.GetTerrain(map) == terrain.terrain)
-                    {
-                        flag = true;
-                        continue;
-                    }
+                        return true;
+
                     if (terrain.maxDistance == 0)
                     {
                         if (pos.GetTerrain(map) != terrain.terrain)
                         {
+                            negativeTerrain = false;
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-                        flag = true;
-                        continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
+                        return true;
                     }
                     else
                     {
                         List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
                         if (terrainTiles.NullOrEmpty() || terrainTiles.Count < terrain.count)
                         {
+                            negativeTerrain = false;
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-                        flag = true;
-                        continue; // Doesn't break just to be sure there aren't terrain restrictors after this point in the list
+                        return true;
                     }
                 }
-            }
-
-            if (flag || flag2) // If one viable terrain was found, or if only checking for negative terrains and none were found
-            {
-                missingTerrain = null;
-                return true;
             }
 
             return false;
