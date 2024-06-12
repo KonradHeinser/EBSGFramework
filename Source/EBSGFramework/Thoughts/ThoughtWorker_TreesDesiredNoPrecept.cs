@@ -1,6 +1,6 @@
 ﻿using System;
 using RimWorld;
-using Verse; 
+using Verse;
 using System.Collections.Generic;
 
 namespace EBSGFramework
@@ -18,9 +18,8 @@ namespace EBSGFramework
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
             if (p.surroundings == null)
-            {
                 return ThoughtState.Inactive;
-            }
+
             return ThoughtState.ActiveAtStage(ThoughtStageIndex(p));
         }
 
@@ -30,28 +29,32 @@ namespace EBSGFramework
             int fullTrees = 0;
             int superTrees = 0;
 
-                    // Due to the actual tree counter being hardcoded for ideology for some reason, I had to make this eyesore
-            foreach (TreeSighting item in IdeoUtility.TreeSightingsNearPawn(p.Position, p.Map, p.Ideo))
-            {
-                if (item.Tree != null)
-                {
-                    _ = item.Tree.def.plant.treeCategory;
-                }
-                switch (item.Tree.def.plant.treeCategory)
-                {
-                    case TreeCategory.Mini:
-                        miniTrees++;
-                        break;
-                    case TreeCategory.Full:
-                        fullTrees++;
-                        break;
-                    case TreeCategory.Super:
-                        superTrees++;
-                        break;
-                }
-            }
+            List<TreeSighting> trees = new List<TreeSighting>(IdeoUtility.TreeSightingsNearPawn(p.Position, p.Map, p.Ideo));
 
-                // Counters
+            // Due to the actual tree counter being hardcoded for ideology for some reason, I had to make this eyesore
+            if (!trees.NullOrEmpty())
+                foreach (TreeSighting item in trees)
+                {
+                    if (item.Tree != null)
+                    {
+                        //_ = item.Tree.def.plant.treeCategory;
+                        switch (item.Tree.def.plant.treeCategory)
+                        {
+                            case TreeCategory.Mini:
+                                miniTrees++;
+                                break;
+                            case TreeCategory.Full:
+                                fullTrees++;
+                                break;
+                            case TreeCategory.Super:
+                                superTrees++;
+                                break;
+                        }
+                    }
+
+                }
+
+            // Counters
             if (superTrees > 1)
             {
                 secondsSinceLastMultiSuper = 0;

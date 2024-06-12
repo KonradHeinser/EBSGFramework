@@ -1,17 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/GatherOption.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Storytime/StoryTellerComp_StorytellerAffinity.cs">
     <Files>
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="12" Column="1" />
-      <File FileName="Generic List Classes/TerrainDistance.cs" Line="9" Column="33" />
-      <File FileName="Things/GatherOption.cs" Line="21" Column="35" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="25" Column="47" />
-      <File FileName="Things/WorkGiver_Gatherer.cs" Line="25" Column="10" />
-      <File FileName="Things/JobDriver_Gatherer.cs" Line="35" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="1004" Column="13" />
-      <File FileName="Things/CompGathererSpot.cs" Line="26" Column="78" />
-      <File FileName="Things/PlaceWorker_GathererTerrain.cs" Line="23" Column="114" />
-      <File FileName="EBSGExtension.cs" Line="124" Column="50" />
+      <File FileName="DependencyGenes/Hediff_Dependency.cs" Line="59" Column="26" />
+      <File FileName="DependencyGenes/Gene_Dependency.cs" Line="193" Column="59" />
+      <File FileName="Thoughts/ThoughtWorker_TreesDesiredNoPrecept.cs" Line="166" Column="27" />
+      <File FileName="Storytime/StoryTellerComp_StorytellerAffinity.cs" Line="75" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="DependencyGenes" expanded="True" />
+              <Node name="Storytime" expanded="True">
+                <Node name="StoryTellerComp_StorytellerAffinity.cs" selected="True" />
+              </Node>
+              <Node name="Thoughts" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

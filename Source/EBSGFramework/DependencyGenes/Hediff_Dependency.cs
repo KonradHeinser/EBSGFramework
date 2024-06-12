@@ -28,11 +28,14 @@ namespace EBSGFramework
             return chemical.label;
         }
 
+        public override bool ShouldRemove => !LinkedGene.Active;
+
         public new Gene_Dependency LinkedGene
         {
             get
             {
-                if (pawn.genes != null && (cachedDependencyGene == null || pawn.genes.GenesListForReading.Count != cachedGeneCount))
+                if (pawn.genes == null) pawn.health.RemoveHediff(this);
+                if (cachedDependencyGene == null || pawn.genes.GenesListForReading.Count != cachedGeneCount)
                 {
                     List<Gene> genesListForReading = pawn.genes.GenesListForReading;
                     cachedGeneCount = genesListForReading.Count;
@@ -56,7 +59,7 @@ namespace EBSGFramework
                         }
                     }
                 }
-                if (cachedDependencyGene == null || pawn.genes == null) pawn.health.RemoveHediff(this);
+                if (cachedDependencyGene == null) pawn.health.RemoveHediff(this);
                 return cachedDependencyGene;
             }
         }

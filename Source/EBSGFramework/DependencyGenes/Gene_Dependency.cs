@@ -69,6 +69,7 @@ namespace EBSGFramework
                     Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(def.chemical.addictionHediff);
                     if (firstHediffOfDef != null)
                     {
+                        Log.Message("Removing hediff A");
                         pawn.health.RemoveHediff(firstHediffOfDef);
                     }
                 }
@@ -82,6 +83,7 @@ namespace EBSGFramework
             Hediff_Dependency linkedHediff = LinkedHediff;
             if (LinkedHediff != null)
             {
+                Log.Message("Removing hediff B");
                 pawn.health.RemoveHediff(linkedHediff);
             }
             base.PostRemove();
@@ -174,7 +176,7 @@ namespace EBSGFramework
                         }
                     }
                 }
-                
+
                 if (flag) Reset();
             }
         }

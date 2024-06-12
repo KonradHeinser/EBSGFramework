@@ -3,7 +3,8 @@
     <HediffDef Name="EBSG_DependencyHediffBase" Abstract="True">
         <hediffClass>EBSGFramework.Hediff_Dependency</hediffClass>
         <everCurableByItem>false</everCurableByItem>
-        <initialSeverity>0.001</initialSeverity>
+        <initialSeverity>0.01</initialSeverity>
+        <minSeverity>0.01</minSeverity>
         <stages>
             <li>
             </li>
