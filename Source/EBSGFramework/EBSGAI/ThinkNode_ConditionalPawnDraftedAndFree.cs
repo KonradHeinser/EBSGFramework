@@ -9,7 +9,9 @@ namespace EBSGFramework
     {
         protected override bool Satisfied(Pawn pawn)
         {
-            return pawn.Drafted && !PawnUtility.PlayerForcedJobNowOrSoon(pawn);
+            if (pawn.Faction == Faction.OfPlayer)
+                return pawn.Drafted && !PawnUtility.PlayerForcedJobNowOrSoon(pawn);
+            return false;
         }
     }
 }

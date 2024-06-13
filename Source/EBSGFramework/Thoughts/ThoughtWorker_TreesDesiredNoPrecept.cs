@@ -17,7 +17,7 @@ namespace EBSGFramework
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            if (p.surroundings == null)
+            if (!p.Spawned || p.surroundings == null)
                 return ThoughtState.Inactive;
 
             return ThoughtState.ActiveAtStage(ThoughtStageIndex(p));

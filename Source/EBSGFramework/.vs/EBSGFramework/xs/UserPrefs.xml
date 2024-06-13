@@ -1,21 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Storytime/StoryTellerComp_StorytellerAffinity.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/ThinkNode_ConditionalPawnDraftedAndFree.cs">
     <Files>
       <File FileName="DependencyGenes/Hediff_Dependency.cs" Line="59" Column="26" />
       <File FileName="DependencyGenes/Gene_Dependency.cs" Line="193" Column="59" />
-      <File FileName="Thoughts/ThoughtWorker_TreesDesiredNoPrecept.cs" Line="166" Column="27" />
-      <File FileName="Storytime/StoryTellerComp_StorytellerAffinity.cs" Line="75" Column="1" />
+      <File FileName="Thoughts/ThoughtWorker_TreesDesiredNoPrecept.cs" Line="25" Column="1" />
+      <File FileName="Storytime/StoryTellerComp_StorytellerAffinity.cs" Line="36" Column="39" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalPawnDraftedAndFree.cs" Line="18" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DependencyGenes" expanded="True" />
-              <Node name="Storytime" expanded="True">
-                <Node name="StoryTellerComp_StorytellerAffinity.cs" selected="True" />
+              <Node name="EBSGAI" expanded="True">
+                <Node name="ThinkNode_ConditionalPawnDraftedAndFree.cs" selected="True" />
               </Node>
-              <Node name="Thoughts" expanded="True" />
             </Node>
           </Node>
         </State>
