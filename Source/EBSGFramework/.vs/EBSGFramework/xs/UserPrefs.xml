@@ -1,24 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGRecorder.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
     <Files>
-      <File FileName="Settings/EBSG_Settings.cs" Line="99" Column="32" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="400" Column="49" />
       <File FileName="Settings/ThinkTreeSetting.cs" Line="10" Column="51" />
       <File FileName="Settings/ThinkBranchSetting.cs" Line="12" Column="1" />
       <File FileName="Settings/PatchOperationSetting.cs" Line="25" Column="14" />
-      <File FileName="EBSGRecorder.cs" Line="13" Column="57" />
+      <File FileName="EBSGRecorder.cs" Line="19" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Settings" expanded="True" />
-              <Node name="EBSGRecorder.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

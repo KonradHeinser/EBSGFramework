@@ -64,6 +64,9 @@ namespace EBSGFramework
 
         public static bool architePsychicInfluencerBondTorn = false;
 
+        public static Dictionary<string, Dictionary<string, bool>> thinkTreeSettings;
+        private bool alreadyCheckThinkSettings = false;
+
         public Dictionary<string, int> asexualDaysSettings;
 
         private List<HediffDef> cachedAsexualHediffs = new List<HediffDef>();
@@ -94,6 +97,50 @@ namespace EBSGFramework
                 }
                 return tabsList;
             }
+        }
+
+        public static void BuildThinkTreeSettings(ref bool alreadyCheckThinkSettings)
+        {
+            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+
+            if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
+            {
+                if (thinkTreeSettings.NullOrEmpty()) thinkTreeSettings = new Dictionary<string, Dictionary<string, bool>>();
+
+                foreach (ThinkTreeSetting treeSetting in recorder.thinkTreeSettings)
+                {
+                    if (thinkTreeSettings.Keys.EnumerableNullOrEmpty() || !thinkTreeSettings.ContainsKey(treeSetting.uniqueID))
+                        thinkTreeSettings.Add(treeSetting.uniqueID, new Dictionary<string, bool>());
+
+                    foreach (ThinkBranchSetting setting in treeSetting.individualSettings)
+                        if (thinkTreeSettings[treeSetting.uniqueID].Keys.EnumerableNullOrEmpty() || !thinkTreeSettings[treeSetting.uniqueID].ContainsKey(setting.settingID))
+                            thinkTreeSettings[treeSetting.uniqueID].Add(setting.settingID, setting.defaultSetting);
+                }
+            }
+
+            alreadyCheckThinkSettings = true;
+        }
+
+
+        private bool needThinkTree = false;
+        private bool needTreeChecked = false;
+        public bool NeedEBSGThinkTree()
+        {
+            if (!needTreeChecked)
+            {
+                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+
+                if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
+                    foreach (ThinkTreeSetting setting in recorder.thinkTreeSettings)
+                        if (setting.uniqueID != "EBSGFramework") // If it is not in the framework's group, then something else added it, and we need everything active
+                        {
+                            needThinkTree = true;
+                            break;
+                        }
+                needTreeChecked = true;
+            }
+
+            return needThinkTree;
         }
 
         private int tabInt = 1;
@@ -140,7 +187,9 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
+            if (thinkTreeSettings.NullOrEmpty()) BuildThinkTreeSettings(ref alreadyCheckThinkSettings);
+
+            //if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
 
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
@@ -151,6 +200,8 @@ namespace EBSGFramework
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
             Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
+            if (!thinkTreeSettings.NullOrEmpty())
+                Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeModSettings", LookMode.Value, LookMode.Value);
             //Scribe_Collections.Look(ref asexualDaysSettings, "EBSG_asexualDaysSettings", LookMode.Value, LookMode.Value);
         }
 
@@ -178,6 +229,9 @@ namespace EBSGFramework
             contentRect.x = 0;
             contentRect.y = 0;
             contentRect.width -= 20;
+
+            Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
+            optionsMenu.Begin(contentRect.AtZero());
 
             switch (tabInt)
             {
@@ -235,10 +289,6 @@ namespace EBSGFramework
 
                     contentRect.height = numberOfOptions * 35; // To avoid weird white space, height is based off of option count of present mods
 
-                    Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
-
-                    optionsMenu.Begin(contentRect.AtZero());
-
                     optionsMenu.CheckboxLabeled("EBSG_ModName".Translate(), ref showMainOptions, "EBSG_ModDescription".Translate());
                     optionsMenu.Gap(7f);
                     if (showMainOptions)
@@ -271,8 +321,6 @@ namespace EBSGFramework
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
                             optionsMenu.Gap(10f);
-
-
                         }
                     }
                     else
@@ -336,15 +384,23 @@ namespace EBSGFramework
 
                 case 2: // Think Tree
 
-                    int numberOfAIOptions = 4;
+                    int numberOfAIOptions = 0;
 
-                    contentRect.height = numberOfAIOptions * 35; // To avoid weird white space, height is based off of option count of present mods
+                    if (thinkTreeSettings.NullOrEmpty() && !alreadyCheckThinkSettings)
+                        BuildThinkTreeSettings(ref alreadyCheckThinkSettings);
 
-                    Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
+                    if (!thinkTreeSettings.NullOrEmpty())
+                    {
+                        contentRect.height = numberOfAIOptions * 35; // To avoid weird white space, height is based off of option count of present mods
 
-                    optionsMenu.Begin(contentRect.AtZero());
+                        optionsMenu.CheckboxLabeled("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(), ref showMainAIOptions, "EBSG_SettingMenuLabel_EBSGThinkTreeDescription".Translate());
+                    }
+                    else
+                    {
+                        contentRect.height = 35;
+                        optionsMenu.Label("EBSG_SettingMenuLabel_EBSGThinkTreeEmpty".Translate());
+                    }
 
-                    optionsMenu.CheckboxLabeled("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(), ref showMainAIOptions, "EBSG_SettingMenuLabel_EBSGThinkTreeDescription".Translate());
                     break;
 
                 case 4: // Customization settings
