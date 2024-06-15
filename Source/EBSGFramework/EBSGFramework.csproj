@@ -337,6 +337,8 @@
         <Compile Include="Generic List Classes\TerrainDistance.cs" />
         <Compile Include="Things\WorkGiver_Gatherer.cs" />
         <Compile Include="Things\JobDriver_Gatherer.cs" />
+        <Compile Include="Settings\ThinkTreeSetting.cs" />
+        <Compile Include="Settings\ThinkBranchSetting.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
