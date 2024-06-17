@@ -50,5 +50,20 @@
         <geneEvents />
         <hiddenGenes />
         <hiddenTemplates />
+        <thinkTreeSettings>
+            <li>
+                <uniqueID>EBSGFramework</uniqueID>
+                <label>EBSG Think Tree</label>
+                <description>These settings universally toggle whether certain AI things added to the EBSG tree by other mods will work. The main settings are disabled by default to avoid accidentally increasing performance costs with things that are not desired by the player.\n\nSettings in this tab usually don't require a restart. The checkmarks next to the titles are just to show and hide a section, and do not change any of the settings.</description>
+                <individualSettings>
+                    <li>
+                        <settingID>EBSGColonistAI</settingID>
+                        <label>Colonist AI</label>
+                        <description>Toggles whether any mods can cause colonists to autocast.</description>
+                        <defaultSetting>False</defaultSetting>
+                    </li>
+                </individualSettings>
+            </li>
+        </thinkTreeSettings>
     </EBSGFramework.EBSGRecorder>
 </Defs>

@@ -87,13 +87,17 @@ namespace EBSGFramework
                             tabsList.Clear(); // Resets list to get new tab, and potentially allow for more dynamic tab creation in the future
                         }, tabInt == 1),
 
-                        new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
-                        delegate () {
-                            tabInt = 2;
-                            tabsList.Clear();
-                        }, tabInt == 2),
                         // new TabRecord("EBSG_SettingMenuLabel_Unbugger".Translate(), delegate () { tabInt = 5; }, tabInt == 5)
                     };
+
+                    if (NeedEBSGThinkTree())
+                        tabsList.Insert(1, new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
+                                delegate ()
+                                {
+                                    tabInt = 2;
+                                    tabsList.Clear();
+                                }, tabInt == 2)
+                            );
                 }
                 return tabsList;
             }
@@ -211,14 +215,15 @@ namespace EBSGFramework
 
             Rect tabs = new Rect(inRect)
             {
-                yMin = Mathf.CeilToInt((float)TabsList.Count / 5f) * 80
+                yMin = 80,
+                height = Mathf.CeilToInt((float)TabsList.Count / 5f) * 40
             };
             TabDrawer.DrawTabs<TabRecord>(tabs, TabsList, Mathf.CeilToInt(TabsList.Count / 5), Mathf.FloorToInt(tabs.width / 5));
 
             activeSettings = false;
-            var scrollContainer = inRect.ContractedBy(10);
-            scrollContainer.height -= optionsMenu.CurHeight;
-            scrollContainer.y += tabs.yMin;
+            var scrollContainer = new Rect(inRect);
+            scrollContainer.height -= optionsMenu.CurHeight + tabs.height;
+            scrollContainer.y += tabs.height;
             Widgets.DrawBoxSolid(scrollContainer, Color.grey);
             var innerContainer = scrollContainer.ContractedBy(1);
             Widgets.DrawBoxSolid(scrollContainer, new ColorInt(37, 37, 37).ToColor);
@@ -397,6 +402,7 @@ namespace EBSGFramework
                     }
                     else
                     {
+                        // This shouldn't ever come to pass, but this is just in case something or someone really fucks with things
                         contentRect.height = 35;
                         optionsMenu.Label("EBSG_SettingMenuLabel_EBSGThinkTreeEmpty".Translate());
                     }
