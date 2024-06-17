@@ -12,7 +12,7 @@ namespace EBSGFramework
         private bool reportTarget = false;
         protected override bool Satisfied(Pawn pawn)
         {
-            Log.Error(output + " - thinking pawn's name: " + pawn.Label);
+            Log.Warning(output + " - thinking pawn's name: " + pawn.Label);
             if (reportJob)
             {
                 if (pawn.CurJobDef == null) Log.Message("No job was found");
