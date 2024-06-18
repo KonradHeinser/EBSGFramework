@@ -339,6 +339,7 @@
         <Compile Include="Things\JobDriver_Gatherer.cs" />
         <Compile Include="Settings\ThinkTreeSetting.cs" />
         <Compile Include="Settings\ThinkBranchSetting.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalEBSGSetting.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

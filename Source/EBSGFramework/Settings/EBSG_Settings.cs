@@ -65,7 +65,7 @@ namespace EBSGFramework
         public static bool architePsychicInfluencerBondTorn = false;
 
         public static Dictionary<string, Dictionary<string, bool>> thinkTreeSettings;
-        private bool alreadyCheckThinkSettings = false;
+        private static bool alreadyCheckThinkSettings = false;
 
         public Dictionary<string, int> asexualDaysSettings;
 
@@ -103,7 +103,7 @@ namespace EBSGFramework
             }
         }
 
-        public static void BuildThinkTreeSettings(ref bool alreadyCheckThinkSettings)
+        public static void BuildThinkTreeSettings()
         {
             EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
 
@@ -125,10 +125,17 @@ namespace EBSGFramework
             alreadyCheckThinkSettings = true;
         }
 
+        public static bool FetchThinkTreeSetting(string uniqueID, string settingID)
+        {
+            if (!thinkTreeSettings.NullOrEmpty() && thinkTreeSettings.ContainsKey(uniqueID) && thinkTreeSettings[uniqueID].ContainsKey(settingID))
+                return thinkTreeSettings[uniqueID][settingID];
+            return false;
+        }
 
-        private bool needThinkTree = false;
-        private bool needTreeChecked = false;
-        public bool NeedEBSGThinkTree()
+        private static bool needThinkTree = false;
+        private static bool needTreeChecked = false;
+
+        public static bool NeedEBSGThinkTree()
         {
             if (!needTreeChecked)
             {
@@ -191,7 +198,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            if (thinkTreeSettings.NullOrEmpty()) BuildThinkTreeSettings(ref alreadyCheckThinkSettings);
+            if (thinkTreeSettings.NullOrEmpty()) BuildThinkTreeSettings();
 
             //if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
 
@@ -392,7 +399,7 @@ namespace EBSGFramework
                     int numberOfAIOptions = 0;
 
                     if (thinkTreeSettings.NullOrEmpty() && !alreadyCheckThinkSettings)
-                        BuildThinkTreeSettings(ref alreadyCheckThinkSettings);
+                        BuildThinkTreeSettings();
 
                     if (!thinkTreeSettings.NullOrEmpty())
                     {

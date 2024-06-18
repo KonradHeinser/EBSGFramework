@@ -240,6 +240,7 @@ namespace EBSGFramework
             cachedGeneMoodFactor = new Dictionary<Pawn, float>();
 
             RebuildCaches();
+            EBSG_Settings.BuildThinkTreeSettings(); // Ensures think tree settings contain all that they should
         }
 
         // Rather than saving them, they are just cached like this to minimize the risk of weird save fuckery caused by mod changes

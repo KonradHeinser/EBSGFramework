@@ -1,22 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/ThinkNode_ConditionalEBSGSetting.cs">
     <Files>
-      <File FileName="Settings/EBSG_Settings.cs" Line="218" Column="26" />
-      <File FileName="Settings/ThinkTreeSetting.cs" Line="10" Column="59" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="132" Column="26" />
+      <File FileName="Settings/ThinkTreeSetting.cs" Line="13" Column="1" />
       <File FileName="Settings/ThinkBranchSetting.cs" Line="12" Column="1" />
       <File FileName="EBSGRecorder.cs" Line="14" Column="1" />
-      <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="16" Column="10" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="4" Column="16" />
       <File FileName="EBSGUtilities.cs" Line="1168" Column="57" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalEBSGSetting.cs" Line="17" Column="13" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="243" Column="112" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True" />
-              <Node name="Settings" expanded="True">
-                <Node name="EBSG_Settings.cs" selected="True" />
+              <Node name="EBSGAI" expanded="True">
+                <Node name="ThinkNode_ConditionalEBSGSetting.cs" selected="True" />
               </Node>
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Settings" expanded="True" />
             </Node>
           </Node>
         </State>
