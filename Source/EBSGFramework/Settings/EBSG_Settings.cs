@@ -50,8 +50,6 @@ namespace EBSGFramework
         private static bool showEAGOptions = true;
         //private static bool showCustomizableOptions = true;
 
-        private static bool showMainAIOptions = true;
-
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
         public static bool hideInactiveSkinGenes = false;
         public static bool hideInactiveHairGenes = false;
@@ -117,7 +115,7 @@ namespace EBSGFramework
                         thinkTreeSettings.Add(treeSetting.uniqueID, new Dictionary<string, bool>());
 
                     foreach (ThinkBranchSetting setting in treeSetting.individualSettings)
-                        if (thinkTreeSettings[treeSetting.uniqueID].Keys.EnumerableNullOrEmpty() || !thinkTreeSettings[treeSetting.uniqueID].ContainsKey(setting.settingID))
+                        if (thinkTreeSettings[treeSetting.uniqueID].NullOrEmpty() || !thinkTreeSettings[treeSetting.uniqueID].ContainsKey(setting.settingID))
                             thinkTreeSettings[treeSetting.uniqueID].Add(setting.settingID, setting.defaultSetting);
                 }
             }
@@ -152,6 +150,35 @@ namespace EBSGFramework
             }
 
             return needThinkTree;
+        }
+
+        private Dictionary<string, List<ThinkBranchSetting>> treeSettings; // All the settings that need to show up in the menu. This doesn't mess with settings themselves
+        private Dictionary<string, List<string>> treeSettingLabelsAndDescriptions; // The key is the label, and this relies on the counts of this and treeSettings remaining the same
+        private Dictionary<string, bool> hiddenTreeSettings; // Gives ability to hide sections
+        private List<string> treeSettingIDs = new List<string>(); // Gives a list that can be iterated through
+        private bool builtTreeSettingMenuOptions = false;
+
+        private void BuildTreeSettingMenuOptions()
+        {
+            treeSettings = new Dictionary<string, List<ThinkBranchSetting>>();
+            treeSettingLabelsAndDescriptions = new Dictionary<string, List<string>>();
+            hiddenTreeSettings = new Dictionary<string, bool>();
+
+            if (Recorder != null)
+                foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
+                    if (treeSettings.NullOrEmpty() || !treeSettings.ContainsKey(setting.uniqueID))
+                    {
+                        treeSettings.Add(setting.uniqueID, setting.individualSettings);
+                        treeSettingLabelsAndDescriptions.Add(setting.uniqueID, new List<string> { setting.label, setting.description });
+                        hiddenTreeSettings.Add(setting.uniqueID, true);
+                        treeSettingIDs.Add(setting.uniqueID);
+                    }
+                    else
+                        foreach (ThinkBranchSetting branch in setting.individualSettings)
+                            if (!treeSettings[setting.uniqueID].Contains(branch))
+                                treeSettings[setting.uniqueID].Add(branch);
+
+            builtTreeSettingMenuOptions = true;
         }
 
         private int tabInt = 1;
@@ -248,7 +275,7 @@ namespace EBSGFramework
             switch (tabInt)
             {
                 case 1: // Main EBSG settings
-                    // Check for various mods
+                        // Check for various mods
 
                     bool EBSGAllInOneActive = ModsConfig.IsActive("EBSG.AiO");
                     bool EAGActive = ModsConfig.IsActive("EBSG.Archite");
@@ -392,55 +419,83 @@ namespace EBSGFramework
                     }
 
                     optionsMenu.Gap(10f);
+
                     break;
 
                 case 2: // Think Tree
-
-                    int numberOfAIOptions = 0;
-
-                    if (thinkTreeSettings.NullOrEmpty() && !alreadyCheckThinkSettings)
+                    if (!alreadyCheckThinkSettings) // Ensures that files have been checked for new settings
                         BuildThinkTreeSettings();
+
+                    if (!builtTreeSettingMenuOptions)
+                        BuildTreeSettingMenuOptions();
 
                     if (!thinkTreeSettings.NullOrEmpty())
                     {
-                        contentRect.height = numberOfAIOptions * 35; // To avoid weird white space, height is based off of option count of present mods
+                        if (Recorder != null && !Recorder.thinkTreeSettings.NullOrEmpty())
+                        {
+                            contentRect.height = Recorder.thinkTreeSettings.Count * 35; // To avoid weird white space, height is based off of option count of present mods
 
-                        optionsMenu.CheckboxLabeled("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(), ref showMainAIOptions, "EBSG_SettingMenuLabel_EBSGThinkTreeDescription".Translate());
+                            foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
+                                if (hiddenTreeSettings[setting.uniqueID] && !setting.individualSettings.NullOrEmpty())
+                                    contentRect.height += setting.individualSettings.Count * 35;
+
+                            foreach (string id in treeSettingIDs)
+                            {
+                                bool showFlag = hiddenTreeSettings[id];
+                                optionsMenu.CheckboxLabeled(treeSettingLabelsAndDescriptions[id][0], ref showFlag, treeSettingLabelsAndDescriptions[id][1]);
+                                optionsMenu.Gap(7f);
+
+                                if (showFlag)
+                                    foreach (ThinkBranchSetting branchSetting in treeSettings[id])
+                                    {
+                                        bool settingFlag = thinkTreeSettings[id][branchSetting.settingID];
+
+                                        optionsMenu.CheckboxLabeled("    " + branchSetting.label, ref settingFlag, branchSetting.description);
+                                        optionsMenu.Gap(3f);
+                                        thinkTreeSettings[id][branchSetting.settingID] = settingFlag;
+                                    }
+
+                                hiddenTreeSettings[id] = showFlag;
+                                optionsMenu.Gap(10f);
+                            }
+                        }
                     }
                     else
                     {
                         // This shouldn't ever come to pass, but this is just in case something or someone really fucks with things
+                        Log.Error("What in the fuck is going on in here. Sincerely, Alite. Let the author know you got this error so they can look at it. This isn't exactly a phrase Alite uses a lot in \"official\" code, so if you're seeing this, something went really really wrong.");
+
                         contentRect.height = 35;
                         optionsMenu.Label("EBSG_SettingMenuLabel_EBSGThinkTreeEmpty".Translate());
+                        optionsMenu.Gap(10f);
                     }
 
                     break;
-
                 case 4: // Customization settings
-                    /*
-                    if (NeedCustomizationSection)
-                    {
-                        numberOfOptions += 1;
-                        if (showCustomizableOptions)
+                        /*
+                        if (NeedCustomizationSection)
                         {
-                            // This is where the individual customization categories belong
-                            if (!AsexualHediffs.NullOrEmpty())
-                                numberOfOptions += AsexualHediffs.Count;
+                            numberOfOptions += 1;
+                            if (showCustomizableOptions)
+                            {
+                                // This is where the individual customization categories belong
+                                if (!AsexualHediffs.NullOrEmpty())
+                                    numberOfOptions += AsexualHediffs.Count;
+                            }
                         }
-                    }
 
-                    // Checks all the lists to see if any make this worth it.
-                    if (NeedCustomizationSection)
-                    {
-                        optionsMenu.CheckboxLabeled("EBSG_CustomizableThings".Translate(), ref showCustomizableOptions, "EBSG_CustomizableThingsDescription".Translate());
-
-                        if (showCustomizableOptions)
+                        // Checks all the lists to see if any make this worth it.
+                        if (NeedCustomizationSection)
                         {
-                            // Column 1
-                            if ()
+                            optionsMenu.CheckboxLabeled("EBSG_CustomizableThings".Translate(), ref showCustomizableOptions, "EBSG_CustomizableThingsDescription".Translate());
+
+                            if (showCustomizableOptions)
+                            {
+                                // Column 1
+                                if ()
+                            }
                         }
-                    }
-                    */
+                        */
 
                     break;
 

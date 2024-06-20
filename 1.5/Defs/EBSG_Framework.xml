@@ -57,9 +57,14 @@
                 <description>These settings universally toggle whether certain AI things added to the EBSG tree by other mods will work. The main settings are disabled by default to avoid accidentally increasing performance costs with things that are not desired by the player.\n\nSettings in this tab usually don't require a restart. The checkmarks next to the titles are just to show and hide a section, and do not change any of the settings.</description>
                 <individualSettings>
                     <li>
+                        <settingID>EBSGThinkTree</settingID>
+                        <label>EBSG Think Tree</label>
+                        <description>Toggles whether any mods can use the EBSG Think Tree. If you see this option, then that means there is a mod that adds to the tree, usually to set up ability auto-casts for abilities. Disabling this completely disables the EBSG tree.\n\nThis should only be disabled if you're having performance issues or encountering weird bugs.</description>
+                    </li>
+                    <li>
                         <settingID>EBSGColonistAI</settingID>
                         <label>Colonist AI</label>
-                        <description>Toggles whether any mods can cause colonists to autocast.</description>
+                        <description>Toggles whether any mods can cause colonists to autocast. This only impacts mods that directly add to the EBSG Tree's colonist AI, so any mod that uses other methods for implementing think tree stuff for colonists will be completely unaffected.</description>
                         <defaultSetting>False</defaultSetting>
                     </li>
                 </individualSettings>
