@@ -69,10 +69,6 @@
                     </li>
                 </individualSettings>
             </li>
-            <li>
-                <uniqueID>InsertYourUniqueIDHere</uniqueID>
-            </li>
-
         </thinkTreeSettings>
     </EBSGFramework.EBSGRecorder>
 </Defs>
