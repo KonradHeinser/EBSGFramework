@@ -62,7 +62,10 @@ namespace EBSGFramework
 
         public static bool architePsychicInfluencerBondTorn = false;
 
-        public static Dictionary<string, Dictionary<string, bool>> thinkTreeSettings;
+        public static Dictionary<string, bool> thinkTreeSettings;
+        public static List<string> thinkTreeSettingKeys;
+        public static List<bool> thinkTreeSettingBools;
+
         private static bool alreadyCheckThinkSettings = false;
 
         public Dictionary<string, int> asexualDaysSettings;
@@ -107,16 +110,24 @@ namespace EBSGFramework
 
             if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
             {
-                if (thinkTreeSettings.NullOrEmpty()) thinkTreeSettings = new Dictionary<string, Dictionary<string, bool>>();
+                if (thinkTreeSettings.NullOrEmpty())
+                {
+                    thinkTreeSettings = new Dictionary<string, bool>();
+                    thinkTreeSettingKeys = new List<string>();
+                    thinkTreeSettingBools = new List<bool>();
+                }
 
                 foreach (ThinkTreeSetting treeSetting in recorder.thinkTreeSettings)
                 {
-                    if (thinkTreeSettings.Keys.EnumerableNullOrEmpty() || !thinkTreeSettings.ContainsKey(treeSetting.uniqueID))
-                        thinkTreeSettings.Add(treeSetting.uniqueID, new Dictionary<string, bool>());
+                    if (treeSetting.individualSettings.NullOrEmpty())
+                        continue;
 
                     foreach (ThinkBranchSetting setting in treeSetting.individualSettings)
-                        if (thinkTreeSettings[treeSetting.uniqueID].NullOrEmpty() || !thinkTreeSettings[treeSetting.uniqueID].ContainsKey(setting.settingID))
-                            thinkTreeSettings[treeSetting.uniqueID].Add(setting.settingID, setting.defaultSetting);
+                        if (thinkTreeSettings.NullOrEmpty() || !thinkTreeSettings.ContainsKey(treeSetting.uniqueID + setting.settingID))
+                        {
+                            thinkTreeSettings.Add(treeSetting.uniqueID + setting.settingID, setting.defaultSetting);
+                        }
+
                 }
             }
 
@@ -125,8 +136,8 @@ namespace EBSGFramework
 
         public static bool FetchThinkTreeSetting(string uniqueID, string settingID)
         {
-            if (!thinkTreeSettings.NullOrEmpty() && thinkTreeSettings.ContainsKey(uniqueID) && thinkTreeSettings[uniqueID].ContainsKey(settingID))
-                return thinkTreeSettings[uniqueID][settingID];
+            if (!thinkTreeSettings.NullOrEmpty() && thinkTreeSettings.ContainsKey(uniqueID + settingID))
+                return thinkTreeSettings[uniqueID + settingID];
             return false;
         }
 
@@ -166,6 +177,9 @@ namespace EBSGFramework
 
             if (Recorder != null)
                 foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
+                {
+                    if (setting.individualSettings.NullOrEmpty())
+                        continue;
                     if (treeSettings.NullOrEmpty() || !treeSettings.ContainsKey(setting.uniqueID))
                     {
                         treeSettings.Add(setting.uniqueID, setting.individualSettings);
@@ -177,6 +191,7 @@ namespace EBSGFramework
                         foreach (ThinkBranchSetting branch in setting.individualSettings)
                             if (!treeSettings[setting.uniqueID].Contains(branch))
                                 treeSettings[setting.uniqueID].Add(branch);
+                }
 
             builtTreeSettingMenuOptions = true;
         }
@@ -225,7 +240,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            if (thinkTreeSettings.NullOrEmpty()) BuildThinkTreeSettings();
+            if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();
 
             //if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
 
@@ -238,8 +253,9 @@ namespace EBSGFramework
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
             Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
-            if (!thinkTreeSettings.NullOrEmpty())
-                Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeModSettings", LookMode.Value, LookMode.Value);
+
+            Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
+
             //Scribe_Collections.Look(ref asexualDaysSettings, "EBSG_asexualDaysSettings", LookMode.Value, LookMode.Value);
         }
 
@@ -431,12 +447,12 @@ namespace EBSGFramework
 
                     if (!thinkTreeSettings.NullOrEmpty())
                     {
-                        if (Recorder != null && !Recorder.thinkTreeSettings.NullOrEmpty())
+                        if (Recorder != null && !treeSettingIDs.NullOrEmpty())
                         {
-                            contentRect.height = Recorder.thinkTreeSettings.Count * 35; // To avoid weird white space, height is based off of option count of present mods
+                            contentRect.height = treeSettingIDs.Count * 35; // To avoid weird white space, height is based off of option count of present mods
 
                             foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
-                                if (hiddenTreeSettings[setting.uniqueID] && !setting.individualSettings.NullOrEmpty())
+                                if (hiddenTreeSettings.ContainsKey(setting.uniqueID) && hiddenTreeSettings[setting.uniqueID] && !setting.individualSettings.NullOrEmpty())
                                     contentRect.height += setting.individualSettings.Count * 35;
 
                             foreach (string id in treeSettingIDs)
@@ -448,12 +464,15 @@ namespace EBSGFramework
                                 if (showFlag)
                                     foreach (ThinkBranchSetting branchSetting in treeSettings[id])
                                     {
-                                        bool settingFlag = thinkTreeSettings[id][branchSetting.settingID];
+                                        bool settingFlag = thinkTreeSettings[id + branchSetting.settingID];
 
                                         optionsMenu.CheckboxLabeled("    " + branchSetting.label, ref settingFlag, branchSetting.description);
                                         optionsMenu.Gap(3f);
-                                        thinkTreeSettings[id][branchSetting.settingID] = settingFlag;
+
+                                        thinkTreeSettings[id + branchSetting.settingID] = settingFlag;
                                     }
+
+
 
                                 hiddenTreeSettings[id] = showFlag;
                                 optionsMenu.Gap(10f);
