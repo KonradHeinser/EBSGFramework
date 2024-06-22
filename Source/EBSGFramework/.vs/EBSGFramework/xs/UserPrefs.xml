@@ -1,13 +1,28 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/ThinkNode_RecordPassage.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/ThinkNode_ConditionalTooManyNearbyThreats.cs">
     <Files>
       <File FileName="Settings/EBSG_Settings.cs" Line="470" Column="61" />
       <File FileName="Settings/ThinkTreeSetting.cs" Line="13" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="1175" Column="104" />
+      <File FileName="EBSGUtilities.cs" Line="1152" Column="29" />
       <File FileName="EBSGAI/ThinkNode_ConditionalEBSGSetting.cs" Line="24" Column="1" />
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="243" Column="112" />
       <File FileName="EBSGAI/ThinkNode_RecordPassage.cs" Line="36" Column="1" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalNearbyEnemyTarget.cs" Line="12" Column="42" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalTooManyNearbyThreats.cs" Line="33" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="EBSGAI" expanded="True">
+                <Node name="ThinkNode_ConditionalTooManyNearbyThreats.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
