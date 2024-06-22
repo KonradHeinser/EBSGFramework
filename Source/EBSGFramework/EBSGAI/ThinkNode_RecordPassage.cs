@@ -12,22 +12,22 @@ namespace EBSGFramework
         private bool reportTarget = false;
         protected override bool Satisfied(Pawn pawn)
         {
-            Log.Warning(output + " - thinking pawn's name: " + pawn.Label);
+            Log.Warning(output + "EBSG_ThinkingPawnName".Translate() + pawn.Label);
             if (reportJob)
             {
-                if (pawn.CurJobDef == null) Log.Message("No job was found");
-                else Log.Message("Pawn is currently performing the job: " + pawn.CurJobDef);
+                if (pawn.CurJobDef == null) Log.Message("EBSG_NoJobFound".Translate());
+                else Log.Message("EBSG_PawnCurrentJob".Translate() + pawn.CurJobDef);
             }
             if (reportStance)
             {
-                if (pawn.stances.curStance == null) Log.Message("No stance was found");
-                else Log.Message("Pawn's current stance is: " + pawn.stances.curStance);
+                if (pawn.stances.curStance == null) Log.Message("EBSG_NoStanceFound".Translate());
+                else Log.Message("EBSG_PawnCurrentStance".Translate() + pawn.stances.curStance);
             }
             if (reportTarget)
             {
                 Thing target = EBSGUtilities.GetCurrentTarget(pawn, false, false, false);
-                if (target == null) Log.Message("Pawn does not currently have a target");
-                else Log.Message("Current target is " + target.Label);
+                if (target == null) Log.Message("EBSG_NoTargetFound".Translate());
+                else Log.Message("EBSG_PawnCurrentTarget".Translate() + target.Label);
             }
             return true;
         }

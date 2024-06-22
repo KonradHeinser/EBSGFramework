@@ -14,6 +14,15 @@
     <AbilityTargetTooFar>Target is out of range.</AbilityTargetTooFar>
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
 
+    <!--EBSG Recorder-->
+    <EBSG_ThinkingPawnName> - thinking pawn's name: </EBSG_ThinkingPawnName>
+    <EBSG_NoJobFound>No job was found</EBSG_NoJobFound>
+    <EBSG_PawnCurrentJob>Pawn is currently performing the job </EBSG_PawnCurrentJob>
+    <EBSG_NoStanceFound>No stance was found</EBSG_NoStanceFound>
+    <EBSG_PawnCurrentStance>Pawn is current stance is </EBSG_PawnCurrentStance>
+    <EBSG_NoTargetFound>They do not currently have a target</EBSG_NoTargetFound>
+    <EBSG_PawnCurrentTarget>Current target is </EBSG_PawnCurrentTarget>
+
     <!--Generic Building Stuff-->
     <PlaceWorkerMoreWater>Requires more water near it.</PlaceWorkerMoreWater>
     <PlaceWorkerLessWater>Requires area with no water around.</PlaceWorkerLessWater>
