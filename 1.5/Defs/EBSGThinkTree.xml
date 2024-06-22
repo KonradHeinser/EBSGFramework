@@ -48,24 +48,24 @@
                                                         </li>
                                                     </subNodes>
                                                 </li>
-                                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_UndraftedColonist_MeleeThreat</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
-                                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
-                                                    <dangerRadius>20</dangerRadius>
-                                                    <minCount>5</minCount>
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_UndraftedColonist_ManyNearbyThreats</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
                                                 <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
                                                     <subNodes>
+                                                        <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_UndraftedColonist_MeleeThreat</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
+                                                        <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                                            <dangerRadius>20</dangerRadius>
+                                                            <minCount>5</minCount>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_UndraftedColonist_ManyNearbyThreats</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
                                                         <li Class="ThinkNode_SubtreesByTag">
                                                             <insertTag>EBSGAI_UndraftedColonist_EnemyOnMap</insertTag>
                                                         </li>
@@ -94,24 +94,25 @@
                                                         </li>
                                                     </subNodes>
                                                 </li>
-                                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_DraftedColonist_MeleeThreat</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
-                                                <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
-                                                    <dangerRadius>20</dangerRadius>
-                                                    <minCount>5</minCount>
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_DraftedColonist_ManyNearbyThreats</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
+
                                                 <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
                                                     <subNodes>
+                                                        <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_DraftedColonist_MeleeThreat</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
+                                                        <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
+                                                            <dangerRadius>20</dangerRadius>
+                                                            <minCount>5</minCount>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_DraftedColonist_ManyNearbyThreats</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
                                                         <li Class="ThinkNode_SubtreesByTag">
                                                             <insertTag>EBSGAI_DraftedColonist_EnemyOnMap</insertTag>
                                                         </li>
