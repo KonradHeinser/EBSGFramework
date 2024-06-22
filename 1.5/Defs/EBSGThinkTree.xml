@@ -14,7 +14,6 @@
                         <uniqueID>EBSGFramework</uniqueID>
                         <settingID>EBSGColonistAI</settingID>
                             <subNodes>
-                                <li Class="EBSGFramework.ThinkNode_RecordPassage" />
                                 <li Class="ThinkNode_ConditionalColonist">
                                     <subNodes>
                                         <li Class="ThinkNode_SubtreesByTag">
@@ -73,7 +72,6 @@
                                                 </li>
                                             </subNodes>
                                         </li>
-                                        <!-- <li Class="EBSGFramework.ThinkNode_RecordPassage" /> -->
                                         <li Class="EBSGFramework.ThinkNode_ConditionalPawnDraftedAndFree">
                                             <subNodes>
                                                 <li Class="ThinkNode_SubtreesByTag">
