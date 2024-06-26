@@ -9,7 +9,7 @@ namespace EBSGFramework
     public class JobGiver_AICastAnyOfAbilityOnEnemyTarget : JobGiver_AICastAbility
     {
         private List<AbilityDef> abilities = null;
-        private int hashInterval = 3; // Alters the chances of the pawn actually trying to cast the ability. If this is set to 1, then the pawn will always attempt to use this, thus making it more difficult to use other abilties. Only recommended for abilities that should be constantly used, like attacks
+        private int hashInterval = 10; // Alters the chances of the pawn actually trying to cast the ability. If this is set to 1, then the pawn will always attempt to use this, thus making it more difficult to use other abilties. Only recommended for abilities that should be constantly used, like attacks
         List<Ability> presentAbilities = new List<Ability>();
         static Random rnd = new Random();
         Thing currentEnemy = null;
@@ -17,11 +17,13 @@ namespace EBSGFramework
 
         protected override Job TryGiveJob(Pawn pawn) // Change this to select its own target instead of using the pawn's current one
         {
-            presentAbilities.Clear();
-            chosenAbility = null;
             if (!pawn.IsHashIntervalTick(hashInterval)) return null;
             currentEnemy = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true);
-            if (currentEnemy == null) return null;
+            if (currentEnemy == null || !currentEnemy.HostileTo(pawn)) return null;
+
+            presentAbilities.Clear();
+            chosenAbility = null;
+
             IntVec3 enemyPosition = currentEnemy.Position;
             bool los = GenSight.LineOfSight(pawn.Position, enemyPosition, pawn.Map);
             foreach (AbilityDef abilityDef in abilities)

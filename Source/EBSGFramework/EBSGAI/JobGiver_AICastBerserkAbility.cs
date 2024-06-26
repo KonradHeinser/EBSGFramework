@@ -28,7 +28,7 @@ namespace EBSGFramework
             float MaxDistanceFromCaster = 0;
             if (verb.rangeStat != null) MaxDistanceFromCaster = caster.GetStatValue(verb.rangeStat);
             else MaxDistanceFromCaster = verb.range;
-            if (ability.def.verbProperties.warmupTime > 1) MaxDistanceFromCaster *= (1 / ability.def.verbProperties.warmupTime) * 1.2f; // Trying to avoid chance of target wandering out of range mid-cast
+            if (ability.def.verbProperties.warmupTime > 1) MaxDistanceFromCaster *= (1 / ability.def.verbProperties.warmupTime) * 0.8f; // Trying to avoid chance of target wandering out of range mid-cast
 
             // Create curve based on range
             SimpleCurve DistanceSquaredToTargetSelectionWeightCurve = new SimpleCurve
@@ -59,22 +59,7 @@ namespace EBSGFramework
                 if (!item.Position.InHorDistOf(caster.Position, MaxDistanceFromCaster) || !mentalComp.Valid(new LocalTargetInfo(item)) || !ability.CanApplyOn(new LocalTargetInfo(item))) continue;
                 if (item.MentalStateDef == mentalState) continue;
 
-                // Tries to figure out the target's type and if that type is valid
-                if (item.RaceProps.Animal)
-                {
-                    if (validTargets.canTargetAnimals) potentialTargets.Add(item);
-                    continue;
-                }
-                if (item.RaceProps.Humanlike)
-                {
-                    if (validTargets.canTargetHumans && item != caster) potentialTargets.Add(item);
-                    continue;
-                }
-                if (item.RaceProps.IsMechanoid)
-                {
-                    if (validTargets.canTargetMechs) potentialTargets.Add(item);
-                    continue;
-                }
+                if (validTargets.CanTarget(item)) potentialTargets.Add(item);
             }
             if (potentialTargets.TryRandomElementByWeight(delegate (Pawn x)
             {

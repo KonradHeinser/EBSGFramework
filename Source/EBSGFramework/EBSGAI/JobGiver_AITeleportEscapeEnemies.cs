@@ -14,12 +14,11 @@ namespace EBSGFramework
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            Ability ability = pawn.abilities?.GetAbility(this.ability);
-            if (ability == null || !ability.CanCast || ability.comps.NullOrEmpty()) return null;
+            Ability castingAbility = pawn.abilities?.GetAbility(this.ability);
+            if (castingAbility == null || !castingAbility.CanCast || castingAbility.comps.NullOrEmpty()) return null;
             float range = 0f;
             CompAbilityEffect_Teleport teleportComp = null;
-            foreach (AbilityComp comp in ability.comps)
-            {
+            foreach (AbilityComp comp in castingAbility.comps)
                 if (comp is CompAbilityEffect_Teleport compAbilityEffect_Teleport)
                 {
                     teleportComp = compAbilityEffect_Teleport;
@@ -27,12 +26,10 @@ namespace EBSGFramework
                     else range = compAbilityEffect_Teleport.Props.randomRange.RandomInRange;
                     break;
                 }
-            }
+
             if (teleportComp == null) return null;
             if (TryFindRelocatePosition(pawn, out var relocatePosition, range, teleportComp))
-            {
-                return ability.GetJob(pawn, relocatePosition);
-            }
+                return castingAbility.GetJob(pawn, relocatePosition);
 
             return null;
         }
