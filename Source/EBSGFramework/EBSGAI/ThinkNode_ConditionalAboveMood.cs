@@ -5,10 +5,10 @@ namespace EBSGFramework
 {
     public class ThinkNode_ConditionalAboveMood : ThinkNode_Conditional
     {
-        private float minMood = 0.9f;
+        private float minMood = 0.5f;
         protected override bool Satisfied(Pawn pawn)
         {
-            return pawn.needs.mood.CurLevel >= minMood;
+            return pawn.needs?.mood?.CurLevel >= minMood;
         }
     }
 }

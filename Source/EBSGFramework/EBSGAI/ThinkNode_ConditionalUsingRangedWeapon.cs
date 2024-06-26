@@ -8,7 +8,7 @@ namespace EBSGFramework
         private bool onlyPassIfDraftedOrAttacker = true;
         protected override bool Satisfied(Pawn pawn)
         {
-            if (onlyPassIfDraftedOrAttacker && (!pawn.Drafted || !EBSGUtilities.AutoAttackingColonist(pawn))) return false;
+            if (onlyPassIfDraftedOrAttacker && pawn.Faction.IsPlayer && (!pawn.Drafted || !EBSGUtilities.AutoAttackingColonist(pawn))) return false;
             return pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon;
         }
     }

@@ -8,17 +8,24 @@ namespace EBSGFramework
     {
         private AbilityDef ability = null;
 
+        private bool onlyHostiles = true;
+
+        private bool onlyInFaction = false;
+
+        private bool autoSearch = true;
+
         protected override bool Satisfied(Pawn pawn)
         {
             if (ability == null) return false;
 
             Ability pawnAbility = pawn.abilities?.GetAbility(ability);
-            if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty()) return false;
+            if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty() || !ability.targetRequired) return false;
 
-            Thing target = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true);
+            Thing target = EBSGUtilities.GetCurrentTarget(pawn, onlyHostiles, onlyInFaction, autoSearch);
 
             try
             {
+                ability.verbProperties.targetParams.CanTarget(target);
                 foreach (CompAbilityEffect abilityEffect in pawnAbility.comps)
                     if (!abilityEffect.Valid((LocalTargetInfo)target)) return false;
             }

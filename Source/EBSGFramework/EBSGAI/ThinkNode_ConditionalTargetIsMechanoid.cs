@@ -10,9 +10,8 @@ namespace EBSGFramework
             Thing enemy = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true);
             if (enemy == null) return false;
             if (enemy is Pawn target)
-            {
                 return target.RaceProps.IsMechanoid;
-            }
+
             return false;
         }
     }

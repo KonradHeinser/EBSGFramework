@@ -329,7 +329,6 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyEnemyTarget.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalValidTargetForAbility.cs" />
-        <Compile Include="EBSGAI\ThinkNode_ConditionalCurrentRainRate.cs" />
         <Compile Include="Things\PlaceWorker_GathererTerrain.cs" />
         <Compile Include="Things\CompProperties_GathererSpot.cs" />
         <Compile Include="Things\GatherOption.cs" />
