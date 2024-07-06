@@ -1,20 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AITeleportEscapeEnemies.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs">
     <Files>
       <File FileName="EBSGAI/JobGiver_AIResurrectHumanoid.cs" Line="92" Column="14" />
-      <File FileName="EBSGAI/JobGiver_AITeleportEscapeEnemies.cs" Line="29" Column="13" />
+      <File FileName="EBSGAI/JobGiver_AITeleportEscapeEnemies.cs" Line="16" Column="10" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="10" Column="83" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="EBSGAI" expanded="True">
-                <Node name="JobGiver_AITeleportEscapeEnemies.cs" selected="True" />
-              </Node>
+              <Node name="Abilities" expanded="True" />
+              <Node name="EBSGAI" expanded="True" />
             </Node>
           </Node>
         </State>
