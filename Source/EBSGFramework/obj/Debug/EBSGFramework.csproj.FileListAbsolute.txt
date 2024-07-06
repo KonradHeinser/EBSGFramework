@@ -6,3 +6,9 @@
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/Source/EBSGFramework/obj/Debug/EBSGFramework.pdb
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/1.5/Assemblies/EBSGFramework.dll
 /home/robert/.steam/debian-installation/steamapps/common/RimWorld/Mods/EBSGFramework/1.5/Assemblies/EBSGFramework.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\1.5\Assemblies\EBSGFramework.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\1.5\Assemblies\EBSGFramework.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\Source\EBSGFramework\obj\Debug\EBSGFramework.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\Source\EBSGFramework\obj\Debug\EBSGFramework.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\Source\EBSGFramework\obj\Debug\EBSGFramework.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\EBSGFramework\Source\EBSGFramework\obj\Debug\EBSGFramework.pdb
