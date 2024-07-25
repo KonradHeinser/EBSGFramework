@@ -339,6 +339,8 @@
         <Compile Include="Settings\ThinkTreeSetting.cs" />
         <Compile Include="Settings\ThinkBranchSetting.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalEBSGSetting.cs" />
+        <Compile Include="Thoughts\MentalBreakWorker_Hydrophobia.cs" />
+        <Compile Include="Thoughts\MentalState_PanicFleeWater.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

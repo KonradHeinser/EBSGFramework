@@ -35,6 +35,13 @@ namespace EBSGFramework
         public List<GeneDef> noApparel = new List<GeneDef>();
         public List<GeneDef> noWeapon = new List<GeneDef>();
         public List<GeneDef> equipRestricting = new List<GeneDef>();
+        public List<GeneDef> grcGenes = new List<GeneDef>();
+
+        // Cached needs of interest
+        public List<NeedDef> murderousNeeds = new List<NeedDef>();
+
+        // Cached hediffs of interest
+        public List<HediffDef> explosiveAttackHediffs = new List<HediffDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -253,6 +260,8 @@ namespace EBSGFramework
 
             CacheGenesOfInterest();
             CacheStatsOfInterest();
+            CacheNeedsOfInterest();
+            CacheHediffsOfInterest();
         }
 
         private void CacheGenesOfInterest()
@@ -264,6 +273,7 @@ namespace EBSGFramework
             noApparel = new List<GeneDef>();
             noWeapon = new List<GeneDef>();
             equipRestricting = new List<GeneDef>();
+            grcGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -292,6 +302,8 @@ namespace EBSGFramework
                     else
                         equipRestricting.Add(gene);
                 }
+                if (gene.HasModExtension<GRCExtension>())
+                    grcGenes.Add(gene);
             }
         }
 
@@ -307,6 +319,7 @@ namespace EBSGFramework
             // nonBleedingSlayingStats = new List<StatDef>();
 
             foreach (StatDef stat in DefDatabase<StatDef>.AllDefs)
+            {
                 if (stat.HasModExtension<EBSGDamageExtension>())
                 {
                     EBSGDamageExtension extension = stat.GetModExtension<EBSGDamageExtension>();
@@ -319,6 +332,30 @@ namespace EBSGFramework
                     // if (extension.allowBleedable) bleedingSlayingStats.Add(stat);
                     // if (extension.allowNonBleedable) nonBleedingSlayingStats.Add(stat);
                 }
+            }
+        }
+
+        private void CacheNeedsOfInterest()
+        {
+            murderousNeeds = new List<NeedDef>();
+
+            foreach (NeedDef need in DefDatabase<NeedDef>.AllDefs)
+            {
+                if (need.needClass == typeof(Need_Murderous))
+                    murderousNeeds.Add(need);
+            }
+        }
+
+        private void CacheHediffsOfInterest()
+        {
+            explosiveAttackHediffs = new List<HediffDef>();
+
+            foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
+            {
+                if (hediff.comps.NullOrEmpty()) continue;
+                if (hediff.HasComp(typeof(HediffComp_ExplodingAttacks)) || hediff.HasComp(typeof(HediffComp_ExplodingRangedAttacks))
+                    || hediff.HasComp(typeof(HediffComp_ExplodingMeleeAttacks))) explosiveAttackHediffs.Add(hediff);
+            }
         }
 
         // Post load

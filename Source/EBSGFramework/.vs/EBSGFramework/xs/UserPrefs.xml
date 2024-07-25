@@ -1,17 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Thoughts/MentalState_PanicFleeWater.cs">
     <Files>
-      <File FileName="EBSGAI/JobGiver_AIResurrectHumanoid.cs" Line="92" Column="14" />
-      <File FileName="EBSGAI/JobGiver_AITeleportEscapeEnemies.cs" Line="16" Column="10" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="10" Column="83" />
+      <File FileName="Thoughts/MentalState_PanicFleeWater.cs" Line="13" Column="57" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
-              <Node name="EBSGAI" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Thoughts" expanded="True">
+                <Node name="MentalState_PanicFleeWater.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

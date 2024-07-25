@@ -453,7 +453,7 @@ namespace EBSGFramework
 
                 if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
 
-                if (!__result.genes.GenesListForReading.NullOrEmpty())
+                if (!__result.genes.GenesListForReading.NullOrEmpty() && Cache != null && Cache.NeedEquipRestrictGeneCheck())
                     foreach (Gene gene in __result.genes.GenesListForReading)
                     {
                         if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
@@ -578,37 +578,42 @@ namespace EBSGFramework
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, ref Pawn ___pawn)
         {
-            if (ModsConfig.BiotechActive && otherPawn.genes != null)
+            if (__result != 0 && ModsConfig.BiotechActive && otherPawn.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty())
             {
-                List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
+                if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out GeneDef firstMatch, Cache.grcGenes))
+                {
+                    List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
 
-                foreach (Gene gene in genesListForReading)
-                    if (gene.def.HasModExtension<GRCExtension>())
-                    {
-                        float num = 1f;
-                        GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
-                        if (extension.carrierStat != null)
+                    foreach (Gene gene in genesListForReading)
+                        if (gene.def.HasModExtension<GRCExtension>())
                         {
-                            float statValue = otherPawn.GetStatValue(extension.carrierStat);
-                            if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
+                            float num = 1f;
+                            GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
+                            if (extension.carrierStat != null)
+                            {
+                                float statValue = otherPawn.GetStatValue(extension.carrierStat);
+                                if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
+                                else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
+                                else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
+                            }
+                            if (extension.otherStat != null)
+                            {
+                                float statValue = ___pawn.GetStatValue(extension.otherStat);
+                                if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
+                                else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
+                                else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
+                            }
+                            __result *= num;
+                            if (__result == 0) return;
                         }
-                        if (extension.otherStat != null)
-                        {
-                            float statValue = ___pawn.GetStatValue(extension.otherStat);
-                            if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                        }
-                        __result *= num;
-                    }
+                }
             }
         }
 
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
         {
-            if (ModsConfig.BiotechActive && romancer.genes != null)
+            if (ModsConfig.BiotechActive && romancer.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty() &&
+                EBSGUtilities.PawnHasAnyOfGenes(romancer, out GeneDef firstMatch, Cache.grcGenes))
             {
                 List<Gene> genesListForReading = romancer.genes.GenesListForReading;
                 float num = 1f;
@@ -662,7 +667,7 @@ namespace EBSGFramework
 
                 if (ensureReverse && positiveValue == __result > 0) __result *= -1;
             }
-
+            // This is a universal mood factor, as opposed to the specialized ones above. Usually ends up returning 1
             if (__result != 0 && Cache != null) __result *= Cache.GetGeneMoodFactor(___pawn);
         }
 
@@ -732,22 +737,16 @@ namespace EBSGFramework
 
         public static void DoKillSideEffectsPostfix(DamageInfo? dinfo, Hediff exactCulprit, bool spawned, Pawn __instance)
         {
-            if (dinfo?.Instigator != null && dinfo.Value.Instigator is Pawn pawn)
-            {
-                if (pawn.needs != null && !pawn.needs.AllNeeds.NullOrEmpty())
-                {
-                    foreach (Need need in pawn.needs.AllNeeds)
-                    {
-                        if (need is Need_Murderous murderNeed)
-                            murderNeed.Notify_KilledPawn(dinfo, __instance);
-                    }
-                }
-            }
+            if (Cache != null && !Cache.murderousNeeds.NullOrEmpty() && dinfo?.Instigator != null && dinfo.Value.Instigator is Pawn pawn &&
+                pawn.needs != null && !pawn.needs.AllNeeds.NullOrEmpty())
+                foreach (Need need in pawn.needs.AllNeeds)
+                    if (need is Need_Murderous murderNeed)
+                        murderNeed.Notify_KilledPawn(dinfo, __instance);
         }
 
         public static void IsForbiddenPostfix(Thing t, Pawn pawn, ref bool __result)
         {
-            if (!__result && (t.Faction == null || pawn.Faction == null || t.Faction != pawn.Faction) && t is Corpse corpse)
+            if (!__result && t is Corpse corpse && (t.Faction == null || pawn.Faction == null || t.Faction != pawn.Faction))
             {
                 MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
                 if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty())
@@ -757,7 +756,7 @@ namespace EBSGFramework
 
         public static void IsBloodfeederPostfix(Pawn pawn, ref bool __result)
         {
-            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null && !DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder").bloodfeederGenes.NullOrEmpty())
+            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
                 __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder").bloodfeederGenes);
         }
 
@@ -823,7 +822,6 @@ namespace EBSGFramework
             {
                 EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
                 if (!recorder.geneEvents.NullOrEmpty())
-                {
                     foreach (GeneEvent geneEvent in recorder.geneEvents)
                         if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, implantee) &&
                             implanter.genes.GenesListForReading.Any((Gene x) => x.def == geneEvent.gene))
@@ -831,7 +829,6 @@ namespace EBSGFramework
                             __result = false;
                             break;
                         }
-                }
             }
         }
 
@@ -841,7 +838,6 @@ namespace EBSGFramework
             {
                 EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
                 if (!recorder.geneEvents.NullOrEmpty())
-                {
                     foreach (GeneEvent geneEvent in recorder.geneEvents)
                         if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, selPawn) &&
                             __instance.GeneSet.GenesListForReading.Any((GeneDef x) => x == geneEvent.gene))
@@ -849,7 +845,6 @@ namespace EBSGFramework
                             __result = true;
                             break;
                         }
-                }
             }
         }
 
@@ -973,7 +968,7 @@ namespace EBSGFramework
 
         public static bool HasSpecialExplosion(Pawn pawn)
         {
-            if (!pawn.Dead && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+            if (pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
@@ -1008,14 +1003,11 @@ namespace EBSGFramework
         {
             if (__instance is Corpse corpse && corpse.InnerPawn != null && EBSGUtilities.PawnHasAnyHediff(corpse))
             {
-                foreach (Hediff hediff in corpse.InnerPawn.health.hediffSet.hediffs)
+                MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
+                if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty() && multipleLives.forbiddenCorpses.Contains(corpse))
                 {
-                    HediffComp_MultipleLives comp = hediff.TryGetComp<HediffComp_MultipleLives>();
-                    if (comp != null && comp.pawnReviving && comp.Props.indestructibleWhileResurrecting)
-                    {
-                        dinfo.SetAmount(0);
-                        return true;
-                    }
+                    dinfo.SetAmount(0);
+                    return true;
                 }
             }
             if (__instance is Pawn victim && dinfo.Instigator is Pawn attacker && Cache != null)
@@ -1062,8 +1054,9 @@ namespace EBSGFramework
 
         public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
-            if (dinfo.Instigator != null && dinfo.Instigator is Pawn pawn && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance) &&
-                EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
+            if (Cache != null && !Cache.explosiveAttackHediffs.NullOrEmpty() && dinfo.Instigator != null && dinfo.Instigator is Pawn pawn
+                && !pawn.Dead && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance)
+                && EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
             {
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
