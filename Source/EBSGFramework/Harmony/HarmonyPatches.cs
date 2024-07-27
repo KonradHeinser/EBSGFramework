@@ -69,6 +69,8 @@ namespace EBSGFramework
                  postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
                 postfix: new HarmonyMethod(patchType, nameof(TryGenerateNewPawnInternalPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GeneratePawnRelations"),
+                prefix: new HarmonyMethod(patchType, nameof(CanGeneratePawnRelationsPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
                 prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
             harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
@@ -523,6 +525,15 @@ namespace EBSGFramework
                         if (flagWeapon && __result.equipment.AllEquipmentListForReading.NullOrEmpty()) flagWeapon = false;
                     }
             }
+        }
+
+        public static bool CanGeneratePawnRelationsPrefix(Pawn pawn)
+        {
+            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+            if (recorder != null && !recorder.pawnKindsWithoutIntialRelationships.NullOrEmpty())
+                if (recorder.pawnKindsWithoutIntialRelationships.Contains(pawn.kindDef)) return false;
+
+            return true;
         }
 
         public static bool DrawGenePrefix(GeneDef geneDef, ref bool __result)

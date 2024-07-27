@@ -50,6 +50,7 @@
         <geneEvents />
         <hiddenGenes />
         <hiddenTemplates />
+        <pawnKindsWithoutIntialRelationships /> 
         <thinkTreeSettings>
             <li>
                 <uniqueID>EBSGFramework</uniqueID>

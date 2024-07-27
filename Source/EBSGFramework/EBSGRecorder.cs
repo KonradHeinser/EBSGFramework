@@ -11,6 +11,7 @@ namespace EBSGFramework
         public List<GeneDef> hiddenGenes;
         public List<GeneTemplateDef> hiddenTemplates;
         public List<ThinkTreeSetting> thinkTreeSettings;
+        public List<PawnKindDef> pawnKindsWithoutIntialRelationships;
 
         // Uncertain about if it will be used
         public List<HediffDef> asexualHediffs;
