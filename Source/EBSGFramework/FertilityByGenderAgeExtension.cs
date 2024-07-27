@@ -1,5 +1,6 @@
 ﻿using Verse;
 using System.Collections.Generic;
+
 namespace EBSGFramework
 {
     public class FertilityByGenderAgeExtension : DefModExtension

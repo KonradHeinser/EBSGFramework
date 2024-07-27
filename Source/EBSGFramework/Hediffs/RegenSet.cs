@@ -1,5 +1,4 @@
-﻿using System;
-namespace EBSGFramework
+﻿namespace EBSGFramework
 {
     public class RegenSet
     {
@@ -14,7 +13,7 @@ namespace EBSGFramework
 
 
         /*
-            This regeneration hediff prioritizes regrowing parts first. 
+            The regeneration hediff prioritizes regrowing parts first. 
             If ticks to regrow is greater than 0, it will start with checking for lost parts, and if it finds one it will return the lost part after x ticks
                 Note: If all lost parts are returned through other methods before this hediff gives a part back, it will scrap the attempt and start trying to do a regular heal
                 Note 2: If returning a part results in more missing parts(i.e. return an arm and have missing hand/fingers), then those are NOT regenerated this cycle

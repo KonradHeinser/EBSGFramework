@@ -1,5 +1,4 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 using System.Collections.Generic;
 
 namespace EBSGFramework

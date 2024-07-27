@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using UnityEngine;
+﻿using System.Text;
 using Verse;
 using RimWorld;
 
@@ -16,10 +14,12 @@ namespace EBSGFramework
             }
             StringBuilder stringBuilder = new StringBuilder(32);
             Factor(pawn, stringBuilder);
-            if (pawn.health.hediffSet.HasHediffPreventsPregnancy() && (CheckForMinimums(pawn) || CheckForMaximums(pawn))) {
+            if (pawn.health.hediffSet.HasHediffPreventsPregnancy() && (CheckForMinimums(pawn) || CheckForMaximums(pawn)))
+            {
                 stringBuilder.AppendLine("\nThis pawn has fertility limiting genes that are not active due to sterilization.");
             }
-            else {
+            else
+            {
                 if (CheckForMinimums(pawn)) stringBuilder.AppendLine("\nAt least one gene stops fertility from going below a certain value.");
                 if (CheckForMaximums(pawn)) stringBuilder.AppendLine("\nAt least one gene stops fertility from going above a certain value.");
             }

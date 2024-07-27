@@ -1,17 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Thoughts/MentalState_PanicFleeWater.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CustomizeableOrbitalStrike.cs">
     <Files>
-      <File FileName="Thoughts/MentalState_PanicFleeWater.cs" Line="13" Column="57" />
+      <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="31" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Thoughts" expanded="True">
-                <Node name="MentalState_PanicFleeWater.cs" selected="True" />
+              <Node name="Things" expanded="True">
+                <Node name="CustomizeableOrbitalStrike.cs" selected="True" />
               </Node>
             </Node>
           </Node>

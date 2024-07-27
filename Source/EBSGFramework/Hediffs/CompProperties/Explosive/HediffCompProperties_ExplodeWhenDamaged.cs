@@ -1,5 +1,4 @@
-﻿using System;
-namespace EBSGFramework
+﻿namespace EBSGFramework
 {
     public class HediffCompProperties_ExplodeWhenDamaged : BurstHediffPropertiesBase
     {

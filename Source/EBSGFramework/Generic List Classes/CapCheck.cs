@@ -1,4 +1,5 @@
 ﻿using Verse;
+
 namespace EBSGFramework
 {
     public class CapCheck

@@ -1,7 +1,6 @@
 ﻿using RimWorld;
 using Verse;
 using System;
-using Verse.Sound;
 
 namespace EBSGFramework
 {

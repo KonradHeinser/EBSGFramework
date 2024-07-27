@@ -1,5 +1,4 @@
-﻿using System;
-namespace EBSGFramework
+﻿namespace EBSGFramework
 {
     public class HediffComp_ExplodingMeleeAttacks : BurstHediffCompBase
     {

@@ -1,5 +1,4 @@
-﻿using Verse;
-namespace EBSGFramework
+﻿namespace EBSGFramework
 {
     public class HediffComp_ExplodingAttacks : BurstHediffCompBase
     {

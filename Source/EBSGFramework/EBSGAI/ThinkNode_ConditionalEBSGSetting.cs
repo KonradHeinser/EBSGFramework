@@ -1,7 +1,5 @@
 ﻿using Verse;
 using Verse.AI;
-using System.Collections.Generic;
-using RimWorld;
 
 namespace EBSGFramework
 {

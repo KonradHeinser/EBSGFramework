@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -10,7 +7,7 @@ namespace EBSGFramework
     {
         public static SimpleCurve PeopleToMoodCurve;
 
-        private static SimpleCurve GetCurve (ThoughtDef def)
+        private static SimpleCurve GetCurve(ThoughtDef def)
         {
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
             return extension.peopleToMoodCurve;

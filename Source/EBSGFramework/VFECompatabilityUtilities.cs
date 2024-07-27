@@ -1,5 +1,4 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 using VanillaGenesExpanded;
 using AnimalBehaviours;
 using System.Collections.Generic;
