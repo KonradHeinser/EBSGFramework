@@ -1,13 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Things/CustomizeableOrbitalStrike.cs">
     <Files>
-      <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="31" Column="31" />
+      <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="312" Column="10" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_OrbitalStrike.cs" Line="92" Column="18" />
+      <File FileName="Abilities/CompProperties/CompProperties_OrbitalStrike.cs" Line="48" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
               <Node name="Things" expanded="True">
                 <Node name="CustomizeableOrbitalStrike.cs" selected="True" />
               </Node>
