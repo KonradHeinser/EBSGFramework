@@ -102,7 +102,6 @@ namespace EBSGFramework
         {
             base.PostRemove();
 
-
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
             if (extension != null)
             {
@@ -112,14 +111,12 @@ namespace EBSGFramework
                 if (changedAmounts == null) changedAmounts = new List<int>();
                 if (originalPassions == null) originalPassions = new List<Passion>();
 
-                if (changedSkills.Count != changedAmounts.Count)
+                if (!changedSkills.NullOrEmpty() && !changedAmounts.NullOrEmpty() && changedSkills.Count != changedAmounts.Count)
                 {
                     changedAmounts.Clear();
                     foreach (SkillChange skillChange in extension.skillChanges)
-                    {
                         if (skillChange.skill == null || pawn.skills.GetSkill(skillChange.skill) != null)
                             changedAmounts.Add(skillChange.skillChange);
-                    }
                 }
 
                 foreach (SkillChange skillChange in extension.skillChanges)
