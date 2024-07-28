@@ -1,23 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGRecorder.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
       <File FileName="Things/CustomizeableOrbitalStrike.cs" Line="312" Column="10" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_OrbitalStrike.cs" Line="92" Column="18" />
       <File FileName="Abilities/CompProperties/CompProperties_OrbitalStrike.cs" Line="48" Column="6" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="532" Column="99" />
-      <File FileName="EBSGRecorder.cs" Line="20" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
+              <Node name="EBSGAI" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
               </Node>
-              <Node name="Harmony" expanded="True" />
               <Node name="Things" expanded="True" />
-              <Node name="EBSGRecorder.cs" selected="True" />
             </Node>
           </Node>
         </State>

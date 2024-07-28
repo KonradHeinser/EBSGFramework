@@ -10,8 +10,12 @@ namespace EBSGFramework
         private bool reportJob = false;
         private bool reportStance = false;
         private bool reportTarget = false;
+        private PawnKindDef requiredPawnKindDef = null;
+
         protected override bool Satisfied(Pawn pawn)
         {
+            if (requiredPawnKindDef != null && pawn.kindDef != requiredPawnKindDef) return false;
+
             Log.Warning(output + "EBSG_ThinkingPawnName".Translate() + pawn.Label);
             if (reportJob)
             {
