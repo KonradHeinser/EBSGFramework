@@ -6,22 +6,8 @@
       <File FileName="Abilities/CompProperties/CompProperties_OrbitalStrike.cs" Line="48" Column="6" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="532" Column="99" />
       <File FileName="Genes/SkillChange.cs" Line="1" Column="1" />
-      <File FileName="Genes/Gene_SkillChanging.cs" Line="109" Column="40" />
+      <File FileName="Genes/Gene_SkillChanging.cs" Line="130" Column="78" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Genes" expanded="True">
-                <Node name="Gene_SkillChanging.cs" selected="True" />
-              </Node>
-              <Node name="Things" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

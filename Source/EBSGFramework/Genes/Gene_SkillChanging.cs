@@ -110,30 +110,28 @@ namespace EBSGFramework
                 if (changedSkills == null) changedSkills = new List<SkillDef>();
                 if (changedAmounts == null) changedAmounts = new List<int>();
                 if (originalPassions == null) originalPassions = new List<Passion>();
-
-                if (!changedSkills.NullOrEmpty() && !changedAmounts.NullOrEmpty() && changedSkills.Count != changedAmounts.Count)
+                if (changedSkills.Count != changedAmounts.Count)
                 {
                     changedAmounts.Clear();
                     foreach (SkillChange skillChange in extension.skillChanges)
                         if (skillChange.skill == null || pawn.skills.GetSkill(skillChange.skill) != null)
                             changedAmounts.Add(skillChange.skillChange);
                 }
-
-                foreach (SkillChange skillChange in extension.skillChanges)
-                {
-                    SkillRecord skill;
-                    if (skillChange.skill == null)
+                if (!changedAmounts.NullOrEmpty())
+                    foreach (SkillChange skillChange in extension.skillChanges)
                     {
-                        if (changedSkills.NullOrEmpty()) continue;
-                        skill = pawn.skills.GetSkill(changedSkills[noSkillCounter]);
-                        noSkillCounter++;
+                        SkillRecord skill;
+                        if (skillChange.skill == null)
+                        {
+                            if (changedSkills.NullOrEmpty()) continue;
+                            skill = pawn.skills.GetSkill(changedSkills[noSkillCounter]);
+                            noSkillCounter++;
+                        }
+                        else skill = pawn.skills.GetSkill(skillChange.skill);
+                        skill.Level -= changedAmounts[originalCounter];
+                        if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
+                        originalCounter++;
                     }
-                    else skill = pawn.skills.GetSkill(skillChange.skill);
-
-                    skill.Level -= changedAmounts[originalCounter];
-                    if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
-                    originalCounter++;
-                }
             }
         }
 
