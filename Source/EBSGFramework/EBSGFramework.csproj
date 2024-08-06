@@ -341,6 +341,9 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalEBSGSetting.cs" />
         <Compile Include="Thoughts\MentalBreakWorker_Hydrophobia.cs" />
         <Compile Include="Thoughts\MentalState_PanicFleeWater.cs" />
+        <Compile Include="Things\CompEBSGPlaceworker.cs" />
+        <Compile Include="Things\CompProperties_EBSGPlaceworker.cs" />
+        <Compile Include="Things\PlaceWorker_EBSGPlaceworker.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
