@@ -7,7 +7,7 @@ namespace EBSGFramework
     {
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
-            if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive || p.IsBloodfeeder() || p.Faction == null)
+            if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive || p.Faction == null)
             {
                 return ThoughtState.Inactive;
             }

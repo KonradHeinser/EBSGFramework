@@ -1,20 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/PlaceWorker_EBSGPlaceworker.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Thoughts/ThoughtWorker_Precept_GeneExtension_Social.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="1014" Column="28" />
-      <File FileName="Things/CompEBSGPlaceworker.cs" Line="5" Column="37" />
-      <File FileName="Things/CompGathererSpot.cs" Line="15" Column="10" />
-      <File FileName="Things/CompProperties_EBSGPlaceworker.cs" Line="6" Column="48" />
-      <File FileName="Things/CompProperties_GathererSpot.cs" Line="29" Column="10" />
-      <File FileName="Things/PlaceWorker_EBSGPlaceworker.cs" Line="17" Column="89" />
+      <File FileName="Thoughts/ThoughtWorker_Precept_GeneExtension_Social.cs" Line="32" Column="1" />
+      <File FileName="Thoughts/ThoughtWorker_Precept_RelatedGeneColonist.cs" Line="43" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Things" expanded="True">
-                <Node name="PlaceWorker_EBSGPlaceworker.cs" selected="True" />
+              <Node name="Thoughts" expanded="True">
+                <Node name="ThoughtWorker_Precept_GeneExtension_Social.cs" selected="True" />
               </Node>
             </Node>
           </Node>
