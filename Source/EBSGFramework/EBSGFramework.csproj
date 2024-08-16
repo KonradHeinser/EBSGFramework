@@ -344,6 +344,7 @@
         <Compile Include="Things\CompEBSGPlaceworker.cs" />
         <Compile Include="Things\CompProperties_EBSGPlaceworker.cs" />
         <Compile Include="Things\PlaceWorker_EBSGPlaceworker.cs" />
+        <Compile Include="Genes\ConditionalStatEffecter_Terrain.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

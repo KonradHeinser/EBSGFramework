@@ -14,6 +14,17 @@
     <AbilityTargetTooFar>Target is out of range.</AbilityTargetTooFar>
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
 
+    <!--Gene Stuff-->
+    <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->
+    <EBSG_NoWater>out of water</EBSG_NoWater>
+    <EBSG_Water>in water</EBSG_Water>
+    <EBSG_NoWaterHated>on good terrain</EBSG_NoWaterHated>
+    <EBSG_WaterHated>in good water</EBSG_WaterHated>
+    <EBSG_HateTerrain>not in/on bad terrain</EBSG_HateTerrain>
+    <EBSG_WaterGood>in water or on good terrain</EBSG_WaterGood>
+    <EBSG_NoWaterGood>out of water or in good water</EBSG_NoWaterGood>
+    <EBSG_GoodTerrain>in/on good terrain</EBSG_GoodTerrain>
+
     <!--EBSG Recorder-->
     <EBSG_ThinkingPawnName> - thinking pawn's name: </EBSG_ThinkingPawnName>
     <EBSG_NoJobFound>No job was found</EBSG_NoJobFound>
