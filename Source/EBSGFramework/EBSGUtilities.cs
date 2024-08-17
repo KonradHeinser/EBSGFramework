@@ -1220,6 +1220,7 @@ namespace EBSGFramework
 
         public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false)
         {
+            if (!pawn.Spawned) return null;
             if (onlyHostiles && onlyInFaction) return null;
             if (pawn.stances.curStance is Stance_Busy stance_Busy && stance_Busy.verb?.CurrentTarget.Thing != null)
             {

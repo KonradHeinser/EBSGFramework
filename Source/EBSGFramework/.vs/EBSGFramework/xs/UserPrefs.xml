@@ -1,22 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatEffecter_Terrain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="Thoughts/ThoughtWorker_Precept_GeneExtension_Social.cs" Line="32" Column="1" />
-      <File FileName="Thoughts/ThoughtWorker_Precept_RelatedGeneColonist.cs" Line="43" Column="14" />
-      <File FileName="Things/CompProperties_EBSGPlaceworker.cs" Line="10" Column="38" />
-      <File FileName="Things/PlaceWorker_EBSGPlaceworker.cs" Line="6" Column="45" />
-      <File FileName="EBSGUtilities.cs" Line="1245" Column="77" />
-      <File FileName="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" Line="29" Column="57" />
-      <File FileName="Genes/ConditionalStatEffecter_Terrain.cs" Line="11" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_TemporaryGenes.cs" Line="41" Column="52" />
+      <File FileName="EBSGUtilities.cs" Line="1221" Column="60" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Genes" expanded="True">
-                <Node name="ConditionalStatEffecter_Terrain.cs" selected="True" />
-              </Node>
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>
