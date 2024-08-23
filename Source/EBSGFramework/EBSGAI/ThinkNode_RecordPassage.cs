@@ -10,6 +10,7 @@ namespace EBSGFramework
         private bool reportJob = false;
         private bool reportStance = false;
         private bool reportTarget = false;
+        private bool autoSearchForTarget = true;
         private PawnKindDef requiredPawnKindDef = null;
 
         protected override bool Satisfied(Pawn pawn)
@@ -29,9 +30,9 @@ namespace EBSGFramework
             }
             if (reportTarget)
             {
-                Thing target = EBSGUtilities.GetCurrentTarget(pawn, false, false, false);
+                Thing target = EBSGUtilities.GetCurrentTarget(pawn, false, false, autoSearchForTarget);
                 if (target == null) Log.Message("EBSG_NoTargetFound".Translate());
-                else Log.Message("EBSG_PawnCurrentTarget".Translate() + target.Label);
+                else Log.Message("EBSG_PawnCurrentTarget".Translate(target.Label, target.Position.DistanceTo(pawn.Position)));
             }
             return true;
         }

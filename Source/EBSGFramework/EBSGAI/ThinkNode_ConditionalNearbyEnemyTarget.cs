@@ -11,7 +11,7 @@ namespace EBSGFramework
         protected override bool Satisfied(Pawn pawn)
         {
             Thing target = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true, searchRadius: searchRadius);
-            return target != null && target.HostileTo(pawn);
+            return target != null;
         }
     }
 }

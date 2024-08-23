@@ -32,7 +32,7 @@
     <EBSG_NoStanceFound>No stance was found</EBSG_NoStanceFound>
     <EBSG_PawnCurrentStance>Pawn is current stance is </EBSG_PawnCurrentStance>
     <EBSG_NoTargetFound>They do not currently have a target</EBSG_NoTargetFound>
-    <EBSG_PawnCurrentTarget>Current target is </EBSG_PawnCurrentTarget>
+    <EBSG_PawnCurrentTarget>Current target is {0}, and the current distance is {1}</EBSG_PawnCurrentTarget>
 
     <!--Generic Building Stuff-->
     <PlaceWorkerMoreWater>Requires more water near it.</PlaceWorkerMoreWater>

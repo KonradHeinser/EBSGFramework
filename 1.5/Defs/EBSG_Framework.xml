@@ -70,6 +70,7 @@
                     </li>
                 </individualSettings>
             </li>
+            <li><uniqueID>Test</uniqueID></li>
         </thinkTreeSettings>
     </EBSGFramework.EBSGRecorder>
 </Defs>
