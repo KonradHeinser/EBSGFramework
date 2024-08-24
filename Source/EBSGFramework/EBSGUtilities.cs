@@ -41,18 +41,10 @@ namespace EBSGFramework
 
         public static bool AbilityCompSucceeds(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
         {
-            float finalChance = baseChance;
+            float finalChance = AbilityCompSuccessChance(baseChance, caster, casterStat, casterDivides, target, targetStat, targetMultiplies);
 
-            if (caster != null && casterStat != null)
-                if (!casterDivides) finalChance *= caster.GetStatValue(casterStat);
-                else finalChance /= caster.GetStatValue(casterStat);
-
-            if (target != null && targetStat != null)
-                if (!targetMultiplies) finalChance /= target.GetStatValue(targetStat);
-                else finalChance *= target.GetStatValue(targetStat);
-
-            if (finalChance <= 0) return false;
-            if (finalChance >= 1) return true;
+            if (finalChance == 0) return false;
+            if (finalChance == 1) return true;
             return Rand.RangeInclusive(0, 1) >= finalChance;
         }
 
@@ -61,12 +53,22 @@ namespace EBSGFramework
             float finalChance = baseChance;
 
             if (caster != null && casterStat != null)
-                if (!casterDivides) finalChance *= caster.GetStatValue(casterStat);
+            {
+                float casterStatValue = caster.GetStatValue(casterStat);
+                if (!casterDivides) finalChance *= casterStatValue;
+                else if (casterStatValue <= 0) finalChance = 1; // Avoiding weird divisors making things act out of the expected
                 else finalChance /= caster.GetStatValue(casterStat);
+            }
 
             if (target != null && targetStat != null)
-                if (!targetMultiplies) finalChance /= target.GetStatValue(targetStat);
+            {
+                float targetStatValue = target.GetStatValue(targetStat);
+                if (!targetMultiplies)
+                    // Avoids weird stat situations where we suddenly end up with a 0 or negative divisor by just making the result 1. That's presumably the general goal when lower is supposed to make the value higher
+                    if (targetStatValue <= 0) finalChance = 1;
+                    else finalChance /= targetStatValue;
                 else finalChance *= target.GetStatValue(targetStat);
+            }
 
             if (finalChance <= 0) return 0f;
             if (finalChance >= 1) return 1f;

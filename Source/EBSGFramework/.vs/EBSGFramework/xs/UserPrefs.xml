@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_CreateLinkedHediff.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
       <File FileName="Abilities/CompProperties/CompProperties_CreateLinkedHediff.cs" Line="19" Column="41" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateLinkedHediff.cs" Line="27" Column="50" />
-      <File FileName="EBSGUtilities.cs" Line="64" Column="66" />
+      <File FileName="EBSGUtilities.cs" Line="61" Column="14" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="293" Column="73" />
     </Files>
   </MonoDevelop.Ide.Workbench>
