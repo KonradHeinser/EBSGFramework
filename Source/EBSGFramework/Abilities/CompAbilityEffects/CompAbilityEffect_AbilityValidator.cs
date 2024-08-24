@@ -148,6 +148,8 @@ namespace EBSGFramework
             return false;
         }
 
+        public override bool ShouldHideGizmo => GizmoDisabled(out var text) && Props.hideGizmo;
+
         public bool CheckRain(out string explanation)
         {
             Map map = parent.pawn.Map;

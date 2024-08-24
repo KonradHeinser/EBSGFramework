@@ -13,6 +13,7 @@
     <AbilityCasterInventory>The caster's inventory is missing required items.</AbilityCasterInventory>
     <AbilityTargetTooFar>Target is out of range.</AbilityTargetTooFar>
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
+    <EBSG_SuccessChance>Success chance: {0}%</EBSG_SuccessChance>
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->

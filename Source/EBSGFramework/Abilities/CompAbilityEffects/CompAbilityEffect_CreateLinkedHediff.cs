@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using Verse;
+using System;
 
 namespace EBSGFramework
 {
@@ -7,9 +8,32 @@ namespace EBSGFramework
     {
         public new CompProperties_CreateLinkedHediff Props => (CompProperties_CreateLinkedHediff)props;
 
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            if (target.Pawn != null && (Props.baseSuccessChance != 1 || Props.casterStatChance != null || Props.targetStatChance != null))
+            {
+                float finalChance = EBSGUtilities.AbilityCompSuccessChance(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies);
+                return "EBSG_SuccessChance".Translate(Math.Round(finalChance, 3));
+            }
+
+            return null;
+        }
+
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             if (target.Pawn == null || target.Pawn == parent.pawn) return;
+            if (EBSGUtilities.AbilityCompSucceeds(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies))
+            {
+                if (Props.successMessage != null)
+                    EBSGUtilities.GiveSimplePlayerMessage(Props.successMessage, parent.pawn, MessageTypeDefOf.SilentInput);
+            }
+            else
+            {
+                if (Props.failureMessage != null)
+                    EBSGUtilities.GiveSimplePlayerMessage(Props.failureMessage, parent.pawn, MessageTypeDefOf.SilentInput);
+                return;
+            }
+
             Pawn targetPawn = target.Pawn;
             Pawn caster = parent.pawn;
 

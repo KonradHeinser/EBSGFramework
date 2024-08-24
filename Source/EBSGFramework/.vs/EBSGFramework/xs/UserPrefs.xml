@@ -1,21 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastAbilityGoToTarget.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="Hediffs/Comps/HediffComp_TemporaryGenes.cs" Line="40" Column="10" />
-      <File FileName="EBSGUtilities.cs" Line="1234" Column="18" />
-      <File FileName="EBSGRecorder.cs" Line="1" Column="1" />
-      <File FileName="EBSGAI/ThinkNode_RecordPassage.cs" Line="33" Column="37" />
-      <File FileName="EBSGAI/ThinkNode_ConditionalNearbyEnemyTarget.cs" Line="14" Column="1" />
-      <File FileName="EBSGAI/JobGiver_AICastAbilityGoToTarget.cs" Line="33" Column="18" />
+      <File FileName="Abilities/CompProperties/CompProperties_CreateLinkedHediff.cs" Line="34" Column="10" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateLinkedHediff.cs" Line="20" Column="9" />
+      <File FileName="EBSGUtilities.cs" Line="73" Column="50" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChargeBattery.cs" Line="29" Column="58" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="151" Column="95" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="11" Column="75" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True">
-                <Node name="JobGiver_AICastAbilityGoToTarget.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
               </Node>
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>

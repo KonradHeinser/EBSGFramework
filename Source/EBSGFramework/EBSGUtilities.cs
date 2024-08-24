@@ -31,6 +31,48 @@ namespace EBSGFramework
             }
         }
 
+        public static void GiveSimplePlayerMessage(string message, TargetInfo target, MessageTypeDef messageType)
+        {
+            if (message.CanTranslate())
+                Messages.Message(message.Translate(), target, messageType);
+            else
+                Messages.Message(message, target, messageType);
+        }
+
+        public static bool AbilityCompSucceeds(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
+        {
+            float finalChance = baseChance;
+
+            if (caster != null && casterStat != null)
+                if (!casterDivides) finalChance *= caster.GetStatValue(casterStat);
+                else finalChance /= caster.GetStatValue(casterStat);
+
+            if (target != null && targetStat != null)
+                if (!targetMultiplies) finalChance /= target.GetStatValue(targetStat);
+                else finalChance *= target.GetStatValue(targetStat);
+
+            if (finalChance <= 0) return false;
+            if (finalChance >= 1) return true;
+            return Rand.RangeInclusive(0, 1) >= finalChance;
+        }
+
+        public static float AbilityCompSuccessChance(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
+        {
+            float finalChance = baseChance;
+
+            if (caster != null && casterStat != null)
+                if (!casterDivides) finalChance *= caster.GetStatValue(casterStat);
+                else finalChance /= caster.GetStatValue(casterStat);
+
+            if (target != null && targetStat != null)
+                if (!targetMultiplies) finalChance /= target.GetStatValue(targetStat);
+                else finalChance *= target.GetStatValue(targetStat);
+
+            if (finalChance <= 0) return 0f;
+            if (finalChance >= 1) return 1f;
+            return finalChance;
+        }
+
         public static bool TargetIsPawn(LocalTargetInfo target, out Pawn pawn)
         {
             if (target.HasThing && target.Thing is Pawn targetPawn)
