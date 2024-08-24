@@ -13,7 +13,7 @@ namespace EBSGFramework
             if (target.Pawn != null && (Props.baseSuccessChance != 1 || Props.casterStatChance != null || Props.targetStatChance != null))
             {
                 float finalChance = EBSGUtilities.AbilityCompSuccessChance(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies);
-                return "EBSG_SuccessChance".Translate(Math.Round(finalChance, 3));
+                return "EBSG_SuccessChance".Translate(Math.Round(finalChance * 100, 3));
             }
 
             return null;

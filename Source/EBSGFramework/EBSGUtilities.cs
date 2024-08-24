@@ -80,7 +80,6 @@ namespace EBSGFramework
                 pawn = targetPawn;
                 return true;
             }
-
             pawn = null;
             return false;
         }
