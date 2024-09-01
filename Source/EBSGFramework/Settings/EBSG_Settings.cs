@@ -23,12 +23,6 @@ namespace EBSGFramework
         {
             base.DoSettingsWindowContents(inRect);
             settings.DoWindowContents(inRect, out bool activeSettings);
-            if (activeSettings)
-            {
-                if (!settings.AsexualHediffs.NullOrEmpty())
-                    VFECompatabilityUtilities.SetAsexualRates(settings.AsexualHediffs, settings.asexualDaysSettings);
-            }
-
         }
 
         public override void WriteSettings()
@@ -195,40 +189,6 @@ namespace EBSGFramework
         }
 
         private int tabInt = 1;
-
-        public List<HediffDef> AsexualHediffs
-        {
-            get
-            {
-                if (!checkedAsexual && cachedAsexualHediffs.NullOrEmpty())
-                {
-                    if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
-                    if (Recorder != null && !Recorder.asexualHediffs.NullOrEmpty())
-                        foreach (HediffDef hediff in Recorder.asexualHediffs)
-                            if (!hediff.comps.NullOrEmpty())
-                                foreach (HediffCompProperties comp in hediff.comps)
-                                    if (comp.compClass.FullName == "AnimalBehaviours.HediffCompProperties_AsexualReproduction")
-                                    {
-                                        cachedAsexualHediffs.Add(hediff);
-                                        if (!asexualDaysSettings.ContainsKey(hediff.defName))
-                                            asexualDaysSettings.Add(hediff.defName, VFECompatabilityUtilities.GetDefaultAsexualRate(comp));
-                                        break;
-                                    }
-                    checkedAsexual = true;
-                }
-
-                return cachedAsexualHediffs;
-            }
-        }
-
-        public bool NeedCustomizationSection
-        {
-            get
-            {
-                if (!AsexualHediffs.NullOrEmpty()) return true;
-                return false;
-            }
-        }
 
         private EBSGRecorder Recorder => DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
 

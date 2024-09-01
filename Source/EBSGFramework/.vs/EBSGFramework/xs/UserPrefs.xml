@@ -1,19 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/EBSG_Settings.cs">
     <Files>
       <File FileName="Abilities/CompProperties/CompProperties_CreateLinkedHediff.cs" Line="19" Column="41" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateLinkedHediff.cs" Line="27" Column="50" />
       <File FileName="EBSGUtilities.cs" Line="58" Column="68" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="293" Column="73" />
       <File FileName="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" Line="110" Column="1" />
+      <File FileName="EBSGRecorder.cs" Line="17" Column="1" />
+      <File FileName="Settings/EBSG_Settings.cs" Line="26" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True">
-                <Node name="JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" selected="True" />
+              <Node name="Settings" expanded="True">
+                <Node name="EBSG_Settings.cs" selected="True" />
               </Node>
             </Node>
           </Node>
