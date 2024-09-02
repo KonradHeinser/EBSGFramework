@@ -25,6 +25,10 @@
     <EBSG_WaterGood>in water or on good terrain</EBSG_WaterGood>
     <EBSG_NoWaterGood>out of water or in good water</EBSG_NoWaterGood>
     <EBSG_GoodTerrain>in/on good terrain</EBSG_GoodTerrain>
+    <EBSG_CorrectGenes>has correct genes</EBSG_CorrectGenes>
+    <EBSG_CorrectHediffs>has correct hediffs</EBSG_CorrectHediffs>
+    <EBSG_InPollution>in pollution</EBSG_InPollution>
+    <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
 
     <!--EBSG Recorder-->
     <EBSG_ThinkingPawnName> - thinking pawn's name: </EBSG_ThinkingPawnName>

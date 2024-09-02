@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class ConditionalStatEffecter_Terrain : ConditionalStatAffecter
+    public class ConditionalStatAffecter_Terrain : ConditionalStatAffecter
     {
         public List<TerrainDef> terrains;
 

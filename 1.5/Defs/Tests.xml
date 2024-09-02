@@ -42,6 +42,64 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
+
+    <GeneDef>
+        <defName>BloodySpeed</defName>
+        <label>bloody speed</label>
+        <description>Ability to control blood makes this pawn go fast.</description>
+        <iconPath>UI/Icons/Genes/Gene_Hemogenic</iconPath>
+        <displayCategory>Hemogen</displayCategory>
+        <conditionalStatAffecters>	
+            <li Class="EBSGFramework.ConditionalStatAffector_OtherGenes">
+                <anyOfGenes>
+                    <li>Hemogenic</li>
+                </anyOfGenes>
+                <label>hemogenic</label>
+                <statFactors>
+                    <MoveSpeed>2</MoveSpeed>
+                </statFactors>
+            </li>
+        </conditionalStatAffecters>
+    </GeneDef>
+
+    <GeneDef>
+        <defName>InconvenientReproductiveOrgans</defName>
+        <label>big balls/ovaries</label>
+        <description>If the parts aren't sterilized medically there may be issues.</description>
+        <iconPath>UI/Icons/Genes/Gene_Hemogenic</iconPath>
+        <displayCategory>Reproduction</displayCategory>
+        <conditionalStatAffecters>	
+            <li Class="EBSGFramework.ConditionalStatAffector_Hediffs">
+                <anyOfHediffs>
+                    <li>Sterilized</li>
+                    <li>Vasectomy</li>
+                    <li>ImplantedIUD</li>
+                    <li>TubalLigation</li>
+                </anyOfHediffs>
+                <label>sterilized</label>
+                <statFactors>
+                    <MoveSpeed>1.2</MoveSpeed>
+                </statFactors>
+            </li>
+            <li Class="EBSGFramework.ConditionalStatAffector_Hediffs">
+                <noneOfHediffs>
+                    <li>Sterilized</li>
+                    <li>Vasectomy</li>
+                    <li>ImplantedIUD</li>
+                    <li>TubalLigation</li>
+                </noneOfHediffs>
+                <label>not sterilized</label>
+                <statFactors>
+                    <MoveSpeed>0.7</MoveSpeed>
+                    <Fertility>3</Fertility>
+                </statFactors>
+            </li>
+        </conditionalStatAffecters>
+        <exclusionTags>
+            <li>Fertility</li>
+        </exclusionTags>      
+    </GeneDef>
+
 </Defs>
 
 <!-- 
