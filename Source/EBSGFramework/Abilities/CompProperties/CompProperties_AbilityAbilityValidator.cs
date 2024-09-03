@@ -52,6 +52,7 @@ namespace EBSGFramework
         public float maxPartOfDay = 1f;
 
         // Map Condition
+        public bool checkRoofForRainSnowRate;
         public float minimumRainRate = 0f;
         public float maximumRainRate = 9999f;
         public float minimumSnowRate = 0f;

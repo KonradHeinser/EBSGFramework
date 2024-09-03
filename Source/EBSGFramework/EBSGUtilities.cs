@@ -682,6 +682,7 @@ namespace EBSGFramework
                 if (need != null)
                     if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel)
                         return false;
+                // Doesn't have an else section because if the need doesn't exist, it's presumed to be at whatever level it needs to be
             }
             return true;
         }

@@ -1,12 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatAffector_Hediffs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs">
     <Files>
       <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="46" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="515" Column="41" />
+      <File FileName="EBSGUtilities.cs" Line="685" Column="136" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="174" Column="32" />
       <File FileName="Genes/ConditionalStatAffecter_Terrain.cs" Line="17" Column="36" />
       <File FileName="Genes/ConditionalStatAffector_OtherGenes.cs" Line="31" Column="1" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="52" Column="40" />
-      <File FileName="Genes/ConditionalStatAffector_Hediffs.cs" Line="31" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,11 +13,12 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_AbilityValidator.cs" selected="True" />
+                </Node>
                 <Node name="CompProperties" expanded="True" />
               </Node>
-              <Node name="Genes" expanded="True">
-                <Node name="ConditionalStatAffector_Hediffs.cs" selected="True" />
-              </Node>
+              <Node name="Genes" expanded="True" />
               <Node name="Settings" expanded="True" />
             </Node>
           </Node>
