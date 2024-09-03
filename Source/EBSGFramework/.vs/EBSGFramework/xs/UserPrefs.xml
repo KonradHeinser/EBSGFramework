@@ -3,28 +3,8 @@
     <Files>
       <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="46" Column="1" />
       <File FileName="EBSGUtilities.cs" Line="685" Column="136" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="174" Column="32" />
-      <File FileName="Genes/ConditionalStatAffecter_Terrain.cs" Line="17" Column="36" />
-      <File FileName="Genes/ConditionalStatAffector_OtherGenes.cs" Line="31" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="163" Column="76" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True">
-                  <Node name="CompAbilityEffect_AbilityValidator.cs" selected="True" />
-                </Node>
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="Genes" expanded="True" />
-              <Node name="Settings" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

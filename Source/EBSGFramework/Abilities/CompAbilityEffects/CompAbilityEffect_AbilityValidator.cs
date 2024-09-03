@@ -160,7 +160,7 @@ namespace EBSGFramework
                     explanation = "AbilityLowRain".Translate();
                     return false;
                 }
-                if (Props.maximumRainRate < map.weatherManager.RainRate)
+                if (Props.maximumRainRate < map.weatherManager.RainRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
                 {
                     explanation = "AbilityHighRain".Translate();
                     return false;
@@ -185,7 +185,7 @@ namespace EBSGFramework
                     explanation = "AbilityLowSnow".Translate();
                     return false;
                 }
-                if (Props.maximumSnowRate < map.weatherManager.SnowRate)
+                if (Props.maximumSnowRate < map.weatherManager.SnowRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
                 {
                     explanation = "AbilityHighSnow".Translate();
                     return false;
