@@ -165,6 +165,11 @@ namespace EBSGFramework
                     explanation = "AbilityHighRain".Translate();
                     return false;
                 }
+                if (Props.checkRoofForRainSnowRate && parent.pawn.Position.Roofed(map) && Props.minimumRainRate >= 0)
+                {
+                    explanation = "Roofed".Translate();
+                    return false;
+                }
             }
             explanation = null;
             return true;
@@ -185,7 +190,13 @@ namespace EBSGFramework
                     explanation = "AbilityHighSnow".Translate();
                     return false;
                 }
+                if (Props.checkRoofForRainSnowRate && parent.pawn.Position.Roofed(map) && Props.minimumSnowRate >= 0)
+                {
+                    explanation = "Roofed".Translate();
+                    return false;
+                }
             }
+
             explanation = null;
             return true;
         }
