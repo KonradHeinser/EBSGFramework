@@ -27,6 +27,7 @@
     <EBSG_GoodTerrain>in/on good terrain</EBSG_GoodTerrain>
     <EBSG_CorrectGenes>has correct genes</EBSG_CorrectGenes>
     <EBSG_CorrectHediffs>has correct hediffs</EBSG_CorrectHediffs>
+    <EBSG_CorrectLight>in correct light level</EBSG_CorrectLight>
     <EBSG_InPollution>in pollution</EBSG_InPollution>
     <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
 

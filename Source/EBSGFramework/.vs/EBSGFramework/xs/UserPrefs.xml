@@ -3,7 +3,7 @@
     <Files>
       <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="46" Column="1" />
       <File FileName="EBSGUtilities.cs" Line="685" Column="136" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="163" Column="76" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="173" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
