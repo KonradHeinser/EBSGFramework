@@ -1,10 +1,30 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatAffecter_Temperature.cs">
     <Files>
-      <File FileName="EBSGAI/ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" Line="46" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="685" Column="136" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="173" Column="14" />
+      <File FileName="EBSGUtilities.cs" Line="132" Column="18" />
+      <File FileName="Genes/ConditionalStatAffecter_Light.cs" Line="26" Column="54" />
+      <File FileName="Genes/ConditionalStatAffecter_MapConditional.cs" Line="38" Column="2" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="57" Column="46" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="375" Column="59" />
+      <File FileName="Genes/ConditionalStatAffecter_Temperature.cs" Line="11" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="Genes" expanded="True">
+                <Node name="ConditionalStatAffecter_Temperature.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

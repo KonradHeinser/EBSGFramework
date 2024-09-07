@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public bool inPollution = true;
 
+        public bool defaultActive;
+
         public override string Label => GetLabel();
 
         private string GetLabel()
@@ -24,7 +26,7 @@ namespace EBSGFramework
                 return !req.Pawn.Position.IsPolluted(req.Pawn.Map);
             }
 
-            return false;
+            return defaultActive;
         }
     }
 }

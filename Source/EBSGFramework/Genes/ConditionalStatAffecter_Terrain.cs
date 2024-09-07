@@ -14,6 +14,8 @@ namespace EBSGFramework
 
         public bool anyNonWater = false;
 
+        public bool defaultActive;
+
         public string label = null;
 
         public override string Label => GetLabel();
@@ -50,20 +52,18 @@ namespace EBSGFramework
                         // If the terrain list is for disabling terrains, then check water is only ran if the current terrain isn't on the list. 
                         // If anyWater/anyNonWater is being used, then only waters/non-waters need to be included on the terrains list
                         if (!terrains.Contains(req.Thing.Position.GetTerrain(req.Thing.Map))) return CheckWater(req.Thing);
+                        return false;
                     }
-                    else
-                    {
-                        // If not looking for disabling terrains, then any terrain on the list is treated as a success
-                        // If anyWater/anyNonWater is being used, then only non-waters/waters need to be included on the terrains list
-                        if (terrains.Contains(req.Thing.Position.GetTerrain(req.Thing.Map))) return true;
-                        return CheckWater(req.Thing); // If the pawn isn't on a liked terrain, then check for water 
-                    }
+
+                    // If not looking for disabling terrains, then any terrain on the list is treated as a success
+                    // If anyWater/anyNonWater is being used, then only non-waters/waters need to be included on the terrains list
+                    if (terrains.Contains(req.Thing.Position.GetTerrain(req.Thing.Map))) return true;
+                    return CheckWater(req.Thing); // If the pawn isn't on a liked terrain, then check for water 
                 }
-                else return CheckWater(req.Thing); // If there isn't a terrains list, then it all depends on if the pawn is or isn't in the water
+                return CheckWater(req.Thing); // If there isn't a terrains list, then it all depends on if the pawn is or isn't in the water
             }
 
-            // Any situation that reaches this point is a failure. This occurs when either the thing isn't spawned on a map or when the pawn is standing on a hated terrain
-            return false;
+            return defaultActive;
         }
 
         private bool CheckWater(Thing thing)

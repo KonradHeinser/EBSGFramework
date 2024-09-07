@@ -348,6 +348,9 @@
         <Compile Include="Genes\ConditionalStatAffector_OtherGenes.cs" />
         <Compile Include="Genes\ConditionalStatAffector_Hediffs.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Pollution.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Light.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_MapConditional.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Temperature.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

@@ -27,7 +27,13 @@
     <EBSG_GoodTerrain>in/on good terrain</EBSG_GoodTerrain>
     <EBSG_CorrectGenes>has correct genes</EBSG_CorrectGenes>
     <EBSG_CorrectHediffs>has correct hediffs</EBSG_CorrectHediffs>
-    <EBSG_CorrectLight>in correct light level</EBSG_CorrectLight>
+    <EBSG_CorrectLight>light level between {0} and {1}</EBSG_CorrectLight>
+    <EBSG_BelowLight>light level below {0}</EBSG_BelowLight>
+    <EBSG_AboveLight>light level above {0}</EBSG_AboveLight>
+    <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
+    <EBSG_BelowTemperature>temperature below {0}</EBSG_BelowTemperature>
+    <EBSG_AboveTemperature>temperature above {0}</EBSG_AboveTemperature>
+    <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
     <EBSG_InPollution>in pollution</EBSG_InPollution>
     <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
 
