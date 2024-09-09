@@ -75,6 +75,8 @@ namespace EBSGFramework
                 prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
             harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
+                postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -1120,6 +1122,101 @@ namespace EBSGFramework
         public static void PostAddGenePostfix(Pawn ___pawn)
         {
             if (Cache != null) Cache.CachePawnWithGene(___pawn);
+        }
+
+        public static void MakeRecipeProductsPostfix(ref IEnumerable<Thing> __result, RecipeDef recipeDef, Pawn worker, List<Thing> ingredients, Thing dominantIngredient,
+            IBillGiver billGiver, Precept_ThingStyle precept = null, ThingStyleDef style = null, int? overrideGraphicIndex = null)
+        {
+            if (recipeDef.HasModExtension<EBSGExtension>())
+            {
+                EBSGExtension extension = recipeDef.GetModExtension<EBSGExtension>();
+                if (!extension.thingCountList.NullOrEmpty())
+                {
+                    List<Thing> newResult = new List<Thing>(__result);
+
+                    float efficiency = ((recipeDef.efficiencyStat != null) ? worker.GetStatValue(recipeDef.efficiencyStat) : 1f);
+                    if (recipeDef.workTableEfficiencyStat != null && billGiver is Building_WorkTable thing)
+                        efficiency *= thing.GetStatValue(recipeDef.workTableEfficiencyStat);
+
+                    foreach (List<ThingDefCountClass> options in extension.thingCountList)
+                    {
+                        bool flag = false;
+                        ThingDefCountClass thingClass = null;
+
+                        if (options.Count() == 1)
+                        {
+                            thingClass = options[0];
+                            if (thingClass.chance != null)
+                                flag |= Rand.Chance((float)thingClass.chance);
+                            else
+                                flag = true;
+                        }
+                        else
+                        {
+                            thingClass = options.RandomElementByWeight((arg) => (float)arg.chance);
+                            flag = true;
+                        }
+
+                        if (flag)
+                        {
+                            Log.Message("Adding additional item");
+                            Thing newThing = ThingMaker.MakeThing(thingClass.thingDef, thingClass.thingDef.MadeFromStuff ? thingClass.stuff ?? dominantIngredient.def : null);
+                            newThing.stackCount = Mathf.CeilToInt((float)thingClass.count * efficiency);
+                            if (dominantIngredient != null && recipeDef.useIngredientsForColor)
+                                newThing.SetColor(dominantIngredient.DrawColor, false);
+
+                            CompIngredients compIngredients = newThing.TryGetComp<CompIngredients>();
+                            if (compIngredients != null)
+                                for (int l = 0; l < ingredients.Count; l++)
+                                    compIngredients.RegisterIngredient(ingredients[l].def);
+
+                            newThing.Notify_RecipeProduced(worker);
+
+                            // PostProcessProduct Stuff
+                            CompQuality compQuality = newThing.TryGetComp<CompQuality>();
+                            if (compQuality != null)
+                            {
+                                if (extension.staticQuality)
+                                    compQuality.SetQuality(thingClass.quality, ArtGenerationContext.Colony);
+                                else
+                                {
+                                    if (recipeDef.workSkill == null)
+                                        Log.Error(string.Concat(recipeDef, " needs workSkill because it creates a product with a quality."));
+
+                                    QualityCategory q = QualityUtility.GenerateQualityCreatedByPawn(worker, recipeDef.workSkill);
+                                    compQuality.SetQuality(q, ArtGenerationContext.Colony);
+                                }
+
+                                QualityUtility.SendCraftNotification(newThing, worker);
+                            }
+
+                            CompArt compArt = newThing.TryGetComp<CompArt>();
+                            if (compArt != null)
+                                compArt.JustCreatedBy(worker);
+                            if (compQuality != null && (int)compQuality.Quality >= 4)
+                                TaleRecorder.RecordTale(TaleDefOf.CraftedArt, worker, newThing);
+
+                            if (worker.Ideo != null)
+                                newThing.StyleDef = worker.Ideo.GetStyleFor(newThing.def);
+
+                            if (precept != null)
+                                newThing.StyleSourcePrecept = precept;
+                            else if (style != null)
+                                newThing.StyleDef = style;
+                            else if (!newThing.def.randomStyle.NullOrEmpty() && Rand.Chance(newThing.def.randomStyleChance))
+                                newThing.SetStyleDef(newThing.def.randomStyle.RandomElementByWeight((ThingStyleChance x) => x.Chance).StyleDef);
+
+                            newThing.overrideGraphicIndex = overrideGraphicIndex;
+                            if (newThing.def.Minifiable)
+                                newThing = newThing.MakeMinified();
+
+                            newResult.Add(newThing);
+                        }
+                    }
+
+                    __result = newResult.AsEnumerable();
+                }
+            }
         }
     }
 }

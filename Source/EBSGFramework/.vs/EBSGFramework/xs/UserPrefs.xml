@@ -1,12 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatAffecter_Temperature.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="132" Column="18" />
-      <File FileName="Genes/ConditionalStatAffecter_Light.cs" Line="26" Column="54" />
-      <File FileName="Genes/ConditionalStatAffecter_MapConditional.cs" Line="38" Column="2" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityChangeWeather.cs" Line="8" Column="37" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="24" Column="13" />
       <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="57" Column="46" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="375" Column="59" />
-      <File FileName="Genes/ConditionalStatAffecter_Temperature.cs" Line="11" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,11 +12,12 @@
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
                 <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
+                <Node name="CompProperties" expanded="True">
+                  <Node name="CompProperties_AbilityAbilityValidator.cs" selected="True" />
+                </Node>
               </Node>
-              <Node name="Genes" expanded="True">
-                <Node name="ConditionalStatAffecter_Temperature.cs" selected="True" />
-              </Node>
+              <Node name="Harmony" expanded="True" />
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

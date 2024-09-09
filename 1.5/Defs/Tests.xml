@@ -43,7 +43,7 @@
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
 
-    <GeneDef>
+    <!-- <GeneDef>
         <defName>BloodySpeed</defName>
         <label>bloody speed</label>
         <description>Ability to control blood makes this pawn go fast.</description>
@@ -98,7 +98,7 @@
         <exclusionTags>
             <li>Fertility</li>
         </exclusionTags>      
-    </GeneDef>
+    </GeneDef> -->
 
 </Defs>
 

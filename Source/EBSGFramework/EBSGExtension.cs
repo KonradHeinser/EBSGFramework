@@ -158,5 +158,9 @@ namespace EBSGFramework
 
         public ThingDef relatedThing;
         public JobDef relatedJob;
+
+        // Recipe Stuff
+        public List<List<ThingDefCountClass>> thingCountList;
+        public bool staticQuality = false; // Only need set to true if there are products that have quality. Will set for all of them at once.
     }
 }

@@ -351,6 +351,8 @@
         <Compile Include="Genes\ConditionalStatAffecter_Light.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_MapConditional.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Temperature.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityPushTarget.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_PushTarget.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

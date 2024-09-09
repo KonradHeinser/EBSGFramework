@@ -30,7 +30,6 @@
     <EBSG_CorrectLight>light level between {0} and {1}</EBSG_CorrectLight>
     <EBSG_BelowLight>light level below {0}</EBSG_BelowLight>
     <EBSG_AboveLight>light level above {0}</EBSG_AboveLight>
-    <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
     <EBSG_BelowTemperature>temperature below {0}</EBSG_BelowTemperature>
     <EBSG_AboveTemperature>temperature above {0}</EBSG_AboveTemperature>
     <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
