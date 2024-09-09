@@ -15,6 +15,21 @@ namespace EBSGFramework
             base.Apply(target, dest);
             List<Thing> ignoreList = new List<Thing>();
             Pawn caster = parent.pawn;
+
+            if (Props.effecter != null)
+            {
+                Effecter effecter = Props.effecter.Spawn();
+                if (Props.effecterTicks != 0)
+                {
+                    caster.Map.effecterMaintainer.AddEffecterToMaintain(effecter, caster.Position, Props.effecterTicks);
+                }
+                else
+                {
+                    effecter.Trigger(new TargetInfo(caster.Position, caster.Map), new TargetInfo(caster.Position, caster.Map));
+                    effecter.Cleanup();
+                }
+            }
+
             float radius = Props.radius;
             if (Props.statRadius != null)
             {

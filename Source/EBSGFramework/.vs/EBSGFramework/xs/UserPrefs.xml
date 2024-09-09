@@ -1,28 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityLightingBolt.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityChangeWeather.cs" Line="8" Column="37" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="24" Column="13" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="57" Column="46" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityChangeWeather.cs" Line="8" Column="38" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="63" Column="77" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="11" Column="30" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityLightingBolt.cs" Line="7" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_LightningBolt.cs" Line="13" Column="13" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_AbilityAbilityValidator.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="Harmony" expanded="True" />
-              <Node name="Things" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

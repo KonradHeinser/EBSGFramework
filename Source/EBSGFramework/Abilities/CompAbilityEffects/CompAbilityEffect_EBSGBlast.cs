@@ -13,8 +13,24 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
+
             List<Thing> ignoreList = new List<Thing>();
             Pawn caster = parent.pawn;
+
+            if (Props.effecter != null)
+            {
+                Effecter effecter = Props.effecter.Spawn();
+                if (Props.effecterTicks != 0)
+                {
+                    caster.Map.effecterMaintainer.AddEffecterToMaintain(effecter, target.Cell, Props.effecterTicks);
+                }
+                else
+                {
+                    effecter.Trigger(new TargetInfo(target.Cell, caster.Map), new TargetInfo(target.Cell, caster.Map));
+                    effecter.Cleanup();
+                }
+            }
+
             float radius = Props.radius;
             if (Props.statRadius != null)
             {
@@ -76,6 +92,8 @@ namespace EBSGFramework
                     Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, ignoreList,
                     null, true, 1f, Props.excludeRadius, true, Props.postExplosionThingWater, Props.screenShakeFactor);
             }
+
+
         }
 
         public override void DrawEffectPreview(LocalTargetInfo target)

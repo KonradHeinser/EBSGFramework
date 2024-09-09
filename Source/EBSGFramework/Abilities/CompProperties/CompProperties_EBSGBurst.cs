@@ -34,6 +34,8 @@ namespace EBSGFramework
         public bool injureSelf = false;
         public bool injureAllies = true;
         public bool injureNonHostiles = true;
+        public EffecterDef effecter;
+        public int effecterTicks = 0;
 
         public CompProperties_EBSGBurst()
         {

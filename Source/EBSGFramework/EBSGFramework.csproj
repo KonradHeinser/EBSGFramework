@@ -353,6 +353,8 @@
         <Compile Include="Genes\ConditionalStatAffecter_Temperature.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityPushTarget.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_PushTarget.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityLightingBolt.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LightningBolt.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
