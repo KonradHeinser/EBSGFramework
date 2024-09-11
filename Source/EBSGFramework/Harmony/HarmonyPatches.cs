@@ -89,8 +89,6 @@ namespace EBSGFramework
 
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 prefix: new HarmonyMethod(patchType, nameof(GainJoyPrefix)));
-            harmony.Patch(AccessTools.Method(typeof(Need_Mood), nameof(Need_Mood.NeedInterval)),
-                postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
                 postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_PsychicEntropyTracker), "PsyfocusFallPerDay"),
