@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatAffecter_Weather.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
       <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="39" Column="49" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="420" Column="87" />
       <File FileName="Genes/ConditionalStatAffecter_Weather.cs" Line="37" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,8 +15,9 @@
                 <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
               </Node>
-              <Node name="Genes" expanded="True">
-                <Node name="ConditionalStatAffecter_Weather.cs" selected="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
               </Node>
             </Node>
           </Node>

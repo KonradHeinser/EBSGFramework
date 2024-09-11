@@ -86,8 +86,9 @@ namespace EBSGFramework
                 harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
                     postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
             }
+
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
-                postfix: new HarmonyMethod(patchType, nameof(GainJoyPostfix)));
+                prefix: new HarmonyMethod(patchType, nameof(GainJoyPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Mood), nameof(Need_Mood.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
@@ -893,14 +894,10 @@ namespace EBSGFramework
             }
         }
 
-        public static void GainJoyPostfix(float amount, JoyKindDef joyKind, Pawn ___pawn, JoyToleranceSet ___tolerances)
+        public static bool GainJoyPrefix(ref float amount, Pawn ___pawn)
         {
-            if (!(amount <= 0f))
-            {
-                amount *= ___tolerances.JoyFactorFromTolerance(joyKind) * (___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate) - 1);
-                amount = Mathf.Min(amount, 1f - ___pawn.needs.joy.CurLevel);
-                ___pawn.needs.joy.CurLevel += amount;
-            }
+            amount *= ___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate);
+            return true;
         }
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
