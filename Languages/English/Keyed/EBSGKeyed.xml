@@ -30,9 +30,15 @@
     <EBSG_CorrectLight>light level between {0} and {1}</EBSG_CorrectLight>
     <EBSG_BelowLight>light level below {0}</EBSG_BelowLight>
     <EBSG_AboveLight>light level above {0}</EBSG_AboveLight>
-    <EBSG_BelowTemperature>temperature below {0}</EBSG_BelowTemperature>
-    <EBSG_AboveTemperature>temperature above {0}</EBSG_AboveTemperature>
+    <EBSG_CorrectTemperature>temperature between {0} and {1}</EBSG_CorrectTemperature>
+    <EBSG_BelowTemperature>temperature level below {0}</EBSG_BelowTemperature>
+    <EBSG_AboveTemperature>temperature level above {0}</EBSG_AboveTemperature>
+    <EBSG_CorrectTime>correct time</EBSG_CorrectTime>
+    <EBSG_CorrectNeeds>correct need levels</EBSG_CorrectNeeds>
+    <EBSG_CorrectSkills>correct skill levels</EBSG_CorrectSkills>
+    <EBSG_CorrectCapacities>correct health capacities</EBSG_CorrectCapacities>
     <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
+    <EBSG_MapWeather>correct map weather</EBSG_MapWeather>
     <EBSG_InPollution>in pollution</EBSG_InPollution>
     <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
 

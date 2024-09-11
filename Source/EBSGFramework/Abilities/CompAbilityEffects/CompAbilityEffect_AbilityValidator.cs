@@ -275,7 +275,7 @@ namespace EBSGFramework
             {
                 foreach (CapCheck capCheck in Props.casterCapLimiters)
                 {
-                    if (pawn.health.capacities.CapableOf(capCheck.capacity))
+                    if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                     {
                         if (capCheck.minCapValue > 0)
                         {

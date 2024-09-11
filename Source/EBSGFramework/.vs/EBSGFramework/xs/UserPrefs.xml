@@ -1,12 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityLightingBolt.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/ConditionalStatAffecter_Weather.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityChangeWeather.cs" Line="8" Column="38" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_ChangeWeather.cs" Line="63" Column="77" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="11" Column="30" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityLightingBolt.cs" Line="7" Column="1" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_LightningBolt.cs" Line="13" Column="13" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="39" Column="49" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="420" Column="87" />
+      <File FileName="Genes/ConditionalStatAffecter_Weather.cs" Line="37" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="Genes" expanded="True">
+                <Node name="ConditionalStatAffecter_Weather.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

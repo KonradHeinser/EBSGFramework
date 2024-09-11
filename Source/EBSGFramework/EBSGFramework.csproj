@@ -349,12 +349,17 @@
         <Compile Include="Genes\ConditionalStatAffector_Hediffs.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Pollution.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Light.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_MapConditional.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_MapCondition.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Temperature.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityPushTarget.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_PushTarget.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityLightingBolt.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LightningBolt.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Time.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Needs.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Skills.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Capacities.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Weather.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
