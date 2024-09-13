@@ -1154,7 +1154,6 @@ namespace EBSGFramework
 
                         if (flag)
                         {
-                            Log.Message("Adding additional item");
                             Thing newThing = ThingMaker.MakeThing(thingClass.thingDef, thingClass.thingDef.MadeFromStuff ? thingClass.stuff ?? dominantIngredient.def : null);
                             newThing.stackCount = Mathf.CeilToInt((float)thingClass.count * efficiency);
                             if (dominantIngredient != null && recipeDef.useIngredientsForColor)

@@ -687,6 +687,50 @@ namespace EBSGFramework
             return true;
         }
 
+        public static bool CapacityConditionsMet(Pawn pawn, List<CapCheck> capLimiters)
+        {
+            if (capLimiters.NullOrEmpty()) return true;
+            foreach (CapCheck capCheck in capLimiters)
+            {
+                if (!pawn.health.capacities.CapableOf(capCheck.capacity))
+                {
+                    if (capCheck.minCapValue > 0)
+                        return false;
+                    continue;
+                }
+
+                float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                if (capValue < capCheck.minCapValue)
+                    return false;
+                if (capValue > capCheck.maxCapValue)
+                    return false;
+            }
+            return true;
+        }
+
+        public static bool AllSkillLevelsMet(Pawn pawn, List<SkillCheck> skillLimiters)
+        {
+            if (skillLimiters.NullOrEmpty() || pawn.skills == null) return true;
+
+            foreach (SkillCheck skillCheck in skillLimiters)
+            {
+                SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
+                if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
+                {
+                    if (skillCheck.minLevel > 0)
+                        return false;
+                    continue;
+                }
+
+                if (skill.Level < skillCheck.minLevel)
+                    return false;
+                if (skill.Level > skillCheck.maxLevel)
+                    return false;
+            }
+
+            return true;
+        }
+
         public static void HandleNeedOffsets(Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
         {
             if (needOffsets.NullOrEmpty() || pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) return;

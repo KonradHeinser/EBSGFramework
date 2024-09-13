@@ -1,11 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties_SpawnPawn.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAbilityValidator.cs" Line="39" Column="49" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AbilityValidator.cs" Line="420" Column="87" />
-      <File FileName="Genes/ConditionalStatAffecter_Weather.cs" Line="37" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="92" Column="1" />
+      <File FileName="Things/CompProperties_SpawnPawn.cs" Line="34" Column="1" />
+      <File FileName="Things/CompSpawnPawn.cs" Line="31" Column="1" />
+      <File FileName="Things/CompRegenerating.cs" Line="7" Column="88" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True" />
+              <Node name="DependencyGenes" expanded="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="CompProperties_SpawnPawn.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

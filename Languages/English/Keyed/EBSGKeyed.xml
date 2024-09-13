@@ -17,6 +17,7 @@
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->
+    <EBSG_CorrectConditions>correct conditions</EBSG_CorrectConditions>
     <EBSG_NoWater>out of water</EBSG_NoWater>
     <EBSG_Water>in water</EBSG_Water>
     <EBSG_NoWaterHated>on good terrain</EBSG_NoWaterHated>
@@ -27,15 +28,18 @@
     <EBSG_GoodTerrain>in/on good terrain</EBSG_GoodTerrain>
     <EBSG_CorrectGenes>has correct genes</EBSG_CorrectGenes>
     <EBSG_CorrectHediffs>has correct hediffs</EBSG_CorrectHediffs>
+
     <EBSG_CorrectLight>light level between {0} and {1}</EBSG_CorrectLight>
     <EBSG_BelowLight>light level below {0}</EBSG_BelowLight>
     <EBSG_AboveLight>light level above {0}</EBSG_AboveLight>
     <EBSG_CorrectTemperature>temperature between {0} and {1}</EBSG_CorrectTemperature>
     <EBSG_BelowTemperature>temperature level below {0}</EBSG_BelowTemperature>
     <EBSG_AboveTemperature>temperature level above {0}</EBSG_AboveTemperature>
+
     <EBSG_CorrectTime>correct time</EBSG_CorrectTime>
     <EBSG_CorrectNeeds>correct need levels</EBSG_CorrectNeeds>
     <EBSG_CorrectSkills>correct skill levels</EBSG_CorrectSkills>
+    <EBSG_CorrectRainSnow>correct rain/snow rate</EBSG_CorrectRainSnow>
     <EBSG_CorrectCapacities>correct health capacities</EBSG_CorrectCapacities>
     <EBSG_MapCondition>correct map conditions</EBSG_MapCondition>
     <EBSG_MapWeather>correct map weather</EBSG_MapWeather>

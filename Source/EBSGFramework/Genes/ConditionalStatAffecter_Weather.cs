@@ -24,7 +24,7 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned && req.Pawn.Map.GameConditionManager != null)
+            if (req.Pawn != null && req.Pawn.Spawned && req.Pawn.Map.weatherManager != null)
             {
                 if (forbiddenWeathers)
                     return !weathers.Contains(req.Pawn.Map.weatherManager.curWeather);

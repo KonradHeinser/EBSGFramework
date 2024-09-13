@@ -21,24 +21,8 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Pawn != null)
-            {
-                foreach (SkillCheck skillCheck in skillLimiters)
-                {
-                    SkillRecord skill = req.Pawn.skills.GetSkill(skillCheck.skill);
-                    if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
-                    {
-                        if (skillCheck.minLevel > 0)
-                            return false;
-                        continue;
-                    }
+                return EBSGUtilities.AllSkillLevelsMet(req.Pawn, skillLimiters);
 
-                    if (skill.Level < skillCheck.minLevel)
-                        return false;
-                    if (skill.Level > skillCheck.maxLevel)
-                        return false;
-                }
-                return true;
-            }
             return false;
         }
     }

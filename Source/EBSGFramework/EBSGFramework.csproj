@@ -360,6 +360,13 @@
         <Compile Include="Genes\ConditionalStatAffecter_Skills.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Capacities.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Weather.cs" />
+        <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyAllies.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_RainSnowRate.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_Multi.cs" />
+        <Compile Include="Things\CompProperties_SpawnPawn.cs" />
+        <Compile Include="Things\CompSpawnPawn.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_PawnMulti.cs" />
+        <Compile Include="Genes\ConditionalStatAffecter_MapMulti.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

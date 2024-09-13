@@ -24,7 +24,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            return EBSGUtilities.CheckGeneTrio(req.Pawn, anyOfGenes, allOfGenes, noneOfGenes);
+            if (req.Pawn != null)
+                return EBSGUtilities.CheckGeneTrio(req.Pawn, anyOfGenes, allOfGenes, noneOfGenes);
+            return false;
         }
     }
 }

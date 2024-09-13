@@ -42,8 +42,8 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <!-- <GeneDef>
+<!--
+    <GeneDef>
         <defName>BloodySpeed</defName>
         <label>bloody speed</label>
         <description>Ability to control blood makes this pawn go fast.</description>
@@ -76,9 +76,9 @@
                     <li>ImplantedIUD</li>
                     <li>TubalLigation</li>
                 </anyOfHediffs>
-                <label>sterilized</label>
+                <label>medically sterilized</label>
                 <statFactors>
-                    <MoveSpeed>1.2</MoveSpeed>
+                    <MoveSpeed>1.3</MoveSpeed>
                 </statFactors>
             </li>
             <li Class="EBSGFramework.ConditionalStatAffector_Hediffs">
@@ -88,18 +88,18 @@
                     <li>ImplantedIUD</li>
                     <li>TubalLigation</li>
                 </noneOfHediffs>
-                <label>not sterilized</label>
+                <label>not medically sterilized</label>
                 <statFactors>
                     <MoveSpeed>0.7</MoveSpeed>
-                    <Fertility>3</Fertility>
+                    <Fertility>2</Fertility>
                 </statFactors>
             </li>
         </conditionalStatAffecters>
         <exclusionTags>
             <li>Fertility</li>
         </exclusionTags>      
-    </GeneDef> -->
-
+    </GeneDef>
+-->
 </Defs>
 
 <!-- 

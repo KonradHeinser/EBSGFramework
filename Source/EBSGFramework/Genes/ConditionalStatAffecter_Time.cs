@@ -24,7 +24,7 @@ namespace EBSGFramework
             if (req.Pawn != null)
             {
                 float time = GenLocalDate.DayPercent(req.Pawn);
-                return time > minPartOfDay && time < maxPartOfDay;
+                return time >= minPartOfDay && time <= maxPartOfDay;
             }
             return false;
         }
