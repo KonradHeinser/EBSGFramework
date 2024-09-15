@@ -39,6 +39,13 @@ namespace EBSGFramework
                 Messages.Message(message, target, messageType);
         }
 
+        public static string TranslateOrLiteral(string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
+        {
+            if (input.CanTranslate())
+                return input.Translate(arg1, arg2, arg3, arg4);
+            return input;
+        }
+
         public static bool AbilityCompSucceeds(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
         {
             float finalChance = AbilityCompSuccessChance(baseChance, caster, casterStat, casterDivides, target, targetStat, targetMultiplies);

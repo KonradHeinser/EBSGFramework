@@ -1,19 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastAbilityTargetToCaster.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties_SpawnPawn.cs">
     <Files>
-      <File FileName="EBSGAI/JobGiver_AICastAbilityTargetToCaster.cs" Line="33" Column="13" />
-      <File FileName="EBSGAI/JobGiver_AITeleportEscapeEnemies.cs" Line="41" Column="65" />
-      <File FileName="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" Line="86" Column="22" />
+      <File FileName="Things/CompProperties_SpawnPawn.cs" Line="25" Column="47" />
+      <File FileName="Things/CompSpawnPawn.cs" Line="159" Column="21" />
+      <File FileName="EBSGUtilities.cs" Line="44" Column="38" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True">
-                <Node name="JobGiver_AICastAbilityTargetToCaster.cs" selected="True" />
+              <Node name="Things" expanded="True">
+                <Node name="CompProperties_SpawnPawn.cs" selected="True" />
               </Node>
-              <Node name="Genes" expanded="True" />
             </Node>
           </Node>
         </State>

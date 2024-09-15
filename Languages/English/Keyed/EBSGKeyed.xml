@@ -15,6 +15,9 @@
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
     <EBSG_SuccessChance>Success chance: {0}%</EBSG_SuccessChance>
 
+    <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
+    <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>
+
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->
     <EBSG_CorrectConditions>correct conditions</EBSG_CorrectConditions>

@@ -3,31 +3,52 @@ using RimWorld;
 
 namespace EBSGFramework
 {
-    public class CompProperties_SpawnPawn : CompProperties
+    public class CompProperties_SpawnBaby : CompProperties
     {
-        public int maxTotalSpawn = 1;
+        public enum XenoSource
+        {
+            Father,
+            Mother,
+            Hybrid
+        }
+
+        public int maxTotalSpawn = 1; // Setting to -1 makes it continue forever
 
         public IntRange spawnPerCompletion = new IntRange(1, 1);
 
         public IntRange completionTicks = new IntRange(600, 600);
 
-        public float initialAge = 0f;
+        public ThingDef filthOnCompletion;
+
+        public IntRange filthPerSpawn = new IntRange(4, 7);
 
         public bool deleteOnFinalSpawn = true;
 
+        public bool sendLetters = true;
+
+        public string letterLabelNote = "born";
+
+        public PawnKindDef staticPawnKind;
+
         public bool miscarriageThought = true;
+
+        public ThoughtDef motherMiscarriageThought;
+
+        public ThoughtDef fatherMiscarriageThought;
+
+        public bool bornThought = true;
+
+        public ThoughtDef motherBabyBornThought;
+
+        public ThoughtDef fatherBabyBornThought;
 
         public XenotypeDef staticXenotype;
 
-        public bool useMotherXeno = false;
+        public XenoSource xenotypeSource = XenoSource.Hybrid;
 
-        public bool useFatherXeno = false;
-
-        public bool useHybrid = true;
-
-        public CompProperties_SpawnPawn()
+        public CompProperties_SpawnBaby()
         {
-            compClass = typeof(CompSpawnPawn);
+            compClass = typeof(CompSpawnBaby);
         }
     }
 }
