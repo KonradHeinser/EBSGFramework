@@ -7,8 +7,6 @@ namespace EBSGFramework
     {
         public float maxBodySize = 999f;
 
-        public IntRange stunTicks;
-
         public SoundDef soundLanding;
 
         public EffecterDef flightEffecterDef;

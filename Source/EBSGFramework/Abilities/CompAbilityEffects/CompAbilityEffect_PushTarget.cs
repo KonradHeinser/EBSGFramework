@@ -37,8 +37,6 @@ namespace EBSGFramework
                         Find.Selector.Select(pawn, false, false);
                     }
                 }
-
-                pawn2.stances.stunner.StunFor(Props.stunTicks.RandomInRange, pawn, false, false);
             }
         }
 

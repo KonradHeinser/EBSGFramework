@@ -367,6 +367,7 @@
         <Compile Include="Things\CompSpawnPawn.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_PawnMulti.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_MapMulti.cs" />
+        <Compile Include="EBSGAI\JobGiver_AICastAbilityTargetToCaster.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
