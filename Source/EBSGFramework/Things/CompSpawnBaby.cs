@@ -19,6 +19,27 @@ namespace EBSGFramework
 
         public List<GeneDef> genes;
 
+        public List<GeneDef> Genes
+        {
+            get
+            {
+                if (genes.NullOrEmpty())
+                {
+                    genes = new List<GeneDef>();
+                    if (Props.staticXenotype != null)
+                        genes = Props.staticXenotype.genes;
+                    else if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Father && father != null)
+                        genes = PregnancyUtility.GetInheritedGenes(father, null);
+                    else if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Mother && mother != null)
+                        genes = PregnancyUtility.GetInheritedGenes(null, mother);
+                    else
+                        genes = PregnancyUtility.GetInheritedGenes(father, mother);
+                }
+
+                return genes;
+            }
+        }
+
         public Faction faction;
 
         public override void PostPostMake()
@@ -26,11 +47,6 @@ namespace EBSGFramework
             base.PostPostMake();
             spawnLeft = Props.maxTotalSpawn;
             ticksLeft = Props.completionTicks.RandomInRange;
-
-            if (mother == null && father == null)
-                genes = Props.staticXenotype.genes;
-            else
-                genes = PregnancyUtility.GetInheritedGenes(father, mother);
 
             if (faction == null)
                 if (mother != null || father != null) faction = mother?.Faction ?? father.Faction;
@@ -51,6 +67,7 @@ namespace EBSGFramework
                 {
                     int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
                     List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+
                     if (spawnLeft != -1)
                     {
                         if (numberToSpawn > spawnLeft)
@@ -68,13 +85,12 @@ namespace EBSGFramework
                             DontGivePreArrivalPathway = true
                         };
 
-                        if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = genes;
-                        else request.ForcedXenogenes = genes;
+                        if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = Genes;
+                        else request.ForcedXenogenes = Genes;
 
                         Pawn pawn = PawnGenerator.GeneratePawn(request);
 
                         if (Props.staticXenotype == null)
-                        {
                             if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Mother && mother != null)
                             {
                                 pawn.genes.xenotypeName = mother.genes.xenotypeName;
@@ -102,7 +118,6 @@ namespace EBSGFramework
                                     pawn.genes.xenotypeName = "Hybrid".Translate();
                                 }
                             }
-                        }
 
                         IntVec3? intVec = null;
 
@@ -182,7 +197,6 @@ namespace EBSGFramework
             Scribe_References.Look(ref mother, "mother");
             Scribe_References.Look(ref father, "father");
             Scribe_References.Look(ref faction, "faction");
-            Scribe_Collections.Look(ref genes, "genes");
             Scribe_Values.Look(ref ticksLeft, "ticksLeft", 250);
             Scribe_Values.Look(ref spawnLeft, "spawnLeft", 1);
         }
@@ -195,17 +209,14 @@ namespace EBSGFramework
         {
             tmpLastNames.Clear();
             if (geneticMother != null)
-            {
                 tmpLastNames.Add(PawnNamingUtility.GetLastName(geneticMother));
-            }
+
             if (father != null)
-            {
                 tmpLastNames.Add(PawnNamingUtility.GetLastName(father));
-            }
+
             if (tmpLastNames.Count == 0)
-            {
                 return null;
-            }
+
             return tmpLastNames.RandomElement();
         }
 

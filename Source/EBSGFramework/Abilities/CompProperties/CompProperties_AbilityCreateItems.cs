@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
+using Verse;
 
 namespace EBSGFramework
 {
     public class CompProperties_AbilityCreateItems : CompProperties_AbilityEffect
     {
         public List<ThingPatternPart> thingPattern;
+
+        public HediffDef linkingHediff;
 
         public bool sendSkipSignal = true;
 

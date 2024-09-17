@@ -30,6 +30,39 @@ namespace EBSGFramework
                 if (partList[item2].thing == null) continue;
                 Thing thing = ThingMaker.MakeThing(partList[item2].thing);
                 thing.stackCount = Math.Min(partList[item2].count, partList[item2].thing.stackLimit);
+
+                if (thing.TryGetComp<CompSpawnBaby>() != null)
+                {
+                    CompSpawnBaby babyComp = thing.TryGetComp<CompSpawnBaby>();
+                    Pawn mother = null;
+                    Pawn father = null;
+
+                    if (Props.linkingHediff != null && EBSGUtilities.HasHediff(parent.pawn, Props.linkingHediff))
+                    {
+                        parent.pawn.health.hediffSet.TryGetHediff(Props.linkingHediff, out Hediff hediff);
+                        if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
+                            if (partner.gender == Gender.Male)
+                            {
+                                mother = parent.pawn;
+                                father = partner;
+                            }
+                            else
+                            {
+                                mother = partner;
+                                father = parent.pawn;
+                            }
+                    }
+                    else
+                    {
+                        if (parent.pawn.gender == Gender.Male) father = parent.pawn;
+                        else mother = parent.pawn;
+                    }
+
+                    babyComp.mother = mother;
+                    babyComp.father = father;
+                    babyComp.faction = parent.pawn.Faction;
+                }
+
                 GenSpawn.Spawn(thing, item2, map);
                 if (Props.sendSkipSignal) CompAbilityEffect_Teleport.SendSkipUsedSignal(item2, parent.pawn);
             }

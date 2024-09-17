@@ -363,8 +363,8 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyAllies.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_RainSnowRate.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_Multi.cs" />
-        <Compile Include="Things\CompProperties_SpawnPawn.cs" />
-        <Compile Include="Things\CompSpawnPawn.cs" />
+        <Compile Include="Things\CompProperties_SpawnBaby.cs" />
+        <Compile Include="Things\CompSpawnBaby.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_PawnMulti.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_MapMulti.cs" />
         <Compile Include="EBSGAI\JobGiver_AICastAbilityTargetToCaster.cs" />
