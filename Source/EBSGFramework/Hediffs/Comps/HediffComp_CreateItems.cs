@@ -64,17 +64,17 @@ namespace EBSGFramework
                     if (map != null)
                     {
                         IntVec3 intVec;
-                        if (parent.pawn.Position.Walkable(parent.pawn.Map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.pawn.Position)))
+                        if (parent.pawn.Position.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.pawn.Position)))
                         {
                             intVec = parent.pawn.Position;
                             alreadyUsedSpots.Add(parent.pawn.Position);
                         }
-                        else intVec = CellFinder.RandomClosewalkCellNear(parent.pawn.Position, parent.pawn.Map, 1, delegate (IntVec3 cell)
+                        else intVec = CellFinder.RandomClosewalkCellNear(parent.pawn.Position, map, 1, delegate (IntVec3 cell)
                         {
                             if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
                             if (cell != parent.pawn.Position)
                             {
-                                Building building = parent.pawn.Map.edificeGrid[cell];
+                                Building building = map.edificeGrid[cell];
                                 if (building == null)
                                 {
                                     alreadyUsedSpots.Add(cell);
@@ -86,8 +86,7 @@ namespace EBSGFramework
                             }
                             return false;
                         });
-
-                        GenPlace.TryPlaceThing(thing, intVec, parent.pawn.Map, ThingPlaceMode.Near);
+                        GenPlace.TryPlaceThing(thing, intVec, map, ThingPlaceMode.Near);
                     }
                     else if (thing.def.Minifiable || (!thing.def.IsPlant && !typeof(Building).IsAssignableFrom(thing.def.thingClass)))
                     {

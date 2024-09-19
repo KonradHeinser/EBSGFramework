@@ -5,8 +5,8 @@
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="87" Column="93" />
       <File FileName="Things/CompSpawnBaby.cs" Line="147" Column="28" />
       <File FileName="Generic List Classes/ThingCreationItem.cs" Line="27" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_CreateItems.cs" Line="45" Column="49" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_CreateItems.cs" Line="19" Column="10" />
+      <File FileName="Hediffs/Comps/HediffComp_CreateItems.cs" Line="73" Column="26" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_CreateItems.cs" Line="24" Column="1" />
       <File FileName="EBSGUtilities.cs" Line="197" Column="18" />
       <File FileName="Harmony/HarmonyPatches.cs" Line="1205" Column="57" />
     </Files>
