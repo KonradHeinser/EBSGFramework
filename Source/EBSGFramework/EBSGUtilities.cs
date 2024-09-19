@@ -159,6 +159,56 @@ namespace EBSGFramework
             return parts[0];
         }
 
+        public static Thing CreatThingCreationItem(ThingCreationItem item, Pawn creater = null)
+        {
+            if (!Rand.Chance(item.chance)) return null;
+
+            Thing thing = ThingMaker.MakeThing(item.thing, item.stuff);
+            thing.stackCount = Math.Min(item.count, item.thing.stackLimit);
+            CompQuality compQuality = thing.TryGetComp<CompQuality>();
+            if (compQuality != null)
+            {
+                compQuality.SetQuality(item.quality, ArtGenerationContext.Colony);
+
+                if (creater != null)
+                    QualityUtility.SendCraftNotification(thing, creater);
+            }
+
+            if (thing.TryGetComp<CompSpawnBaby>() != null && creater != null)
+            {
+                CompSpawnBaby babyComp = thing.TryGetComp<CompSpawnBaby>();
+                Pawn mother = null;
+                Pawn father = null;
+
+                if (item.linkingHediff != null && HasHediff(creater, item.linkingHediff))
+                {
+                    creater.health.hediffSet.TryGetHediff(item.linkingHediff, out Hediff hediff);
+                    if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
+                        if (partner.gender == Gender.Male)
+                        {
+                            mother = creater;
+                            father = partner;
+                        }
+                        else
+                        {
+                            mother = partner;
+                            father = creater;
+                        }
+                }
+                else
+                {
+                    if (creater.gender == Gender.Male) father = creater;
+                    else mother = creater;
+                }
+
+                babyComp.mother = mother;
+                babyComp.father = father;
+                babyComp.faction = creater.Faction;
+            }
+
+            return thing;
+        }
+
         public static Hediff GetFirstHediffAttachedToPart(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
         {
             if (hediffDef == null) return null;

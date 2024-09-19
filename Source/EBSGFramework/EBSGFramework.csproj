@@ -368,6 +368,9 @@
         <Compile Include="Genes\ConditionalStatAffecter_PawnMulti.cs" />
         <Compile Include="Genes\ConditionalStatAffecter_MapMulti.cs" />
         <Compile Include="EBSGAI\JobGiver_AICastAbilityTargetToCaster.cs" />
+        <Compile Include="Generic List Classes\ThingCreationItem.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_CreateItems.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateItems.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

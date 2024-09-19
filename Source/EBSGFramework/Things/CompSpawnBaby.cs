@@ -121,8 +121,13 @@ namespace EBSGFramework
 
                         IntVec3? intVec = null;
 
-                        if (parent.InteractionCell.Walkable(parent.Map))
+                        if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
+                            intVec = parent.Position;
+                        else if (parent.InteractionCell.Walkable(parent.Map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
+                        {
                             intVec = parent.InteractionCell;
+                            alreadyUsedSpots.Add(parent.InteractionCell);
+                        }
                         else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, parent.Map, 1, delegate (IntVec3 cell)
                         {
                             if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;

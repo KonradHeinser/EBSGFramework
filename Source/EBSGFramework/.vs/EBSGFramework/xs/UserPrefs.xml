@@ -1,28 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompSpawnBaby.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_CreateItems.cs">
     <Files>
-      <File FileName="Things/CompProperties_SpawnBaby.cs" Line="25" Column="47" />
-      <File FileName="Things/CompSpawnBaby.cs" Line="64" Column="29" />
       <File FileName="Abilities/CompProperties/CompProperties_AbilityCreateItems.cs" Line="15" Column="47" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="92" Column="86" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="87" Column="93" />
+      <File FileName="Things/CompSpawnBaby.cs" Line="147" Column="28" />
+      <File FileName="Generic List Classes/ThingCreationItem.cs" Line="27" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_CreateItems.cs" Line="45" Column="49" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_CreateItems.cs" Line="19" Column="10" />
+      <File FileName="EBSGUtilities.cs" Line="197" Column="18" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1205" Column="57" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="Things" expanded="True">
-                <Node name="CompSpawnBaby.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
