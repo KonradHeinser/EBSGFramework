@@ -57,14 +57,33 @@ namespace EBSGFramework
         {
             base.CompTick();
 
-            if (parent is Plant plant && plant.Growth < 1f) return; // Ensures plants are grown before the start creating pawns
-
             if (spawnLeft > 0 || spawnLeft == -1)
             {
+                if (parent.HasComp<CompRefuelable>())
+                {
+                    CompRefuelable fuel = parent.GetComp<CompRefuelable>();
+                    if (!fuel.HasFuel) return;
+                }
+
+                // Ensures plants and pawns are grown before they start creating new pawns
+                bool flag = false;
+                if (parent is Plant plant && plant.Growth < 1f)
+                    flag |= plant.Growth < 1f;
+                else if (parent is Pawn carrier)
+                    if (!carrier.RaceProps.IsMechanoid)
+                        flag |= !carrier.ageTracker.Adult;
+
+                if (flag) return;
+
                 ticksLeft--;
 
                 if (ticksLeft <= 0)
                 {
+                    Map map = parent.MapHeld;
+                    Caravan caravan = null;
+                    if (map == null && parent is Pawn carrier) caravan = carrier.GetCaravan();
+                    if (map == null && caravan == null) return;
+
                     int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
                     List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
 
@@ -119,48 +138,52 @@ namespace EBSGFramework
                                 }
                             }
 
-                        IntVec3? intVec = null;
+                        if (map != null)
+                        {
+                            IntVec3? intVec = null;
 
-                        if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
-                            intVec = parent.Position;
-                        else if (parent.InteractionCell.Walkable(parent.Map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
-                        {
-                            intVec = parent.InteractionCell;
-                            alreadyUsedSpots.Add(parent.InteractionCell);
-                        }
-                        else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, parent.Map, 1, delegate (IntVec3 cell)
-                        {
-                            if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
-                            if (cell != parent.InteractionCell)
+                            if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
+                                intVec = parent.Position;
+                            else if (parent.InteractionCell.Walkable(parent.Map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
                             {
-                                Building building = parent.Map.edificeGrid[cell];
-                                if (building == null)
-                                {
-                                    alreadyUsedSpots.Add(cell);
-                                    return true;
-                                }
-
-                                if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
-                                return building.def?.IsBed != true;
+                                intVec = parent.InteractionCell;
+                                alreadyUsedSpots.Add(parent.InteractionCell);
                             }
-                            return false;
-                        });
-                        if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, parent.Map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
+                            else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, parent.Map, 1, delegate (IntVec3 cell)
+                            {
+                                if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
+                                if (cell != parent.InteractionCell)
+                                {
+                                    Building building = parent.Map.edificeGrid[cell];
+                                    if (building == null)
+                                    {
+                                        alreadyUsedSpots.Add(cell);
+                                        return true;
+                                    }
 
-                        if (pawn.RaceProps.IsFlesh)
-                        {
-                            if (mother != null)
-                                pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-                            if (father != null)
-                                pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
+                                    if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
+                                    return building.def?.IsBed != true;
+                                }
+                                return false;
+                            });
+                            if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, parent.Map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
+
+                            if (pawn.RaceProps.IsFlesh)
+                            {
+                                if (mother != null)
+                                    pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
+                                if (father != null)
+                                    pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
+                            }
+
+                            if (pawn.playerSettings != null && mother?.playerSettings != null)
+                                pawn.playerSettings.AreaRestrictionInPawnCurrentMap = mother.playerSettings.AreaRestrictionInPawnCurrentMap;
+
+                            // It is unlikely that this will fail since it should be a spawned thing spitting the pawn out
+                            if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent, intVec))
+                                Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
                         }
-
-                        if (pawn.playerSettings != null && mother?.playerSettings != null)
-                            pawn.playerSettings.AreaRestrictionInPawnCurrentMap = mother.playerSettings.AreaRestrictionInPawnCurrentMap;
-
-                        // It is unlikely that this will fail since it should be a spawned thing spitting the pawn out
-                        if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent, intVec))
-                            Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
+                        else caravan.AddPawn(pawn, true);
 
                         if (Props.bornThought)
                         {

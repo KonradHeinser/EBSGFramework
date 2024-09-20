@@ -1,14 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompSpawnBaby.cs">
     <Files>
       <File FileName="Coma Genes/Need_ComaGene.cs" Line="51" Column="61" />
       <File FileName="EBSGExtension.cs" Line="24" Column="40" />
       <File FileName="Needs/Need_GenericNeed.cs" Line="36" Column="10" />
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="70" Column="1" />
       <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="56" Column="18" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="638" Column="36" />
-      <File FileName="Genes/GRCExtension.cs" Line="17" Column="59" />
-      <File FileName="DynamicResourceGenes/Alert_LowResource.cs" Line="49" Column="29" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="645" Column="26" />
+      <File FileName="Things/CompProperties_SpawnBaby.cs" Line="1" Column="1" />
+      <File FileName="Things/CompSpawnBaby.cs" Line="77" Column="17" />
+      <File FileName="Hediffs/Comps/HediffComp_CreateItems.cs" Line="6" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,13 +17,13 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Coma Genes" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True" />
               </Node>
-              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="CompSpawnBaby.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
