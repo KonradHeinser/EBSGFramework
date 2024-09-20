@@ -1,12 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/Need_ComaGene.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/Alert_LowComaNeed.cs">
     <Files>
       <File FileName="Coma Genes/Need_ComaGene.cs" Line="51" Column="61" />
       <File FileName="EBSGExtension.cs" Line="24" Column="40" />
       <File FileName="EBSGUtilities.cs" Line="319" Column="57" />
-      <File FileName="Needs/Need_GenericNeed.cs" Line="51" Column="9" />
+      <File FileName="Needs/Need_GenericNeed.cs" Line="51" Column="1" />
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="71" Column="42" />
-      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="37" Column="21" />
+      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="18" Column="9" />
       <File FileName="Coma Genes/Gene_Coma.cs" Line="11" Column="1" />
     </Files>
     <Pads>
@@ -15,7 +15,7 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Coma Genes" expanded="True">
-                <Node name="Need_ComaGene.cs" selected="True" />
+                <Node name="Alert_LowComaNeed.cs" selected="True" />
               </Node>
               <Node name="GameComponents" expanded="True" />
               <Node name="Needs" expanded="True" />
