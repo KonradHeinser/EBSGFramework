@@ -1,14 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties_SpawnBaby.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Coma Genes/Need_ComaGene.cs" Line="51" Column="61" />
-      <File FileName="EBSGExtension.cs" Line="24" Column="40" />
-      <File FileName="Needs/Need_GenericNeed.cs" Line="36" Column="10" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="70" Column="1" />
-      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="56" Column="18" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="645" Column="26" />
-      <File FileName="Things/CompProperties_SpawnBaby.cs" Line="40" Column="9" />
-      <File FileName="Things/CompSpawnBaby.cs" Line="190" Column="136" />
+      <File FileName="EBSGExtension.cs" Line="178" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="916" Column="14" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="320" Column="60" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,13 +11,11 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Coma Genes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="Comps" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
               </Node>
-              <Node name="Things" expanded="True">
-                <Node name="CompProperties_SpawnBaby.cs" selected="True" />
-              </Node>
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

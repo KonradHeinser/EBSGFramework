@@ -57,6 +57,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "DoKillSideEffects"),
                 postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
+
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GeneUtility), nameof(GeneUtility.IsBloodfeeder)),
@@ -77,6 +78,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
+                prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
+                prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -875,6 +880,41 @@ namespace EBSGFramework
                             break;
                         }
             }
+        }
+
+        public static bool DropBloodFilthPrefix(Pawn ___pawn)
+        {
+            if (Cache != null && !Cache.bloodReplacingGenes.NullOrEmpty() && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
+                && ___pawn.SpawnedOrAnyParentSpawned && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out GeneDef bloodGene, Cache.bloodReplacingGenes))
+            {
+                EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
+                if (bloodExtension.bloodFilthAmount <= 0 || !Rand.Chance(bloodExtension.bloodDropChance)) return false;
+                if (bloodExtension.bloodReplacement != null)
+                    FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodReplacement, ___pawn.LabelIndefinite(),
+                        bloodExtension.bloodFilthAmount);
+            }
+            return true;
+        }
+
+        public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
+        {
+            if (Cache != null && !Cache.bloodSmearReplacingGenes.NullOrEmpty()
+                && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
+            {
+                EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
+                if (!Rand.Chance(bloodExtension.bloodSmearDropChance)) return false;
+                if (bloodExtension.bloodReplacement != null)
+                {
+                    FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodSmearReplacement, out var outFilth, ___pawn.LabelIndefinite());
+                    if (outFilth != null)
+                    {
+                        float rotation = ((!___lastSmearDropPos.HasValue) ? ___pawn.pather.lastMoveDirection : (___lastSmearDropPos.Value - ___pawn.DrawPos).AngleFlat());
+                        outFilth.SetOverrideDrawPositionAndRotation(___pawn.DrawPos.WithY(bloodExtension.bloodSmearReplacement.Altitude), rotation);
+                        ___lastSmearDropPos = ___pawn.DrawPos;
+                    }
+                }
+            }
+            return true;
         }
 
         // Harmony patches for stats

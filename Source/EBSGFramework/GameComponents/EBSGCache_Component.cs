@@ -36,6 +36,8 @@ namespace EBSGFramework
         public List<GeneDef> noWeapon = new List<GeneDef>();
         public List<GeneDef> equipRestricting = new List<GeneDef>();
         public List<GeneDef> grcGenes = new List<GeneDef>();
+        public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
+        public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
 
         // Cached needs of interest
         public List<NeedDef> murderousNeeds = new List<NeedDef>();
@@ -294,6 +296,8 @@ namespace EBSGFramework
             noWeapon = new List<GeneDef>();
             equipRestricting = new List<GeneDef>();
             grcGenes = new List<GeneDef>();
+            bloodReplacingGenes = new List<GeneDef>();
+            bloodSmearReplacingGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -306,6 +310,12 @@ namespace EBSGFramework
 
                     if (extension.hideInGeneTabWhenInactive)
                         hiddenWhenInactive.Add(gene);
+
+                    if (extension.bloodDropChance != 1 || extension.bloodReplacement != null)
+                        bloodReplacingGenes.Add(gene);
+
+                    if (extension.bloodSmearDropChance != 1 || extension.bloodSmearReplacement != null)
+                        bloodReplacingGenes.Add(gene);
                 }
                 if (gene.geneClass == typeof(ResourceGene))
                     dynamicResourceGenes.Add(gene);
