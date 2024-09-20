@@ -97,8 +97,8 @@ namespace EBSGFramework
                     for (int i = 0; i < numberToSpawn; i++)
                     {
                         // If the faction is somehow null, the child will default to joining the player
-                        PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? PawnKindDefOf.Colonist, faction ?? Faction.OfPlayer,
-                            fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true,
+                        PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
+                            faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true,
                             forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: DevelopmentalStage.Newborn)
                         {
                             DontGivePreArrivalPathway = true
@@ -109,7 +109,7 @@ namespace EBSGFramework
 
                         Pawn pawn = PawnGenerator.GeneratePawn(request);
 
-                        if (Props.staticXenotype == null)
+                        if (Props.staticXenotype == null && (mother != null || father != null))
                             if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Mother && mother != null)
                             {
                                 pawn.genes.xenotypeName = mother.genes.xenotypeName;
@@ -212,7 +212,7 @@ namespace EBSGFramework
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
-            if (Props.miscarriageThought && spawnLeft != 0)
+            if (Props.miscarriageThought && spawnLeft > 0)
             {
                 mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherMiscarriageThought ?? ThoughtDefOf.Miscarried);
                 father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherMiscarriageThought ?? ThoughtDefOf.PartnerMiscarried);
