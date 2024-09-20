@@ -1,15 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityCreateItems.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/Need_ComaGene.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityCreateItems.cs" Line="24" Column="9" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="87" Column="93" />
-      <File FileName="Things/CompSpawnBaby.cs" Line="147" Column="28" />
-      <File FileName="Generic List Classes/ThingCreationItem.cs" Line="25" Column="6" />
-      <File FileName="Hediffs/Comps/HediffComp_CreateItems.cs" Line="72" Column="64" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_CreateItems.cs" Line="16" Column="68" />
-      <File FileName="EBSGUtilities.cs" Line="197" Column="18" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="1205" Column="57" />
+      <File FileName="Coma Genes/Need_ComaGene.cs" Line="51" Column="61" />
+      <File FileName="EBSGExtension.cs" Line="24" Column="40" />
+      <File FileName="EBSGUtilities.cs" Line="319" Column="57" />
+      <File FileName="Needs/Need_GenericNeed.cs" Line="51" Column="9" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="71" Column="42" />
+      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="37" Column="21" />
+      <File FileName="Coma Genes/Gene_Coma.cs" Line="11" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Coma Genes" expanded="True">
+                <Node name="Need_ComaGene.cs" selected="True" />
+              </Node>
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Needs" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

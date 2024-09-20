@@ -46,12 +46,39 @@ namespace EBSGFramework
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
 
+        private bool needComaAlert = false;
+        private bool checkedComaAlert = false;
+
         private bool needRechargerJob = false;
         private bool checkedRechargerJob = false;
 
         // Other
 
         public List<Pawn> cachedHemogenicPawns = new List<Pawn>();
+
+        public bool NeedComaAlert()
+        {
+            // Checks the def database to see if there are any needs that use displayLowAlert
+            if (!checkedComaAlert)
+            {
+                foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
+                {
+                    if (need.HasModExtension<EBSGExtension>())
+                    {
+                        EBSGExtension extension = need.GetModExtension<EBSGExtension>();
+                        if (extension.displayLowAlert)
+                        {
+                            needComaAlert = true;
+                            break;
+                        }
+                    }
+                }
+
+                checkedComaAlert = true;
+            }
+
+            return needComaAlert;
+        }
 
         public bool NeedNeedAlert()
         {

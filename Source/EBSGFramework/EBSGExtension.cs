@@ -18,6 +18,11 @@ namespace EBSGFramework
         public List<GeneticMultiplier> geneticMultipliers;
         public float universalMoodFactor = 1;
 
+        public string nextComaTranslateString;
+        public string shouldComaTranslateString;
+        public HediffDef exhaustionHediff;
+        public float gainPerDayComatose = 0.2f;
+
         public HediffDef alternativePregnancyHediff;
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;

@@ -42,7 +42,7 @@ namespace EBSGFramework
         public static string TranslateOrLiteral(string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
         {
             if (input.CanTranslate())
-                return input.Translate(arg1, arg2, arg3, arg4);
+                return input.Translate(arg1, arg2, arg3, arg4).Resolve();
             return input;
         }
 
@@ -708,7 +708,7 @@ namespace EBSGFramework
 
         public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
-            if (pawn.health == null) return false;
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
             return false;
         }

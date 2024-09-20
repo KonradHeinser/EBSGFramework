@@ -371,6 +371,9 @@
         <Compile Include="Generic List Classes\ThingCreationItem.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_CreateItems.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateItems.cs" />
+        <Compile Include="Coma Genes\Need_ComaGene.cs" />
+        <Compile Include="Coma Genes\Alert_LowComaNeed.cs" />
+        <Compile Include="Coma Genes\Gene_Coma.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -408,6 +411,7 @@
         <Folder Include="Hediffs\Comps\Explosive\" />
         <Folder Include="Stats\" />
         <Folder Include="Storytime\" />
+        <Folder Include="Coma Genes\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
