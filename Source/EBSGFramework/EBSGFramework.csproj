@@ -373,6 +373,7 @@
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateItems.cs" />
         <Compile Include="Coma Genes\Need_ComaGene.cs" />
         <Compile Include="Coma Genes\Gene_Coma.cs" />
+        <Compile Include="Coma Genes\Alert_LowComaNeed.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -383,7 +384,6 @@
         <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
         <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
         <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
-        <None Include="Coma Genes\Alert_LowComaNeed.cs" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Abilities\" />

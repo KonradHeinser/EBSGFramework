@@ -11,6 +11,21 @@ namespace EBSGFramework
 
         private List<string> targetLabels = new List<string>();
 
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         public Alert_LowComaNeed()
         {
             requireBiotech = true;
@@ -19,10 +34,9 @@ namespace EBSGFramework
         public override string GetLabel()
         {
             if (targets.Count == 1)
-            {
-                return "AlertLowDeathrestPawn".Translate(targetLabels[0].Named("PAWN"));
-            }
-            return "AlertLowDeathrestPawns".Translate(targetLabels.Count.ToStringCached().Named("NUMCULPRITS"));
+                return "EBSG_AlertLowComaPawn".Translate(targetLabels[0].Named("PAWN"));
+
+            return "EBSG_AlertLowComaPawns".Translate(targetLabels.Count.ToStringCached().Named("NUMCULPRITS"));
         }
 
         private void CalculateTargets()
@@ -33,9 +47,8 @@ namespace EBSGFramework
             {
                 if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer)
                 {
-
-                    Need_Deathrest need_Deathrest = item.needs?.TryGetNeed<Need_Deathrest>();
-                    if (need_Deathrest != null && need_Deathrest.CurLevel <= 0.1f && !item.Deathresting)
+                    Need_ComaGene need_Coma = item.needs?.TryGetNeed<Need_ComaGene>();
+                    if (need_Coma != null && need_Coma.CurLevel <= 0.1f && !item.Deathresting)
                     {
                         targets.Add(item);
                         targetLabels.Add(item.NameShortColored.Resolve());
@@ -46,11 +59,14 @@ namespace EBSGFramework
 
         public override TaggedString GetExplanation()
         {
-            return "AlertLowDeathrestDesc".Translate(targetLabels.ToLineList("  - ").Named("CULPRITS"));
+            return "EBSG_LowComaNeedDesc".Translate(targetLabels.ToLineList("  - ").Named("CULPRITS"));
         }
 
         public override AlertReport GetReport()
         {
+            if (Cache != null && !Cache.NeedComaAlert())
+                return AlertReport.Inactive;
+
             CalculateTargets();
             return AlertReport.CulpritsAre(targets);
         }

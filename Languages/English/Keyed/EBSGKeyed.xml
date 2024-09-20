@@ -17,7 +17,10 @@
 
     <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>
-    <EBSG_LowComaNeed>A colonist has not been in their special coma for a long time. If they go too long without this special type of rest, they will become exhausted.\n\nTo start this rest, select the colonist then right-click on their assigned bed or a related building.\n\nThese people need rest:\n{CULPRITS}</EBSG_LowComaNeed>
+
+    <EBSG_AlertLowComaPawn>{PAWN} needs special rest</EBSG_AlertLowComaPawn>
+    <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need special rest</EBSG_AlertLowComaPawns>  
+    <EBSG_LowComaNeedDesc>A colonist has not been in their special coma for a long time. If they go too long without this special type of rest, they will become exhausted.\n\nTo start this rest, select the colonist then right-click on their assigned bed or a related building.\n\nThese people need rest:\n{CULPRITS}</EBSG_LowComaNeedDesc>
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->

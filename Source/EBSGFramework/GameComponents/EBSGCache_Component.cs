@@ -62,18 +62,11 @@ namespace EBSGFramework
             if (!checkedComaAlert)
             {
                 foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
-                {
-                    if (need.HasModExtension<EBSGExtension>())
+                    if (need.needClass == typeof(Need_ComaGene))
                     {
-                        EBSGExtension extension = need.GetModExtension<EBSGExtension>();
-                        if (extension.displayLowAlert)
-                        {
-                            needComaAlert = true;
-                            break;
-                        }
+                        needComaAlert = true;
+                        break;
                     }
-                }
-
                 checkedComaAlert = true;
             }
 
