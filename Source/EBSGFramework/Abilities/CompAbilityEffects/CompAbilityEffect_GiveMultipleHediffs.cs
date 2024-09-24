@@ -67,6 +67,14 @@ namespace EBSGFramework
                     hediffComp_Link.other = other;
                     hediffComp_Link.drawConnection = target == parent.pawn;
                 }
+
+                HediffComp_SpawnHumanlike hediffComp_SpawnBaby = hediff.TryGetComp<HediffComp_SpawnHumanlike>();
+                if (hediffComp_SpawnBaby != null)
+                {
+                    hediffComp_SpawnBaby.faction = other.Faction;
+                    hediffComp_SpawnBaby.father = other;
+                }
+
                 target.health.AddHediff(hediff);
             }
             else

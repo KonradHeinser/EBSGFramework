@@ -5,13 +5,6 @@ namespace EBSGFramework
 {
     public class CompProperties_SpawnBaby : CompProperties
     {
-        public enum XenoSource
-        {
-            Father,
-            Mother,
-            Hybrid
-        }
-
         public int maxTotalSpawn = 1; // Setting to -1 makes it continue forever
 
         public IntRange spawnPerCompletion = new IntRange(1, 1);

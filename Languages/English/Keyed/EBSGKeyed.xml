@@ -17,6 +17,7 @@
 
     <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>
+    <EBSG_CompSpawnPawnHediffText>A pawn has finished developing inside of {0}, and {1}</EBSG_CompSpawnPawnHediffText>
 
     <EBSG_AlertLowComaPawn>{PAWN} needs special rest</EBSG_AlertLowComaPawn>
     <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need special rest</EBSG_AlertLowComaPawns>  

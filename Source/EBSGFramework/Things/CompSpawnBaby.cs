@@ -28,9 +28,9 @@ namespace EBSGFramework
                     genes = new List<GeneDef>();
                     if (Props.staticXenotype != null)
                         genes = Props.staticXenotype.genes;
-                    else if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Father && father != null)
+                    else if (Props.xenotypeSource == XenoSource.Father && father != null)
                         genes = PregnancyUtility.GetInheritedGenes(father, null);
-                    else if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Mother && mother != null)
+                    else if (Props.xenotypeSource == XenoSource.Mother && mother != null)
                         genes = PregnancyUtility.GetInheritedGenes(null, mother);
                     else
                         genes = PregnancyUtility.GetInheritedGenes(father, mother);
@@ -110,12 +110,12 @@ namespace EBSGFramework
                         Pawn pawn = PawnGenerator.GeneratePawn(request);
 
                         if (Props.staticXenotype == null && (mother != null || father != null))
-                            if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Mother && mother != null)
+                            if (Props.xenotypeSource == XenoSource.Mother && mother != null)
                             {
                                 pawn.genes.xenotypeName = mother.genes.xenotypeName;
                                 pawn.genes.iconDef = mother.genes.iconDef;
                             }
-                            else if (Props.xenotypeSource == CompProperties_SpawnBaby.XenoSource.Father && father != null)
+                            else if (Props.xenotypeSource == XenoSource.Father && father != null)
                             {
                                 pawn.genes.xenotypeName = father.genes.xenotypeName;
                                 pawn.genes.iconDef = father.genes.iconDef;
@@ -144,17 +144,17 @@ namespace EBSGFramework
 
                             if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
                                 intVec = parent.Position;
-                            else if (parent.InteractionCell.Walkable(parent.Map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
+                            else if (parent.InteractionCell.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
                             {
                                 intVec = parent.InteractionCell;
                                 alreadyUsedSpots.Add(parent.InteractionCell);
                             }
-                            else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, parent.Map, 1, delegate (IntVec3 cell)
+                            else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, map, 1, delegate (IntVec3 cell)
                             {
                                 if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
                                 if (cell != parent.InteractionCell)
                                 {
-                                    Building building = parent.Map.edificeGrid[cell];
+                                    Building building = map.edificeGrid[cell];
                                     if (building == null)
                                     {
                                         alreadyUsedSpots.Add(cell);
@@ -166,7 +166,7 @@ namespace EBSGFramework
                                 }
                                 return false;
                             });
-                            if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, parent.Map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
+                            if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
 
                             if (pawn.RaceProps.IsFlesh)
                             {
@@ -191,13 +191,16 @@ namespace EBSGFramework
                             father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
                         }
 
-                        if (Props.sendLetters)
+                        if (Props.sendLetters && faction == Faction.OfPlayer)
                         {
                             ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, EBSGUtilities.TranslateOrLiteral(Props.letterLabelNote)),
                                 "EBSG_CompSpawnPawnText".Translate(parent.Label), LetterDefOf.BabyBirth, pawn);
                             birthLetter.Start();
                             Find.LetterStack.ReceiveLetter(birthLetter);
                         }
+
+                        if (pawn.caller != null)
+                            pawn.caller.DoCall();
                     }
 
                     if (spawnLeft == 0 && Props.deleteOnFinalSpawn)

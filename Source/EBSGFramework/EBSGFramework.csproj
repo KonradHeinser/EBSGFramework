@@ -374,6 +374,9 @@
         <Compile Include="Coma Genes\Need_ComaGene.cs" />
         <Compile Include="Coma Genes\Gene_Coma.cs" />
         <Compile Include="Coma Genes\Alert_LowComaNeed.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnHumanlike.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_SpawnHumanlike.cs" />
+        <Compile Include="Generic List Classes\XenoSource.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
