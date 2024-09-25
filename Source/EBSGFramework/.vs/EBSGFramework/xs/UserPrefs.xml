@@ -1,21 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/Gene_Coma.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/CompUseEffect_OffsetComaCapacity.cs">
     <Files>
-      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="69" Column="13" />
-      <File FileName="Coma Genes/Gene_Coma.cs" Line="301" Column="18" />
-      <File FileName="Coma Genes/Need_ComaGene.cs" Line="25" Column="30" />
-      <File FileName="Coma Genes/CompComaGeneBindable.cs" Line="181" Column="43" />
-      <File FileName="Coma Genes/CompProperties_ComaBindable.cs" Line="45" Column="263" />
-      <File FileName="EBSGExtension.cs" Line="23" Column="1" />
+      <File FileName="Coma Genes/Gene_Coma.cs" Line="79" Column="16" />
+      <File FileName="Coma Genes/Need_ComaGene.cs" Line="53" Column="17" />
+      <File FileName="Coma Genes/CompProperties_UseEffectOffsetComaCapacity.cs" Line="6" Column="60" />
+      <File FileName="Coma Genes/CompUseEffect_OffsetComaCapacity.cs" Line="21" Column="67" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Coma Genes" expanded="True" selected="True" />
-              <Node name="GameComponents" expanded="True" />
+              <Node name="Coma Genes" expanded="True">
+                <Node name="CompUseEffect_OffsetComaCapacity.cs" selected="True" />
+              </Node>
               <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True" />
+              </Node>
               <Node name="Needs" expanded="True" />
             </Node>
           </Node>

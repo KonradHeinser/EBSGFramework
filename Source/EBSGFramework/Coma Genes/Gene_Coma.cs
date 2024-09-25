@@ -66,9 +66,8 @@ namespace EBSGFramework
             get
             {
                 if (cachedComaNeed == null)
-                {
-                    cachedComaNeed = pawn.needs.TryGetNeed<Need_ComaGene>();
-                }
+                    cachedComaNeed = pawn.needs?.TryGetNeed(Extension.relatedNeed) as Need_ComaGene;
+
                 return cachedComaNeed;
             }
         }
@@ -295,7 +294,7 @@ namespace EBSGFramework
             List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
             for (int num = hediffs.Count - 1; num >= 0; num--)
             {
-                if (hediffs[num].def.removeOnComaStart) // Need to make special hediff comp that checks for certain genes
+                if (hediffs[num].TryGetComp<HediffComp_RemoveOnComaRest>()?.Valid(def) == true) // Need to make special hediff comp that checks for certain genes
                 {
                     pawn.health.RemoveHediff(hediffs[num]);
                 }
@@ -534,7 +533,7 @@ namespace EBSGFramework
                         int newCap = i;
                         list.Add(new FloatMenuOption(newCap.ToString(), delegate
                         {
-                            OffsetCapacity(newCap - comaRestCapacity, sendNotification: false);
+                            OffsetCapacity(newCap - comaRestCapacity, false);
                         }));
                     }
                     Find.WindowStack.Add(new FloatMenu(list));

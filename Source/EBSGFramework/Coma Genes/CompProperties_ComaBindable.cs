@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public float hemogenLimitOffset; // Left in due to there not really being a way to increase it via hediff
 
+        public string connectionLinePath;
+
         public HediffDef hediffToApply;
 
         public SoundDef soundWorking;

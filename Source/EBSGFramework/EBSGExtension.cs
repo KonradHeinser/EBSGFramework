@@ -20,6 +20,7 @@ namespace EBSGFramework
 
         public string nextComaTranslateString;
         public string shouldComaTranslateString;
+        public NeedDef relatedNeed;
         public HediffDef comaRestingHediff;
         public HediffDef comaInterruptedHediff;
         public HediffDef exhaustionHediff;

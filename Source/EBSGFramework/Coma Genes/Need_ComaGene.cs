@@ -49,9 +49,8 @@ namespace EBSGFramework
             get
             {
                 if (cachedComaGene == null)
-                {
-                    cachedComaGene = (Gene_Coma)pawn.genes?.GetGene(Extension.relatedGene);
-                }
+                    cachedComaGene = pawn.genes?.GetGene(Extension.relatedGene) as Gene_Coma;
+
                 return cachedComaGene;
             }
         }

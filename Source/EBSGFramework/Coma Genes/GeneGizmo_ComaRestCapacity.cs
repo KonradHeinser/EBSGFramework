@@ -39,7 +39,7 @@ namespace EBSGFramework
             if (Mouse.IsOver(rect2))
             {
                 Widgets.DrawHighlight(rect2);
-                TooltipHandler.TipRegion(rect2, "EBSG_ComaRestCapacityDesc".Translate() + "\n\n" + "EBSG_PawnIsConnectedToBuildings".Translate(gene.pawn.Named("PAWN"), gene.CurrentCapacity.Named("CURRENT"), gene.DeathrestCapacity.Named("MAX")));
+                TooltipHandler.TipRegion(rect2, "EBSG_ComaRestCapacityDesc".Translate() + "\n\n" + "EBSG_PawnIsConnectedToBuildings".Translate(gene.pawn.Named("PAWN"), gene.CurrentCapacity.Named("CURRENT"), gene.ComaCapacity.Named("MAX")));
             }
             GUI.EndGroup();
             return new GizmoResult(GizmoState.Clear);
