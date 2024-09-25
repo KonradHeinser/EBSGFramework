@@ -372,11 +372,14 @@
         <Compile Include="Hediffs\Comps\HediffComp_CreateItems.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_CreateItems.cs" />
         <Compile Include="Coma Genes\Need_ComaGene.cs" />
-        <Compile Include="Coma Genes\Gene_Coma.cs" />
         <Compile Include="Coma Genes\Alert_LowComaNeed.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnHumanlike.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_SpawnHumanlike.cs" />
         <Compile Include="Generic List Classes\XenoSource.cs" />
+        <Compile Include="Coma Genes\CompComaGeneBindable.cs" />
+        <Compile Include="Coma Genes\CompProperties_ComaBindable.cs" />
+        <Compile Include="Coma Genes\GeneGizmo_ComaRestCapacity.cs" />
+        <Compile Include="Coma Genes\Gene_Coma.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

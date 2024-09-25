@@ -43,6 +43,14 @@
         <reportString>using recharger.</reportString>
     </JobDef>
 
+    <ConceptDef>
+        <defName>EBSG_SpecialComa</defName>
+        <label>Special coma rest genes</label>
+        <helpText>Some pawns require going into a special type of coma on occassion to avoid receiving penalties. This rest must be initiated in a bed, or a special building type in some cases. The specific details of the benefits and penalties may vary greatly based on mod author.</helpText>
+        <priority>52</priority>
+        <needsOpportunity>true</needsOpportunity>
+    </ConceptDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

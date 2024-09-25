@@ -1252,9 +1252,8 @@ namespace EBSGFramework
             if (!ModsConfig.BiotechActive || pawn == null || relatedGenes.NullOrEmpty() || pawn.genes == null) return false;
 
             foreach (GeneDef gene in relatedGenes)
-            {
                 if (pawn.genes.HasActiveGene(gene)) return true;
-            }
+
             return false;
         }
 

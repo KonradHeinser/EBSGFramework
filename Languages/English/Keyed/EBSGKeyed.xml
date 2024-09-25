@@ -22,6 +22,14 @@
     <EBSG_AlertLowComaPawn>{PAWN} needs special rest</EBSG_AlertLowComaPawn>
     <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need special rest</EBSG_AlertLowComaPawns>  
     <EBSG_LowComaNeedDesc>A colonist has not been in their special coma for a long time. If they go too long without this special type of rest, they will become exhausted.\n\nTo start this rest, select the colonist then right-click on their assigned bed or a related building.\n\nThese people need rest:\n{CULPRITS}</EBSG_LowComaNeedDesc>
+    <EBSG_StatsReport_ComaRestEffectiveness>Special rest effectiveness</EBSG_StatsReport_ComaRestEffectiveness>
+    <EBSG_StatsReport_ComaRestEffectiveness_Desc>A multiplier on how effective this is when used to replenish a special rest need. The higher this is, the less time a user needs to rest here.</EBSG_StatsReport_ComaRestEffectiveness_Desc>
+    <EBSG_StatsReport_ComaRestConnectionLimit>Special rest building connection limit</EBSG_StatsReport_ComaRestConnectionLimit>
+    <EBSG_StatsReport_ComaRestConnectionLimit_Desc>How many of these buildings can connect to a pawn while resting. This number is also limited by the person's capacity.</EBSG_StatsReport_ComaRestConnectionLimit_Desc>  
+    <EBSG_ComaRestCapacity>Coma capacity</EBSG_ComaRestCapacity>
+    <EBSG_ComaRestCapacityDesc>This determines how many buildings a person can connect to while engaging in their special rest. Each building confers a specific benefit, so it's better to be able to connect to more of them.\n\nMethods for increasing this vary by gene, if they exist.</EBSG_ComaRestCapacityDesc>
+    <EBSG_PawnIsConnectedToBuildings>{PAWN_nameDef} is connected to {CURRENT} / {MAX} (max) buildings.</EBSG_PawnIsConnectedToBuildings>
+    <EBSG_TimeActiveThisComaRest>Time active this rest</EBSG_TimeActiveThisComaRest>
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->

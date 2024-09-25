@@ -20,6 +20,8 @@ namespace EBSGFramework
 
         public string nextComaTranslateString;
         public string shouldComaTranslateString;
+        public HediffDef comaRestingHediff;
+        public HediffDef comaInterruptedHediff;
         public HediffDef exhaustionHediff;
         public float gainPerDayComatose = 0.2f;
 

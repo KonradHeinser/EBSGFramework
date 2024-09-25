@@ -1,26 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_SpawnHumanlike.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/Gene_Coma.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SpawnHumanlike.cs" Line="25" Column="9" />
-      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="83" Column="10" />
+      <File FileName="Coma Genes/Alert_LowComaNeed.cs" Line="69" Column="13" />
+      <File FileName="Coma Genes/Gene_Coma.cs" Line="301" Column="18" />
+      <File FileName="Coma Genes/Need_ComaGene.cs" Line="25" Column="30" />
+      <File FileName="Coma Genes/CompComaGeneBindable.cs" Line="181" Column="43" />
+      <File FileName="Coma Genes/CompProperties_ComaBindable.cs" Line="45" Column="263" />
+      <File FileName="EBSGExtension.cs" Line="23" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-              </Node>
-              <Node name="Coma Genes" expanded="True" />
+              <Node name="Coma Genes" expanded="True" selected="True" />
               <Node name="GameComponents" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True">
-                  <Node name="HediffCompProperties_SpawnHumanlike.cs" selected="True" />
-                </Node>
-                <Node name="Comps" expanded="True" />
-              </Node>
-              <Node name="Things" expanded="True" />
+              <Node name="Harmony" expanded="True" />
+              <Node name="Needs" expanded="True" />
             </Node>
           </Node>
         </State>

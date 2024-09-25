@@ -15,6 +15,8 @@ namespace EBSGFramework
         public static JobDef DRG_Deliver;
         public static JobDef DRG_FeedPatient;
 
+        public static ConceptDef EBSG_SpecialComa;
+
         public static PawnCapacityDef Metabolism;
 
         public static JobDef EBSG_NeedCharge;
