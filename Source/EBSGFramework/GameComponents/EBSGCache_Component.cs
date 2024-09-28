@@ -49,7 +49,7 @@ namespace EBSGFramework
         private bool checkedNeedAlert = false;
 
         private bool needComaAlert = false;
-        private bool checkedComaAlert = false;
+        private bool checkedComaNeeds = false;
 
         private bool needRechargerJob = false;
         private bool checkedRechargerJob = false;
@@ -58,10 +58,10 @@ namespace EBSGFramework
 
         public List<Pawn> cachedHemogenicPawns = new List<Pawn>();
 
-        public bool NeedComaAlert()
+        public bool ComaNeedsExist()
         {
             // Checks the def database to see if there are any needs that use displayLowAlert
-            if (!checkedComaAlert)
+            if (!checkedComaNeeds)
             {
                 foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
                     if (need.needClass == typeof(Need_ComaGene))
@@ -69,7 +69,7 @@ namespace EBSGFramework
                         needComaAlert = true;
                         break;
                     }
-                checkedComaAlert = true;
+                checkedComaNeeds = true;
             }
 
             return needComaAlert;

@@ -44,7 +44,7 @@ namespace EBSGFramework
         [Unsaved(false)]
         private Gene_Coma cachedComaGene;
 
-        private Gene_Coma ComaGene
+        public Gene_Coma ComaGene
         {
             get
             {

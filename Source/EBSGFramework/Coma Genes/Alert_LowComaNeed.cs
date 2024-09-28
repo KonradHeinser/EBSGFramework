@@ -64,7 +64,7 @@ namespace EBSGFramework
 
         public override AlertReport GetReport()
         {
-            if (Cache != null && !Cache.NeedComaAlert())
+            if (Cache?.ComaNeedsExist() != true)
                 return AlertReport.Inactive;
 
             CalculateTargets();

@@ -31,6 +31,8 @@
     <EBSG_PawnIsConnectedToBuildings>{PAWN_nameDef} is connected to {CURRENT} / {MAX} (max) buildings.</EBSG_PawnIsConnectedToBuildings>
     <EBSG_TimeActiveThisComaRest>Time active this rest</EBSG_TimeActiveThisComaRest>
     <EBSG_Missing>missing {0}</EBSG_Missing>
+    <EBSG_ComaPaused>Coma paused</EBSG_ComaPaused>
+    <EBSG_Coma>comatose</EBSG_Coma>
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->

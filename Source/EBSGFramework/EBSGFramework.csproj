@@ -384,6 +384,8 @@
         <Compile Include="Coma Genes\HediffComp_RemoveOnComaRest.cs" />
         <Compile Include="Coma Genes\CompProperties_UseEffectOffsetComaCapacity.cs" />
         <Compile Include="Coma Genes\CompUseEffect_OffsetComaCapacity.cs" />
+        <Compile Include="Coma Genes\JobDriver_GeneComa.cs" />
+        <Compile Include="Coma Genes\JobGiver_GetComaRest.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
