@@ -8,21 +8,8 @@
       <File FileName="EBSGExtension.cs" Line="25" Column="1" />
       <File FileName="Coma Genes/JobDriver_GeneComa.cs" Line="98" Column="1" />
       <File FileName="Coma Genes/JobGiver_GetComaRest.cs" Line="95" Column="50" />
-      <File FileName="EBSGAI/JobGiver_AICastHealingAbility.cs" Line="46" Column="82" />
+      <File FileName="EBSGAI/JobGiver_AICastHealingAbility.cs" Line="50" Column="58" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True">
-                <Node name="JobGiver_AICastHealingAbility.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
