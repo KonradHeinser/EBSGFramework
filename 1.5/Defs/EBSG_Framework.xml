@@ -51,6 +51,12 @@
         <needsOpportunity>true</needsOpportunity>
     </ConceptDef>
 
+    <RoomRoleDef>
+        <defName>EBSG_ComaRestChamber</defName>
+        <label>coma rest chamber</label>
+        <workerClass>EBSGFramework.RoomRoleWorker_ComaRestChamber</workerClass>
+    </RoomRoleDef>
+    
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

@@ -386,6 +386,11 @@
         <Compile Include="Coma Genes\CompUseEffect_OffsetComaCapacity.cs" />
         <Compile Include="Coma Genes\JobDriver_GeneComa.cs" />
         <Compile Include="Coma Genes\JobGiver_GetComaRest.cs" />
+        <Compile Include="Coma Genes\StatPart_ComaResting.cs" />
+        <Compile Include="Coma Genes\ThoughtWorker_ComaGeneExhaustion.cs" />
+        <Compile Include="Coma Genes\PlaceWorker_DrawLinesToComaRestBuildings.cs" />
+        <Compile Include="Coma Genes\RoomRoleWorker_ComaRestChamber.cs" />
+        <Compile Include="Coma Genes\ThoughtWorker_ComaRestChamber.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

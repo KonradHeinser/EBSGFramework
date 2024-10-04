@@ -130,6 +130,17 @@ namespace EBSGFramework
             }
         }
 
+        public Thing BoundBed
+        {
+            get
+            {
+                if (!boundBuildings.NullOrEmpty())
+                    foreach (Thing thing in boundBuildings)
+                        if (thing.def.IsBed) return thing;
+                return null;
+            }
+        }
+
         public bool AtBuildingCapacityLimit => CurrentCapacity >= comaRestCapacity;
 
         public float ComaPercent => Mathf.Clamp01((float)comaRestTicks / (float)MinComaTicks);

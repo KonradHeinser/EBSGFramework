@@ -1104,6 +1104,14 @@ namespace EBSGFramework
             return true;
         }
 
+        public static bool AnyGeneDefSame(List<GeneDef> listA, List<GeneDef> listB)
+        {
+            if (listA.NullOrEmpty() || listB.NullOrEmpty()) return false;
+            foreach (GeneDef gene in listA)
+                if (listB.Contains(gene)) return true;
+            return false;
+        }
+
         public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
 

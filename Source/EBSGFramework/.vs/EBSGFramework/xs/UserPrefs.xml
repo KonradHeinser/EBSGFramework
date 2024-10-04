@@ -1,15 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastHealingAbility.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/ThoughtWorker_ComaRestChamber.cs">
     <Files>
-      <File FileName="Coma Genes/Gene_Coma.cs" Line="551" Column="65" />
-      <File FileName="Coma Genes/Need_ComaGene.cs" Line="47" Column="15" />
-      <File FileName="Coma Genes/CompProperties_UseEffectOffsetComaCapacity.cs" Line="6" Column="60" />
-      <File FileName="Coma Genes/CompUseEffect_OffsetComaCapacity.cs" Line="21" Column="67" />
-      <File FileName="EBSGExtension.cs" Line="25" Column="1" />
-      <File FileName="Coma Genes/JobDriver_GeneComa.cs" Line="98" Column="1" />
-      <File FileName="Coma Genes/JobGiver_GetComaRest.cs" Line="95" Column="50" />
-      <File FileName="EBSGAI/JobGiver_AICastHealingAbility.cs" Line="50" Column="58" />
+      <File FileName="Coma Genes/Gene_Coma.cs" Line="139" Column="59" />
+      <File FileName="EBSGRecorder.cs" Line="17" Column="1" />
+      <File FileName="EBSGExtension.cs" Line="31" Column="35" />
+      <File FileName="Coma Genes/ThoughtWorker_ComaRestChamber.cs" Line="44" Column="1" />
+      <File FileName="Coma Genes/StatPart_ComaResting.cs" Line="15" Column="83" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Coma Genes" expanded="True">
+                <Node name="ThoughtWorker_ComaRestChamber.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
