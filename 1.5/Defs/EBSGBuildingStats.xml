@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DamageFactor_Humanlike</defName>
+        <label>damage factor (humanlike)</label>
+        <description>A multiplier on damage against humanlike targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5202</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowHumanlikes>True</allowHumanlikes>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Ideology">
+        <defName>EBSG_DamageFactor_Dryad</defName>
+        <label>damage factor (dryad)</label>
+        <description>A multiplier on damage against dryad targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5203</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowDryads>True</allowDryads>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DamageFactor_Insect</defName>
+        <label>damage factor (insect)</label>
+        <description>A multiplier on damage against insect targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5204</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowInsects>True</allowInsects>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DamageFactor_Animal</defName>
+        <label>damage factor (animal)</label>
+        <description>A multiplier on damage against animal targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5205</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowAnimals>True</allowAnimals>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DamageFactor_Mechanoid</defName>
+        <label>damage factor (mechanoid)</label>
+        <description>A multiplier on damage against mechanoid targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5206</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowMechanoids>True</allowMechanoids>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Anomaly">
+        <defName>EBSG_DamageFactor_Entity</defName>
+        <label>damage factor (entity)</label>
+        <description>A multiplier on damage against entity targets.</description>
+        <category>Basics</category>
+        <displayPriorityInCategory>5207</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowEntities>True</allowEntities>
+            </li>
+        </modExtensions>
+    </StatDef>
+</Defs>
