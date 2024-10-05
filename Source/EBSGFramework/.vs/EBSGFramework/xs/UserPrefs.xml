@@ -1,25 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/ThoughtWorker_ComaRestChamber.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
       <File FileName="Coma Genes/Gene_Coma.cs" Line="139" Column="59" />
       <File FileName="EBSGRecorder.cs" Line="17" Column="1" />
       <File FileName="EBSGExtension.cs" Line="31" Column="35" />
       <File FileName="Coma Genes/ThoughtWorker_ComaRestChamber.cs" Line="44" Column="1" />
       <File FileName="Coma Genes/StatPart_ComaResting.cs" Line="15" Column="83" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1116" Column="22" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Coma Genes" expanded="True">
-                <Node name="ThoughtWorker_ComaRestChamber.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
