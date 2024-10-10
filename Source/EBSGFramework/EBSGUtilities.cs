@@ -41,6 +41,7 @@ namespace EBSGFramework
 
         public static string TranslateOrLiteral(string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
         {
+            if (input == null) return null;
             if (input.CanTranslate())
                 return input.Translate(arg1, arg2, arg3, arg4).Resolve();
             return input;

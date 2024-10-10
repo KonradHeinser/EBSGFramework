@@ -391,6 +391,10 @@
         <Compile Include="Coma Genes\PlaceWorker_DrawLinesToComaRestBuildings.cs" />
         <Compile Include="Coma Genes\RoomRoleWorker_ComaRestChamber.cs" />
         <Compile Include="Coma Genes\ThoughtWorker_ComaRestChamber.cs" />
+        <Compile Include="Genes\FoodExtension.cs" />
+        <Compile Include="Generic List Classes\ThingLink.cs" />
+        <Compile Include="Things\CompProperties_AbilityLimitedCharges.cs" />
+        <Compile Include="Things\CompAbilityLimitedCharges.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

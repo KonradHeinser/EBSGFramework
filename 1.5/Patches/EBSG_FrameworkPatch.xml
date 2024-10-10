@@ -145,4 +145,20 @@
             </nomatch>
         </active>
     </Operation>
+
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/GeneDef[defName="Deathrest"]/exclusionTags</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/GeneDef[defName="Deathrest"]/exclusionTags</xpath>
+            <value><li>EBSG_Coma</li></value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/GeneDef[defName="Deathrest"]</xpath>
+            <value>
+                <exclusionTags>
+                    <li>EBSG_Coma</li>
+                </exclusionTags>
+            </value>
+        </nomatch>
+    </Operation>
 </Patch>

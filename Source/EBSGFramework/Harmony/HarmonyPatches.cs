@@ -57,6 +57,22 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "DoKillSideEffects"),
                 postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
+                postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
+
+            /*
+            harmony.Patch(AccessTools.Method(typeof(Ability), "PreActivate"),
+                postfix: new HarmonyMethod(patchType, nameof(PreActivatePostfix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AbilityTracker), nameof(Pawn_AbilityTracker.AllAbilitiesForReading)),
+                postfix: new HarmonyMethod(patchType, nameof(AllAbilitiesForReadingPostfix)));
+            */
+
+            /*
+            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(ThingDef), typeof(Pawn), typeof(bool), typeof(bool) }),
+                postfix: new HarmonyMethod(patchType, nameof(WillEatThingDefPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(Thing), typeof(Pawn), typeof(bool), typeof(bool) }),
+                postfix: new HarmonyMethod(patchType, nameof(WillEatThingPostfix)));
+            */
 
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
@@ -778,6 +794,155 @@ namespace EBSGFramework
                         murderNeed.Notify_KilledPawn(dinfo, __instance);
         }
 
+        public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)
+        {
+            if (Cache?.ComaNeedsExist() == true && pawn.genes != null)
+            {
+                Building_Bed bed = null;
+
+                IntVec3 clickCell = IntVec3.FromVector3(clickPos);
+                if (clickCell.GetThingList(pawn.Map).NullOrEmpty()) return;
+
+                foreach (Thing thing in clickCell.GetThingList(pawn.Map))
+                    if (thing.def.IsBed)
+                    {
+                        bed = thing as Building_Bed;
+                        break;
+                    }
+                if (bed == null) return;
+
+                Gene_Coma comaGene = pawn.genes.GetFirstGeneOfType<Gene_Coma>();
+                if (comaGene != null)
+                {
+                    // Always ensures the coma gene closest to empty is used. This shouldn't really be needed, but I can't assume that everyone listens to my warning
+                    float needLevel = comaGene.ComaNeed.CurLevel;
+
+                    foreach (Gene gene in pawn.genes.GenesListForReading)
+                        if (gene is Gene_Coma coma && coma.ComaNeed.CurLevel < needLevel)
+                        {
+                            comaGene = coma;
+                            needLevel = coma.ComaNeed.CurLevel;
+                        }
+
+                    if (!pawn.CanReach(bed, PathEndMode.OnCell, Danger.Deadly))
+                    {
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "NoPath".Translate().CapitalizeFirst(), null));
+                        return;
+                    }
+                    AcceptanceReport acceptanceReport2 = bed.CompAssignableToPawn.CanAssignTo(pawn);
+                    if (!acceptanceReport2.Accepted)
+                    {
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + acceptanceReport2.Reason, null));
+                        return;
+                    }
+                    if ((!bed.CompAssignableToPawn.HasFreeSlot || !RestUtility.BedOwnerWillShare(bed, pawn, pawn.guest.GuestStatus)) && !bed.IsOwner(pawn))
+                    {
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "AssignedToOtherPawn".Translate(bed).CapitalizeFirst(), null));
+                        return;
+                    }
+
+                    if (comaGene.Extension.needBedOutOfSunlight)
+                        foreach (IntVec3 item25 in bed.OccupiedRect())
+                            if (item25.GetRoof(bed.Map) == null)
+                            {
+                                opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "ThingIsSkyExposed".Translate(bed).CapitalizeFirst(), null));
+                                return;
+                            }
+                    if (RestUtility.IsValidBedFor(bed, pawn, pawn, true, false, false, pawn.GuestStatus))
+                    {
+                        opts.Add(new FloatMenuOption(EBSGUtilities.TranslateOrLiteral(comaGene.Extension.startRestLabel) ?? "EBSG_StartRest".Translate(), delegate
+                        {
+                            Job job25 = JobMaker.MakeJob(comaGene.Extension.relatedJob, bed);
+                            job25.forceSleep = true;
+                            pawn.jobs.TryTakeOrderedJob(job25, JobTag.Misc);
+                        }));
+                    }
+                }
+            }
+        }
+
+        public static void PreActivatePostfix(Ability __instance, Pawn ___pawn)
+        {
+            if (Cache?.needEquippableAbilityPatches == true)
+            {
+                if (___pawn.apparel?.WornApparel.NullOrEmpty() == false)
+                {
+                    List<Apparel> equipment = new List<Apparel>(___pawn.apparel.WornApparel);
+                    foreach (ThingWithComps thing in equipment)
+                        thing.TryGetComp<CompAbilityLimitedCharges>()?.UsedAbility(__instance);
+                }
+
+                if (___pawn.equipment?.AllEquipmentListForReading.NullOrEmpty() == false)
+                {
+                    List<ThingWithComps> equipment = new List<ThingWithComps>(___pawn.equipment.AllEquipmentListForReading);
+                    foreach (ThingWithComps thing in equipment)
+                        thing.TryGetComp<CompAbilityLimitedCharges>()?.UsedAbility(__instance);
+                }
+            }
+        }
+
+        public static void AllAbilitiesForReadingPostfix(ref List<Ability> __result, List<Ability> ___allAbilitiesCached, Pawn ___pawn, ref bool ___allAbilitiesCachedDirty)
+        {
+            if (Cache?.needEquippableAbilityPatches == true)
+            {
+                if (___pawn.apparel?.WornApparel.NullOrEmpty() == false)
+                    foreach (Apparel thing in ___pawn.apparel.WornApparel)
+                    {
+                        Ability ability = thing.TryGetComp<CompAbilityLimitedCharges>()?.AbilityForReading;
+                        if (ability != null)
+                        {
+                            ___allAbilitiesCached.Add(ability);
+                        }
+                    }
+
+                if (___pawn.equipment?.AllEquipmentListForReading.NullOrEmpty() == false)
+                    foreach (ThingWithComps thing in ___pawn.equipment.AllEquipmentListForReading)
+                    {
+                        Ability ability = thing.TryGetComp<CompAbilityLimitedCharges>()?.AbilityForReading;
+                        if (ability != null)
+                        {
+                            ___allAbilitiesCached.Add(ability);
+                        }
+                    }
+                __result = ___allAbilitiesCached;
+            }
+        }
+
+        /*
+        public static void WillEatThingDefPostfix(ref bool __result, Pawn p, ThingDef food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
+        {
+            if (__result && Cache?.NeedEatPatch == true && p.genes != null)
+            {
+                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods))
+                {
+                    FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
+
+                    if (foodExtension.forbiddenFoods.Contains(food))
+                    {
+                        __result = false;
+                        return;
+                    }
+                }
+            }
+        }
+
+        public static void WillEatThingPostfix(ref bool __result, Pawn p, Thing food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
+        {
+            if (__result && Cache?.NeedEatPatch == true && p.genes != null)
+            {
+                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods))
+                {
+                    FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
+
+                    if (foodExtension.forbiddenFoods.Contains(food.def))
+                    {
+                        __result = false;
+                        return;
+                    }
+                }
+            }
+        }
+        */
         public static void IsForbiddenPostfix(Thing t, Pawn pawn, ref bool __result)
         {
             if (!__result && t is Corpse corpse && (t.Faction == null || pawn.Faction == null || t.Faction != pawn.Faction))

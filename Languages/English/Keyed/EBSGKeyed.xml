@@ -34,6 +34,9 @@
     <EBSG_ComaPaused>Coma paused</EBSG_ComaPaused>
     <EBSG_Coma>comatose</EBSG_Coma>
     <EBSG_ComaChamber>{0} chamber</EBSG_ComaChamber>
+    <EBSG_CannotRest>cannot start coma</EBSG_CannotRest>
+    <EBSG_StartRest>Start coma</EBSG_StartRest>
+  
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->
@@ -166,6 +169,7 @@
     <AbilityTargetGene>Target has a gene  preventing this ability from working.</AbilityTargetGene>
     <AbilityTargetXenotype>Target is a {0}.</AbilityTargetXenotype>
     <AbilityTargetXenotypeOne>Target is not a {0}.</AbilityTargetXenotypeOne>
+    <AbilityPawnKind>Target is not a valid pawn kind.</AbilityPawnKind>
 
     <AbilityNoTargetHediffOne>Target must have the {0} hediff for this ability to work.</AbilityNoTargetHediffOne>
     <AbilityNoTargetHediff>Target is missing a required hediff for this ability to work.</AbilityNoTargetHediff>

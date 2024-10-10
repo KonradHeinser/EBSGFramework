@@ -712,6 +712,11 @@ namespace EBSGFramework
                     explanation = "TargetTooLarge".Translate();
                     return false;
                 }
+                if (!Props.targetPawnKinds.NullOrEmpty() && !Props.targetPawnKinds.Contains(pawn.kindDef))
+                {
+                    explanation = "AbilityPawnKind".Translate();
+                    return false;
+                }
             }
             else
             {

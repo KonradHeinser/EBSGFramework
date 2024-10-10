@@ -38,6 +38,27 @@ namespace EBSGFramework
         public List<GeneDef> grcGenes = new List<GeneDef>();
         public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
         public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
+        public List<GeneDef> forbidFoods = new List<GeneDef>();
+        public List<GeneDef> restrictFoods = new List<GeneDef>();
+        public List<GeneDef> nonIngestibleFoods = new List<GeneDef>();
+        public List<GeneDef> noStandardFoods = new List<GeneDef>();
+        public List<GeneDef> foodTypeOverrides = new List<GeneDef>();
+
+        public bool NeedEatPatch
+        {
+            get
+            {
+                return !forbidFoods.NullOrEmpty() || !restrictFoods.NullOrEmpty() || !noStandardFoods.NullOrEmpty();
+            }
+        }
+
+        public bool FoodTypeOverride
+        {
+            get
+            {
+                return !noStandardFoods.NullOrEmpty() || !foodTypeOverrides.NullOrEmpty();
+            }
+        }
 
         // Cached needs of interest
         public List<NeedDef> murderousNeeds = new List<NeedDef>();
@@ -53,6 +74,9 @@ namespace EBSGFramework
 
         private bool needRechargerJob = false;
         private bool checkedRechargerJob = false;
+
+        // Cached things of interest
+        public bool needEquippableAbilityPatches = false;
 
         // Other
 
@@ -284,6 +308,7 @@ namespace EBSGFramework
             CacheStatsOfInterest();
             CacheNeedsOfInterest();
             CacheHediffsOfInterest();
+            CacheThingsOfInterest();
         }
 
         private void CacheGenesOfInterest()
@@ -334,6 +359,16 @@ namespace EBSGFramework
                 }
                 if (gene.HasModExtension<GRCExtension>())
                     grcGenes.Add(gene);
+                if (gene.HasModExtension<FoodExtension>())
+                {
+                    FoodExtension foodExtension = gene.GetModExtension<FoodExtension>();
+
+                    if (!foodExtension.forbiddenFoods.NullOrEmpty()) forbidFoods.Add(gene);
+                    if (!foodExtension.allowedFoods.NullOrEmpty()) restrictFoods.Add(gene);
+                    if (!foodExtension.nonIngestibleFoods.NullOrEmpty()) restrictFoods.Add(gene);
+                    if (foodExtension.noStandardFood) noStandardFoods.Add(gene);
+                    if (foodExtension.foodTypeOverride != FoodTypeFlags.None) foodTypeOverrides.Add(gene);
+                }
             }
         }
 
@@ -385,6 +420,18 @@ namespace EBSGFramework
                 if (hediff.comps.NullOrEmpty()) continue;
                 if (hediff.HasComp(typeof(HediffComp_ExplodingAttacks)) || hediff.HasComp(typeof(HediffComp_ExplodingRangedAttacks))
                     || hediff.HasComp(typeof(HediffComp_ExplodingMeleeAttacks))) explosiveAttackHediffs.Add(hediff);
+            }
+        }
+
+        private void CacheThingsOfInterest()
+        {
+            foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
+            {
+                if (thing.HasComp<CompAbilityLimitedCharges>())
+                {
+                    needEquippableAbilityPatches = true;
+                    break; // Will need removed if this function needs to record more in the future
+                }
             }
         }
 

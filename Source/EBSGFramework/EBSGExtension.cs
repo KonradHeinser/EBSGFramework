@@ -29,6 +29,7 @@ namespace EBSGFramework
         public float gainPerDayComatose = 0.2f;
         public ThingDef restingMote;
         public string chamberName;
+        public string startRestLabel;
 
         public HediffDef alternativePregnancyHediff;
         public List<HediffsToParts> hediffsToApply;

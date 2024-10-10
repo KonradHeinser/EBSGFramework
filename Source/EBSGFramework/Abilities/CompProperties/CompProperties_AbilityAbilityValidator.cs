@@ -27,6 +27,7 @@ namespace EBSGFramework
         public List<SkillCheck> targetSkillLimiters;
         public List<StatCheck> targetStatLimiters;
         public List<NeedLevel> targetNeedLevels;
+        public List<PawnKindDef> targetPawnKinds;
         public float minBodySize = 0f;
         public float maxBodySize = 999f;
 
