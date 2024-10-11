@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -60,12 +61,9 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
                 postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
 
-            /*
+
             harmony.Patch(AccessTools.Method(typeof(Ability), "PreActivate"),
                 postfix: new HarmonyMethod(patchType, nameof(PreActivatePostfix)));
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AbilityTracker), nameof(Pawn_AbilityTracker.AllAbilitiesForReading)),
-                postfix: new HarmonyMethod(patchType, nameof(AllAbilitiesForReadingPostfix)));
-            */
 
             /*
             harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(ThingDef), typeof(Pawn), typeof(bool), typeof(bool) }),
@@ -863,7 +861,7 @@ namespace EBSGFramework
 
         public static void PreActivatePostfix(Ability __instance, Pawn ___pawn)
         {
-            if (Cache?.needEquippableAbilityPatches == true)
+            if (Cache?.needEquippableAbilityPatches == true && ___pawn.RaceProps.Humanlike && !___pawn.DeadOrDowned && (___pawn.Spawned || ___pawn.GetCaravan() != null))
             {
                 if (___pawn.apparel?.WornApparel.NullOrEmpty() == false)
                 {
@@ -878,33 +876,6 @@ namespace EBSGFramework
                     foreach (ThingWithComps thing in equipment)
                         thing.TryGetComp<CompAbilityLimitedCharges>()?.UsedAbility(__instance);
                 }
-            }
-        }
-
-        public static void AllAbilitiesForReadingPostfix(ref List<Ability> __result, List<Ability> ___allAbilitiesCached, Pawn ___pawn, ref bool ___allAbilitiesCachedDirty)
-        {
-            if (Cache?.needEquippableAbilityPatches == true)
-            {
-                if (___pawn.apparel?.WornApparel.NullOrEmpty() == false)
-                    foreach (Apparel thing in ___pawn.apparel.WornApparel)
-                    {
-                        Ability ability = thing.TryGetComp<CompAbilityLimitedCharges>()?.AbilityForReading;
-                        if (ability != null)
-                        {
-                            ___allAbilitiesCached.Add(ability);
-                        }
-                    }
-
-                if (___pawn.equipment?.AllEquipmentListForReading.NullOrEmpty() == false)
-                    foreach (ThingWithComps thing in ___pawn.equipment.AllEquipmentListForReading)
-                    {
-                        Ability ability = thing.TryGetComp<CompAbilityLimitedCharges>()?.AbilityForReading;
-                        if (ability != null)
-                        {
-                            ___allAbilitiesCached.Add(ability);
-                        }
-                    }
-                __result = ___allAbilitiesCached;
             }
         }
 

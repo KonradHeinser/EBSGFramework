@@ -14,6 +14,8 @@ namespace EBSGFramework
 
         public ThingDef spawnOnFinalUse;
 
+        public ThingDef spawnStuffing;
+
         public int spawnCount = 1;
 
         public EffecterDef effecterOnFinalUse;

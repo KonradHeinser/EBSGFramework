@@ -9,7 +9,9 @@ namespace EBSGFramework
     {
         CompProperties_AbilityLimitedCharges Props => (CompProperties_AbilityLimitedCharges)props;
 
-        private Pawn Holder => (parent?.ParentHolder as Pawn_EquipmentTracker)?.pawn;
+        private Pawn Holder => (parent?.ParentHolder as Pawn_EquipmentTracker)?.pawn ?? (parent?.ParentHolder as Pawn_ApparelTracker)?.pawn;
+
+        private int remainingCharges;
 
         private Ability ability;
 
@@ -18,11 +20,33 @@ namespace EBSGFramework
             get
             {
                 if (ability == null)
-                {
-                    ability = AbilityUtility.MakeAbility(Props.abilityDef, Holder);
-                }
+                    MakeAbility();
                 return ability;
             }
+            set
+            {
+                ability = value;
+            }
+        }
+
+        public void MakeAbility()
+        {
+            if (Holder == null) return;
+
+            Ability oldAbility = Holder.abilities.GetAbility(Props.abilityDef);
+            if (oldAbility != null && oldAbility.RemainingCharges == RemainingCharges)
+            {
+                ability = oldAbility;
+                return;
+            }
+
+            ability = AbilityUtility.MakeAbility(Props.abilityDef, Holder);
+            ability.maxCharges = Props.maxCharges;
+            ability.RemainingCharges = RemainingCharges;
+            ability.pawn = Holder;
+            ability.verb.caster = Holder;
+            Holder.abilities.abilities.Add(ability);
+            Holder.abilities.Notify_TemporaryAbilitiesChanged();
         }
 
         public int MaxCharges => Props.maxCharges;
@@ -33,11 +57,11 @@ namespace EBSGFramework
         {
             get
             {
-                return AbilityForReading.RemainingCharges;
+                return remainingCharges;
             }
             set
             {
-                AbilityForReading.RemainingCharges = value;
+                remainingCharges = value;
             }
         }
 
@@ -54,20 +78,26 @@ namespace EBSGFramework
         public override void PostPostMake()
         {
             base.PostPostMake();
-            AbilityForReading.maxCharges = MaxCharges;
             RemainingCharges = MaxCharges;
+            MakeAbility();
         }
 
         public override void Notify_Equipped(Pawn pawn)
         {
-            AbilityForReading.pawn = pawn;
-            AbilityForReading.verb.caster = pawn;
-            pawn.abilities.Notify_TemporaryAbilitiesChanged();
+            MakeAbility();
         }
 
         public override void Notify_Unequipped(Pawn pawn)
         {
-            pawn.abilities.Notify_TemporaryAbilitiesChanged();
+            pawn.abilities.RemoveAbility(Props.abilityDef);
+            AbilityForReading = null;
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            if (Holder != null)
+                Holder.abilities.RemoveAbility(Props.abilityDef);
+            AbilityForReading = null;
         }
 
         public override string CompInspectStringExtra()
@@ -78,30 +108,23 @@ namespace EBSGFramework
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Deep.Look(ref ability, "ability");
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && Holder != null)
-            {
-                AbilityForReading.pawn = Holder;
-                AbilityForReading.verb.caster = Holder;
-            }
+            Scribe_Values.Look(ref remainingCharges, "remainingCharges", MaxCharges);
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
             IEnumerable<StatDrawEntry> enumerable = base.SpecialDisplayStats();
             if (enumerable != null)
-            {
                 foreach (StatDrawEntry item in enumerable)
-                {
                     yield return item;
-                }
-            }
+
             yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "Stat_Thing_ReloadChargesRemaining_Name".Translate(Props.ChargeNounArgument), LabelRemaining, "Stat_Thing_ReloadChargesRemaining_Desc".Translate(Props.ChargeNounArgument), 5440);
         }
 
         public void UsedAbility(Ability ability)
         {
             if (ability != AbilityForReading) return;
+            remainingCharges--;
 
             if (RemainingCharges == 0)
             {
@@ -127,8 +150,43 @@ namespace EBSGFramework
 
                 if (Props.spawnOnFinalUse != null)
                 {
-                    Thing thing = ThingMaker.MakeThing(Props.spawnOnFinalUse, parent.Stuff);
+                    Thing thing = null;
+
+                    if (Props.spawnOnFinalUse.MadeFromStuff)
+                        thing = ThingMaker.MakeThing(Props.spawnOnFinalUse, Props.spawnStuffing ?? parent.Stuff);
+                    else
+                        thing = ThingMaker.MakeThing(Props.spawnOnFinalUse);
+
+                    if (thing.TryGetQuality(out var newQuality) && parent.TryGetQuality(out var oldQuality))
+                        thing.TryGetComp<CompQuality>().SetQuality(oldQuality, null); // No art stuff to avoid potential issues
+
                     thing.stackCount = Props.spawnCount;
+
+                    if (Holder.Map != null) // This check avoids any errors/warnings about not being able to drop equipment. If they aren't on a map, it's just added to the inventory
+                    {
+                        if (thing is ThingWithComps compy && thing.def.equipmentType == EquipmentType.Primary && (Holder.equipment.Primary == null || (Holder.equipment.Primary == parent && Props.destroyAfterLast)))
+                        {
+                            Holder.equipment.AddEquipment(compy);
+                            if (Props.destroyAfterLast)
+                                parent.Destroy();
+                            return;
+                        }
+                        if (thing is Apparel)
+                        {
+                            Apparel apparel = thing as Apparel;
+                            if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
+                            {
+                                Apparel oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);
+                                if (oldApparel == null || (oldApparel == parent && Props.destroyAfterLast))
+                                {
+                                    Holder.apparel.Wear(apparel);
+                                    if (Props.destroyAfterLast)
+                                        parent.Destroy();
+                                    return;
+                                }
+                            }
+                        }
+                    }
 
                     Holder.inventory.TryAddAndUnforbid(thing);
                 }
