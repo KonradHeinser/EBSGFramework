@@ -25,7 +25,7 @@ namespace EBSGFramework
             if (Cache?.ComaNeedsExist() != true) return false;
             if (p.story.traits.HasTrait(TraitDefOf.Ascetic)) return false;
 
-            if (!(p.genes.GetGene(def.GetModExtension<EBSGExtension>().relatedGene) is Gene_Coma comaGene) || comaGene.ComaNeed.Comatose) return false;
+            if (!(p.genes.GetGene(def.GetModExtension<ComaExtension>().relatedGene) is Gene_Coma comaGene) || comaGene.ComaNeed.Comatose) return false;
 
             Thing boundBed = comaGene.BoundBed;
             if (boundBed == null) return false;

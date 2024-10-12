@@ -22,21 +22,27 @@
     <EBSG_AlertLowComaPawn>{PAWN} needs special rest</EBSG_AlertLowComaPawn>
     <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need special rest</EBSG_AlertLowComaPawns>  
     <EBSG_LowComaNeedDesc>A colonist has not been in their special coma for a long time. If they go too long without this special type of rest, they will become exhausted.\n\nTo start this rest, select the colonist then right-click on their assigned bed or a related building.\n\nThese people need rest:\n{CULPRITS}</EBSG_LowComaNeedDesc>
-    <EBSG_StatsReport_ComaRestEffectiveness>Special rest effectiveness</EBSG_StatsReport_ComaRestEffectiveness>
+    <EBSG_StatsReport_ComaRestEffectiveness>Special coma effectiveness</EBSG_StatsReport_ComaRestEffectiveness>
     <EBSG_StatsReport_ComaRestEffectiveness_Desc>A multiplier on how effective this is when used to replenish a special rest need. The higher this is, the less time a user needs to rest here.</EBSG_StatsReport_ComaRestEffectiveness_Desc>
-    <EBSG_StatsReport_ComaRestConnectionLimit>Special rest building connection limit</EBSG_StatsReport_ComaRestConnectionLimit>
+    <EBSG_StatsReport_ComaRestConnectionLimit>Special coma building connection limit</EBSG_StatsReport_ComaRestConnectionLimit>
     <EBSG_StatsReport_ComaRestConnectionLimit_Desc>How many of these buildings can connect to a pawn while resting. This number is also limited by the person's capacity.</EBSG_StatsReport_ComaRestConnectionLimit_Desc>
     <EBSG_Capacity>{0} capacity</EBSG_Capacity>
-    <EBSG_ComaRestCapacityDesc>This determines how many buildings a person can connect to while engaging in their special rest. Each building confers a specific benefit, so it's better to be able to connect to more of them.\n\nMethods for increasing this vary by gene, if they exist.</EBSG_ComaRestCapacityDesc>
+    <EBSG_ComaRestCapacityDesc>This determines how many buildings a person can connect to while {0}. Each building confers a specific benefit, so it's better to be able to connect to more of them.\n\nMethods for increasing this vary by gene, if they exist.</EBSG_ComaRestCapacityDesc>
     <EBSG_PawnIsConnectedToBuildings>{PAWN_nameDef} is connected to {CURRENT} / {MAX} (max) buildings.</EBSG_PawnIsConnectedToBuildings>
     <EBSG_TimeActiveThisComaRest>Time active this rest</EBSG_TimeActiveThisComaRest>
     <EBSG_Missing>missing {0}</EBSG_Missing>
-    <EBSG_ComaPaused>Coma paused</EBSG_ComaPaused>
-    <EBSG_Coma>comatose</EBSG_Coma>
+    <EBSG_ComaPaused>{0} paused</EBSG_ComaPaused>
+    <EBSG_Coma>{1}</EBSG_Coma>
     <EBSG_ComaChamber>{0} chamber</EBSG_ComaChamber>
-    <EBSG_CannotRest>cannot start coma</EBSG_CannotRest>
-    <EBSG_StartRest>Start coma</EBSG_StartRest>
-  
+    <EBSG_CannotRest>cannot start {0}</EBSG_CannotRest>
+    <EBSG_StartRest>Start {0}</EBSG_StartRest>
+    <EBSG_NextComaNeed>{0} should start their {1} within {2} to avoid exhaustion.</EBSG_NextComaNeed>
+    <EBSG_ShouldComaRestNow>{0} should start their {1} soon to avoid exhaustion.</EBSG_ShouldComaRestNow>  
+    <EBSG_ComaWakeDesc>Wake up from {0}.\n\n{PAWN_nameDef} has been in {0} for {DURATION}.</EBSG_ComaWakeDesc>
+    <EBSG_ComaWakeExtraDesc_Exhaustion>{PAWN_nameDef} needs to {0} for at least {TOTAL}. Waking {PAWN_objective} early will make {PAWN_objective} ill.</EBSG_ComaWakeExtraDesc_Exhaustion>
+    <EBSG_ComaAutoWakeDesc>When on, {PAWN_nameDef} will automatically wake once {PAWN_possessive} {0} is complete.\n\nWhile off, {PAWN_pronoun} will continue {1} until you wake {PAWN_objective} manually.</EBSG_ComaAutoWakeDesc>
+    <EBSG_WarningWakingInterruptsComa>Waking {PAWN_nameDef} before {MINDURATION} has passed will interrupt {PAWN_possessive} {0}, leaving {PAWN_objective} sick for some time while {PAWN_pronoun} recovers. {PAWN_pronoun} has been {1} for {CURDURATION}.\n\nAre you sure you wish to wake {PAWN_nameDef}?</EBSG_WarningWakingInterruptsComa>
+    <EBSG_ComaNoBuildingBonusWarning>\n\nThey will not gain any benefits from linked {0} buildings.</EBSG_ComaNoBuildingBonusWarning>
 
     <!--Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->

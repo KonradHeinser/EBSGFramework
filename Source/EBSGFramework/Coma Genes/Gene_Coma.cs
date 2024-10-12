@@ -27,9 +27,23 @@ namespace EBSGFramework
 
         private GeneGizmo_ComaRestCapacity gizmo;
 
-        private static readonly CachedTexture WakeCommandTex = new CachedTexture("UI/Gizmos/Wake");
+        private CachedTexture WakeCommandTex => GetWakeCommandTex();
 
-        private static readonly CachedTexture AutoWakeCommandTex = new CachedTexture("UI/Gizmos/DeathrestAutoWake");
+        private CachedTexture AutoWakeCommandTex => GetAutoWakeCommandTex();
+
+        private CachedTexture GetWakeCommandTex()
+        {
+            if (ComaExtension.wakeCommandTexPath != null)
+                return new CachedTexture(ComaExtension.wakeCommandTexPath);
+            return new CachedTexture("UI/Gizmos/Wake");
+        }
+
+        private CachedTexture GetAutoWakeCommandTex()
+        {
+            if (ComaExtension.autoWakeTexCommandPath != null)
+                return new CachedTexture(ComaExtension.autoWakeTexCommandPath);
+            return new CachedTexture("UI/Gizmos/DeathrestAutoWake");
+        }
 
         private int comaRestCapacity;
 
@@ -53,8 +67,6 @@ namespace EBSGFramework
 
         private const int InitialComaCapacity = 1;
 
-        public const int BaseComaTicksWithoutInterruptedHediff = 240000;
-
         public const float PresencePercentRequiredToApply = 0.75f;
 
         private const int LessonComaTicks = 200;
@@ -66,7 +78,7 @@ namespace EBSGFramework
             get
             {
                 if (cachedComaNeed == null)
-                    cachedComaNeed = pawn.needs?.TryGetNeed(ComaExtension.relatedNeed) as Need_ComaGene;
+                    cachedComaNeed = pawn.needs?.TryGetNeed(def.causesNeed) as Need_ComaGene;
 
                 return cachedComaNeed;
             }
@@ -97,19 +109,15 @@ namespace EBSGFramework
         {
             get
             {
-                float num = 1f;
+                float num = ComaNeed.RiseMultiplier;
                 foreach (CompComaGeneBindable boundComp in BoundComps)
-                {
                     if (boundComp.Props.comaRestEffectivenessFactor > 0f && boundComp.CanIncreasePresence)
-                    {
                         num *= boundComp.Props.comaRestEffectivenessFactor;
-                    }
-                }
                 return num;
             }
         }
 
-        public int MinComaTicks => Mathf.RoundToInt(240000f / ComaEfficiency);
+        public int MinComaTicks => Mathf.RoundToInt(ComaExtension.minComaTicks / ComaEfficiency);
 
         public int ComaCapacity => comaRestCapacity;
 
@@ -122,9 +130,7 @@ namespace EBSGFramework
                 {
                     CompComaGeneBindable compComaBindable = boundBuildings[i].TryGetComp<CompComaGeneBindable>();
                     if (compComaBindable != null && compComaBindable.Props.countsTowardsBuildingLimit)
-                    {
                         num++;
-                    }
                 }
                 return num;
             }
@@ -182,19 +188,9 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             base.PostRemove();
-            if (ComaExtension.comaRestingHediff != null)
-            {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.comaRestingHediff);
-                if (firstHediffOfDef != null)
-                    pawn.health.RemoveHediff(firstHediffOfDef);
-            }
-
-            if (ComaExtension.exhaustionHediff != null)
-            {
-                Hediff firstHediffOfDef2 = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.exhaustionHediff);
-                if (firstHediffOfDef2 != null)
-                    pawn.health.RemoveHediff(firstHediffOfDef2);
-            }
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaRestingHediff);
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaInterruptedHediff);
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff);
             RemoveOldComaBonuses();
             Reset();
         }
@@ -243,9 +239,7 @@ namespace EBSGFramework
             int num = comaRestCapacity;
             comaRestCapacity += offset;
             if (sendNotification && PawnUtility.ShouldSendNotificationAbout(pawn))
-            {
                 Messages.Message("MessageComaCapacityChanged".Translate(pawn.Named("PAWN"), num.Named("OLD"), comaRestCapacity.Named("NEW")), pawn, MessageTypeDefOf.PositiveEvent);
-            }
         }
 
         private bool PawnOrBedTouchingSunlight()
@@ -261,8 +255,14 @@ namespace EBSGFramework
 
         public void Notify_ComaStarted()
         {
-            RemoveOldComaBonuses();
-            TryLinkToNearbyComaBuildings();
+            pawn.health.AddHediff(ComaExtension.comaRestingHediff);
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaInterruptedHediff);
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff);
+            if (ComaExtension.usesBuildings)
+            {
+                RemoveOldComaBonuses();
+                TryLinkToNearbyComaBuildings();
+            }
             notifiedWakeOK = false;
         }
 
@@ -280,9 +280,8 @@ namespace EBSGFramework
             cachedBoundComps = null;
             Room room = pawn.GetRoom();
             if (room == null)
-            {
                 return;
-            }
+
             foreach (Region region in room.Regions)
                 foreach (Thing item in region.ListerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
                 {
@@ -296,12 +295,9 @@ namespace EBSGFramework
         {
             List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
             for (int num = hediffs.Count - 1; num >= 0; num--)
-            {
                 if (hediffs[num].TryGetComp<HediffComp_RemoveOnComaRest>()?.Valid(def) == true) // Need to make special hediff comp that checks for certain genes
-                {
                     pawn.health.RemoveHediff(hediffs[num]);
-                }
-            }
+
             pawn.genes.GetFirstGeneOfType<Gene_Hemogen>()?.ResetMax();
         }
 
@@ -310,12 +306,7 @@ namespace EBSGFramework
             if (comaRestTicks == 0)
                 return;
 
-            if (ComaExtension.comaInterruptedHediff != null)
-            {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.comaInterruptedHediff);
-                if (firstHediffOfDef != null)
-                    pawn.health.RemoveHediff(firstHediffOfDef);
-            }
+            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff); // This is used just in case the need somehow misses it
 
             if (!BoundComps.NullOrEmpty())
                 foreach (CompComaGeneBindable boundComp in BoundComps)
@@ -408,12 +399,12 @@ namespace EBSGFramework
         public override void Reset()
         {
             comaRestCapacity = ComaExtension.baseBuildingMax;
-            foreach (CompComaGeneBindable boundComp in BoundComps)
-                boundComp.Notify_ComaGeneRemoved();
+            if (!BoundComps.NullOrEmpty())
+                foreach (CompComaGeneBindable boundComp in BoundComps)
+                    boundComp.Notify_ComaGeneRemoved();
 
             cachedBoundComps = null;
-
-            if (pawn.CurJobDef == Extension.relatedJob)
+            if (pawn.CurJobDef == ComaExtension.relatedJob)
                 pawn.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);
         }
 
@@ -454,25 +445,34 @@ namespace EBSGFramework
                 boundBuilding.TryGetComp<CompComaGeneBindable>().Notify_ComaEnded();
         }
 
+        private bool shownMissingNeedWarning = false;
         public override IEnumerable<Gizmo> GetGizmos()
         {
             if (!Active)
                 yield break;
 
-            if (gizmo == null)
-            {
+            if (gizmo == null && ComaExtension.usesBuildings)
                 gizmo = new GeneGizmo_ComaRestCapacity(this);
-            }
-            if (Find.Selector.SelectedPawns.Count == 1)
-            {
+
+            if (gizmo != null && Find.Selector.SelectedPawns.Count == 1)
                 yield return gizmo;
+
+            if (ComaNeed == null)
+            {
+                if (!shownMissingNeedWarning)
+                {
+                    Log.Error($"{def.defName} is missing a linked need. This should be added through causesNeed.");
+                    shownMissingNeedWarning = true;
+                }
+                yield break;
             }
+
             if (ComaNeed.Comatose)
             {
                 if (pawn.IsColonistPlayerControlled || pawn.IsPrisonerOfColony)
                 {
-                    string text = "WakeDesc".Translate(pawn.Named("PAWN"), comaRestTicks.ToStringTicksToPeriod().Named("DURATION")).Resolve() + "\n\n";
-                    text = ((!(ComaPercent < 1f)) ? (text + "WakeExtraDesc_Safe".Translate(pawn.Named("PAWN")).Resolve()) : (text + "WakeExtraDesc_Exhaustion".Translate(pawn.Named("PAWN"), MinComaTicks.ToStringTicksToPeriod().Named("TOTAL")).Resolve()));
+                    string text = "EBSG_ComaWakeDesc".Translate(ComaExtension.noun, pawn.Named("PAWN"), comaRestTicks.ToStringTicksToPeriod().Named("DURATION")).Resolve() + "\n\n";
+                    text += (!(ComaPercent < 1f)) ? "WakeExtraDesc_Safe".Translate(pawn.Named("PAWN")).Resolve() : "EBSG_ComaWakeExtraDesc_Exhaustion".Translate(ComaExtension.noun, pawn.Named("PAWN"), MinComaTicks.ToStringTicksToPeriod().Named("TOTAL")).Resolve();
                     Command_Action command_Action = new Command_Action
                     {
                         defaultLabel = "Wake".Translate().CapitalizeFirst(),
@@ -482,7 +482,9 @@ namespace EBSGFramework
                         {
                             if (ComaPercent < 1f)
                             {
-                                Dialog_MessageBox window = Dialog_MessageBox.CreateConfirmation("WarningWakingInterruptsComa".Translate(pawn.Named("PAWN"), MinComaTicks.ToStringTicksToPeriod().Named("MINDURATION"), comaRestTicks.ToStringTicksToPeriod().Named("CURDURATION")), Wake, true);
+                                string warning = "EBSG_WarningWakingInterruptsComa".Translate(ComaExtension.noun, ComaExtension.gerund, pawn.Named("PAWN"), MinComaTicks.ToStringTicksToPeriod().Named("MINDURATION"), comaRestTicks.ToStringTicksToPeriod().Named("CURDURATION"));
+                                if (!BoundBuildings.NullOrEmpty()) warning += "EBSG_ComaNoBuildingBonusWarning".Translate(ComaExtension.noun);
+                                Dialog_MessageBox window = Dialog_MessageBox.CreateConfirmation(warning, Wake, true);
                                 Find.WindowStack.Add(window);
                             }
                             else
@@ -492,12 +494,12 @@ namespace EBSGFramework
                         }
                     };
                     yield return command_Action;
-                    if (ComaPercent < 1f)
+                    if (ComaPercent < 1f && ComaExtension.minComaTicks > 0)
                     {
                         yield return new Command_Toggle
                         {
                             defaultLabel = "AutoWake".Translate().CapitalizeFirst(),
-                            defaultDesc = "AutoWakeDesc".Translate(pawn.Named("PAWN")).Resolve(),
+                            defaultDesc = "EBSG_ComaAutoWakeDesc".Translate(ComaExtension.noun, ComaExtension.gerund, pawn.Named("PAWN")).Resolve(),
                             icon = AutoWakeCommandTex.Texture,
                             isActive = () => autoWake,
                             toggleAction = delegate
@@ -515,20 +517,19 @@ namespace EBSGFramework
                         action = delegate
                         {
                             comaRestTicks = MinComaTicks + 1;
-                            adjustedComaTicks = 240001f;
+                            adjustedComaTicks = ComaExtension.minComaTicks + 1;
                             foreach (CompComaGeneBindable boundComp in BoundComps)
-                            {
                                 boundComp.presenceTicks = comaRestTicks;
-                            }
+
                             Wake();
                         }
                     };
                 }
             }
-            if (!DebugSettings.ShowDevGizmos)
-            {
+
+            if (!DebugSettings.ShowDevGizmos || !ComaExtension.usesBuildings)
                 yield break;
-            }
+
             yield return new Command_Action
             {
                 defaultLabel = "DEV: Set capacity",
@@ -550,7 +551,7 @@ namespace EBSGFramework
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
-            yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "ComaCapacity".Translate().CapitalizeFirst(), comaRestCapacity.ToString(), "ComaCapacityDesc".Translate(), 1010);
+            yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "EBSG_Capacity".Translate(ComaExtension.noun).CapitalizeFirst(), comaRestCapacity.ToString(), "EBSG_ComaRestCapacityDesc".Translate(ComaExtension.gerund), 1010);
         }
 
         public override void ExposeData()

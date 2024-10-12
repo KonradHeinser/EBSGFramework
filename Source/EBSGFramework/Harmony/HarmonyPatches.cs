@@ -832,18 +832,18 @@ namespace EBSGFramework
 
                     if (!pawn.CanReach(bed, PathEndMode.OnCell, Danger.Deadly))
                     {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "NoPath".Translate().CapitalizeFirst(), null));
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "NoPath".Translate().CapitalizeFirst(), null));
                         return;
                     }
                     AcceptanceReport acceptanceReport2 = bed.CompAssignableToPawn.CanAssignTo(pawn);
                     if (!acceptanceReport2.Accepted)
                     {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + acceptanceReport2.Reason, null));
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + acceptanceReport2.Reason, null));
                         return;
                     }
                     if ((!bed.CompAssignableToPawn.HasFreeSlot || !RestUtility.BedOwnerWillShare(bed, pawn, pawn.guest.GuestStatus)) && !bed.IsOwner(pawn))
                     {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "AssignedToOtherPawn".Translate(bed).CapitalizeFirst(), null));
+                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "AssignedToOtherPawn".Translate(bed).CapitalizeFirst(), null));
                         return;
                     }
 
@@ -851,11 +851,11 @@ namespace EBSGFramework
                         foreach (IntVec3 item25 in bed.OccupiedRect())
                             if (item25.GetRoof(bed.Map) == null)
                             {
-                                opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate().CapitalizeFirst() + ": " + "ThingIsSkyExposed".Translate(bed).CapitalizeFirst(), null));
+                                opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "ThingIsSkyExposed".Translate(bed).CapitalizeFirst(), null));
                                 return;
                             }
                     if (RestUtility.IsValidBedFor(bed, pawn, pawn, true, false, false, pawn.GuestStatus))
-                        opts.Add(new FloatMenuOption(EBSGUtilities.TranslateOrLiteral(comaGene.ComaExtension.startRestLabel) ?? "EBSG_StartRest".Translate(), delegate
+                        opts.Add(new FloatMenuOption("EBSG_StartRest".Translate(comaGene.ComaExtension.gerund), delegate
                         {
                             Job job25 = JobMaker.MakeJob(comaGene.ComaExtension.relatedJob, bed);
                             job25.forceSleep = true;

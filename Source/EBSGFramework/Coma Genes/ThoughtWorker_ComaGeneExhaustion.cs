@@ -7,7 +7,7 @@ namespace EBSGFramework
     {
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            if (!(p.genes?.GetGene(def.GetModExtension<EBSGExtension>()?.relatedGene) is Gene_Coma comaGene))
+            if (!(p.genes?.GetGene(def.GetModExtension<ComaExtension>()?.relatedGene) is Gene_Coma comaGene))
                 return ThoughtState.Inactive;
             return comaGene.ComaNeed.CurLevel == 0f;
         }

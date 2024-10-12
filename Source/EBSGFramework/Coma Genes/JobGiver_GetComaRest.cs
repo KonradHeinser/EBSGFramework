@@ -62,9 +62,9 @@ namespace EBSGFramework
             {
                 comaNeed = null;
                 foreach (Need need in pawn.needs.AllNeeds)
-                    if (need is Need_ComaGene && comaNeed.CurLevelPercentage <= 0.05f)
+                    if (need is Need_ComaGene coma && coma.CurLevelPercentage <= 0.05f)
                     {
-                        comaNeed = need as Need_ComaGene;
+                        comaNeed = coma;
                         break;
                     }
 

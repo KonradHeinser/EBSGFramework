@@ -48,7 +48,7 @@ namespace EBSGFramework
                 if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer)
                 {
                     Need_ComaGene need_Coma = item.needs?.TryGetNeed<Need_ComaGene>();
-                    if (need_Coma != null && need_Coma.CurLevel <= 0.1f && !item.Deathresting)
+                    if (need_Coma != null && need_Coma.CurLevel <= 0.1f && !need_Coma.Comatose)
                     {
                         targets.Add(item);
                         targetLabels.Add(item.NameShortColored.Resolve());

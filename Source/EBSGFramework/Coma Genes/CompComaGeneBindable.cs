@@ -55,8 +55,8 @@ namespace EBSGFramework
                     if (building_Bed == parent)
                         return true;
 
-                    CompDeathrestBindable compDeathrestBindable = building_Bed.TryGetComp<CompDeathrestBindable>();
-                    if (compDeathrestBindable == null || compDeathrestBindable.BoundPawn != boundPawn)
+                    CompComaGeneBindable compComaBindable = building_Bed.TryGetComp<CompComaGeneBindable>();
+                    if (compComaBindable == null || compComaBindable.BoundPawn != boundPawn)
                         return false;
 
                     return true;
@@ -119,7 +119,7 @@ namespace EBSGFramework
 
         public override void PostDraw()
         {
-            if (!Props.mustBeLayingInToBind && boundPawn != null && boundPawn.Map == parent.Map && boundPawn.Deathresting && ComaGene != null && ComaGene.BoundComps.Contains(this) && CanIncreasePresence && HoseMat != null)
+            if (!Props.mustBeLayingInToBind && boundPawn != null && boundPawn.Map == parent.Map && ComaGene.ComaNeed.Comatose && ComaGene.BoundComps.Contains(this) && CanIncreasePresence && HoseMat != null)
             {
                 Vector3 vector = boundPawn.CurrentBed().TrueCenter();
                 Vector3 vector2 = parent.TrueCenter();

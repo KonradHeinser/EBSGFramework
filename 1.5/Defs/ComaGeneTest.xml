@@ -3,9 +3,135 @@
     <GeneDef>
         <defName>Hibernation</defName>
         <label>hibernation</label>
-        <description>Carriers of this gene must regularly hibernate for long periods of time.</description>
+        <description>Carriers of this gene must regularly hibernate for two full days so their body's natural cycle can continue without issue.</description>
         <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath>
         <displayCategory>Miscellaneous</displayCategory>
-        <!-- <geneClass>EBSGFramework.Gene_Coma</geneClass> -->
+        <geneClass>EBSGFramework.Gene_Coma</geneClass>
+        <causesNeed>Hibernation</causesNeed>
+        <exclusionTags>
+            <li>EBSG_Coma</li>
+        </exclusionTags>
+        <modExtensions>
+            <li Class="EBSGFramework.ComaExtension">
+                <comaRestingHediff>Hibernation</comaRestingHediff>
+                <comaInterruptedHediff>InterruptedHibernation</comaInterruptedHediff>
+                <exhaustionHediff>HibernationExhaustion</exhaustionHediff>
+                <gainPerDayComatose>0.5</gainPerDayComatose>
+                <minComaTicks>60000</minComaTicks> <!--Must rest for at least one day or suffer the interrupted hediff-->
+                <!--Because no buildings have been made for this gene, we can tell the code to ignore any building related things.
+                If you do have buildings, the you won't need the usesBuildings line at all because the code assumes there are buildings by default-->
+                <usesBuildings>False</usesBuildings>
+                <noun>hibernation</noun> <!--What the coma state is called-->
+                <gerund>hibernating</gerund> <!--Term for entering the state-->
+                <relatedJob>Hibernate</relatedJob>
+            </li>
+        </modExtensions>
     </GeneDef>
+
+    <NeedDef>
+        <defName>Hibernation</defName>
+        <label>hibernation</label>
+        <needClass>EBSGFramework.Need_ComaGene</needClass>
+        <description>People with the hibernation gene must hibernate every quadrum. While hibernating, the pawn will be sleeping and their wounds will heal slightly faster than they would normally.</description>
+        <baseLevel>0.01</baseLevel>
+        <fallPerDay>0.05</fallPerDay> <!--Requires hibernation every 20 days-->
+        <listPriority>600</listPriority>
+        <major>true</major>
+        <minIntelligence>ToolUser</minIntelligence>
+        <onlyIfCausedByGene>true</onlyIfCausedByGene>
+        <modExtensions>
+            <li Class="EBSGFramework.ComaExtension">
+                <relatedGene>Hibernation</relatedGene>
+            </li>
+        </modExtensions>
+    </NeedDef>
+
+    <HediffDef>
+        <defName>Hibernation</defName>
+        <label>hibernating</label>
+        <description>A deep coma-like sleep that lasts several days and restores the body's resources.</description>
+        <everCurableByItem>false</everCurableByItem>
+        <isBad>false</isBad>
+        <recordDownedTale>false</recordDownedTale>
+        <defaultLabelColor>(149, 189, 252)</defaultLabelColor>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+                <statFactors>
+                    <InjuryHealingFactor>1.5</InjuryHealingFactor>
+                    <ImmunityGainSpeed>1.5</ImmunityGainSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    
+    <HediffDef>
+        <defName>InterruptedHibernation</defName>
+        <label>interrupted hibernation</label>
+        <description>Hibernation was interrupted, disrupting the natural cycle of this pawn's body. They will be sick for days while it tries to recover.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <makesSickThought>true</makesSickThought>
+        <defaultLabelColor>(0.9, 1.0, 0.35)</defaultLabelColor>
+        <initialSeverity>0.001</initialSeverity>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>300000</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.8</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <postFactor>0.9</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.9</postFactor>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+      </HediffDef>
+    
+      <HediffDef>
+        <defName>HibernationExhaustion</defName>
+        <label>hibernation exhaustion</label>
+        <description>This person desperately needs to hibernate so their body can recover from its fatigue.</description>
+        <defaultLabelColor>(0.9, 1.0, 0.35)</defaultLabelColor>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.5</setMax>
+                    </li>
+                </capMods>
+                <statFactors>
+                    <InjuryHealingFactor>0.9</InjuryHealingFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>    
+    
+    <JobDef>
+        <defName>Hibernate</defName>
+        <driverClass>EBSGFramework.JobDriver_GeneComa</driverClass>
+        <reportString>hibernating.</reportString>
+        <modExtensions>
+            <li Class="EBSGFramework.ComaExtension">
+                <relatedGene>Hibernation</relatedGene>
+            </li>
+        </modExtensions>
+    </JobDef>
 </Defs>

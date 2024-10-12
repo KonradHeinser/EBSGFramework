@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public List<HediffDef> currentBonuses;
 
-        public bool Comatose => Find.TickManager.TicksGame <= lastComaTick + 1;
+        public bool Comatose => EBSGUtilities.HasHediff(pawn, ComaGene.ComaExtension.comaRestingHediff);
 
         private ComaExtension cachedExtension;
 
@@ -57,6 +57,16 @@ namespace EBSGFramework
             }
         }
 
+        public new float FallMultiplier
+        {
+            get
+            {
+                if (ComaGene?.ComaExtension.fallStat != null)
+                    return pawn.GetStatValue(ComaGene.ComaExtension.fallStat);
+                return 1f;
+            }
+        }
+
         [Unsaved(false)]
         private Gene_Coma cachedComaGene;
 
@@ -78,7 +88,7 @@ namespace EBSGFramework
                 if (!Comatose)
                     CurLevel -= def.fallPerDay / 400f * FallMultiplier;
                 else
-                    CurLevel += ComaGene.ComaExtension.gainPerDayComatose / 400f * RiseMultiplier;
+                    CurLevel += ComaGene.ComaExtension.gainPerDayComatose / 400f * ComaGene.ComaEfficiency;
 
                 bool exhausted = EBSGUtilities.HasHediff(pawn, ComaGene.ComaExtension.exhaustionHediff);
                 if (CurLevel > 0f && exhausted)
@@ -97,18 +107,15 @@ namespace EBSGFramework
             string text = (LabelCap + ": " + CurLevelPercentage.ToStringPercent()).Colorize(ColoredText.TipSectionTitleColor) + "\n\n";
             if (!Comatose)
             {
-                if (Extension?.nextComaTranslateString != null && Extension.shouldComaTranslateString != null)
+                if (CurLevelPercentage > 0.1f)
                 {
-                    if (CurLevelPercentage > 0.1f)
-                    {
-                        float num = (CurLevelPercentage - 0.1f) / (1f / 30f);
-                        text += EBSGUtilities.TranslateOrLiteral(Extension.nextComaTranslateString, pawn.LabelShortCap, "PeriodDays".Translate(num.ToString("F1"))).CapitalizeFirst();
-                    }
-                    else
-                        text += EBSGUtilities.TranslateOrLiteral(Extension.shouldComaTranslateString, pawn.LabelShortCap).CapitalizeFirst().Colorize(ColorLibrary.RedReadable);
-
-                    text += "\n\n";
+                    float num = (CurLevelPercentage - 0.1f) / (1f / 30f);
+                    text += "EBSG_NextComaNeed".Translate(pawn.LabelShortCap, ComaGene.ComaExtension.noun ?? ComaGene.Label, "PeriodDays".Translate(num.ToString("F1"))).Resolve().CapitalizeFirst();
                 }
+                else
+                    text += "EBSG_ShouldComaRestNow".Translate(pawn.LabelShortCap, ComaGene.ComaExtension.noun ?? ComaGene.Label).Resolve().CapitalizeFirst().Colorize(ColorLibrary.RedReadable);
+
+                text += "\n\n";
             }
             // Need to set up linked building count once gene itself is made
             return text + def.description;
