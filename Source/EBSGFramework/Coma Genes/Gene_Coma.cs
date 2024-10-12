@@ -5,23 +5,23 @@ using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class Gene_Coma : Gene
+    public class Gene_Coma : HediffAdder
     {
         public bool alreadyChecked;
 
-        private EBSGExtension cachedExtension;
+        private ComaExtension cachedComaExtension;
 
-        public EBSGExtension Extension
+        public ComaExtension ComaExtension
         {
             get
             {
-                if (cachedExtension == null && !alreadyChecked)
+                if (cachedComaExtension == null && !alreadyChecked)
                 {
-                    cachedExtension = def.GetModExtension<EBSGExtension>();
+                    cachedComaExtension = def.GetModExtension<ComaExtension>();
                     alreadyChecked = true;
                 }
 
-                return cachedExtension;
+                return cachedComaExtension;
             }
         }
 
@@ -66,7 +66,7 @@ namespace EBSGFramework
             get
             {
                 if (cachedComaNeed == null)
-                    cachedComaNeed = pawn.needs?.TryGetNeed(Extension.relatedNeed) as Need_ComaGene;
+                    cachedComaNeed = pawn.needs?.TryGetNeed(ComaExtension.relatedNeed) as Need_ComaGene;
 
                 return cachedComaNeed;
             }
@@ -182,16 +182,16 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             base.PostRemove();
-            if (Extension.comaRestingHediff != null)
+            if (ComaExtension.comaRestingHediff != null)
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(Extension.comaRestingHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.comaRestingHediff);
                 if (firstHediffOfDef != null)
                     pawn.health.RemoveHediff(firstHediffOfDef);
             }
 
-            if (Extension.exhaustionHediff != null)
+            if (ComaExtension.exhaustionHediff != null)
             {
-                Hediff firstHediffOfDef2 = pawn.health.hediffSet.GetFirstHediffOfDef(Extension.exhaustionHediff);
+                Hediff firstHediffOfDef2 = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.exhaustionHediff);
                 if (firstHediffOfDef2 != null)
                     pawn.health.RemoveHediff(firstHediffOfDef2);
             }
@@ -230,7 +230,7 @@ namespace EBSGFramework
                     Messages.Message("MessageComaingPawnCanWakeSafely".Translate(pawn.Named("PAWN")), pawn, MessageTypeDefOf.PositiveEvent);
             }
 
-            if (Extension.needBedOutOfSunlight && pawn.Spawned && pawn.IsHashIntervalTick(150) && PawnOrBedTouchingSunlight())
+            if (ComaExtension.needBedOutOfSunlight && pawn.Spawned && pawn.IsHashIntervalTick(150) && PawnOrBedTouchingSunlight())
             {
                 if (PawnUtility.ShouldSendNotificationAbout(pawn))
                     Messages.Message("MessagePawnWokenFromSunlight".Translate(pawn.Named("PAWN")), pawn, MessageTypeDefOf.NegativeEvent);
@@ -310,9 +310,9 @@ namespace EBSGFramework
             if (comaRestTicks == 0)
                 return;
 
-            if (Extension.comaInterruptedHediff != null)
+            if (ComaExtension.comaInterruptedHediff != null)
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(Extension.comaInterruptedHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.comaInterruptedHediff);
                 if (firstHediffOfDef != null)
                     pawn.health.RemoveHediff(firstHediffOfDef);
             }
@@ -407,7 +407,7 @@ namespace EBSGFramework
 
         public override void Reset()
         {
-            comaRestCapacity = Extension.baseBuildingMax;
+            comaRestCapacity = ComaExtension.baseBuildingMax;
             foreach (CompComaGeneBindable boundComp in BoundComps)
                 boundComp.Notify_ComaGeneRemoved();
 
@@ -435,15 +435,15 @@ namespace EBSGFramework
         {
             if (ComaPercent < 1f)
             {
-                if (Extension.comaInterruptedHediff != null)
-                    pawn.health.AddHediff(Extension.comaInterruptedHediff);
+                if (ComaExtension.comaInterruptedHediff != null)
+                    pawn.health.AddHediff(ComaExtension.comaInterruptedHediff);
             }
             else
                 ApplyComaBuildingBonuses();
 
-            if (Extension.comaRestingHediff != null)
+            if (ComaExtension.comaRestingHediff != null)
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(Extension.comaRestingHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(ComaExtension.comaRestingHediff);
                 if (firstHediffOfDef != null)
                     pawn.health.RemoveHediff(firstHediffOfDef);
             }

@@ -82,7 +82,7 @@ namespace EBSGFramework
                 yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.A);
                 Toil toil = Toils_Bed.GotoBed(TargetIndex.A);
 
-                if (ComaGene.Extension.needBedOutOfSunlight)
+                if (ComaGene.ComaExtension.needBedOutOfSunlight)
                     toil.AddFailCondition(delegate
                     {
                         if (!ComaGene.Paused)
@@ -109,15 +109,15 @@ namespace EBSGFramework
                 if (pawn.Drafted)
                     pawn.drafter.Drafted = false;
 
-                if (ComaGene.Extension.comaRestingHediff != null && !pawn.health.hediffSet.HasHediff(ComaGene.Extension.comaRestingHediff))
-                    pawn.health.AddHediff(ComaGene.Extension.comaRestingHediff);
+                if (ComaGene.ComaExtension.comaRestingHediff != null && !pawn.health.hediffSet.HasHediff(ComaGene.ComaExtension.comaRestingHediff))
+                    pawn.health.AddHediff(ComaGene.ComaExtension.comaRestingHediff);
             });
 
-            if (ComaGene.Extension.restingMote != null)
+            if (ComaGene.ComaExtension.restingMote != null)
                 toil2.tickAction = (Action)Delegate.Combine(toil2.tickAction, (Action)delegate
                 {
                     if (pawn.IsHashIntervalTick(160))
-                        MoteMaker.MakeAttachedOverlay(pawn, ComaGene.Extension.restingMote, new Vector3(0f, pawn.story.bodyType.bedOffset).RotatedBy(pawn.Rotation));
+                        MoteMaker.MakeAttachedOverlay(pawn, ComaGene.ComaExtension.restingMote, new Vector3(0f, pawn.story.bodyType.bedOffset).RotatedBy(pawn.Rotation));
                 });
 
             yield return toil2;

@@ -6,6 +6,21 @@ namespace EBSGFramework
 {
     public class CompAbilityEffect_InstantKill : CompAbilityEffect
     {
+        private static EBSGCache_Component cache;
+
+        public static EBSGCache_Component Cache
+        {
+            get
+            {
+                if (cache == null)
+                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+
+                if (cache != null && cache.loaded)
+                    return cache;
+                return null;
+            }
+        }
+
         public new CompProperties_InstantKill Props => (CompProperties_InstantKill)props;
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
@@ -41,9 +56,13 @@ namespace EBSGFramework
                         {
                             bloodType = Props.filthReplacement;
                         }
+                        else if (EBSGUtilities.PawnHasAnyOfGenes(victim, out var first, Cache?.bloodReplacingGenes))
+                        {
+                            bloodType = first.GetModExtension<EBSGExtension>().bloodReplacement;
+                        }
                         else if (ModsConfig.IsActive("OskarPotocki.VanillaFactionsExpanded.Core"))
                         {
-                            VFECompatabilityUtilities.BloodType(victim);
+                            bloodType = VFECompatabilityUtilities.BloodType(victim);
                         }
 
                         FilthMaker.TryMakeFilth(c, victim.MapHeld, bloodType, victim.LabelShort);

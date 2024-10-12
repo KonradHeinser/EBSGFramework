@@ -28,6 +28,7 @@ namespace EBSGFramework
         private Dictionary<Pawn, float> cachedGeneMoodFactor;
 
         // Cached genes of interest
+        public List<GeneDef> fertilityChangingGenes = new List<GeneDef>();
         public List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
         public List<GeneDef> dynamicResourceGenes = new List<GeneDef>();
         public List<GeneDef> hiddenWhenInactive = new List<GeneDef>();
@@ -313,6 +314,7 @@ namespace EBSGFramework
 
         private void CacheGenesOfInterest()
         {
+            fertilityChangingGenes = new List<GeneDef>();
             moodMultiplyingGenes = new List<GeneDef>();
             hiddenWhenInactive = new List<GeneDef>();
             dynamicResourceGenes = new List<GeneDef>();
@@ -326,6 +328,8 @@ namespace EBSGFramework
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
+                if (gene.HasModExtension<FertilityByGenderAgeExtension>())
+                    fertilityChangingGenes.Add(gene);
                 if (gene.HasModExtension<EBSGExtension>())
                 {
                     EBSGExtension extension = gene.GetModExtension<EBSGExtension>();

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <GeneDef>
+        <defName>Hibernation</defName>
+        <label>hibernation</label>
+        <description>Carriers of this gene must regularly hibernate for long periods of time.</description>
+        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath>
+        <displayCategory>Miscellaneous</displayCategory>
+        <!-- <geneClass>EBSGFramework.Gene_Coma</geneClass> -->
+    </GeneDef>
+</Defs>

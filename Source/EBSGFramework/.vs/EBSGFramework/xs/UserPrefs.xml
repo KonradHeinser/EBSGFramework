@@ -1,10 +1,34 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties_AbilityLimitedCharges.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Things/CompProperties_AbilityLimitedCharges.cs" Line="28" Column="9" />
-      <File FileName="Things/CompAbilityLimitedCharges.cs" Line="37" Column="86" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="861" Column="9" />
+      <File FileName="Coma Genes/ComaExtension.cs" Line="26" Column="1" />
+      <File FileName="EBSGExtension.cs" Line="10" Column="36" />
+      <File FileName="Coma Genes/Gene_Coma.cs" Line="23" Column="17" />
+      <File FileName="Coma Genes/RoomRoleWorker_ComaRestChamber.cs" Line="31" Column="70" />
+      <File FileName="Coma Genes/JobGiver_GetComaRest.cs" Line="84" Column="68" />
+      <File FileName="Coma Genes/Need_ComaGene.cs" Line="76" Column="27" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="899" Column="14" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="332" Column="54" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+              </Node>
+              <Node name="Coma Genes" expanded="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
+              <Node name="Needs" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

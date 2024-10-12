@@ -58,12 +58,20 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CostToMoveIntoCellPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "DoKillSideEffects"),
                 postfix: new HarmonyMethod(patchType, nameof(DoKillSideEffectsPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
-                postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
-
-
             harmony.Patch(AccessTools.Method(typeof(Ability), "PreActivate"),
                 postfix: new HarmonyMethod(patchType, nameof(PreActivatePostfix)));
+            harmony.Patch(AccessTools.Method(typeof(StatWorker_MeleeDPS), "GetMeleeDamage"),
+                postfix: new HarmonyMethod(patchType, nameof(MeleeDPSPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
+                postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
+
+            // Coma Gene stuff
+            harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
+                postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Food), "IsFrozen"),
+                postfix: new HarmonyMethod(patchType, nameof(NeedFrozenPostfix)));
+            harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Learning), "IsFrozen"),
+                postfix: new HarmonyMethod(patchType, nameof(NeedFrozenPostfix)));
 
             /*
             harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(ThingDef), typeof(Pawn), typeof(bool), typeof(bool) }),
@@ -134,8 +142,6 @@ namespace EBSGFramework
             // Vanilla code bug fixes
             harmony.Patch(AccessTools.Method(typeof(Widgets), nameof(Widgets.DefIcon)),
                 prefix: new HarmonyMethod(patchType, nameof(DefIconPrefix)));
-
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         // Bug fixes
@@ -151,6 +157,8 @@ namespace EBSGFramework
             }
             return true;
         }
+
+        // EBSG Framework stuff
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)
         {
@@ -839,7 +847,7 @@ namespace EBSGFramework
                         return;
                     }
 
-                    if (comaGene.Extension.needBedOutOfSunlight)
+                    if (comaGene.ComaExtension.needBedOutOfSunlight)
                         foreach (IntVec3 item25 in bed.OccupiedRect())
                             if (item25.GetRoof(bed.Map) == null)
                             {
@@ -847,16 +855,68 @@ namespace EBSGFramework
                                 return;
                             }
                     if (RestUtility.IsValidBedFor(bed, pawn, pawn, true, false, false, pawn.GuestStatus))
-                    {
-                        opts.Add(new FloatMenuOption(EBSGUtilities.TranslateOrLiteral(comaGene.Extension.startRestLabel) ?? "EBSG_StartRest".Translate(), delegate
+                        opts.Add(new FloatMenuOption(EBSGUtilities.TranslateOrLiteral(comaGene.ComaExtension.startRestLabel) ?? "EBSG_StartRest".Translate(), delegate
                         {
-                            Job job25 = JobMaker.MakeJob(comaGene.Extension.relatedJob, bed);
+                            Job job25 = JobMaker.MakeJob(comaGene.ComaExtension.relatedJob, bed);
                             job25.forceSleep = true;
                             pawn.jobs.TryTakeOrderedJob(job25, JobTag.Misc);
                         }));
-                    }
                 }
             }
+        }
+
+        public static void NeedFrozenPostfix(ref bool __result, Pawn ___pawn)
+        {
+            if (Cache?.ComaNeedsExist() == true)
+            {
+                Need_ComaGene comaNeed = ___pawn.needs.TryGetNeed<Need_ComaGene>();
+                if (comaNeed != null)
+                    if (comaNeed.Comatose)
+                        __result = true;
+                    else
+                        foreach (Need need in ___pawn.needs.AllNeeds)
+                            if (need is Need_ComaGene coma && coma.Comatose)
+                            {
+                                __result = true;
+                                break;
+                            }
+            }
+        }
+
+        public static void MeleeDPSPostfix(ref float __result, StatRequest req, bool applyPostProcess = true)
+        {
+            if (req.Thing is Pawn pawn)
+                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
+        }
+
+        public static void FertilityByAgeAgeFactorPostfix(ref float __result, Pawn pawn)
+        {
+            if (Cache?.fertilityChangingGenes.NullOrEmpty() == false && pawn != null && pawn.RaceProps.Humanlike && pawn.Spawned)
+                if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Cache.fertilityChangingGenes))
+                {
+                    FertilityByGenderAgeExtension extension = gene.GetModExtension<FertilityByGenderAgeExtension>();
+                    List<GeneDef> alreadyFoundGenes = new List<GeneDef>
+                    {
+                        gene
+                    };
+
+                    // Goes down the list of overriding genes until it finds one that doesn't have any overriding genes, catches itself in an eternal loop, or the pawn doesn't have an overriding gene
+                    while (!extension.overridingGenes.NullOrEmpty())
+                        if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var first, extension.overridingGenes))
+                        {
+                            if (alreadyFoundGenes.Contains(first)) break; // Ensures nobody can put it in an eternal loop
+                            extension = first.GetModExtension<FertilityByGenderAgeExtension>();
+                            alreadyFoundGenes.Add(first);
+                        }
+                        else break; // If the pawn doesn't have an overriding gene, then this is the final gene to use
+
+                    if (extension.maleFertilityAgeFactor != null && pawn.gender == Gender.Male)
+                        __result = extension.maleFertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                    else if (extension.femaleFertilityAgeFactor != null && pawn.gender == Gender.Female)
+                        __result = extension.femaleFertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                    else if (extension.fertilityAgeFactor != null)
+                        __result = extension.fertilityAgeFactor.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+                }
         }
 
         public static void PreActivatePostfix(Ability __instance, Pawn ___pawn)

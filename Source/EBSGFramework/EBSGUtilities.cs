@@ -842,7 +842,7 @@ namespace EBSGFramework
         {
             firstMatch = null;
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return false;
-            if (pawn.genes == null) return false;
+            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return false;
 
             if (!geneDefs.NullOrEmpty())
             {

@@ -152,9 +152,7 @@
         <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_TemporaryGenes.cs" />
-        <Compile Include="Harmony\StatPart_FertilityByGenderAge_AgeFactor_AnyOneOf_Patch.cs" />
         <Compile Include="Harmony\HarmonyPatches.cs" />
-        <Compile Include="Harmony\MeleeDPSPostfix.cs" />
         <Compile Include="Generic List Classes\GeneticMultiplier.cs" />
         <Compile Include="Generic List Classes\NeedOffset.cs" />
         <Compile Include="Generic List Classes\HediffsToParts.cs" />
@@ -395,6 +393,7 @@
         <Compile Include="Generic List Classes\ThingLink.cs" />
         <Compile Include="Things\CompProperties_AbilityLimitedCharges.cs" />
         <Compile Include="Things\CompAbilityLimitedCharges.cs" />
+        <Compile Include="Coma Genes\ComaExtension.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

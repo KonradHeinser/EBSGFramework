@@ -28,7 +28,7 @@ namespace EBSGFramework
             if (primary == null)
                 return base.PostProcessedLabel(baseLabel, room);
 
-            string staticName = primary.GetModExtension<EBSGExtension>().chamberName;
+            string staticName = primary.GetModExtension<ComaExtension>().chamberName;
 
             return staticName != null ? EBSGUtilities.TranslateOrLiteral(staticName) : "EBSG_ComaChamber".Translate(primary.LabelCap).ToString();
         }
