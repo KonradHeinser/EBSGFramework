@@ -342,29 +342,13 @@
         <Compile Include="Things\CompEBSGPlaceworker.cs" />
         <Compile Include="Things\CompProperties_EBSGPlaceworker.cs" />
         <Compile Include="Things\PlaceWorker_EBSGPlaceworker.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Terrain.cs" />
-        <Compile Include="Genes\ConditionalStatAffector_OtherGenes.cs" />
-        <Compile Include="Genes\ConditionalStatAffector_Hediffs.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Pollution.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Light.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_MapCondition.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Temperature.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityPushTarget.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_PushTarget.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityLightingBolt.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LightningBolt.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Time.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Needs.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Skills.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Capacities.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Weather.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyAllies.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_RainSnowRate.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_Multi.cs" />
         <Compile Include="Things\CompProperties_SpawnBaby.cs" />
         <Compile Include="Things\CompSpawnBaby.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_PawnMulti.cs" />
-        <Compile Include="Genes\ConditionalStatAffecter_MapMulti.cs" />
         <Compile Include="EBSGAI\JobGiver_AICastAbilityTargetToCaster.cs" />
         <Compile Include="Generic List Classes\ThingCreationItem.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_CreateItems.cs" />
@@ -378,13 +362,10 @@
         <Compile Include="Coma Genes\CompProperties_ComaBindable.cs" />
         <Compile Include="Coma Genes\GeneGizmo_ComaRestCapacity.cs" />
         <Compile Include="Coma Genes\Gene_Coma.cs" />
-        <Compile Include="Coma Genes\HediffCompProperties_RemoveOnComaRest.cs" />
-        <Compile Include="Coma Genes\HediffComp_RemoveOnComaRest.cs" />
         <Compile Include="Coma Genes\CompProperties_UseEffectOffsetComaCapacity.cs" />
         <Compile Include="Coma Genes\CompUseEffect_OffsetComaCapacity.cs" />
         <Compile Include="Coma Genes\JobDriver_GeneComa.cs" />
         <Compile Include="Coma Genes\JobGiver_GetComaRest.cs" />
-        <Compile Include="Coma Genes\ThoughtWorker_ComaGeneExhaustion.cs" />
         <Compile Include="Coma Genes\PlaceWorker_DrawLinesToComaRestBuildings.cs" />
         <Compile Include="Coma Genes\RoomRoleWorker_ComaRestChamber.cs" />
         <Compile Include="Coma Genes\ThoughtWorker_ComaRestChamber.cs" />
@@ -393,6 +374,24 @@
         <Compile Include="Things\CompProperties_AbilityLimitedCharges.cs" />
         <Compile Include="Things\CompAbilityLimitedCharges.cs" />
         <Compile Include="Coma Genes\ComaExtension.cs" />
+        <Compile Include="Things\CompAssignableToPawn_GeneticBed.cs" />
+        <Compile Include="Things\CompProperties_GeneticBed.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Capacities.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Light.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_MapCondition.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_MapMulti.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Multi.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Needs.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_PawnMulti.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Pollution.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_RainSnowRate.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Skills.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Temperature.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Terrain.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Time.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Weather.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffector_Hediffs.cs" />
+        <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffector_OtherGenes.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -431,6 +430,7 @@
         <Folder Include="Stats\" />
         <Folder Include="Storytime\" />
         <Folder Include="Coma Genes\" />
+        <Folder Include="Genes\ConditionalStatAffecters\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

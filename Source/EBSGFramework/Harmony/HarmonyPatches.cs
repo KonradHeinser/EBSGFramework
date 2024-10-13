@@ -64,6 +64,9 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(MeleeDPSPostfix)));
             harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
                 postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_Ownership), "ClaimBedIfNonMedical"),
+                prefix: new HarmonyMethod(patchType, nameof(ClaimBedIfNonMedicalPrefix)));
+
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -863,6 +866,17 @@ namespace EBSGFramework
                         }));
                 }
             }
+        }
+
+        public static bool ClaimBedIfNonMedicalPrefix(ref bool __result, Building_Bed newBed, Pawn ___pawn)
+        {
+            CompComaGeneBindable compComaRestBindable = newBed.TryGetComp<CompComaGeneBindable>();
+            if (compComaRestBindable != null)
+            {
+                __result = ___pawn.ownership.ClaimDeathrestCasket(newBed);
+                return false;
+            }
+            return true;
         }
 
         public static void NeedFrozenPostfix(ref bool __result, Pawn ___pawn)

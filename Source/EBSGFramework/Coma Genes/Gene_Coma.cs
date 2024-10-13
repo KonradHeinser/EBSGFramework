@@ -55,8 +55,6 @@ namespace EBSGFramework
 
         public bool autoWake;
 
-        public int chamberThoughtIndex = -1;
-
         private bool notifiedWakeOK;
 
         [Unsaved(false)]
@@ -85,6 +83,8 @@ namespace EBSGFramework
         }
 
         public List<Thing> BoundBuildings => boundBuildings;
+
+        public List<HediffDef> temporaryHediffs;
 
         public List<CompComaGeneBindable> BoundComps
         {
@@ -199,37 +199,36 @@ namespace EBSGFramework
         {
             base.Tick();
             if (pawn.IsHashIntervalTick(200) && pawn.IsColonistPlayerControlled)
-            {
                 LessonAutoActivator.TeachOpportunity(EBSGDefOf.EBSG_SpecialComa, OpportunityType.Important);
-            }
 
             if (Paused) return;
 
-            if (ComaNeed != null)
-                ComaNeed.lastComaTick = Find.TickManager.TicksGame;
+            ComaNeed.lastComaTick = Find.TickManager.TicksGame;
 
             comaRestTicks++;
             adjustedComaTicks += ComaEfficiency;
-            foreach (CompComaGeneBindable boundComp in BoundComps)
-                boundComp.TryIncreasePresence();
+            if (!BoundComps.NullOrEmpty())
+                foreach (CompComaGeneBindable boundComp in BoundComps)
+                    boundComp.TryIncreasePresence();
 
-            if (ComaPercent >= 1f && !notifiedWakeOK)
+            if (ComaPercent >= 1f)
             {
-                notifiedWakeOK = true;
                 if (autoWake)
                 {
                     Wake();
                     return;
                 }
 
-                if (PawnUtility.ShouldSendNotificationAbout(pawn))
-                    Messages.Message("MessageComaingPawnCanWakeSafely".Translate(pawn.Named("PAWN")), pawn, MessageTypeDefOf.PositiveEvent);
+                if (!notifiedWakeOK && PawnUtility.ShouldSendNotificationAbout(pawn))
+                    Messages.Message("EBSG_ComaSafeWake".Translate(ComaExtension.noun, pawn.Named("PAWN")), pawn, MessageTypeDefOf.PositiveEvent);
+
+                notifiedWakeOK = true;
             }
 
             if (ComaExtension.needBedOutOfSunlight && pawn.Spawned && pawn.IsHashIntervalTick(150) && PawnOrBedTouchingSunlight())
             {
                 if (PawnUtility.ShouldSendNotificationAbout(pawn))
-                    Messages.Message("MessagePawnWokenFromSunlight".Translate(pawn.Named("PAWN")), pawn, MessageTypeDefOf.NegativeEvent);
+                    Messages.Message("EBSG_ComaSunlightWake".Translate(ComaExtension.noun, pawn.Named("PAWN")), pawn, MessageTypeDefOf.NegativeEvent);
                 Wake();
             }
         }
@@ -239,7 +238,7 @@ namespace EBSGFramework
             int num = comaRestCapacity;
             comaRestCapacity += offset;
             if (sendNotification && PawnUtility.ShouldSendNotificationAbout(pawn))
-                Messages.Message("MessageComaCapacityChanged".Translate(pawn.Named("PAWN"), num.Named("OLD"), comaRestCapacity.Named("NEW")), pawn, MessageTypeDefOf.PositiveEvent);
+                Messages.Message("EBSG_ComaCapacityChanged".Translate(ComaExtension.noun, pawn.Named("PAWN"), num.Named("OLD"), comaRestCapacity.Named("NEW")), pawn, MessageTypeDefOf.PositiveEvent);
         }
 
         private bool PawnOrBedTouchingSunlight()
@@ -269,6 +268,9 @@ namespace EBSGFramework
         public void Notify_BoundBuildingDeSpawned(Thing building)
         {
             boundBuildings.Remove(building);
+            pawn.ownership.UnclaimDeathrestCasket();
+            if (building is Building_Bed)
+                Wake();
             cachedBoundComps = null;
         }
 
@@ -293,20 +295,16 @@ namespace EBSGFramework
 
         public void RemoveOldComaBonuses()
         {
-            List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
-            for (int num = hediffs.Count - 1; num >= 0; num--)
-                if (hediffs[num].TryGetComp<HediffComp_RemoveOnComaRest>()?.Valid(def) == true) // Need to make special hediff comp that checks for certain genes
-                    pawn.health.RemoveHediff(hediffs[num]);
-
+            EBSGUtilities.RemoveHediffs(pawn, null, temporaryHediffs);
             pawn.genes.GetFirstGeneOfType<Gene_Hemogen>()?.ResetMax();
         }
 
         private void ApplyComaBuildingBonuses()
         {
-            if (comaRestTicks == 0)
+            if (!ComaExtension.usesBuildings || comaRestTicks == 0)
                 return;
 
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff); // This is used just in case the need somehow misses it
+            temporaryHediffs = new List<HediffDef>();
 
             if (!BoundComps.NullOrEmpty())
                 foreach (CompComaGeneBindable boundComp in BoundComps)
@@ -317,17 +315,16 @@ namespace EBSGFramework
         public bool CanBindToBindable(CompComaGeneBindable bindComp)
         {
             if (bindComp == null || bindComp.parent.Faction != pawn.Faction || boundBuildings.Contains(bindComp.parent) ||
-                bindComp.Props.countsTowardsBuildingLimit && AtBuildingCapacityLimit || !bindComp.CanBindTo(pawn) || !CanUseBindableNow(bindComp.parent) ||
+                (bindComp.Props.countsTowardsBuildingLimit && AtBuildingCapacityLimit) || !bindComp.CanBindTo(pawn) || !CanUseBindableNow(bindComp.parent) ||
                 BindingWillExceedStackLimit(bindComp)) return false;
             return true;
         }
 
         public bool BindingWillExceedStackLimit(CompComaGeneBindable bindComp)
         {
-            if (boundBuildings.Contains(bindComp.parent))
-            {
+            if (boundBuildings.Contains(bindComp.parent) || !bindComp.Props.countsTowardsBuildingLimit)
                 return false;
-            }
+
             int stackLimit = bindComp.Props.stackLimit;
             if (stackLimit > 0)
             {
@@ -349,39 +346,29 @@ namespace EBSGFramework
 
         private bool CanUseBindableNow(Thing building)
         {
-            if (!ModsConfig.BiotechActive)
-            {
-                return false;
-            }
             CompComaGeneBindable compComaBindable = building.TryGetComp<CompComaGeneBindable>();
             if (compComaBindable == null)
-            {
                 return false;
-            }
+
             Building_Bed building_Bed = pawn.CurrentBed();
             if (building_Bed == null)
-            {
                 return false;
-            }
-            if (compComaBindable.Props.mustBeLayingInToBind)
+
+            if (building is Building_Bed)
             {
                 if (building_Bed != building)
-                {
                     return false;
-                }
             }
             else if (!building_Bed.def.HasComp(typeof(CompComaGeneBindable)))
             {
                 return false;
             }
             if (!building.Spawned || building.Map != pawn.MapHeld || building.GetRoom() != pawn.GetRoom())
-            {
                 return false;
-            }
+
             if (!GenSight.LineOfSight(pawn.Position, building.OccupiedRect().CenterCell, pawn.Map))
-            {
                 return false;
-            }
+
             return true;
         }
 
@@ -391,9 +378,7 @@ namespace EBSGFramework
             boundBuildings.Add(bindComp.parent);
             cachedBoundComps = null;
             if (PawnUtility.ShouldSendNotificationAbout(pawn) && bindComp.Props.countsTowardsBuildingLimit)
-            {
-                Messages.Message("MessageComaBuildingBound".Translate(bindComp.parent.Named("BUILDING"), pawn.Named("PAWN"), CurrentCapacity.Named("CUR"), ComaCapacity.Named("MAX")), new LookTargets(bindComp.parent, pawn), MessageTypeDefOf.NeutralEvent, historical: false);
-            }
+                Messages.Message("EBSG_ComaBuildingBound".Translate(ComaExtension.noun, bindComp.parent.Named("BUILDING"), pawn.Named("PAWN"), CurrentCapacity.Named("CUR"), ComaCapacity.Named("MAX")), new LookTargets(bindComp.parent, pawn), MessageTypeDefOf.NeutralEvent, historical: false);
         }
 
         public override void Reset()
@@ -446,6 +431,7 @@ namespace EBSGFramework
         }
 
         private bool shownMissingNeedWarning = false;
+
         public override IEnumerable<Gizmo> GetGizmos()
         {
             if (!Active)
@@ -561,9 +547,9 @@ namespace EBSGFramework
             Scribe_Values.Look(ref adjustedComaTicks, "adjustedComaTicks", 0f);
             Scribe_Values.Look(ref comaRestTicks, "comaRestTicks", 0);
             Scribe_Values.Look(ref autoWake, "autoWake", false);
-            Scribe_Values.Look(ref chamberThoughtIndex, "chamberThoughtIndex", -1);
             Scribe_Values.Look(ref notifiedWakeOK, "notifiedWakeOK", false);
             Scribe_Collections.Look(ref boundBuildings, "boundBuildings", LookMode.Reference);
+            Scribe_Collections.Look(ref temporaryHediffs, "temporaryHediffs", LookMode.Def);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
                 boundBuildings.RemoveAll((Thing x) => x == null);
         }

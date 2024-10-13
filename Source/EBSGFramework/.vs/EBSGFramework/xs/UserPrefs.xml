@@ -1,33 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/ComaExtension.cs">
     <Files>
-      <File FileName="Coma Genes/ComaExtension.cs" Line="26" Column="37" />
-      <File FileName="Coma Genes/Gene_Coma.cs" Line="152" Column="93" />
-      <File FileName="Coma Genes/Need_ComaGene.cs" Line="73" Column="34" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="459" Column="34" />
-      <File FileName="Coma Genes/JobGiver_GetComaRest.cs" Line="73" Column="14" />
-      <File FileName="Coma Genes/JobDriver_GeneComa.cs" Line="51" Column="79" />
-      <File FileName="Coma Genes/GeneGizmo_ComaRestCapacity.cs" Line="49" Column="1" />
-      <File FileName="Coma Genes/CompComaGeneBindable.cs" Line="125" Column="55" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="855" Column="40" />
-      <File FileName="Coma Genes/CompUseEffect_OffsetComaCapacity.cs" Line="31" Column="1" />
-      <File FileName="Coma Genes/CompProperties_ComaBindable.cs" Line="30" Column="34" />
-      <File FileName="Needs/Need_GenericNeed.cs" Line="50" Column="10" />
+      <File FileName="Coma Genes/ComaExtension.cs" Line="10" Column="48" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-              </Node>
               <Node name="Coma Genes" expanded="True">
                 <Node name="ComaExtension.cs" selected="True" />
               </Node>
-              <Node name="GameComponents" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Needs" expanded="True" />
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

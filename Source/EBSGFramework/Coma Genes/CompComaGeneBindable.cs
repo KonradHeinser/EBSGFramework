@@ -3,12 +3,20 @@ using Verse;
 using Verse.Sound;
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
     public class CompComaGeneBindable : ThingComp
     {
         public CompProperties_ComaBindable Props => (CompProperties_ComaBindable)props;
+
+        public CachedTexture UnbindTex => GetUnbindTex();
+
+        private CachedTexture GetUnbindTex()
+        {
+            return new CachedTexture(Props.unbindTexPath);
+        }
 
         private Pawn boundPawn;
 
@@ -107,7 +115,11 @@ namespace EBSGFramework
             if (boundPawn != null)
             {
                 if (Props.hediffToApply != null)
+                {
+                    EBSGUtilities.AddOrAppendHediffs(boundPawn, Props.severity, Props.severity, Props.hediffToApply);
                     boundPawn.health.AddHediff(Props.hediffToApply);
+                    ComaGene.temporaryHediffs.Add(Props.hediffToApply);
+                }
 
                 if (Props.hemogenLimitOffset > 0f)
                 {
@@ -119,7 +131,7 @@ namespace EBSGFramework
 
         public override void PostDraw()
         {
-            if (!Props.mustBeLayingInToBind && boundPawn != null && boundPawn.Map == parent.Map && ComaGene.ComaNeed.Comatose && ComaGene.BoundComps.Contains(this) && CanIncreasePresence && HoseMat != null)
+            if (!(parent is Building_Bed) && boundPawn != null && boundPawn.Map == parent.Map && ComaGene.ComaNeed.Comatose && ComaGene.BoundComps.Contains(this) && CanIncreasePresence && HoseMat != null)
             {
                 Vector3 vector = boundPawn.CurrentBed().TrueCenter();
                 Vector3 vector2 = parent.TrueCenter();
@@ -156,9 +168,24 @@ namespace EBSGFramework
             }
             else
             {
-                text += "WillBindOnFirstUse".Translate();
+                text += "EBSG_ComaWillBindOnFirstUse".Translate();
             }
             return text;
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            if (boundPawn != null && !ComaGene.ComaNeed.Comatose)
+            {
+                Command_Action command = new Command_Action
+                {
+                    defaultLabel = "EBSG_Unbind".Translate().CapitalizeFirst(),
+                    defaultDesc = "EBSG_ComaUnbindDesc".Translate(boundPawn.LabelShortCap).Resolve().CapitalizeFirst(),
+                    icon = UnbindTex.Texture,
+                    action = Unbind
+                };
+                yield return command;
+            }
         }
 
         public void TryIncreasePresence()
@@ -184,7 +211,7 @@ namespace EBSGFramework
 
         public bool CanBindTo(Pawn pawn)
         {
-            if (Props.mustBeLayingInToBind && pawn.CurrentBed() != parent)
+            if (parent is Building_Bed && pawn.CurrentBed() != parent)
                 return false;
             if (boundPawn != null)
                 return boundPawn == pawn;
@@ -197,25 +224,37 @@ namespace EBSGFramework
                 return;
 
             presenceTicks = 0;
-            foreach (Pawn item in parent.Map.mapPawns.PawnsInFaction(parent.Faction))
-            {
-                EBSGUtilities.PawnHasAnyOfGenes(item, out GeneDef linkingGene, Props.relatedGenes);
-                Gene_Coma comaGene = boundPawn.genes?.GetGene(linkingGene) as Gene_Coma;
-                if (comaGene.ComaNeed.Comatose && comaGene.CanBindToBindable(this))
-                    comaGene.BindTo(this);
-            }
+
+            if (boundPawn != null && !parent.Map.mapPawns.PawnsInFaction(parent.Faction).NullOrEmpty())
+                foreach (Pawn item in parent.Map.mapPawns.PawnsInFaction(parent.Faction))
+                {
+                    if (!EBSGUtilities.PawnHasAnyOfGenes(item, out GeneDef linkingGene, Props.relatedGenes)) continue;
+                    Gene_Coma comaGene = boundPawn.genes?.GetGene(linkingGene) as Gene_Coma;
+                    if (comaGene.ComaNeed.Comatose && comaGene.CanBindToBindable(this))
+                        comaGene.BindTo(this);
+                }
         }
 
-        public override void PostDeSpawn(Map map)
+        public void Unbind()
         {
             presenceTicks = 0;
             if (boundPawn != null)
+            {
                 ComaGene?.Notify_BoundBuildingDeSpawned(parent);
+                if (parent is Building_Bed bed)
+                    bed.NotifyRoomAssignedPawnsChanged();
+            }
 
             if (sustainer != null && !sustainer.Ended)
                 sustainer.End();
 
+            boundPawn = null;
             sustainer = null;
+        }
+
+        public override void PostDeSpawn(Map map)
+        {
+            Unbind();
         }
 
         public override void CompTick()

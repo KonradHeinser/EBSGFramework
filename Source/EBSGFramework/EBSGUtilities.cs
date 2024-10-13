@@ -309,6 +309,7 @@ namespace EBSGFramework
 
         public static void RemoveHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
+            if (pawn?.health?.hediffSet == null) return;
             if (hediff != null)
             {
                 Hediff hediffToRemove = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);

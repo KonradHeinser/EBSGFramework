@@ -19,13 +19,14 @@
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>
     <EBSG_CompSpawnPawnHediffText>A pawn has finished developing inside of {0}, and {1}</EBSG_CompSpawnPawnHediffText>
 
-    <EBSG_AlertLowComaPawn>{PAWN} needs special rest</EBSG_AlertLowComaPawn>
-    <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need special rest</EBSG_AlertLowComaPawns>  
+    <!--Coma Gene stuff-->
+    <EBSG_AlertLowComaPawn>{PAWN} needs coma</EBSG_AlertLowComaPawn>
+    <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need to start a coma</EBSG_AlertLowComaPawns>  
     <EBSG_LowComaNeedDesc>A colonist has not been in their special coma for a long time. If they go too long without this special type of rest, they will become exhausted.\n\nTo start this rest, select the colonist then right-click on their assigned bed or a related building.\n\nThese people need rest:\n{CULPRITS}</EBSG_LowComaNeedDesc>
     <EBSG_StatsReport_ComaRestEffectiveness>Special coma effectiveness</EBSG_StatsReport_ComaRestEffectiveness>
     <EBSG_StatsReport_ComaRestEffectiveness_Desc>A multiplier on how effective this is when used to replenish a special rest need. The higher this is, the less time a user needs to rest here.</EBSG_StatsReport_ComaRestEffectiveness_Desc>
-    <EBSG_StatsReport_ComaRestConnectionLimit>Special coma building connection limit</EBSG_StatsReport_ComaRestConnectionLimit>
-    <EBSG_StatsReport_ComaRestConnectionLimit_Desc>How many of these buildings can connect to a pawn while resting. This number is also limited by the person's capacity.</EBSG_StatsReport_ComaRestConnectionLimit_Desc>
+    <EBSG_StatsReport_ComaRestConnectionLimit>Connection limit</EBSG_StatsReport_ComaRestConnectionLimit>
+    <EBSG_StatsReport_ComaRestConnectionLimit_Desc>How many of these buildings can connect to a pawn while resting. This number is also limited by the person's capacity for the related gene.</EBSG_StatsReport_ComaRestConnectionLimit_Desc>
     <EBSG_Capacity>{0} capacity</EBSG_Capacity>
     <EBSG_ComaRestCapacityDesc>This determines how many buildings a person can connect to while {0}. Each building confers a specific benefit, so it's better to be able to connect to more of them.\n\nMethods for increasing this vary by gene, if they exist.</EBSG_ComaRestCapacityDesc>
     <EBSG_PawnIsConnectedToBuildings>{PAWN_nameDef} is connected to {CURRENT} / {MAX} (max) buildings.</EBSG_PawnIsConnectedToBuildings>
@@ -43,8 +44,16 @@
     <EBSG_ComaAutoWakeDesc>When on, {PAWN_nameDef} will automatically wake once {PAWN_possessive} {0} is complete.\n\nWhile off, {PAWN_pronoun} will continue {1} until you wake {PAWN_objective} manually.</EBSG_ComaAutoWakeDesc>
     <EBSG_WarningWakingInterruptsComa>Waking {PAWN_nameDef} before {MINDURATION} has passed will interrupt {PAWN_possessive} {0}, leaving {PAWN_objective} sick for some time while {PAWN_pronoun} recovers. {PAWN_pronoun} has been {1} for {CURDURATION}.\n\nAre you sure you wish to wake {PAWN_nameDef}?</EBSG_WarningWakingInterruptsComa>
     <EBSG_ComaNoBuildingBonusWarning>\n\nThey will not gain any benefits from linked {0} buildings.</EBSG_ComaNoBuildingBonusWarning>
+    <EBSG_Unbind>Unbind</EBSG_Unbind>
+    <EBSG_ComaUnbindDesc>Unbinds {0} from this building so another may try to bind themselves to it.</EBSG_ComaUnbindDesc>
+    <EBSG_InvalidGenes>Invalid genes</EBSG_InvalidGenes>
+    <EBSG_ComaWillBindOnFirstUse>Will bind with pawn on use.</EBSG_ComaWillBindOnFirstUse>
+    <EBSG_ComaSafeWake>{PAWN_nameDef} can now wake from {0} safely.</EBSG_ComaSafeWake>
+    <EBSG_ComaSunlightWake>{PAWN_nameDef} was woken from {PAWN_possessive} {0} due to sunlight exposure.</EBSG_ComaSunlightWake>
+    <EBSG_ComaCapacityChanged>{PAWN_nameDef}'s {0} capacity has increased from {OLD} to {NEW}.</EBSG_ComaCapacityChanged>
+    <EBSG_ComaBuildingBound>{BUILDING_labelShort} has been bound to {PAWN_nameDef} ({CUR}/{MAX} {0} capacity).</EBSG_ComaBuildingBound>
 
-    <!--Gene Stuff-->
+    <!--Generic Gene Stuff-->
     <EBSG_Constant>constant</EBSG_Constant> <!--Only here to prevent errors, but shouldn't actually be needed-->
     <EBSG_CorrectConditions>correct conditions</EBSG_CorrectConditions>
     <EBSG_NoWater>out of water</EBSG_NoWater>
