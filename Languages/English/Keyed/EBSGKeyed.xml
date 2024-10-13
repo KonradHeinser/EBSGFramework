@@ -32,7 +32,7 @@
     <EBSG_TimeActiveThisComaRest>Time active this rest</EBSG_TimeActiveThisComaRest>
     <EBSG_Missing>missing {0}</EBSG_Missing>
     <EBSG_ComaPaused>{0} paused</EBSG_ComaPaused>
-    <EBSG_Coma>{1}</EBSG_Coma>
+    <EBSG_Coma>{0}</EBSG_Coma>
     <EBSG_ComaChamber>{0} chamber</EBSG_ComaChamber>
     <EBSG_CannotRest>cannot start {0}</EBSG_CannotRest>
     <EBSG_StartRest>Start {0}</EBSG_StartRest>

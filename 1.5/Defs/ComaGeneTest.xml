@@ -16,14 +16,15 @@
                 <comaRestingHediff>Hibernation</comaRestingHediff>
                 <comaInterruptedHediff>InterruptedHibernation</comaInterruptedHediff>
                 <exhaustionHediff>HibernationExhaustion</exhaustionHediff>
-                <gainPerDayComatose>0.5</gainPerDayComatose>
+                <relatedJob>Hibernate</relatedJob>
+
+                <gainPerDayComatose>0.5</gainPerDayComatose> <!--Takes 2 days to go from 0 to full-->
                 <minComaTicks>60000</minComaTicks> <!--Must rest for at least one day or suffer the interrupted hediff-->
                 <!--Because no buildings have been made for this gene, we can tell the code to ignore any building related things.
                 If you do have buildings, the you won't need the usesBuildings line at all because the code assumes there are buildings by default-->
                 <usesBuildings>False</usesBuildings>
                 <noun>hibernation</noun> <!--What the coma state is called-->
                 <gerund>hibernating</gerund> <!--Term for entering the state-->
-                <relatedJob>Hibernate</relatedJob>
             </li>
         </modExtensions>
     </GeneDef>
