@@ -150,8 +150,8 @@ namespace EBSGFramework
                     DontGivePreArrivalPathway = true
                 };
 
-                if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = Genes;
-                else request.ForcedXenogenes = Genes;
+                if (Props.staticXenotype == null)
+                    request.ForcedEndogenes = Genes;
 
                 Pawn pawn = PawnGenerator.GeneratePawn(request);
 

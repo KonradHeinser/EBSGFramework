@@ -4,8 +4,8 @@
       <File FileName="Harmony/HarmonyPatches.cs" Line="441" Column="50" />
       <File FileName="EBSGExtension.cs" Line="20" Column="50" />
       <File FileName="Genes/SpawnAgeLimiter.cs" Line="72" Column="30" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="1" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="82" Column="117" />
+      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="161" Column="77" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,8 +16,10 @@
                 <Node name="CompAbilityEffects" expanded="True" />
               </Node>
               <Node name="GameComponents" expanded="True" />
+              <Node name="Genes" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True">
                   <Node name="HediffComp_SpawnHumanlike.cs" selected="True" />
                 </Node>
