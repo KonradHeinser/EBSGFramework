@@ -77,9 +77,9 @@ namespace EBSGFramework
 
             /*
             harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(ThingDef), typeof(Pawn), typeof(bool), typeof(bool) }),
-                postfix: new HarmonyMethod(patchType, nameof(WillEatThingDefPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(Thing), typeof(Pawn), typeof(bool), typeof(bool) }),
-                postfix: new HarmonyMethod(patchType, nameof(WillEatThingPostfix)));
+                postfix: new HarmonyMethod(patchType, nameof(WillEatPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "GetMaxAmountToPickup"),
+                postfix: new HarmonyMethod(patchType, nameof(GetMaxAmountToPickupPostfix)));               
             */
 
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
@@ -996,11 +996,11 @@ namespace EBSGFramework
         }
 
         /*
-        public static void WillEatThingDefPostfix(ref bool __result, Pawn p, ThingDef food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
+        public static void WillEatPostfix(ref bool __result, Pawn p, ThingDef food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
         {
             if (__result && Cache?.NeedEatPatch == true && p.genes != null)
             {
-                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods))
+                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods)) // Switch to get all matches
                 {
                     FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
 
@@ -1013,21 +1013,10 @@ namespace EBSGFramework
             }
         }
 
-        public static void WillEatThingPostfix(ref bool __result, Pawn p, Thing food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
+       public static void GetMaxAmountToPickupPostfix(ref int __result, Thing food, Pawn pawn, int wantedCount)
         {
-            if (__result && Cache?.NeedEatPatch == true && p.genes != null)
-            {
-                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods))
-                {
-                    FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
-
-                    if (foodExtension.forbiddenFoods.Contains(food.def))
-                    {
-                        __result = false;
-                        return;
-                    }
-                }
-            }
+            if (__result != 0 && Cache?.NeedEatPatch == true && p.genes != null)
+                __result = 0; // This sets the food to be unconsumable. It only greys out the option
         }
         */
         public static void IsForbiddenPostfix(Thing t, Pawn pawn, ref bool __result)
