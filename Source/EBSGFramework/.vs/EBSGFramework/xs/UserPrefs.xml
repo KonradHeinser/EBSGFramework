@@ -1,17 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Coma Genes/ComaExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_SpawnHumanlike.cs">
     <Files>
-      <File FileName="Coma Genes/ComaExtension.cs" Line="10" Column="48" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="441" Column="50" />
+      <File FileName="EBSGExtension.cs" Line="20" Column="50" />
+      <File FileName="Genes/SpawnAgeLimiter.cs" Line="72" Column="30" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_InstantKill.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Coma Genes" expanded="True">
-                <Node name="ComaExtension.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
               </Node>
+              <Node name="GameComponents" expanded="True" />
               <Node name="Harmony" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffComp_SpawnHumanlike.cs" selected="True" />
+                </Node>
+              </Node>
               <Node name="Things" expanded="True" />
             </Node>
           </Node>

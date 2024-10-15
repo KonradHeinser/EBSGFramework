@@ -26,5 +26,7 @@ namespace EBSGFramework
         public bool onlyRanged = false; // Won't stop melee attacks from fists and weapon tools, but will stop melee weapons
         public bool onlyMelee = false; // Won't stop ranged abilities from being used
         public List<ThingDef> forbiddenEquipments; // Stops xenotypes/carriers of the gene from equipping anything on the list
+        public List<ApparelLayerDef> restrictedLayers; // Stops any equipment from being placed on this layer
+        public List<ThingDef> layerEquipExceptions; // Exceptions to the restrictedLayers tag
     }
 }

@@ -257,6 +257,7 @@
     <EBSG_OnlyMelee>{0} only permits melee weapons.</EBSG_OnlyMelee>
     <EBSG_NoApparel>{0} prevents all apparel from being equipped.</EBSG_NoApparel>
     <EBSG_LimitedList>{0} only permits a specific set of equipment.</EBSG_LimitedList>
+    <EBSG_RestrictedLayer>{0} restricts the {1} layer.</EBSG_RestrictedLayer>
     <EBSG_ForbiddenList>{0} can't equip this.</EBSG_ForbiddenList>
 
         <!--Dynamic Resource Genes-->

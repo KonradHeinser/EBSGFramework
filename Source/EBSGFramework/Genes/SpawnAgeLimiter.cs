@@ -52,6 +52,27 @@ namespace EBSGFramework
             base.PostAdd();
             if (Extension != null)
             {
+                if (Extension.staticGender != Gender.None)
+                {
+                    pawn.gender = Gender.Male;
+                    switch (pawn.gender)
+                    {
+                        case Gender.Female:
+                            if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Male)
+                            {
+                                pawn.story.bodyType = BodyTypeDefOf.Female;
+                                pawn.Drawer.renderer.SetAllGraphicsDirty();
+                            }
+                            break;
+                        case Gender.Male:
+                            if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Female)
+                            {
+                                pawn.story.bodyType = BodyTypeDefOf.Male;
+                                pawn.Drawer.renderer.SetAllGraphicsDirty();
+                            }
+                            break;
+                    }
+                }
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;

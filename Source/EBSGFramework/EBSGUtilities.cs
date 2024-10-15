@@ -873,6 +873,30 @@ namespace EBSGFramework
             return false;
         }
 
+        public static List<GeneDef> GetAllGenesOnListFromPawn(Pawn pawn, List<GeneDef> searchList)
+        {
+            List<GeneDef> results = new List<GeneDef>();
+
+            if (pawn.genes?.GenesListForReading.NullOrEmpty() == false && !searchList.NullOrEmpty())
+                foreach (GeneDef gene in searchList)
+                    if (pawn.genes.GetGene(gene) != null)
+                        results.Add(gene);
+
+            return results;
+        }
+
+        public static List<GeneDef> GetAllMatchingGenes(List<GeneDef> listA, List<GeneDef> listB)
+        {
+            List<GeneDef> results = new List<GeneDef>();
+
+            if (!listA.NullOrEmpty() && !listB.NullOrEmpty())
+                foreach (GeneDef gene in listA)
+                    if (listB.Contains(gene))
+                        results.Add(gene);
+
+            return results;
+        }
+
         public static bool PawnHasAllOfGenes(Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
