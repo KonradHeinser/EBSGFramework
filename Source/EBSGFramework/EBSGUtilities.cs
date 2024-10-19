@@ -409,13 +409,13 @@ namespace EBSGFramework
 
                         if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
                         else
-                        {
                             foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                            {
-                                if (hediff.Part.def == bodyPart && hediff.def == hediffToParts.hediff) firstHediffOfDef = hediff;
-                                break;
-                            }
-                        }
+                                if (hediff.Part.def == bodyPart && hediff.def == hediffToParts.hediff)
+                                {
+                                    firstHediffOfDef = hediff;
+                                    break;
+                                }
+
                         if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
                     }
                 }
@@ -436,13 +436,13 @@ namespace EBSGFramework
 
                             if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
                             else
-                            {
                                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                                {
-                                    if (hediff.Part.def == bodyPart && hediff.def == hediffPart.hediff) firstHediffOfDef = hediff;
-                                    break;
-                                }
-                            }
+                                    if (hediff.Part.def == bodyPart && hediff.def == hediffPart.hediff)
+                                    {
+                                        firstHediffOfDef = hediff;
+                                        break;
+                                    }
+
                             if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
                         }
                     }

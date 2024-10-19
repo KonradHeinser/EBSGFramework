@@ -73,10 +73,9 @@ namespace EBSGFramework
                             break;
                     }
                 }
-                if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
-
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
                 if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
@@ -289,10 +288,8 @@ namespace EBSGFramework
             foreach (AbilityAndGeneLink link in geneAbilities)
             {
                 if (link.abilities.NullOrEmpty()) continue;
-                if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var anyOfGene, link.requireOneOfGenes) && (link.forbiddenGenes.NullOrEmpty() || !EBSGUtilities.PawnHasAnyOfGenes(pawn, out var noneOfGene, link.forbiddenGenes)) && EBSGUtilities.PawnHasAllOfGenes(pawn, link.requiredGenes))
-                {
+                if (EBSGUtilities.CheckGeneTrio(pawn, link.requireOneOfGenes, link.requiredGenes, link.forbiddenGenes))
                     foreach (AbilityDef ability in link.abilities) abilitiesToAdd.Add(ability);
-                }
             }
 
             return EBSGUtilities.GivePawnAbilities(pawn, abilitiesToAdd);

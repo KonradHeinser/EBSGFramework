@@ -392,6 +392,9 @@
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Weather.cs" />
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffector_Hediffs.cs" />
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffector_OtherGenes.cs" />
+        <Compile Include="Things\Projectile_LiquidExplosion.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpew.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Spew.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
