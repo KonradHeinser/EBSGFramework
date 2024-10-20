@@ -39,6 +39,8 @@ namespace EBSGFramework
 
         public XenoSource xenotypeSource = XenoSource.Hybrid;
 
+        public DevelopmentalStage developmentalStage = DevelopmentalStage.Newborn;
+
         public CompProperties_SpawnBaby()
         {
             compClass = typeof(CompSpawnBaby);
