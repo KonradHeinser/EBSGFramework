@@ -1,5 +1,5 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_EBSGBurst.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SpawnAgeLimiter.cs">
     <Files>
       <File FileName="EBSGExtension.cs" Line="34" Column="33" />
       <File FileName="Generic List Classes/AbilityAndGeneLink.cs" Line="12" Column="47" />
@@ -8,23 +8,6 @@
       <File FileName="Things/CompSpawnBaby.cs" Line="20" Column="27" />
       <File FileName="Abilities/CompProperties/CompProperties_EBSGBurst.cs" Line="22" Column="52" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_EBSGBurst.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="Things" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

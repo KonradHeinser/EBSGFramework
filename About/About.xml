@@ -25,30 +25,53 @@
   </loadAfter>
 
   <description>
-Expanded Biotech Style Genes(EBSG) is the step beyond [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2985153870]More Biotech Style Genes[/url]. Where that series sought to expand ranges that already exist, this series seeks to add ranges that should exist. You get gene ranges that alter sleep fall rate, but why not a range for changing the rate it recovers? If you can have fire resistance genes, why not have genes to resist other types of damage like frostbite and acid?
+[img]https://i.imgur.com/Aq17Utk.png[/img]
 
-This framework contains all the C# that I made that can be utilized for broad purposes. While it mostly contains stuff for the Expanded Biotech Style Genes series, it also has generic copies of some of the code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff. Important note, the code from SHG also still has an SHG equivalent, but there is no guarantee that they will act the same as those ones are intended solely for SHG and any mods that have it as a dependency.
+[img]https://i.imgur.com/d62qHAC.png[/img]
 
-Some things this contains includes:
- - Stats that alter deathrest, pregnancy, and blood recovery speeds.
- - Create basic resource genes like Hemogen using just xml
- - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden tags.
- - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.
- - Create thoughts that check for trees similar to the Trees Desired precept.
- - Create mood curves based on how many people are in the colony.
- - Create hediffs that damage and even completely remove specific parts.
- - Create hive mind genes.
- - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. The wiki's list will be more extensive.
+This framework contains all the C# that I made that can be utilized for broad purposes. In addition to the stuff for the Expanded Biotech Style Genes series, it also has generic copies of some of the code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability, along with many other ideas I've had and various requests from others. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff.
+
+This framework does not have any hard requirement on any DLC. However please keep in mind none of the gene stuff will work without Biotech, and the precept thought workers will usually require both Biotech and Ideology.
+
+[img]https://i.imgur.com/0gYfTPj.png[/img]
+  - Stats that alter deathrest, pregnancy, and blood recovery speeds.
+  - Create basic resource genes like Hemogen using just xml
+  - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden tags.
+  - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.
+  - Create thoughts that check for trees similar to the Trees Desired precept.
+  - Create mood curves based on how many people are in the colony.
+  - Create hediffs that damage and even completely remove specific parts.
+  - Create hive mind genes.
+  - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. [url=https://github.com/KonradHeinser/EBSGFramework/wiki]The wiki's list is a lot more extensive[/url].
+
+[url=https://github.com/KonradHeinser/EBSGFramework/wiki/Updates]To read about past updates and the next major update (if I'm presently working on it), take a look at the updates page on the wiki.[/url]
+
+EBSG mods using this framework
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3015076392]Bleeding Genes[/url] : Only the blood recovery genes
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115290386]Environmental Preference Genes[/url] : Adds a bunch of genes that change how the pawn feels about the place they live
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3137774673]Expanded Dependency Genes[/url] : Gives stricter drug dependency options along with various food options
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115293263]Expanded Reproduction Genes[/url] : Alter the pregnancy speed and fertility curve of pawns
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115298539]Expanded Deathrest Genes[/url] : Alter how long a pawn needs to spend to complete a deathrest session
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115303988]Health Genes[/url] : Alter biosculpting speed and give an extra challenge for pawns when you start with the body parts section
+  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3137775020]Passion Genes[/url] : Change how much passion pawns have for certain skills
+
+[img]https://i.imgur.com/o3vWOw6.png[/img]
+- CE might take issue with the outgoing damage stuff. Awaiting large scale input from community.
+- HAR may not be compatible with the fertility curve. Awaiting large scale input from community.
+- No other issues are known at the moment.
 
 
 [url=https://steamcommunity.com/id/alite/myworkshopfiles/?appid=294100]Easy link to all of my Rimworld mods[/url]
 
 If you're interested in downloading manually, casually looking at the code, or taking a look at its functions to use in your own mods, click the Github link. While I do encourage looking at the C# if you want an example on how to do something, you do NOT have permission to just copy my code into your own mod. If you want to use something directly from this, make this mod a dependency.
 
-[url=https://github.com/KonradHeinser/https://github.com/KonradHeinser/EBSGFramework/wiki][img]https://i.imgur.com/kTkpTOE.png[/img][/url]
+[url=https://github.com/KonradHeinser/EBSGFramework/wiki][img]https://i.imgur.com/kTkpTOE.png[/img][/url]
 
 [url=https://ko-fi.com/alite56114][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
 
 [url=https://discord.gg/fYP8qkcNDh][img]https://i.imgur.com/0dG2g3t.png[/img][/url]
-  </description>
+
+[img]https://i.imgur.com/TdjmzJr.png[/img]
+[url=https://steamcommunity.com/id/Sovereign484854/myworkshopfiles/]Sovereign[/url] has helped come up with several of the ideas in the mod, and, more importantly, has helped me with art stuff to compensate for my inability to do art stuff.
+    </description>
 </ModMetaData>
