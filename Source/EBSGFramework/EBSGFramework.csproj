@@ -395,6 +395,12 @@
         <Compile Include="Things\Projectile_LiquidExplosion.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpew.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Spew.cs" />
+        <Compile Include="PatchOperations\PatchOperationCarefulConditional.cs" />
+        <Compile Include="PatchOperations\CarefulOperation.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ForceJobOnHostiles.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StunNonCaster.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityStopMentalNoPsychic.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StopMentalNoPsychic.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -434,6 +440,7 @@
         <Folder Include="Storytime\" />
         <Folder Include="Coma Genes\" />
         <Folder Include="Genes\ConditionalStatAffecters\" />
+        <Folder Include="PatchOperations\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
