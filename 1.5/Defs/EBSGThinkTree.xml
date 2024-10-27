@@ -32,18 +32,26 @@
                                                         </li>
                                                     </subNodes>
                                                 </li>
-                                                <li Class="ThinkNode_ConditionalShotRecently">
-                                                    <thresholdTicks>600</thresholdTicks>
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_UndraftedColonist_ShotRecently</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
                                                 <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
                                                     <subNodes>
                                                         <li Class="ThinkNode_SubtreesByTag">
                                                             <insertTag>EBSGAI_UndraftedColonist_EnemyOnMap</insertTag>
+                                                        </li>
+                                                        <li Class="ThinkNode_HarmedRecently">
+                                                            <thresholdTicks>120</thresholdTicks>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_UndraftedColonist_HarmedRecently</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
+                                                        <li Class="ThinkNode_ConditionalShotRecently">
+                                                            <thresholdTicks>600</thresholdTicks>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_UndraftedColonist_ShotRecently</insertTag>
+                                                                </li>
+                                                            </subNodes>
                                                         </li>
                                                         <li Class="EBSGFramework.ThinkNode_ConditionalTooManyNearbyThreats">
                                                             <subNodes>
@@ -77,16 +85,24 @@
                                                 <li Class="ThinkNode_SubtreesByTag">
                                                     <insertTag>EBSGAI_DraftedAndFreePawn</insertTag>
                                                 </li>
-                                                <li Class="ThinkNode_ConditionalShotRecently">
-                                                    <thresholdTicks>600</thresholdTicks>
-                                                    <subNodes>
-                                                        <li Class="ThinkNode_SubtreesByTag">
-                                                            <insertTag>EBSGAI_DraftedColonist_ShotRecently</insertTag>
-                                                        </li>
-                                                    </subNodes>
-                                                </li>
                                                 <li Class="EBSGFramework.ThinkNode_ConditionalAnyActiveEnemyInMap">
                                                     <subNodes>
+                                                        <li Class="ThinkNode_HarmedRecently">
+                                                            <thresholdTicks>120</thresholdTicks>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_DraftedColonist_HarmedRecently</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
+                                                        <li Class="ThinkNode_ConditionalShotRecently">
+                                                            <thresholdTicks>600</thresholdTicks>
+                                                            <subNodes>
+                                                                <li Class="ThinkNode_SubtreesByTag">
+                                                                    <insertTag>EBSGAI_DraftedColonist_ShotRecently</insertTag>
+                                                                </li>
+                                                            </subNodes>
+                                                        </li>
                                                         <li Class="ThinkNode_SubtreesByTag">
                                                             <insertTag>EBSGAI_DraftedColonist_EnemyOnMap</insertTag>
                                                         </li>
@@ -127,6 +143,14 @@
                             <subNodes>
                                 <li Class="ThinkNode_SubtreesByTag">
                                     <insertTag>EBSGAI_NonColonist</insertTag>
+                                </li>
+                                <li Class="ThinkNode_HarmedRecently">
+                                    <thresholdTicks>120</thresholdTicks>
+                                    <subNodes>
+                                        <li Class="ThinkNode_SubtreesByTag">
+                                            <insertTag>EBSGAI_NonColonist_HarmedRecently</insertTag>
+                                        </li>
+                                    </subNodes>
                                 </li>
                                 <li Class="ThinkNode_ConditionalShotRecently">
                                     <thresholdTicks>600</thresholdTicks>
