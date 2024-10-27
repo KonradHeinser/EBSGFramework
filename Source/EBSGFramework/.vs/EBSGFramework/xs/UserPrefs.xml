@@ -1,16 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/ThinkNode_ConditionalAnyActiveEnemyInMap.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityStopMentalNoPsychic.cs">
     <Files>
-      <File FileName="EBSGAI/ThinkNode_ConditionalAnyActiveEnemyInMap.cs" Line="1" Column="1" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityStopMentalNoPsychic.cs" Line="21" Column="35" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilitySpew.cs" Line="1" Column="1" />
+      <File FileName="PatchOperations/PatchOperationCarefulConditional.cs" Line="26" Column="13" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_StopMentalNoPsychic.cs" Line="52" Column="83" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="EBSGAI" expanded="True">
-                <Node name="ThinkNode_ConditionalAnyActiveEnemyInMap.cs" selected="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True">
+                  <Node name="CompProperties_AbilityStopMentalNoPsychic.cs" selected="True" />
+                </Node>
               </Node>
+              <Node name="PatchOperations" expanded="True" />
+              <Node name="Things" expanded="True" />
             </Node>
           </Node>
         </State>

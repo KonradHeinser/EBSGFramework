@@ -51,9 +51,12 @@ namespace EBSGFramework
 
                 if (pawn.health.hediffSet.HasHediff(HediffDefOf.CatatonicBreakdown))
                 {
+                    if (!Props.canFixCatatonic) return 0f;
                     intensity = MentalBreakIntensity.Extreme;
                     return Props.extremeChance;
                 }
+
+                if (!Props.limitedTo.NullOrEmpty() && (mentalStateDef == null || !Props.limitedTo.Contains(mentalStateDef))) return 0f;
 
                 if (mentalStateDef != null)
                 {

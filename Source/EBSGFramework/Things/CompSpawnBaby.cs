@@ -98,10 +98,10 @@ namespace EBSGFramework
                     {
                         // If the faction is somehow null, the child will default to joining the player
                         PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
-                            faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true,
+                            faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, forceNoGear: true,
                             forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: Props.developmentalStage)
                         {
-                            DontGivePreArrivalPathway = true
+                            DontGivePreArrivalPathway = true,
                         };
 
                         if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = Genes;

@@ -8,6 +8,10 @@ namespace EBSGFramework
     {
         public List<MentalStateDef> exceptions;
 
+        public List<MentalStateDef> limitedTo;
+
+        public bool canFixCatatonic = true;
+
         public bool mustHaveMentalState = true;
 
         public float minorChance = 1f;
