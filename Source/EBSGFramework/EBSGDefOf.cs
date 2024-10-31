@@ -22,6 +22,9 @@ namespace EBSGFramework
         public static JobDef EBSG_NeedCharge;
         public static JobDef EBSG_GathererJob;
 
+        public static ThingDef EBSG_PawnLeaving;
+        public static WorldObjectDef EBSG_PawnFlying;
+
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_DeathrestRiseRate;

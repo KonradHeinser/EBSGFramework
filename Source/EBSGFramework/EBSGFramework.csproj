@@ -401,6 +401,9 @@
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StunNonCaster.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityStopMentalNoPsychic.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StopMentalNoPsychic.cs" />
+        <Compile Include="Things\FlyPawnLeaving.cs" />
+        <Compile Include="Things\FlyPawnArriving.cs" />
+        <Compile Include="Things\FlyingPawn.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

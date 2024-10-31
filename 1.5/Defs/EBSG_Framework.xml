@@ -57,6 +57,37 @@
         <workerClass>EBSGFramework.RoomRoleWorker_ComaRestChamber</workerClass>
     </RoomRoleDef>
     
+    <WorldObjectDef Name="EBSG_PawnFlying">
+        <defName>EBSG_PawnFlying</defName>
+        <label>flying pawn</label>
+        <description>Pawn in flight.</description>
+        <worldObjectClass>EBSGFramework.FlyingPawn</worldObjectClass>
+        <useDynamicDrawer>True</useDynamicDrawer>
+        <allowCaravanIncidentsWhichGenerateMap>False</allowCaravanIncidentsWhichGenerateMap>
+    </WorldObjectDef>
+
+    <ThingDef ParentName="SkyfallerBase" Name="EBSG_PawnLeaving">
+        <defName>EBSG_PawnLeaving</defName>
+        <label>flying pawn</label>
+        <thingClass>EBSGFramework.FlyPawnLeaving</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>10</drawSize>
+        </graphicData>
+        <skyfaller>
+            <movementType>Decelerate</movementType>
+            <rotateGraphicTowardsDirection>True</rotateGraphicTowardsDirection>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(1, 1)</shadowSize>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-10</anticipationSoundTicks>
+            <ticksToImpactRange><min>-40</min><max>-15</max></ticksToImpactRange>
+        </skyfaller>
+    </ThingDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

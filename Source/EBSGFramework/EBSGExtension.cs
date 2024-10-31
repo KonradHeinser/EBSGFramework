@@ -19,6 +19,8 @@ namespace EBSGFramework
         public float universalMoodFactor = 1;
         public Gender staticGender = Gender.None;
 
+        public EffecterDef effecter;
+
         public HediffDef alternativePregnancyHediff;
         public List<HediffsToParts> hediffsToApply;
         public bool vanishingGene = false;

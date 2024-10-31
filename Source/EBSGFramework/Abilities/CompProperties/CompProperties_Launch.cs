@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public int maxDistance = 10;
 
+        public ThingDef skyfallerArriving;
+
         public ThingDef skyfallerLeaving;
 
         public WorldObjectDef worldObject;

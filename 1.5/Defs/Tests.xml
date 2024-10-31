@@ -42,22 +42,36 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-</Defs>
 
-    <!-- <GeneDef ParentName="EBSG_TestGeneBase">
-        <defName>Dendrovore</defName>
-        <modExtensions>
-            <li Class="EBSGFramework.FoodExtension">
-                <foodTypeOverride>Plant</foodTypeOverride>
+    <AbilityDef>
+        <defName>Launch</defName>
+        <label>go launch yourself</label>
+        <description>Fly to another world tile.</description>
+        <iconPath>Things/Mote/SpeechSymbols/Speech</iconPath>
+        <targetWorldCell>True</targetWorldCell>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <category>Psychic</category>
+        <cooldownTicksRange>60</cooldownTicksRange>
+        <hostile>false</hostile>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <range>0.9</range>
+            <warmupTime>0.5</warmupTime>
+            <requireLineOfSight>False</requireLineOfSight>
+        </verbProperties>
+        <comps>
+            <li Class="EBSGFramework.CompProperties_Launch">
+                <maxDistance>30</maxDistance>
             </li>
-        </modExtensions>
-    </GeneDef> -->
-
+        </comps>
+    </AbilityDef>
+</Defs>
 
 <!-- 
         <modExtensions>
             <li Class="EBSGFramework.EBSGExtension">
-                
             </li>
         </modExtensions>
 -->

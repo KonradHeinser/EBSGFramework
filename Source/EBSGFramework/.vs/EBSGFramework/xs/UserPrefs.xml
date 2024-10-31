@@ -1,29 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityStopMentalNoPsychic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/FlyingPawn.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityStopMentalNoPsychic.cs" Line="21" Column="35" />
-      <File FileName="Abilities/CompProperties/CompProperties_AbilitySpew.cs" Line="1" Column="1" />
-      <File FileName="PatchOperations/PatchOperationCarefulConditional.cs" Line="26" Column="13" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_StopMentalNoPsychic.cs" Line="52" Column="83" />
+      <File FileName="Things/FlyPawnLeaving.cs" Line="100" Column="54" />
+      <File FileName="Things/FlyPawnArriving.cs" Line="21" Column="54" />
+      <File FileName="Abilities/CompProperties/CompProperties_Launch.cs" Line="28" Column="1" />
+      <File FileName="Things/FlyingPawn.cs" Line="31" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="41" Column="1" />
+      <File FileName="EBSGDefOf.cs" Line="26" Column="54" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_AbilityStopMentalNoPsychic.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="PatchOperations" expanded="True" />
-              <Node name="Things" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -19,21 +19,25 @@ namespace EBSGFramework
                 GenSpawn.Spawn(transporter, position, map);
 
                 CompTransporter transportComp = transporter.TryGetComp<CompTransporter>();
-                transportComp.groupID = parent.pawn.thingIDNumber;
+                transportComp.groupID = Find.UniqueIDsManager.GetNextTransporterGroupID();
                 transportComp.TryRemoveLord(map);
 
                 transportComp.GetDirectlyHeldThings().TryAddOrTransfer(parent.pawn.SplitOff(1));
                 ThingOwner directlyHeldThings = transportComp.GetDirectlyHeldThings();
 
-                ActiveDropPod activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(ThingDefOf.ActiveDropPod);
+                ActiveDropPod activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(Props.skyfallerArriving ?? ThingDefOf.ActiveDropPod);
                 activeDropPod.Contents = new ActiveDropPodInfo();
                 activeDropPod.Contents.innerContainer.TryAddRangeOrTransfer(directlyHeldThings, true, true);
+                if (activeDropPod is FlyPawnArriving pawnArriving)
+                    pawnArriving.pawn = parent.pawn;
 
-                FlyShipLeaving obj = (FlyShipLeaving)SkyfallerMaker.MakeSkyfaller(Props.skyfallerLeaving ?? ThingDefOf.DropPodLeaving, activeDropPod);
+                FlyShipLeaving obj = (FlyShipLeaving)SkyfallerMaker.MakeSkyfaller(Props.skyfallerLeaving ?? EBSGDefOf.EBSG_PawnLeaving, activeDropPod);
                 obj.groupID = transportComp.groupID;
                 obj.destinationTile = target.Tile;
                 obj.arrivalAction = new TransportPodsArrivalAction_FormCaravan("MessagePawnArrived");
-                obj.worldObjectDef = Props.worldObject ?? WorldObjectDefOf.TravelingTransportPods;
+                obj.worldObjectDef = Props.worldObject ?? EBSGDefOf.EBSG_PawnFlying;
+                if (obj is FlyPawnLeaving pawnLeaving)
+                    pawnLeaving.pawn = parent.pawn;
 
                 transportComp.CleanUpLoadingVars(map);
                 transportComp.parent.Destroy();
@@ -44,12 +48,14 @@ namespace EBSGFramework
             {
                 Caravan caravan = parent.pawn.GetCaravan();
                 if (caravan == null) return;
-                WorldObject newCaravan = WorldObjectMaker.MakeWorldObject(Props.worldObject ?? WorldObjectDefOf.TravelingTransportPods);
+                WorldObject newCaravan = WorldObjectMaker.MakeWorldObject(Props.worldObject ?? EBSGDefOf.EBSG_PawnFlying);
                 if (newCaravan is TravelingTransportPods transport)
                 {
                     transport.Tile = caravan.Tile;
                     transport.destinationTile = target.Tile;
                     transport.arrivalAction = new TransportPodsArrivalAction_FormCaravan("MessagePawnArrived");
+                    if (transport is FlyingPawn flyingPawn)
+                        flyingPawn.pawn = parent.pawn;
                     ActiveDropPodInfo podInfo = new ActiveDropPodInfo();
                     podInfo.innerContainer.TryAddRangeOrTransfer(caravan.AllThings);
                     podInfo.innerContainer.TryAddRangeOrTransfer(caravan.pawns);
