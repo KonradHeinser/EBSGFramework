@@ -113,6 +113,12 @@
                         <description>Toggles whether any mods can cause colonists to autocast. This only impacts mods that directly add to the EBSG Tree's colonist AI, so any mod that uses other methods for implementing think tree stuff for colonists will be completely unaffected.</description>
                         <defaultSetting>False</defaultSetting>
                     </li>
+                    <li>
+                        <settingID>EBSGDraftedAI</settingID>
+                        <label>Drafted AI</label>
+                        <description>Toggles whether any mods can cause drafted colonists to autocast. This only impacts mods that directly add to the EBSG Tree's drafted colonist AI, so any mod that uses other methods for implementing think tree stuff for colonists will be completely unaffected.</description>
+                        <defaultSetting>False</defaultSetting>
+                    </li>
                 </individualSettings>
             </li>
         </thinkTreeSettings>

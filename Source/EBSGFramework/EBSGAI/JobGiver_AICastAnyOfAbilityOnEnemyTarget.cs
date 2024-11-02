@@ -40,9 +40,9 @@ namespace EBSGFramework
                         {
                             if (compAbility is CompAbilityEffect_GiveHediff comp)
                             {
-                                if ((comp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                                flag |= ((comp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
                                     (comp.Props.durationMultiplier != null && otherPawn.GetStatValue(comp.Props.durationMultiplier) <= 0) ||
-                                    EBSGUtilities.HasHediff(otherPawn, comp.Props.hediffDef)) flag = true;
+                                    EBSGUtilities.HasHediff(otherPawn, comp.Props.hediffDef));
                             }
                             else if (compAbility is CompAbilityEffect_GiveMultipleHediffs multiComp)
                             {
@@ -51,19 +51,23 @@ namespace EBSGFramework
                                 else
                                     foreach (HediffToGive hediff in multiComp.Props.hediffsToGive)
                                         if ((hediff.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                            EBSGUtilities.HasHediff(otherPawn, hediff.hediffDef)) flag = true;
+                                            EBSGUtilities.HasHediff(otherPawn, hediff.hediffDef))
+                                        {
+                                            flag = true;
+                                            break;
+                                        }
                             }
                             else if (compAbility is CompAbilityEffect_BloodDrain bloodComp)
                             {
-                                if ((bloodComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (bloodComp.Props.replacementHediff != null && EBSGUtilities.HasHediff(otherPawn, bloodComp.Props.replacementHediff))) flag = true;
+                                flag |= (bloodComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                                    (bloodComp.Props.replacementHediff != null && EBSGUtilities.HasHediff(otherPawn, bloodComp.Props.replacementHediff));
                             }
                             else if (compAbility is CompAbilityEffect_Stun stunComp)
                             {
-                                if ((stunComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                                flag |= (stunComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
                                     (stunComp.Props.durationMultiplier != null && otherPawn.GetStatValue(stunComp.Props.durationMultiplier) <= 0) ||
                                     (tempAbility.lastCastTick >= 0 && tempAbility.def.EffectDuration() > 0 &&
-                                    Find.TickManager.TicksGame - tempAbility.lastCastTick < tempAbility.def.EffectDuration())) flag = true;
+                                    Find.TickManager.TicksGame - tempAbility.lastCastTick < tempAbility.def.EffectDuration());
                             }
                             if (flag) break;
                         }

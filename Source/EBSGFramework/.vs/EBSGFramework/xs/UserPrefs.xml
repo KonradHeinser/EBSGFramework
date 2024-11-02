@@ -1,5 +1,5 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/FlyingPawn.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs">
     <Files>
       <File FileName="Things/FlyPawnLeaving.cs" Line="100" Column="54" />
       <File FileName="Things/FlyPawnArriving.cs" Line="21" Column="54" />
@@ -7,6 +7,8 @@
       <File FileName="Things/FlyingPawn.cs" Line="31" Column="1" />
       <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="41" Column="1" />
       <File FileName="EBSGDefOf.cs" Line="26" Column="54" />
+      <File FileName="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" Line="30" Column="14" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalHighResourceLevels.cs" Line="26" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
