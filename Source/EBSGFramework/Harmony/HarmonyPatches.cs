@@ -65,7 +65,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_Ownership), "ClaimBedIfNonMedical"),
                 prefix: new HarmonyMethod(patchType, nameof(ClaimBedIfNonMedicalPrefix)));
-
+            harmony.Patch(AccessTools.PropertyGetter(typeof(SkillRecord), "Aptitude"),
+                postfix: new HarmonyMethod(patchType, nameof(SkillAptitudePostfix)));
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -843,6 +844,95 @@ namespace EBSGFramework
                 foreach (Need need in pawn.needs.AllNeeds)
                     if (need is Need_Murderous murderNeed)
                         murderNeed.Notify_KilledPawn(dinfo, __instance);
+        }
+
+        public static void SkillAptitudePostfix(ref int __result, Pawn ___pawn, SkillDef ___def)
+        {
+            if (Cache?.skillChanging.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(___pawn, Cache.skillChanging))
+                foreach (Gene gene in ___pawn.genes.GenesListForReading)
+                    if (gene is Gene_SkillChanging skillGene && skillGene.changedSkills?.Contains(___def) == true)
+                        __result += skillGene.changedAmounts[skillGene.changedSkills.IndexOf(___def)];
+        }
+
+        public static void GraphicForHeadPostfix(Pawn pawn, ref Graphic __result)
+        {
+            Shader shader = ShaderUtility.GetSkinShader(pawn);
+            if (shader == null) return;
+            if (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated)
+            {
+                if (Cache?.desiccatedHeads.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedHeads))
+                    foreach (GeneDef gene in Cache.desiccatedHeads)
+                    {
+                        if (!pawn.genes.HasActiveGene(gene)) continue;
+                        EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
+
+                        if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child) && extension.desChildHead != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChildHead, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (extension.desHead != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHead, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                    }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public static void GraphicForBodyPostfix(Pawn pawn, ref Graphic __result)
+        {
+            Shader shader = ShaderUtility.GetSkinShader(pawn);
+            if (shader == null) return;
+            if (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated)
+            {
+                if (Cache?.desiccatedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedBodies))
+                    foreach (GeneDef gene in Cache.desiccatedBodies)
+                    {
+                        if (!pawn.genes.HasActiveGene(gene)) continue;
+                        EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
+
+                        if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child) && extension.desChild != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChild, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (pawn.story?.bodyType == BodyTypeDefOf.Male && extension.desMale != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMale, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (pawn.story?.bodyType == BodyTypeDefOf.Female && extension.desFemale != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemale, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (pawn.story?.bodyType == BodyTypeDefOf.Fat && extension.desFat != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFat, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && extension.desHulk != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHulk, shader, Vector2.one, Color.white);
+                            return;
+                        }
+                        if (pawn.story?.bodyType == BodyTypeDefOf.Thin && extension.desThin != null)
+                        {
+                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desThin, shader, Vector2.one, Color.white);
+                            return;
+                        }
+
+                    }
+            }
+            else
+            {
+                return;
+            }
         }
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)

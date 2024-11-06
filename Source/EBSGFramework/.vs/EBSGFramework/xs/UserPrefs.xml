@@ -1,15 +1,30 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Things/FlyPawnLeaving.cs" Line="100" Column="54" />
-      <File FileName="Things/FlyPawnArriving.cs" Line="21" Column="54" />
-      <File FileName="Abilities/CompProperties/CompProperties_Launch.cs" Line="28" Column="1" />
-      <File FileName="Things/FlyingPawn.cs" Line="31" Column="1" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Launch.cs" Line="41" Column="1" />
-      <File FileName="EBSGDefOf.cs" Line="26" Column="54" />
-      <File FileName="EBSGAI/JobGiver_AICastAnyOfAbilityOnEnemyTarget.cs" Line="30" Column="14" />
-      <File FileName="EBSGAI/ThinkNode_ConditionalHighResourceLevels.cs" Line="26" Column="1" />
+      <File FileName="RenderNodes/PawnRenderNode_EBSGFur.cs" Line="24" Column="1" />
+      <File FileName="Genes/EBSGBodyExtension.cs" Line="53" Column="1" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="417" Column="9" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="903" Column="26" />
+      <File FileName="Generic List Classes/AgeBodyLink.cs" Line="22" Column="9" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
+              </Node>
+              <Node name="RenderNodes" expanded="True" />
+              <Node name="Settings" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -404,6 +404,9 @@
         <Compile Include="Things\FlyPawnLeaving.cs" />
         <Compile Include="Things\FlyPawnArriving.cs" />
         <Compile Include="Things\FlyingPawn.cs" />
+        <Compile Include="RenderNodes\PawnRenderNode_EBSGFur.cs" />
+        <Compile Include="Genes\EBSGBodyExtension.cs" />
+        <Compile Include="Generic List Classes\AgeBodyLink.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -444,6 +447,7 @@
         <Folder Include="Coma Genes\" />
         <Folder Include="Genes\ConditionalStatAffecters\" />
         <Folder Include="PatchOperations\" />
+        <Folder Include="RenderNodes\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

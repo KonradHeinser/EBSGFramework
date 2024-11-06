@@ -2,6 +2,10 @@
 using UnityEngine;
 using Verse;
 using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Reflection;
+using HarmonyLib;
 
 namespace EBSGFramework
 {
@@ -424,7 +428,7 @@ namespace EBSGFramework
                                     {
                                         bool settingFlag = thinkTreeSettings[id + branchSetting.settingID];
 
-                                        optionsMenu.CheckboxLabeled("    " + branchSetting.label, ref settingFlag, branchSetting.description);
+                                        optionsMenu.CheckboxLabeled("    " + branchSetting.label.CapitalizeFirst(), ref settingFlag, branchSetting.description);
                                         optionsMenu.Gap(3f);
 
                                         thinkTreeSettings[id + branchSetting.settingID] = settingFlag;

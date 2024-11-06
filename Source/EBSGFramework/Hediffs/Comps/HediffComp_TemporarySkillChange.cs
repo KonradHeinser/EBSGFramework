@@ -32,11 +32,12 @@ namespace EBSGFramework
                 else skill = Pawn.skills.GetSkill(skillChange.skill);
                 if (skill == null) continue;
 
-                if (skill.Level + skillChange.skillChange > 20) changedAmounts.Add(20 - skill.Level);
-                else if (skill.Level + skillChange.skillChange < 0) changedAmounts.Add(skill.Level * -1);
-                else changedAmounts.Add(skillChange.skillChange);
+                int changeAmount = skillChange.skillChange.RandomInRange;
+                if (skill.Level + changeAmount > 20) changedAmounts.Add(20 - skill.Level);
+                else if (skill.Level + changeAmount < 0) changedAmounts.Add(skill.Level * -1);
+                else changedAmounts.Add(changeAmount);
 
-                skill.Level += skillChange.skillChange;
+                skill.Level += changeAmount;
                 originalPassions.Add(skill.passion);
 
                 if (skillChange.setPassion)
@@ -96,7 +97,7 @@ namespace EBSGFramework
                 foreach (SkillChange skillChange in Props.skillChanges)
                 {
                     if (skillChange.skill == null || Pawn.skills.GetSkill(skillChange.skill) != null)
-                        changedAmounts.Add(skillChange.skillChange);
+                        changedAmounts.Add(skillChange.skillChange.RandomInRange);
                 }
             }
 
@@ -119,7 +120,7 @@ namespace EBSGFramework
 
         private bool Redundant(SkillRecord skill, SkillChange skillChange)
         {
-            if (skillChange.skillChange != 0) return false;
+            if (skillChange.skillChange != new IntRange(0, 0)) return false;
             if (skillChange.setPassion)
             {
                 if (skill.passion == skillChange.passion) return true;

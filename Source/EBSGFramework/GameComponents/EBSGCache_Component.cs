@@ -1,5 +1,6 @@
 ﻿using Verse;
 using RimWorld;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace EBSGFramework
@@ -32,6 +33,13 @@ namespace EBSGFramework
         public List<GeneDef> moodMultiplyingGenes = new List<GeneDef>();
         public List<GeneDef> dynamicResourceGenes = new List<GeneDef>();
         public List<GeneDef> hiddenWhenInactive = new List<GeneDef>();
+        public List<GeneDef> skillChanging = new List<GeneDef>();
+
+        public List<GeneDef> desiccatedHeads = new List<GeneDef>();
+        public List<GeneDef> desiccatedBodies = new List<GeneDef>();
+        public List<GeneDef> ageBasedHeads = new List<GeneDef>();
+        public List<GeneDef> ageBasedBodies = new List<GeneDef>();
+
         public List<GeneDef> noEquipment = new List<GeneDef>();
         public List<GeneDef> noApparel = new List<GeneDef>();
         public List<GeneDef> noWeapon = new List<GeneDef>();
@@ -317,6 +325,13 @@ namespace EBSGFramework
             fertilityChangingGenes = new List<GeneDef>();
             moodMultiplyingGenes = new List<GeneDef>();
             hiddenWhenInactive = new List<GeneDef>();
+            skillChanging = new List<GeneDef>();
+
+            desiccatedHeads = new List<GeneDef>();
+            desiccatedBodies = new List<GeneDef>();
+            ageBasedHeads = new List<GeneDef>();
+            ageBasedBodies = new List<GeneDef>();
+
             dynamicResourceGenes = new List<GeneDef>();
             noEquipment = new List<GeneDef>();
             noApparel = new List<GeneDef>();
@@ -330,6 +345,11 @@ namespace EBSGFramework
             {
                 if (gene.HasModExtension<FertilityByGenderAgeExtension>())
                     fertilityChangingGenes.Add(gene);
+                if (gene.HasModExtension<GRCExtension>())
+                    grcGenes.Add(gene);
+                if (gene.geneClass == typeof(ResourceGene))
+                    dynamicResourceGenes.Add(gene);
+
                 if (gene.HasModExtension<EBSGExtension>())
                 {
                     EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
@@ -340,14 +360,16 @@ namespace EBSGFramework
                     if (extension.hideInGeneTabWhenInactive)
                         hiddenWhenInactive.Add(gene);
 
+                    if (!extension.skillChanges.NullOrEmpty())
+                        skillChanging.Add(gene);
+
                     if (extension.bloodDropChance != 1 || extension.bloodReplacement != null)
                         bloodReplacingGenes.Add(gene);
 
                     if (extension.bloodSmearDropChance != 1 || extension.bloodSmearReplacement != null)
                         bloodReplacingGenes.Add(gene);
                 }
-                if (gene.geneClass == typeof(ResourceGene))
-                    dynamicResourceGenes.Add(gene);
+
                 if (gene.HasModExtension<EquipRestrictExtension>())
                 {
                     EquipRestrictExtension equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
@@ -361,8 +383,7 @@ namespace EBSGFramework
                     else
                         equipRestricting.Add(gene);
                 }
-                if (gene.HasModExtension<GRCExtension>())
-                    grcGenes.Add(gene);
+
                 if (gene.HasModExtension<FoodExtension>())
                 {
                     FoodExtension foodExtension = gene.GetModExtension<FoodExtension>();
@@ -372,6 +393,24 @@ namespace EBSGFramework
                     if (!foodExtension.nonIngestibleFoods.NullOrEmpty()) restrictFoods.Add(gene);
                     if (foodExtension.noStandardFood) noStandardFoods.Add(gene);
                     if (foodExtension.foodTypeOverride != FoodTypeFlags.None) foodTypeOverrides.Add(gene);
+                }
+
+                if (gene.HasModExtension<EBSGBodyExtension>())
+                {
+                    EBSGBodyExtension bodyExtension = gene.GetModExtension<EBSGBodyExtension>();
+                    if (bodyExtension.desHead != null || bodyExtension.desChildHead != null)
+                        desiccatedHeads.Add(gene);
+                    if (bodyExtension.desBody != null || bodyExtension.desFat != null || bodyExtension.desHulk != null || bodyExtension.desThin != null
+                        || bodyExtension.desFemale != null || bodyExtension.desMale != null || bodyExtension.desChild != null)
+                        desiccatedBodies.Add(gene);
+                    if (!bodyExtension.ageBodies.NullOrEmpty())
+                    {
+                        if (!bodyExtension.ageBodies.Where((arg) => arg.childHead != null || arg.head != null).EnumerableNullOrEmpty())
+                            ageBasedHeads.Add(gene);
+                        if (!bodyExtension.ageBodies.Where((arg) => arg.child != null || arg.body != null || arg.female != null || arg.male != null ||
+                            arg.hulk != null || arg.thin != null || arg.fat != null).EnumerableNullOrEmpty())
+                            ageBasedBodies.Add(gene);
+                    }
                 }
             }
         }

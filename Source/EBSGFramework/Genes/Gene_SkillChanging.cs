@@ -10,7 +10,6 @@ namespace EBSGFramework
         public List<SkillDef> changedSkills;
         public List<int> changedAmounts;
         public List<Passion> originalPassions;
-        public int delayTicks;
 
         public override void PostAdd()
         {
@@ -19,81 +18,68 @@ namespace EBSGFramework
             if (!def.HasModExtension<EBSGExtension>()) Log.Error(def + " is missing EBSGExtension");
             else
             {
-                EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-                if (extension.skillChanges.NullOrEmpty()) Log.Error(def + " has EBSGExtension, but has no changes set");
-                else delayTicks = 70; // Wait until post spawn plus a little over a second before changing passions to allow for things like the gene randomizer to take effect
-            }
-        }
-
-        public override void Tick()
-        {
-            if (!pawn.Spawned) return;
-            if (delayTicks >= 0) delayTicks--;
-            if (delayTicks == 0)
-            {
-                if (changedSkills == null) changedSkills = new List<SkillDef>();
-                if (changedAmounts == null) changedAmounts = new List<int>();
-                if (originalPassions == null) originalPassions = new List<Passion>();
-
-                EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-                foreach (SkillChange skillChange in extension.skillChanges)
+                if (Extension.skillChanges.NullOrEmpty()) Log.Error(def + " has EBSGExtension, but has no changes set");
+                else
                 {
-                    SkillRecord skill;
-                    if (skillChange.skill == null)
-                    {
-                        IEnumerable<SkillRecord> validSkills = pawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
-                        if (validSkills.EnumerableNullOrEmpty()) continue;
-                        skill = validSkills.RandomElement();
-                    }
-                    else skill = pawn.skills.GetSkill(skillChange.skill);
-                    if (skill == null) continue;
+                    if (changedSkills == null) changedSkills = new List<SkillDef>();
+                    if (changedAmounts == null) changedAmounts = new List<int>();
+                    if (originalPassions == null) originalPassions = new List<Passion>();
 
-                    if (skill.Level + skillChange.skillChange > 20) changedAmounts.Add(20 - skill.Level);
-                    else if (skill.Level + skillChange.skillChange < 0) changedAmounts.Add(skill.Level * -1);
-                    else changedAmounts.Add(skillChange.skillChange);
-
-                    skill.Level += skillChange.skillChange;
-                    originalPassions.Add(skill.passion);
-
-                    if (skillChange.setPassion)
+                    foreach (SkillChange skillChange in Extension.skillChanges)
                     {
-                        skill.passion = skillChange.passion;
-                    }
-                    else
-                    {
-                        if (skillChange.passionChange < 0)
+                        SkillRecord skill;
+                        if (skillChange.skill == null)
                         {
-                            switch (skill.passion)
-                            {
-                                case Passion.Major:
-                                    if (skillChange.passionChange == -1)
-                                    {
-                                        skill.passion = Passion.Minor;
-                                    }
-                                    else
-                                    {
-                                        skill.passion = Passion.None;
-                                    }
-                                    break;
-                                case Passion.Minor:
-                                    skill.passion = Passion.None;
-                                    break;
-                                default:
-                                    skill.passion = Passion.None;
-                                    break;
-                            }
+                            IEnumerable<SkillRecord> validSkills = pawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
+                            if (validSkills.EnumerableNullOrEmpty()) continue;
+                            skill = validSkills.RandomElement();
+                        }
+                        else skill = pawn.skills.GetSkill(skillChange.skill);
+                        if (skill == null) continue;
+
+                        changedAmounts.Add(skillChange.skillChange.RandomInRange);
+                        originalPassions.Add(skill.passion);
+                        changedSkills.Add(skill.def);
+
+                        if (skillChange.setPassion)
+                        {
+                            skill.passion = skillChange.passion;
                         }
                         else
                         {
-                            for (int i = 0; i < skillChange.passionChange; i++)
+                            if (skillChange.passionChange < 0)
                             {
-                                if (skill.passion == skill.passion.IncrementPassion()) break;
-                                skill.passion = skill.passion.IncrementPassion();
+                                switch (skill.passion)
+                                {
+                                    case Passion.Major:
+                                        if (skillChange.passionChange == -1)
+                                        {
+                                            skill.passion = Passion.Minor;
+                                        }
+                                        else
+                                        {
+                                            skill.passion = Passion.None;
+                                        }
+                                        break;
+                                    case Passion.Minor:
+                                        skill.passion = Passion.None;
+                                        break;
+                                    default:
+                                        skill.passion = Passion.None;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < skillChange.passionChange; i++)
+                                {
+                                    if (skill.passion == skill.passion.IncrementPassion()) break;
+                                    skill.passion = skill.passion.IncrementPassion();
+                                }
                             }
                         }
                     }
-
-                    changedSkills.Add(skill.def);
+                    pawn.skills.DirtyAptitudes();
                 }
             }
         }
@@ -102,36 +88,20 @@ namespace EBSGFramework
         {
             base.PostRemove();
 
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            if (extension != null)
+            if (Extension != null)
             {
-                int noSkillCounter = 0;
-                int originalCounter = 0;
-                if (changedSkills == null) changedSkills = new List<SkillDef>();
-                if (changedAmounts == null) changedAmounts = new List<int>();
-                if (originalPassions == null) originalPassions = new List<Passion>();
-                if (changedSkills.Count != changedAmounts.Count)
+                if (!changedSkills.NullOrEmpty())
                 {
-                    changedAmounts.Clear();
-                    foreach (SkillChange skillChange in extension.skillChanges)
-                        if (skillChange.skill == null || pawn.skills.GetSkill(skillChange.skill) != null)
-                            changedAmounts.Add(skillChange.skillChange);
-                }
-                if (!changedAmounts.NullOrEmpty())
-                    foreach (SkillChange skillChange in extension.skillChanges)
+                    int counter = 0;
+                    foreach (SkillDef skill in changedSkills)
                     {
-                        SkillRecord skill;
-                        if (skillChange.skill == null)
-                        {
-                            if (changedSkills.NullOrEmpty()) continue;
-                            skill = pawn.skills.GetSkill(changedSkills[noSkillCounter]);
-                            noSkillCounter++;
-                        }
-                        else skill = pawn.skills.GetSkill(skillChange.skill);
-                        skill.Level -= changedAmounts[originalCounter];
-                        if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
-                        originalCounter++;
+                        SkillRecord record = pawn.skills.GetSkill(skill);
+                        if (record != null)
+                            record.passion = originalPassions[counter];
+                        counter++;
                     }
+                }
+                pawn.skills.DirtyAptitudes();
             }
         }
 
@@ -145,7 +115,7 @@ namespace EBSGFramework
 
         private bool Redundant(SkillRecord skill, SkillChange skillChange)
         {
-            if (skillChange.skillChange != 0) return false;
+            if (skillChange.skillChange != new IntRange(0, 0)) return false;
             if (skillChange.setPassion)
             {
                 if (skill.passion == skillChange.passion) return true;
