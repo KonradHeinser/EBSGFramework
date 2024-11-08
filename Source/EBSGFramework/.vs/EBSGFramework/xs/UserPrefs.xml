@@ -1,13 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/EBSGBodyExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="RenderNodes/PawnRenderNode_EBSGAttachmentHead.cs">
     <Files>
-      <File FileName="RenderNodes/PawnRenderNode_EBSGFur.cs" Line="24" Column="1" />
-      <File FileName="Genes/EBSGBodyExtension.cs" Line="14" Column="30" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="969" Column="34" />
-      <File FileName="Generic List Classes/AgeBodyLink.cs" Line="26" Column="1" />
-      <File FileName="RenderNodes/PawnRenderNode_EBSGAttachmentHead.cs" Line="21" Column="52" />
-      <File FileName="RenderNodes/PawnRenderNodeProperties_EBSG.cs" Line="20" Column="34" />
+      <File FileName="Things/PlaceWorker_WallTombs_InsideWallBlock.cs" Line="20" Column="10" />
+      <File FileName="Genes/EBSGBodyExtension.cs" Line="46" Column="45" />
+      <File FileName="Generic List Classes/AgeBodyLink.cs" Line="45" Column="30" />
+      <File FileName="RenderNodes/PawnRenderNode_EBSGAttachmentHead.cs" Line="44" Column="39" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Genes" expanded="True" />
+              <Node name="RenderNodes" expanded="True">
+                <Node name="PawnRenderNode_EBSGAttachmentHead.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

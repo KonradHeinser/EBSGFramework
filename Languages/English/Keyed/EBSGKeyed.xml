@@ -102,6 +102,7 @@
     <PlaceWorkerAvoidTerrain>Can't be placed near {0}.</PlaceWorkerAvoidTerrain>
     <EBSG_NoValidTarget>{0} tried to use {1}, but couldn't find a valid target.</EBSG_NoValidTarget>
     <EBSG_TryAnotherLocation>Try moving it to another location.</EBSG_TryAnotherLocation>
+    <EBSG_InTheWay>{0} is in the way</EBSG_InTheWay>
 
     <!--Missing specific thing-->
     <EBSG_MissingGathererComp>{0} is missing some parts of its code. Please notify the mod dev.</EBSG_MissingGathererComp>
