@@ -3,35 +3,13 @@ using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class EBSGBodyExtension : DefModExtension
+    public class PawnRenderNodeProperties_EBSG : PawnRenderNodeProperties
     {
-        public string desChildHead;
-
-        public string desFemaleChildHead;
-
-        public string desMaleChildHead;
-
-        public string desHead;
-
-        public string desMaleHead;
-
-        public string desFemaleHead;
-
-        public string desThinHead;
-
-        public string desHulkHead;
-
-        public string desFatHead;
-
         public string desMale;
 
         public string desFemale;
 
         public string desChild;
-
-        public string desFemaleChild;
-
-        public string desMaleChild;
 
         public string desThin;
 
@@ -39,7 +17,7 @@ namespace EBSGFramework
 
         public string desFat;
 
-        public string desBody;
+        public string desGraphic;
 
         public bool referenceGender = false;
 
@@ -48,6 +26,10 @@ namespace EBSGFramework
         private FloatRange ages;
 
         private bool checkedAges;
+
+        private bool hasDes = false;
+
+        private bool checkedDes = false;
 
         public bool InAges(Pawn pawn)
         {
@@ -67,6 +49,16 @@ namespace EBSGFramework
                 checkedAges = true;
             }
             return ages.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
+        }
+
+        public bool HasDesGraphics()
+        {
+            if (!checkedDes)
+            {
+                hasDes = desGraphic != null || desFat != null || desHulk != null || desThin != null || desFemale != null || desMale != null || desChild != null;
+                checkedDes = true;
+            }
+            return hasDes;
         }
     }
 }

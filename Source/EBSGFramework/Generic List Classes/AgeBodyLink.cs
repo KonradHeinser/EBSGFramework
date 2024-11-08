@@ -8,6 +8,20 @@ namespace EBSGFramework
 
         public string childHead;
 
+        public string femaleChildHead;
+
+        public string maleChildHead;
+
+        public string maleHead;
+
+        public string femaleHead;
+
+        public string thinHead;
+
+        public string hulkHead;
+
+        public string fatHead;
+
         public string head;
 
         public string male;
@@ -16,6 +30,10 @@ namespace EBSGFramework
 
         public string child;
 
+        public string femaleChild;
+
+        public string maleChild;
+
         public string thin;
 
         public string hulk;
@@ -23,5 +41,9 @@ namespace EBSGFramework
         public string fat;
 
         public string body;
+
+        public string graphic;
+
+        public bool referenceGender = false;
     }
 }

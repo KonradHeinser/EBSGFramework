@@ -407,6 +407,8 @@
         <Compile Include="RenderNodes\PawnRenderNode_EBSGFur.cs" />
         <Compile Include="Genes\EBSGBodyExtension.cs" />
         <Compile Include="Generic List Classes\AgeBodyLink.cs" />
+        <Compile Include="RenderNodes\PawnRenderNodeProperties_EBSG.cs" />
+        <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentHead.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

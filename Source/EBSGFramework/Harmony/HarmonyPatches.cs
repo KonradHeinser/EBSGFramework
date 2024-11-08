@@ -67,6 +67,10 @@ namespace EBSGFramework
                 prefix: new HarmonyMethod(patchType, nameof(ClaimBedIfNonMedicalPrefix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(SkillRecord), "Aptitude"),
                 postfix: new HarmonyMethod(patchType, nameof(SkillAptitudePostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnRenderNode_Head), "GraphicFor"),
+                postfix: new HarmonyMethod(patchType, nameof(GraphicForHeadPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnRenderNode_Body), "GraphicFor"),
+                postfix: new HarmonyMethod(patchType, nameof(GraphicForBodyPostfix)));
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -866,21 +870,163 @@ namespace EBSGFramework
                         if (!pawn.genes.HasActiveGene(gene)) continue;
                         EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
 
-                        if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child) && extension.desChildHead != null)
+                        if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child))
                         {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChildHead, shader, Vector2.one, Color.white);
-                            return;
+                            if (pawn.gender == Gender.Male && extension.desMaleChildHead != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMaleChildHead, shader, Vector2.one, Color.white);
+                                return;
+                            }
+                            if (pawn.gender == Gender.Female && extension.desFemaleChildHead != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemaleChildHead, shader, Vector2.one, Color.white);
+                                return;
+                            }
+                            if (extension.desChildHead != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChildHead, shader, Vector2.one, Color.white);
+                                return;
+                            }
                         }
-                        if (extension.desHead != null)
+                        else
                         {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHead, shader, Vector2.one, Color.white);
-                            return;
+                            if (extension.referenceGender)
+                            {
+                                if (pawn.gender == Gender.Male && extension.desMaleHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMaleHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.gender == Gender.Female && extension.desFemaleHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemaleHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (extension.desHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Male && extension.desMaleHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMaleHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Female && extension.desFemaleHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemaleHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Fat && extension.desFatHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFatHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && extension.desHulkHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHulkHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Thin && extension.desThinHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desThinHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (extension.desHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHead, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                            }
                         }
                     }
             }
-            else
+            else if (Cache?.ageBasedHeads.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.ageBasedHeads))
             {
-                return;
+                foreach (GeneDef gene in Cache.ageBasedHeads)
+                {
+                    EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
+                    if (!extension.InAges(pawn)) continue; // Checks the age first because that involves the least amount of work
+                    if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
+                    foreach (AgeBodyLink link in extension.ageGraphics)
+                    {
+                        if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+                        {
+                            if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
+                            {
+                                if (pawn.gender == Gender.Male && link.maleChildHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.maleChildHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                                if (pawn.gender == Gender.Female && link.femaleChildHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleChildHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                                if (link.childHead != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.childHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (link.referenceGender)
+                                {
+                                    if (pawn.gender == Gender.Male && link.maleHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.maleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.gender == Gender.Female && link.femaleHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.maleHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.maleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.femaleHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fatHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.fatHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulkHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.hulkHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thinHead != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.thinHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (link.head != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.head, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -893,44 +1039,171 @@ namespace EBSGFramework
                 if (Cache?.desiccatedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedBodies))
                     foreach (GeneDef gene in Cache.desiccatedBodies)
                     {
-                        if (!pawn.genes.HasActiveGene(gene)) continue;
+                        if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
                         EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
 
-                        if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child) && extension.desChild != null)
+                        if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
                         {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChild, shader, Vector2.one, Color.white);
-                            return;
+                            if (pawn.gender == Gender.Male && extension.desMaleChild != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMaleChild, shader, Vector2.one, Color.white);
+                                return;
+                            }
+                            if (pawn.gender == Gender.Female && extension.desFemaleChild != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemaleChild, shader, Vector2.one, Color.white);
+                                return;
+                            }
+                            if (extension.desChild != null)
+                            {
+                                __result = GraphicDatabase.Get<Graphic_Multi>(extension.desChild, shader, Vector2.one, Color.white);
+                                return;
+                            }
                         }
-                        if (pawn.story?.bodyType == BodyTypeDefOf.Male && extension.desMale != null)
+                        else
                         {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMale, shader, Vector2.one, Color.white);
-                            return;
+                            if (extension.referenceGender)
+                            {
+                                if (pawn.gender == Gender.Male && extension.desMale != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMale, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.gender == Gender.Female && extension.desFemale != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemale, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (extension.desBody != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desBody, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Male && extension.desMale != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desMale, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Female && extension.desFemale != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemale, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Fat && extension.desFat != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFat, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && extension.desHulk != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHulk, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Thin && extension.desThin != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desThin, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                                if (extension.desBody != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(extension.desBody, shader, Vector2.one, Color.white);
+                                    return;
+                                }
+                            }
                         }
-                        if (pawn.story?.bodyType == BodyTypeDefOf.Female && extension.desFemale != null)
-                        {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFemale, shader, Vector2.one, Color.white);
-                            return;
-                        }
-                        if (pawn.story?.bodyType == BodyTypeDefOf.Fat && extension.desFat != null)
-                        {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desFat, shader, Vector2.one, Color.white);
-                            return;
-                        }
-                        if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && extension.desHulk != null)
-                        {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desHulk, shader, Vector2.one, Color.white);
-                            return;
-                        }
-                        if (pawn.story?.bodyType == BodyTypeDefOf.Thin && extension.desThin != null)
-                        {
-                            __result = GraphicDatabase.Get<Graphic_Multi>(extension.desThin, shader, Vector2.one, Color.white);
-                            return;
-                        }
-
                     }
             }
-            else
+            else if (Cache?.ageBasedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.ageBasedBodies))
             {
+                foreach (GeneDef gene in Cache.ageBasedBodies)
+                {
+                    EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
+                    if (!extension.InAges(pawn)) continue; // Checks the age first because that involves the least amount of work
+                    if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
+
+                    foreach (AgeBodyLink link in extension.ageGraphics)
+                    {
+                        if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+                        {
+                            if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
+                            {
+                                if (pawn.gender == Gender.Male && link.maleChild != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.maleChild, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                                if (pawn.gender == Gender.Female && link.femaleChild != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleChild, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                                if (link.child != null)
+                                {
+                                    __result = GraphicDatabase.Get<Graphic_Multi>(link.child, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (link.referenceGender)
+                                {
+                                    if (pawn.gender == Gender.Male && link.male != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.male, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.gender == Gender.Female && link.female != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.female, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (link.body != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.body, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.male != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.male, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.female != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.female, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fat != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.fat, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulk != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.hulk, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thin != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.thin, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                    if (link.body != null)
+                                    {
+                                        __result = GraphicDatabase.Get<Graphic_Multi>(link.body, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
+                                        return;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
                 return;
             }
         }

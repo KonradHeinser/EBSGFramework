@@ -174,6 +174,9 @@ namespace EBSGFramework
                         }
                 }
             }
+
+            if (def.HasModExtension<EBSGBodyExtension>())
+                pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
 
         // Things represents the temporary list, while equipment represents the universal one. thing is the item in question. False means it wasn't in either list
@@ -188,7 +191,7 @@ namespace EBSGFramework
         {
             base.Tick();
 
-            if (pawn.IsHashIntervalTick(200))
+            if (pawn.IsHashIntervalTick(300))
             {
                 if (Extension != null && !Extension.geneAbilities.NullOrEmpty() && pawn.genes != null && pawn.genes.GenesListForReading.Count != cachedGeneCount)
                 {
@@ -200,6 +203,9 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(2500))
             {
+                if (def.HasModExtension<EBSGBodyExtension>()) // Refreshes the drawer to ensure the visual is up to date
+                    pawn.Drawer.renderer.SetAllGraphicsDirty();
+
                 if (Extension != null)
                 {
                     Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();

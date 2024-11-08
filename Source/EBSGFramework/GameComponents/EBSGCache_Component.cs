@@ -403,11 +403,11 @@ namespace EBSGFramework
                     if (bodyExtension.desBody != null || bodyExtension.desFat != null || bodyExtension.desHulk != null || bodyExtension.desThin != null
                         || bodyExtension.desFemale != null || bodyExtension.desMale != null || bodyExtension.desChild != null)
                         desiccatedBodies.Add(gene);
-                    if (!bodyExtension.ageBodies.NullOrEmpty())
+                    if (!bodyExtension.ageGraphics.NullOrEmpty())
                     {
-                        if (!bodyExtension.ageBodies.Where((arg) => arg.childHead != null || arg.head != null).EnumerableNullOrEmpty())
+                        if (!bodyExtension.ageGraphics.Where((arg) => arg.childHead != null || arg.head != null).EnumerableNullOrEmpty())
                             ageBasedHeads.Add(gene);
-                        if (!bodyExtension.ageBodies.Where((arg) => arg.child != null || arg.body != null || arg.female != null || arg.male != null ||
+                        if (!bodyExtension.ageGraphics.Where((arg) => arg.child != null || arg.body != null || arg.female != null || arg.male != null ||
                             arg.hulk != null || arg.thin != null || arg.fat != null).EnumerableNullOrEmpty())
                             ageBasedBodies.Add(gene);
                     }
