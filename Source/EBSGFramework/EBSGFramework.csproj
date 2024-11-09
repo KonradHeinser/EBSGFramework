@@ -409,7 +409,6 @@
         <Compile Include="Generic List Classes\AgeBodyLink.cs" />
         <Compile Include="RenderNodes\PawnRenderNodeProperties_EBSG.cs" />
         <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentHead.cs" />
-        <Compile Include="Things\PlaceWorker_WallTombs_InsideWallBlock.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -420,6 +419,7 @@
         <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
         <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
         <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
+        <None Include="Things\PlaceWorker_WallTombs_InsideWallBlock.cs" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Abilities\" />
