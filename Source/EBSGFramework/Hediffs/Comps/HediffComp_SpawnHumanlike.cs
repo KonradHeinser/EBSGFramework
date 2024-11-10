@@ -140,12 +140,24 @@ namespace EBSGFramework
                 spawnLeft -= numberToSpawn;
             }
 
+            float fixedAge = 0f;
+
+            switch (developmentalStage)
+            {
+                case DevelopmentalStage.Adult:
+                    fixedAge = 18f;
+                    break;
+                case DevelopmentalStage.Child:
+                    fixedAge = 8f;
+                    break;
+            }
+
             for (int i = 0; i < numberToSpawn; i++)
             {
                 // If the faction is somehow null, the child will default to joining the player
                 PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
-                    faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true,
-                    forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage)
+                    faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, fixedBiologicalAge: fixedAge,
+                    fixedChronologicalAge: fixedAge, forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage)
                 {
                     DontGivePreArrivalPathway = true
                 };

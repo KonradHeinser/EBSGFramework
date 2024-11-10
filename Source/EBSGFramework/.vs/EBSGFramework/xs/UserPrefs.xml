@@ -3,9 +3,8 @@
     <Files>
       <File FileName="EBSGRecorder.cs" Line="1" Column="1" />
       <File FileName="Things/CompProperties_SpawnBaby.cs" Line="26" Column="21" />
-      <File FileName="Things/CompSpawnBaby.cs" Line="203" Column="49" />
-      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="240" Column="81" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="27" Column="14" />
+      <File FileName="Things/CompSpawnBaby.cs" Line="102" Column="44" />
+      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="142" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
