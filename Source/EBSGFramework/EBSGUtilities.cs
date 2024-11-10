@@ -1107,10 +1107,10 @@ namespace EBSGFramework
             // Wrap things up
             if (pawn.Faction == Faction.OfPlayer && showMessage) // If the pawn is in the player faction, give a message based on what is most relevant to the player.
             {
-                if (!geneSets.NullOrEmpty()) Messages.Message("Random genes successfully generated!", MessageTypeDefOf.NeutralEvent, false);
-                else if (!alwaysAddedGenes.NullOrEmpty()) Messages.Message("Genes successfully added to pawn!", MessageTypeDefOf.NeutralEvent, false);
-                else if (!alwaysRemovedGenes.NullOrEmpty()) Messages.Message("Genes successfully removed from pawn!", MessageTypeDefOf.NeutralEvent, false);
-                else Messages.Message("A gene randomizer has been successfully processed, but the mod dev gave me NOTHING to work with. Why?", MessageTypeDefOf.NeutralEvent, false);
+                if (!geneSets.NullOrEmpty()) Messages.Message("EBSG_RandomGenesGenerated".Translate(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+                else if (!alwaysAddedGenes.NullOrEmpty()) Messages.Message("EBSG_GenesAdded".Translate(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+                else if (!alwaysRemovedGenes.NullOrEmpty()) Messages.Message("EBSG_GenesRemoved".Translate(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+                else Log.Error("A gene randomizer has been successfully processed, but no gene sets were listed.");
             }
         }
 

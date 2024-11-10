@@ -409,6 +409,8 @@
         <Compile Include="Generic List Classes\AgeBodyLink.cs" />
         <Compile Include="RenderNodes\PawnRenderNodeProperties_EBSG.cs" />
         <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentHead.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_AlterXenotype.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_AlterXenotype.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

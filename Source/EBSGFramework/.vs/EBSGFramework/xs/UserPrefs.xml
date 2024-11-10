@@ -1,11 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompSpawnBaby.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_AlterXenotype.cs">
     <Files>
-      <File FileName="EBSGRecorder.cs" Line="1" Column="1" />
-      <File FileName="Things/CompProperties_SpawnBaby.cs" Line="26" Column="21" />
-      <File FileName="Things/CompSpawnBaby.cs" Line="102" Column="44" />
-      <File FileName="Hediffs/Comps/HediffComp_SpawnHumanlike.cs" Line="142" Column="13" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_AlterXenotype.cs" Line="18" Column="40" />
+      <File FileName="Hediffs/Comps/HediffComp_AlterXenotype.cs" Line="19" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="1120" Column="48" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffComp_AlterXenotype.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
