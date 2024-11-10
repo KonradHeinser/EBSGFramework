@@ -193,6 +193,7 @@ namespace EBSGFramework
 
                         if (Props.sendLetters && faction == Faction.OfPlayer)
                         {
+                            pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
                             ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, EBSGUtilities.TranslateOrLiteral(Props.letterLabelNote)),
                                 "EBSG_CompSpawnPawnText".Translate(parent.Label), LetterDefOf.BabyBirth, pawn);
                             birthLetter.Start();
