@@ -20,6 +20,7 @@
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>
     <EBSG_CompSpawnPawnHediffText>A pawn has finished developing inside of {0}, and {1}</EBSG_CompSpawnPawnHediffText>
 
+    <EBSG_RequireGenes>Target doesn't have genes.</EBSG_RequireGenes>
     <EBSG_RandomGenesGenerated>Random genes successfully generated!</EBSG_RandomGenesGenerated>
     <EBSG_GenesAdded>Genes added to {0}.</EBSG_GenesAdded>
     <EBSG_GenesRemoved>Genes removed from {0}.</EBSG_GenesRemoved>

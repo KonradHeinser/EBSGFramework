@@ -1,20 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_AlterXenotype.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAlterXenotype.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_AlterXenotype.cs" Line="18" Column="40" />
-      <File FileName="Hediffs/Comps/HediffComp_AlterXenotype.cs" Line="19" Column="1" />
-      <File FileName="EBSGUtilities.cs" Line="1120" Column="48" />
+      <File FileName="Abilities/CompProperties/CompProperties_AbilityAlterXenotype.cs" Line="27" Column="1" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AlterXenotype.cs" Line="80" Column="37" />
+      <File FileName="Generic List Classes/RandomXenoGenes.cs" Line="2" Column="13" />
+      <File FileName="Generic List Classes/RandomXenotype.cs" Line="51" Column="14" />
+      <File FileName="EBSGUtilities.cs" Line="1086" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True">
+                  <Node name="CompProperties_AbilityAlterXenotype.cs" selected="True" />
+                </Node>
+              </Node>
+              <Node name="Generic List Classes" expanded="True" />
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_AlterXenotype.cs" selected="True" />
-                </Node>
+                <Node name="Comps" expanded="True" />
               </Node>
             </Node>
           </Node>

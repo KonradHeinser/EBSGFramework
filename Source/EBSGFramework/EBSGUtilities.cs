@@ -1044,6 +1044,53 @@ namespace EBSGFramework
             return removedAbilities;
         }
 
+        public static void AlterXenotype(Pawn pawn, List<RandomXenotype> xenotypes, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
+        {
+            AlterXenotype(pawn, xenotypes.RandomElementByWeight((arg) => arg.weight).xenotype, filth, filthCount, setXenotype, sendMessage);
+        }
+
+        public static void AlterXenotype(Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
+        {
+            if (pawn?.genes == null || xenotype == null) return;
+
+            if (setXenotype)
+            {
+                pawn.genes.Endogenes.RemoveWhere((arg) => arg.def.endogeneCategory != EndogeneCategory.HairColor && arg.def.endogeneCategory != EndogeneCategory.Melanin);
+                pawn.genes.SetXenotype(xenotype);
+            }
+            else
+            {
+                pawn.genes.SetXenotypeDirect(xenotype);
+                bool isGermline = xenotype.inheritable;
+                List<Gene> genesListForReading = new List<Gene>(pawn.genes.GenesListForReading);
+                List<Gene> genesListToRemove = new List<Gene>();
+                for (int i = 0; i < xenotype.genes.Count; i++)
+                {
+                    if (!genesListForReading.NullOrEmpty())
+                    {
+                        foreach (Gene gene in genesListForReading)
+                            if (xenotype.genes[i].ConflictsWith(gene.def))
+                                genesListToRemove.Add(gene);
+
+                        foreach (Gene gene in genesListToRemove)
+                        {
+                            genesListForReading.Remove(gene);
+                            pawn.genes.RemoveGene(gene);
+                        }
+                    }
+                    pawn.genes.AddGene(xenotype.genes[i], !isGermline);
+                }
+            }
+
+            if (pawn.Spawned && filth != null)
+                FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, filth, pawn.LabelIndefinite(), filthCount.RandomInRange);
+
+            if (sendMessage)
+                Messages.Message("EBSG_XenotypeApplied".Translate(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+
+            pawn.Drawer.renderer.SetAllGraphicsDirty();
+        }
+
         public static void GainRandomGeneSet(Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
                 List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null, bool showMessage = true)
         {

@@ -411,6 +411,9 @@
         <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentHead.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_AlterXenotype.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_AlterXenotype.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterXenotype.cs" />
+        <Compile Include="Generic List Classes\RandomXenotype.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterXenotype.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

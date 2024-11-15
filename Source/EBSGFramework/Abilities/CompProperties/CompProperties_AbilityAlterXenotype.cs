@@ -1,13 +1,14 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class HediffCompProperties_AlterXenotype : HediffCompProperties
+    public class CompProperties_AbilityAlterXenotype : CompProperties_AbilityEffect
     {
-        public List<RandomXenotype> xenotypes;
+        public bool useCasterXeno = false;
 
-        public FloatRange severities = new FloatRange(0f, 999f);
+        public List<RandomXenotype> xenotypes;
 
         public ThingDef filth;
 
@@ -17,9 +18,9 @@ namespace EBSGFramework
 
         public bool sendMessage = true;
 
-        public HediffCompProperties_AlterXenotype()
+        public CompProperties_AbilityAlterXenotype()
         {
-            compClass = typeof(HediffComp_AlterXenotype);
+            compClass = typeof(CompAbilityEffect_AlterXenotype);
         }
     }
 }
