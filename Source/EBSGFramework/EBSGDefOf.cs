@@ -41,6 +41,10 @@ namespace EBSGFramework
         public static StatDef EBSG_MoodRiseRate;
         public static StatDef EBSG_MoodFallRate;
         public static StatDef EBSG_JoyRiseRate;
+        public static StatDef EBSG_IndoorsRiseRate;
+        public static StatDef EBSG_IndoorsFallRate;
+        public static StatDef EBSG_OutdoorsRiseRate;
+        public static StatDef EBSG_OutdoorsFallRate;
 
         public static StatDef EBSG_GrowthPointRate;
         public static StatDef EBSG_OutgoingDamageFactor;

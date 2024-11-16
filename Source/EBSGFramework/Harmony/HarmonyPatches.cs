@@ -123,6 +123,10 @@ namespace EBSGFramework
 
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 prefix: new HarmonyMethod(patchType, nameof(GainJoyPrefix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Indoors), nameof(Need_Indoors.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(IndoorsIntervalPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Outdoors), nameof(Need_Outdoors.NeedInterval)),
+                postfix: new HarmonyMethod(patchType, nameof(OutdoorsIntervalPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
                 postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_PsychicEntropyTracker), "PsyfocusFallPerDay"),
@@ -1557,6 +1561,72 @@ namespace EBSGFramework
         {
             amount *= ___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate);
             return true;
+        }
+
+        public static void IndoorsIntervalPostfix(Need __instance, Pawn ___pawn)
+        {
+            if (__instance.CurLevel != 1 && __instance.CurLevel != 0 && !___pawn.Suspended && ___pawn.Awake() && (___pawn.SpawnedOrAnyParentSpawned || ___pawn.IsCaravanMember() || PawnUtility.IsTravelingInTransportPodWorldObject(___pawn)))
+            {
+                float num = 0f;
+                bool flag = !___pawn.Spawned || ___pawn.Position.UsesOutdoorTemperature(___pawn.Map);
+                RoofDef roofDef = (___pawn.Spawned ? ___pawn.Position.GetRoof(___pawn.Map) : null);
+                float curLevel = __instance.CurLevel;
+                num = (((roofDef == null || !roofDef.isThickRoof) && curLevel >= 0.5f) ? (-0.5f) : ((!flag) ? ((roofDef == null) ? 0f : (roofDef.isThickRoof ? 2f : 1f)) : ((roofDef == null) ? (-0.25f) : ((!roofDef.isThickRoof) ? (-0.25f) : 0f))));
+                num *= 0.0025f;
+
+                if (num < 0f)
+                {
+                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_IndoorsFallRate) - 1;
+                    __instance.CurLevel += num;
+                }
+                else
+                {
+                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_IndoorsRiseRate) - 1;
+                    __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
+                }
+            }
+        }
+
+        public static void OutdoorsIntervalPostfix(Need __instance, Pawn ___pawn)
+        {
+            if (__instance.CurLevel != 1 && __instance.CurLevel != 0 && !___pawn.Suspended && ___pawn.Awake() && (___pawn.SpawnedOrAnyParentSpawned || ___pawn.IsCaravanMember() || PawnUtility.IsTravelingInTransportPodWorldObject(___pawn)))
+            {
+                float num = 0f;
+                bool num2 = !___pawn.Spawned || ___pawn.Position.UsesOutdoorTemperature(___pawn.Map);
+                RoofDef roofDef = (___pawn.Spawned ? ___pawn.Position.GetRoof(___pawn.Map) : null);
+                if (num2)
+                {
+                    num = ((roofDef == null) ? 8f : ((!roofDef.isThickRoof) ? 1f : (-0.4f)));
+                }
+                else if (roofDef == null)
+                {
+                    num = 5f;
+                }
+                else if (!roofDef.isThickRoof)
+                {
+                    num = -0.32f;
+                }
+                else
+                {
+                    num = -0.45f;
+                }
+                if (___pawn.InBed() && num < 0f)
+                {
+                    num *= 0.2f;
+                }
+                num *= 0.0025f;
+                float curLevel = __instance.CurLevel;
+                if (num < 0f)
+                {
+                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_OutdoorsFallRate) - 1;
+                    __instance.CurLevel += num;
+                }
+                else
+                {
+                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_OutdoorsRiseRate) - 1;
+                    __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
+                }
+            }
         }
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)

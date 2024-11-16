@@ -1,27 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompProperties/CompProperties_AbilityAlterXenotype.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityAlterXenotype.cs" Line="27" Column="1" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_AlterXenotype.cs" Line="80" Column="37" />
-      <File FileName="Generic List Classes/RandomXenoGenes.cs" Line="2" Column="13" />
-      <File FileName="Generic List Classes/RandomXenotype.cs" Line="51" Column="14" />
-      <File FileName="EBSGUtilities.cs" Line="1086" Column="1" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1565" Column="9" />
+      <File FileName="EBSGDefOf.cs" Line="42" Column="49" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_AbilityAlterXenotype.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
               </Node>
             </Node>
           </Node>
