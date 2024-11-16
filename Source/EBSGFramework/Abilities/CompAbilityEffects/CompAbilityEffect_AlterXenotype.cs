@@ -21,7 +21,6 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            base.Apply(target, dest);
             Pawn pawn = target.Pawn;
             Pawn caster = parent.pawn;
 

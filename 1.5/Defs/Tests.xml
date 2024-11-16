@@ -28,7 +28,7 @@
     <GeneDef Name="EBSG_TestGeneBase" Abstract="True">
         <label>test gene</label>
         <description>This is just a test of a specific gene class/extension</description>
-        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath>        <!--Using a generic icon that's I know will be there-->
+        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath> <!--Using a generic icon that's I know will be there-->
         <displayCategory>Miscellaneous</displayCategory>
         <geneClass>EBSGFramework.HediffAdder</geneClass>
     </GeneDef>

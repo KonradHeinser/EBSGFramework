@@ -19,7 +19,7 @@ namespace EBSGFramework
                 delayTicks = Props.delayTicks;
             }
 
-            // Some semi-arbitrary additions to try to increase randomness. The tick increase is very slight, but 
+            // Some semi-arbitrary additions to try to increase randomness. The tick increase is very slight, so it won't be noticed 
             if (Pawn.gender == Gender.Male) delayTicks += 1;
             else if (Pawn.gender == Gender.Female) delayTicks += 2;
             if (Pawn.genes != null && Pawn.genes.GenesListForReading.Count() < 30) delayTicks += Pawn.genes.GenesListForReading.Count();

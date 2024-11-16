@@ -414,6 +414,8 @@
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterXenotype.cs" />
         <Compile Include="Generic List Classes\RandomXenotype.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterXenotype.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterGenes.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterGenes.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
