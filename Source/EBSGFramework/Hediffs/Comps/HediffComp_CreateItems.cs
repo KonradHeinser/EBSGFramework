@@ -59,7 +59,7 @@ namespace EBSGFramework
                 if (!optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity).EnumerableNullOrEmpty())
                 {
                     ThingCreationItem option = optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity).RandomElementByWeight((arg) => arg.weight);
-                    Thing thing = EBSGUtilities.CreatThingCreationItem(option, parent.pawn);
+                    Thing thing = EBSGUtilities.CreateThingCreationItem(option, parent.pawn);
                     if (thing == null) continue;
                     if (map != null)
                     {

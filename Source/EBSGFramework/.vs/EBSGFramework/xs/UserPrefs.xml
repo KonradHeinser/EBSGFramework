@@ -1,18 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGDefOf.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/PregnancyReplacerExtension.cs">
     <Files>
-      <File FileName="EBSGRecorder.cs" Line="13" Column="59" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="654" Column="21" />
-      <File FileName="EBSGDefOf.cs" Line="28" Column="9" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1248" Column="62" />
+      <File FileName="Genes/PregnancyReplacerExtension.cs" Line="18" Column="43" />
+      <File FileName="EBSGUtilities.cs" Line="579" Column="38" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateItems.cs" Line="36" Column="18" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_GiveMultipleHediffs.cs" Line="68" Column="62" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+              </Node>
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="PregnancyReplacerExtension.cs" selected="True" />
+              </Node>
               <Node name="Harmony" expanded="True" />
-              <Node name="EBSGDefOf.cs" selected="True" />
+              <Node name="Hediffs" expanded="True" />
             </Node>
           </Node>
         </State>

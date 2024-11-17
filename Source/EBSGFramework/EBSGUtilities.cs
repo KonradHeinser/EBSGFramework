@@ -160,7 +160,7 @@ namespace EBSGFramework
             return parts[0];
         }
 
-        public static Thing CreatThingCreationItem(ThingCreationItem item, Pawn creater = null)
+        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creater = null)
         {
             if (!Rand.Chance(item.chance)) return null;
 
@@ -463,6 +463,27 @@ namespace EBSGFramework
             }
         }
 
+        public static bool GenerateThingFromCountClass(List<ThingDefCountClass> thingDefs, out List<Thing> results, Pawn pawn1 = null, Pawn pawn2 = null)
+        {
+            results = new List<Thing>();
+
+            if (!thingDefs.NullOrEmpty())
+                foreach (ThingDefCountClass thingCountClass in thingDefs)
+                    if (Rand.Chance(thingCountClass.DropChance))
+                    {
+                        Thing thing = ThingMaker.MakeThing(thingCountClass.thingDef, thingCountClass.thingDef.MadeFromStuff ? thingCountClass.stuff : null);
+                        thing.stackCount = thingCountClass.count;
+                        if (thingCountClass.color != null)
+                            thing.SetColor((Color)thingCountClass.color);
+                        CompQuality quality = thing.TryGetComp<CompQuality>();
+                        if (quality != null)
+                            quality.SetQuality(thingCountClass.quality, null);
+                        results.Add(thing);
+                    }
+
+            return !results.NullOrEmpty();
+        }
+
         public static IEnumerable<IntVec3> AffectedCells(LocalTargetInfo target, Map map, Pawn pawn, float radius)
         {
             if (target.Cell.Filled(pawn.Map))
@@ -538,35 +559,51 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
-        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        public static Hediff CreateComplexHediff(Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
+        {
+            if (pawn?.health == null) return null;
+
+            Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn, bodyPart);
+            newHediff.Severity = severity;
+
+            if (newHediff is HediffWithTarget targetHediff)
+                targetHediff.target = other;
+
+            HediffComp_Link hediffComp_Link = newHediff.TryGetComp<HediffComp_Link>();
+            if (hediffComp_Link != null)
+            {
+                hediffComp_Link.other = other;
+                hediffComp_Link.drawConnection = other != pawn;
+            }
+
+            HediffComp_SpawnHumanlike hediffComp_SpawnBaby = newHediff.TryGetComp<HediffComp_SpawnHumanlike>();
+            if (hediffComp_SpawnBaby != null)
+            {
+                hediffComp_SpawnBaby.faction = pawn.Faction;
+                hediffComp_SpawnBaby.father = other;
+                hediffComp_SpawnBaby.mother = pawn;
+            }
+
+            return newHediff;
+        }
+
+        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null)
         {
             if (hediff != null)
             {
                 if (HasHediff(pawn, hediff))
-                {
                     pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityIncrease;
-                }
                 else if (initialSeverity > 0)
-                {
-                    Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn);
-                    newHediff.Severity = initialSeverity;
-                    pawn.health.AddHediff(newHediff);
-                }
+                    pawn.health.AddHediff(CreateComplexHediff(pawn, initialSeverity, hediff, other));
             }
             if (!hediffs.NullOrEmpty())
             {
                 foreach (HediffDef hediffDef in hediffs)
                 {
                     if (HasHediff(pawn, hediffDef))
-                    {
                         pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityIncrease;
-                    }
                     else if (initialSeverity > 0)
-                    {
-                        Hediff newHediff = HediffMaker.MakeHediff(hediffDef, pawn);
-                        newHediff.Severity = initialSeverity;
-                        pawn.health.AddHediff(newHediff);
-                    }
+                        pawn.health.AddHediff(CreateComplexHediff(pawn, initialSeverity, hediffDef, other));
                 }
             }
         }

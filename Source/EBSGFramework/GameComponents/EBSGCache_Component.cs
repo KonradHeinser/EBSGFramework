@@ -44,9 +44,12 @@ namespace EBSGFramework
         public List<GeneDef> noApparel = new List<GeneDef>();
         public List<GeneDef> noWeapon = new List<GeneDef>();
         public List<GeneDef> equipRestricting = new List<GeneDef>();
+
         public List<GeneDef> grcGenes = new List<GeneDef>();
         public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
         public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
+        public List<GeneDef> pregnancyReplacingGenes = new List<GeneDef>();
+
         public List<GeneDef> forbidFoods = new List<GeneDef>();
         public List<GeneDef> restrictFoods = new List<GeneDef>();
         public List<GeneDef> nonIngestibleFoods = new List<GeneDef>();
@@ -340,6 +343,7 @@ namespace EBSGFramework
             grcGenes = new List<GeneDef>();
             bloodReplacingGenes = new List<GeneDef>();
             bloodSmearReplacingGenes = new List<GeneDef>();
+            pregnancyReplacingGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -412,6 +416,9 @@ namespace EBSGFramework
                             ageBasedBodies.Add(gene);
                     }
                 }
+
+                if (gene.HasModExtension<PregnancyReplacerExtension>())
+                    pregnancyReplacingGenes.Add(gene);
             }
         }
 

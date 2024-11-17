@@ -31,9 +31,9 @@ namespace EBSGFramework
                 Thing thing = ThingMaker.MakeThing(partList[item2].thing);
                 thing.stackCount = Math.Min(partList[item2].count, partList[item2].thing.stackLimit);
 
-                if (thing.TryGetComp<CompSpawnBaby>() != null)
+                CompSpawnBaby babyComp = thing.TryGetComp<CompSpawnBaby>();
+                if (babyComp != null)
                 {
-                    CompSpawnBaby babyComp = thing.TryGetComp<CompSpawnBaby>();
                     Pawn mother = null;
                     Pawn father = null;
 

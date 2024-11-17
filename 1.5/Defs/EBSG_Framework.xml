@@ -88,6 +88,27 @@
         </skyfaller>
     </ThingDef>
 
+    <HediffDef>
+        <defName>EBSG_BriefSterility</defName>
+        <label>brief sterility</label>
+        <description>This pawn is very briefly sterile to avoid having Rimworld attempt to make them pregnant again so quickly.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <statFactors>
+                    <Fertility>0</Fertility>
+                </statFactors>
+                <becomeVisible>false</becomeVisible>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>60</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+    </HediffDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

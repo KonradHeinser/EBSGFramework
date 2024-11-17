@@ -71,6 +71,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GraphicForHeadPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnRenderNode_Body), "GraphicFor"),
                 postfix: new HarmonyMethod(patchType, nameof(GraphicForBodyPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Hediff_Pregnant), "PostAdd"),
+                postfix: new HarmonyMethod(patchType, nameof(PregnantAddPostfix)));
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -1228,6 +1230,33 @@ namespace EBSGFramework
                     }
                 }
                 return;
+            }
+        }
+
+        public static void PregnantAddPostfix(Hediff_Pregnant __instance, Pawn ___pawn)
+        {
+            // Hediff checks are used to minimize the risk of accidentally messing up another mod's pregnancy changes
+            if (Cache?.pregnancyReplacingGenes.NullOrEmpty() == false && __instance.def == HediffDefOf.PregnantHuman &&
+                ___pawn.health.hediffSet.HasHediff(HediffDefOf.PregnantHuman) && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out var pregGene, Cache.pregnancyReplacingGenes))
+            {
+                PregnancyReplacerExtension extension = pregGene.GetModExtension<PregnancyReplacerExtension>();
+
+                if (extension.fatherRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(__instance.Father, extension.fatherRequiresOneOf))
+                {
+                    EBSGUtilities.AddOrAppendHediffs(___pawn, extension.initialSeverity, extension.increaseSeverity, extension.motherHediff, extension.replacementHediffs, __instance.Father);
+                    EBSGUtilities.AddOrAppendHediffs(__instance.Father, extension.initialSeverity, extension.increaseSeverity, extension.fatherHediff, null, ___pawn);
+                    if (!extension.spawnThings.NullOrEmpty())
+                    {
+                        if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things))
+                            if (___pawn.Spawned)
+                                foreach (Thing thing in things)
+                                    GenSpawn.Spawn(thing, ___pawn.Position, ___pawn.Map);
+                            else
+                                ___pawn.inventory.innerContainer.TryAddRangeOrTransfer(things);
+                    }
+                }
+
+                ___pawn.health.RemoveHediff(__instance);
             }
         }
 

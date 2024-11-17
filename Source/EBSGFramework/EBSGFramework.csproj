@@ -416,6 +416,7 @@
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterXenotype.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterGenes.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterGenes.cs" />
+        <Compile Include="Genes\PregnancyReplacerExtension.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

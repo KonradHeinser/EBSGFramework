@@ -65,7 +65,7 @@ namespace EBSGFramework
                 if (hediffComp_Link != null)
                 {
                     hediffComp_Link.other = other;
-                    hediffComp_Link.drawConnection = target == parent.pawn;
+                    hediffComp_Link.drawConnection = target != parent.pawn;
                 }
 
                 HediffComp_SpawnHumanlike hediffComp_SpawnBaby = hediff.TryGetComp<HediffComp_SpawnHumanlike>();
