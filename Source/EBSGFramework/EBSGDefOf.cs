@@ -25,6 +25,8 @@ namespace EBSGFramework
         public static ThingDef EBSG_PawnLeaving;
         public static WorldObjectDef EBSG_PawnFlying;
 
+        public static EBSGRecorder EBSG_Recorder;
+
         // Need Stuff
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_DeathrestRiseRate;

@@ -103,6 +103,8 @@ namespace EBSGFramework
                 prefix: new HarmonyMethod(patchType, nameof(CanGeneratePawnRelationsPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
                 prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
+            harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGenes"),
+                postfix: new HarmonyMethod(patchType, nameof(DrawGenesPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
@@ -611,7 +613,7 @@ namespace EBSGFramework
 
         public static bool CanGeneratePawnRelationsPrefix(Pawn pawn)
         {
-            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+            EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
             if (recorder != null && !recorder.pawnKindsWithoutIntialRelationships.NullOrEmpty())
                 if (recorder.pawnKindsWithoutIntialRelationships.Contains(pawn.kindDef)) return false;
 
@@ -620,7 +622,7 @@ namespace EBSGFramework
 
         public static bool DrawGenePrefix(GeneDef geneDef, ref bool __result)
         {
-            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+            EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
             if (recorder != null)
             {
                 if (!recorder.hiddenGenes.NullOrEmpty() && recorder.hiddenGenes.Contains(geneDef))
@@ -628,6 +630,14 @@ namespace EBSGFramework
                     __result = false;
                     return false;
                 }
+                /* Technically not required because the category can never be opened, but if an issue pops up this can be used. 
+                 * This being active just increases performance costs for something that doesn't really need it
+                if (!recorder.hiddenGeneCategories.NullOrEmpty() && recorder.hiddenGeneCategories.Contains(geneDef.displayCategory))
+                {
+                    __result = false;
+                    return false;
+                }
+                    */
                 if (!recorder.hiddenTemplates.NullOrEmpty())
                     foreach (GeneTemplateDef template in recorder.hiddenTemplates)
                         if (geneDef.defName.StartsWith(template.defName + "_", StringComparison.Ordinal))
@@ -637,6 +647,15 @@ namespace EBSGFramework
                         }
             }
             return true;
+        }
+
+        public static void DrawGenesPostfix(ref Dictionary<GeneCategoryDef, bool> ___collapsedCategories)
+        {
+            EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
+            if (recorder?.hiddenGeneCategories.NullOrEmpty() == false)
+                foreach (GeneCategoryDef category in recorder.hiddenGeneCategories)
+                    if (___collapsedCategories.ContainsKey(category))
+                        ___collapsedCategories[category] = true;
         }
 
         public static void GeneConflictsWithPostfix(GeneDef other, GeneDef __instance, ref bool __result)
@@ -1398,8 +1417,8 @@ namespace EBSGFramework
 
         public static void IsBloodfeederPostfix(Pawn pawn, ref bool __result)
         {
-            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
-                __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder").bloodfeederGenes);
+            if (!__result && EBSGDefOf.EBSG_Recorder != null)
+                __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, EBSGDefOf.EBSG_Recorder.bloodfeederGenes);
         }
 
         public static void RecacheGenesPostfix(Thing target, GeneSet genesOverride, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
@@ -1460,7 +1479,7 @@ namespace EBSGFramework
 
         public static void PawnIdeoCanAcceptReimplantPostfix(ref bool __result, Pawn implanter, Pawn implantee)
         {
-            if (__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
+            if (__result && EBSGDefOf.EBSG_Recorder != null)
             {
                 EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
                 if (!recorder.geneEvents.NullOrEmpty())
@@ -1476,7 +1495,7 @@ namespace EBSGFramework
 
         public static void PawnIdeoDisallowsImplantingPostFix(ref bool __result, Pawn selPawn, ref Xenogerm __instance)
         {
-            if (!__result && DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder") != null)
+            if (!__result && EBSGDefOf.EBSG_Recorder != null)
             {
                 EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
                 if (!recorder.geneEvents.NullOrEmpty())

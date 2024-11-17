@@ -95,6 +95,7 @@
         <geneEvents />
         <hiddenGenes />
         <hiddenTemplates />
+        <hiddenGeneCategories />
         <pawnKindsWithoutIntialRelationships /> 
         <thinkTreeSettings>
             <li>

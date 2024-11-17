@@ -102,7 +102,7 @@ namespace EBSGFramework
 
         public static void BuildThinkTreeSettings()
         {
-            EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+            EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
 
             if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
             {
@@ -144,7 +144,7 @@ namespace EBSGFramework
         {
             if (!needTreeChecked)
             {
-                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+                EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
 
                 if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
                     foreach (ThinkTreeSetting setting in recorder.thinkTreeSettings)
@@ -194,7 +194,7 @@ namespace EBSGFramework
 
         private int tabInt = 1;
 
-        private EBSGRecorder Recorder => DefDatabase<EBSGRecorder>.GetNamedSilentFail("EBSG_Recorder");
+        private EBSGRecorder Recorder => EBSGDefOf.EBSG_Recorder;
 
         public EBSG_Settings()
         { }
