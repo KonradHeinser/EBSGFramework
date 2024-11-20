@@ -1,5 +1,6 @@
 ﻿using Verse;
 using RimWorld;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -14,6 +15,8 @@ namespace EBSGFramework
         public ThingDef filthOnCompletion;
 
         public IntRange filthPerSpawn = new IntRange(4, 7);
+
+        public List<ThingDef> consumeToRecharge; // Does not apply to buildings. Buildings should use the normal fuel comp
 
         public bool deleteOnFinalSpawn = true;
 

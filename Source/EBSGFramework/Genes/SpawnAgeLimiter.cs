@@ -46,6 +46,15 @@ namespace EBSGFramework
             }
         }
 
+        public override void Notify_IngestedThing(Thing thing, int numTaken)
+        {
+            base.Notify_IngestedThing(thing, numTaken);
+            if (!Extension.hediffsToGivePostConsumption.NullOrEmpty())
+                foreach (HediffToParts hediffSet in Extension.hediffsToGivePostConsumption)
+                    if (!hediffSet.consumedThings.NullOrEmpty() && hediffSet.consumedThings.Contains(thing.def))
+                        EBSGUtilities.AddHediffToParts(pawn, null, hediffSet);
+        }
+
         public override void PostAdd()
         {
             if (!Active || Overridden) return;
@@ -79,7 +88,7 @@ namespace EBSGFramework
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
                 if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
-                    foreach (HediffsToParts hediffToParts in Extension.hediffsToApplyAtAges)
+                    foreach (HediffToParts hediffToParts in Extension.hediffsToApplyAtAges)
                         if (pawn.ageTracker.AgeBiologicalYearsFloat > hediffToParts.minAge && pawn.ageTracker.AgeBiologicalYearsFloat < hediffToParts.maxAge)
                             if (hediffToParts.bodyParts.NullOrEmpty())
                                 if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))
@@ -217,7 +226,7 @@ namespace EBSGFramework
                     }
 
                     if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
-                        foreach (HediffsToParts hediffToParts in Extension.hediffsToApplyAtAges)
+                        foreach (HediffToParts hediffToParts in Extension.hediffsToApplyAtAges)
                             if (pawn.ageTracker.AgeBiologicalYearsFloat > hediffToParts.minAge && pawn.ageTracker.AgeBiologicalYearsFloat < hediffToParts.maxAge)
                                 if (hediffToParts.bodyParts.NullOrEmpty())
                                     if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))

@@ -1247,7 +1247,7 @@ namespace EBSGFramework
                     EBSGUtilities.AddOrAppendHediffs(__instance.Father, extension.initialSeverity, extension.increaseSeverity, extension.fatherHediff, null, ___pawn);
                     if (!extension.spawnThings.NullOrEmpty())
                     {
-                        if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things))
+                        if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, ___pawn, __instance.Father))
                             if (___pawn.Spawned)
                                 foreach (Thing thing in things)
                                     GenSpawn.Spawn(thing, ___pawn.Position, ___pawn.Map);

@@ -212,10 +212,6 @@
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_RemoveItemFromInventory.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_DamageOverTime.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOverTime.cs" />
-        <Compile Include="Things\CompProperties_Regenerating.cs" />
-        <Compile Include="Things\CompRegenerating.cs" />
-        <Compile Include="Things\CompIndestructible.cs" />
-        <Compile Include="Things\CompProperties_Indestructible.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_TerrainCostOverride.cs" />
         <Compile Include="Generic List Classes\TerrainLinker.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_TerrainCostOverride.cs" />
@@ -328,9 +324,7 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalHasTargetNoFriendlyFire.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalValidTargetForAbility.cs" />
         <Compile Include="Things\PlaceWorker_GathererTerrain.cs" />
-        <Compile Include="Things\CompProperties_GathererSpot.cs" />
         <Compile Include="Things\GatherOption.cs" />
-        <Compile Include="Things\CompGathererSpot.cs" />
         <Compile Include="Generic List Classes\TerrainDistance.cs" />
         <Compile Include="Things\WorkGiver_Gatherer.cs" />
         <Compile Include="Things\JobDriver_Gatherer.cs" />
@@ -339,16 +333,12 @@
         <Compile Include="EBSGAI\ThinkNode_ConditionalEBSGSetting.cs" />
         <Compile Include="Thoughts\MentalBreakWorker_Hydrophobia.cs" />
         <Compile Include="Thoughts\MentalState_PanicFleeWater.cs" />
-        <Compile Include="Things\CompEBSGPlaceworker.cs" />
-        <Compile Include="Things\CompProperties_EBSGPlaceworker.cs" />
         <Compile Include="Things\PlaceWorker_EBSGPlaceworker.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityPushTarget.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_PushTarget.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityLightingBolt.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LightningBolt.cs" />
         <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyAllies.cs" />
-        <Compile Include="Things\CompProperties_SpawnBaby.cs" />
-        <Compile Include="Things\CompSpawnBaby.cs" />
         <Compile Include="EBSGAI\JobGiver_AICastAbilityTargetToCaster.cs" />
         <Compile Include="Generic List Classes\ThingCreationItem.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_CreateItems.cs" />
@@ -371,11 +361,7 @@
         <Compile Include="Coma Genes\ThoughtWorker_ComaRestChamber.cs" />
         <Compile Include="Genes\FoodExtension.cs" />
         <Compile Include="Generic List Classes\ThingLink.cs" />
-        <Compile Include="Things\CompProperties_AbilityLimitedCharges.cs" />
-        <Compile Include="Things\CompAbilityLimitedCharges.cs" />
         <Compile Include="Coma Genes\ComaExtension.cs" />
-        <Compile Include="Things\CompAssignableToPawn_GeneticBed.cs" />
-        <Compile Include="Things\CompProperties_GeneticBed.cs" />
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Capacities.cs" />
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Light.cs" />
         <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_MapCondition.cs" />
@@ -417,6 +403,23 @@
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterGenes.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterGenes.cs" />
         <Compile Include="Genes\PregnancyReplacerExtension.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_AbilityLimitedCharges.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_EBSGPlaceworker.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_GathererSpot.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_GeneticBed.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_Indestructible.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_Regenerating.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_SpawnBaby.cs" />
+        <Compile Include="Things\Comps\CompAbilityLimitedCharges.cs" />
+        <Compile Include="Things\Comps\CompAssignableToPawn_GeneticBed.cs" />
+        <Compile Include="Things\Comps\CompEBSGPlaceworker.cs" />
+        <Compile Include="Things\Comps\CompGathererSpot.cs" />
+        <Compile Include="Things\Comps\CompIndestructible.cs" />
+        <Compile Include="Things\Comps\CompRegenerating.cs" />
+        <Compile Include="Things\Comps\CompSpawnBaby.cs" />
+        <Compile Include="Things\IngestionOutcomeDoer_RechargeSpawnBabyComp.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_SpawnBabyRecharger.cs" />
+        <Compile Include="Things\Comps\CompSpawnBabyRecharger.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -459,6 +462,8 @@
         <Folder Include="Genes\ConditionalStatAffecters\" />
         <Folder Include="PatchOperations\" />
         <Folder Include="RenderNodes\" />
+        <Folder Include="Things\CompProperties\" />
+        <Folder Include="Things\Comps\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

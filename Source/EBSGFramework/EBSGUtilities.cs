@@ -326,7 +326,7 @@ namespace EBSGFramework
             }
         }
 
-        public static void AddHediffsToParts(Pawn pawn, List<HediffsToParts> hediffs = null, HediffsToParts hediffToParts = null)
+        public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
             if (hediffToParts != null)
             {
@@ -362,7 +362,7 @@ namespace EBSGFramework
             if (!hediffs.NullOrEmpty())
             {
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-                foreach (HediffsToParts hediffParts in hediffs)
+                foreach (HediffToParts hediffParts in hediffs)
                 {
                     foundParts.Clear();
                     if (!hediffParts.bodyParts.NullOrEmpty())
@@ -395,7 +395,7 @@ namespace EBSGFramework
             }
         }
 
-        public static void RemoveHediffsFromParts(Pawn pawn, List<HediffsToParts> hediffs = null, HediffsToParts hediffToParts = null)
+        public static void RemoveHediffsFromParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
             if (hediffToParts != null && HasHediff(pawn, hediffToParts.hediff))
             {
@@ -422,7 +422,7 @@ namespace EBSGFramework
             }
             if (!hediffs.NullOrEmpty())
             {
-                foreach (HediffsToParts hediffPart in hediffs)
+                foreach (HediffToParts hediffPart in hediffs)
                 {
                     if (!hediffPart.removeOnRemove) continue;
                     if (!HasHediff(pawn, hediffPart.hediff)) continue;
@@ -478,6 +478,12 @@ namespace EBSGFramework
                         CompQuality quality = thing.TryGetComp<CompQuality>();
                         if (quality != null)
                             quality.SetQuality(thingCountClass.quality, null);
+                        CompSpawnBabyRecharger spawnBaby = thing.TryGetComp<CompSpawnBabyRecharger>();
+                        if (spawnBaby != null)
+                        {
+                            spawnBaby.mother = pawn1;
+                            spawnBaby.father = pawn2;
+                        }
                         results.Add(thing);
                     }
 

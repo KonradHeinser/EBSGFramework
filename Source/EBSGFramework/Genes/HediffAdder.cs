@@ -27,7 +27,7 @@ namespace EBSGFramework
             if (extension != null && !extension.hediffsToApply.NullOrEmpty())
             {
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-                foreach (HediffsToParts hediffToParts in extension.hediffsToApply)
+                foreach (HediffToParts hediffToParts in extension.hediffsToApply)
                 {
                     foundParts.Clear();
                     if (!hediffToParts.bodyParts.NullOrEmpty())

@@ -18,11 +18,12 @@ namespace EBSGFramework
         public List<GeneticMultiplier> geneticMultipliers;
         public float universalMoodFactor = 1;
         public Gender staticGender = Gender.None;
+        public List<HediffToParts> hediffsToGivePostConsumption;
 
         public EffecterDef effecter;
 
         public HediffDef alternativePregnancyHediff;
-        public List<HediffsToParts> hediffsToApply;
+        public List<HediffToParts> hediffsToApply;
         public bool vanishingGene = false;
         public FloatRange expectedAges;
         public FloatRange ageRange;
@@ -31,7 +32,7 @@ namespace EBSGFramework
 
         public float maxAgeActive = -1f;
         public float removePastAge = -1f;
-        public List<HediffsToParts> hediffsToApplyAtAges;
+        public List<HediffToParts> hediffsToApplyAtAges;
 
         public List<AbilityAndGeneLink> geneAbilities;
         public List<GeneDef> conflictingGenes; // List of very specific genes to make it incompatible with
