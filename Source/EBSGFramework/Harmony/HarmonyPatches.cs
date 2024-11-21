@@ -690,7 +690,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, ref Pawn ___pawn)
+        public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, Pawn ___pawn)
         {
             if (__result != 0 && ModsConfig.BiotechActive && otherPawn.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty())
             {
@@ -710,6 +710,14 @@ namespace EBSGFramework
                                 else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                             }
+                            if (!extension.carrierStats.NullOrEmpty())
+                                foreach (StatDef stat in extension.carrierStats)
+                                {
+                                    float statValue = otherPawn.GetStatValue(stat);
+                                    if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
+                                    else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
+                                    else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
+                                }
                             if (extension.otherStat != null)
                             {
                                 float statValue = ___pawn.GetStatValue(extension.otherStat);
@@ -717,6 +725,14 @@ namespace EBSGFramework
                                 else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
                             }
+                            if (!extension.otherStats.NullOrEmpty())
+                                foreach (StatDef stat in extension.otherStats)
+                                {
+                                    float statValue = ___pawn.GetStatValue(stat);
+                                    if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
+                                    else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
+                                    else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
+                                }
                             __result *= num;
                             if (__result < 0) __result = 0;
                             if (__result == 0) return;
