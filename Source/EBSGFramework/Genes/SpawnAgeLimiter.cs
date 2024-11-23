@@ -49,7 +49,7 @@ namespace EBSGFramework
         public override void Notify_IngestedThing(Thing thing, int numTaken)
         {
             base.Notify_IngestedThing(thing, numTaken);
-            if (!Extension.hediffsToGivePostConsumption.NullOrEmpty())
+            if (Extension?.hediffsToGivePostConsumption.NullOrEmpty() == false)
                 foreach (HediffToParts hediffSet in Extension.hediffsToGivePostConsumption)
                     if (!hediffSet.consumedThings.NullOrEmpty() && hediffSet.consumedThings.Contains(thing.def))
                         EBSGUtilities.AddHediffToParts(pawn, null, hediffSet);
@@ -63,7 +63,7 @@ namespace EBSGFramework
             {
                 if (Extension.staticGender != Gender.None)
                 {
-                    pawn.gender = Gender.Male;
+                    pawn.gender = Extension.staticGender;
                     switch (pawn.gender)
                     {
                         case Gender.Female:
