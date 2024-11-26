@@ -37,6 +37,8 @@ namespace EBSGFramework
 
             harmony.Patch(AccessTools.Method(typeof(EquipmentUtility), nameof(EquipmentUtility.CanEquip), new[] { typeof(Thing), typeof(Pawn), typeof(string).MakeByRefType(), typeof(bool) }),
                 postfix: new HarmonyMethod(patchType, nameof(CanEquipPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(JobGiver_OptimizeApparel), "ApparelScoreGain"),
+                postfix: new HarmonyMethod(patchType, nameof(ApparelScoreGainPostFix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
                 postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
             harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
@@ -256,36 +258,28 @@ namespace EBSGFramework
                 }
 
                 // Hediff Check
-                HediffSet hediffSet = pawn.health.hediffSet;
-                if (flag && !hediffSet.hediffs.NullOrEmpty())
+                HediffSet hediffSet = pawn.health?.hediffSet;
+                if (flag && (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty()))
                 {
-                    if (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty())
+                    if (hediffSet?.hediffs?.NullOrEmpty() == false)
                     {
                         if (!forbiddenHediffsToEquip.NullOrEmpty())
                             foreach (HediffDef hediffDef in forbiddenHediffsToEquip)
-                            {
                                 if (hediffSet.HasHediff(hediffDef))
                                 {
                                     cantReason = "EBSG_HediffRestrictedEquipment_None".Translate(hediffDef.LabelCap);
                                     flag = false;
                                     break;
                                 }
-                            }
 
                         if (flag && !requireOneOfHediffsToEquip.NullOrEmpty())
                         {
-                            flag = false;
-                            foreach (HediffDef hediffDef in requireOneOfHediffsToEquip)
+                            if (!EBSGUtilities.PawnHasAnyOfHediffs(pawn, requireOneOfHediffsToEquip))
                             {
-                                if (hediffSet.HasHediff(hediffDef))
-                                {
-                                    flag = true;
-                                    break;
-                                }
-                            }
-                            if (!flag)
                                 if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
                                 else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
+                                flag = false;
+                            }
                         }
 
                         if (flag && !requiredHediffsToEquip.NullOrEmpty())
@@ -301,7 +295,18 @@ namespace EBSGFramework
                                 flag = false;
                             }
                         }
-
+                    }
+                    else if (!requiredHediffsToEquip.NullOrEmpty())
+                    {
+                        if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
+                        else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0]);
+                        flag = false;
+                    }
+                    else if (!requireOneOfHediffsToEquip.NullOrEmpty())
+                    {
+                        if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
+                        else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
+                        flag = false;
                     }
                 }
             }
@@ -444,7 +449,7 @@ namespace EBSGFramework
                                         // If either equipment limiters contain the item, the no layer check is needed because those act as exceptions
                                         if (!extension.layerEquipExceptions.NullOrEmpty() && extension.layerEquipExceptions.Contains(thing.def)) continue;
 
-                                        if (thing.def.apparel?.layers != null)
+                                        if (thing.def.apparel?.layers?.NullOrEmpty() == false)
                                             foreach (ApparelLayerDef layer in thing.def.apparel.layers)
                                                 if (extension.restrictedLayers.Contains(layer))
                                                 {
@@ -461,6 +466,89 @@ namespace EBSGFramework
                 }
             }
             __result = flag;
+        }
+
+
+        public static void ApparelScoreGainPostFix(Pawn pawn, Apparel ap, ref float __result)
+        {
+            if (__result == -1000f) return;
+
+            EquipRestrictExtension equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
+
+            if (equipRestrict != null)
+            {
+                if (pawn.genes?.Xenotype != null && (!equipRestrict.requireOneOfXenotypeToEquip.NullOrEmpty() || !equipRestrict.forbiddenXenotypesToEquip.NullOrEmpty()))
+                {
+                    if (!equipRestrict.requireOneOfXenotypeToEquip.NullOrEmpty() && !equipRestrict.requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype))
+                    {
+                        __result = -1000f;
+                        return;
+                    }
+                    if (!equipRestrict.forbiddenXenotypesToEquip.NullOrEmpty() && equipRestrict.forbiddenXenotypesToEquip.Contains(pawn.genes.Xenotype))
+                    {
+                        __result = -1000f;
+                        return;
+                    }
+                }
+                if (!EBSGUtilities.CheckGeneTrio(pawn, equipRestrict.requireOneOfGenesToEquip, equipRestrict.requiredGenesToEquip, equipRestrict.forbiddenGenesToEquip))
+                {
+                    __result = -1000f;
+                    return;
+                }
+                if (!EBSGUtilities.CheckHediffTrio(pawn, equipRestrict.requireOneOfHediffsToEquip, equipRestrict.requiredHediffsToEquip, equipRestrict.forbiddenHediffsToEquip))
+                {
+                    __result = -1000f;
+                    return;
+                }
+            }
+
+            if (Cache?.NeedEquipRestrictGeneCheck() == true)
+            {
+                if (EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.noEquipment) || EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.noApparel))
+                {
+                    __result = -1000f;
+                    return;
+                }
+
+                List<GeneDef> genes = EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.equipRestricting);
+
+                if (!genes.NullOrEmpty())
+                {
+                    foreach (GeneDef gene in genes)
+                    {
+                        equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
+
+                        if (!equipRestrict.limitedToEquipments.NullOrEmpty() && !equipRestrict.limitedToEquipments.Contains(ap.def))
+                        {
+                            __result = -1000f;
+                            return;
+                        }
+                        if (!equipRestrict.limitedToApparels.NullOrEmpty() && !equipRestrict.limitedToApparels.Contains(ap.def))
+                        {
+                            __result = -1000f;
+                            return;
+                        }
+                        if (!equipRestrict.forbiddenEquipments.NullOrEmpty() && equipRestrict.forbiddenEquipments.Contains(ap.def))
+                        {
+                            __result = -1000f;
+                            return;
+                        }
+                        if (!equipRestrict.restrictedLayers.NullOrEmpty())
+                        {
+                            // If either equipment limiters contain the item, the no layer check is needed because those act as exceptions
+                            if (!equipRestrict.layerEquipExceptions.NullOrEmpty() && equipRestrict.layerEquipExceptions.Contains(ap.def)) continue;
+
+                            if (ap.def.apparel?.layers?.NullOrEmpty() == false)
+                                foreach (ApparelLayerDef layer in ap.def.apparel.layers)
+                                    if (equipRestrict.restrictedLayers.Contains(layer))
+                                    {
+                                        __result = -1000f;
+                                        return;
+                                    }
+                        }
+                    }
+                }
+            }
         }
 
         public static void TryGenerateNewPawnInternalPostfix(ref Pawn __result)
