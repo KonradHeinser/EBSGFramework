@@ -477,7 +477,7 @@ namespace EBSGFramework
 
             if (equipRestrict != null)
             {
-                if (pawn.genes?.Xenotype != null && (!equipRestrict.requireOneOfXenotypeToEquip.NullOrEmpty() || !equipRestrict.forbiddenXenotypesToEquip.NullOrEmpty()))
+                if (pawn.genes?.Xenotype != null)
                 {
                     if (!equipRestrict.requireOneOfXenotypeToEquip.NullOrEmpty() && !equipRestrict.requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype))
                     {
