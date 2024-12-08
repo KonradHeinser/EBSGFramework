@@ -420,6 +420,8 @@
         <Compile Include="Things\IngestionOutcomeDoer_RechargeSpawnBabyComp.cs" />
         <Compile Include="Things\CompProperties\CompProperties_SpawnBabyRecharger.cs" />
         <Compile Include="Things\Comps\CompSpawnBabyRecharger.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_AttachMote.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_AttachMote.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

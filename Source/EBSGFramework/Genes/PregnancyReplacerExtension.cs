@@ -18,5 +18,9 @@ namespace EBSGFramework
         public float initialSeverity = 1f;
 
         public float increaseSeverity = 0f;
+
+        public ThingDef filth;
+
+        public IntRange filthCount = new IntRange(4, 7);
     }
 }

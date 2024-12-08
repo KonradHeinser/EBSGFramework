@@ -44,6 +44,20 @@ namespace EBSGFramework
             if (input == null) return null;
             if (input.CanTranslate())
                 return input.Translate(arg1, arg2, arg3, arg4).Resolve();
+            if (arg1 != null)
+            {
+                input = input.Replace("{0}", arg1);
+                if (arg2 != null)
+                {
+                    input = input.Replace("{1}", arg2);
+                    if (arg3 != null)
+                    {
+                        input = input.Replace("{2}", arg3);
+                        if (arg4 != null)
+                            input = input.Replace("{3}", arg4);
+                    }
+                }
+            }
             return input;
         }
 
@@ -328,7 +342,7 @@ namespace EBSGFramework
 
         public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
-            if (hediffToParts != null)
+            if (hediffToParts != null && Rand.Chance(hediffToParts.chance))
             {
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
@@ -364,6 +378,7 @@ namespace EBSGFramework
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
                 foreach (HediffToParts hediffParts in hediffs)
                 {
+                    if (!Rand.Chance(hediffParts.chance)) continue;
                     foundParts.Clear();
                     if (!hediffParts.bodyParts.NullOrEmpty())
                     {

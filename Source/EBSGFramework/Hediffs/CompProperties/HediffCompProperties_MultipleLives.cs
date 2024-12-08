@@ -36,6 +36,13 @@ namespace EBSGFramework
         public bool alwaysForbiddenWhileResurrecting = true; // Only applicable if indestructible. This avoids various situations where the corpse could end up destroyed
         public bool removeAllInjuriesAfterRevival = false;
 
+        public string revivalFailedMessage;
+        public string revivalSuccessMessage;
+        public string revivalFailedLetterLabel;
+        public string revivalFailedLetterDescription;
+        public string revivalSuccessLetterLabel;
+        public string revivalSuccessLetterDescription;
+
         public HediffCompProperties_MultipleLives()
         {
             compClass = typeof(HediffComp_MultipleLives);

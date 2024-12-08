@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         public float severity = 0.5f;
 
+        public float chance = 1f;
+
         public float minAge = 0;
 
         public float maxAge = 9999f;

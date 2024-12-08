@@ -242,8 +242,21 @@ namespace EBSGFramework
                 EBSGUtilities.RemoveAllOfHediffs(pawn.InnerPawn, hediffs);
             }
 
-            if (pawn != null && pawn.InnerPawn.Dead)
+            if (pawn != null && pawn.InnerPawn.Dead && multipleLivesComp != null)
             {
+                if (pawn.InnerPawn.Faction.IsPlayer)
+                {
+                    if (multipleLivesComp.Props.revivalSuccessMessage != null)
+                        Messages.Message(EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessMessage, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                            MessageTypeDefOf.PositiveEvent);
+                    if (multipleLivesComp.Props.revivalSuccessLetterLabel != null)
+                    {
+                        Letter letter = LetterMaker.MakeLetter(EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessLetterLabel, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                            EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessLetterDescription, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                            LetterDefOf.PositiveEvent);
+                        Find.LetterStack.ReceiveLetter(letter);
+                    }
+                }
                 if (pawn.MapHeld != null && pawn.Spawned)
                 {
                     map = pawn.MapHeld;
@@ -258,17 +271,18 @@ namespace EBSGFramework
                         Thing storage = pawn.StoringThing(); // If not spawned but it has a map, then it may just be in a container
                         if (storage != null)
                         {
-                            GenSpawn.Spawn(pawn, storage.Position, storage.Map);
+                            position = storage.Position;
+                            map = storage.Map;
+                            GenSpawn.Spawn(pawn, position, map);
                             EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
+                            EBSGUtilities.ThingAndSoundMaker(position, map, multipleLivesComp.Props.thingSpawnOnReviveEnd, multipleLivesComp.Props.thingsToSpawnOnReviveEnd,
+                                multipleLivesComp.Props.reviveEndSound);
                         }
                     }
                     else
                     {
                         int tile = -1;
                         Caravan caravan = null;
-                        Thing storage = pawn.StoringThing(); // Be sure there's no weird container business involved
-                        if (storage != null)
-                            GenSpawn.Spawn(pawn, storage.Position, storage.Map);
 
                         tile = pawn.Tile;
 
@@ -293,12 +307,6 @@ namespace EBSGFramework
                         }
                     }
                 }
-            }
-
-            if (multipleLivesComp != null && position.IsValid)
-            {
-                EBSGUtilities.ThingAndSoundMaker(position, map, multipleLivesComp.Props.thingSpawnOnReviveEnd, multipleLivesComp.Props.thingsToSpawnOnReviveEnd,
-                        multipleLivesComp.Props.reviveEndSound);
             }
         }
 

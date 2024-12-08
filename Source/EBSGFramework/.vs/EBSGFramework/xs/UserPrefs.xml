@@ -1,11 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SpawnAgeLimiter.cs">
     <Files>
-      <File FileName="Harmony/HarmonyPatches.cs" Line="1239" Column="22" />
-      <File FileName="Genes/SpawnAgeLimiter.cs" Line="64" Column="59" />
-      <File FileName="EBSGUtilities.cs" Line="1376" Column="1" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="160" Column="10" />
-      <File FileName="Genes/EBSGBodyExtension.cs" Line="6" Column="18" />
+      <File FileName="EBSGExtension.cs" Line="23" Column="37" />
+      <File FileName="Genes/PregnancyReplacerExtension.cs" Line="24" Column="50" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1527" Column="57" />
+      <File FileName="Genes/SpawnAgeLimiter.cs" Line="64" Column="45" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,9 +12,9 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="GameComponents" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Genes" expanded="True">
+                <Node name="SpawnAgeLimiter.cs" selected="True" />
               </Node>
             </Node>
           </Node>

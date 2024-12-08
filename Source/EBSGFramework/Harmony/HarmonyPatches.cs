@@ -1520,6 +1520,8 @@ namespace EBSGFramework
                             else
                                 ___pawn.inventory.innerContainer.TryAddRangeOrTransfer(things);
                     }
+                    if (extension.filth != null && ___pawn.Spawned)
+                        FilthMaker.TryMakeFilth(___pawn.Position, ___pawn.Map, extension.filth, extension.filthCount.RandomInRange);
                 }
 
                 ___pawn.health.RemoveHediff(__instance);

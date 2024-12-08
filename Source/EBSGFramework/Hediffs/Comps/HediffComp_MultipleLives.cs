@@ -36,9 +36,9 @@ namespace EBSGFramework
                         if (pawnReviving)
                         {
                             if (revivalProgress >= 1)
-                                tooltipAddition += "EBSG_RevivalImminent".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_RevivalImminent".Translate(Pawn.Named("PAWN")).Resolve();
                             else
-                                tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive * (1 - revivalProgress), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_TimeTillRevival".Translate(hoursToRevive * (1 - revivalProgress), Pawn.Named("PAWN")).Resolve();
                             tooltipAddition += " ";
                         }
                         else
@@ -58,15 +58,15 @@ namespace EBSGFramework
                                             break;
                                         }
                                     if (severityPerDay > 0)
-                                        tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(severityRemaining / severityPerDay, 1), parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(severityRemaining / severityPerDay, 1), Pawn.Named("PAWN")).Resolve();
                                     else if (severityPerDay < 0)
-                                        tooltipAddition += "EBSG_TimeTillLifeLoss".Translate(Math.Round(severityRemaining / severityPerDay * -1, 1), parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_TimeTillLifeLoss".Translate(Math.Round(severityRemaining / severityPerDay * -1, 1), Pawn.Named("PAWN")).Resolve();
                                     tooltipAddition += " ";
                                 }
                             }
                             else if (progressPercentage > 0)
                             {
-                                tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(Props.daysToRecoverLife * (1 - progressPercentage), 1), parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_TimeTillLifeGain".Translate(Math.Round(Props.daysToRecoverLife * (1 - progressPercentage), 1), Pawn.Named("PAWN")).Resolve();
                                 tooltipAddition += " ";
                             }
                         }
@@ -79,28 +79,28 @@ namespace EBSGFramework
                                 {
                                     int livesRemaining = (int)Math.Floor(severity / severityPerLife);
                                     if (livesRemaining == 0)
-                                        tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_LastLife".Translate(Pawn.Named("PAWN")).Resolve();
                                     else if (livesRemaining == 1 && Props.extraLives == 1)
-                                        tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_OneLifeStill".Translate(Pawn.Named("PAWN")).Resolve();
                                     else if (livesRemaining == 1)
-                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(Pawn.Named("PAWN")).Resolve();
                                     else
-                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, Pawn.Named("PAWN")).Resolve();
                                 }
                                 else
                                 {
                                     if (livesLeft == 0)
-                                        tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_LastLife".Translate(Pawn.Named("PAWN")).Resolve();
                                     else if (livesLeft == 1 && Props.extraLives == 1)
-                                        tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_OneLifeStill".Translate(Pawn.Named("PAWN")).Resolve();
                                     else if (livesLeft == 1)
-                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_OneLifeLeft".Translate(Pawn.Named("PAWN")).Resolve();
                                     else
-                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, parent.pawn.Named("PAWN")).Resolve();
+                                        tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, Pawn.Named("PAWN")).Resolve();
                                 }
                             }
                             else
-                                tooltipAddition += "EBSG_Immortal".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_Immortal".Translate(Pawn.Named("PAWN")).Resolve();
                             tooltipAddition += " ";
                         }
                     }
@@ -110,24 +110,24 @@ namespace EBSGFramework
                         {
                             int livesRemaining = (int)Math.Floor(severity / severityPerLife);
                             if (livesRemaining == 0)
-                                tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_LastLife".Translate(Pawn.Named("PAWN")).Resolve();
                             else if (livesRemaining == 1 && Props.extraLives == 1)
-                                tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_OneLifeStill".Translate(Pawn.Named("PAWN")).Resolve();
                             else if (livesRemaining == 1)
-                                tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_OneLifeLeft".Translate(Pawn.Named("PAWN")).Resolve();
                             else
-                                tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_LivesLeft".Translate(livesRemaining, Pawn.Named("PAWN")).Resolve();
                         }
                         else
                         {
                             if (livesLeft == 0)
-                                tooltipAddition += "EBSG_LastLife".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_LastLife".Translate(Pawn.Named("PAWN")).Resolve();
                             else if (livesLeft == 1 && Props.extraLives == 1)
-                                tooltipAddition += "EBSG_OneLifeStill".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_OneLifeStill".Translate(Pawn.Named("PAWN")).Resolve();
                             else if (livesLeft == 1)
-                                tooltipAddition += "EBSG_OneLifeLeft".Translate(parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_OneLifeLeft".Translate(Pawn.Named("PAWN")).Resolve();
                             else
-                                tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, parent.pawn.Named("PAWN")).Resolve();
+                                tooltipAddition += "EBSG_LivesLeft".Translate(livesLeft, Pawn.Named("PAWN")).Resolve();
                         }
                         tooltipAddition += " ";
                     }
@@ -144,7 +144,7 @@ namespace EBSGFramework
                         }
 
                         if (Props.needBrainToRevive && livesLeft != 0)
-                            tooltipAddition += "EBSG_FailReviveOnHeadRemoval".Translate(parent.pawn.Named("PAWN")).Resolve();
+                            tooltipAddition += "EBSG_FailReviveOnHeadRemoval".Translate(Pawn.Named("PAWN")).Resolve();
                     }
 
                     if (tooltipAddition == "\n") return "";
@@ -162,7 +162,7 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (parent.pawn.IsHashIntervalTick(200))
+            if (Pawn.IsHashIntervalTick(200))
             {
                 if (!Props.useSeverityNotDays)
                 {
@@ -277,21 +277,34 @@ namespace EBSGFramework
 
         private void OnReviveStart()
         {
-            if (parent.pawn.Corpse == null || parent.pawn.Corpse.Destroyed) return;
-            Map map = parent.pawn.Corpse.Map;
-            if (map == null) map = parent.pawn.Corpse.MapHeld;
+            if (Pawn.Corpse == null || Pawn.Corpse.Destroyed) return;
+            Map map = Pawn.Corpse.Map;
+            if (map == null) map = Pawn.Corpse.MapHeld;
 
-            EBSGUtilities.ThingAndSoundMaker(parent.pawn.Corpse.Position, map, Props.thingSpawnOnReviveStart, Props.thingsToSpawnOnReviveStart, Props.reviveStartSound);
+            EBSGUtilities.ThingAndSoundMaker(Pawn.Corpse.Position, map, Props.thingSpawnOnReviveStart, Props.thingsToSpawnOnReviveStart, Props.reviveStartSound);
         }
 
         private void FlashyFail()
         {
-            if (!Props.deleteOnFailedRevive || parent.pawn.Corpse == null || parent.pawn.Corpse.Destroyed) return;
-            Map map = parent.pawn.Corpse.Map;
-            if (map == null) map = parent.pawn.Corpse.MapHeld;
+            if (Pawn.Faction.IsPlayer)
+            {
+                if (Props.revivalSuccessMessage != null)
+                    Messages.Message(EBSGUtilities.TranslateOrLiteral(Props.revivalFailedMessage, Pawn.LabelShortCap, livesLeft.ToString()),
+                        MessageTypeDefOf.NegativeHealthEvent);
+                if (Props.revivalSuccessLetterLabel != null)
+                {
+                    Letter letter = LetterMaker.MakeLetter(EBSGUtilities.TranslateOrLiteral(Props.revivalFailedLetterLabel, Pawn.LabelShortCap, livesLeft.ToString()),
+                        EBSGUtilities.TranslateOrLiteral(Props.revivalFailedLetterDescription, Pawn.LabelShortCap, livesLeft.ToString()),
+                        LetterDefOf.NeutralEvent);
+                    Find.LetterStack.ReceiveLetter(letter);
+                }
+            }
+            Map map = Pawn.Corpse.Map;
+            if (map == null) map = Pawn.Corpse.MapHeld;
 
-            EBSGUtilities.ThingAndSoundMaker(parent.pawn.Corpse.Position, map, Props.thingSpawnOnFail, Props.thingsToSpawnOnFail, Props.failSound);
-            parent.pawn.Corpse.Destroy();
+            EBSGUtilities.ThingAndSoundMaker(Pawn.Corpse.Position, map, Props.thingSpawnOnFail, Props.thingsToSpawnOnFail, Props.failSound);
+            if (Props.deleteOnFailedRevive && Pawn.Corpse != null && !Pawn.Corpse.Destroyed)
+                Pawn.Corpse.Destroy();
         }
 
         public override void CompExposeData()
