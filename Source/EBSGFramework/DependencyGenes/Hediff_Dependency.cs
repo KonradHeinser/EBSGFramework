@@ -5,8 +5,10 @@ using System;
 
 namespace EBSGFramework
 {
-    public class Hediff_Dependency : Hediff_ChemicalDependency
+    public class Hediff_Dependency : HediffWithComps
     {
+        public ChemicalDef chemical;
+
         private Gene_Dependency cachedDependencyGene;
 
         public override string LabelBase => LinkedGene.Label;
@@ -28,9 +30,11 @@ namespace EBSGFramework
             return chemical.label;
         }
 
-        public override bool ShouldRemove => !LinkedGene.Active;
+        public override bool ShouldRemove => LinkedGene?.Active != true;
 
-        public new Gene_Dependency LinkedGene
+        public bool ShouldSatify => Severity >= def.stages[2].minSeverity - 0.1f;
+
+        public Gene_Dependency LinkedGene
         {
             get
             {
@@ -39,9 +43,8 @@ namespace EBSGFramework
                 {
                     List<Gene> genesListForReading = pawn.genes.GenesListForReading;
                     cachedGeneCount = genesListForReading.Count;
-                    for (int i = 0; i < genesListForReading.Count; i++)
-                    {
-                        if (genesListForReading[i] is Gene_Dependency gene_Dependency)
+                    foreach (Gene gene in genesListForReading)
+                        if (gene is Gene_Dependency gene_Dependency)
                         {
                             if (chemical != null)
                             {
@@ -57,9 +60,7 @@ namespace EBSGFramework
                                 break;
                             }
                         }
-                    }
                 }
-                if (cachedDependencyGene == null) pawn.health.RemoveHediff(this);
                 return cachedDependencyGene;
             }
         }
@@ -76,26 +77,17 @@ namespace EBSGFramework
             }
         }
 
+        public override void Tick()
+        {
+            base.Tick();
+            if (LinkedGene == null) pawn.health.RemoveHediff(this);
+        }
+
         public override string TipStringExtra
         {
             get
             {
-                string text = "";
-                foreach (StatDrawEntry item in HediffStatsUtility.SpecialDisplayStats(CurStage, this))
-                {
-                    if (item.ShouldDisplay())
-                    {
-                        text += ("\n  - " + item.LabelCap + ": " + item.ValueString);
-                    }
-                }
-                for (int i = 0; i < comps.Count; i++)
-                {
-                    string compTipStringExtra = comps[i].CompTipStringExtra;
-                    if (!compTipStringExtra.NullOrEmpty())
-                    {
-                        text += "\n" + (compTipStringExtra);
-                    }
-                }
+                string text = base.TipStringExtra;
                 if (LinkedGene != null && !def.comps.NullOrEmpty())
                 {
                     if (!text.NullOrEmpty())
@@ -120,7 +112,7 @@ namespace EBSGFramework
                         if (severityPerDay > 0 && !def.stages.NullOrEmpty())
                         {
                             bool firstFlag = true;
-                            text += "EBSG_DependencyNeedDurationDescriptionBase".Translate(AssignedLabel, pawn.Named("PAWN")).Resolve();
+                            text += " " + "EBSG_DependencyNeedDurationDescriptionBase".Translate(AssignedLabel, pawn.Named("PAWN")).Resolve();
                             foreach (HediffStage stage in def.stages)
                             {
                                 if (stage.minSeverity <= 0) continue;
@@ -147,15 +139,15 @@ namespace EBSGFramework
                                 }
                                 if (deathStage)
                                 {
-                                    text += "EBSG_DependencyNeedDurationDescriptionDeath".Translate(days, pawn.Named("PAWN")).Resolve();
+                                    text += " " + "EBSG_DependencyNeedDurationDescriptionDeath".Translate(days, pawn.Named("PAWN")).Resolve();
                                     break;
                                 }
                                 if (firstFlag)
                                 {
-                                    text += "EBSG_DependencyNeedDurationDescriptionFirst".Translate(AssignedLabel, days, experienceLabel, pawn.Named("PAWN")).Resolve();
+                                    text += " " + "EBSG_DependencyNeedDurationDescriptionFirst".Translate(AssignedLabel, days, experienceLabel, pawn.Named("PAWN")).Resolve();
                                     firstFlag = false;
                                 }
-                                else text += "EBSG_DependencyNeedDurationDescription".Translate(days, experienceLabel, pawn.Named("PAWN")).Resolve();
+                                else text += " " + "EBSG_DependencyNeedDurationDescription".Translate(days, experienceLabel, pawn.Named("PAWN")).Resolve();
                             }
                         }
                         else
@@ -189,9 +181,19 @@ namespace EBSGFramework
             return false;
         }
 
+        public override void CopyFrom(Hediff other)
+        {
+            base.CopyFrom(other);
+            if (other is Hediff_Dependency hediff_Dependency)
+            {
+                chemical = hediff_Dependency.chemical;
+            }
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Defs.Look(ref chemical, "chemical");
             Scribe_Defs.Look(ref linkedGene, "linkedGene");
         }
     }

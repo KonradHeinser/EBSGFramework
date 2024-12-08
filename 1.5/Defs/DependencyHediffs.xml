@@ -6,8 +6,7 @@
         <initialSeverity>0.01</initialSeverity>
         <minSeverity>0.01</minSeverity>
         <stages>
-            <li>
-            </li>
+            <li />
             <li>
                 <label>deficiency</label>
                 <minSeverity>1</minSeverity>
