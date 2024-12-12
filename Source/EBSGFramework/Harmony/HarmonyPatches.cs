@@ -75,6 +75,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GraphicForBodyPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Hediff_Pregnant), "PostAdd"),
                 postfix: new HarmonyMethod(patchType, nameof(PregnantAddPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(JobDriver_Lovin), "GenerateRandomMinTicksToNextLovin"),
+                postfix: new HarmonyMethod(patchType, nameof(PostLovinPostfix)));
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -1525,6 +1527,35 @@ namespace EBSGFramework
                 }
 
                 ___pawn.health.RemoveHediff(__instance);
+            }
+        }
+
+        public static void PostLovinPostfix(Pawn pawn, Pawn ___Partner)
+        {
+            if (Cache?.lovinAddinGenes.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfGenes(pawn, out _, Cache.lovinAddinGenes))
+            {
+                foreach (GeneDef gene in EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.lovinAddinGenes))
+                {
+                    PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
+                    if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
+                        (extension.partnerGender == Gender.None || ___Partner.gender == extension.partnerGender) &&
+                        (extension.partnerRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(___Partner, extension.partnerRequiresOneOf)))
+                    {
+                        EBSGUtilities.AddHediffToParts(pawn, extension.hediffsToApplySelf);
+                        EBSGUtilities.AddHediffToParts(___Partner, extension.hediffsToApplyPartner);
+                        if (!extension.spawnThings.NullOrEmpty())
+                        {
+                            if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, ___Partner))
+                                if (pawn.Spawned)
+                                    foreach (Thing thing in things)
+                                        GenSpawn.Spawn(thing, pawn.Position, pawn.Map);
+                                else
+                                    pawn.inventory.innerContainer.TryAddRangeOrTransfer(things);
+                        }
+                        if (extension.filth != null && pawn.Spawned)
+                            FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
+                    }
+                }
             }
         }
 

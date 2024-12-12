@@ -422,6 +422,7 @@
         <Compile Include="Things\Comps\CompSpawnBabyRecharger.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_AttachMote.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_AttachMote.cs" />
+        <Compile Include="Genes\PostLovinThingsExtension.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

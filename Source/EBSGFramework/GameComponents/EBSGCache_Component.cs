@@ -49,6 +49,7 @@ namespace EBSGFramework
         public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
         public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
         public List<GeneDef> pregnancyReplacingGenes = new List<GeneDef>();
+        public List<GeneDef> lovinAddinGenes = new List<GeneDef>();
 
         public List<GeneDef> forbidFoods = new List<GeneDef>();
         public List<GeneDef> restrictFoods = new List<GeneDef>();
@@ -344,6 +345,7 @@ namespace EBSGFramework
             bloodReplacingGenes = new List<GeneDef>();
             bloodSmearReplacingGenes = new List<GeneDef>();
             pregnancyReplacingGenes = new List<GeneDef>();
+            lovinAddinGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -419,6 +421,9 @@ namespace EBSGFramework
 
                 if (gene.HasModExtension<PregnancyReplacerExtension>())
                     pregnancyReplacingGenes.Add(gene);
+
+                if (gene.HasModExtension<PostLovinThingsExtension>())
+                    lovinAddinGenes.Add(gene);
             }
         }
 
