@@ -1530,22 +1530,23 @@ namespace EBSGFramework
             }
         }
 
-        public static void PostLovinPostfix(Pawn pawn, Pawn ___Partner)
+        public static void PostLovinPostfix(Pawn pawn, JobDriver_Lovin __instance)
         {
             if (Cache?.lovinAddinGenes.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfGenes(pawn, out _, Cache.lovinAddinGenes))
             {
+                Pawn Partner = (Pawn)(Thing)__instance.job.GetTarget(TargetIndex.A);
                 foreach (GeneDef gene in EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.lovinAddinGenes))
                 {
                     PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
                     if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
-                        (extension.partnerGender == Gender.None || ___Partner.gender == extension.partnerGender) &&
-                        (extension.partnerRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(___Partner, extension.partnerRequiresOneOf)))
+                        (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
+                        (extension.partnerRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(Partner, extension.partnerRequiresOneOf)))
                     {
                         EBSGUtilities.AddHediffToParts(pawn, extension.hediffsToApplySelf);
-                        EBSGUtilities.AddHediffToParts(___Partner, extension.hediffsToApplyPartner);
+                        EBSGUtilities.AddHediffToParts(Partner, extension.hediffsToApplyPartner);
                         if (!extension.spawnThings.NullOrEmpty())
                         {
-                            if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, ___Partner))
+                            if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, Partner))
                                 if (pawn.Spawned)
                                     foreach (Thing thing in things)
                                         GenSpawn.Spawn(thing, pawn.Position, pawn.Map);

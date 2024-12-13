@@ -3,26 +3,9 @@
     <Files>
       <File FileName="Genes/PostLovinThingsExtension.cs" Line="25" Column="1" />
       <File FileName="Genes/PregnancyReplacerExtension.cs" Line="27" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="1538" Column="18" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1533" Column="44" />
       <File FileName="GameComponents/EBSGCache_Component.cs" Line="426" Column="47" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="DependencyGenes" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Genes" expanded="True" />
-              <Node name="Harmony" expanded="True">
-                <Node name="HarmonyPatches.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
