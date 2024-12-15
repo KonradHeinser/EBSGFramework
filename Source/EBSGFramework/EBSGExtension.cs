@@ -152,6 +152,7 @@ namespace EBSGFramework
         public List<NeedOffset> needOffsetsPerHour;
         public SoundDef startSound;
         public SoundDef sustainerSound;
+        public SoundDef endSound;
         public ThingDef chargeMote;
         public ThingDef chargeMotePulse;
         public EffecterDef wasteProducedEffecter;
@@ -162,6 +163,10 @@ namespace EBSGFramework
 
         public ThingDef relatedThing;
         public JobDef relatedJob;
+
+        public HediffDef endHediff;
+        public HediffDef mechEndHediff;
+        public ThingDef filth;
 
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;

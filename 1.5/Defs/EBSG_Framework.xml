@@ -109,6 +109,13 @@
         </comps>
     </HediffDef>
 
+    <JobDef>
+        <defName>EBSG_EnterSleepCasket</defName>
+        <driverClass>EBSGFramework.JobDriver_EnterSleepCasket</driverClass>
+        <reportString>entering TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>
@@ -116,7 +123,7 @@
         <geneEvents />
         <hiddenGenes />
         <hiddenTemplates />
-        <hiddenGeneCategories />
+        <!-- <hiddenGeneCategories /> -->
         <pawnKindsWithoutIntialRelationships /> 
         <thinkTreeSettings>
             <li>

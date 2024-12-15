@@ -109,6 +109,11 @@
     <EBSG_NoValidTarget>{0} tried to use {1}, but couldn't find a valid target.</EBSG_NoValidTarget>
     <EBSG_TryAnotherLocation>Try moving it to another location.</EBSG_TryAnotherLocation>
     <EBSG_InTheWay>{0} is in the way</EBSG_InTheWay>
+    <EBSG_PsychicBondDistanceWillBeActive>This will strain {PAWN_nameDef}'s psychic bond with {BOND_nameDef}, causing stress to both partners.\n\nAre you sure you want to continue?</EBSG_PsychicBondDistanceWillBeActive>
+    <EBSG_EnterSleepCasket>Enter {0}</EBSG_EnterSleepCasket>
+    <EBSG_OpenSleepCasket>Open {0}</EBSG_OpenSleepCasket>
+    <EBSG_CommandSleepCasketEjectDesc>Wake up the pawn inside and eject them.</EBSG_CommandSleepCasketEjectDesc>
+
 
     <!--Missing specific thing-->
     <EBSG_MissingGathererComp>{0} is missing some parts of its code. Please notify the mod dev.</EBSG_MissingGathererComp>

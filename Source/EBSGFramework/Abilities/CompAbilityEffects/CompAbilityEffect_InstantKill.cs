@@ -60,10 +60,6 @@ namespace EBSGFramework
                         {
                             bloodType = first.GetModExtension<EBSGExtension>().bloodReplacement;
                         }
-                        else if (ModsConfig.IsActive("OskarPotocki.VanillaFactionsExpanded.Core"))
-                        {
-                            bloodType = VFECompatabilityUtilities.BloodType(victim);
-                        }
 
                         FilthMaker.TryMakeFilth(c, victim.MapHeld, bloodType, victim.LabelShort);
                     }

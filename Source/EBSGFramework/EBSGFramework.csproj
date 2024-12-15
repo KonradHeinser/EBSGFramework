@@ -59,10 +59,6 @@
             <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="VFECore">
-            <HintPath>..\..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -171,7 +167,6 @@
         <Compile Include="Abilities\CompProperties\CompProperties_EBSGBlast.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
         <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
-        <Compile Include="VFECompatabilityUtilities.cs" />
         <Compile Include="Generic List Classes\NeedLevel.cs" />
         <Compile Include="Generic List Classes\SkillCheck.cs" />
         <Compile Include="Generic List Classes\StatCheck.cs" />
@@ -423,6 +418,10 @@
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_AttachMote.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_AttachMote.cs" />
         <Compile Include="Genes\PostLovinThingsExtension.cs" />
+        <Compile Include="Things\Building_SleepCasket.cs" />
+        <Compile Include="Things\JobDriver_EnterSleepCasket.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_CasketPower.cs" />
+        <Compile Include="Things\Comps\CompPowerPlantCasket.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
