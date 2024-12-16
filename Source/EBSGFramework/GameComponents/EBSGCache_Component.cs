@@ -482,11 +482,8 @@ namespace EBSGFramework
         {
             foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
             {
-                if (thing.HasComp<CompAbilityLimitedCharges>())
-                {
-                    needEquippableAbilityPatches = true;
-                    break; // Will need removed if this function needs to record more in the future
-                }
+                needEquippableAbilityPatches |= thing.HasComp<CompAbilityLimitedCharges>();
+                if (needEquippableAbilityPatches) break;
             }
         }
 

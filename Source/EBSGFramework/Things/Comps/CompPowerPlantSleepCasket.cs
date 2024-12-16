@@ -11,12 +11,12 @@ namespace EBSGFramework
 
         private Building_SleepCasket Casket => parent as Building_SleepCasket;
 
-        private CompProperties_CasketPower CasketPower => Props as CompProperties_CasketPower;
+        private CompProperties_SleepCasketPower CasketPower => Props as CompProperties_SleepCasketPower;
 
         public override void CompTick()
         {
             base.CompTick();
-            if (!PowerOn || Casket == null || CasketPower == null || Casket.InnerContainer.Count == 0)
+            if (!PowerOn || Casket == null || !Casket.PawnInside || !Casket.IsContentsSuspended)
             {
                 cachedPowerOutput = 0f;
                 return;

@@ -86,13 +86,13 @@ namespace EBSGFramework
 
         public override float GetPriority(Pawn pawn)
         {
-            if (Cache == null || !Cache.NeedRechargerJob() || pawn.Map == null || pawn.CurJobDef == EBSGDefOf.EBSG_NeedCharge) return 0f;
+            if (Cache?.NeedRechargerJob() != true || pawn.Map == null || pawn.CurJobDef == EBSGDefOf.EBSG_NeedCharge) return 0f;
             return 9.1f;
         }
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (Cache == null || !Cache.NeedRechargerJob() || pawn.Map == null) return null;
+            if (Cache?.NeedRechargerJob() != true || pawn.Map == null) return null;
 
             Building_PawnNeedCharger building = ClosestViableCharger(pawn);
 

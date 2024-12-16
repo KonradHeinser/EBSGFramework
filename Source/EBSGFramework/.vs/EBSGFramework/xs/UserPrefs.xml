@@ -1,30 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Comps/CompPowerPlantCasket.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_SleepCasket.cs">
     <Files>
-      <File FileName="Things/Building_SleepCasket.cs" Line="33" Column="60" />
-      <File FileName="EBSGExtension.cs" Line="168" Column="40" />
-      <File FileName="EBSGDefOf.cs" Line="1" Column="1" />
-      <File FileName="Things/JobDriver_EnterSleepCasket.cs" Line="14" Column="10" />
-      <File FileName="Things/CompProperties/CompProperties_AbilityLimitedCharges.cs" Line="45" Column="10" />
-      <File FileName="Things/CompProperties/CompProperties_CasketPower.cs" Line="13" Column="1" />
-      <File FileName="Things/Comps/CompPowerPlantCasket.cs" Line="20" Column="14" />
+      <File FileName="Generic List Classes/HediffsToParts.cs" Line="27" Column="1" />
+      <File FileName="Things/Building_SleepCasket.cs" Line="74" Column="30" />
+      <File FileName="EBSGExtension.cs" Line="167" Column="43" />
+      <File FileName="Things/CompProperties/CompProperties_SleepCasketPower.cs" Line="6" Column="49" />
+      <File FileName="Things/WorkGiver_HaulNutritionToFoodCasket.cs" Line="26" Column="30" />
+      <File FileName="GameComponents/EBSGCache_Component.cs" Line="486" Column="49" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Things" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="CompPowerPlantCasket.cs" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

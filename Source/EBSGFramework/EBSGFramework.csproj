@@ -420,8 +420,9 @@
         <Compile Include="Genes\PostLovinThingsExtension.cs" />
         <Compile Include="Things\Building_SleepCasket.cs" />
         <Compile Include="Things\JobDriver_EnterSleepCasket.cs" />
-        <Compile Include="Things\CompProperties\CompProperties_CasketPower.cs" />
-        <Compile Include="Things\Comps\CompPowerPlantCasket.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_SleepCasketPower.cs" />
+        <Compile Include="Things\Comps\CompPowerPlantSleepCasket.cs" />
+        <Compile Include="Things\WorkGiver_HaulNutritionToFoodCasket.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
