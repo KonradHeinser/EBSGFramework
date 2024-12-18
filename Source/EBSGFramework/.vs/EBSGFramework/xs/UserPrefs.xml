@@ -1,13 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_SleepCasket.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DamageWorker_PermanentInjury.cs">
     <Files>
-      <File FileName="Generic List Classes/HediffsToParts.cs" Line="27" Column="1" />
-      <File FileName="Things/Building_SleepCasket.cs" Line="74" Column="30" />
-      <File FileName="EBSGExtension.cs" Line="167" Column="43" />
-      <File FileName="Things/CompProperties/CompProperties_SleepCasketPower.cs" Line="6" Column="49" />
-      <File FileName="Things/WorkGiver_HaulNutritionToFoodCasket.cs" Line="26" Column="30" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="486" Column="49" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_DamageBodyParts.cs" Line="13" Column="44" />
+      <File FileName="Generic List Classes/PartToDamage.cs" Line="5" Column="18" />
+      <File FileName="Hediffs/Comps/HediffComp_DamageBodyParts.cs" Line="6" Column="18" />
+      <File FileName="DamageWorker_PermanentInjury.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="EBSGFramework" expanded="True">
+            <Node name="EBSGFramework" expanded="True">
+              <Node name="Generic List Classes" expanded="True" />
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+                <Node name="Comps" expanded="True" />
+              </Node>
+              <Node name="DamageWorker_PermanentInjury.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

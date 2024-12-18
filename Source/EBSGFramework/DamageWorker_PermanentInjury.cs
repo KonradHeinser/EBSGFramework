@@ -12,9 +12,7 @@ namespace EBSGFramework
         public override DamageResult Apply(DamageInfo dinfo, Thing thing)
         {
             if (!(thing is Pawn pawn))
-            {
                 return base.Apply(dinfo, thing);
-            }
             return ApplyToPawn(dinfo, pawn);
         }
 
@@ -203,6 +201,8 @@ namespace EBSGFramework
                     min = 0f;
                 }
             }
+            if (injury.TendableNow())
+                injury.Tended(1, 1);
             pawn.health.AddHediff(injury, null, dinfo, result);
             float num3 = Mathf.Min(injury.Severity, partHealth);
             result.totalDamageDealt += num3;

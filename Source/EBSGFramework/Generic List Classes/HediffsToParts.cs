@@ -15,6 +15,8 @@ namespace EBSGFramework
 
         public float chance = 1f;
 
+        public FloatRange validAges = new FloatRange(0f, 9999f);
+
         public float minAge = 0;
 
         public float maxAge = 9999f;

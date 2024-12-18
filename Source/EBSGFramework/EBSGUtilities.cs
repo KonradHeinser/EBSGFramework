@@ -340,9 +340,19 @@ namespace EBSGFramework
             }
         }
 
+        public static bool WithinAges(Pawn pawn, float min, float max)
+        {
+            return (pawn.ageTracker.AgeBiologicalYearsFloat >= min || min == -1f) && (pawn.ageTracker.AgeBiologicalYearsFloat <= max || max == -1f);
+        }
+
+        public static bool WithinAges(Pawn pawn, FloatRange ageRange)
+        {
+            return ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
+        }
+
         public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
-            if (hediffToParts != null && Rand.Chance(hediffToParts.chance))
+            if (hediffToParts != null && Rand.Chance(hediffToParts.chance) && WithinAges(pawn, hediffToParts.validAges))
             {
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
@@ -378,7 +388,7 @@ namespace EBSGFramework
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
                 foreach (HediffToParts hediffParts in hediffs)
                 {
-                    if (!Rand.Chance(hediffParts.chance)) continue;
+                    if (!Rand.Chance(hediffParts.chance) || !WithinAges(pawn, hediffParts.validAges)) continue;
                     foundParts.Clear();
                     if (!hediffParts.bodyParts.NullOrEmpty())
                     {
