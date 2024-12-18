@@ -1,27 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_DamageBodyParts.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_AttachMote.cs">
     <Files>
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_DamageBodyParts.cs" Line="13" Column="44" />
-      <File FileName="Generic List Classes/PartToDamage.cs" Line="5" Column="18" />
-      <File FileName="Hediffs/Comps/HediffComp_DamageBodyParts.cs" Line="6" Column="18" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_AttachMote.cs" Line="26" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_AttachMote.cs" Line="27" Column="52" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="EBSGFramework" expanded="True">
-            <Node name="EBSGFramework" expanded="True">
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_DamageBodyParts.cs" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

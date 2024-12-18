@@ -14,7 +14,7 @@ namespace EBSGFramework
         {
             get
             {
-                if (!Props.brightnessBySeverity) return 1f;
+                if (!Props.brightnessBySeverity) return Props.staticBrightness;
                 return Mathf.Max(parent.Severity, 1);
             }
         }
@@ -27,7 +27,7 @@ namespace EBSGFramework
                 if (mote == null || mote.Destroyed)
                 {
                     mote = MoteMaker.MakeAttachedOverlay(Pawn, Props.moteDef, Vector3.zero);
-                    mote.link1.rotateWithTarget = true;
+                    mote.link1.rotateWithTarget = Props.rotateWithPawn;
                 }
 
                 mote.instanceColor = new Color(Props.color.r, Props.color.g, Props.color.b, Brightness);

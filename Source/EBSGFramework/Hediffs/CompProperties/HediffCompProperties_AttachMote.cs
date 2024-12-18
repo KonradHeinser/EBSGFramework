@@ -11,7 +11,11 @@ namespace EBSGFramework
 
         public bool brightnessBySeverity;
 
+        public float staticBrightness = 1f;
+
         public bool displayWhileDowned = false;
+
+        public bool rotateWithPawn = true;
 
         public HediffCompProperties_AttachMote()
         {
