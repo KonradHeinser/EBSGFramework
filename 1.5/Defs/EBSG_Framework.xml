@@ -4,12 +4,13 @@
         <defName>EBSG_GeneticDamage</defName>
         <label>genetic damage</label>
         <workerClass>EBSGFramework.DamageWorker_PermanentInjury</workerClass>
-        <externalViolence>true</externalViolence>
         <deathMessage>{0} has been killed by bad genes.</deathMessage>
         <hediff>EBSG_GeneticDamage</hediff>
         <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
         <hasForcefulImpact>false</hasForcefulImpact>
         <canInterruptJobs>false</canInterruptJobs>
+        <makesBlood>False</makesBlood>
+        <externalViolence>False</externalViolence>
         <impactSoundType />
         <armorCategory />
     </DamageDef>
@@ -31,7 +32,7 @@
         <injuryProps>
             <painPerSeverity>0</painPerSeverity>
             <averagePainPerSeverityPermanent>0</averagePainPerSeverityPermanent>
-            <bleedRate>0.00</bleedRate>
+            <bleedRate>0</bleedRate>
             <canMerge>true</canMerge>
             <destroyedLabel>Genetically Damaged</destroyedLabel>
         </injuryProps>
