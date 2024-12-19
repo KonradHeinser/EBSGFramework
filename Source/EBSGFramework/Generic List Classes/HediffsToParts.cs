@@ -5,9 +5,9 @@ namespace EBSGFramework
 {
     public class HediffToParts
     {
-        public List<BodyPartDef> bodyParts;
-
         public HediffDef hediff;
+
+        public List<BodyPartDef> bodyParts;
 
         public bool onlyIfNew = false;
 

@@ -350,37 +350,45 @@ namespace EBSGFramework
             return ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
         }
 
-        public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
+        public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
         {
-            if (hediffToParts != null && Rand.Chance(hediffToParts.chance) && WithinAges(pawn, hediffToParts.validAges))
+            if (hediffToParts != null)
             {
-                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-
-                if (!hediffToParts.bodyParts.NullOrEmpty())
+                if (!WithinAges(pawn, hediffToParts.validAges) && WithinAges(pawn, hediffToParts.minAge, hediffToParts.maxAge))
                 {
-                    foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
-                    {
-                        if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
-                        if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
-                            foundParts.Add(bodyPartDef, 0);
-
-                        if (hediffToParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
-                        else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
-                        foundParts[bodyPartDef]++;
-                    }
+                    if (removeWhenBeyondAges)
+                        RemoveHediffsFromParts(pawn, null, hediffToParts);
                 }
-                else
+                else if (Rand.Chance(hediffToParts.chance))
                 {
-                    if (HasHediff(pawn, hediffToParts.hediff))
+                    if (!hediffToParts.bodyParts.NullOrEmpty())
                     {
-                        if (!hediffToParts.onlyIfNew)
+                        Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
+
+                        foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
                         {
-                            Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                            hediff.Severity += hediffToParts.severity;
+                            if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
+                            if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
+                                foundParts.Add(bodyPartDef, 0);
+
+                            if (hediffToParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
+                            else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
+                            foundParts[bodyPartDef]++;
                         }
                     }
                     else
-                        AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
+                    {
+                        if (HasHediff(pawn, hediffToParts.hediff))
+                        {
+                            if (!hediffToParts.onlyIfNew)
+                            {
+                                Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
+                                hediff.Severity += hediffToParts.severity;
+                            }
+                        }
+                        else
+                            AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
+                    }
                 }
             }
             if (!hediffs.NullOrEmpty())
@@ -388,7 +396,13 @@ namespace EBSGFramework
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
                 foreach (HediffToParts hediffParts in hediffs)
                 {
-                    if (!Rand.Chance(hediffParts.chance) || !WithinAges(pawn, hediffParts.validAges)) continue;
+                    if (!WithinAges(pawn, hediffParts.validAges) || !WithinAges(pawn, hediffParts.minAge, hediffParts.maxAge))
+                    {
+                        if (removeWhenBeyondAges)
+                            RemoveHediffsFromParts(pawn, null, hediffParts);
+                        continue;
+                    }
+                    if (!Rand.Chance(hediffParts.chance)) continue;
                     foundParts.Clear();
                     if (!hediffParts.bodyParts.NullOrEmpty())
                     {
@@ -559,7 +573,7 @@ namespace EBSGFramework
                 }
             }
 
-            if (firstHediffOfDef != null && onlyNew) pawn.health.RemoveHediff(firstHediffOfDef);
+            if (firstHediffOfDef != null && onlyNew) return null;
 
             if (firstHediffOfDef != null && !onlyNew)
             {
@@ -780,6 +794,13 @@ namespace EBSGFramework
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
+            return false;
+        }
+
+        public static bool HasHediff(Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart)
+        {
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+            if (pawn.health.hediffSet.HasHediff(hediff, bodyPart)) return true;
             return false;
         }
 

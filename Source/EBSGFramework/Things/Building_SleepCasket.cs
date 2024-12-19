@@ -98,7 +98,8 @@ namespace EBSGFramework
 
         public ThingOwner InnerContainer => innerContainer;
 
-        public bool IsContentsSuspended => def.building.defaultStorageSettings == null || storedNutrition > 0;
+        public bool IsContentsSuspended => (def.building.defaultStorageSettings == null || storedNutrition > 0) && GetComp<CompRefuelable>()?.HasFuel != false &&
+            (PowerComp == null || PowerComp.TransmitsPowerNow || (PowerComp.PowerNet != null && PowerComp.PowerNet.CurrentStoredEnergy() > 0));
 
         public bool StorageTabVisible => true;
 
