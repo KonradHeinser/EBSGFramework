@@ -26,35 +26,7 @@ namespace EBSGFramework
             EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.hediffsToApply.NullOrEmpty())
             {
-                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-                foreach (HediffToParts hediffToParts in extension.hediffsToApply)
-                {
-                    foundParts.Clear();
-                    if (!hediffToParts.bodyParts.NullOrEmpty())
-                    {
-                        foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
-                        {
-                            if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
-                            if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
-                            {
-                                foundParts.Add(bodyPartDef, 0);
-                            }
-                            EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity, hediffToParts.onlyIfNew);
-                            foundParts[bodyPartDef]++;
-                        }
-                    }
-                    else
-                    {
-                        if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))
-                        {
-                            if (hediffToParts.onlyIfNew) continue;
-                            Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                            hediff.Severity += hediffToParts.severity;
-                        }
-                        else
-                            EBSGUtilities.AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
-                    }
-                }
+                EBSGUtilities.AddHediffToParts(pawn, extension.hediffsToApply);
                 if (extension.vanishingGene) pawn.genes.RemoveGene(gene);
             }
         }

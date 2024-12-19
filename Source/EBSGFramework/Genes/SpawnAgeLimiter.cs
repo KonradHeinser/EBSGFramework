@@ -85,37 +85,7 @@ namespace EBSGFramework
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
-                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
-
-                if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
-                    foreach (HediffToParts hediffToParts in Extension.hediffsToApplyAtAges)
-                        if (pawn.ageTracker.AgeBiologicalYearsFloat > hediffToParts.minAge && pawn.ageTracker.AgeBiologicalYearsFloat < hediffToParts.maxAge)
-                            if (hediffToParts.bodyParts.NullOrEmpty())
-                                if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))
-                                {
-                                    if (hediffToParts.onlyIfNew) continue;
-                                    Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                                    hediff.Severity += hediffToParts.severity;
-                                }
-                                else
-                                    EBSGUtilities.AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
-                            else
-                            {
-                                foundParts.Clear();
-                                if (!hediffToParts.bodyParts.NullOrEmpty())
-                                    foreach (BodyPartDef bodyPartDef in hediffToParts.bodyParts)
-                                    {
-                                        if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
-                                        if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
-                                        {
-                                            foundParts.Add(bodyPartDef, 0);
-                                        }
-                                        EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity, hediffToParts.onlyIfNew);
-                                        foundParts[bodyPartDef]++;
-                                    }
-                            }
-                        else
-                            EBSGUtilities.RemoveHediffsFromParts(pawn, null, hediffToParts);
+                EBSGUtilities.AddHediffToParts(pawn, Extension.hediffsToApplyAtAges);
             }
             if (def.HasModExtension<EquipRestrictExtension>() && (pawn.equipment != null || pawn.apparel != null))
             {

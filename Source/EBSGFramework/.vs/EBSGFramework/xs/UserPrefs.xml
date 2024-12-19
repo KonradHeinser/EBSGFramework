@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Genes/SpawnAgeLimiter.cs">
     <Files>
-      <File FileName="Genes/HediffAdder.cs" Line="46" Column="25" />
-      <File FileName="Genes/SpawnAgeLimiter.cs" Line="218" Column="39" />
-      <File FileName="EBSGUtilities.cs" Line="406" Column="40" />
-      <File FileName="Generic List Classes/HediffsToParts.cs" Line="18" Column="36" />
+      <File FileName="Genes/EBSGBodyExtension.cs" Line="57" Column="23" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_CreateOtherHediffs.cs" Line="9" Column="22" />
+      <File FileName="RenderNodes/PawnRenderNodeProperties_EBSG.cs" Line="39" Column="23" />
+      <File FileName="Genes/SpawnAgeLimiter.cs" Line="74" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,6 +15,10 @@
               <Node name="Genes" expanded="True">
                 <Node name="SpawnAgeLimiter.cs" selected="True" />
               </Node>
+              <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="RenderNodes" expanded="True" />
             </Node>
           </Node>
         </State>
