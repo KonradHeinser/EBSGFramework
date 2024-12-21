@@ -354,7 +354,7 @@ namespace EBSGFramework
         {
             if (hediffToParts != null)
             {
-                if (!WithinAges(pawn, hediffToParts.validAges) && WithinAges(pawn, hediffToParts.minAge, hediffToParts.maxAge))
+                if (!WithinAges(pawn, hediffToParts.validAges) && !WithinAges(pawn, hediffToParts.minAge, hediffToParts.maxAge))
                 {
                     if (removeWhenBeyondAges)
                         RemoveHediffsFromParts(pawn, null, hediffToParts);
@@ -393,7 +393,6 @@ namespace EBSGFramework
             }
             if (!hediffs.NullOrEmpty())
             {
-                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
                 foreach (HediffToParts hediffParts in hediffs)
                 {
                     if (!WithinAges(pawn, hediffParts.validAges) || !WithinAges(pawn, hediffParts.minAge, hediffParts.maxAge))
@@ -403,17 +402,17 @@ namespace EBSGFramework
                         continue;
                     }
                     if (!Rand.Chance(hediffParts.chance)) continue;
-                    foundParts.Clear();
                     if (!hediffParts.bodyParts.NullOrEmpty())
                     {
+                        Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
                         foreach (BodyPartDef bodyPartDef in hediffParts.bodyParts)
                         {
                             if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
                             if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                                 foundParts.Add(bodyPartDef, 0);
 
-                            if (hediffParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
-                            else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
+                            if (hediffParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity);
+                            else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity, hediffParts.severity);
                             foundParts[bodyPartDef]++;
                         }
                     }
