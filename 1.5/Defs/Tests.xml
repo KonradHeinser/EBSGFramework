@@ -42,29 +42,6 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
-
-    <HediffDef>
-        <defName>Smertness</defName>
-        <label>smertness</label>
-        <description>They're smarter now</description>
-        <everCurableByItem>false</everCurableByItem>
-        <initialSeverity>0.001</initialSeverity>
-        <stages />
-        <hediffClass>HediffWithComps</hediffClass>
-        <scenarioCanAdd>false</scenarioCanAdd>
-        <comps>
-            <li Class="EBSGFramework.HediffCompProperties_TemporarySkillChange">
-                <skillChanges>
-                    <li>
-                        <skill>Intellectual</skill>
-                        <setPassion>True</setPassion>
-                        <passion>None</passion>
-                        <skillChange>3</skillChange>
-                    </li>
-                </skillChanges>
-            </li>
-        </comps>
-    </HediffDef>
 </Defs>
 
 <!-- 
