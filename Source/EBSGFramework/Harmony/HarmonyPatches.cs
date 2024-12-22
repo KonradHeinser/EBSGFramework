@@ -987,6 +987,13 @@ namespace EBSGFramework
                 foreach (Gene gene in ___pawn.genes.GenesListForReading)
                     if (gene is Gene_SkillChanging skillGene && skillGene.changedSkills?.Contains(___def) == true)
                         __result += skillGene.changedAmounts[skillGene.changedSkills.IndexOf(___def)];
+            if (Cache?.skillChangeHediffs.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfHediffs(___pawn, Cache.skillChangeHediffs, out var matches))
+                foreach (Hediff hediff in matches)
+                {
+                    HediffComp_TemporarySkillChange skillChange = hediff.TryGetComp<HediffComp_TemporarySkillChange>();
+                    if (skillChange?.changedSkills?.Contains(___def) == true)
+                        __result += skillChange.changedAmounts[skillChange.changedSkills.IndexOf(___def)];
+                }
         }
 
         public static void GraphicForHeadPostfix(Pawn pawn, ref Graphic __result)
@@ -1562,12 +1569,12 @@ namespace EBSGFramework
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)
         {
+            IntVec3 clickCell = IntVec3.FromVector3(clickPos);
+            if (clickCell.GetThingList(pawn.Map).NullOrEmpty()) return; // If there are no Things, then there's nothing I'd be able to do anyway
+
             if (Cache?.ComaNeedsExist() == true && pawn.genes != null)
             {
                 Building_Bed bed = null;
-
-                IntVec3 clickCell = IntVec3.FromVector3(clickPos);
-                if (clickCell.GetThingList(pawn.Map).NullOrEmpty()) return;
 
                 foreach (Thing thing in clickCell.GetThingList(pawn.Map))
                     if (thing.def.IsBed)
@@ -1575,7 +1582,7 @@ namespace EBSGFramework
                         bed = thing as Building_Bed;
                         break;
                     }
-                if (bed == null) return;
+                if (bed == null || bed.IsForbidden(pawn) || !pawn.CanReserve(bed)) return;
 
                 Gene_Coma comaGene = pawn.genes.GetFirstGeneOfType<Gene_Coma>();
                 if (comaGene != null)
@@ -1589,6 +1596,7 @@ namespace EBSGFramework
                             comaGene = coma;
                             needLevel = coma.ComaNeed.CurLevel;
                         }
+
 
                     if (!pawn.CanReach(bed, PathEndMode.OnCell, Danger.Deadly))
                     {
@@ -1621,6 +1629,36 @@ namespace EBSGFramework
                             job25.forceSleep = true;
                             pawn.jobs.TryTakeOrderedJob(job25, JobTag.Misc);
                         }));
+                }
+            }
+
+            if (Cache?.abilityFuel.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfAbilities(pawn, Cache.reloadableAbilities, out var abilities) &&
+                EBSGUtilities.GetThings(clickCell.GetThingList(pawn.Map), Cache.abilityFuel, out var things))
+            {
+
+                foreach (Ability ability in abilities)
+                {
+                    CompAbilityEffect_Reloadable reloadable = ability.CompOfType<CompAbilityEffect_Reloadable>();
+                    foreach (Thing thing in things)
+                        if (reloadable.Props.ammoDef == thing.def && !thing.IsForbidden(pawn) && pawn.CanReserve(thing))
+                        {
+                            string baseExplanation = "EBSG_Recharge".Translate(ability.def.LabelCap);
+                            if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Deadly))
+                            {
+                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "NoPath".Translate().CapitalizeFirst(), null));
+                                break;
+                            }
+                            if (thing.stackCount < reloadable.Props.ammoPerCharge)
+                            {
+                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadNotEnough".Translate().CapitalizeFirst(), null));
+                                break;
+                            }
+                            if (reloadable.ChargesNeeded <= 0)
+                            {
+                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadFull", null));
+                                break;
+                            }
+                        }
                 }
             }
         }

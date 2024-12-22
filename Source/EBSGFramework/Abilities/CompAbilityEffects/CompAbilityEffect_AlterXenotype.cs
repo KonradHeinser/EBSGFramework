@@ -56,7 +56,7 @@ namespace EBSGFramework
                                 if (!genesListForReading.NullOrEmpty())
                                 {
                                     foreach (Gene g in genesListForReading)
-                                        if (gene.def.ConflictsWith(g.def))
+                                        if (gene.def.ConflictsWith(g.def) || gene.def.prerequisite?.ConflictsWith(g.def) == true)
                                             genesListToRemove.Add(g);
 
                                     foreach (Gene r in genesListToRemove)
@@ -74,7 +74,7 @@ namespace EBSGFramework
                                 if (!genesListForReading.NullOrEmpty())
                                 {
                                     foreach (Gene g in genesListForReading)
-                                        if (gene.def.ConflictsWith(g.def))
+                                        if (gene.def.ConflictsWith(g.def) || gene.def.prerequisite?.ConflictsWith(g.def) == true)
                                             genesListToRemove.Add(g);
 
                                     foreach (Gene r in genesListToRemove)

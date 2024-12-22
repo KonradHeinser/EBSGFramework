@@ -423,6 +423,9 @@
         <Compile Include="Things\CompProperties\CompProperties_SleepCasketPower.cs" />
         <Compile Include="Things\Comps\CompPowerPlantSleepCasket.cs" />
         <Compile Include="Things\WorkGiver_HaulNutritionToFoodCasket.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilityReloadable.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Reloadable.cs" />
+        <Compile Include="Generic List Classes\ExclusionLevel.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

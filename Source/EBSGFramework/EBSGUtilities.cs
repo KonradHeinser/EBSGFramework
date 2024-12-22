@@ -488,6 +488,19 @@ namespace EBSGFramework
             }
         }
 
+        public static bool GetThings(List<Thing> lookThrough, List<ThingDef> validThings, out List<Thing> matches)
+        {
+            matches = new List<Thing>();
+
+            if (lookThrough.NullOrEmpty() || validThings.NullOrEmpty()) return false;
+
+            foreach (Thing thing in lookThrough)
+                if (validThings.Contains(thing.def))
+                    matches.Add(thing);
+
+            return !matches.NullOrEmpty();
+        }
+
         public static void ThingAndSoundMaker(IntVec3 position, Map map, ThingDef thing = null, List<ThingDef> things = null, SoundDef sound = null)
         {
             if (position.IsValid && map != null)
@@ -796,11 +809,28 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool HasHediff(Pawn pawn, HediffDef hediff, out Hediff result) // Only made this to make checking for null hediffSets require less work
+        {
+            result = null;
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+            result = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
+            return result != null;
+        }
+
         public static bool HasHediff(Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart)
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff, bodyPart)) return true;
             return false;
+        }
+
+        public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches)
+        {
+            matches = new List<Hediff>();
+            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
+            foreach (HediffDef hediff in hediffs)
+                if (HasHediff(pawn, hediff, out var match)) matches.Add(match);
+            return !matches.NullOrEmpty();
         }
 
         public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs)
@@ -1076,6 +1106,21 @@ namespace EBSGFramework
             return addedGenes;
         }
 
+        public static bool PawnHasAnyOfAbilities(Pawn pawn, List<AbilityDef> abilities, out List<Ability> foundAbilities)
+        {
+            foundAbilities = new List<Ability>();
+
+            if (pawn.abilities?.AllAbilitiesForReading.NullOrEmpty() == false)
+                foreach (AbilityDef ability in abilities)
+                {
+                    Ability a = pawn.abilities.GetAbility(ability);
+                    if (a != null)
+                        foundAbilities.Add(a);
+                }
+
+            return !foundAbilities.NullOrEmpty();
+        }
+
         public static List<AbilityDef> GivePawnAbilities(Pawn pawn, List<AbilityDef> abilities = null, AbilityDef ability = null)
         {
             List<AbilityDef> addedAbilities = new List<AbilityDef>();
@@ -1157,7 +1202,7 @@ namespace EBSGFramework
                     if (!genesListForReading.NullOrEmpty())
                     {
                         foreach (Gene gene in genesListForReading)
-                            if (xenotype.genes[i].ConflictsWith(gene.def))
+                            if (xenotype.genes[i].ConflictsWith(gene.def) || xenotype.genes[i].prerequisite?.ConflictsWith(gene.def) == true)
                                 genesListToRemove.Add(gene);
 
                         foreach (Gene gene in genesListToRemove)

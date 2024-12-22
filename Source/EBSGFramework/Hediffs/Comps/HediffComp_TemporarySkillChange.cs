@@ -33,11 +33,8 @@ namespace EBSGFramework
                 if (skill == null) continue;
 
                 int changeAmount = skillChange.skillChange.RandomInRange;
-                if (skill.Level + changeAmount > 20) changedAmounts.Add(20 - skill.Level);
-                else if (skill.Level + changeAmount < 0) changedAmounts.Add(skill.Level * -1);
-                else changedAmounts.Add(changeAmount);
+                changedAmounts.Add(changeAmount);
 
-                skill.Level += changeAmount;
                 originalPassions.Add(skill.passion);
 
                 if (skillChange.setPassion)
@@ -87,35 +84,22 @@ namespace EBSGFramework
             base.CompPostPostRemoved();
             int noSkillCounter = 0;
             int originalCounter = 0;
-            if (changedSkills == null) changedSkills = new List<SkillDef>();
-            if (changedAmounts == null) changedAmounts = new List<int>();
-            if (originalPassions == null) originalPassions = new List<Passion>();
 
-            if (changedSkills.Count != changedAmounts.Count)
-            {
-                changedAmounts.Clear();
+            if (!changedSkills.NullOrEmpty())
                 foreach (SkillChange skillChange in Props.skillChanges)
                 {
-                    if (skillChange.skill == null || Pawn.skills.GetSkill(skillChange.skill) != null)
-                        changedAmounts.Add(skillChange.skillChange.RandomInRange);
-                }
-            }
+                    SkillRecord skill;
+                    if (skillChange.skill == null)
+                    {
+                        if (changedSkills.NullOrEmpty()) continue;
+                        skill = Pawn.skills.GetSkill(changedSkills[noSkillCounter]);
+                        noSkillCounter++;
+                    }
+                    else skill = Pawn.skills.GetSkill(skillChange.skill);
 
-            foreach (SkillChange skillChange in Props.skillChanges)
-            {
-                SkillRecord skill;
-                if (skillChange.skill == null)
-                {
-                    if (changedSkills.NullOrEmpty()) continue;
-                    skill = Pawn.skills.GetSkill(changedSkills[noSkillCounter]);
-                    noSkillCounter++;
+                    if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
+                    originalCounter++;
                 }
-                else skill = Pawn.skills.GetSkill(skillChange.skill);
-
-                skill.Level -= changedAmounts[originalCounter];
-                if (!originalPassions.NullOrEmpty()) skill.passion = originalPassions[originalCounter];
-                originalCounter++;
-            }
         }
 
         private bool Redundant(SkillRecord skill, SkillChange skillChange)

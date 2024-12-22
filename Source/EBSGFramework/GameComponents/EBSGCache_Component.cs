@@ -11,6 +11,10 @@ namespace EBSGFramework
         public int tick = 0;
         public int storyTellerAffinity;
 
+        // Ability Caches
+        public List<AbilityDef> reloadableAbilities = new List<AbilityDef>();
+        public List<ThingDef> abilityFuel = new List<ThingDef>();
+
         // Stat caches
         public List<StatDef> humanoidSlayingStats = new List<StatDef>();
         public List<StatDef> dryadSlayingStats = new List<StatDef>();
@@ -78,6 +82,7 @@ namespace EBSGFramework
 
         // Cached hediffs of interest
         public List<HediffDef> explosiveAttackHediffs = new List<HediffDef>();
+        public List<HediffDef> skillChangeHediffs = new List<HediffDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -318,10 +323,29 @@ namespace EBSGFramework
                 CachePawnWithGene(pawn);
 
             CacheGenesOfInterest();
+            CacheAbilitiesOfInterest();
             CacheStatsOfInterest();
             CacheNeedsOfInterest();
             CacheHediffsOfInterest();
             CacheThingsOfInterest();
+        }
+
+        private void CacheAbilitiesOfInterest()
+        {
+            reloadableAbilities = new List<AbilityDef>();
+            abilityFuel = new List<ThingDef>();
+
+            foreach (AbilityDef ability in DefDatabase<AbilityDef>.AllDefs)
+            {
+                if (!ability.comps.NullOrEmpty())
+                    foreach (AbilityCompProperties prop in ability.comps)
+                        if (prop is CompProperties_AbilityReloadable reloadable)
+                        {
+                            reloadableAbilities.Add(ability);
+                            if (!abilityFuel.Contains(reloadable.ammoDef))
+                                abilityFuel.Add(reloadable.ammoDef);
+                        }
+            }
         }
 
         private void CacheGenesOfInterest()
@@ -469,12 +493,25 @@ namespace EBSGFramework
         private void CacheHediffsOfInterest()
         {
             explosiveAttackHediffs = new List<HediffDef>();
+            skillChangeHediffs = new List<HediffDef>();
 
             foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
             {
                 if (hediff.comps.NullOrEmpty()) continue;
-                if (hediff.HasComp(typeof(HediffComp_ExplodingAttacks)) || hediff.HasComp(typeof(HediffComp_ExplodingRangedAttacks))
-                    || hediff.HasComp(typeof(HediffComp_ExplodingMeleeAttacks))) explosiveAttackHediffs.Add(hediff);
+                foreach (HediffCompProperties comp in hediff.comps)
+                {
+                    if (comp is HediffCompProperties_ExplodingAttacks || comp is HediffCompProperties_ExplodingRangedAttacks || comp is HediffCompProperties_ExplodingMeleeAttacks)
+                    {
+                        explosiveAttackHediffs.Add(hediff);
+                        continue;
+                    }
+                    if (comp is HediffCompProperties_TemporarySkillChange skillChange)
+                    {
+                        if (!skillChange.skillChanges.Where((arg) => arg.skillChange != new IntRange(0, 0)).EnumerableNullOrEmpty())
+                            skillChangeHediffs.Add(hediff);
+                        continue;
+                    }
+                }
             }
         }
 

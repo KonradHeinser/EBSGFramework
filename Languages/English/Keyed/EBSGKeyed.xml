@@ -15,6 +15,7 @@
     <MessagePawnArrived>A pawn has arrived at their destination and needs new orders.</MessagePawnArrived>
     <EBSG_SuccessChance>Success chance: {0}%</EBSG_SuccessChance>
     <EBSG_StopBreak>Stop break chance: {0}%</EBSG_StopBreak>
+    <EBSG_Recharge>Recharge {0}</EBSG_Recharge>
 
     <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>

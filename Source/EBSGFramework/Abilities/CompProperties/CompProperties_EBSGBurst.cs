@@ -31,9 +31,12 @@ namespace EBSGFramework
         public float excludeRadius = 0f; // Usability is questionable
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
+
         public bool injureSelf = false;
         public bool injureAllies = true;
         public bool injureNonHostiles = true;
+        public ExclusionLevel? exclusions;
+
         public EffecterDef effecter;
         public int effecterTicks = 0;
 
