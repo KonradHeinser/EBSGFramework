@@ -39,9 +39,9 @@ namespace EBSGFramework
                         if (!Props.genes.NullOrEmpty())
                             if (Props.mustHaveAllGenes)
                             {
-                                if (EBSGUtilities.PawnHasAllOfGenes(pawn, Props.genes)) count++;
+                                if (pawn.PawnHasAllOfGenes(Props.genes)) count++;
                             }
-                            else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
+                            else if (pawn.PawnHasAnyOfGenes(out var gene, Props.genes)) count++;
                     }
                 }
             }
@@ -68,9 +68,9 @@ namespace EBSGFramework
                 if (!Props.genes.NullOrEmpty())
                     if (Props.mustHaveAllGenes)
                     {
-                        if (EBSGUtilities.PawnHasAllOfGenes(pawn, Props.genes)) count++;
+                        if (pawn.PawnHasAllOfGenes(Props.genes)) count++;
                     }
-                    else if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Props.genes)) count++;
+                    else if (pawn.PawnHasAnyOfGenes(out var gene, Props.genes)) count++;
             }
 
             return count;

@@ -276,7 +276,7 @@ namespace EBSGFramework
 
                         if (flag && !requireOneOfHediffsToEquip.NullOrEmpty())
                         {
-                            if (!EBSGUtilities.PawnHasAnyOfHediffs(pawn, requireOneOfHediffsToEquip))
+                            if (!pawn.PawnHasAnyOfHediffs(requireOneOfHediffsToEquip))
                             {
                                 if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
                                 else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
@@ -385,26 +385,26 @@ namespace EBSGFramework
                 if (flag && Cache?.NeedEquipRestrictGeneCheck() == true)
                 {
                     if (!Cache.noEquipment.NullOrEmpty())
-                        if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Cache.noEquipment))
+                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noEquipment))
                         {
                             cantReason = "EBSG_NoEquipment".Translate(gene.LabelCap);
                             flag = false;
                         }
                     if (flag && thing.def.IsWeapon && !Cache.noWeapon.NullOrEmpty())
-                        if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Cache.noWeapon))
+                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noWeapon))
                         {
                             cantReason = "EBSG_NoWeapon".Translate(gene.LabelCap);
                             flag = false;
                         }
                     if (flag && thing.def.IsApparel && !Cache.noApparel.NullOrEmpty())
-                        if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Cache.noApparel))
+                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noApparel))
                         {
                             cantReason = "EBSG_NoApparel".Translate(gene.LabelCap);
                             flag = false;
                         }
                     if (flag && !Cache.equipRestricting.NullOrEmpty())
                     {
-                        List<GeneDef> genes = EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.equipRestricting);
+                        List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
                         if (!genes.NullOrEmpty())
                             foreach (GeneDef gene in genes)
                             {
@@ -492,12 +492,12 @@ namespace EBSGFramework
                         return;
                     }
                 }
-                if (!EBSGUtilities.CheckGeneTrio(pawn, equipRestrict.requireOneOfGenesToEquip, equipRestrict.requiredGenesToEquip, equipRestrict.forbiddenGenesToEquip))
+                if (!pawn.CheckGeneTrio(equipRestrict.requireOneOfGenesToEquip, equipRestrict.requiredGenesToEquip, equipRestrict.forbiddenGenesToEquip))
                 {
                     __result = -1000f;
                     return;
                 }
-                if (!EBSGUtilities.CheckHediffTrio(pawn, equipRestrict.requireOneOfHediffsToEquip, equipRestrict.requiredHediffsToEquip, equipRestrict.forbiddenHediffsToEquip))
+                if (!pawn.CheckHediffTrio(equipRestrict.requireOneOfHediffsToEquip, equipRestrict.requiredHediffsToEquip, equipRestrict.forbiddenHediffsToEquip))
                 {
                     __result = -1000f;
                     return;
@@ -506,13 +506,13 @@ namespace EBSGFramework
 
             if (Cache?.NeedEquipRestrictGeneCheck() == true)
             {
-                if (EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.noEquipment) || EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.noApparel))
+                if (pawn.HasAnyOfRelatedGene(Cache.noEquipment) || pawn.HasAnyOfRelatedGene(Cache.noApparel))
                 {
                     __result = -1000f;
                     return;
                 }
 
-                List<GeneDef> genes = EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.equipRestricting);
+                List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
 
                 if (!genes.NullOrEmpty())
                 {
@@ -784,7 +784,7 @@ namespace EBSGFramework
         {
             if (__result != 0 && ModsConfig.BiotechActive && otherPawn.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty())
             {
-                if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out GeneDef firstMatch, Cache.grcGenes))
+                if (otherPawn.PawnHasAnyOfGenes(out GeneDef firstMatch, Cache.grcGenes))
                 {
                     List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
 
@@ -834,7 +834,7 @@ namespace EBSGFramework
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
         {
             if (ModsConfig.BiotechActive && romancer.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty() &&
-                EBSGUtilities.PawnHasAnyOfGenes(romancer, out GeneDef firstMatch, Cache.grcGenes))
+                romancer.PawnHasAnyOfGenes(out GeneDef firstMatch, Cache.grcGenes))
             {
                 List<Gene> genesListForReading = romancer.genes.GenesListForReading;
                 float num = 1f;
@@ -896,7 +896,7 @@ namespace EBSGFramework
 
                 if (!extension.geneticMultipliers.NullOrEmpty())
                     foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
-                        if (EBSGUtilities.HasRelatedGene(___pawn, geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !EBSGUtilities.PawnHasAnyOfGenes(___pawn, out var gene, geneticMultiplier.nullifyingGenes))
+                        if (___pawn.HasRelatedGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !___pawn.PawnHasAnyOfGenes(out var gene, geneticMultiplier.nullifyingGenes))
                         {
                             __result *= geneticMultiplier.multiplier;
                             ensureReverse |= geneticMultiplier.multiplier < 0;
@@ -946,7 +946,7 @@ namespace EBSGFramework
                     if (!pawn.CheckGeneTrio(terrainComp.pawnHasAnyOfGenes, terrainComp.pawnHasAllOfGenes, terrainComp.pawnHasNoneOfGenes) ||
                         !pawn.CheckHediffTrio(terrainComp.pawnHasAnyOfHediffs, terrainComp.pawnHasAllOfHediffs, terrainComp.pawnHasNoneOfHediffs) ||
                         !pawn.CheckPawnCapabilitiesTrio(terrainComp.pawnCapLimiters, terrainComp.pawnSkillLimiters, terrainComp.pawnStatLimiters) ||
-                        !EBSGUtilities.AllNeedLevelsMet(pawn, terrainComp.pawnNeedLevels)) return;
+                        !pawn.AllNeedLevelsMet(terrainComp.pawnNeedLevels)) return;
 
                     float num = (c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal;
                     TerrainDef terrainDef = pawn.Map.terrainGrid.TerrainAt(c);
@@ -958,7 +958,7 @@ namespace EBSGFramework
                             if (!pawn.CheckGeneTrio(terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) ||
                                 !pawn.CheckHediffTrio(terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) ||
                                 !pawn.CheckPawnCapabilitiesTrio(terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) ||
-                                !EBSGUtilities.AllNeedLevelsMet(pawn, terrain.pawnNeedLevels)) continue;
+                                !pawn.AllNeedLevelsMet(terrain.pawnNeedLevels)) continue;
 
                             if (terrain.newCost >= 0 && ((terrain.terrain != null && terrain.terrain == terrainDef) ||
                                 (!terrain.terrains.NullOrEmpty() && terrain.terrains.Contains(terrainDef))))
@@ -983,11 +983,11 @@ namespace EBSGFramework
 
         public static void SkillAptitudePostfix(ref int __result, Pawn ___pawn, SkillDef ___def)
         {
-            if (Cache?.skillChanging.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(___pawn, Cache.skillChanging))
+            if (Cache?.skillChanging.NullOrEmpty() == false && ___pawn.HasAnyOfRelatedGene(Cache.skillChanging))
                 foreach (Gene gene in ___pawn.genes.GenesListForReading)
                     if (gene is Gene_SkillChanging skillGene && skillGene.changedSkills?.Contains(___def) == true)
                         __result += skillGene.changedAmounts[skillGene.changedSkills.IndexOf(___def)];
-            if (Cache?.skillChangeHediffs.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfHediffs(___pawn, Cache.skillChangeHediffs, out var matches))
+            if (Cache?.skillChangeHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.skillChangeHediffs, out var matches))
                 foreach (Hediff hediff in matches)
                 {
                     HediffComp_TemporarySkillChange skillChange = hediff.TryGetComp<HediffComp_TemporarySkillChange>();
@@ -1002,7 +1002,7 @@ namespace EBSGFramework
             if (shader == null) return;
             if (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated)
             {
-                if (Cache?.desiccatedHeads.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedHeads))
+                if (Cache?.desiccatedHeads.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.desiccatedHeads))
                     foreach (GeneDef gene in Cache.desiccatedHeads)
                     {
                         if (!pawn.genes.HasActiveGene(gene)) continue;
@@ -1082,7 +1082,7 @@ namespace EBSGFramework
                         }
                     }
             }
-            else if (Cache?.ageBasedHeads.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.ageBasedHeads))
+            else if (Cache?.ageBasedHeads.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.ageBasedHeads))
             {
                 foreach (GeneDef gene in Cache.ageBasedHeads)
                 {
@@ -1254,7 +1254,7 @@ namespace EBSGFramework
             if (shader == null) return;
             if (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated)
             {
-                if (Cache?.desiccatedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedBodies))
+                if (Cache?.desiccatedBodies.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.desiccatedBodies))
                     foreach (GeneDef gene in Cache.desiccatedBodies)
                     {
                         if (!pawn.HasRelatedGene(gene)) continue;
@@ -1334,7 +1334,7 @@ namespace EBSGFramework
                         }
                     }
             }
-            else if (Cache?.ageBasedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.ageBasedBodies))
+            else if (Cache?.ageBasedBodies.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.ageBasedBodies))
             {
                 foreach (GeneDef gene in Cache.ageBasedBodies)
                 {
@@ -1512,11 +1512,11 @@ namespace EBSGFramework
         {
             // Hediff checks are used to minimize the risk of accidentally messing up another mod's pregnancy changes
             if (Cache?.pregnancyReplacingGenes.NullOrEmpty() == false && __instance.def == HediffDefOf.PregnantHuman &&
-                ___pawn.health.hediffSet.HasHediff(HediffDefOf.PregnantHuman) && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out var pregGene, Cache.pregnancyReplacingGenes))
+                ___pawn.health.hediffSet.HasHediff(HediffDefOf.PregnantHuman) && ___pawn.PawnHasAnyOfGenes(out var pregGene, Cache.pregnancyReplacingGenes))
             {
                 PregnancyReplacerExtension extension = pregGene.GetModExtension<PregnancyReplacerExtension>();
 
-                if (extension.fatherRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(__instance.Father, extension.fatherRequiresOneOf))
+                if (extension.fatherRequiresOneOf.NullOrEmpty() || __instance.Father.HasAnyOfRelatedGene(extension.fatherRequiresOneOf))
                 {
                     ___pawn.AddOrAppendHediffs(extension.initialSeverity, extension.increaseSeverity, extension.motherHediff, extension.replacementHediffs, __instance.Father);
                     __instance.Father.AddOrAppendHediffs(extension.initialSeverity, extension.increaseSeverity, extension.fatherHediff, null, ___pawn);
@@ -1539,15 +1539,15 @@ namespace EBSGFramework
 
         public static void PostLovinPostfix(Pawn pawn, JobDriver_Lovin __instance)
         {
-            if (Cache?.lovinAddinGenes.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfGenes(pawn, out _, Cache.lovinAddinGenes))
+            if (Cache?.lovinAddinGenes.NullOrEmpty() == false && pawn.PawnHasAnyOfGenes(out _, Cache.lovinAddinGenes))
             {
                 Pawn Partner = (Pawn)(Thing)__instance.job.GetTarget(TargetIndex.A);
-                foreach (GeneDef gene in EBSGUtilities.GetAllGenesOnListFromPawn(pawn, Cache.lovinAddinGenes))
+                foreach (GeneDef gene in pawn.GetAllGenesOnListFromPawn(Cache.lovinAddinGenes))
                 {
                     PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
                     if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
                         (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
-                        (extension.partnerRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(Partner, extension.partnerRequiresOneOf)))
+                        (extension.partnerRequiresOneOf.NullOrEmpty() || Partner.HasAnyOfRelatedGene(extension.partnerRequiresOneOf)))
                     {
                         pawn.AddHediffToParts(extension.hediffsToApplySelf);
                         Partner.AddHediffToParts(extension.hediffsToApplyPartner);
@@ -1632,7 +1632,7 @@ namespace EBSGFramework
                 }
             }
 
-            if (Cache?.abilityFuel.NullOrEmpty() == false && EBSGUtilities.PawnHasAnyOfAbilities(pawn, Cache.reloadableAbilities, out var abilities) &&
+            if (Cache?.abilityFuel.NullOrEmpty() == false && pawn.PawnHasAnyOfAbilities(Cache.reloadableAbilities, out var abilities) &&
                 EBSGUtilities.GetThings(clickCell.GetThingList(pawn.Map), Cache.abilityFuel, out var things))
             {
 
@@ -1701,7 +1701,7 @@ namespace EBSGFramework
         public static void FertilityByAgeAgeFactorPostfix(ref float __result, Pawn pawn)
         {
             if (Cache?.fertilityChangingGenes.NullOrEmpty() == false && pawn != null && pawn.RaceProps.Humanlike && pawn.Spawned)
-                if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var gene, Cache.fertilityChangingGenes))
+                if (pawn.PawnHasAnyOfGenes(out var gene, Cache.fertilityChangingGenes))
                 {
                     FertilityByGenderAgeExtension extension = gene.GetModExtension<FertilityByGenderAgeExtension>();
                     List<GeneDef> alreadyFoundGenes = new List<GeneDef>
@@ -1711,7 +1711,7 @@ namespace EBSGFramework
 
                     // Goes down the list of overriding genes until it finds one that doesn't have any overriding genes, catches itself in an eternal loop, or the pawn doesn't have an overriding gene
                     while (!extension.overridingGenes.NullOrEmpty())
-                        if (EBSGUtilities.PawnHasAnyOfGenes(pawn, out var first, extension.overridingGenes))
+                        if (pawn.PawnHasAnyOfGenes(out var first, extension.overridingGenes))
                         {
                             if (alreadyFoundGenes.Contains(first)) break; // Ensures nobody can put it in an eternal loop
                             extension = first.GetModExtension<FertilityByGenderAgeExtension>();
@@ -1753,7 +1753,7 @@ namespace EBSGFramework
         {
             if (__result && Cache?.NeedEatPatch == true && p.genes != null)
             {
-                if (EBSGUtilities.PawnHasAnyOfGenes(p, out var first, Cache.forbidFoods)) // Switch to get all matches
+                if (p.PawnHasAnyOfGenes(out var first, Cache.forbidFoods)) // Switch to get all matches
                 {
                     FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
 
@@ -1785,7 +1785,7 @@ namespace EBSGFramework
         public static void IsBloodfeederPostfix(Pawn pawn, ref bool __result)
         {
             if (!__result && EBSGDefOf.EBSG_Recorder != null)
-                __result = EBSGUtilities.HasAnyOfRelatedGene(pawn, EBSGDefOf.EBSG_Recorder.bloodfeederGenes);
+                __result = pawn.HasAnyOfRelatedGene(EBSGDefOf.EBSG_Recorder.bloodfeederGenes);
         }
 
         public static void RecacheGenesPostfix(Thing target, GeneSet genesOverride, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
@@ -1879,7 +1879,7 @@ namespace EBSGFramework
         public static bool DropBloodFilthPrefix(Pawn ___pawn)
         {
             if (Cache != null && !Cache.bloodReplacingGenes.NullOrEmpty() && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
-                && ___pawn.SpawnedOrAnyParentSpawned && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out GeneDef bloodGene, Cache.bloodReplacingGenes))
+                && ___pawn.SpawnedOrAnyParentSpawned && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
                 if (bloodExtension.bloodFilthAmount <= 0 || !Rand.Chance(bloodExtension.bloodDropChance)) return false;
@@ -1893,7 +1893,7 @@ namespace EBSGFramework
         public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
         {
             if (Cache != null && !Cache.bloodSmearReplacingGenes.NullOrEmpty()
-                && EBSGUtilities.PawnHasAnyOfGenes(___pawn, out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
+                && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
                 if (!Rand.Chance(bloodExtension.bloodSmearDropChance)) return false;
@@ -2020,7 +2020,7 @@ namespace EBSGFramework
             float increase = ___def.seekerRisePerHour * 0.06f;
             float decrease = ___def.seekerFallPerHour * 0.06f;
             float curInstantLevel;
-            if (EBSGUtilities.NeedFrozen(___pawn, ___def)) return;
+            if (___pawn.NeedFrozen(___def)) return;
             switch (___def.ToString())
             {
                 case "Beauty":
@@ -2220,7 +2220,7 @@ namespace EBSGFramework
         {
             if (Cache != null && !Cache.explosiveAttackHediffs.NullOrEmpty() && dinfo.Instigator != null && dinfo.Instigator is Pawn pawn
                 && !pawn.Dead && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance)
-                && EBSGUtilities.GetCurrentTarget(pawn, false) == __instance && !EBSGUtilities.CastingAbility(pawn))
+                && pawn.GetCurrentTarget(false) == __instance && !pawn.CastingAbility())
             {
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {

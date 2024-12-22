@@ -17,7 +17,7 @@ namespace EBSGFramework
 
         public override AcceptanceReport CanBeUsedBy(Pawn p)
         {
-            if (!EBSGUtilities.HasRelatedGene(p, Props.gene))
+            if (!p.HasRelatedGene(Props.gene))
                 return "EBSG_Missing".Translate(Props.gene.label);
             return base.CanBeUsedBy(p);
         }

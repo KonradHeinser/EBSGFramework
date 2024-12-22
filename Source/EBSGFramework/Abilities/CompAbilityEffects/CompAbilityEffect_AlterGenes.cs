@@ -21,7 +21,7 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             Pawn pawn = target.Pawn;
-            EBSGUtilities.GainRandomGeneSet(pawn, Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
+            pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
         }
     }
 }

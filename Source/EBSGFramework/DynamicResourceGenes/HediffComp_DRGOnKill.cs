@@ -13,7 +13,7 @@ namespace EBSGFramework
             if (!Props.resourceOffsets.NullOrEmpty())
                 foreach (GeneLinker linker in Props.resourceOffsets)
                 {
-                    if (!EBSGUtilities.HasRelatedGene(Pawn, linker.mainResourceGene)) continue;
+                    if (!Pawn.HasRelatedGene(linker.mainResourceGene)) continue;
 
                     if (Pawn.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
                     {

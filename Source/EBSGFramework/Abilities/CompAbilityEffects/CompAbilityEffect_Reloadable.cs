@@ -44,7 +44,7 @@ namespace EBSGFramework
 
             if (RemainingCharges == 0)
             {
-                reason = EBSGUtilities.TranslateOrLiteral(Props.noChargesRemaining, Props.ammoDef.label, parent.def.label);
+                reason = Props.noChargesRemaining.TranslateOrLiteral(Props.ammoDef.label, parent.def.label);
                 return true;
             }
 
@@ -53,12 +53,12 @@ namespace EBSGFramework
 
         public override string ExtraTooltipPart()
         {
-            return EBSGUtilities.TranslateOrLiteral(Props.remainingCharges) + ": " + RemainingCharges.ToString();
+            return Props.remainingCharges.TranslateOrLiteral() + ": " + RemainingCharges.ToString();
         }
 
         public override string CompInspectStringExtra()
         {
-            return EBSGUtilities.TranslateOrLiteral(Props.remainingCharges) + ": " + RemainingCharges.ToString();
+            return Props.remainingCharges.TranslateOrLiteral() + ": " + RemainingCharges.ToString();
         }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)

@@ -11,7 +11,7 @@ namespace EBSGFramework
             if (Pawn.IsHashIntervalTick(200) && Pawn.genes != null && !Props.resourcesPerHour.NullOrEmpty())
             {
                 foreach (GeneLinker linker in Props.resourcesPerHour)
-                    if (EBSGUtilities.HasRelatedGene(Pawn, linker.mainResourceGene))
+                    if (Pawn.HasRelatedGene(linker.mainResourceGene))
                     {
                         Gene gene = Pawn.genes.GetGene(linker.mainResourceGene);
                         if (gene is ResourceGene resource)

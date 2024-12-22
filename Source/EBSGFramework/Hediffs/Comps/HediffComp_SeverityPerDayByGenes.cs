@@ -11,7 +11,7 @@ namespace EBSGFramework
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             if (Props.geneEffects.NullOrEmpty())
-                EBSGUtilities.AddedHediffError(parent, parent.pawn);
+                parent.AddedHediffError(parent.pawn);
         }
 
         public override void CompPostTick(ref float severityAdjustment)
@@ -23,17 +23,17 @@ namespace EBSGFramework
         public static void SetSeverity(Hediff hediff, Pawn pawn, List<GeneEffect> geneEffects, float baseSeverity = 1,
             StatDef baseSeverityStatFactor = null, StatDef geneEffectStatFactor = null, StatDef globalStatFactor = null)
         {
-            float newSeverity = baseSeverity * EBSGUtilities.StatFactorOrOne(pawn, baseSeverityStatFactor);
+            float newSeverity = baseSeverity * pawn.StatFactorOrOne(baseSeverityStatFactor);
 
             foreach (GeneEffect geneEffect in geneEffects)
             {
-                if (pawn.HasRelatedGene(geneEffect.gene) && EBSGUtilities.PawnHasAnyOfGenes(pawn, out var anyOfGene, geneEffect.anyOfGene) && EBSGUtilities.PawnHasAllOfGenes(pawn, geneEffect.allOfGene))
+                if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
                 {
-                    newSeverity += geneEffect.effect * EBSGUtilities.StatFactorOrOne(pawn, geneEffect.statFactor) * EBSGUtilities.StatFactorOrOne(pawn, geneEffectStatFactor);
+                    newSeverity += geneEffect.effect * pawn.StatFactorOrOne(geneEffect.statFactor) * pawn.StatFactorOrOne(geneEffectStatFactor);
                 }
             }
 
-            hediff.Severity += newSeverity * EBSGUtilities.StatFactorOrOne(pawn, globalStatFactor) * 0.003334f;
+            hediff.Severity += newSeverity * pawn.StatFactorOrOne(globalStatFactor) * 0.003334f;
         }
     }
 }

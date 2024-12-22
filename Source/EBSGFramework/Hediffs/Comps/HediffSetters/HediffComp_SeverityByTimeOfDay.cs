@@ -12,7 +12,7 @@ namespace EBSGFramework
             if (Props.timeToSeverityCurve != null)
                 parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
             else
-                EBSGUtilities.AddedHediffError(parent, Pawn);
+                parent.AddedHediffError(Pawn);
         }
 
         public override void CompPostTick(ref float severityAdjustment)

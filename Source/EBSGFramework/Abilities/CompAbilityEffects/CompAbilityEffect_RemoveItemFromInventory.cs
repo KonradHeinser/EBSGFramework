@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (Props.targetThing != null && EBSGUtilities.TargetIsPawn(target, out Pawn targetPawn) && targetPawn.inventory != null)
+            if (Props.targetThing != null && target.TargetIsPawn(out Pawn targetPawn) && targetPawn.inventory != null)
                 if (targetPawn.inventory.innerContainer.Contains(Props.targetThing, Props.targetCount))
                     targetPawn.inventory.RemoveCount(Props.targetThing, Props.targetCount);
                 else if (targetPawn.inventory.Count(Props.targetThing) > 0)
@@ -45,7 +45,7 @@ namespace EBSGFramework
             string baseExplanation = "CannotUseAbility".Translate(parent.def.label) + ": ";
 
             if (!Props.targetBestEffort && Props.targetThing != null)
-                if (!EBSGUtilities.TargetIsPawn(target, out Pawn targetPawn) || targetPawn.inventory == null || !targetPawn.inventory.innerContainer.Contains(Props.targetThing, Props.targetCount))
+                if (!target.TargetIsPawn(out Pawn targetPawn) || targetPawn.inventory == null || !targetPawn.inventory.innerContainer.Contains(Props.targetThing, Props.targetCount))
                 {
                     Map map = targetPawn.Map;
                     if (map == null) map = targetPawn.MapHeld;

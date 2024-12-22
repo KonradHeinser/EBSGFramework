@@ -13,14 +13,14 @@ namespace EBSGFramework
                 if (!thingy.comps.NullOrEmpty() && thingy.HasComp(typeof(CompEBSGPlaceworker)))
                 {
                     CompProperties_EBSGPlaceworker gatherComp = thingy.GetCompProperties<CompProperties_EBSGPlaceworker>();
-                    if (gatherComp.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(loc, map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
+                    if (gatherComp.nearbyWaterTilesNeeded > 0 && !loc.CheckNearbyWater(map, gatherComp.nearbyWaterTilesNeeded, out int count, gatherComp.maxWaterDistance))
                         return new AcceptanceReport("PlaceWorkerMoreWater".Translate());
 
-                    if (gatherComp.nearbyWaterTilesNeeded < 0 && EBSGUtilities.CheckNearbyWater(loc, map, 1, out int countB, gatherComp.maxWaterDistance))
+                    if (gatherComp.nearbyWaterTilesNeeded < 0 && loc.CheckNearbyWater(map, 1, out int countB, gatherComp.maxWaterDistance))
                         return new AcceptanceReport("PlaceWorkerLessWater".Translate());
 
                     foreach (List<TerrainDistance> terrains in gatherComp.nearbyTerrainsNeeded)
-                        if (!EBSGUtilities.CheckNearbyTerrain(loc, map, terrains, out TerrainDef missingTerrain, out bool negativeTerrain))
+                        if (!loc.CheckNearbyTerrain(map, terrains, out TerrainDef missingTerrain, out bool negativeTerrain))
                         {
                             if (negativeTerrain)
                                 return new AcceptanceReport("PlaceWorkerAvoidTerrain".Translate(missingTerrain.label));

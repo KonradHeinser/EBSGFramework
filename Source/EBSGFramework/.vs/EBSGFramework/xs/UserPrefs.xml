@@ -1,16 +1,7 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_SleepCasket.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="1732" Column="49" />
-      <File FileName="Coma Genes/CompComaGeneBindable.cs" Line="119" Column="40" />
-      <File FileName="Hediffs/Comps/HediffComp_HediffWhileMoving.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/Comps/HediffComp_HediffOnKill.cs" Line="49" Column="33" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="1" Column="1" />
-      <File FileName="Genes/ConditionalStatAffecters/ConditionalStatAffecter_PawnMulti.cs" Line="1" Column="1" />
-      <File FileName="EBSGAI/ThinkNode_ConditionalUsingRangedWeapon.cs" Line="9" Column="9" />
-      <File FileName="DynamicResourceGenes/Alert_LowResource.cs" Line="105" Column="75" />
-      <File FileName="Things/Building_PawnNeedCharger.cs" Line="236" Column="74" />
-      <File FileName="Things/Building_SleepCasket.cs" Line="76" Column="37" />
+      <File FileName="EBSGUtilities.cs" Line="1401" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,7 +13,10 @@
                 <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Coma Genes" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="DynamicResourceGenes" expanded="True">
+                <Node name="CompAbilityEffect" expanded="True" />
+                <Node name="GetResourceAI" expanded="True" />
+              </Node>
               <Node name="EBSGAI" expanded="True" />
               <Node name="GameComponents" expanded="True" />
               <Node name="Genes" expanded="True">
@@ -31,12 +25,16 @@
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True" />
+                <Node name="Comps" expanded="True">
+                  <Node name="HediffSetters" expanded="True" />
+                </Node>
               </Node>
               <Node name="HiveMind" expanded="True" />
               <Node name="Things" expanded="True">
-                <Node name="Building_SleepCasket.cs" selected="True" />
+                <Node name="Comps" expanded="True" />
               </Node>
+              <Node name="Thoughts" expanded="True" />
+              <Node name="EBSGUtilities.cs" selected="True" />
             </Node>
           </Node>
         </State>

@@ -11,7 +11,7 @@ namespace EBSGFramework
         {
             foreach (HediffDef hediff in hediffs)
             {
-                if (EBSGUtilities.HasHediff(pawn, hediff)) return true;
+                if (pawn.HasHediff(hediff)) return true;
             }
             return false;
         }

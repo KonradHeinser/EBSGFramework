@@ -32,7 +32,7 @@ namespace EBSGFramework
                 }
 
             if (!flag) return null;
-            Thing enemy = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true, searchRadius: range);
+            Thing enemy = pawn.GetCurrentTarget(autoSearch: true, searchRadius: range);
             // This is making the assumption that if the current/randomly picked enemy is too large, then you don't want to pull any of the targets next to you
             if (enemy == null || !(enemy is Pawn target) || target.BodySize > maxBodySize || !castingAbility.CanApplyOn(new LocalTargetInfo(target))) return null;
             return castingAbility.GetJob(target, pawn.Position);

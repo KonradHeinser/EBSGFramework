@@ -247,12 +247,12 @@ namespace EBSGFramework
                 if (pawn.InnerPawn.Faction.IsPlayer)
                 {
                     if (multipleLivesComp.Props.revivalSuccessMessage != null)
-                        Messages.Message(EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessMessage, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                        Messages.Message(multipleLivesComp.Props.revivalSuccessMessage.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
                             MessageTypeDefOf.PositiveEvent);
                     if (multipleLivesComp.Props.revivalSuccessLetterLabel != null)
                     {
-                        Letter letter = LetterMaker.MakeLetter(EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessLetterLabel, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
-                            EBSGUtilities.TranslateOrLiteral(multipleLivesComp.Props.revivalSuccessLetterDescription, pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                        Letter letter = LetterMaker.MakeLetter(multipleLivesComp.Props.revivalSuccessLetterLabel.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                            multipleLivesComp.Props.revivalSuccessLetterDescription.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
                             LetterDefOf.PositiveEvent);
                         Find.LetterStack.ReceiveLetter(letter);
                     }
@@ -262,7 +262,7 @@ namespace EBSGFramework
                     map = pawn.MapHeld;
                     if (pawn.Position.IsValid)
                         position = pawn.Position;
-                    EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
+                    pawn.InnerPawn.TryToRevivePawn();
                 }
                 else
                 {
@@ -274,7 +274,7 @@ namespace EBSGFramework
                             position = storage.Position;
                             map = storage.Map;
                             GenSpawn.Spawn(pawn, position, map);
-                            EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
+                            pawn.InnerPawn.TryToRevivePawn();
                             EBSGUtilities.ThingAndSoundMaker(position, map, multipleLivesComp.Props.thingSpawnOnReviveEnd, multipleLivesComp.Props.thingsToSpawnOnReviveEnd,
                                 multipleLivesComp.Props.reviveEndSound);
                         }
@@ -297,7 +297,7 @@ namespace EBSGFramework
                             if (!caravans.NullOrEmpty())
                                 caravan = caravans[0];
                         }
-                        EBSGUtilities.TryToRevivePawn(pawn.InnerPawn);
+                        pawn.InnerPawn.TryToRevivePawn();
                         if (caravan != null) caravan.AddPawn(pawn.InnerPawn, false);
                         else if (pawn.Faction.IsPlayer)
                         {

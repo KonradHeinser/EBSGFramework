@@ -37,7 +37,7 @@ namespace EBSGFramework
                     Pawn mother = null;
                     Pawn father = null;
 
-                    if (Props.linkingHediff != null && EBSGUtilities.HasHediff(parent.pawn, Props.linkingHediff))
+                    if (Props.linkingHediff != null && parent.pawn.HasHediff(Props.linkingHediff))
                     {
                         parent.pawn.health.hediffSet.TryGetHediff(Props.linkingHediff, out Hediff hediff);
                         if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)

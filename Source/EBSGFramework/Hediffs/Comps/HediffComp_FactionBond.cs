@@ -18,7 +18,7 @@ namespace EBSGFramework
                 List<Pawn> allies = parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction);
                 foreach (Pawn ally in allies)
                 {
-                    if (!ally.Dead && EBSGUtilities.HasHediff(ally, parent.def)) bondedAllies++;
+                    if (!ally.Dead && ally.HasHediff(parent.def)) bondedAllies++;
                 }
             }
             else if (parent.pawn.GetCaravan() != null)
@@ -26,7 +26,7 @@ namespace EBSGFramework
                 Caravan caravan = parent.pawn.GetCaravan();
                 foreach (Pawn pawn in caravan.pawns)
                 {
-                    if (!pawn.Dead && pawn.Faction != null && pawn.Faction == parent.pawn.Faction && EBSGUtilities.HasHediff(pawn, parent.def)) bondedAllies++;
+                    if (!pawn.Dead && pawn.Faction != null && pawn.Faction == parent.pawn.Faction && pawn.HasHediff(parent.def)) bondedAllies++;
                 }
             }
             else bondedAllies = 1;

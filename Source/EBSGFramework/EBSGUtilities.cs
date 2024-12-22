@@ -39,7 +39,7 @@ namespace EBSGFramework
                 Messages.Message(message, target, messageType);
         }
 
-        public static string TranslateOrLiteral(string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
+        public static string TranslateOrLiteral(this string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
         {
             if (input == null) return null;
             if (input.CanTranslate())
@@ -97,7 +97,7 @@ namespace EBSGFramework
             return finalChance;
         }
 
-        public static bool TargetIsPawn(LocalTargetInfo target, out Pawn pawn)
+        public static bool TargetIsPawn(this LocalTargetInfo target, out Pawn pawn)
         {
             if (target.HasThing && target.Thing is Pawn targetPawn)
             {
@@ -108,7 +108,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static void AddedHediffError(Hediff hediff, Pawn pawn)
+        public static void AddedHediffError(this Hediff hediff, Pawn pawn)
         {
             Log.Error(hediff.def + " is missing tags that are required for one of its EBSG comps. Removing the hediff to avoid more errors.");
             pawn.health.RemoveHediff(hediff);
@@ -1353,7 +1353,7 @@ namespace EBSGFramework
             return CheckNearbyWater(pawn.Position, pawn.Map, maxNeededForTrue, out waterCount, maxDistance);
         }
 
-        public static bool CheckNearbyWater(IntVec3 pos, Map map, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
+        public static bool CheckNearbyWater(this IntVec3 pos, Map map, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
             waterCount = 0;
 
@@ -1381,7 +1381,7 @@ namespace EBSGFramework
             return CheckNearbyTerrain(pawn.Position, pawn.Map, terrains, out missingTerrain, out negativeTerrain);
         }
 
-        public static bool CheckNearbyTerrain(Thing thing, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
+        public static bool CheckNearbyTerrain(this Thing thing, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
             if (!thing.Spawned || thing.Map == null || !thing.Position.IsValid)
             {
@@ -1393,7 +1393,7 @@ namespace EBSGFramework
             return CheckNearbyTerrain(thing.Position, thing.Map, terrains, out missingTerrain, out negativeTerrain);
         }
 
-        public static bool CheckNearbyTerrain(IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
+        public static bool CheckNearbyTerrain(this IntVec3 pos, Map map, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
             negativeTerrain = false;
             missingTerrain = null;

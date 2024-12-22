@@ -203,7 +203,7 @@ namespace EBSGFramework
             {
                 if (Extension != null)
                 {
-                    if (!Extension.mutationGeneSets.NullOrEmpty()) EBSGUtilities.GainRandomGeneSet(pawn, Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
+                    if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
                 }
             }
             mutationDelayTicks--;
@@ -230,7 +230,7 @@ namespace EBSGFramework
                 {
                     pawn.ageTracker.AgeChronologicalTicks = (long)(currentBioAge * 3600000f);
                 }
-                if (removeChronic) EBSGUtilities.RemoveChronicHediffs(pawn);
+                if (removeChronic) pawn.RemoveChronicHediffs();
             }
         }
 
@@ -238,16 +238,16 @@ namespace EBSGFramework
         {
             List<AbilityDef> abilitiesToAdd = new List<AbilityDef>();
 
-            EBSGUtilities.RemovePawnAbilities(pawn, addedAbilities);
+            pawn.RemovePawnAbilities(addedAbilities);
 
             foreach (AbilityAndGeneLink link in geneAbilities)
             {
                 if (link.abilities.NullOrEmpty()) continue;
-                if (EBSGUtilities.CheckGeneTrio(pawn, link.requireOneOfGenes, link.requiredGenes, link.forbiddenGenes))
+                if (pawn.CheckGeneTrio(link.requireOneOfGenes, link.requiredGenes, link.forbiddenGenes))
                     foreach (AbilityDef ability in link.abilities) abilitiesToAdd.Add(ability);
             }
 
-            return EBSGUtilities.GivePawnAbilities(pawn, abilitiesToAdd);
+            return pawn.GivePawnAbilities(abilitiesToAdd);
         }
 
         public override void ExposeData()

@@ -37,9 +37,9 @@ namespace EBSGFramework
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
             if (extension == null)
-                return EBSGUtilities.CheckNearbyWater(pawn, 1, out int waterCount);
+                return pawn.CheckNearbyWater(1, out int waterCount);
 
-            return EBSGUtilities.CheckNearbyWater(pawn, 1, out int count, extension.maxWaterDistance);
+            return pawn.CheckNearbyWater(1, out int count, extension.maxWaterDistance);
         }
     }
 }

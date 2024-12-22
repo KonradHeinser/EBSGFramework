@@ -244,19 +244,19 @@ namespace EBSGFramework
             }
             else
             {
-                if (!Props.casterHasAllOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAllOfHediffs(parent.pawn, Props.casterHasAllOfHediffs))
+                if (!Props.casterHasAllOfHediffs.NullOrEmpty() && !parent.pawn.PawnHasAllOfHediffs(Props.casterHasAllOfHediffs))
                 {
                     if (Props.casterHasAllOfHediffs.Count == 1 && Props.casterHasAnyOfHediffs.NullOrEmpty()) explanation = "AbilityNoCasterHediffOne".Translate(Props.casterHasAllOfHediffs[0].label);
                     else explanation = "AbilityNoCasterHediff".Translate();
                     return false;
                 }
-                if (!Props.casterHasAnyOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfHediffs(parent.pawn, Props.casterHasAnyOfHediffs))
+                if (!Props.casterHasAnyOfHediffs.NullOrEmpty() && !parent.pawn.PawnHasAnyOfHediffs(Props.casterHasAnyOfHediffs))
                 {
                     if (Props.casterHasAnyOfHediffs.Count == 1) explanation = "AbilityNoCasterHediffOne".Translate(Props.casterHasAnyOfHediffs[0].label);
                     else explanation = "AbilityNoCasterHediff".Translate();
                     return false;
                 }
-                if (!Props.casterHasNoneOfHediffs.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfHediffs(parent.pawn, Props.casterHasNoneOfHediffs))
+                if (!Props.casterHasNoneOfHediffs.NullOrEmpty() && parent.pawn.PawnHasAnyOfHediffs(Props.casterHasNoneOfHediffs))
                 {
                     if (Props.casterHasNoneOfHediffs.Count == 1) explanation = "AbilityCasterHediffOne".Translate(Props.casterHasNoneOfHediffs[0].label);
                     else explanation = "AbilityCasterHediff".Translate();
@@ -342,7 +342,7 @@ namespace EBSGFramework
             }
             if (!Props.casterNeedLevels.NullOrEmpty())
             {
-                if (!EBSGUtilities.AllNeedLevelsMet(pawn, Props.casterNeedLevels))
+                if (!pawn.AllNeedLevelsMet(Props.casterNeedLevels))
                 {
                     explanation = "AbilityCasterNeedsCheck".Translate();
                     return false;
@@ -487,7 +487,7 @@ namespace EBSGFramework
 
         public bool CheckTargetHediffs(LocalTargetInfo target, out string explanation)
         {
-            if (EBSGUtilities.TargetIsPawn(target, out Pawn targetPawn))
+            if (target.TargetIsPawn(out Pawn targetPawn))
             {
                 if (targetPawn.health == null || targetPawn.health.hediffSet.hediffs.NullOrEmpty())
                 {
@@ -506,19 +506,19 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    if (!Props.targetHasAllOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAllOfHediffs(targetPawn, Props.targetHasAllOfHediffs))
+                    if (!Props.targetHasAllOfHediffs.NullOrEmpty() && !targetPawn.PawnHasAllOfHediffs(Props.targetHasAllOfHediffs))
                     {
                         if (Props.targetHasAllOfHediffs.Count == 1 && Props.targetHasAnyOfHediffs.NullOrEmpty()) explanation = "AbilityNoTargetHediffOne".Translate(Props.targetHasAllOfHediffs[0].label);
                         else explanation = "AbilityNoTargetHediff".Translate();
                         return false;
                     }
-                    if (!Props.targetHasAnyOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfHediffs(targetPawn, Props.targetHasAnyOfHediffs))
+                    if (!Props.targetHasAnyOfHediffs.NullOrEmpty() && !targetPawn.PawnHasAnyOfHediffs(Props.targetHasAnyOfHediffs))
                     {
                         if (Props.targetHasAnyOfHediffs.Count == 1) explanation = "AbilityNoTargetHediffOne".Translate(Props.targetHasAnyOfHediffs[0].label);
                         else explanation = "AbilityNoTargetHediff".Translate();
                         return false;
                     }
-                    if (!Props.targetHasNoneOfHediffs.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfHediffs(targetPawn, Props.targetHasNoneOfHediffs))
+                    if (!Props.targetHasNoneOfHediffs.NullOrEmpty() && targetPawn.PawnHasAnyOfHediffs(Props.targetHasNoneOfHediffs))
                     {
                         if (Props.targetHasNoneOfHediffs.Count == 1) explanation = "AbilityTargetHediffOne".Translate(Props.targetHasNoneOfHediffs[0].label);
                         else explanation = "AbilityTargetHediff".Translate();
@@ -548,7 +548,7 @@ namespace EBSGFramework
 
         public bool CheckTargetGenes(LocalTargetInfo target, out string explanation)
         {
-            if (EBSGUtilities.TargetIsPawn(target, out Pawn targetPawn))
+            if (target.TargetIsPawn(out Pawn targetPawn))
             {
                 if (targetPawn.genes == null || targetPawn.genes.GenesListForReading.NullOrEmpty())
                 {
@@ -581,19 +581,19 @@ namespace EBSGFramework
                             return false;
                         }
                     }
-                    if (!Props.targetHasAllOfGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAllOfGenes(targetPawn, Props.targetHasAllOfGenes))
+                    if (!Props.targetHasAllOfGenes.NullOrEmpty() && !targetPawn.PawnHasAllOfGenes(Props.targetHasAllOfGenes))
                     {
                         if (Props.targetHasAllOfGenes.Count == 1 && Props.targetHasAnyOfGenes.NullOrEmpty()) explanation = "AbilityNoTargetGeneOne".Translate(Props.targetHasAllOfGenes[0].label);
                         else explanation = "AbilityNoTargetGene".Translate();
                         return false;
                     }
-                    if (!Props.targetHasAnyOfGenes.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfGenes(targetPawn, out var anyOfGene, Props.targetHasAnyOfGenes))
+                    if (!Props.targetHasAnyOfGenes.NullOrEmpty() && !targetPawn.PawnHasAnyOfGenes(out var anyOfGene, Props.targetHasAnyOfGenes))
                     {
                         if (Props.targetHasAnyOfGenes.Count == 1) explanation = "AbilityNoTargetGeneOne".Translate(Props.targetHasAnyOfGenes[0].label);
                         else explanation = "AbilityNoTargetGene".Translate();
                         return false;
                     }
-                    if (!Props.targetHasNoneOfGenes.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfGenes(targetPawn, out var noneOfGene, Props.targetHasNoneOfGenes))
+                    if (!Props.targetHasNoneOfGenes.NullOrEmpty() && targetPawn.PawnHasAnyOfGenes(out var noneOfGene, Props.targetHasNoneOfGenes))
                     {
                         if (Props.targetHasNoneOfGenes.Count == 1) explanation = "AbilityTargetGeneOne".Translate(Props.targetHasNoneOfGenes[0].label);
                         else explanation = "AbilityTargetGene".Translate();
@@ -623,7 +623,7 @@ namespace EBSGFramework
 
         public bool CheckTargetPawn(LocalTargetInfo target, out string explanation)
         {
-            if (EBSGUtilities.TargetIsPawn(target, out Pawn pawn))
+            if (target.TargetIsPawn(out Pawn pawn))
             {
                 if (!Props.targetCapLimiters.NullOrEmpty())
                 {
@@ -696,7 +696,7 @@ namespace EBSGFramework
                 }
                 if (!Props.targetNeedLevels.NullOrEmpty())
                 {
-                    if (!EBSGUtilities.AllNeedLevelsMet(pawn, Props.targetNeedLevels))
+                    if (!pawn.AllNeedLevelsMet(Props.targetNeedLevels))
                     {
                         explanation = "AbilityTargetNeedsCheck".Translate();
                         return false;

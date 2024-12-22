@@ -31,7 +31,7 @@ namespace EBSGFramework
             float effect = 0;
             if (checkedHediffDef != null)
             {
-                if (EBSGUtilities.HasHediff(pawn, checkedHediffDef))
+                if (pawn.HasHediff(checkedHediffDef))
                 {
                     effect = severityCurve.Evaluate(pawn.health.hediffSet.GetFirstHediffOfDef(checkedHediffDef).Severity);
                 }
@@ -44,7 +44,7 @@ namespace EBSGFramework
                     float severitySum = 0;
                     foreach (HediffDef hediff in checkedHediffList)
                     {
-                        if (EBSGUtilities.HasHediff(pawn, hediff))
+                        if (pawn.HasHediff(hediff))
                         {
                             severitySum += pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity;
                         }
@@ -56,7 +56,7 @@ namespace EBSGFramework
                     float severityToUse = 0;
                     foreach (HediffDef hediff in checkedHediffList)
                     {
-                        if (EBSGUtilities.HasHediff(pawn, hediff))
+                        if (pawn.HasHediff(hediff))
                         {
                             if (pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity > severityToUse) severityToUse = pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity;
                         }
@@ -67,7 +67,7 @@ namespace EBSGFramework
                 {
                     foreach (HediffDef hediff in checkedHediffList)
                     {
-                        if (EBSGUtilities.HasHediff(pawn, hediff))
+                        if (pawn.HasHediff(hediff))
                         {
                             effect = severityCurve.Evaluate(pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity);
                             break;
@@ -78,7 +78,7 @@ namespace EBSGFramework
                 {
                     foreach (HediffDef hediff in checkedHediffList)
                     {
-                        if (EBSGUtilities.HasHediff(pawn, hediff))
+                        if (pawn.HasHediff(hediff))
                         {
                             effect += severityCurve.Evaluate(pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity);
                         }
@@ -88,7 +88,7 @@ namespace EBSGFramework
             }
             else
             {
-                if (EBSGUtilities.HasHediff(pawn, hediffDef))
+                if (pawn.HasHediff(hediffDef))
                 {
                     effect = severityCurve.Evaluate(pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity);
                 }

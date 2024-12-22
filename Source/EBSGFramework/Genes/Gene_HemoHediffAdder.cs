@@ -93,7 +93,7 @@ namespace EBSGFramework
                         foreach (HediffToParts hediffToParts in Extension.hediffsToApplyAtAges)
                             if (pawn.ageTracker.AgeBiologicalYearsFloat > hediffToParts.minAge && pawn.ageTracker.AgeBiologicalYearsFloat < hediffToParts.maxAge)
                                 if (hediffToParts.bodyParts.NullOrEmpty())
-                                    if (EBSGUtilities.HasHediff(pawn, hediffToParts.hediff))
+                                    if (pawn.HasHediff(hediffToParts.hediff))
                                     {
                                         if (hediffToParts.onlyIfNew) continue;
                                         Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
@@ -127,7 +127,7 @@ namespace EBSGFramework
             {
                 if (Extension != null)
                 {
-                    if (!Extension.mutationGeneSets.NullOrEmpty()) EBSGUtilities.GainRandomGeneSet(pawn, Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
+                    if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
                 }
             }
             delayTicks--;

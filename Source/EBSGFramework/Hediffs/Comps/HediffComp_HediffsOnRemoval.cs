@@ -30,7 +30,7 @@ namespace EBSGFramework
                             pawn.health.RemoveHediff(firstHediffOfDef);
                     }
 
-                    if (!hediffToGive.hediffDefs.NullOrEmpty() && EBSGUtilities.PawnHasAnyOfHediffs(pawn, hediffToGive.hediffDefs))
+                    if (!hediffToGive.hediffDefs.NullOrEmpty() && pawn.PawnHasAnyOfHediffs(hediffToGive.hediffDefs))
                         foreach (HediffDef hediff in hediffToGive.hediffDefs)
                         {
                             Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToGive.hediffDef);

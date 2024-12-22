@@ -67,7 +67,7 @@ namespace EBSGFramework
 
         public override bool GizmoDisabled(out string reason)
         {
-            if (!EBSGUtilities.HasRelatedGene(parent.pawn, Props.mainResourceGene))
+            if (!parent.pawn.HasRelatedGene(Props.mainResourceGene))
             {
                 reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
                 return true;
@@ -105,7 +105,7 @@ namespace EBSGFramework
         public override bool Valid(GlobalTargetInfo target, bool throwMessages = false)
         {
             if (!parent.pawn.Spawned || parent.pawn.Map == null ||
-                Props.mainResourceGene == null || !EBSGUtilities.HasRelatedGene(parent.pawn, Props.mainResourceGene)) return false;
+                Props.mainResourceGene == null || !parent.pawn.HasRelatedGene(Props.mainResourceGene)) return false;
 
             GenDraw.DrawWorldRadiusRing(parent.pawn.Map.Tile, MaxDistance);
 

@@ -25,11 +25,11 @@ namespace EBSGFramework
             Pawn caster = parent.pawn;
 
             if (!Props.useCasterXeno)
-                EBSGUtilities.AlterXenotype(pawn, Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
+                pawn.AlterXenotype(Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
             else
             {
                 if (!caster.genes.UniqueXenotype)
-                    EBSGUtilities.AlterXenotype(pawn, caster.genes.Xenotype, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
+                    pawn.AlterXenotype(caster.genes.Xenotype, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
                 else
                 {
                     if (Props.setXenotype)

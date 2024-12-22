@@ -12,7 +12,7 @@ namespace EBSGFramework
             if (!victim.health.CanBleed || Pawn.genes == null || parent.Severity < Props.minSeverity || parent.Severity > Props.maxSeverity
                 || (Props.maxDistance > 0 && Pawn.Position.DistanceTo(victim.Position) > Props.maxDistance) || Props.hemogenEfficiency <= 0) return;
 
-            if (!Props.forbiddenTargetGenes.NullOrEmpty() && EBSGUtilities.HasAnyOfRelatedGene(victim, Props.forbiddenTargetGenes)) return;
+            if (!Props.forbiddenTargetGenes.NullOrEmpty() && victim.HasAnyOfRelatedGene(Props.forbiddenTargetGenes)) return;
 
             if ((victim.RaceProps.Humanlike && !Props.allowHumanoids) || (victim.RaceProps.Animal && !Props.allowAnimals) ||
                 (victim.RaceProps.Dryad && !Props.allowDryads) || (victim.RaceProps.Insect && !Props.allowInsects) ||
@@ -38,7 +38,7 @@ namespace EBSGFramework
                 if (maxToTake > maxGain) maxToTake = maxGain;
                 if (maxToTake <= 0) return;
 
-                if (!EBSGUtilities.HasHediff(victim, HediffDefOf.BloodLoss))
+                if (!victim.HasHediff(HediffDefOf.BloodLoss))
                 {
                     Hediff bloodloss = HediffMaker.MakeHediff(HediffDefOf.BloodLoss, victim);
                     bloodloss.Severity = maxToTake;

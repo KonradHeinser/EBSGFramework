@@ -34,7 +34,7 @@ namespace EBSGFramework
             {
                 if (parent.Severity >= severityLevel.minSeverity && parent.Severity <= severityLevel.maxSeverity)
                 {
-                    if (!addedHediffs.Contains(severityLevel.hediff) && !EBSGUtilities.HasHediff(Pawn, severityLevel.hediff))
+                    if (!addedHediffs.Contains(severityLevel.hediff) && !Pawn.HasHediff(severityLevel.hediff))
                     {
                         Pawn.AddOrAppendHediffs(hediff: severityLevel.hediff);
                         addedHediffs.Add(severityLevel.hediff);
@@ -42,7 +42,7 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    if (addedHediffs.Contains(severityLevel.hediff) && EBSGUtilities.HasHediff(Pawn, severityLevel.hediff))
+                    if (addedHediffs.Contains(severityLevel.hediff) && Pawn.HasHediff(severityLevel.hediff))
                     {
                         Pawn.RemoveHediffs(severityLevel.hediff);
                         addedHediffs.Remove(severityLevel.hediff);

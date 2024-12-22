@@ -56,7 +56,7 @@ namespace EBSGFramework
                         {
                             bloodType = Props.filthReplacement;
                         }
-                        else if (EBSGUtilities.PawnHasAnyOfGenes(victim, out var first, Cache?.bloodReplacingGenes))
+                        else if (victim.PawnHasAnyOfGenes(out var first, Cache?.bloodReplacingGenes))
                         {
                             bloodType = first.GetModExtension<EBSGExtension>().bloodReplacement;
                         }

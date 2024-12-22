@@ -49,11 +49,11 @@ namespace EBSGFramework
                             }
                         }
 
-                        if (!extension.requireOneOfHediffs.NullOrEmpty() && !EBSGUtilities.PawnHasAnyOfHediffs(pawn, extension.requireOneOfHediffs)) return false;
-                        if (!EBSGUtilities.PawnHasAllOfHediffs(pawn, extension.requiredHediffs)) return false;
-                        if (EBSGUtilities.PawnHasAnyOfHediffs(pawn, extension.forbiddenHediffs)) return false;
+                        if (!extension.requireOneOfHediffs.NullOrEmpty() && !pawn.PawnHasAnyOfHediffs(extension.requireOneOfHediffs)) return false;
+                        if (!pawn.PawnHasAllOfHediffs(extension.requiredHediffs)) return false;
+                        if (pawn.PawnHasAnyOfHediffs(extension.forbiddenHediffs)) return false;
 
-                        if (!EBSGUtilities.AllNeedLevelsMet(pawn, extension.needLevels)) return false;
+                        if (!pawn.AllNeedLevelsMet(extension.needLevels)) return false;
                     }
                     return true;
                 }
@@ -119,7 +119,7 @@ namespace EBSGFramework
 
             if (!addedAbilities.NullOrEmpty())
             {
-                EBSGUtilities.RemovePawnAbilities(pawn, addedAbilities);
+                pawn.RemovePawnAbilities(addedAbilities);
             }
         }
 

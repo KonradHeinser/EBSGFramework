@@ -21,7 +21,7 @@ namespace EBSGFramework
             Ability pawnAbility = pawn.abilities?.GetAbility(ability);
             if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty() || !ability.targetRequired) return false;
 
-            Thing target = EBSGUtilities.GetCurrentTarget(pawn, onlyHostiles, onlyInFaction, autoSearch);
+            Thing target = pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch);
 
             try
             {

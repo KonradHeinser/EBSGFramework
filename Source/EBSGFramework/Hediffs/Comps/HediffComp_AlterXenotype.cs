@@ -22,7 +22,7 @@ namespace EBSGFramework
         {
             if (Props.severities.Includes(parent.Severity))
             {
-                EBSGUtilities.AlterXenotype(Pawn, Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
+                Pawn.AlterXenotype(Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
                 Pawn.health.RemoveHediff(parent);
             }
             else if (Pawn.genes == null)

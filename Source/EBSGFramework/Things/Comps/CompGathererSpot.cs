@@ -23,18 +23,18 @@ namespace EBSGFramework
                     foreach (GatherOption option in Props.options)
                     {
                         // Checks for situations where nearby water is needed
-                        if (option.nearbyWaterTilesNeeded > 0 && !EBSGUtilities.CheckNearbyWater(parent.Position, parent.Map, option.nearbyWaterTilesNeeded, out int countA, option.maxWaterDistance))
+                        if (option.nearbyWaterTilesNeeded > 0 && !parent.Position.CheckNearbyWater(parent.Map, option.nearbyWaterTilesNeeded, out int countA, option.maxWaterDistance))
                             continue;
 
                         // Checks for situations where a lack of nearby water is needed
-                        if (option.nearbyWaterTilesNeeded < 0 && EBSGUtilities.CheckNearbyWater(parent.Position, parent.Map, 1, out int countB, option.maxWaterDistance))
+                        if (option.nearbyWaterTilesNeeded < 0 && parent.Position.CheckNearbyWater(parent.Map, 1, out int countB, option.maxWaterDistance))
                             continue;
 
                         if (!option.nearbyTerrainsNeeded.NullOrEmpty())
                         {
                             bool flag = true;
                             foreach (List<TerrainDistance> terrains in option.nearbyTerrainsNeeded)
-                                if (!EBSGUtilities.CheckNearbyTerrain(parent, terrains, out TerrainDef missing, out bool negative))
+                                if (!parent.CheckNearbyTerrain(terrains, out TerrainDef missing, out bool negative))
                                 {
                                     flag = false;
                                     break;

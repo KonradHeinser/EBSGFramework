@@ -28,9 +28,9 @@ namespace EBSGFramework
                 if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
                     if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
-                    EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
+                    parent.pawn.RemoveGenesFromPawn(addedGenes);
                     addedGenes.Clear();
-                    addedGenes = EBSGUtilities.AddGenesToPawn(parent.pawn, geneSet.xenogenes, geneSet.genes);
+                    addedGenes = parent.pawn.AddGenesToPawn(geneSet.xenogenes, geneSet.genes);
                     break;
                 }
             }
@@ -45,9 +45,9 @@ namespace EBSGFramework
                 if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
                     if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
-                    EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
+                    parent.pawn.RemoveGenesFromPawn(addedGenes);
                     addedGenes.Clear();
-                    addedGenes = EBSGUtilities.AddGenesToPawn(parent.pawn, geneSet.xenogenes, geneSet.genes);
+                    addedGenes = parent.pawn.AddGenesToPawn(geneSet.xenogenes, geneSet.genes);
                     break;
                 }
             }
@@ -55,7 +55,7 @@ namespace EBSGFramework
 
         public override void CompPostPostRemoved()
         {
-            EBSGUtilities.RemoveGenesFromPawn(parent.pawn, addedGenes);
+            parent.pawn.RemoveGenesFromPawn(addedGenes);
             addedGenes.Clear();
         }
 

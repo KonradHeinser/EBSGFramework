@@ -33,7 +33,7 @@ namespace EBSGFramework
                 }
             }
 
-            if (EBSGUtilities.GetCurrentTarget(pawn) != null) parent.Severity = Props.fightingSeverity;
+            if (pawn.GetCurrentTarget() != null) parent.Severity = Props.fightingSeverity;
             else if (pawn.Drafted) parent.Severity = Props.draftedSeverity;
             else parent.Severity = Props.defaultSeverity;
         }

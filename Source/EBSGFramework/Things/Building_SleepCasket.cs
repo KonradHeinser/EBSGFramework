@@ -73,7 +73,7 @@ namespace EBSGFramework
                             if (thing is Pawn pawn)
                             {
                                 num += pawn.needs.food.FoodFallPerTick;
-                                if (EBSGUtilities.HasHediff(pawn, HediffDefOf.Lactating))
+                                if (pawn.HasHediff(HediffDefOf.Lactating))
                                     num -= pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Lactating).TryGetComp<HediffComp_Lactating>().AddedNutritionPerDay() / 60000f;
                             }
                 }

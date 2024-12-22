@@ -41,7 +41,7 @@ namespace EBSGFramework
                         }
 
                         if (Extension.waterSatisfiedByRain && pawn.Map.weatherManager.RainRate > Extension.minimumRainAmount) WaterStuff();
-                        else if (EBSGUtilities.CheckNearbyWater(pawn, Extension.waterTilesNeeded, out int waterCount, Extension.maxWaterDistance)) WaterStuff();
+                        else if (pawn.CheckNearbyWater(Extension.waterTilesNeeded, out int waterCount, Extension.maxWaterDistance)) WaterStuff();
                         else NoWaterStuff();
                     }
                     else

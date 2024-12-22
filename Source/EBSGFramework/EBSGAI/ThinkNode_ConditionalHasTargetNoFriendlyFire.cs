@@ -26,7 +26,7 @@ namespace EBSGFramework
             if (noTarget) target = pawn;
             else
             {
-                target = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true);
+                target = pawn.GetCurrentTarget(autoSearch: true);
                 if (target == null || !target.HostileTo(pawn)) return false;
             }
 

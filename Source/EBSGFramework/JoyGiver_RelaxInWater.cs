@@ -11,7 +11,7 @@ namespace EBSGFramework
             if (pawn.MapHeld == null || !def.HasModExtension<EBSGExtension>()) return null;
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
-            if (!EBSGUtilities.HasAnyOfRelatedGene(pawn, extension.relatedGenes)) return null;
+            if (!pawn.HasAnyOfRelatedGene(extension.relatedGenes)) return null;
             if (pawn.Map.BadWeather()) return null;
 
             if (!RCellFinder.TryFindRandomCellNearWith(pawn.Position, (IntVec3 p) => p.GetTerrain(pawn.Map).IsWater, pawn.Map, out IntVec3 result)) return null;

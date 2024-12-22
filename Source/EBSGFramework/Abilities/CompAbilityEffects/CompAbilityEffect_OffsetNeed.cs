@@ -13,7 +13,7 @@ namespace EBSGFramework
                 pawn.HandleNeedOffsets(Props.needOffsets, Props.preventRepeats);
 
             if (parent.pawn == null || parent.pawn.needs == null || (Props.psychic && parent.pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0)) return;
-            EBSGUtilities.HandleNeedOffsets(parent.pawn, Props.casterNeedOffsets, Props.preventRepeats);
+            parent.pawn.HandleNeedOffsets(Props.casterNeedOffsets, Props.preventRepeats);
         }
     }
 }

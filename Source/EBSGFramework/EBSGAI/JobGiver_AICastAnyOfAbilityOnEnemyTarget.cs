@@ -18,7 +18,7 @@ namespace EBSGFramework
         protected override Job TryGiveJob(Pawn pawn) // Change this to select its own target instead of using the pawn's current one
         {
             if (!pawn.IsHashIntervalTick(hashInterval)) return null;
-            currentEnemy = EBSGUtilities.GetCurrentTarget(pawn, autoSearch: true);
+            currentEnemy = pawn.GetCurrentTarget(autoSearch: true);
             if (currentEnemy == null || !currentEnemy.HostileTo(pawn)) return null;
 
             presentAbilities.Clear();
@@ -42,7 +42,7 @@ namespace EBSGFramework
                             {
                                 flag |= ((comp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
                                     (comp.Props.durationMultiplier != null && otherPawn.GetStatValue(comp.Props.durationMultiplier) <= 0) ||
-                                    EBSGUtilities.HasHediff(otherPawn, comp.Props.hediffDef));
+                                    otherPawn.HasHediff(comp.Props.hediffDef));
                             }
                             else if (compAbility is CompAbilityEffect_GiveMultipleHediffs multiComp)
                             {
@@ -51,7 +51,7 @@ namespace EBSGFramework
                                 else
                                     foreach (HediffToGive hediff in multiComp.Props.hediffsToGive)
                                         if ((hediff.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                            EBSGUtilities.HasHediff(otherPawn, hediff.hediffDef))
+                                            otherPawn.HasHediff(hediff.hediffDef))
                                         {
                                             flag = true;
                                             break;
@@ -60,7 +60,7 @@ namespace EBSGFramework
                             else if (compAbility is CompAbilityEffect_BloodDrain bloodComp)
                             {
                                 flag |= (bloodComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (bloodComp.Props.replacementHediff != null && EBSGUtilities.HasHediff(otherPawn, bloodComp.Props.replacementHediff));
+                                    (bloodComp.Props.replacementHediff != null && otherPawn.HasHediff(bloodComp.Props.replacementHediff));
                             }
                             else if (compAbility is CompAbilityEffect_Stun stunComp)
                             {

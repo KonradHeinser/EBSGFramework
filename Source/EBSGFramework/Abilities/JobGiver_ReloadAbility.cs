@@ -33,7 +33,7 @@ namespace EBSGFramework
             if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) || pawn.abilities == null)
                 return null;
 
-            if (EBSGUtilities.PawnHasAnyOfAbilities(pawn, Cache.reloadableAbilities, out var abilities))
+            if (pawn.PawnHasAnyOfAbilities(Cache.reloadableAbilities, out var abilities))
                 foreach (Ability ability in abilities)
                 {
                     var reloadComp = ability.CompOfType<CompAbilityEffect_Reloadable>();

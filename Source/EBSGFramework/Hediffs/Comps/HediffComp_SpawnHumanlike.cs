@@ -59,7 +59,7 @@ namespace EBSGFramework
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Props.linkedHediff != null && !EBSGUtilities.HasHediff(Pawn, Props.linkedHediff)) return;
+            if (Props.linkedHediff != null && !Pawn.HasHediff(Props.linkedHediff)) return;
 
             if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
             {
@@ -85,7 +85,7 @@ namespace EBSGFramework
         public override void Notify_PawnKilled()
         {
             if (spawnLeft != 0 && Props.onDeath && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity
-                && (Props.linkedHediff == null || EBSGUtilities.HasHediff(Pawn, Props.linkedHediff)))
+                && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
                 SpawnPawns(Props.devStageForRemovalOrDeath, Props.spawnRemainingOnRemovalOrDeath);
@@ -97,7 +97,7 @@ namespace EBSGFramework
 
         public override void CompPostPostRemoved()
         {
-            if (!Pawn.Dead && spawnLeft != 0 && (Props.linkedHediff == null || EBSGUtilities.HasHediff(Pawn, Props.linkedHediff)))
+            if (!Pawn.Dead && spawnLeft != 0 && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
                 if (Props.onRemoval && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
@@ -250,8 +250,8 @@ namespace EBSGFramework
                 if (Props.sendLetters && faction == Faction.OfPlayer)
                 {
                     pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
-                    ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, EBSGUtilities.TranslateOrLiteral(Props.letterLabelNote)),
-                        "EBSG_CompSpawnPawnHediffText".Translate(Pawn.Label, EBSGUtilities.TranslateOrLiteral(Props.letterTextPawnDescription)), LetterDefOf.BabyBirth, pawn);
+                    ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, Props.letterLabelNote.TranslateOrLiteral()),
+                        "EBSG_CompSpawnPawnHediffText".Translate(Pawn.Label, Props.letterTextPawnDescription.TranslateOrLiteral()), LetterDefOf.BabyBirth, pawn);
                     birthLetter.Start();
                     Find.LetterStack.ReceiveLetter(birthLetter);
                 }

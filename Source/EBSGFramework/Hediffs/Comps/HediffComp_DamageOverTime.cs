@@ -9,7 +9,7 @@ namespace EBSGFramework
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             if (Props.damage == null)
-                EBSGUtilities.AddedHediffError(parent, Pawn);
+                parent.AddedHediffError(Pawn);
         }
 
         public override void CompPostTick(ref float severityAdjustment)

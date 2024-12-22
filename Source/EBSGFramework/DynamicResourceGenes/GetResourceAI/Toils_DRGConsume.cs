@@ -80,7 +80,7 @@ namespace EBSGFramework
 
                 if (relatedLinker.consumeEffect == null)
                     foreach (GeneLinker linker in target2.Thing.TryGetComp<Comp_DRGConsumable>().Props.resourceOffsets)
-                        if (linker.consumeEffect != null && EBSGUtilities.HasRelatedGene(consumer, linker.mainResourceGene))
+                        if (linker.consumeEffect != null && consumer.HasRelatedGene(linker.mainResourceGene))
                             result = linker.consumeEffect;
                 return result;
             }, delegate
@@ -218,7 +218,7 @@ namespace EBSGFramework
 
                 if (compProps != null)
                     foreach (GeneLinker linker in compProps.resourceOffsets)
-                        if (EBSGUtilities.HasRelatedGene(ingester, linker.mainResourceGene) && ingester.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
+                        if (ingester.HasRelatedGene(linker.mainResourceGene) && ingester.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
                             ResourceGene.OffsetResource(ingester, linker.amount * thing.stackCount, resource, null, true);
                 thing.Destroy();
             };

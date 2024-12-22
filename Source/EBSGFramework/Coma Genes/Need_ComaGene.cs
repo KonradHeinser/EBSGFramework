@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public List<HediffDef> currentBonuses;
 
-        public bool Comatose => EBSGUtilities.HasHediff(pawn, ComaGene.ComaExtension.comaRestingHediff);
+        public bool Comatose => pawn.HasHediff(ComaGene.ComaExtension.comaRestingHediff);
 
         private ComaExtension cachedExtension;
 
@@ -90,7 +90,7 @@ namespace EBSGFramework
                 else
                     CurLevel += ComaGene.ComaExtension.gainPerDayComatose / 400f * ComaGene.ComaEfficiency;
 
-                bool exhausted = EBSGUtilities.HasHediff(pawn, ComaGene.ComaExtension.exhaustionHediff);
+                bool exhausted = pawn.HasHediff(ComaGene.ComaExtension.exhaustionHediff);
                 if (CurLevel > 0f && exhausted)
                     pawn.RemoveHediffs(ComaGene.ComaExtension.exhaustionHediff);
                 else if (CurLevel <= 0f && !exhausted)

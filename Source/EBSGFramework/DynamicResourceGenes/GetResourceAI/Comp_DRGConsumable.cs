@@ -40,7 +40,7 @@ namespace EBSGFramework
             string text = "DRG_Consuming".Translate(parent.LabelShort);
 
             foreach (GeneLinker linker in Props.resourceOffsets)
-                if (EBSGUtilities.HasRelatedGene(selPawn, linker.mainResourceGene))
+                if (selPawn.HasRelatedGene(linker.mainResourceGene))
                 {
                     flag = true;
                     if (linker.consumptionReportString != null)

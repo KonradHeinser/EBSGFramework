@@ -237,7 +237,7 @@ namespace EBSGFramework
 
             bool flag = true;
 
-            if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !EBSGUtilities.HasHediff(pawn, pawnTerrainComps[pawn].def) || pawnTerrainComps[pawn].TryGetComp<HediffComp_TerrainCostOverride>() == null)
+            if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !pawn.HasHediff(pawnTerrainComps[pawn].def) || pawnTerrainComps[pawn].TryGetComp<HediffComp_TerrainCostOverride>() == null)
             {
                 DeRegisterTerrainPawn(pawn);
                 flag = false;

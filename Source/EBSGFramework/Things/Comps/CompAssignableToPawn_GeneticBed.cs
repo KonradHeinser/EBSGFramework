@@ -59,7 +59,7 @@ namespace EBSGFramework
             if (compComaRestBindable?.BoundPawn != null && compComaRestBindable.BoundPawn != pawn)
                 return "CannotAssignAlreadyBound".Translate(compComaRestBindable?.BoundPawn);
 
-            if (!EBSGUtilities.CheckGeneTrio(pawn, Props.anyOfGenes, Props.allOfGenes, Props.noneOfGenes))
+            if (!pawn.CheckGeneTrio(Props.anyOfGenes, Props.allOfGenes, Props.noneOfGenes))
                 return "EBSG_InvalidGenes".Translate();
 
             return base.CanAssignTo(pawn);

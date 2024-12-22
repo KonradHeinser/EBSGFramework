@@ -102,7 +102,7 @@ namespace EBSGFramework
                 if (cachedComaGene == null)
                 {
                     if (boundPawn == null) return null;
-                    EBSGUtilities.PawnHasAnyOfGenes(BoundPawn, out GeneDef linkingGene, Props.relatedGenes);
+                    BoundPawn.PawnHasAnyOfGenes(out GeneDef linkingGene, Props.relatedGenes);
                     cachedComaGene = boundPawn.genes?.GetGene(linkingGene) as Gene_Coma;
                 }
 
@@ -215,7 +215,7 @@ namespace EBSGFramework
                 return false;
             if (boundPawn != null)
                 return boundPawn == pawn;
-            return EBSGUtilities.HasAnyOfRelatedGene(pawn, Props.relatedGenes);
+            return pawn.HasAnyOfRelatedGene(Props.relatedGenes);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -228,7 +228,7 @@ namespace EBSGFramework
             if (boundPawn != null && !parent.Map.mapPawns.PawnsInFaction(parent.Faction).NullOrEmpty())
                 foreach (Pawn item in parent.Map.mapPawns.PawnsInFaction(parent.Faction))
                 {
-                    if (!EBSGUtilities.PawnHasAnyOfGenes(item, out GeneDef linkingGene, Props.relatedGenes)) continue;
+                    if (!item.PawnHasAnyOfGenes(out GeneDef linkingGene, Props.relatedGenes)) continue;
                     Gene_Coma comaGene = boundPawn.genes?.GetGene(linkingGene) as Gene_Coma;
                     if (comaGene.ComaNeed.Comatose && comaGene.CanBindToBindable(this))
                         comaGene.BindTo(this);

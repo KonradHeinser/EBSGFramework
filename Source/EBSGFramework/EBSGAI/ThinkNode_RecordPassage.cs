@@ -30,7 +30,7 @@ namespace EBSGFramework
             }
             if (reportTarget)
             {
-                Thing target = EBSGUtilities.GetCurrentTarget(pawn, false, false, autoSearchForTarget);
+                Thing target = pawn.GetCurrentTarget(false, false, autoSearchForTarget);
                 if (target == null) Log.Message("EBSG_NoTargetFound".Translate());
                 else Log.Message("EBSG_PawnCurrentTarget".Translate(target.Label, target.Position.DistanceTo(pawn.Position)));
             }

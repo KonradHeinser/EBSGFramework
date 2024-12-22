@@ -16,7 +16,7 @@ namespace EBSGFramework
             {
                 foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
                 {
-                    if (EBSGUtilities.HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
+                    if (item.HasRelatedGene(extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
                     {
                         return ThoughtState.ActiveDefault;
                     }
@@ -25,7 +25,7 @@ namespace EBSGFramework
             }
             foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
             {
-                if (!EBSGUtilities.HasRelatedGene(item, extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
+                if (!item.HasRelatedGene(extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
                 {
                     return ThoughtState.ActiveDefault;
                 }

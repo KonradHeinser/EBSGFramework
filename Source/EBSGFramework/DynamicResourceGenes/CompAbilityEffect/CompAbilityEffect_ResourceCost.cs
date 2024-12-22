@@ -45,7 +45,7 @@ namespace EBSGFramework
 
         public override bool GizmoDisabled(out string reason)
         {
-            if (!EBSGUtilities.HasRelatedGene(parent.pawn, Props.mainResourceGene))
+            if (!parent.pawn.HasRelatedGene(Props.mainResourceGene))
             {
                 reason = "AbilityDisabledNoResourceGene".Translate(parent.pawn, Props.mainResourceGene.LabelCap);
                 return true;

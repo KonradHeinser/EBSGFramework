@@ -25,18 +25,18 @@ namespace EBSGFramework
                 }
                 if (!extension.requiredGenes.NullOrEmpty())
                 {
-                    if (!EBSGUtilities.HasAnyOfRelatedGene(p, extension.requiredGenes))
+                    if (!p.HasAnyOfRelatedGene(extension.requiredGenes))
                         return ThoughtState.Inactive;
                 }
                 if (!extension.compoundingHatred)
                 {
                     if (extension.opinionOfAllOthers)
                     {
-                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var nullifyingGene, extension.nullifyingGenes)) return ThoughtState.Inactive;
+                        if (otherPawn.PawnHasAnyOfGenes(out var nullifyingGene, extension.nullifyingGenes)) return ThoughtState.Inactive;
                         if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
                         if (!extension.checkedGenes.NullOrEmpty())
                         {
-                            if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var gene, extension.checkedGenes)) return ThoughtState.ActiveAtStage(0);
+                            if (otherPawn.PawnHasAnyOfGenes(out var gene, extension.checkedGenes)) return ThoughtState.ActiveAtStage(0);
                             return ThoughtState.Inactive;
                         }
                         return ThoughtState.ActiveAtStage(0);
@@ -54,7 +54,7 @@ namespace EBSGFramework
                     int num = 0;
                     if (extension.opinionOfAllOthers)
                     {
-                        if (EBSGUtilities.PawnHasAnyOfGenes(otherPawn, out var gene, extension.nullifyingGenes)) return ThoughtState.Inactive;
+                        if (otherPawn.PawnHasAnyOfGenes(out var gene, extension.nullifyingGenes)) return ThoughtState.Inactive;
                         if (extension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
                     }
                     if (!extension.checkedGenes.NullOrEmpty())

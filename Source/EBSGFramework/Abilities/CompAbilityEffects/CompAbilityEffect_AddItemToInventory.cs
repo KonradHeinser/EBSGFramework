@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (Props.targetThing != null && EBSGUtilities.TargetIsPawn(target, out Pawn targetPawn))
+            if (Props.targetThing != null && target.TargetIsPawn(out Pawn targetPawn))
             {
                 Thing thing = ThingMaker.MakeThing(Props.targetThing, Props.targetStuffing);
                 thing.stackCount = Props.targetCount;
