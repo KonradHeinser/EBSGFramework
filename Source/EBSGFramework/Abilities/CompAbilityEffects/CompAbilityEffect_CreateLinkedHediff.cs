@@ -25,12 +25,12 @@ namespace EBSGFramework
             if (EBSGUtilities.AbilityCompSucceeds(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies))
             {
                 if (Props.successMessage != null)
-                    EBSGUtilities.GiveSimplePlayerMessage(Props.successMessage, parent.pawn, MessageTypeDefOf.SilentInput);
+                    EBSGUtilities.GiveSimplePlayerMessage(Props.successMessage.TranslateOrLiteral(), parent.pawn, MessageTypeDefOf.SilentInput);
             }
             else
             {
                 if (Props.failureMessage != null)
-                    EBSGUtilities.GiveSimplePlayerMessage(Props.failureMessage, parent.pawn, MessageTypeDefOf.SilentInput);
+                    EBSGUtilities.GiveSimplePlayerMessage(Props.failureMessage.TranslateOrLiteral(), parent.pawn, MessageTypeDefOf.SilentInput);
                 return;
             }
 

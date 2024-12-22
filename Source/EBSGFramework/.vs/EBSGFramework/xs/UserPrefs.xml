@@ -1,7 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Abilities/CompAbilityEffects/CompAbilityEffect_CreateLinkedHediff.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="1401" Column="40" />
+      <File FileName="EBSGUtilities.cs" Line="96" Column="45" />
+      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_CreateLinkedHediff.cs" Line="21" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -9,32 +10,11 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="Coma Genes" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="CompAbilityEffect" expanded="True" />
-                <Node name="GetResourceAI" expanded="True" />
-              </Node>
-              <Node name="EBSGAI" expanded="True" />
-              <Node name="GameComponents" expanded="True" />
-              <Node name="Genes" expanded="True">
-                <Node name="ConditionalStatAffecters" expanded="True" />
-              </Node>
-              <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffSetters" expanded="True" />
+                <Node name="CompAbilityEffects" expanded="True">
+                  <Node name="CompAbilityEffect_CreateLinkedHediff.cs" selected="True" />
                 </Node>
               </Node>
-              <Node name="HiveMind" expanded="True" />
-              <Node name="Things" expanded="True">
-                <Node name="Comps" expanded="True" />
-              </Node>
-              <Node name="Thoughts" expanded="True" />
-              <Node name="EBSGUtilities.cs" selected="True" />
+              <Node name="Harmony" expanded="True" />
             </Node>
           </Node>
         </State>
