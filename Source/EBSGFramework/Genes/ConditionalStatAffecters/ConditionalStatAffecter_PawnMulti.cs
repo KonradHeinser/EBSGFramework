@@ -38,11 +38,11 @@ namespace EBSGFramework
         {
             if (req.Pawn != null)
             {
-                if (!EBSGUtilities.CapacityConditionsMet(req.Pawn, capLimiters)) return false;
-                if (!EBSGUtilities.AllNeedLevelsMet(req.Pawn, needLevels)) return false;
-                if (!EBSGUtilities.AllSkillLevelsMet(req.Pawn, skillLimiters)) return false;
-                if (!EBSGUtilities.CheckHediffTrio(req.Pawn, anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
-                if (!EBSGUtilities.CheckGeneTrio(req.Pawn, anyOfGenes, allOfGenes, noneOfGenes)) return false;
+                if (!req.Pawn.CapacityConditionsMet(capLimiters)) return false;
+                if (!req.Pawn.AllNeedLevelsMet(needLevels)) return false;
+                if (!req.Pawn.AllSkillLevelsMet(skillLimiters)) return false;
+                if (!req.Pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
+                if (!req.Pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 
                 return true;
             }

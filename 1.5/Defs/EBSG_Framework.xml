@@ -117,6 +117,14 @@
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 
+    <JobDef>
+        <defName>EBSG_ReloadAbility</defName>
+        <driverClass>EBSGFramework.JobDriver_ReloadAbility</driverClass>
+        <reportString>recharging ability.</reportString>
+        <suspendable>false</suspendable>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

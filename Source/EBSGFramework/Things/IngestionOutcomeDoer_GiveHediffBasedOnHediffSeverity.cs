@@ -98,7 +98,7 @@ namespace EBSGFramework
             if (divideByBodySize) effect /= pawn.BodySize;
             AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize_NewTemp(pawn, toleranceChemical, ref effect, multiplyByGeneToleranceFactors);
 
-            EBSGUtilities.AddOrAppendHediffs(pawn, effect, effect, hediffDef);
+            pawn.AddOrAppendHediffs(effect, effect, hediffDef);
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats(ThingDef parentDef)

@@ -50,7 +50,7 @@ namespace EBSGFramework
 
         public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
         {
-            return EBSGUtilities.HasRelatedGene(pawn, relatedGene); // Has related gene checks for biotech active and genes existing
+            return pawn.HasRelatedGene(relatedGene); // Has related gene checks for biotech active and genes existing
         }
     }
 }

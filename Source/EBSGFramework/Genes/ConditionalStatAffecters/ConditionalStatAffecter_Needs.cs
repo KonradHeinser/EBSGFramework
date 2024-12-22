@@ -21,7 +21,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Pawn != null)
-                return EBSGUtilities.AllNeedLevelsMet(req.Pawn, needLevels);
+                return req.Pawn.AllNeedLevelsMet(needLevels);
 
             return false;
         }

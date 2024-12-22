@@ -18,7 +18,7 @@ namespace EBSGFramework
             {
                 BodyPartRecord hitPart = null;
                 if (Props.damageAttachedPart && parent.Part != null) hitPart = parent.Part;
-                else if (!Props.bodyParts.NullOrEmpty()) hitPart = EBSGUtilities.GetSemiRandomPartFromList(Props.bodyParts, Pawn);
+                else if (!Props.bodyParts.NullOrEmpty()) hitPart = Pawn.GetSemiRandomPartFromList(Props.bodyParts);
 
                 Pawn.TakeDamage(new DamageInfo(Props.damage, Props.damageAmount, Props.armorPenetration, hitPart: hitPart, spawnFilth: Props.createFilth));
             }

@@ -21,7 +21,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Pawn != null)
-                return EBSGUtilities.CapacityConditionsMet(req.Pawn, capLimiters);
+                return req.Pawn.CapacityConditionsMet(capLimiters);
 
             return false;
         }

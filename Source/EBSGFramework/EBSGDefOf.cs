@@ -22,6 +22,7 @@ namespace EBSGFramework
         public static JobDef EBSG_NeedCharge;
         public static JobDef EBSG_GathererJob;
         public static JobDef EBSG_EnterSleepCasket;
+        public static JobDef EBSG_ReloadAbility;
 
         public static ThingDef EBSG_PawnLeaving;
         public static WorldObjectDef EBSG_PawnFlying;

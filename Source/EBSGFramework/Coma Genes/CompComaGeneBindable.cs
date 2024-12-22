@@ -116,7 +116,7 @@ namespace EBSGFramework
             {
                 if (Props.hediffToApply != null)
                 {
-                    EBSGUtilities.AddOrAppendHediffs(boundPawn, Props.severity, Props.severity, Props.hediffToApply);
+                    boundPawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffToApply);
                     boundPawn.health.AddHediff(Props.hediffToApply);
                     ComaGene.temporaryHediffs.Add(Props.hediffToApply);
                 }

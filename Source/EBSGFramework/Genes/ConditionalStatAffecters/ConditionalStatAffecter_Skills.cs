@@ -21,7 +21,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Pawn != null)
-                return EBSGUtilities.AllSkillLevelsMet(req.Pawn, skillLimiters);
+                return req.Pawn.AllSkillLevelsMet(skillLimiters);
 
             return false;
         }

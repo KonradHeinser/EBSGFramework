@@ -33,7 +33,7 @@ namespace EBSGFramework
                     {
                         if (Props.gene != null)
                         {
-                            if (EBSGUtilities.HasRelatedGene(pawn, Props.gene))
+                            if (pawn.HasRelatedGene(Props.gene))
                                 count++;
                         }
                         if (!Props.genes.NullOrEmpty())
@@ -62,7 +62,7 @@ namespace EBSGFramework
 
                 if (Props.gene != null)
                 {
-                    if (EBSGUtilities.HasRelatedGene(pawn, Props.gene))
+                    if (pawn.HasRelatedGene(Props.gene))
                         count++;
                 }
                 if (!Props.genes.NullOrEmpty())

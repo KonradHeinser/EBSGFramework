@@ -68,7 +68,7 @@ namespace EBSGFramework
                         if (Cache != null)
                         {
                             foreach (GeneDef gene in Cache.dynamicResourceGenes)
-                                if (EBSGUtilities.HasRelatedGene(item, gene) && item.genes.GetGene(gene) is ResourceGene resource)
+                                if (item.HasRelatedGene(gene) && item.genes.GetGene(gene) is ResourceGene resource)
                                     if (resource.Value < resource.MinLevelForAlert)
                                     {
                                         targets.Add(item);

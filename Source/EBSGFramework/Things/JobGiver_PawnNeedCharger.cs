@@ -65,7 +65,7 @@ namespace EBSGFramework
                 {
                     foreach (GeneEffect geneEffect in extension.resourceOffsetsPerHour)
                     {
-                        if (EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
+                        if (pawn.HasRelatedGene(geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
                         {
                             if (geneEffect.offset <= 0 && resourceGene.Value < resourceGene.targetValue)
                             {

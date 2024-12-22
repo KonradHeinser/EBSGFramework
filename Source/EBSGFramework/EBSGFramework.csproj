@@ -426,6 +426,12 @@
         <Compile Include="Abilities\CompProperties\CompProperties_AbilityReloadable.cs" />
         <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_Reloadable.cs" />
         <Compile Include="Generic List Classes\ExclusionLevel.cs" />
+        <Compile Include="Abilities\JobGiver_ReloadAbility.cs" />
+        <Compile Include="Abilities\JobDriver_ReloadAbility.cs" />
+        <Compile Include="Hediffs\CompProperties\Explosive\HediffCompProperties_ExplodeOnRemoval.cs" />
+        <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeOnRemoval.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveAtSeverities.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_RemoveAtSeverities.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

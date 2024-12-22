@@ -19,7 +19,7 @@ namespace EBSGFramework
         {
             base.PostAdd();
             HediffAdder.HediffAdding(pawn, this);
-            if (def.HasModExtension<HiveMindExtension>()) 
+            if (def.HasModExtension<HiveMindExtension>())
             {
                 extension = def.GetModExtension<HiveMindExtension>();
                 if (!extension.hiveRolesToCheckFor.NullOrEmpty())
@@ -46,7 +46,7 @@ namespace EBSGFramework
             if (allHediffs.NullOrEmpty()) BuildAllHediffsList();
             if (completeWipe)
             {
-                EBSGUtilities.RemoveHediffs(pawn, null, allHediffs); // Wipe slate
+                pawn.RemoveHediffs(null, allHediffs); // Wipe slate
                 completeWipe = false;
             }
             StartHiveCheck();
@@ -55,7 +55,7 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             base.PostRemove();
-            EBSGUtilities.RemoveHediffs(pawn, null, addedHediffs); // Wipe slate
+            pawn.RemoveHediffs(null, addedHediffs); // Wipe slate
         }
 
         public void StartHiveCheck()
@@ -63,7 +63,7 @@ namespace EBSGFramework
             List<Pawn> allies = GetAllies();
             if (allies.NullOrEmpty()) // If there's no allies, get out of here because this place is weird
             {
-                EBSGUtilities.RemoveHediffs(pawn, null, addedHediffs); // Wipe slate
+                pawn.RemoveHediffs(null, addedHediffs); // Wipe slate
                 previousCounts.Clear();
                 addedHediffs.Clear();
                 stillAlone = false; // Prep for less weird scenario
@@ -77,23 +77,23 @@ namespace EBSGFramework
                 {
                     if (!stillAlone)
                     {
-                        EBSGUtilities.RemoveHediffs(pawn, null, addedHediffs); // Wipe slate
+                        pawn.RemoveHediffs(null, addedHediffs); // Wipe slate
                         previousCounts.Clear();
-                        addedHediffs = EBSGUtilities.ApplyHediffs(pawn, null, hediffsWhenNoAllies); // Add the lonely hediffs
+                        addedHediffs = pawn.ApplyHediffs(null, hediffsWhenNoAllies); // Add the lonely hediffs
                         stillAlone = true; // Prep for continued loneliness. No reason to keep removing and adding hediffs if still alone
                     }
                 }
                 else
                 {
 
-                    EBSGUtilities.RemoveHediffs(pawn, null, addedHediffs); // Wipe slate
+                    pawn.RemoveHediffs(null, addedHediffs); // Wipe slate
                     addedHediffs.Clear();
                     foreach (HiveRoleToCheckFor hiveRole in extension.hiveRolesToCheckFor)
                     {
                         List<HediffDef> tempHediffs = new List<HediffDef>();
-                        if (hiveCounts[hiveRole.checkKey] < hiveRole.minCount) tempHediffs = EBSGUtilities.ApplyHediffs(pawn, hiveRole.hediffWhenTooFew, hiveRole.hediffsWhenTooFew);
-                        else if (hiveRole.minCount <= hiveRole.maxCount && hiveCounts[hiveRole.checkKey] > hiveRole.maxCount) tempHediffs = EBSGUtilities.ApplyHediffs(pawn, hiveRole.hediffWhenTooMany, hiveRole.hediffsWhenTooMany);
-                        else tempHediffs = EBSGUtilities.ApplyHediffs(pawn, hiveRole.hediffWhenEnough, hiveRole.hediffsWhenEnough);
+                        if (hiveCounts[hiveRole.checkKey] < hiveRole.minCount) tempHediffs = pawn.ApplyHediffs(hiveRole.hediffWhenTooFew, hiveRole.hediffsWhenTooFew);
+                        else if (hiveRole.minCount <= hiveRole.maxCount && hiveCounts[hiveRole.checkKey] > hiveRole.maxCount) tempHediffs = pawn.ApplyHediffs(hiveRole.hediffWhenTooMany, hiveRole.hediffsWhenTooMany);
+                        else tempHediffs = pawn.ApplyHediffs(hiveRole.hediffWhenEnough, hiveRole.hediffsWhenEnough);
 
                         if (addedHediffs.NullOrEmpty()) addedHediffs = tempHediffs;
                         else if (!tempHediffs.NullOrEmpty()) foreach (HediffDef hediff in tempHediffs) addedHediffs.Add(hediff);
@@ -108,7 +108,7 @@ namespace EBSGFramework
             hiveGenesPresent.Clear();
             List<Pawn> allies = new List<Pawn>(pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction));
             List<Pawn> removeAllies = new List<Pawn>();
-            foreach(Pawn ally in allies)
+            foreach (Pawn ally in allies)
             {
                 bool flag = true;
                 if (!ally.Dead && ally.genes != null)
@@ -193,7 +193,7 @@ namespace EBSGFramework
         }
 
         public void BuildHiveCount(List<Pawn> allies)
-        { 
+        {
             hiveCounts.Clear();
             foreach (GeneDef gene in hiveGenesPresent)
             {

@@ -14,7 +14,7 @@ namespace EBSGFramework
             if (pawn == null) return null;
 
             foreach (GeneLinker linker in Props.resourceOffsets)
-                if (EBSGUtilities.HasRelatedGene(pawn, linker.mainResourceGene))
+                if (pawn.HasRelatedGene(linker.mainResourceGene))
                     return linker;
 
             return null;
@@ -26,7 +26,7 @@ namespace EBSGFramework
             int num = 1;
 
             foreach (GeneLinker linker in Props.resourceOffsets)
-                if (EBSGUtilities.HasRelatedGene(pawn, linker.mainResourceGene) && pawn.genes.GetGene(linker.mainResourceGene) is ResourceGene resourceGene)
+                if (pawn.HasRelatedGene(linker.mainResourceGene) && pawn.genes.GetGene(linker.mainResourceGene) is ResourceGene resourceGene)
                     if (Mathf.FloorToInt(resourceGene.AmountMissing / linker.amount) > num)
                         num = Mathf.FloorToInt(resourceGene.AmountMissing / linker.amount);
 

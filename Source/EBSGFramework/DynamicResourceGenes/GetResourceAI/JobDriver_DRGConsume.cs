@@ -43,7 +43,7 @@ namespace EBSGFramework
                     return relatedLinker.consumptionReportString.Formatted(thing.LabelShort, thing);
 
                 foreach (GeneLinker linker in thing.TryGetComp<Comp_DRGConsumable>().Props.resourceOffsets)
-                    if (linker.consumptionReportString != null && EBSGUtilities.HasRelatedGene(pawn, linker.mainResourceGene))
+                    if (linker.consumptionReportString != null && pawn.HasRelatedGene(linker.mainResourceGene))
                         return linker.consumptionReportString.Formatted(thing.LabelShort, thing);
             }
             return "DRG_Consuming".Translate(thing.LabelShort);

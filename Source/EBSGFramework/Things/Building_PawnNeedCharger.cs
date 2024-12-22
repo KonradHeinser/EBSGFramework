@@ -187,9 +187,9 @@ namespace EBSGFramework
 
             if (!Extension.resourceOffsetsPerHour.NullOrEmpty() && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
                 foreach (GeneEffect geneEffect in Extension.resourceOffsetsPerHour)
-                    if (geneEffect.offset > 0 && EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
+                    if (geneEffect.offset > 0 && pawn.HasRelatedGene(geneEffect.gene))
                         return true;
-                    else if (!Extension.negativeResourceOffsetsAreNotCosts && geneEffect.offset < 0 && !EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
+                    else if (!Extension.negativeResourceOffsetsAreNotCosts && geneEffect.offset < 0 && !pawn.HasRelatedGene(geneEffect.gene))
                         return false; // If the offset is negative, then treat it as a required cost for use
 
             return false;
@@ -217,8 +217,8 @@ namespace EBSGFramework
                 StopCharging();
             if (currentPawn != null && IsPowered && IsFueled)
             {
-                EBSGUtilities.HandleNeedOffsets(currentPawn, Extension.needOffsetsPerHour, true, 1, true);
-                EBSGUtilities.HandleDRGOffsets(currentPawn, Extension.resourceOffsetsPerHour, 1, true);
+                currentPawn.HandleNeedOffsets(Extension.needOffsetsPerHour, true, 1, true);
+                currentPawn.HandleDRGOffsets(Extension.resourceOffsetsPerHour, 1, true);
                 if (WasteProducer != null && Extension?.wastePerHourOfUse > 0)
                 {
                     wasteProduced += Extension.wastePerHourOfUse * 0.0004f;
@@ -276,7 +276,7 @@ namespace EBSGFramework
             if (!Extension.resourceOffsetsPerHour.NullOrEmpty() && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
                 foreach (GeneEffect geneEffect in Extension.resourceOffsetsPerHour)
                 {
-                    if (!EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene))
+                    if (!pawn.HasRelatedGene(geneEffect.gene))
                     {
                         if (geneEffect.offset > 0) continue;
                         if (!Extension.negativeResourceOffsetsAreNotCosts) return true;

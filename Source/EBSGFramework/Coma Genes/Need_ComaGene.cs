@@ -92,11 +92,11 @@ namespace EBSGFramework
 
                 bool exhausted = EBSGUtilities.HasHediff(pawn, ComaGene.ComaExtension.exhaustionHediff);
                 if (CurLevel > 0f && exhausted)
-                    EBSGUtilities.RemoveHediffs(pawn, ComaGene.ComaExtension.exhaustionHediff);
+                    pawn.RemoveHediffs(ComaGene.ComaExtension.exhaustionHediff);
                 else if (CurLevel <= 0f && !exhausted)
                 {
-                    EBSGUtilities.RemoveHediffs(pawn, null, currentBonuses);
-                    EBSGUtilities.AddOrAppendHediffs(pawn, hediff: ComaGene.ComaExtension.exhaustionHediff);
+                    pawn.RemoveHediffs(null, currentBonuses);
+                    pawn.AddOrAppendHediffs(hediff: ComaGene.ComaExtension.exhaustionHediff);
                 }
             }
             return;

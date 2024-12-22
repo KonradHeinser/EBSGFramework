@@ -87,7 +87,7 @@ namespace EBSGFramework
                     if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                         foundParts.Add(bodyPartDef, 0);
 
-                    EBSGUtilities.AddHediffToPart(target, target.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToGive.hediffDef, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
+                    target.AddHediffToPart(target.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToGive.hediffDef, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
                     foundParts[bodyPartDef]++;
                 }
             }

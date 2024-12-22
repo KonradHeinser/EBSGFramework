@@ -188,9 +188,9 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             base.PostRemove();
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaRestingHediff);
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaInterruptedHediff);
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff);
+            pawn.RemoveHediffs(ComaExtension.comaRestingHediff);
+            pawn.RemoveHediffs(ComaExtension.comaInterruptedHediff);
+            pawn.RemoveHediffs(ComaExtension.exhaustionHediff);
             RemoveOldComaBonuses();
             Reset();
         }
@@ -255,8 +255,8 @@ namespace EBSGFramework
         public void Notify_ComaStarted()
         {
             pawn.health.AddHediff(ComaExtension.comaRestingHediff);
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.comaInterruptedHediff);
-            EBSGUtilities.RemoveHediffs(pawn, ComaExtension.exhaustionHediff);
+            pawn.RemoveHediffs(ComaExtension.comaInterruptedHediff);
+            pawn.RemoveHediffs(ComaExtension.exhaustionHediff);
             if (ComaExtension.usesBuildings)
             {
                 RemoveOldComaBonuses();
@@ -295,7 +295,7 @@ namespace EBSGFramework
 
         public void RemoveOldComaBonuses()
         {
-            EBSGUtilities.RemoveHediffs(pawn, null, temporaryHediffs);
+            pawn.RemoveHediffs(null, temporaryHediffs);
             pawn.genes.GetFirstGeneOfType<Gene_Hemogen>()?.ResetMax();
         }
 

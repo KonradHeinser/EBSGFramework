@@ -57,9 +57,9 @@ namespace EBSGFramework
                 if (Extension != null && Extension.hediffWhenEmpty != null)
                 {
                     if (CurLevel <= 0)
-                        EBSGUtilities.AddOrAppendHediffs(pawn, Extension.initialSeverity, Extension.risePerDayWhenEmpty / 400f, Extension.hediffWhenEmpty);
+                        pawn.AddOrAppendHediffs(Extension.initialSeverity, Extension.risePerDayWhenEmpty / 400f, Extension.hediffWhenEmpty);
                     else
-                        EBSGUtilities.AddOrAppendHediffs(pawn, 0, (Extension.fallPerDayWhenNotEmpty / 400f) * -1, Extension.hediffWhenEmpty);
+                        pawn.AddOrAppendHediffs(0, (Extension.fallPerDayWhenNotEmpty / 400f) * -1, Extension.hediffWhenEmpty);
                 }
             }
         }

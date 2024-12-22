@@ -116,7 +116,7 @@ namespace EBSGFramework
             if (Cache != null)
             {
                 foreach (GeneDef gene in Cache.dynamicResourceGenes)
-                    if (EBSGUtilities.HasRelatedGene(pawn, gene))
+                    if (pawn.HasRelatedGene(gene))
                         resourcesPresent.Add(pawn.genes.GetGene(gene) as ResourceGene);
             }
             else

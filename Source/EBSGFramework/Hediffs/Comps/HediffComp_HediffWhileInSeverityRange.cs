@@ -36,7 +36,7 @@ namespace EBSGFramework
                 {
                     if (!addedHediffs.Contains(severityLevel.hediff) && !EBSGUtilities.HasHediff(Pawn, severityLevel.hediff))
                     {
-                        EBSGUtilities.AddOrAppendHediffs(Pawn, hediff: severityLevel.hediff);
+                        Pawn.AddOrAppendHediffs(hediff: severityLevel.hediff);
                         addedHediffs.Add(severityLevel.hediff);
                     }
                 }
@@ -44,7 +44,7 @@ namespace EBSGFramework
                 {
                     if (addedHediffs.Contains(severityLevel.hediff) && EBSGUtilities.HasHediff(Pawn, severityLevel.hediff))
                     {
-                        EBSGUtilities.RemoveHediffs(Pawn, severityLevel.hediff);
+                        Pawn.RemoveHediffs(severityLevel.hediff);
                         addedHediffs.Remove(severityLevel.hediff);
                     }
                 }
@@ -56,7 +56,7 @@ namespace EBSGFramework
             base.CompPostPostRemoved();
             if (addedHediffs != null && !addedHediffs.NullOrEmpty())
             {
-                EBSGUtilities.RemoveHediffs(Pawn, null, addedHediffs);
+                Pawn.RemoveHediffs(null, addedHediffs);
                 addedHediffs.Clear();
             }
         }

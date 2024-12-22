@@ -52,7 +52,7 @@ namespace EBSGFramework
             if (Extension?.hediffsToGivePostConsumption.NullOrEmpty() == false)
                 foreach (HediffToParts hediffSet in Extension.hediffsToGivePostConsumption)
                     if (!hediffSet.consumedThings.NullOrEmpty() && hediffSet.consumedThings.Contains(thing.def))
-                        EBSGUtilities.AddHediffToParts(pawn, null, hediffSet);
+                        pawn.AddHediffToParts(null, hediffSet);
         }
 
         public override void PostAdd()
@@ -85,7 +85,7 @@ namespace EBSGFramework
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
-                EBSGUtilities.AddHediffToParts(pawn, Extension.hediffsToApplyAtAges);
+                pawn.AddHediffToParts(Extension.hediffsToApplyAtAges);
             }
             if (def.HasModExtension<EquipRestrictExtension>() && (pawn.equipment != null || pawn.apparel != null))
             {
@@ -193,7 +193,7 @@ namespace EBSGFramework
                         return;
                     }
 
-                    EBSGUtilities.AddHediffToParts(pawn, Extension.hediffsToApplyAtAges, null, true);
+                    pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
                 }
             }
 
@@ -212,7 +212,7 @@ namespace EBSGFramework
         public override void PostRemove()
         {
             if (Extension != null && !Extension.hediffsToApplyAtAges.NullOrEmpty())
-                EBSGUtilities.RemoveHediffsFromParts(pawn, Extension.hediffsToApplyAtAges);
+                pawn.RemoveHediffsFromParts(Extension.hediffsToApplyAtAges);
         }
 
         public static void LimitAge(Pawn pawn, FloatRange expectedAges, FloatRange ageRange, bool sameBioAndChrono = false, bool removeChronic = true)

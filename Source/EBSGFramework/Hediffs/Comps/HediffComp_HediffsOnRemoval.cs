@@ -39,7 +39,7 @@ namespace EBSGFramework
                         }
                 }
 
-                EBSGUtilities.AddOrAppendHediffs(pawn, hediffToGive.severity, hediffToGive.severity, hediffToGive.hediffDef, hediffToGive.hediffDefs);
+                pawn.AddOrAppendHediffs(hediffToGive.severity, hediffToGive.severity, hediffToGive.hediffDef, hediffToGive.hediffDefs);
             }
             else
             {
@@ -52,10 +52,10 @@ namespace EBSGFramework
                         foundParts.Add(bodyPartDef, 0);
 
                     if (hediffToGive.hediffDef != null)
-                        EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToGive.hediffDef, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
+                        pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToGive.hediffDef, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
                     if (!hediffToGive.hediffDefs.NullOrEmpty())
                         foreach (HediffDef hediff in hediffToGive.hediffDefs)
-                            EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediff, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
+                            pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediff, hediffToGive.severity, hediffToGive.severity, hediffToGive.replaceExisting);
                     foundParts[bodyPartDef]++;
                 }
             }

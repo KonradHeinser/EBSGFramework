@@ -179,7 +179,7 @@ namespace EBSGFramework
 
                 foreach (GeneDef gene in moodMultiplyingGenes)
                 {
-                    if (EBSGUtilities.HasRelatedGene(pawn, gene))
+                    if (pawn.HasRelatedGene(gene))
                     {
                         EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
                         if (extension != null)

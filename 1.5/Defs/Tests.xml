@@ -42,6 +42,37 @@
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
     </HediffDef>
+
+    <HediffDef>
+        <defName>Exploder</defName>
+        <label>exploder</label>
+        <description>This is a test hediff</description>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.001</initialSeverity>
+        <stages />
+        <hediffClass>HediffWithComps</hediffClass>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <comps>
+            <li Class="EBSGFramework.HediffCompProperties_RemoveAtSeverities">
+                <severity>0.9</severity>
+            </li>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>20</severityPerDay>
+            </li>
+            <li Class="EBSGFramework.HediffCompProperties_ExplodeOnRemoval">
+                <allowDead>True</allowDead>
+                <radius>10</radius>
+                <damageDef>Burn</damageDef>
+                <exclusions>None</exclusions>
+                <extraGasType>None</extraGasType>
+                <explosionSound>Foam_Impact</explosionSound>
+                <preExplosionThing>Filth_Fuel</preExplosionThing>
+                <preExplosionThingChance>1</preExplosionThingChance>
+                <chanceToStartFire>0.50</chanceToStartFire>
+                <damageAmount>40</damageAmount>
+            </li>
+        </comps>
+    </HediffDef>
 </Defs>
 
 <!-- 

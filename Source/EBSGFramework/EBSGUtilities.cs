@@ -114,12 +114,12 @@ namespace EBSGFramework
             pawn.health.RemoveHediff(hediff);
         }
 
-        public static int RemoveAllOfHediffs(Pawn pawn, List<Hediff> hediffs)
+        public static int RemoveAllOfHediffs(this Pawn pawn, List<Hediff> hediffs)
         {
             int removeCount = 0;
             if (pawn != null && !hediffs.NullOrEmpty() && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
                 foreach (Hediff hediff in hediffs)
-                    if (HediffInHediffSet(pawn, hediff))
+                    if (pawn.HediffInHediffSet(hediff))
                     {
                         removeCount++;
                         pawn.health.RemoveHediff(hediff);
@@ -127,23 +127,23 @@ namespace EBSGFramework
             return removeCount;
         }
 
-        public static bool PawnHasAnyHediff(Corpse corpse)
+        public static bool PawnHasAnyHediff(this Corpse corpse)
         {
-            return PawnHasAnyHediff(corpse.InnerPawn);
+            return corpse.InnerPawn.PawnHasAnyHediff();
         }
 
-        public static bool PawnHasAnyHediff(Pawn pawn)
+        public static bool PawnHasAnyHediff(this Pawn pawn)
         {
             return pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty();
         }
 
-        private static bool HediffInHediffSet(Pawn pawn, Hediff hediff)
+        private static bool HediffInHediffSet(this Pawn pawn, Hediff hediff)
         {
             if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
             return pawn.health.hediffSet.hediffs.Contains(hediff);
         }
 
-        public static bool ConditionOrExclusiveIsActive(GameConditionDef gameCondition, Map map)
+        public static bool ConditionOrExclusiveIsActive(this GameConditionDef gameCondition, Map map)
         {
             if (map.GameConditionManager != null && !map.GameConditionManager.ActiveConditions.NullOrEmpty())
             {
@@ -156,7 +156,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static BodyPartRecord GetSemiRandomPartFromList(List<BodyPartDef> bodyParts, Pawn pawn)
+        public static BodyPartRecord GetSemiRandomPartFromList(this Pawn pawn, List<BodyPartDef> bodyParts)
         {
             List<BodyPartRecord> parts = pawn.RaceProps.body.GetPartsWithDef(bodyParts.RandomElement());
 
@@ -224,7 +224,7 @@ namespace EBSGFramework
             return thing;
         }
 
-        public static Hediff GetFirstHediffAttachedToPart(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
+        public static Hediff GetFirstHediffAttachedToPart(this Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
         {
             if (hediffDef == null) return null;
             Hediff hediff = null;
@@ -274,11 +274,11 @@ namespace EBSGFramework
             return hediff;
         }
 
-        public static void RemoveDamage(Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPart, float damageRemoved)
+        public static void RemoveDamage(this Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPart, float damageRemoved)
         {
             while (damageRemoved > 0)
             {
-                Hediff hediff = GetFirstHediffAttachedToPart(pawn, hediffDef, bodyPart);
+                Hediff hediff = pawn.GetFirstHediffAttachedToPart(hediffDef, bodyPart);
                 if (hediff != null)
                 {
                     float removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;
@@ -290,7 +290,7 @@ namespace EBSGFramework
             }
         }
 
-        public static List<HediffDef> ApplyHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        public static List<HediffDef> ApplyHediffs(this Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             List<HediffDef> addedHediffs = new List<HediffDef>();
             if (hediff != null)
@@ -321,7 +321,7 @@ namespace EBSGFramework
             return addedHediffs;
         }
 
-        public static void RemoveHediffs(Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        public static void RemoveHediffs(this Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             if (pawn?.health?.hediffSet == null) return;
             if (hediff != null)
@@ -340,24 +340,47 @@ namespace EBSGFramework
             }
         }
 
-        public static bool WithinAges(Pawn pawn, float min, float max)
+        public static bool WithinAges(this Pawn pawn, float min, float max)
         {
             return (pawn.ageTracker.AgeBiologicalYearsFloat >= min || min == -1f) && (pawn.ageTracker.AgeBiologicalYearsFloat <= max || max == -1f);
         }
 
-        public static bool WithinAges(Pawn pawn, FloatRange ageRange)
+        public static bool WithinAges(this Pawn pawn, FloatRange ageRange)
         {
             return ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
         }
 
-        public static void AddHediffToParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
+        public static bool WithinSeverityRanges(float severity, FloatRange? severityRange = null, List<FloatRange> severityRanges = null, bool assumeMin = true)
+        {
+            if (severityRange != null)
+            {
+                var s = (FloatRange)severityRange;
+                if (s.min == s.max)
+                {
+                    if (assumeMin)
+                        return severity >= s.min;
+                    return severity <= s.min;
+                }
+                return s.Includes(severity);
+            }
+
+            if (!severityRanges.NullOrEmpty())
+            {
+                foreach (FloatRange f in severityRanges)
+                    if (f.Includes(severity)) return true;
+            }
+
+            return false;
+        }
+
+        public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
         {
             if (hediffToParts != null)
             {
-                if (!WithinAges(pawn, hediffToParts.validAges) && !WithinAges(pawn, hediffToParts.minAge, hediffToParts.maxAge))
+                if (!pawn.WithinAges(hediffToParts.validAges) && !pawn.WithinAges(hediffToParts.minAge, hediffToParts.maxAge))
                 {
                     if (removeWhenBeyondAges)
-                        RemoveHediffsFromParts(pawn, null, hediffToParts);
+                        pawn.RemoveHediffsFromParts(null, hediffToParts);
                 }
                 else if (Rand.Chance(hediffToParts.chance))
                 {
@@ -371,8 +394,8 @@ namespace EBSGFramework
                             if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                                 foundParts.Add(bodyPartDef, 0);
 
-                            if (hediffToParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
-                            else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
+                            if (hediffToParts.onlyIfNew) pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity);
+                            else pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity);
                             foundParts[bodyPartDef]++;
                         }
                     }
@@ -387,7 +410,7 @@ namespace EBSGFramework
                             }
                         }
                         else
-                            AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
+                            pawn.AddOrAppendHediffs(hediffToParts.severity, 0, hediffToParts.hediff);
                     }
                 }
             }
@@ -398,7 +421,7 @@ namespace EBSGFramework
                     if (!WithinAges(pawn, hediffParts.validAges) || !WithinAges(pawn, hediffParts.minAge, hediffParts.maxAge))
                     {
                         if (removeWhenBeyondAges)
-                            RemoveHediffsFromParts(pawn, null, hediffParts);
+                            pawn.RemoveHediffsFromParts(null, hediffParts);
                         continue;
                     }
                     if (!Rand.Chance(hediffParts.chance)) continue;
@@ -411,8 +434,8 @@ namespace EBSGFramework
                             if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                                 foundParts.Add(bodyPartDef, 0);
 
-                            if (hediffParts.onlyIfNew) AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity);
-                            else AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity, hediffParts.severity);
+                            if (hediffParts.onlyIfNew) pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity);
+                            else pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity, hediffParts.severity);
                             foundParts[bodyPartDef]++;
                         }
                     }
@@ -426,14 +449,14 @@ namespace EBSGFramework
                         }
                         else
                         {
-                            AddOrAppendHediffs(pawn, hediffParts.severity, 0, hediffParts.hediff);
+                            pawn.AddOrAppendHediffs(hediffParts.severity, 0, hediffParts.hediff);
                         }
                     }
                 }
             }
         }
 
-        public static void RemoveHediffsFromParts(Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
+        public static void RemoveHediffsFromParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
             if (hediffToParts != null && HasHediff(pawn, hediffToParts.hediff))
             {
@@ -568,7 +591,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static Hediff AddHediffToPart(Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false)
+        public static Hediff AddHediffToPart(this Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false)
         {
             Hediff firstHediffOfDef = null;
             if (HasHediff(pawn, hediffDef))
@@ -616,7 +639,7 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
-        public static Hediff CreateComplexHediff(Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
+        public static Hediff CreateComplexHediff(this Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
         {
             if (pawn?.health == null) return null;
 
@@ -644,14 +667,14 @@ namespace EBSGFramework
             return newHediff;
         }
 
-        public static void AddOrAppendHediffs(Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null)
+        public static void AddOrAppendHediffs(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null)
         {
             if (hediff != null)
             {
                 if (HasHediff(pawn, hediff))
                     pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityIncrease;
                 else if (initialSeverity > 0)
-                    pawn.health.AddHediff(CreateComplexHediff(pawn, initialSeverity, hediff, other));
+                    pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediff, other));
             }
             if (!hediffs.NullOrEmpty())
             {
@@ -660,12 +683,12 @@ namespace EBSGFramework
                     if (HasHediff(pawn, hediffDef))
                         pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityIncrease;
                     else if (initialSeverity > 0)
-                        pawn.health.AddHediff(CreateComplexHediff(pawn, initialSeverity, hediffDef, other));
+                        pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediffDef, other));
                 }
             }
         }
 
-        public static bool CheckGeneTrio(Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
+        public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
             if (pawn == null || pawn.genes == null) return false;
 
@@ -676,7 +699,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool CheckHediffTrio(Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null)
+        public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null)
         {
             if (pawn == null || pawn.health == null) return false;
 
@@ -687,7 +710,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool CheckPawnCapabilitiesTrio(Pawn pawn, List<CapCheck> capChecks = null, List<SkillCheck> skillChecks = null, List<StatCheck> statChecks = null)
+        public static bool CheckPawnCapabilitiesTrio(this Pawn pawn, List<CapCheck> capChecks = null, List<SkillCheck> skillChecks = null, List<StatCheck> statChecks = null)
         {
             if (pawn == null) return false;
 
@@ -756,7 +779,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void FadingHediffs(Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
+        public static void FadingHediffs(this Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             if (hediff != null)
             {
@@ -802,14 +825,14 @@ namespace EBSGFramework
             return IntVec3.Invalid;
         }
 
-        public static bool HasHediff(Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff)) return true;
             return false;
         }
 
-        public static bool HasHediff(Pawn pawn, HediffDef hediff, out Hediff result) // Only made this to make checking for null hediffSets require less work
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff, out Hediff result)
         {
             result = null;
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
@@ -817,14 +840,14 @@ namespace EBSGFramework
             return result != null;
         }
 
-        public static bool HasHediff(Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart)
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart)
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
             if (pawn.health.hediffSet.HasHediff(hediff, bodyPart)) return true;
             return false;
         }
 
-        public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches)
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches)
         {
             matches = new List<Hediff>();
             if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
@@ -833,7 +856,7 @@ namespace EBSGFramework
             return !matches.NullOrEmpty();
         }
 
-        public static bool PawnHasAnyOfHediffs(Pawn pawn, List<HediffDef> hediffs)
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs)
         {
             if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
             foreach (HediffDef hediff in hediffs)
@@ -841,7 +864,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool PawnHasAllOfHediffs(Pawn pawn, List<HediffDef> hediffs)
+        public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffDef> hediffs)
         {
             if (hediffs.NullOrEmpty()) return true;
             foreach (HediffDef hediff in hediffs)
@@ -850,7 +873,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool AllNeedLevelsMet(Pawn pawn, List<NeedLevel> needLevels)
+        public static bool AllNeedLevelsMet(this Pawn pawn, List<NeedLevel> needLevels)
         {
             if (needLevels.NullOrEmpty() || pawn.needs == null) return true;
             foreach (NeedLevel needLevel in needLevels)
@@ -864,7 +887,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool CapacityConditionsMet(Pawn pawn, List<CapCheck> capLimiters)
+        public static bool CapacityConditionsMet(this Pawn pawn, List<CapCheck> capLimiters)
         {
             if (capLimiters.NullOrEmpty()) return true;
             foreach (CapCheck capCheck in capLimiters)
@@ -885,7 +908,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool AllSkillLevelsMet(Pawn pawn, List<SkillCheck> skillLimiters)
+        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillCheck> skillLimiters)
         {
             if (skillLimiters.NullOrEmpty() || pawn.skills == null) return true;
 
@@ -908,7 +931,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void HandleNeedOffsets(Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        public static void HandleNeedOffsets(this Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
         {
             if (needOffsets.NullOrEmpty() || pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) return;
             List<Need> alreadyPickedNeeds = new List<Need>();
@@ -934,7 +957,7 @@ namespace EBSGFramework
             }
         }
 
-        public static void HandleDRGOffsets(Pawn pawn, List<GeneEffect> geneEffects, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        public static void HandleDRGOffsets(this Pawn pawn, List<GeneEffect> geneEffects, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
         {
             if (geneEffects.NullOrEmpty() || pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return;
 
@@ -951,13 +974,13 @@ namespace EBSGFramework
             }
         }
 
-        public static bool BadWeather(Map map)
+        public static bool BadWeather(this Map map)
         {
             // Couldn't use the vanilla enjoyable outside, so I just checked the favorability
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
-        public static bool PawnHasAnyOfGenes(Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
             firstMatch = null;
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return false;
@@ -991,7 +1014,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static List<GeneDef> GetAllGenesOnListFromPawn(Pawn pawn, List<GeneDef> searchList)
+        public static List<GeneDef> GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList)
         {
             List<GeneDef> results = new List<GeneDef>();
 
@@ -1015,7 +1038,7 @@ namespace EBSGFramework
             return results;
         }
 
-        public static bool PawnHasAllOfGenes(Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool PawnHasAllOfGenes(this Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
             if (pawn.genes == null) return false;
@@ -1038,7 +1061,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool NeedFrozen(Pawn pawn, NeedDef def)
+        public static bool NeedFrozen(this Pawn pawn, NeedDef def)
         {
             if (pawn.Suspended)
             {
@@ -1059,7 +1082,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static void RemoveGenesFromPawn(Pawn pawn, List<GeneDef> genes = null, GeneDef gene = null)
+        public static void RemoveGenesFromPawn(this Pawn pawn, List<GeneDef> genes = null, GeneDef gene = null)
         {
             if (pawn.genes == null) return;
             if (gene != null)
@@ -1077,7 +1100,7 @@ namespace EBSGFramework
             }
         }
 
-        public static List<GeneDef> AddGenesToPawn(Pawn pawn, bool xenogene = true, List<GeneDef> genes = null, GeneDef gene = null)
+        public static List<GeneDef> AddGenesToPawn(this Pawn pawn, bool xenogene = true, List<GeneDef> genes = null, GeneDef gene = null)
         {
             if (pawn.genes == null) return null;
             List<GeneDef> addedGenes = new List<GeneDef>();
@@ -1106,7 +1129,7 @@ namespace EBSGFramework
             return addedGenes;
         }
 
-        public static bool PawnHasAnyOfAbilities(Pawn pawn, List<AbilityDef> abilities, out List<Ability> foundAbilities)
+        public static bool PawnHasAnyOfAbilities(this Pawn pawn, List<AbilityDef> abilities, out List<Ability> foundAbilities)
         {
             foundAbilities = new List<Ability>();
 
@@ -1121,7 +1144,7 @@ namespace EBSGFramework
             return !foundAbilities.NullOrEmpty();
         }
 
-        public static List<AbilityDef> GivePawnAbilities(Pawn pawn, List<AbilityDef> abilities = null, AbilityDef ability = null)
+        public static List<AbilityDef> GivePawnAbilities(this Pawn pawn, List<AbilityDef> abilities = null, AbilityDef ability = null)
         {
             List<AbilityDef> addedAbilities = new List<AbilityDef>();
 
@@ -1149,7 +1172,7 @@ namespace EBSGFramework
             return addedAbilities;
         }
 
-        public static List<AbilityDef> RemovePawnAbilities(Pawn pawn, List<AbilityDef> abilities = null, AbilityDef ability = null)
+        public static List<AbilityDef> RemovePawnAbilities(this Pawn pawn, List<AbilityDef> abilities = null, AbilityDef ability = null)
         {
             List<AbilityDef> removedAbilities = new List<AbilityDef>();
 
@@ -1177,12 +1200,12 @@ namespace EBSGFramework
             return removedAbilities;
         }
 
-        public static void AlterXenotype(Pawn pawn, List<RandomXenotype> xenotypes, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
+        public static void AlterXenotype(this Pawn pawn, List<RandomXenotype> xenotypes, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
         {
             AlterXenotype(pawn, xenotypes.RandomElementByWeight((arg) => arg.weight).xenotype, filth, filthCount, setXenotype, sendMessage);
         }
 
-        public static void AlterXenotype(Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
+        public static void AlterXenotype(this Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
         {
             if (pawn?.genes == null || xenotype == null) return;
 
@@ -1224,7 +1247,7 @@ namespace EBSGFramework
             pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
 
-        public static void GainRandomGeneSet(Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
+        public static void GainRandomGeneSet(this Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
                 List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null, bool showMessage = true)
         {
             if (pawn.genes == null) return;
@@ -1318,7 +1341,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool CheckNearbyWater(Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
+        public static bool CheckNearbyWater(this Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
         {
 
             if (!pawn.Spawned || pawn.Map == null)
@@ -1346,7 +1369,7 @@ namespace EBSGFramework
             return maxNeededForTrue <= waterCount;
         }
 
-        public static bool CheckNearbyTerrain(Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
+        public static bool CheckNearbyTerrain(this Pawn pawn, List<TerrainDistance> terrains, out TerrainDef missingTerrain, out bool negativeTerrain)
         {
             if (!pawn.Spawned || pawn.Map == null || !pawn.Position.IsValid)
             {
@@ -1433,13 +1456,13 @@ namespace EBSGFramework
             return false;
         }
 
-        public static float StatFactorOrOne(Pawn pawn, StatDef statDef = null)
+        public static float StatFactorOrOne(this Pawn pawn, StatDef statDef = null)
         {
             if (statDef == null) return 1;
             return pawn.GetStatValue(statDef);
         }
 
-        public static void RemoveChronicHediffs(Pawn pawn)
+        public static void RemoveChronicHediffs(this Pawn pawn)
         {
             if (pawn.health.hediffSet != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
             {
@@ -1455,13 +1478,13 @@ namespace EBSGFramework
             }
         }
 
-        public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
+        public static bool HasRelatedGene(this Pawn pawn, GeneDef relatedGene)
         {
             if (!ModsConfig.BiotechActive || pawn.genes == null || relatedGene == null) return false;
             return pawn.genes.HasActiveGene(relatedGene);
         }
 
-        public static bool HasAnyOfRelatedGene(Pawn pawn, List<GeneDef> relatedGenes)
+        public static bool HasAnyOfRelatedGene(this Pawn pawn, List<GeneDef> relatedGenes)
         {
             if (!ModsConfig.BiotechActive || pawn == null || relatedGenes.NullOrEmpty() || pawn.genes == null) return false;
 
@@ -1507,7 +1530,7 @@ namespace EBSGFramework
 
         // Resurrect utility with bug fix
 
-        public static void TryToRevivePawn(Pawn pawn)
+        public static void TryToRevivePawn(this Pawn pawn)
         {
             if (!pawn.Dead || pawn.Discarded) return; // If these events pass, just silently fail
 
@@ -1576,7 +1599,7 @@ namespace EBSGFramework
 
         // EBSGAI Utilities
 
-        public static Thing GetCurrentTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false, bool allowDowned = false)
+        public static Thing GetCurrentTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false, bool allowDowned = false)
         {
             if (!pawn.Spawned) return null;
             if (onlyHostiles && onlyInFaction) return null;
@@ -1630,7 +1653,7 @@ namespace EBSGFramework
             return null;
         }
 
-        public static Pawn AutoSearchTarget(Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, float searchRadius = 50, bool LoSRequired = false)
+        public static Pawn AutoSearchTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, float searchRadius = 50, bool LoSRequired = false)
         {
 
             List<Pawn> pawns = pawn.Map.mapPawns.AllPawns;
@@ -1688,7 +1711,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool CastingAbility(Pawn pawn)
+        public static bool CastingAbility(this Pawn pawn)
         {
             if (pawn.stances.curStance is Stance_Busy stance_Busy)
             {
@@ -1706,7 +1729,7 @@ namespace EBSGFramework
             return job;
         }
 
-        public static bool AutoAttackingColonist(Pawn pawn)
+        public static bool AutoAttackingColonist(this Pawn pawn)
         {
             if (pawn.playerSettings != null && pawn.playerSettings.UsesConfigurableHostilityResponse && pawn.playerSettings.hostilityResponse == HostilityResponseMode.Attack) return true;
             return false;

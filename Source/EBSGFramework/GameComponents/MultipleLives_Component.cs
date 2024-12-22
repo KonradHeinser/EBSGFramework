@@ -46,7 +46,7 @@ namespace EBSGFramework
                 newDead = false;
                 foreach (Corpse pawn in deadPawns)
                 {
-                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) continue;
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !pawn.PawnHasAnyHediff()) continue;
 
                     bool flag = true;
                     Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
@@ -85,7 +85,7 @@ namespace EBSGFramework
                 instantRevive = false;
                 foreach (Corpse pawn in deadPawns)
                 {
-                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) continue;
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !pawn.PawnHasAnyHediff()) continue;
 
                     Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
                     if (hediff != null)
@@ -101,7 +101,7 @@ namespace EBSGFramework
                 tick = 0;
                 foreach (Corpse pawn in deadPawns)
                 {
-                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !EBSGUtilities.PawnHasAnyHediff(pawn)) purgeList.Add(pawn);
+                    if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !pawn.PawnHasAnyHediff()) purgeList.Add(pawn);
                     else
                     {
                         Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
@@ -150,7 +150,7 @@ namespace EBSGFramework
 
         public static bool RecordPawnData(Pawn pawn)
         {
-            if (!EBSGUtilities.PawnHasAnyHediff(pawn)) return false;
+            if (!pawn.PawnHasAnyHediff()) return false;
             if (deadPawnHediffs.ContainsKey(pawn))
             {
                 Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn]);
@@ -239,7 +239,7 @@ namespace EBSGFramework
             if (removeAllInjuries)
             {
                 List<Hediff> hediffs = new List<Hediff>(pawn.InnerPawn.health.hediffSet.hediffs.Where((Hediff h) => h.def.injuryProps != null).ToList());
-                EBSGUtilities.RemoveAllOfHediffs(pawn.InnerPawn, hediffs);
+                pawn.InnerPawn.RemoveAllOfHediffs(hediffs);
             }
 
             if (pawn != null && pawn.InnerPawn.Dead && multipleLivesComp != null)

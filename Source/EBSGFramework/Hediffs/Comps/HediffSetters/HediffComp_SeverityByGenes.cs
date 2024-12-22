@@ -45,7 +45,7 @@ namespace EBSGFramework
 
             foreach (GeneEffect geneEffect in geneEffects)
             {
-                if (EBSGUtilities.HasRelatedGene(pawn, geneEffect.gene) && EBSGUtilities.PawnHasAnyOfGenes(pawn, out var anyOfGene, geneEffect.anyOfGene) && EBSGUtilities.PawnHasAllOfGenes(pawn, geneEffect.allOfGene))
+                if (pawn.HasRelatedGene(geneEffect.gene) && EBSGUtilities.PawnHasAnyOfGenes(pawn, out var anyOfGene, geneEffect.anyOfGene) && EBSGUtilities.PawnHasAllOfGenes(pawn, geneEffect.allOfGene))
                 {
                     newSeverity += geneEffect.effect * EBSGUtilities.StatFactorOrOne(pawn, geneEffect.statFactor) * EBSGUtilities.StatFactorOrOne(pawn, geneEffectStatFactor);
                 }

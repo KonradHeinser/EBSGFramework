@@ -1,27 +1,41 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Genes/Gene_SkillChanging.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/Building_SleepCasket.cs">
     <Files>
-      <File FileName="Abilities/CompProperties/CompProperties_AbilityReloadable.cs" Line="23" Column="61" />
-      <File FileName="Abilities/CompAbilityEffects/CompAbilityEffect_Reloadable.cs" Line="40" Column="14" />
-      <File FileName="GameComponents/EBSGCache_Component.cs" Line="504" Column="52" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="990" Column="13" />
-      <File FileName="EBSGUtilities.cs" Line="499" Column="40" />
-      <File FileName="Hediffs/Comps/HediffComp_TemporarySkillChange.cs" Line="1" Column="1" />
-      <File FileName="Genes/SkillChange.cs" Line="1" Column="1" />
-      <File FileName="Genes/Gene_SkillChanging.cs" Line="1" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="1732" Column="49" />
+      <File FileName="Coma Genes/CompComaGeneBindable.cs" Line="119" Column="40" />
+      <File FileName="Hediffs/Comps/HediffComp_HediffWhileMoving.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_HediffOnKill.cs" Line="49" Column="33" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="1" Column="1" />
+      <File FileName="Genes/ConditionalStatAffecters/ConditionalStatAffecter_PawnMulti.cs" Line="1" Column="1" />
+      <File FileName="EBSGAI/ThinkNode_ConditionalUsingRangedWeapon.cs" Line="9" Column="9" />
+      <File FileName="DynamicResourceGenes/Alert_LowResource.cs" Line="105" Column="75" />
+      <File FileName="Things/Building_PawnNeedCharger.cs" Line="236" Column="74" />
+      <File FileName="Things/Building_SleepCasket.cs" Line="76" Column="37" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
+              <Node name="Coma Genes" expanded="True" />
+              <Node name="DynamicResourceGenes" expanded="True" />
+              <Node name="EBSGAI" expanded="True" />
               <Node name="GameComponents" expanded="True" />
               <Node name="Genes" expanded="True">
-                <Node name="Gene_SkillChanging.cs" selected="True" />
+                <Node name="ConditionalStatAffecters" expanded="True" />
               </Node>
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
+                <Node name="CompProperties" expanded="True" />
                 <Node name="Comps" expanded="True" />
+              </Node>
+              <Node name="HiveMind" expanded="True" />
+              <Node name="Things" expanded="True">
+                <Node name="Building_SleepCasket.cs" selected="True" />
               </Node>
             </Node>
           </Node>

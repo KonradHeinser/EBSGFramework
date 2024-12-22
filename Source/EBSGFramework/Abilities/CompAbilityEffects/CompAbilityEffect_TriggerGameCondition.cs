@@ -15,7 +15,7 @@ namespace EBSGFramework
             {
                 foreach (ConditionDuration condition in Props.gameConditions)
                 {
-                    if (!EBSGUtilities.ConditionOrExclusiveIsActive(condition.condition, parent.pawn.Map))
+                    if (!condition.condition.ConditionOrExclusiveIsActive(parent.pawn.Map))
                     {
                         parent.pawn.Map.GameConditionManager.RegisterCondition(GameConditionMaker.MakeCondition(condition.condition, condition.ticks));
                         if (Props.onlyFirst) break;
@@ -39,7 +39,7 @@ namespace EBSGFramework
 
             if (Props.gameCondition != null)
             {
-                if (!EBSGUtilities.ConditionOrExclusiveIsActive(Props.gameCondition, caster.Map))
+                if (!Props.gameCondition.ConditionOrExclusiveIsActive(caster.Map))
                 {
                     flag = true;
                 }
@@ -51,11 +51,11 @@ namespace EBSGFramework
                 {
                     if (Props.onlyFirst)
                     {
-                        if (EBSGUtilities.ConditionOrExclusiveIsActive(condition.condition, caster.Map)) continue;
+                        if (condition.condition.ConditionOrExclusiveIsActive(caster.Map)) continue;
                         flag = true;
                         break;
                     }
-                    if (EBSGUtilities.ConditionOrExclusiveIsActive(condition.condition, caster.Map))
+                    if (condition.condition.ConditionOrExclusiveIsActive(caster.Map))
                     {
                         if (!Props.skipExisting)
                         {

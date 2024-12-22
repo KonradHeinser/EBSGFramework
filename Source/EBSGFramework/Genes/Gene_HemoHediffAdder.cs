@@ -59,7 +59,7 @@ namespace EBSGFramework
                 Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
                 if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
-                    EBSGUtilities.AddHediffToParts(pawn, Extension.hediffsToApplyAtAges, null, true);
+                    pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
             }
         }
 
@@ -100,7 +100,7 @@ namespace EBSGFramework
                                         hediff.Severity += hediffToParts.severity;
                                     }
                                     else
-                                        EBSGUtilities.AddOrAppendHediffs(pawn, hediffToParts.severity, 0, hediffToParts.hediff);
+                                        pawn.AddOrAppendHediffs(hediffToParts.severity, 0, hediffToParts.hediff);
                                 else
                                 {
                                     foundParts.Clear();
@@ -112,12 +112,12 @@ namespace EBSGFramework
                                             {
                                                 foundParts.Add(bodyPartDef, 0);
                                             }
-                                            EBSGUtilities.AddHediffToPart(pawn, pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity, hediffToParts.onlyIfNew);
+                                            pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffToParts.hediff, hediffToParts.severity, hediffToParts.severity, hediffToParts.onlyIfNew);
                                             foundParts[bodyPartDef]++;
                                         }
                                 }
                             else
-                                EBSGUtilities.RemoveHediffsFromParts(pawn, null, hediffToParts);
+                                pawn.RemoveHediffsFromParts(null, hediffToParts);
                 }
             }
 
@@ -139,7 +139,7 @@ namespace EBSGFramework
             HediffAdder.HediffRemoving(pawn, this);
 
             if (Extension != null && !Extension.hediffsToApplyAtAges.NullOrEmpty())
-                EBSGUtilities.RemoveHediffsFromParts(pawn, Extension.hediffsToApplyAtAges);
+                pawn.RemoveHediffsFromParts(Extension.hediffsToApplyAtAges);
         }
 
         public override void ExposeData()

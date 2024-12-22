@@ -372,7 +372,7 @@ namespace EBSGFramework
                     bool flag = true;
                     foreach (GameConditionDef conditionDef in Props.requireOneOfCondition)
                     {
-                        if (EBSGUtilities.ConditionOrExclusiveIsActive(conditionDef, parent.pawn.Map))
+                        if (conditionDef.ConditionOrExclusiveIsActive(parent.pawn.Map))
                         {
                             flag = false;
                             break;

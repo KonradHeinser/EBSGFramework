@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
+using Verse.Sound;
 
 namespace EBSGFramework
 {
@@ -8,17 +8,23 @@ namespace EBSGFramework
     {
         public new CompProperties_AbilityReloadable Props => (CompProperties_AbilityReloadable)props;
 
-        private int remainingCharges;
+        private int? remainingCharges;
 
         public int RemainingCharges
         {
             get
             {
-                return remainingCharges;
+                if (remainingCharges == null)
+                    remainingCharges = Props.maxCharges;
+                return (int)remainingCharges;
             }
             set
             {
+                if (value > remainingCharges && Props.reloadSound != null)
+                    Props.reloadSound.PlayOneShot(new TargetInfo(parent.pawn.Position, parent.pawn.Map));
+
                 remainingCharges = value;
+                Log.Message(remainingCharges);
             }
         }
 
@@ -45,9 +51,14 @@ namespace EBSGFramework
             return false;
         }
 
+        public override string ExtraTooltipPart()
+        {
+            return EBSGUtilities.TranslateOrLiteral(Props.remainingCharges) + ": " + RemainingCharges.ToString();
+        }
+
         public override string CompInspectStringExtra()
         {
-            return EBSGUtilities.TranslateOrLiteral(Props.remainingCharges) + " : " + RemainingCharges.ToString();
+            return EBSGUtilities.TranslateOrLiteral(Props.remainingCharges) + ": " + RemainingCharges.ToString();
         }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
@@ -55,7 +66,7 @@ namespace EBSGFramework
             base.Apply(target, dest);
             RemainingCharges--;
 
-            if (Props.removeOnceEmpty)
+            if (Props.removeOnceEmpty && RemainingCharges == 0)
                 parent.pawn.abilities.RemoveAbility(parent.def);
         }
 

@@ -943,9 +943,9 @@ namespace EBSGFramework
                     if (c.Impassable(pawn.Map)) return; // If the tile is impassable, I don't want to touch that.
 
                     // Universal Checks
-                    if (!EBSGUtilities.CheckGeneTrio(pawn, terrainComp.pawnHasAnyOfGenes, terrainComp.pawnHasAllOfGenes, terrainComp.pawnHasNoneOfGenes) ||
-                        !EBSGUtilities.CheckHediffTrio(pawn, terrainComp.pawnHasAnyOfHediffs, terrainComp.pawnHasAllOfHediffs, terrainComp.pawnHasNoneOfHediffs) ||
-                        !EBSGUtilities.CheckPawnCapabilitiesTrio(pawn, terrainComp.pawnCapLimiters, terrainComp.pawnSkillLimiters, terrainComp.pawnStatLimiters) ||
+                    if (!pawn.CheckGeneTrio(terrainComp.pawnHasAnyOfGenes, terrainComp.pawnHasAllOfGenes, terrainComp.pawnHasNoneOfGenes) ||
+                        !pawn.CheckHediffTrio(terrainComp.pawnHasAnyOfHediffs, terrainComp.pawnHasAllOfHediffs, terrainComp.pawnHasNoneOfHediffs) ||
+                        !pawn.CheckPawnCapabilitiesTrio(terrainComp.pawnCapLimiters, terrainComp.pawnSkillLimiters, terrainComp.pawnStatLimiters) ||
                         !EBSGUtilities.AllNeedLevelsMet(pawn, terrainComp.pawnNeedLevels)) return;
 
                     float num = (c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal;
@@ -955,9 +955,9 @@ namespace EBSGFramework
                         foreach (TerrainLinker terrain in terrainComp.terrainSets)
                         {
                             // These check all 10 lists
-                            if (!EBSGUtilities.CheckGeneTrio(pawn, terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) ||
-                                !EBSGUtilities.CheckHediffTrio(pawn, terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) ||
-                                !EBSGUtilities.CheckPawnCapabilitiesTrio(pawn, terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) ||
+                            if (!pawn.CheckGeneTrio(terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) ||
+                                !pawn.CheckHediffTrio(terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) ||
+                                !pawn.CheckPawnCapabilitiesTrio(terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) ||
                                 !EBSGUtilities.AllNeedLevelsMet(pawn, terrain.pawnNeedLevels)) continue;
 
                             if (terrain.newCost >= 0 && ((terrain.terrain != null && terrain.terrain == terrainDef) ||
@@ -1088,7 +1088,7 @@ namespace EBSGFramework
                 {
                     EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
                     if (!extension.InAges(pawn)) continue; // Checks the age first because that involves the least amount of work
-                    if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
+                    if (!pawn.HasRelatedGene(gene)) continue;
                     foreach (AgeBodyLink link in extension.ageGraphics)
                     {
                         if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
@@ -1257,7 +1257,7 @@ namespace EBSGFramework
                 if (Cache?.desiccatedBodies.NullOrEmpty() == false && EBSGUtilities.HasAnyOfRelatedGene(pawn, Cache.desiccatedBodies))
                     foreach (GeneDef gene in Cache.desiccatedBodies)
                     {
-                        if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
+                        if (!pawn.HasRelatedGene(gene)) continue;
                         EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
 
                         if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
@@ -1340,7 +1340,7 @@ namespace EBSGFramework
                 {
                     EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
                     if (!extension.InAges(pawn)) continue; // Checks the age first because that involves the least amount of work
-                    if (!EBSGUtilities.HasRelatedGene(pawn, gene)) continue;
+                    if (!pawn.HasRelatedGene(gene)) continue;
 
                     foreach (AgeBodyLink link in extension.ageGraphics)
                         if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
@@ -1518,8 +1518,8 @@ namespace EBSGFramework
 
                 if (extension.fatherRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(__instance.Father, extension.fatherRequiresOneOf))
                 {
-                    EBSGUtilities.AddOrAppendHediffs(___pawn, extension.initialSeverity, extension.increaseSeverity, extension.motherHediff, extension.replacementHediffs, __instance.Father);
-                    EBSGUtilities.AddOrAppendHediffs(__instance.Father, extension.initialSeverity, extension.increaseSeverity, extension.fatherHediff, null, ___pawn);
+                    ___pawn.AddOrAppendHediffs(extension.initialSeverity, extension.increaseSeverity, extension.motherHediff, extension.replacementHediffs, __instance.Father);
+                    __instance.Father.AddOrAppendHediffs(extension.initialSeverity, extension.increaseSeverity, extension.fatherHediff, null, ___pawn);
                     if (!extension.spawnThings.NullOrEmpty())
                     {
                         if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, ___pawn, __instance.Father))
@@ -1549,8 +1549,8 @@ namespace EBSGFramework
                         (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
                         (extension.partnerRequiresOneOf.NullOrEmpty() || EBSGUtilities.HasAnyOfRelatedGene(Partner, extension.partnerRequiresOneOf)))
                     {
-                        EBSGUtilities.AddHediffToParts(pawn, extension.hediffsToApplySelf);
-                        EBSGUtilities.AddHediffToParts(Partner, extension.hediffsToApplyPartner);
+                        pawn.AddHediffToParts(extension.hediffsToApplySelf);
+                        Partner.AddHediffToParts(extension.hediffsToApplyPartner);
                         if (!extension.spawnThings.NullOrEmpty())
                         {
                             if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, Partner))
@@ -1644,20 +1644,20 @@ namespace EBSGFramework
                         {
                             string baseExplanation = "EBSG_Recharge".Translate(ability.def.LabelCap);
                             if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Deadly))
-                            {
                                 opts.Add(new FloatMenuOption(baseExplanation + ": " + "NoPath".Translate().CapitalizeFirst(), null));
-                                break;
-                            }
-                            if (thing.stackCount < reloadable.Props.ammoPerCharge)
-                            {
+                            else if (thing.stackCount < reloadable.Props.ammoPerCharge)
                                 opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadNotEnough".Translate().CapitalizeFirst(), null));
-                                break;
-                            }
-                            if (reloadable.ChargesNeeded <= 0)
-                            {
-                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadFull", null));
-                                break;
-                            }
+                            else if (reloadable.ChargesNeeded <= 0)
+                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadFull".Translate(), null));
+                            else
+                                opts.Add(new FloatMenuOption(baseExplanation, delegate
+                                {
+                                    Job job = JobMaker.MakeJob(EBSGDefOf.EBSG_ReloadAbility, thing);
+                                    job.count = Mathf.Min(thing.stackCount, reloadable.ChargesNeeded * reloadable.Props.ammoPerCharge);
+                                    job.ability = ability;
+                                    pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+                                }));
+                            break;
                         }
                 }
             }
@@ -2126,7 +2126,7 @@ namespace EBSGFramework
 
         public static bool TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
-            if (__instance is Corpse corpse && corpse.InnerPawn != null && EBSGUtilities.PawnHasAnyHediff(corpse))
+            if (__instance is Corpse corpse && corpse.InnerPawn != null && corpse.PawnHasAnyHediff())
             {
                 MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
                 if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty() && multipleLives.forbiddenCorpses.Contains(corpse))

@@ -26,7 +26,7 @@ namespace EBSGFramework
             EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.hediffsToApply.NullOrEmpty())
             {
-                EBSGUtilities.AddHediffToParts(pawn, extension.hediffsToApply);
+                pawn.AddHediffToParts(extension.hediffsToApply);
                 if (extension.vanishingGene) pawn.genes.RemoveGene(gene);
             }
         }
@@ -35,7 +35,7 @@ namespace EBSGFramework
         {
             EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
-                EBSGUtilities.RemoveHediffsFromParts(pawn, extension.hediffsToApply);
+                pawn.RemoveHediffsFromParts(extension.hediffsToApply);
         }
     }
 }
