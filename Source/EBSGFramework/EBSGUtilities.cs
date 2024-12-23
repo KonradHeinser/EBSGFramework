@@ -847,6 +847,19 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart, out Hediff result)
+        {
+            result = null;
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+            foreach (Hediff h in pawn.health.hediffSet.hediffs)
+                if (h.def == hediff && h.Part == bodyPart)
+                {
+                    result = h;
+                    break;
+                }
+            return result != null;
+        }
+
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches)
         {
             matches = new List<Hediff>();

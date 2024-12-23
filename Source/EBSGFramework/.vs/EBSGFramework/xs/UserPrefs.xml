@@ -1,24 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_RemoveAtSeverities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="104" Column="35" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_RemoveAtSeverities.cs" Line="1" Column="1" />
+      <File FileName="EBSGUtilities.cs" Line="844" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
-                <Node name="CompProperties" expanded="True" />
-              </Node>
-              <Node name="Generic List Classes" expanded="True" />
-              <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True">
-                  <Node name="HediffCompProperties_RemoveAtSeverities.cs" selected="True" />
-                </Node>
+                <Node name="CompProperties" expanded="True" selected="True" />
               </Node>
             </Node>
           </Node>
