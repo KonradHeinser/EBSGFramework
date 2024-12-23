@@ -30,6 +30,7 @@ namespace EBSGFramework
         public List<PawnKindDef> targetPawnKinds;
         public float minBodySize = 0f;
         public float maxBodySize = 999f;
+        public TargetGroup targetGroup = TargetGroup.None;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;

@@ -432,6 +432,12 @@
         <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplodeOnRemoval.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveAtSeverities.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_RemoveAtSeverities.cs" />
+        <Compile Include="Generic List Classes\TargetGroup.cs" />
+        <Compile Include="Generic List Classes\HediffEffectTrigger.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_EquippableAbility.cs" />
+        <Compile Include="Things\Comps\CompEquippableAbility.cs" />
+        <Compile Include="Things\CompProperties\CompProperties_ProjectileImpactEffect.cs" />
+        <Compile Include="Things\Comps\ProjectileComp_ImpactEffect.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

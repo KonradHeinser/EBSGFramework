@@ -717,6 +717,40 @@ namespace EBSGFramework
                     explanation = "AbilityPawnKind".Translate();
                     return false;
                 }
+                if (Props.targetGroup != TargetGroup.None)
+                {
+                    switch (Props.targetGroup)
+                    {
+                        case TargetGroup.Player:
+                            if (pawn.Faction?.IsPlayer != true)
+                            {
+                                explanation = "AbilityTargetPlayer".Translate();
+                                return false;
+                            }
+                            break;
+                        case TargetGroup.NonPlayer:
+                            if (pawn.Faction?.IsPlayer == true)
+                            {
+                                explanation = "AbilityTargetNonPlayer".Translate();
+                                return false;
+                            }
+                            break;
+                        case TargetGroup.Hostiles:
+                            if (pawn.Faction?.HostileTo(Faction.OfPlayer) != true && !pawn.HostileTo(parent.pawn))
+                            {
+                                explanation = "AbilityTargetHostile".Translate();
+                                return false;
+                            }
+                            break;
+                        case TargetGroup.NoFaction:
+                            if (pawn.Faction != null)
+                            {
+                                explanation = "AbilityTargetFactionNone".Translate();
+                                return false;
+                            }
+                            break;
+                    }
+                }
             }
             else
             {

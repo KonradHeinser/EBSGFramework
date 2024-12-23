@@ -10,6 +10,8 @@ namespace EBSGFramework
 
         public int maxCharges = 1;
 
+        public bool saveCooldown = true;
+
         public bool destroyAfterLast = true;
 
         public ThingDef spawnOnFinalUse;

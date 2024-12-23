@@ -110,7 +110,7 @@ namespace EBSGFramework
 
         public static void AddedHediffError(this Hediff hediff, Pawn pawn)
         {
-            Log.Error(hediff.def + " is missing tags that are required for one of its EBSG comps. Removing the hediff to avoid more errors.");
+            Log.Error(hediff.def + " is missing things that are required for one of its EBSG comps. Removing the hediff to avoid more errors.");
             pawn.health.RemoveHediff(hediff);
         }
 

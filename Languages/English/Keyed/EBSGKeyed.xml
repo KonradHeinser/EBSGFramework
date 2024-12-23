@@ -192,54 +192,59 @@
     <AbilityGameCondition>An existing map condition is obstructing the ability from working.</AbilityGameCondition>
 
         <!--Ability Validator Stuff-->
-    <AbilityNoTargetGeneOne>Target must have the {0} gene for this ability to work.</AbilityNoTargetGeneOne>
-    <AbilityNoTargetGene>Target is missing a required gene for this ability to work.</AbilityNoTargetGene>
-    <AbilityTargetGeneOne>Target has the {0} gene, preventing this ability from working.</AbilityTargetGeneOne>
-    <AbilityTargetGene>Target has a gene  preventing this ability from working.</AbilityTargetGene>
-    <AbilityTargetXenotype>Target is a {0}.</AbilityTargetXenotype>
-    <AbilityTargetXenotypeOne>Target is not a {0}.</AbilityTargetXenotypeOne>
-    <AbilityPawnKind>Target is not a valid pawn kind.</AbilityPawnKind>
+    <AbilityNoTargetGeneOne>Target must have the {0} gene</AbilityNoTargetGeneOne>
+    <AbilityNoTargetGene>Target is missing a required gene</AbilityNoTargetGene>
+    <AbilityTargetGeneOne>Target has the {0} gene</AbilityTargetGeneOne>
+    <AbilityTargetGene>Target has certain gene(s)</AbilityTargetGene>
+    <AbilityTargetXenotype>Target is a {0}</AbilityTargetXenotype>
+    <AbilityTargetXenotypeOne>Target is not a {0}</AbilityTargetXenotypeOne>
+    <AbilityPawnKind>Target is not a valid pawn kind</AbilityPawnKind>
 
-    <AbilityNoTargetHediffOne>Target must have the {0} hediff for this ability to work.</AbilityNoTargetHediffOne>
-    <AbilityNoTargetHediff>Target is missing a required hediff for this ability to work.</AbilityNoTargetHediff>
-    <AbilityTargetHediffOne>Target has the {0} hediff, preventing this ability from working.</AbilityTargetHediffOne>
-    <AbilityTargetHediff>Target has a hediff preventing this ability from working.</AbilityTargetHediff>
+    <AbilityNoTargetHediffOne>Target must have the {0} hediff</AbilityNoTargetHediffOne>
+    <AbilityNoTargetHediff>Target is missing a required hediff</AbilityNoTargetHediff>
+    <AbilityTargetHediffOne>Target has the {0} hediff</AbilityTargetHediffOne>
+    <AbilityTargetHediff>Target has certain hediff(s)</AbilityTargetHediff>
 
-    <AbilityNoCasterHediffOne>Caster must have the hediff {0} for this ability to work.</AbilityNoCasterHediffOne>
-    <AbilityNoCasterHediff>Caster is missing a required hediff for this ability to work.</AbilityNoCasterHediff>
-    <AbilityCasterHediffOne>Caster has the {0} hediff, preventing this ability from working.</AbilityCasterHediffOne>
-    <AbilityCasterHediff>Caster has a hediff preventing this ability from working.</AbilityCasterHediff>
+    <AbilityNoCasterHediffOne>Caster must have the hediff {0}</AbilityNoCasterHediffOne>
+    <AbilityNoCasterHediff>Caster is missing a required hediff</AbilityNoCasterHediff>
+    <AbilityCasterHediffOne>Caster has the {0} hediff</AbilityCasterHediffOne>
+    <AbilityCasterHediff>Caster has certain hediff(s)</AbilityCasterHediff>
 
-    <AbilityGameNoConditionOne>This map is not currently experiencing a(n) {0}, which is required for this ability to work.</AbilityGameNoConditionOne>
-    <AbilityGameNoCondition>The map must be experiencing certain conditions for this ability to wrok.</AbilityGameNoCondition>
-    <AbilityGameConditionOne>This map is currently experiencing a(n) {0}, which prevents this ability from working.</AbilityGameConditionOne>
+    <AbilityGameNoConditionOne>This map is not currently experiencing a(n) {0}</AbilityGameNoConditionOne>
+    <AbilityGameNoCondition>The map must be experiencing certain conditions</AbilityGameNoCondition>
+    <AbilityGameConditionOne>This map is currently experiencing a(n) {0}</AbilityGameConditionOne>
 
-    <AbilityWeatherOne>Map currently has bad weather, stopping this ability from working: {0}</AbilityWeatherOne>
-    <AbilityNoWeatherOne>Map needs specific weather for this ability to work: {0}</AbilityNoWeatherOne>
-    <AbilityNoWeather>This ability only works when the map has certain types of weather.</AbilityNoWeather>
+    <AbilityWeatherOne>Map currently has bad weather: {0}</AbilityWeatherOne>
+    <AbilityNoWeatherOne>Map needs specific weather: {0}</AbilityNoWeatherOne>
+    <AbilityNoWeather>Requires certain types of weather</AbilityNoWeather>
 
-    <AbilityLowRain>It's not raining enough on the caster's map for this ability to work.</AbilityLowRain>
-    <AbilityHighRain>It's raining too much on the caster's map for this ability to work.</AbilityHighRain>
-    <AbilityLowSnow>It's not snowing enough on the caster's map for this ability to work.</AbilityLowSnow>
-    <AbilityHighSnow>It's snowing too much on the caster's map for this ability to work.</AbilityHighSnow>
+    <AbilityLowRain>It's not raining enough</AbilityLowRain>
+    <AbilityHighRain>It's raining too much</AbilityHighRain>
+    <AbilityLowSnow>It's not snowing enough</AbilityLowSnow>
+    <AbilityHighSnow>It's snowing too much</AbilityHighSnow>
 
-    <AbilityTargetLightLevel>Target must be standing in a location with a light level between {0} and {1}</AbilityTargetLightLevel>
-    <AbilityCasterLightLevel>Caster must be standing in a location with a light level between {0} and {1}</AbilityCasterLightLevel>
-    <AbilityTime>Hour must be between {0} and {1} to use this ability.</AbilityTime>
+    <AbilityTargetLightLevel>Target must be in an area with brightness between {0} and {1}</AbilityTargetLightLevel>
+    <AbilityCasterLightLevel>Caster must be in an area with brightness between {0} and {1}</AbilityCasterLightLevel>
+    <AbilityTime>Hour must be between {0} and {1}</AbilityTime>
 
-    <AbilityTargetNoneCheck>Target can't use {0}.</AbilityTargetNoneCheck>
-    <AbilityTargetLowCheck>Target's {0} is too low.</AbilityTargetLowCheck>
-    <AbilityTargetHighCheck>Target's {0} is too high.</AbilityTargetHighCheck>
-    <AbilityTargetNeedsCheck>Target's needs are not in the correct ranges.</AbilityTargetNeedsCheck>
+    <AbilityTargetNoneCheck>Target can't use {0}</AbilityTargetNoneCheck>
+    <AbilityTargetLowCheck>Target's {0} is too low</AbilityTargetLowCheck>
+    <AbilityTargetHighCheck>Target's {0} is too high</AbilityTargetHighCheck>
+    <AbilityTargetNeedsCheck>Target's needs are not in the correct ranges</AbilityTargetNeedsCheck>
     <TargetTooLarge>Too large</TargetTooLarge>
     <TargetTooSmall>Too small</TargetTooSmall>
     
-    <AbilityCasterNoneCheck>Caster can't use {0}.</AbilityCasterNoneCheck>
-    <AbilityCasterLowCheck>Caster's {0} is too low.</AbilityCasterLowCheck>
-    <AbilityCasterHighCheck>Caster's {0} is too high.</AbilityCasterHighCheck>
-    <AbilityCasterNeedsCheck>Caster's needs are not in the correct ranges.</AbilityCasterNeedsCheck>
+    <AbilityCasterNoneCheck>Caster can't use {0}</AbilityCasterNoneCheck>
+    <AbilityCasterLowCheck>Caster's {0} is too low</AbilityCasterLowCheck>
+    <AbilityCasterHighCheck>Caster's {0} is too high</AbilityCasterHighCheck>
+    <AbilityCasterNeedsCheck>Caster's needs are not in the correct ranges</AbilityCasterNeedsCheck>
 
-    <AbilityTargetMustBePawn>Target must be a pawn.</AbilityTargetMustBePawn>
+    <AbilityTargetMustBePawn>Target must be a pawn</AbilityTargetMustBePawn>
+
+    <AbilityTargetPlayer>Target must be in your faction</AbilityTargetPlayer>
+    <AbilityTargetNonPlayer>Target must not be in your faction</AbilityTargetNonPlayer>
+    <AbilityTargetHostile>Target must be hostile</AbilityTargetHostile>
+    <AbilityTargetFactionNone>Target cannot be in a faction</AbilityTargetFactionNone>
 
         <!--Ingestible Dependency Genes-->
     <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive.</EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->

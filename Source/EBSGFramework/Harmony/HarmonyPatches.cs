@@ -78,6 +78,10 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(JobDriver_Lovin), "GenerateRandomMinTicksToNextLovin"),
                 postfix: new HarmonyMethod(patchType, nameof(PostLovinPostfix)));
 
+            // Stuff From Athena
+            harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
+                postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
+
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
                 postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
@@ -1565,6 +1569,14 @@ namespace EBSGFramework
                     }
                 }
             }
+        }
+
+        public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)
+        {
+            ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
+
+            if (impactEffect != null)
+                impactEffect.Impact();
         }
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)

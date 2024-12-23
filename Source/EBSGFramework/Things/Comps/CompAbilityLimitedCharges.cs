@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         private int remainingCharges;
 
+        private int cooldownLeft = 0;
+
         private Ability ability;
 
         public Ability AbilityForReading
@@ -45,6 +47,8 @@ namespace EBSGFramework
             ability.RemainingCharges = RemainingCharges;
             ability.pawn = Holder;
             ability.verb.caster = Holder;
+            if (cooldownLeft != 0 && Props.saveCooldown)
+                ability.StartCooldown(cooldownLeft);
             Holder.abilities.abilities.Add(ability);
             Holder.abilities.Notify_TemporaryAbilitiesChanged();
         }
@@ -89,6 +93,7 @@ namespace EBSGFramework
 
         public override void Notify_Unequipped(Pawn pawn)
         {
+            cooldownLeft = pawn.abilities.GetAbility(Props.abilityDef)?.CooldownTicksRemaining ?? 0;
             pawn.abilities.RemoveAbility(Props.abilityDef);
             AbilityForReading = null;
         }
@@ -109,6 +114,7 @@ namespace EBSGFramework
         {
             base.PostExposeData();
             Scribe_Values.Look(ref remainingCharges, "remainingCharges", MaxCharges);
+            Scribe_Values.Look(ref cooldownLeft, "cooldownLeft", 0);
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
