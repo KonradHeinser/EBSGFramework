@@ -121,11 +121,13 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
+
+            /*
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
-
+            */
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
@@ -145,6 +147,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_PsychicEntropyTracker), "PsyfocusFallPerDay"),
                 postfix: new HarmonyMethod(patchType, nameof(PsyfocusFallPerDayPostFix)));
+            harmony.Patch(AccessTools.Method(typeof(Need_Food), nameof(Need_Food.FoodFallPerTickAssumingCategory)),
+                postfix: new HarmonyMethod(patchType, nameof(FoodFallRatePostfix)));
 
             // Stat Harmony patches
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.DeathrestEfficiency)),
@@ -163,6 +167,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
                 postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
+            harmony.Patch(AccessTools.Method(typeof(SkillRecord), nameof(SkillRecord.Learn)),
+                prefix: new HarmonyMethod(patchType, nameof(SkillFallPrefix)));
 
             // Vanilla code bug fixes
             harmony.Patch(AccessTools.Method(typeof(Widgets), nameof(Widgets.DefIcon)),
@@ -1941,8 +1947,8 @@ namespace EBSGFramework
                         }
             }
         }
-
-        public static bool DropBloodFilthPrefix(Pawn ___pawn)
+        /*
+        public static void DropBloodFilthPrefix(Pawn ___pawn)
         {
             if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
                 && ___pawn.SpawnedOrAnyParentSpawned && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
@@ -1953,10 +1959,9 @@ namespace EBSGFramework
                     FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodReplacement, ___pawn.LabelIndefinite(),
                         bloodExtension.bloodFilthAmount);
             }
-            return true;
         }
 
-        public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
+        public static void DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
         {
             if (Cache.bloodSmearReplacingGenes?.NullOrEmpty() == false && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
             {
@@ -1973,9 +1978,8 @@ namespace EBSGFramework
                     }
                 }
             }
-            return true;
         }
-
+        */
         // Harmony patches for stats
 
         public static void DeathrestEfficiencyPostfix(ref float __result, Pawn ___pawn)
@@ -2008,10 +2012,9 @@ namespace EBSGFramework
             }
         }
 
-        public static bool GainJoyPrefix(ref float amount, Pawn ___pawn)
+        public static void GainJoyPrefix(ref float amount, Pawn ___pawn)
         {
             amount *= ___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate);
-            return true;
         }
 
         public static void IndoorsIntervalPostfix(Need __instance, Pawn ___pawn)
@@ -2142,6 +2145,11 @@ namespace EBSGFramework
 
             if (___pawn != null && ___pawn.GetPsylinkLevel() > 0)
                 __result = (__result + ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
+        }
+
+        public static void FoodFallRatePostfix(Pawn ___pawn, ref float __result)
+        {
+            __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_HungerRateFactor);
         }
 
         public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
@@ -2334,6 +2342,12 @@ namespace EBSGFramework
                 __result += ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxOffset);
                 __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxFactor);
             }
+        }
+
+        public static void SkillFallPrefix(Pawn ___pawn, ref float xp, bool direct)
+        {
+            if (xp < 0 && !direct)
+                xp *= ___pawn.GetStatValue(EBSGDefOf.EBSG_SkillLossRate);
         }
 
         public static void PostAddGenePostfix(Pawn ___pawn)

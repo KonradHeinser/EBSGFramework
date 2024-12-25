@@ -1,8 +1,8 @@
 ﻿namespace EBSGFramework
 {
-    public enum HediffEffectTrigger
+    public enum RemovedHediffEffectTrigger
     {
-        OnDeathOrRemoval,
+        Always,
         OnDeathOnly,
         OnRemovalOnly
     }

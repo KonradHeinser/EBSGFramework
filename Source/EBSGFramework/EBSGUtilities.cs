@@ -160,7 +160,6 @@ namespace EBSGFramework
         {
             List<BodyPartRecord> parts = pawn.RaceProps.body.GetPartsWithDef(bodyParts.RandomElement());
 
-
             if (parts.NullOrEmpty())
             {
                 bodyParts.Shuffle();
@@ -997,7 +996,7 @@ namespace EBSGFramework
         {
             firstMatch = null;
             if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return false;
-            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return false;
+            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false) return false;
 
             if (!geneDefs.NullOrEmpty())
             {

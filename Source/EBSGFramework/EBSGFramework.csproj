@@ -441,6 +441,10 @@
         <Compile Include="Things\CompProperties\CompProperties_HediffOnDamage.cs" />
         <Compile Include="Things\Comps\CompHediffOnDamage.cs" />
         <Compile Include="Genes\ButcherProductExtension.cs" />
+        <Compile Include="ModularStuff\ModuleSlotPackage.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOnRemoval.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_DamageOnRemoval.cs" />
+        <Compile Include="Hediffs\Comps\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -485,6 +489,9 @@
         <Folder Include="RenderNodes\" />
         <Folder Include="Things\CompProperties\" />
         <Folder Include="Things\Comps\" />
+        <Folder Include="ModularStuff\" />
+        <Folder Include="ModularStuff\ModularHediffs\" />
+        <Folder Include="ModularStuff\ModularEquipment\" />
     </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

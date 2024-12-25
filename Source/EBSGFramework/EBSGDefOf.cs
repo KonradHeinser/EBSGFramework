@@ -30,6 +30,7 @@ namespace EBSGFramework
         public static EBSGRecorder EBSG_Recorder;
 
         // Need Stuff
+        public static StatDef EBSG_HungerRateFactor;
         public static StatDef EBSG_DeathrestEfficiency;
         public static StatDef EBSG_DeathrestRiseRate;
         public static StatDef EBSG_DeathrestFallRate;
@@ -50,6 +51,9 @@ namespace EBSGFramework
         public static StatDef EBSG_OutdoorsRiseRate;
         public static StatDef EBSG_OutdoorsFallRate;
 
+        // More StatDef stuff
+
+        public static StatDef EBSG_SkillLossRate;
         public static StatDef EBSG_GrowthPointRate;
         public static StatDef EBSG_OutgoingDamageFactor;
         public static StatDef EBSG_PsyfocusFallRateFactor;

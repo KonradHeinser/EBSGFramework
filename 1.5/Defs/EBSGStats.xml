@@ -1,48 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-    <StatDef>
-        <defName>EBSG_PawnGestationSpeed</defName>
-        <label>pregnancy speed</label>
-        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
-        <category>BasicsPawn</category>
-        <defaultBaseValue>1</defaultBaseValue>
-        <hideAtValue>1</hideAtValue>
-        <minValue>0.001</minValue>
-        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
-        <toStringStyle>PercentZero</toStringStyle>
-        <displayPriorityInCategory>2201</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef>
-        <defName>EBSG_BloodlossRecoveryBonus</defName>
-        <label>bloodloss recovery bonus</label>
-        <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
-        <category>BasicsPawn</category>
-        <defaultBaseValue>0</defaultBaseValue>
-        <hideAtValue>0</hideAtValue>
-        <minValue>-1</minValue>
-        <toStringStyle>PercentZero</toStringStyle>
-        <displayPriorityInCategory>2202</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef>
-        <defName>EBSG_Healthiness</defName>
-        <label>healthiness</label>
-        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
-        <category>BasicsPawn</category>
-        <defaultBaseValue>1</defaultBaseValue>
-        <hideAtValue>1</hideAtValue>
-        <minValue>0.1</minValue>
-        <toStringStyle>PercentZero</toStringStyle>
-        <displayPriorityInCategory>2203</displayPriorityInCategory>
-    </StatDef>
-
     <StatDef Name="EBSG_OffsetingStat" Abstract="True">
         <category>BasicsPawn</category>
         <defaultBaseValue>0</defaultBaseValue>
         <hideAtValue>0</hideAtValue>
         <minValue>-999999</minValue>
         <toStringStyle>PercentZero</toStringStyle>
+        <cacheable>true</cacheable>
     </StatDef>
 
     <StatDef Name="EBSG_FactoringStat" Abstract="True">
@@ -51,6 +15,46 @@
         <hideAtValue>1</hideAtValue>
         <minValue>0.0001</minValue>
         <toStringStyle>PercentZero</toStringStyle>
+        <cacheable>true</cacheable>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_PawnGestationSpeed</defName>
+        <label>pregnancy speed</label>
+        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
+        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
+        <displayPriorityInCategory>2201</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_OffsetingStat">
+        <defName>EBSG_BloodlossRecoveryBonus</defName>
+        <label>bloodloss recovery bonus</label>
+        <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
+        <minValue>-1</minValue>
+        <displayPriorityInCategory>2202</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_Healthiness</defName>
+        <label>healthiness</label>
+        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
+        <minValue>0.1</minValue>
+        <displayPriorityInCategory>2203</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_HungerRateFactor</defName>
+        <label>hunger rate factor</label>
+        <description>Changes the rate that a pawn's food need falls.\n\nDue to how the food consumption stat display works, this will be reflected in the total, but cannot be listed as one of the causes in the breakdown.</description>
+        <displayPriorityInCategory>1400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_SkillLossRate</defName>
+        <label>skill loss rate</label>
+        <description>The rate at which the pawn loses their skill knowledge.</description>
+        <displayPriorityInCategory>3930</displayPriorityInCategory>
+        <category>PawnMisc</category>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
