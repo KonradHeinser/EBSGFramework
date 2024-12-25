@@ -440,6 +440,7 @@
         <Compile Include="Things\Comps\ProjectileComp_ImpactEffect.cs" />
         <Compile Include="Things\CompProperties\CompProperties_HediffOnDamage.cs" />
         <Compile Include="Things\Comps\CompHediffOnDamage.cs" />
+        <Compile Include="Genes\ButcherProductExtension.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

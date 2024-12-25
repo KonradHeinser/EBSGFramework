@@ -77,6 +77,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PregnantAddPostfix)));
             harmony.Patch(AccessTools.Method(typeof(JobDriver_Lovin), "GenerateRandomMinTicksToNextLovin"),
                 postfix: new HarmonyMethod(patchType, nameof(PostLovinPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn), "ButcherProducts"),
+                postfix: new HarmonyMethod(patchType, nameof(ButcherProductsPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -110,7 +112,7 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
                 postfix: new HarmonyMethod(patchType, nameof(TryGenerateNewPawnInternalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GeneratePawnRelations"),
-                prefix: new HarmonyMethod(patchType, nameof(CanGeneratePawnRelationsPrefix)));
+                prefix: new HarmonyMethod(patchType, nameof(GeneratePawnRelationsPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
                 prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
             harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGenes"),
@@ -559,7 +561,7 @@ namespace EBSGFramework
 
         public static void TryGenerateNewPawnInternalPostfix(ref Pawn __result)
         {
-            if (__result != null && __result.genes != null)
+            if (__result?.genes != null)
             {
                 bool flagApparel = true; // Need for apparel check
                 bool flagWeapon = true; // Need for weapon check
@@ -707,10 +709,10 @@ namespace EBSGFramework
             }
         }
 
-        public static bool CanGeneratePawnRelationsPrefix(Pawn pawn)
+        public static bool GeneratePawnRelationsPrefix(Pawn pawn)
         {
             EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
-            if (recorder != null && !recorder.pawnKindsWithoutIntialRelationships.NullOrEmpty())
+            if (recorder?.pawnKindsWithoutIntialRelationships.NullOrEmpty() == false)
                 if (recorder.pawnKindsWithoutIntialRelationships.Contains(pawn.kindDef)) return false;
 
             return true;
@@ -837,7 +839,7 @@ namespace EBSGFramework
 
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
         {
-            if (ModsConfig.BiotechActive && romancer.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty() &&
+            if (ModsConfig.BiotechActive && romancer.genes != null && Cache?.grcGenes.NullOrEmpty() == false &&
                 romancer.PawnHasAnyOfGenes(out GeneDef firstMatch, Cache.grcGenes))
             {
                 List<Gene> genesListForReading = romancer.genes.GenesListForReading;
@@ -925,6 +927,7 @@ namespace EBSGFramework
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
+            if (__result.EnumerableNullOrEmpty()) return;
             List<ThingDef> invalidThings = new List<ThingDef>();
             foreach (ThingDef th in __result.Where((ThingDef t) => !t.comps.NullOrEmpty()))
                 foreach (CompProperties comp in th.comps)
@@ -953,6 +956,7 @@ namespace EBSGFramework
                         !pawn.AllNeedLevelsMet(terrainComp.pawnNeedLevels)) return;
 
                     float num = (c.x != pawn.Position.x && c.z != pawn.Position.z) ? pawn.TicksPerMoveDiagonal : pawn.TicksPerMoveCardinal;
+                    if (num == __result) return; // Checking to see if something like VE's hover is taking effect
                     TerrainDef terrainDef = pawn.Map.terrainGrid.TerrainAt(c);
 
                     if (!terrainComp.terrainSets.NullOrEmpty() && terrainDef != null)
@@ -978,8 +982,7 @@ namespace EBSGFramework
 
         public static void DoKillSideEffectsPostfix(DamageInfo? dinfo, Hediff exactCulprit, bool spawned, Pawn __instance)
         {
-            if (Cache != null && !Cache.murderousNeeds.NullOrEmpty() && dinfo?.Instigator != null && dinfo.Value.Instigator is Pawn pawn &&
-                pawn.needs != null && !pawn.needs.AllNeeds.NullOrEmpty())
+            if (Cache?.murderousNeeds.NullOrEmpty() == false && dinfo?.Instigator != null && dinfo.Value.Instigator is Pawn pawn && pawn.needs != null && !pawn.needs.AllNeeds.NullOrEmpty())
                 foreach (Need need in pawn.needs.AllNeeds)
                     if (need is Need_Murderous murderNeed)
                         murderNeed.Notify_KilledPawn(dinfo, __instance);
@@ -1515,8 +1518,8 @@ namespace EBSGFramework
         public static void PregnantAddPostfix(Hediff_Pregnant __instance, Pawn ___pawn)
         {
             // Hediff checks are used to minimize the risk of accidentally messing up another mod's pregnancy changes
-            if (Cache?.pregnancyReplacingGenes.NullOrEmpty() == false && __instance.def == HediffDefOf.PregnantHuman &&
-                ___pawn.health.hediffSet.HasHediff(HediffDefOf.PregnantHuman) && ___pawn.PawnHasAnyOfGenes(out var pregGene, Cache.pregnancyReplacingGenes))
+            if (Cache?.pregnancyReplacingGenes.NullOrEmpty() == false && __instance.def == HediffDefOf.PregnantHuman && ___pawn.HasHediff(HediffDefOf.PregnantHuman) &&
+                ___pawn.PawnHasAnyOfGenes(out var pregGene, Cache.pregnancyReplacingGenes))
             {
                 PregnancyReplacerExtension extension = pregGene.GetModExtension<PregnancyReplacerExtension>();
 
@@ -1568,6 +1571,58 @@ namespace EBSGFramework
                             FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
                     }
                 }
+            }
+        }
+
+        public static void ButcherProductsPostfix(Pawn __instance, ref IEnumerable<Thing> __result, float efficiency)
+        {
+            if (Cache?.butcherProductGenes.NullOrEmpty() == false && __instance.PawnHasAnyOfGenes(out _, Cache.butcherProductGenes))
+            {
+                List<Thing> newResult = new List<Thing>(__result);
+
+                ThingDef meat = null;
+                ThingDef leather = null;
+
+                foreach (GeneDef gene in __instance.GetAllGenesOnListFromPawn(Cache.butcherProductGenes))
+                {
+                    ButcherProductExtension extension = gene.GetModExtension<ButcherProductExtension>();
+
+                    if (meat == null && extension.meatReplacement != null)
+                        meat = extension.meatReplacement;
+
+                    if (leather == null && extension.leatherReplacement != null)
+                        leather = extension.leatherReplacement;
+
+                    if (EBSGUtilities.GenerateThingFromCountClass(extension.things, out var things, __instance))
+                    {
+                        if (extension.useEfficiency)
+                            foreach (Thing thing in things)
+                                thing.stackCount = GenMath.RoundRandom(thing.stackCount * efficiency);
+                        newResult.AddRange(things);
+                    }
+                }
+
+                if (meat != null && __instance.RaceProps.meatDef != null)
+                    for (int i = 0; i < newResult.Count; i++)
+                        if (newResult[i].def == __instance.RaceProps.meatDef)
+                        {
+                            Thing thing = ThingMaker.MakeThing(meat);
+                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.MeatAmount) * efficiency);
+                            newResult.Replace(newResult[i], thing);
+                            break;
+                        }
+
+                if (leather != null && __instance.RaceProps.leatherDef != null)
+                    for (int i = 0; i < newResult.Count; i++)
+                        if (newResult[i].def == __instance.RaceProps.leatherDef)
+                        {
+                            Thing thing = ThingMaker.MakeThing(leather);
+                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.LeatherAmount) * efficiency);
+                            newResult.Replace(newResult[i], thing);
+                            break;
+                        }
+
+                __result = newResult.AsEnumerable();
             }
         }
 
@@ -1647,7 +1702,6 @@ namespace EBSGFramework
             if (Cache?.abilityFuel.NullOrEmpty() == false && pawn.PawnHasAnyOfAbilities(Cache.reloadableAbilities, out var abilities) &&
                 EBSGUtilities.GetThings(clickCell.GetThingList(pawn.Map), Cache.abilityFuel, out var things))
             {
-
                 foreach (Ability ability in abilities)
                 {
                     CompAbilityEffect_Reloadable reloadable = ability.CompOfType<CompAbilityEffect_Reloadable>();
@@ -1688,7 +1742,7 @@ namespace EBSGFramework
 
         public static void NeedFrozenPostfix(ref bool __result, Pawn ___pawn)
         {
-            if (Cache?.ComaNeedsExist() == true)
+            if (Cache?.ComaNeedsExist() == true && !__result)
             {
                 Need_ComaGene comaNeed = ___pawn.needs.TryGetNeed<Need_ComaGene>();
                 if (comaNeed != null)
@@ -1804,7 +1858,7 @@ namespace EBSGFramework
         {
             if (target is Pawn pawn)
             {
-                if (pawn.genes.Xenotype != null && pawn.genes.Xenotype.HasModExtension<EBSGExtension>() && pawn.genes.Xenotype.GetModExtension<EBSGExtension>().hideAllInactiveGenesForXenotype)
+                if (pawn.genes?.Xenotype?.GetModExtension<EBSGExtension>()?.hideAllInactiveGenesForXenotype == true)
                 {
                     foreach (Gene gene in pawn.genes.Xenogenes)
                         if (gene.Overridden && ___xenogenes.Contains(gene))
@@ -1816,7 +1870,7 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    if (pawn.genes.Xenotype != null && pawn.genes.Xenotype.HasModExtension<EBSGExtension>())
+                    if (pawn.genes?.Xenotype?.HasModExtension<EBSGExtension>() == true)
                     {
                         EBSGExtension extension = pawn.genes.Xenotype.GetModExtension<EBSGExtension>();
                         if (extension.hideAllInactiveSkinColorGenesForXenotype)
@@ -1842,7 +1896,7 @@ namespace EBSGFramework
                         }
                     }
 
-                    if (Cache != null && !Cache.hiddenWhenInactive.NullOrEmpty())
+                    if (Cache.hiddenWhenInactive?.NullOrEmpty() == false)
                     {
                         foreach (Gene gene in pawn.genes.Xenogenes)
                             if (gene.Overridden && ___xenogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
@@ -1890,7 +1944,7 @@ namespace EBSGFramework
 
         public static bool DropBloodFilthPrefix(Pawn ___pawn)
         {
-            if (Cache != null && !Cache.bloodReplacingGenes.NullOrEmpty() && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
+            if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
                 && ___pawn.SpawnedOrAnyParentSpawned && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
@@ -1904,8 +1958,7 @@ namespace EBSGFramework
 
         public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
         {
-            if (Cache != null && !Cache.bloodSmearReplacingGenes.NullOrEmpty()
-                && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
+            if (Cache.bloodSmearReplacingGenes?.NullOrEmpty() == false && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
                 if (!Rand.Chance(bloodExtension.bloodSmearDropChance)) return false;
@@ -2029,6 +2082,7 @@ namespace EBSGFramework
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
         {
+            if (__instance.CurLevel <= 0 || __instance.CurLevel >= 1) return; // If already at min/max, no need to do anything else
             float increase = ___def.seekerRisePerHour * 0.06f;
             float decrease = ___def.seekerFallPerHour * 0.06f;
             float curInstantLevel;

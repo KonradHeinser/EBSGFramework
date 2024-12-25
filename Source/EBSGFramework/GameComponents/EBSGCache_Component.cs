@@ -54,6 +54,8 @@ namespace EBSGFramework
         public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
         public List<GeneDef> pregnancyReplacingGenes = new List<GeneDef>();
         public List<GeneDef> lovinAddinGenes = new List<GeneDef>();
+        public List<GeneDef> butcherProductGenes = new List<GeneDef>();
+        public List<GeneDef> leatherProductGenes = new List<GeneDef>();
 
         public List<GeneDef> forbidFoods = new List<GeneDef>();
         public List<GeneDef> restrictFoods = new List<GeneDef>();
@@ -370,6 +372,8 @@ namespace EBSGFramework
             bloodSmearReplacingGenes = new List<GeneDef>();
             pregnancyReplacingGenes = new List<GeneDef>();
             lovinAddinGenes = new List<GeneDef>();
+            butcherProductGenes = new List<GeneDef>();
+            leatherProductGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -425,9 +429,9 @@ namespace EBSGFramework
                     if (foodExtension.foodTypeOverride != FoodTypeFlags.None) foodTypeOverrides.Add(gene);
                 }
 
-                if (gene.HasModExtension<EBSGBodyExtension>())
+                EBSGBodyExtension bodyExtension = gene.GetModExtension<EBSGBodyExtension>();
+                if (bodyExtension != null)
                 {
-                    EBSGBodyExtension bodyExtension = gene.GetModExtension<EBSGBodyExtension>();
                     if (bodyExtension.desHead != null || bodyExtension.desChildHead != null)
                         desiccatedHeads.Add(gene);
                     if (bodyExtension.desBody != null || bodyExtension.desFat != null || bodyExtension.desHulk != null || bodyExtension.desThin != null
@@ -448,6 +452,14 @@ namespace EBSGFramework
 
                 if (gene.HasModExtension<PostLovinThingsExtension>())
                     lovinAddinGenes.Add(gene);
+
+                ButcherProductExtension butcher = gene.GetModExtension<ButcherProductExtension>();
+                if (butcher != null)
+                {
+                    butcherProductGenes.Add(gene);
+                    if (butcher.leatherReplacement != null)
+                        leatherProductGenes.Add(gene);
+                }
             }
         }
 

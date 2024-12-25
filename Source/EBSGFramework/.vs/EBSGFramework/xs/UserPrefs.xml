@@ -1,15 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="EBSGUtilities.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Harmony/HarmonyPatches.cs">
     <Files>
-      <File FileName="EBSGUtilities.cs" Line="844" Column="10" />
+      <File FileName="EBSGUtilities.cs" Line="540" Column="28" />
+      <File FileName="EBSGExtension.cs" Line="25" Column="53" />
+      <File FileName="Genes/ButcherProductExtension.cs" Line="6" Column="41" />
+      <File FileName="Harmony/HarmonyPatches.cs" Line="2439" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" selected="True" />
+              <Node name="GameComponents" expanded="True" />
+              <Node name="Harmony" expanded="True">
+                <Node name="HarmonyPatches.cs" selected="True" />
               </Node>
             </Node>
           </Node>
