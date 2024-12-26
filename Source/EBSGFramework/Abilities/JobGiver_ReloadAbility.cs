@@ -37,7 +37,7 @@ namespace EBSGFramework
                 foreach (Ability ability in abilities)
                 {
                     var reloadComp = ability.CompOfType<CompAbilityEffect_Reloadable>();
-
+                    if (reloadComp.Props.disableAutoSearch || reloadComp.Props.ammoDef == null) continue;
                     if (reloadComp.ChargesNeeded > 0)
                     {
                         List<Thing> validAmmo = RefuelWorkGiverUtility.FindEnoughReservableThings(pawn, pawn.Position,

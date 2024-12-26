@@ -1,29 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/Comps/HediffComp_SpawnPawnKindOnRemoval.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties/CompProperties_AbilityLimitedCharges.cs">
     <Files>
-      <File FileName="EBSGExtension.cs" Line="28" Column="40" />
-      <File FileName="EBSGDefOf.cs" Line="32" Column="22" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SpawnPawnKindOnRemoval.cs" Line="24" Column="49" />
-      <File FileName="Hediffs/Comps/HediffComp_SpawnPawnKindOnRemoval.cs" Line="53" Column="13" />
+      <File FileName="EBSGExtension.cs" Line="33" Column="41" />
+      <File FileName="Things/Comps/CompEquippableAbility.cs" Line="8" Column="25" />
+      <File FileName="Things/CompProperties/CompProperties_EquippableAbility.cs" Line="6" Column="18" />
+      <File FileName="Things/CompProperties/CompProperties_AbilityLimitedCharges.cs" Line="13" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="DependencyGenes" expanded="True" />
-              <Node name="DynamicResourceGenes" expanded="True">
-                <Node name="GetResourceAI" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Generic List Classes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Hediffs" expanded="True">
-                <Node name="CompProperties" expanded="True" />
-                <Node name="Comps" expanded="True">
-                  <Node name="HediffComp_SpawnPawnKindOnRemoval.cs" selected="True" />
-                </Node>
-              </Node>
               <Node name="Things" expanded="True">
+                <Node name="CompProperties" expanded="True">
+                  <Node name="CompProperties_AbilityLimitedCharges.cs" selected="True" />
+                </Node>
                 <Node name="Comps" expanded="True" />
               </Node>
             </Node>

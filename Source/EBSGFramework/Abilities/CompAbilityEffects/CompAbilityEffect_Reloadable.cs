@@ -24,7 +24,6 @@ namespace EBSGFramework
                     Props.reloadSound.PlayOneShot(new TargetInfo(parent.pawn.Position, parent.pawn.Map));
 
                 remainingCharges = value;
-                Log.Message(remainingCharges);
             }
         }
 
@@ -39,10 +38,10 @@ namespace EBSGFramework
         public override bool GizmoDisabled(out string reason)
         {
             reason = null;
-            if (!base.GizmoDisabled(out reason))
+            if (base.GizmoDisabled(out reason))
                 return base.GizmoDisabled(out reason);
 
-            if (RemainingCharges == 0)
+            if (RemainingCharges <= 0)
             {
                 reason = Props.noChargesRemaining.TranslateOrLiteral(Props.ammoDef.label, parent.def.label);
                 return true;
@@ -66,7 +65,7 @@ namespace EBSGFramework
             base.Apply(target, dest);
             RemainingCharges--;
 
-            if (Props.removeOnceEmpty && RemainingCharges == 0)
+            if (Props.removeOnceEmpty && RemainingCharges <= 0)
                 parent.pawn.abilities.RemoveAbility(parent.def);
         }
 

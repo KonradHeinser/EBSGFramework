@@ -1711,6 +1711,7 @@ namespace EBSGFramework
                 foreach (Ability ability in abilities)
                 {
                     CompAbilityEffect_Reloadable reloadable = ability.CompOfType<CompAbilityEffect_Reloadable>();
+                    if (reloadable.Props.ammoDef == null) continue;
                     foreach (Thing thing in things)
                         if (reloadable.Props.ammoDef == thing.def && !thing.IsForbidden(pawn) && pawn.CanReserve(thing))
                         {
