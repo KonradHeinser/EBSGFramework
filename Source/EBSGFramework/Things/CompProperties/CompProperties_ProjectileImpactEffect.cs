@@ -1,5 +1,4 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 
 namespace EBSGFramework
 {
@@ -11,7 +10,7 @@ namespace EBSGFramework
 
         public CompProperties_ProjectileImpactEffect()
         {
-            this.compClass = typeof(ProjectileComp_ImpactEffect);
+            compClass = typeof(ProjectileComp_ImpactEffect);
         }
     }
 }

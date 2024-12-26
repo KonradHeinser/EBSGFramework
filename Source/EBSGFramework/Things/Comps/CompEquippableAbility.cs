@@ -16,9 +16,13 @@ namespace EBSGFramework
         public override void Notify_Equipped(Pawn pawn)
         {
             Ability ability = AbilityUtility.MakeAbility(Props.ability, Holder);
-            ability.RemainingCharges = remainingCharges;
+
+            if (Props.saveCharges)
+                ability.RemainingCharges = remainingCharges;
+
             if (cooldownLeft != 0 && Props.saveCooldown)
                 ability.StartCooldown(cooldownLeft);
+
             Holder.abilities.abilities.Add(ability);
             Holder.abilities.Notify_TemporaryAbilitiesChanged();
         }

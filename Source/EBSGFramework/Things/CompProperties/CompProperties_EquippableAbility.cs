@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public bool saveCooldown = true; // Technically it's saved anyway, but it's only used if this is false
 
+        public bool saveCharges = true;
+
         public CompProperties_EquippableAbility()
         {
             compClass = typeof(CompEquippableAbility);

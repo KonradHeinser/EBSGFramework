@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties/CompProperties_AbilityLimitedCharges.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties/CompProperties_ProjectileImpactEffect.cs">
     <Files>
       <File FileName="EBSGExtension.cs" Line="33" Column="41" />
-      <File FileName="Things/Comps/CompEquippableAbility.cs" Line="8" Column="25" />
-      <File FileName="Things/CompProperties/CompProperties_EquippableAbility.cs" Line="6" Column="18" />
-      <File FileName="Things/CompProperties/CompProperties_AbilityLimitedCharges.cs" Line="13" Column="33" />
+      <File FileName="Things/CompProperties/CompProperties_ProjectileImpactEffect.cs" Line="9" Column="36" />
+      <File FileName="Things/Comps/ProjectileComp_ImpactEffect.cs" Line="29" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,13 +11,14 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Generic List Classes" expanded="True" />
               <Node name="Harmony" expanded="True" />
               <Node name="Things" expanded="True">
                 <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_AbilityLimitedCharges.cs" selected="True" />
+                  <Node name="CompProperties_ProjectileImpactEffect.cs" selected="True" />
                 </Node>
                 <Node name="Comps" expanded="True" />
               </Node>
