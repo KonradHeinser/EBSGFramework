@@ -125,6 +125,20 @@
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 
+    <MentalStateDef ParentName="BaseMentalState">
+        <defName>EBSG_AggressiveSummon</defName>
+        <stateClass>EBSGFramework.MentalState_AggressiveSummon</stateClass>
+        <label>aggressive summon</label>
+        <category>Aggro</category>
+        <minTicksBeforeRecovery>99999999</minTicksBeforeRecovery>
+        <nameColor>(0.8,0.2,0.5)</nameColor>
+        <baseInspectLine>Maddened: Aggressive Summon</baseInspectLine>
+        <inCaravanCanDo>true</inCaravanCanDo>
+        <recoverFromSleep>false</recoverFromSleep>
+        <recoverFromDowned>false</recoverFromDowned>
+        <recoverFromCollapsingExhausted>false</recoverFromCollapsingExhausted>
+    </MentalStateDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>

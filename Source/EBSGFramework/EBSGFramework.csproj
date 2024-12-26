@@ -447,6 +447,11 @@
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_SpawnPawnKindOnRemoval.cs" />
         <Compile Include="Generic List Classes\Gases.cs" />
+        <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_SpawnPawnKind.cs" />
+        <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpawnPawnKind.cs" />
+        <Compile Include="MentalState_AggressiveSummon.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventDeathNotifications.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_PreventDeathNotifications.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
