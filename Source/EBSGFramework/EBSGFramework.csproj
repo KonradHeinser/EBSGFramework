@@ -444,7 +444,8 @@
         <Compile Include="ModularStuff\ModuleSlotPackage.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOnRemoval.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_DamageOnRemoval.cs" />
-        <Compile Include="Hediffs\Comps\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
+        <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
+        <Compile Include="Hediffs\Comps\HediffComp_SpawnPawnKindOnRemoval.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

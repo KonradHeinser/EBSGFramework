@@ -1948,7 +1948,7 @@ namespace EBSGFramework
             }
         }
         /*
-        public static void DropBloodFilthPrefix(Pawn ___pawn)
+        public static bool DropBloodFilthPrefix(Pawn ___pawn)
         {
             if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
                 && ___pawn.SpawnedOrAnyParentSpawned && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
@@ -1958,12 +1958,13 @@ namespace EBSGFramework
                 if (bloodExtension.bloodReplacement != null)
                     FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodReplacement, ___pawn.LabelIndefinite(),
                         bloodExtension.bloodFilthAmount);
+                return true;                       
             }
         }
 
-        public static void DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
+        public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
         {
-            if (Cache.bloodSmearReplacingGenes?.NullOrEmpty() == false && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
+            if (___pawn.Spawned && Cache.bloodSmearReplacingGenes?.NullOrEmpty() == false && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
                 if (!Rand.Chance(bloodExtension.bloodSmearDropChance)) return false;
@@ -1978,6 +1979,7 @@ namespace EBSGFramework
                     }
                 }
             }
+            return true;
         }
         */
         // Harmony patches for stats
