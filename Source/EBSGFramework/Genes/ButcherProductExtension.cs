@@ -11,6 +11,10 @@ namespace EBSGFramework
 
         public ThingDef meatReplacement;
 
+        public float meatAmountFactor = 1f;
+
         public ThingDef leatherReplacement;
+
+        public float leatherAmountFactor = 1f;
     }
 }

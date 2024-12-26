@@ -30,9 +30,8 @@ namespace EBSGFramework
             List<Thing> ignoreList = new List<Thing>();
             Pawn caster = parent.pawn;
 
-            Map map;
-            if (caster.Dead) map = caster.Corpse.MapHeld;
-            else map = caster.Map;
+            Map map = caster.Corpse.MapHeld;
+            if (map == null) return;
 
             float radius = Props.radius;
             if (Props.statRadius != null && caster.GetStatValue(Props.statRadius) > 0) radius = caster.GetStatValue(Props.statRadius);

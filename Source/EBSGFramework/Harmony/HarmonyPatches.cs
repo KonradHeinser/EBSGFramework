@@ -122,12 +122,11 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
 
-            /*
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
-            */
+
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
@@ -1587,17 +1586,25 @@ namespace EBSGFramework
                 List<Thing> newResult = new List<Thing>(__result);
 
                 ThingDef meat = null;
+                float meatAmountFactor = 1f;
                 ThingDef leather = null;
+                float leatherAmountFactor = 1f;
 
                 foreach (GeneDef gene in __instance.GetAllGenesOnListFromPawn(Cache.butcherProductGenes))
                 {
                     ButcherProductExtension extension = gene.GetModExtension<ButcherProductExtension>();
 
                     if (meat == null && extension.meatReplacement != null)
+                    {
                         meat = extension.meatReplacement;
+                        meatAmountFactor = extension.meatAmountFactor;
+                    }
 
                     if (leather == null && extension.leatherReplacement != null)
+                    {
                         leather = extension.leatherReplacement;
+                        leatherAmountFactor = extension.leatherAmountFactor;
+                    }
 
                     if (EBSGUtilities.GenerateThingFromCountClass(extension.things, out var things, __instance))
                     {
@@ -1613,7 +1620,7 @@ namespace EBSGFramework
                         if (newResult[i].def == __instance.RaceProps.meatDef)
                         {
                             Thing thing = ThingMaker.MakeThing(meat);
-                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.MeatAmount) * efficiency);
+                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.MeatAmount) * efficiency * meatAmountFactor);
                             newResult.Replace(newResult[i], thing);
                             break;
                         }
@@ -1623,7 +1630,7 @@ namespace EBSGFramework
                         if (newResult[i].def == __instance.RaceProps.leatherDef)
                         {
                             Thing thing = ThingMaker.MakeThing(leather);
-                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.LeatherAmount) * efficiency);
+                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.LeatherAmount) * efficiency * leatherAmountFactor);
                             newResult.Replace(newResult[i], thing);
                             break;
                         }
@@ -1948,7 +1955,7 @@ namespace EBSGFramework
                         }
             }
         }
-        /*
+
         public static bool DropBloodFilthPrefix(Pawn ___pawn)
         {
             if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
@@ -1959,8 +1966,8 @@ namespace EBSGFramework
                 if (bloodExtension.bloodReplacement != null)
                     FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodReplacement, ___pawn.LabelIndefinite(),
                         bloodExtension.bloodFilthAmount);
-                return true;                       
             }
+            return true;
         }
 
         public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
@@ -1982,7 +1989,7 @@ namespace EBSGFramework
             }
             return true;
         }
-        */
+
         // Harmony patches for stats
 
         public static void DeathrestEfficiencyPostfix(ref float __result, Pawn ___pawn)
@@ -2295,7 +2302,7 @@ namespace EBSGFramework
 
         public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
-            if (Cache != null && !Cache.explosiveAttackHediffs.NullOrEmpty() && dinfo.Instigator != null && dinfo.Instigator is Pawn pawn
+            if (Cache?.explosiveAttackHediffs.NullOrEmpty() == false && __instance.MapHeld != null && dinfo.Instigator != null && dinfo.Instigator is Pawn pawn
                 && !pawn.Dead && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance)
                 && pawn.GetCurrentTarget(false) == __instance && !pawn.CastingAbility())
             {
@@ -2306,7 +2313,7 @@ namespace EBSGFramework
                     if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity)
                     {
                         explodingComp.currentlyExploding = true;
-                        explodingComp.DoExplosion(__instance.Position);
+                        explodingComp.DoExplosion(__instance.PositionHeld);
                     }
                     if (dinfo.Def == null) continue; // Special catch
 
@@ -2316,7 +2323,7 @@ namespace EBSGFramework
                         if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity)
                         {
                             rangedExplodingComp.currentlyExploding = true;
-                            rangedExplodingComp.DoExplosion(__instance.Position);
+                            rangedExplodingComp.DoExplosion(__instance.PositionHeld);
                         }
                     }
                     else if (!dinfo.Def.isExplosive)
@@ -2325,7 +2332,7 @@ namespace EBSGFramework
                         if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity)
                         {
                             meleeExplodingComp.currentlyExploding = true;
-                            meleeExplodingComp.DoExplosion(__instance.Position);
+                            meleeExplodingComp.DoExplosion(__instance.PositionHeld);
                         }
                     }
                 }
