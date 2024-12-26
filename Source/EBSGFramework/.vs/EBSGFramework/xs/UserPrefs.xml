@@ -1,25 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/CompProperties/HediffCompProperties_SpawnPawnKindOnRemoval.cs">
     <Files>
-      <File FileName="EBSGExtension.cs" Line="33" Column="41" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_RemoveAtSeverities.cs" Line="18" Column="1" />
-      <File FileName="Harmony/HarmonyPatches.cs" Line="75" Column="87" />
-      <File FileName="Genes/ButcherProductExtension.cs" Line="21" Column="1" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_DamageOnRemoval.cs" Line="1" Column="1" />
-      <File FileName="Hediffs/CompProperties/HediffCompProperties_SpawnPawnKindOnRemoval.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_SpawnPawnKindOnRemoval.cs" Line="35" Column="1" />
+      <File FileName="Hediffs/Comps/HediffComp_SpawnPawnKindOnRemoval.cs" Line="60" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
-              <Node name="Abilities" expanded="True" />
-              <Node name="Genes" expanded="True" />
+              <Node name="Abilities" expanded="True">
+                <Node name="CompAbilityEffects" expanded="True" />
+                <Node name="CompProperties" expanded="True" />
+              </Node>
               <Node name="Harmony" expanded="True" />
               <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True">
                   <Node name="HediffCompProperties_SpawnPawnKindOnRemoval.cs" selected="True" />
                 </Node>
+                <Node name="Comps" expanded="True" />
               </Node>
             </Node>
           </Node>

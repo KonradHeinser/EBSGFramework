@@ -7,7 +7,7 @@ namespace EBSGFramework
     {
         public DamageDef damage;
 
-        public float amount = 1f;
+        public float amount = -1f;
 
         public float minHealthRemaining = 0f;
 

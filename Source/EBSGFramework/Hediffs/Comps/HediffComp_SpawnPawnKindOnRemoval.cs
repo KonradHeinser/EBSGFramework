@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.AI.Group;
 
 namespace EBSGFramework
@@ -40,6 +41,13 @@ namespace EBSGFramework
                 GenSpawn.Spawn(pawn, pos, map);
                 lord?.AddPawn(pawn);
 
+                if (Props.inCreatorFaction && pawn.RaceProps.IsMechanoid && Pawn.mechanitor?.CanOverseeSubject(pawn) == true)
+                {
+                    pawn.GetOverseer()?.relations.TryRemoveDirectRelation(PawnRelationDefOf.Overseer, pawn);
+                    Pawn.relations?.AddDirectRelation(PawnRelationDefOf.Overseer, pawn);
+                    Pawn.mechanitor.CanOverseeSubject(pawn);
+                }
+
                 if (Props.mentalStateOnSpawn != null)
                     pawn.mindState?.mentalStateHandler?.TryStartMentalState(Props.mentalStateOnSpawn);
 
@@ -49,6 +57,9 @@ namespace EBSGFramework
                     effecter.Trigger(Props.attachEffecterToPawn ? pawn : new TargetInfo(pos, map), TargetInfo.Invalid);
                     effecter.Cleanup();
                 }
+
+                if (Props.hediffOnPawns != null)
+                    pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, Pawn);
             }
 
             if (Props.effecter != null)

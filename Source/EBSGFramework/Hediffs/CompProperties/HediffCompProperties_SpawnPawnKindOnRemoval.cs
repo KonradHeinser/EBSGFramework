@@ -22,6 +22,10 @@ namespace EBSGFramework
 
         public MentalStateDef mentalStateOnSpawn;
 
+        public HediffDef hediffOnPawns;
+
+        public float severity = 1f;
+
         public HediffCompProperties_SpawnPawnKindOnRemoval()
         {
             compClass = typeof(HediffComp_SpawnPawnKindOnRemoval);
