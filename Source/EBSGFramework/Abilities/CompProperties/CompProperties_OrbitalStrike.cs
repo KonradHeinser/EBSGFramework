@@ -6,14 +6,6 @@ namespace EBSGFramework
 {
     public class CompProperties_OrbitalStrike : CompProperties_AbilityEffect
     {
-        public enum Gases
-        {
-            Smoke = 0,
-            None = 1,
-            Tox = 8,
-            Rot = 24
-        }
-
         public ThingDef centerMarker;
         public SoundDef preImpactSound;
         public int count = 30;

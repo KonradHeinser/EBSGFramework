@@ -7,21 +7,18 @@ namespace EBSGFramework
     {
         public HediffDef givenHediff;
 
-        // When set, hediff's severity will be adjusted by damage amount multiplied by this number
-        public float? severityPerDamage;
-        // If hediff should be applied to the damaged bodypart or to the whole body
+        public float severityPerDamage = 0f;
         public bool applyToBodypart = false;
 
-        // Whenever the comp triggers on ranged/explosive/melee damage
+        public float initialSeverity = 1f;
+        public float severityIncrease = 1f;
+
         public bool triggeredByRangedDamage = true;
         public bool triggeredByExplosions = true;
         public bool triggeredByMeleeDamage = true;
 
-        // List of whitelisted DamageDefs. When set, DamageDefs that are not in this list won't be affected.
-        public List<DamageDef> whitelistedDamageDefs;
-
-        // List of blacklisted DamageDefs. When set, DamageDefs that are in this list won't be affected.
-        public List<DamageDef> blacklistedDamageDefs;
+        public List<DamageDef> validDamageDefs;
+        public List<DamageDef> ignoredDamageDefs;
 
         public CompProperties_HediffOnDamage()
         {

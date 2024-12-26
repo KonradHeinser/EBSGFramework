@@ -5,13 +5,6 @@ namespace EBSGFramework
 {
     public class CompProperties_EBSGBurst : CompProperties_AbilityEffect
     {
-        public enum Gases
-        {
-            Smoke = 0,
-            None = 1,
-            Tox = 8,
-            Rot = 24
-        }
         public float radius;
         public StatDef statRadius;
         public DamageDef damageDef;

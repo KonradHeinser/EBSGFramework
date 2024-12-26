@@ -446,6 +446,7 @@
         <Compile Include="Hediffs\Comps\HediffComp_DamageOnRemoval.cs" />
         <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
         <Compile Include="Hediffs\Comps\HediffComp_SpawnPawnKindOnRemoval.cs" />
+        <Compile Include="Generic List Classes\Gases.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />

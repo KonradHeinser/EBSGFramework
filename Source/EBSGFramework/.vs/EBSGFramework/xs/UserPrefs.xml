@@ -1,9 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Things/CompProperties/CompProperties_ProjectileImpactEffect.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hediffs/BurstHediffPropertiesBase.cs">
     <Files>
       <File FileName="EBSGExtension.cs" Line="33" Column="41" />
-      <File FileName="Things/CompProperties/CompProperties_ProjectileImpactEffect.cs" Line="9" Column="36" />
-      <File FileName="Things/Comps/ProjectileComp_ImpactEffect.cs" Line="29" Column="9" />
+      <File FileName="Hediffs/CompProperties/HediffCompProperties_RemoveAtSeverities.cs" Line="1" Column="1" />
+      <File FileName="Hediffs/CompProperties/Explosive/HediffCompProperties_ExplodeOnRemoval.cs" Line="3" Column="69" />
+      <File FileName="Generic List Classes/Gases.cs" Line="11" Column="1" />
+      <File FileName="Hediffs/BurstHediffPropertiesBase.cs" Line="6" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,16 +13,15 @@
           <Node name="EBSGFramework" expanded="True">
             <Node name="EBSGFramework" expanded="True">
               <Node name="Abilities" expanded="True">
-                <Node name="CompAbilityEffects" expanded="True" />
                 <Node name="CompProperties" expanded="True" />
               </Node>
               <Node name="Generic List Classes" expanded="True" />
               <Node name="Harmony" expanded="True" />
-              <Node name="Things" expanded="True">
+              <Node name="Hediffs" expanded="True">
                 <Node name="CompProperties" expanded="True">
-                  <Node name="CompProperties_ProjectileImpactEffect.cs" selected="True" />
+                  <Node name="Explosive" expanded="True" />
                 </Node>
-                <Node name="Comps" expanded="True" />
+                <Node name="BurstHediffPropertiesBase.cs" selected="True" />
               </Node>
             </Node>
           </Node>

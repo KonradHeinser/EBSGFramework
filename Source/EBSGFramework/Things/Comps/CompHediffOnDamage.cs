@@ -17,10 +17,10 @@ namespace EBSGFramework
                 || (!dinfo.Def.isRanged && !dinfo.Def.isExplosive && !Props.triggeredByMeleeDamage))
                 return;
 
-            if (!Props.whitelistedDamageDefs.NullOrEmpty() && !Props.whitelistedDamageDefs.Contains(dinfo.Def))
+            if (!Props.validDamageDefs.NullOrEmpty() && !Props.validDamageDefs.Contains(dinfo.Def))
                 return;
 
-            if (!Props.blacklistedDamageDefs.NullOrEmpty() && Props.blacklistedDamageDefs.Contains(dinfo.Def))
+            if (!Props.ignoredDamageDefs.NullOrEmpty() && Props.ignoredDamageDefs.Contains(dinfo.Def))
                 return;
 
             Hediff hediff = null;
@@ -33,15 +33,19 @@ namespace EBSGFramework
 
             if (flag)
             {
-                if (Props.severityPerDamage != null)
-                    hediff.Severity += (float)Props.severityPerDamage * dinfo.Amount;
+                if (Props.severityPerDamage > 0)
+                    hediff.Severity += Props.severityPerDamage * dinfo.Amount;
+                else
+                    hediff.Severity += Props.severityIncrease;
             }
             else
             {
                 hediff = Pawn.health.AddHediff(Props.givenHediff, Props.applyToBodypart ? dinfo.HitPart : null);
 
-                if (Props.severityPerDamage != null)
-                    hediff.Severity = (float)Props.severityPerDamage * dinfo.Amount;
+                if (Props.severityPerDamage > 0)
+                    hediff.Severity = Props.severityPerDamage * dinfo.Amount;
+                else
+                    hediff.Severity = Props.initialSeverity;
             }
         }
     }
