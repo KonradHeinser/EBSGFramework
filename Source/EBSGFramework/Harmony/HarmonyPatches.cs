@@ -121,12 +121,12 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
-
+            /*
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
-
+            */
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
@@ -1972,7 +1972,7 @@ namespace EBSGFramework
 
         public static bool DropBloodFilthPrefix(Pawn ___pawn)
         {
-            if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
+            if (Cache.bloodReplacingGenes?.NullOrEmpty() == false && ___pawn != null && (___pawn.Spawned || ___pawn.ParentHolder is Pawn_CarryTracker)
                 && ___pawn.SpawnedOrAnyParentSpawned && ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
             {
                 EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();

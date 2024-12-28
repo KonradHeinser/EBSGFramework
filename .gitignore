@@ -5,6 +5,7 @@
 
 # User-specific files
 */UserPrefs.xml
-/.vs
+*/.vs
 /Source/EBSGFramework/obj
 /Source/EBSGFramework/.vs/EBSGFramework/v16
+/Source/EBSGFramework/.vs
