@@ -172,6 +172,17 @@ namespace EBSGFramework
             // Vanilla code bug fixes
             harmony.Patch(AccessTools.Method(typeof(Widgets), nameof(Widgets.DefIcon)),
                 prefix: new HarmonyMethod(patchType, nameof(DefIconPrefix)));
+            harmony.Patch(AccessTools.Method(typeof(Widgets), "CreateMouseAttachedLabelRect"),
+                postfix: new HarmonyMethod(patchType, nameof(MouseAttachedLabelPostfix)));
+
+            // Slavery Harmony Patches
+            if (ModsConfig.IdeologyActive)
+            {
+                harmony.Patch(AccessTools.Method(typeof(SlaveRebellionUtility), nameof(SlaveRebellionUtility.InitiateSlaveRebellionMtbDays)),
+                    prefix: new HarmonyMethod(patchType, nameof(InitiateSlaveRebellionPrefix)));
+                harmony.Patch(AccessTools.Method(typeof(SlaveRebellionUtility), nameof(SlaveRebellionUtility.CanParticipateInSlaveRebellion)),
+                    prefix: new HarmonyMethod(patchType, nameof(ParticipateInSlaveRebellionPrefix)));
+            }
         }
 
         // Bug fixes
@@ -186,6 +197,11 @@ namespace EBSGFramework
                 }
             }
             return true;
+        }
+
+        public static void MouseAttachedLabelPostfix(ref Rect __result)
+        {
+            __result.y -= __result.height/2f;
         }
 
         // EBSG Framework stuff
@@ -1137,7 +1153,6 @@ namespace EBSGFramework
                                         __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
                                         return;
                                     }
-
                                 }
                                 else
                                 {
@@ -1219,7 +1234,6 @@ namespace EBSGFramework
                                                 __result = GraphicDatabase.Get<Graphic_Multi>(link.femaleHead, shader, Vector2.one, pawn.story?.SkinColor ?? Color.white);
                                                 return;
                                             }
-
                                         }
                                         else
                                         {
@@ -2457,6 +2471,34 @@ namespace EBSGFramework
                     __result = newResult.AsEnumerable();
                 }
             }
+        }
+
+        // Harmony patches for Ideology
+
+        public static bool InitiateSlaveRebellionPrefix(ref float __result, Pawn pawn)
+        {
+            foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+            {
+                if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
+                {
+                    __result = -1f;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool ParticipateInSlaveRebellionPrefix(ref bool __result, Pawn pawn)
+        {
+            foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+            {
+                if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
+                {
+                    __result = false;
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

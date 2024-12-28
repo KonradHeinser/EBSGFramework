@@ -93,7 +93,7 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(baseExplanation + targetExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
-                return true;
+                return false;
             }
 
             return true;
