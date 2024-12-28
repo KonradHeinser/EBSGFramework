@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -84,7 +85,18 @@ namespace EBSGFramework
                 }
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
-                if (!Extension.mutationGeneSets.NullOrEmpty() && mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
+                if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
+                /*
+                if (!Extension.mutationGeneSets.NullOrEmpty())
+                {
+                    if (mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
+                    if (pawn.gender == Gender.Male) mutationDelayTicks += 1;
+                    else if (pawn.gender == Gender.Female) mutationDelayTicks += 2;
+                    if (pawn.genes != null && pawn.genes.GenesListForReading.Count() < 30) mutationDelayTicks += pawn.genes.GenesListForReading.Count();
+                    if (pawn.equipment != null && !pawn.equipment.AllEquipmentListForReading.NullOrEmpty()) mutationDelayTicks += pawn.equipment.AllEquipmentListForReading.Count();
+                    if (pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty()) mutationDelayTicks += pawn.health.hediffSet.hediffs.Count();
+                    if (!pawn.relations.RelatedPawns.EnumerableNullOrEmpty()) mutationDelayTicks += pawn.relations.RelatedPawns.Count();
+                }*/
                 pawn.AddHediffToParts(Extension.hediffsToApplyAtAges);
             }
             if (def.HasModExtension<EquipRestrictExtension>() && (pawn.equipment != null || pawn.apparel != null))
@@ -198,6 +210,7 @@ namespace EBSGFramework
             }
 
             // Mutation should always be the last thing processed, along with anything else attached to the timer
+            /*
             if (mutationDelayTicks < 0) return;
             if (mutationDelayTicks == 0)
             {
@@ -206,7 +219,7 @@ namespace EBSGFramework
                     if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
                 }
             }
-            mutationDelayTicks--;
+            mutationDelayTicks--;*/
         }
 
         public override void PostRemove()
