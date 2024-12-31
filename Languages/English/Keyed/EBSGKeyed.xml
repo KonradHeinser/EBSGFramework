@@ -115,7 +115,6 @@
     <EBSG_OpenSleepCasket>Open {0}</EBSG_OpenSleepCasket>
     <EBSG_CommandSleepCasketEjectDesc>Wake up the pawn inside and eject them.</EBSG_CommandSleepCasketEjectDesc>
 
-
     <!--Missing specific thing-->
     <EBSG_MissingGathererComp>{0} is missing some parts of its code. Please notify the mod dev.</EBSG_MissingGathererComp>
 
@@ -226,6 +225,15 @@
     <AbilityTargetLightLevel>Target must be in an area with brightness between {0} and {1}</AbilityTargetLightLevel>
     <AbilityCasterLightLevel>Caster must be in an area with brightness between {0} and {1}</AbilityCasterLightLevel>
     <AbilityTime>Hour must be between {0} and {1}</AbilityTime>
+
+    <AbilityTargetNoRoof>Target cannot be under a roof</AbilityTargetNoRoof>
+    <AbilityTargetNoThickRoof>Target cannot be under a thick roof</AbilityTargetNoThickRoof>
+    <AbilityTargetRoof>Target must be under a roof</AbilityTargetRoof>
+    <AbilityTargetThickRoof>Target must be under a thick roof</AbilityTargetThickRoof>
+    <AbilityCasterNoRoof>Caster cannot be under a roof</AbilityCasterNoRoof>
+    <AbilityCasterNoThickRoof>Caster cannot be under a thick roof</AbilityCasterNoThickRoof>
+    <AbilityCasterRoof>Caster must be under a roof</AbilityCasterRoof>
+    <AbilityCasterThickRoof>Caster must be under a thick roof</AbilityCasterThickRoof>
 
     <AbilityTargetNoneCheck>Target can't use {0}</AbilityTargetNoneCheck>
     <AbilityTargetLowCheck>Target's {0} is too low</AbilityTargetLowCheck>
