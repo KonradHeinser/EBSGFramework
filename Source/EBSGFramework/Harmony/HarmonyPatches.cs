@@ -83,6 +83,8 @@ namespace EBSGFramework
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(CompTurretGun), "CanShoot"),
+                postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
 
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -1656,9 +1658,13 @@ namespace EBSGFramework
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
+            impactEffect?.Impact();
+        }
 
-            if (impactEffect != null)
-                impactEffect.Impact();
+        public static void TurretCanShootPostfix(CompTurretGun __instance, ref bool __result)
+        {
+            if (__result && __instance.gun.def.HasModExtension<TurretRoofBlocked>() && __instance.parent is Pawn p && p.MapHeld != null) // MapHeld shouldn't be an issue, but yada yada sorry
+                __result = !p.PositionHeld.Roofed(p.MapHeld);
         }
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)

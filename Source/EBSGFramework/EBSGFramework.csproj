@@ -68,6 +68,7 @@
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
+    <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_Precept_GeneExtension_Social.cs" />
