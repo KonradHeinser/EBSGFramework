@@ -83,6 +83,12 @@ namespace EBSGFramework
                     Messages.Message(baseExplanation + targetLightExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
+            if (!CheckTargetRoof(target, out string targetRoofExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + targetRoofExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
             if (!CheckTargetHediffs(target, out string targetHediffExplanation))
             {
                 if (throwMessages)
@@ -159,7 +165,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public override bool ShouldHideGizmo => GizmoDisabled(out var text) && Props.hideGizmo;
+        public override bool ShouldHideGizmo => GizmoDisabled(out _) && Props.hideGizmo;
 
         public bool CheckRain(out string explanation)
         {
@@ -536,6 +542,52 @@ namespace EBSGFramework
                 }
             }
             explanation = null;
+            return true;
+        }
+
+        public bool CheckTargetRoof(LocalTargetInfo target, out string explanation)
+        {
+            explanation = null;
+            if (parent.pawn.MapHeld == null) return true;
+            IntVec3 pos = target.Cell;
+            Map map = parent.pawn.MapHeld;
+
+            if (Props.targetRoof != RoofCheck.NoCheck)
+            {
+                RoofDef roof = pos.GetRoof(map);
+                switch (Props.targetRoof)
+                {
+                    case RoofCheck.AnyRoof:
+                        if (roof == null)
+                        {
+                            explanation = "AbilityTargetRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.ThickRoof:
+                        if (roof?.isThickRoof != true)
+                        {
+                            explanation = "AbilityTargetThickRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.NoRoof:
+                        if (roof != null)
+                        {
+                            explanation = "AbilityTargetNoRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.NoThickRoof:
+                        if (roof?.isThickRoof == true)
+                        {
+                            explanation = "AbilityTargetNoThickRoof".Translate();
+                            return false;
+                        }
+                        break;
+                }
+            }
+
             return true;
         }
 
