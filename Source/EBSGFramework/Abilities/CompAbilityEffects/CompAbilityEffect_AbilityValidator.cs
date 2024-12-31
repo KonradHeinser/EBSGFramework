@@ -23,7 +23,13 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(baseExplanation + casterLightExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
-                return true;
+                return false;
+            }
+            if (!CheckCasterRoof(out string casterRoofExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + casterRoofExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                return false;
             }
             if (!CheckCasterHediffs(out string casterHediffExplanation))
             {
@@ -35,7 +41,7 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(baseExplanation + casterExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
-                return true;
+                return false;
             }
 
             // Caster map checks
@@ -43,13 +49,13 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(baseExplanation + rainExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
-                return true;
+                return false;
             }
             if (!CheckSnow(out string snowExplanation))
             {
                 if (throwMessages)
                     Messages.Message(baseExplanation + snowExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
-                return true;
+                return false;
             }
             if (!CheckCondition(out string conditionExplanation))
             {
@@ -116,6 +122,11 @@ namespace EBSGFramework
                 if (!CheckCasterLight(out string casterLightExplanation))
                 {
                     reason = casterLightExplanation;
+                    return true;
+                }
+                if (!CheckCasterRoof(out string casterRoofExplanation))
+                {
+                    reason = casterRoofExplanation;
                     return true;
                 }
                 if (!CheckCasterHediffs(out string casterHediffExplanation))
@@ -222,6 +233,49 @@ namespace EBSGFramework
                 }
             }
             explanation = null;
+            return true;
+        }
+
+        public bool CheckCasterRoof(out string explanation)
+        {
+            explanation = null;
+
+            if (Props.casterRoof != RoofCheck.NoCheck && parent.pawn.Spawned)
+            {
+                RoofDef roof = parent.pawn.PositionHeld.GetRoof(parent.pawn.MapHeld);
+                switch (Props.casterRoof)
+                {
+                    case RoofCheck.AnyRoof:
+                        if (roof == null)
+                        {
+                            explanation = "AbilityCasterRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.ThickRoof:
+                        if (roof?.isThickRoof != true)
+                        {
+                            explanation = "AbilityCasterThickRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.NoRoof:
+                        if (roof != null)
+                        {
+                            explanation = "AbilityCasterNoRoof".Translate();
+                            return false;
+                        }
+                        break;
+                    case RoofCheck.NoThickRoof:
+                        if (roof?.isThickRoof == true)
+                        {
+                            explanation = "AbilityCasterNoThickRoof".Translate();
+                            return false;
+                        }
+                        break;
+                }
+            }
+
             return true;
         }
 

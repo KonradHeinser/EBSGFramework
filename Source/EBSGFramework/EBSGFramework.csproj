@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventSlaveRebellion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

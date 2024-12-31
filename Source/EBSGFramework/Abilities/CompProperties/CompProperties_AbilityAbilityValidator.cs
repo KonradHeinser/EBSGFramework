@@ -49,6 +49,10 @@ namespace EBSGFramework
         public float minCasterLightLevel = 0f;
         public float maxCasterLightLevel = 1f;
 
+        // Roof Check
+        public RoofCheck casterRoof = RoofCheck.NoCheck;
+        public RoofCheck targetRoof = RoofCheck.NoCheck;
+
         // % of progress through the day
         public float minPartOfDay = 0f;
         public float maxPartOfDay = 1f;
