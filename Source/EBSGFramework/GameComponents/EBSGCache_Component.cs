@@ -278,22 +278,6 @@ namespace EBSGFramework
             Initialize();
         }
 
-        // Storyteller affinity uses this because storytellers don't have an expose data apparently
-
-        public int UpdateAffinity(int offset, int adoredAffinity, int despisedAffinity)
-        {
-            storyTellerAffinity += offset;
-            if (storyTellerAffinity > adoredAffinity) storyTellerAffinity = adoredAffinity;
-            else if (storyTellerAffinity < despisedAffinity) storyTellerAffinity = despisedAffinity;
-
-            return storyTellerAffinity;
-        }
-
-        public override void ExposeData()
-        {
-            Scribe_Values.Look(ref storyTellerAffinity, "storyTellerAffinity", 0);
-        }
-
         public EBSGCache_Component(Game game)
         {
             loaded = false;

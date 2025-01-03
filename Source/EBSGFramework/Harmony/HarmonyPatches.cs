@@ -181,14 +181,14 @@ namespace EBSGFramework
             if (ModsConfig.IdeologyActive)
             {
                 harmony.Patch(AccessTools.Method(typeof(SlaveRebellionUtility), nameof(SlaveRebellionUtility.InitiateSlaveRebellionMtbDays)),
-                    prefix: new HarmonyMethod(patchType, nameof(InitiateSlaveRebellionPrefix)));
+                    postfix: new HarmonyMethod(patchType, nameof(InitiateSlaveRebellionPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(SlaveRebellionUtility), nameof(SlaveRebellionUtility.CanParticipateInSlaveRebellion)),
-                    prefix: new HarmonyMethod(patchType, nameof(ParticipateInSlaveRebellionPrefix)));
+                    postfix: new HarmonyMethod(patchType, nameof(ParticipateInSlaveRebellionPostfix)));
             }
         }
 
         // Bug fixes
-        public static bool DefIconPrefix(Rect rect, ref Def def, float scale = 1f, Material material = null, int? graphicIndexOverride = null)
+        public static bool DefIconPrefix(Rect rect, ref Def def, float scale = 1f, Material material = null)
         {
             if (EBSG_Settings.defaultToRecipeIcon && !(def is BuildableDef))
             {
@@ -2481,30 +2481,30 @@ namespace EBSGFramework
 
         // Harmony patches for Ideology
 
-        public static bool InitiateSlaveRebellionPrefix(ref float __result, Pawn pawn)
+        public static void InitiateSlaveRebellionPostfix(ref float __result, Pawn pawn)
         {
+            if (__result != -1f && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false)
             foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
             {
                 if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
                 {
                     __result = -1f;
-                    return false;
+                    break;
                 }
             }
-            return true;
         }
 
-        public static bool ParticipateInSlaveRebellionPrefix(ref bool __result, Pawn pawn)
+        public static void ParticipateInSlaveRebellionPostfix(ref bool __result, Pawn pawn)
         {
-            foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-            {
-                if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
+            if (__result && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false)
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
-                    __result = false;
-                    return false;
+                    if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
+                    {
+                        __result = false;
+                        break;
+                    }
                 }
-            }
-            return true;
         }
     }
 }

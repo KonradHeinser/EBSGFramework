@@ -7,7 +7,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>EBSGFramework</RootNamespace>
     <AssemblyName>EBSGFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="AthenaSpecificStuff\Dialog_ColorPalette.cs" />
+    <None Include="AthenaSpecificStuff\IColorSelector.cs" />
+    <Compile Include="Generic List Classes\ColorPackageGenerator.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventSlaveRebellion.cs" />
@@ -464,8 +468,6 @@
     <None Include="obj\Debug\EBSGFramework.pdb" />
     <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
     <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
-    <None Include="Storytime\StoryTellerComp_StorytellerAffinity.cs" />
-    <None Include="Storytime\StoryTellerCompProperties_StorytellerAffinity.cs" />
     <None Include="Things\PlaceWorker_WallTombs_InsideWallBlock.cs" />
   </ItemGroup>
   <ItemGroup>
