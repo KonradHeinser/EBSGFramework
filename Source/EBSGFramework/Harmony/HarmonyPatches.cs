@@ -83,7 +83,7 @@ namespace EBSGFramework
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(CompTurretGun), "CanShoot"),
+            harmony.Patch(AccessTools.PropertyGetter(typeof(CompTurretGun), "CanShoot"),
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
 
             // Coma Gene stuff
