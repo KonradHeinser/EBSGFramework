@@ -25,9 +25,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned)
+            if (req.Thing is Pawn pawn && pawn.Spawned)
             {
-                float temp = req.Pawn.Position.GetTemperature(req.Pawn.Map);
+                float temp = pawn.Position.GetTemperature(pawn.Map);
                 return temp >= minTemp && temp <= maxTemp;
             }
             return defaultActive;

@@ -24,11 +24,11 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned && req.Pawn.Map.weatherManager != null)
+            if (req.Thing is Pawn pawn && pawn.Spawned && pawn.Map.weatherManager != null)
             {
                 if (forbiddenWeathers)
-                    return !weathers.Contains(req.Pawn.Map.weatherManager.curWeather);
-                return weathers.Contains(req.Pawn.Map.weatherManager.curWeather);
+                    return !weathers.Contains(pawn.Map.weatherManager.curWeather);
+                return weathers.Contains(pawn.Map.weatherManager.curWeather);
             }
             return defaultActive;
         }

@@ -36,13 +36,13 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null)
+            if (req.Thing is Pawn pawn)
             {
-                if (!req.Pawn.CapacityConditionsMet(capLimiters)) return false;
-                if (!req.Pawn.AllNeedLevelsMet(needLevels)) return false;
-                if (!req.Pawn.AllSkillLevelsMet(skillLimiters)) return false;
-                if (!req.Pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
-                if (!req.Pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
+                if (!pawn.CapacityConditionsMet(capLimiters)) return false;
+                if (!pawn.AllNeedLevelsMet(needLevels)) return false;
+                if (!pawn.AllSkillLevelsMet(skillLimiters)) return false;
+                if (!pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
+                if (!pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 
                 return true;
             }

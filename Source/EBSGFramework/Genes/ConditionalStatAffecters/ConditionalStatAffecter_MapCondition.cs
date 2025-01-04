@@ -24,9 +24,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned && req.Pawn.Map.GameConditionManager != null)
+            if (req.Thing is Pawn pawn && pawn.Spawned && pawn.Map.GameConditionManager != null)
             {
-                GameConditionManager manager = req.Pawn.Map.GameConditionManager;
+                GameConditionManager manager = pawn.Map.GameConditionManager;
                 foreach (GameConditionDef condition in conditions)
                     if (manager.ConditionIsActive(condition)) return !forbiddenConditions;
 

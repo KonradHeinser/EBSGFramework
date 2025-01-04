@@ -25,9 +25,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned)
+            if (req.Thing is Pawn pawn && pawn.Spawned)
             {
-                float light = req.Pawn.Map.glowGrid.GroundGlowAt(req.Pawn.Position);
+                float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
                 if (light < minLightLevel || light > maxLightLevel)
                 {
                     return false;

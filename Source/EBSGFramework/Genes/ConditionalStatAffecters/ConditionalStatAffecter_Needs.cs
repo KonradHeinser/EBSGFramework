@@ -20,9 +20,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null)
-                return req.Pawn.AllNeedLevelsMet(needLevels);
-
+            if (req.Thing is Pawn pawn)
+                return pawn.AllNeedLevelsMet(needLevels);
+            Log.Message("Null pawn");
             return false;
         }
     }

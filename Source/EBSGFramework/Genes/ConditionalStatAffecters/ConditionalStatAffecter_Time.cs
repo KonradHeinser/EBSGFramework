@@ -21,9 +21,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null)
+            if (req.Thing is Pawn pawn)
             {
-                float time = GenLocalDate.DayPercent(req.Pawn);
+                float time = GenLocalDate.DayPercent(pawn);
                 return time >= minPartOfDay && time <= maxPartOfDay;
             }
             return false;

@@ -20,8 +20,8 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null)
-                return req.Pawn.CapacityConditionsMet(capLimiters);
+            if (req.Thing is Pawn pawn)
+                return pawn.CapacityConditionsMet(capLimiters);
 
             return false;
         }

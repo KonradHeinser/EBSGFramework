@@ -24,7 +24,9 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            return req.Pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs);
+            if (req.Thing is Pawn pawn)
+                return pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs);
+            return false;
         }
     }
 }

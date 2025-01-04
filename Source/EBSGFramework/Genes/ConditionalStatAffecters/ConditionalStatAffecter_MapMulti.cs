@@ -62,16 +62,16 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned)
+            if (req.Thing is Pawn pawn && pawn.Spawned)
             {
                 if (minPartOfDay > 0 || maxPartOfDay < 1)
                 {
-                    float time = GenLocalDate.DayPercent(req.Pawn);
+                    float time = GenLocalDate.DayPercent(pawn);
                     if (time < minPartOfDay && time > maxPartOfDay) return false;
                 }
 
-                Map map = req.Pawn.Map;
-                IntVec3 position = req.Pawn.Position;
+                Map map = pawn.Map;
+                IntVec3 position = pawn.Position;
 
                 if (inPollution && !position.IsPolluted(map)) return false;
                 if (notInPollution && position.IsPolluted(map)) return false;

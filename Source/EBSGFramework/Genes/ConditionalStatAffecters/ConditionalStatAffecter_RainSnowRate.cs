@@ -29,17 +29,17 @@ namespace EBSGFramework
 
         public override bool Applies(StatRequest req)
         {
-            if (req.Pawn != null && req.Pawn.Spawned && req.Pawn.Map.weatherManager != null)
+            if (req.Thing is Pawn pawn && pawn.Spawned && pawn.Map.weatherManager != null)
             {
-                Map map = req.Pawn.Map;
+                Map map = pawn.Map;
 
                 // Handles roof checks for the minimums
-                if (checkRoof && req.Pawn.Position.Roofed(req.Pawn.Map))
+                if (checkRoof && pawn.Position.Roofed(pawn.Map))
                     return minimumRainRate <= 0 && minimumSnowRate <= 0;
 
                 if ((minimumRainRate > map.weatherManager.RainRate) || (minimumSnowRate > map.weatherManager.SnowRate) ||
-                    (maximumRainRate < map.weatherManager.RainRate && (!checkRoof || !req.Pawn.Position.Roofed(map))) ||
-                    (maximumSnowRate < map.weatherManager.SnowRate && (!checkRoof || !req.Pawn.Position.Roofed(map))))
+                    (maximumRainRate < map.weatherManager.RainRate && (!checkRoof || !pawn.Position.Roofed(map))) ||
+                    (maximumSnowRate < map.weatherManager.SnowRate && (!checkRoof || !pawn.Position.Roofed(map))))
                     return false;
 
                 return true;
