@@ -1039,6 +1039,12 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList, out List<GeneDef> matches)
+        {
+            matches = GetAllGenesOnListFromPawn(pawn, searchList);
+            return !matches.NullOrEmpty();
+        }
+
         public static List<GeneDef> GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList)
         {
             List<GeneDef> results = new List<GeneDef>();
@@ -1481,10 +1487,143 @@ namespace EBSGFramework
             return false;
         }
 
-        public static float StatFactorOrOne(this Pawn pawn, StatDef statDef = null)
+        public static float StatOrOne(this Thing thing, StatDef statDef = null, StatRequirement statReq = StatRequirement.Always)
         {
             if (statDef == null) return 1;
-            return pawn.GetStatValue(statDef);
+            switch (statReq)
+            {
+                case StatRequirement.Always:
+                    return thing.GetStatValue(statDef);
+                case StatRequirement.Lower:
+                    return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                case StatRequirement.Higher:
+                    return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                case StatRequirement.Pawn:
+                    if (thing is Pawn)
+                        return thing.GetStatValue(statDef);
+                    return 1f;
+                case StatRequirement.PawnLower:
+                    if (thing is Pawn)
+                        return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return 1f;
+                case StatRequirement.PawnHigher:
+                    if (thing is Pawn)
+                        return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return 1f;
+                case StatRequirement.NonPawn:
+                    if (thing is Pawn)
+                        return 1f;
+                    return thing.GetStatValue(statDef);
+                case StatRequirement.NonPawnLower:
+                    if (thing is Pawn)
+                        return 1f;
+                    return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                case StatRequirement.NonPawnHigher:
+                    if (thing is Pawn)
+                        return 1f;
+                    return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                case StatRequirement.Humanlike:
+                    if (thing is Pawn p && p.RaceProps.Humanlike)
+                        return thing.GetStatValue(statDef);
+                    return 1f;
+                case StatRequirement.HumanlikeLower:
+                    if (thing is Pawn l && l.RaceProps.Humanlike)
+                        return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return 1f;
+                case StatRequirement.HumanlikeHigher:
+                    if (thing is Pawn h && h.RaceProps.Humanlike)
+                        return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return 1f;
+            }
+            return 1f;
+        }
+
+        public static float OutStatModifiedDamage(float damage, DamageModifyingStatsExtension extension, Thing victim, Thing attacker = null)
+        {
+            float dmg = damage;
+            float offset = 0;
+            
+            if (attacker != null)
+            {
+                if (!extension.outgoingAttackerFactors.NullOrEmpty())
+                    foreach (StatDef stat in extension.outgoingAttackerFactors)
+                        damage *= attacker.StatOrOne(stat, extension.inAttackFactorReq);
+                
+                if (!extension.outgoingAttackerModifiers.NullOrEmpty())
+                    foreach (StatModifier stat in extension.outgoingAttackerModifiers)
+                        offset += dmg * attacker.StatOrOne(stat.stat, extension.outAttackModReq) * stat.value;
+                
+                if (!extension.outgoingAttackerDivisors.NullOrEmpty())
+                    foreach (StatDef stat in extension.outgoingAttackerDivisors)
+                        damage /= attacker.StatOrOne(stat, extension.outAttackDivReq);
+            }
+
+            if (!extension.outgoingTargetFactors.NullOrEmpty())
+                foreach (StatDef stat in extension.outgoingTargetFactors)
+                    damage *= victim.StatOrOne(stat, extension.outTargetFactorReq);
+
+            if (!extension.outgoingTargetModifiers.NullOrEmpty())
+                foreach (StatModifier stat in extension.outgoingTargetModifiers)
+                    offset += dmg * victim.StatOrOne(stat.stat, extension.outTargetModReq) * stat.value;
+
+            if (!extension.outgoingTargetDivisors.NullOrEmpty())
+                foreach (StatDef stat in extension.outgoingTargetDivisors)
+                    damage /= victim.StatOrOne(stat, extension.outTargetDivReq);
+            
+            damage += offset;
+            
+            if (extension.maxOutRemaining != -1f && damage > extension.maxOutRemaining)
+                damage = extension.maxOutRemaining;
+            
+            if (damage < extension.minOutRemaining)
+                damage = extension.minOutRemaining;
+            
+            return damage;
+        }
+
+        public static float IncStatModifiedDamage(float damage, DamageModifyingStatsExtension extension, Thing victim, Thing attacker = null)
+        {
+            float dmg = damage;
+            float offset = 0;
+
+            if (attacker != null)
+            {
+                if (!extension.incomingAttackerFactors.NullOrEmpty())
+                    foreach (StatDef stat in extension.incomingAttackerFactors)
+                        damage *= attacker.StatOrOne(stat, extension.inAttackFactorReq);
+
+                if (!extension.incomingAttackerModifiers.NullOrEmpty())
+                    foreach (StatModifier stat in extension.incomingAttackerModifiers)
+                        offset += dmg * attacker.StatOrOne(stat.stat, extension.inAttackModReq) * stat.value;
+
+                if (!extension.incomingAttackerDivisors.NullOrEmpty())
+                    foreach (StatDef stat in extension.incomingAttackerDivisors)
+                        damage /= attacker.StatOrOne(stat, extension.inAttackDivReq);
+            }
+
+            if (!extension.incomingTargetFactors.NullOrEmpty())
+                foreach (StatDef stat in extension.incomingTargetFactors)
+                    damage *= victim.StatOrOne(stat, extension.inTargetFactorReq);
+
+            if (!extension.incomingTargetModifiers.NullOrEmpty())
+                foreach (StatModifier stat in extension.incomingTargetModifiers)
+                    offset += dmg * victim.StatOrOne(stat.stat, extension.inTargetModReq) * stat.value;
+
+            if (!extension.incomingTargetDivisors.NullOrEmpty())
+                foreach (StatDef stat in extension.incomingTargetDivisors)
+                {
+                    damage /= Mathf.Max(victim.StatOrOne(stat, extension.inTargetDivReq), 0.0001f);
+                }
+
+            damage += offset;
+
+            if (extension.maxInRemaining != -1f && damage > extension.maxInRemaining)
+                damage = extension.maxInRemaining;
+
+            if (damage < extension.minInRemaining)
+                damage = extension.minInRemaining;
+
+            return damage;
         }
 
         public static void RemoveChronicHediffs(this Pawn pawn)

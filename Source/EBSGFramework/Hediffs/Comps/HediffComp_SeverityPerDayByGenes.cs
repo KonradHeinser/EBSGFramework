@@ -23,17 +23,17 @@ namespace EBSGFramework
         public static void SetSeverity(Hediff hediff, Pawn pawn, List<GeneEffect> geneEffects, float baseSeverity = 1,
             StatDef baseSeverityStatFactor = null, StatDef geneEffectStatFactor = null, StatDef globalStatFactor = null)
         {
-            float newSeverity = baseSeverity * pawn.StatFactorOrOne(baseSeverityStatFactor);
+            float newSeverity = baseSeverity * pawn.StatOrOne(baseSeverityStatFactor);
 
             foreach (GeneEffect geneEffect in geneEffects)
             {
                 if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
                 {
-                    newSeverity += geneEffect.effect * pawn.StatFactorOrOne(geneEffect.statFactor) * pawn.StatFactorOrOne(geneEffectStatFactor);
+                    newSeverity += geneEffect.effect * pawn.StatOrOne(geneEffect.statFactor) * pawn.StatOrOne(geneEffectStatFactor);
                 }
             }
 
-            hediff.Severity += newSeverity * pawn.StatFactorOrOne(globalStatFactor) * 0.003334f;
+            hediff.Severity += newSeverity * pawn.StatOrOne(globalStatFactor) * 0.003334f;
         }
     }
 }

@@ -66,13 +66,15 @@
     <None Include="AthenaSpecificStuff\IColorSelector.cs" />
     <Compile Include="Generic List Classes\ColorPackageGenerator.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
+    <Compile Include="DamageModifyingStatsExtension.cs" />
+    <Compile Include="Generic List Classes\StatRequirement.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventSlaveRebellion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
-    <Compile Include="AthenaSpecificStuff\TurretRoofBlocked.cs" />
+    <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_Precept_GeneExtension_Social.cs" />

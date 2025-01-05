@@ -2228,7 +2228,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
+        public static void TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
             if (__instance is Corpse corpse && corpse.InnerPawn != null && corpse.PawnHasAnyHediff())
             {
@@ -2236,12 +2236,50 @@ namespace EBSGFramework
                 if (multipleLives != null && multipleLives.loaded && !multipleLives.forbiddenCorpses.NullOrEmpty() && multipleLives.forbiddenCorpses.Contains(corpse))
                 {
                     dinfo.SetAmount(0);
-                    return true;
+                    return;
                 }
             }
-            if (__instance is Pawn victim && Cache != null)
+
+            if (dinfo.Weapon != null)
             {
-                if (dinfo.Instigator is Pawn attacker)
+                DamageModifyingStatsExtension weaponModStats = dinfo.Weapon.GetModExtension<DamageModifyingStatsExtension>();
+
+                if (weaponModStats?.Outgoing == true)
+                    dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, weaponModStats, __instance, dinfo.Instigator));
+            }
+
+            if (dinfo.Instigator != null)
+            {
+                DamageModifyingStatsExtension attackerModStats = dinfo.Instigator.def.GetModExtension<DamageModifyingStatsExtension>();
+
+                if (attackerModStats?.Outgoing == true)
+                    dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, attackerModStats, __instance, dinfo.Instigator));
+
+                if (dinfo.Instigator is Pawn a)
+                {
+                    if (Cache?.outgoingDamageStatGenes.NullOrEmpty() == false && a.GetAllGenesOnListFromPawn(Cache.outgoingDamageStatGenes, out var statGenes))
+                        foreach (GeneDef gene in statGenes)
+                        {
+                            DamageModifyingStatsExtension extension = gene.GetModExtension<DamageModifyingStatsExtension>();
+                            dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, extension, __instance, a));
+                        }
+
+                    DamageModifyingStatsExtension attackerKindModStats = a.kindDef.GetModExtension<DamageModifyingStatsExtension>();
+
+                    if (attackerKindModStats?.Outgoing == true)
+                        dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, attackerKindModStats, __instance, a));
+                }
+            }
+
+            DamageModifyingStatsExtension victimModStats = __instance.def.GetModExtension<DamageModifyingStatsExtension>();
+
+            if (victimModStats?.Incoming == true)
+                dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, victimModStats, __instance, dinfo.Instigator));
+
+            if (Cache != null && dinfo.Amount > 0 && __instance is Pawn victim)
+            {
+                if (dinfo.Instigator != null && dinfo.Instigator is Pawn attacker)
+                {
                     if (victim.RaceProps.Humanlike)
                     {
                         if (!Cache.humanoidSlayingStats.NullOrEmpty())
@@ -2278,8 +2316,10 @@ namespace EBSGFramework
                             foreach (StatDef stat in Cache.dryadSlayingStats)
                                 dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
                     }
+                }
 
                 if (dinfo.Weapon != null)
+                {
                     if (victim.RaceProps.Humanlike)
                     {
                         if (!Cache.humanoidSlayingStats.NullOrEmpty())
@@ -2316,8 +2356,20 @@ namespace EBSGFramework
                             foreach (StatDef stat in Cache.dryadSlayingStats)
                                 dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
                     }
+                }
+
+                if (!Cache.incomingDamageStatGenes.NullOrEmpty() && victim.GetAllGenesOnListFromPawn(Cache.incomingDamageStatGenes, out var incStatGenes))
+                    foreach (GeneDef gene in incStatGenes)
+                    {
+                        DamageModifyingStatsExtension extension = gene.GetModExtension<DamageModifyingStatsExtension>();
+                        dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, extension, victim, dinfo.Instigator));
+                    }
+
+                DamageModifyingStatsExtension victimKindModStats = victim.kindDef.GetModExtension<DamageModifyingStatsExtension>();
+
+                if (victimKindModStats?.Incoming == true)
+                    dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, victimKindModStats, victim, dinfo.Instigator));
             }
-            return true;
         }
 
         public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)

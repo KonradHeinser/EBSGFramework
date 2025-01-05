@@ -63,6 +63,9 @@ namespace EBSGFramework
         public List<GeneDef> noStandardFoods = new List<GeneDef>();
         public List<GeneDef> foodTypeOverrides = new List<GeneDef>();
 
+        public List<GeneDef> outgoingDamageStatGenes = new List<GeneDef>();
+        public List<GeneDef> incomingDamageStatGenes = new List<GeneDef>();
+
         public bool NeedEatPatch
         {
             get
@@ -358,6 +361,8 @@ namespace EBSGFramework
             lovinAddinGenes = new List<GeneDef>();
             butcherProductGenes = new List<GeneDef>();
             leatherProductGenes = new List<GeneDef>();
+            outgoingDamageStatGenes = new List<GeneDef>();
+            incomingDamageStatGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -443,6 +448,15 @@ namespace EBSGFramework
                     butcherProductGenes.Add(gene);
                     if (butcher.leatherReplacement != null)
                         leatherProductGenes.Add(gene);
+                }
+
+                DamageModifyingStatsExtension damageStats = gene.GetModExtension<DamageModifyingStatsExtension>();
+                if (damageStats != null)
+                {
+                    if (damageStats.Outgoing)
+                        outgoingDamageStatGenes.Add(gene);
+                    if (damageStats.Incoming)
+                        incomingDamageStatGenes.Add(gene);
                 }
             }
         }
