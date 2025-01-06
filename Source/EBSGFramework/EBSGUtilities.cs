@@ -1547,15 +1547,15 @@ namespace EBSGFramework
             {
                 if (!extension.outgoingAttackerFactors.NullOrEmpty())
                     foreach (StatDef stat in extension.outgoingAttackerFactors)
-                        damage *= attacker.StatOrOne(stat, extension.inAttackFactorReq);
+                        damage *= attacker.StatOrOne(stat);
                 
                 if (!extension.outgoingAttackerModifiers.NullOrEmpty())
                     foreach (StatModifier stat in extension.outgoingAttackerModifiers)
-                        offset += dmg * attacker.StatOrOne(stat.stat, extension.outAttackModReq) * stat.value;
+                        offset += dmg * attacker.StatOrOne(stat.stat) * stat.value;
                 
                 if (!extension.outgoingAttackerDivisors.NullOrEmpty())
                     foreach (StatDef stat in extension.outgoingAttackerDivisors)
-                        damage /= attacker.StatOrOne(stat, extension.outAttackDivReq);
+                        damage /= attacker.StatOrOne(stat);
             }
 
             if (!extension.outgoingTargetFactors.NullOrEmpty())
@@ -1603,16 +1603,16 @@ namespace EBSGFramework
 
             if (!extension.incomingTargetFactors.NullOrEmpty())
                 foreach (StatDef stat in extension.incomingTargetFactors)
-                    damage *= victim.StatOrOne(stat, extension.inTargetFactorReq);
+                    damage *= victim.StatOrOne(stat);
 
             if (!extension.incomingTargetModifiers.NullOrEmpty())
                 foreach (StatModifier stat in extension.incomingTargetModifiers)
-                    offset += dmg * victim.StatOrOne(stat.stat, extension.inTargetModReq) * stat.value;
+                    offset += dmg * victim.StatOrOne(stat.stat) * stat.value;
 
             if (!extension.incomingTargetDivisors.NullOrEmpty())
                 foreach (StatDef stat in extension.incomingTargetDivisors)
                 {
-                    damage /= Mathf.Max(victim.StatOrOne(stat, extension.inTargetDivReq), 0.0001f);
+                    damage /= Mathf.Max(victim.StatOrOne(stat), 0.0001f);
                 }
 
             damage += offset;

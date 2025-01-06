@@ -8,15 +8,9 @@ namespace EBSGFramework
     {
         public List<StatDef> outgoingAttackerFactors;
 
-        public StatRequirement outAttackFactorReq = StatRequirement.Always;
-
         public List<StatModifier> outgoingAttackerModifiers;
 
-        public StatRequirement outAttackModReq = StatRequirement.Always;
-
         public List<StatDef> outgoingAttackerDivisors;
-
-        public StatRequirement outAttackDivReq = StatRequirement.Always;
 
         public List<StatDef> outgoingTargetFactors;
 
@@ -62,15 +56,9 @@ namespace EBSGFramework
 
         public List<StatDef> incomingTargetFactors;
 
-        public StatRequirement inTargetFactorReq = StatRequirement.Always;
-
         public List<StatModifier> incomingTargetModifiers;
 
-        public StatRequirement inTargetModReq = StatRequirement.Always;
-
         public List<StatDef> incomingTargetDivisors;
-
-        public StatRequirement inTargetDivReq = StatRequirement.Always;
 
         public float maxInRemaining = -1f;
 
