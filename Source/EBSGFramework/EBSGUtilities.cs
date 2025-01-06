@@ -1546,7 +1546,7 @@ namespace EBSGFramework
             {
                 if (!extension.outgoingAttackerFactors.NullOrEmpty())
                     foreach (StatDef stat in extension.outgoingAttackerFactors)
-                        damage *= attacker.StatOrOne(stat);
+                        damage *= attacker.StatOrOne(stat, extension.outAttackFactorReq);
                 
                 if (!extension.outgoingAttackerModifiers.NullOrEmpty())
                     foreach (StatModifier stat in extension.outgoingAttackerModifiers)
@@ -1563,7 +1563,7 @@ namespace EBSGFramework
 
             if (!extension.outgoingTargetModifiers.NullOrEmpty())
                 foreach (StatModifier stat in extension.outgoingTargetModifiers)
-                    offset += victim.StatOrOne(stat.stat, extension.outTargetModReq) * stat.value;
+                    offset += victim.StatOrOne(stat.stat) * stat.value;
 
             if (!extension.outgoingTargetDivisors.NullOrEmpty())
                 foreach (StatDef stat in extension.outgoingTargetDivisors)
@@ -1592,7 +1592,7 @@ namespace EBSGFramework
 
                 if (!extension.incomingAttackerModifiers.NullOrEmpty())
                     foreach (StatModifier stat in extension.incomingAttackerModifiers)
-                        offset += attacker.StatOrOne(stat.stat, extension.inAttackModReq) * stat.value;
+                        offset += attacker.StatOrOne(stat.stat) * stat.value;
 
                 if (!extension.incomingAttackerDivisors.NullOrEmpty())
                     foreach (StatDef stat in extension.incomingAttackerDivisors)
@@ -1601,7 +1601,7 @@ namespace EBSGFramework
 
             if (!extension.incomingTargetFactors.NullOrEmpty())
                 foreach (StatDef stat in extension.incomingTargetFactors)
-                    damage *= victim.StatOrOne(stat);
+                    damage *= victim.StatOrOne(stat, extension.inTargetFactorReq);
 
             if (!extension.incomingTargetModifiers.NullOrEmpty())
                 foreach (StatModifier stat in extension.incomingTargetModifiers)

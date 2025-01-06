@@ -8,6 +8,8 @@ namespace EBSGFramework
     {
         public List<StatDef> outgoingAttackerFactors;
 
+        public StatRequirement outAttackFactorReq = StatRequirement.Always;
+
         public List<StatModifier> outgoingAttackerModifiers;
 
         public List<StatDef> outgoingAttackerDivisors;
@@ -19,8 +21,6 @@ namespace EBSGFramework
         public StatRequirement outTargetFactorReq = StatRequirement.Always;
 
         public List<StatModifier> outgoingTargetModifiers;
-
-        public StatRequirement outTargetModReq = StatRequirement.Always;
 
         public List<StatDef> outgoingTargetDivisors;
 
@@ -50,13 +50,13 @@ namespace EBSGFramework
 
         public List<StatModifier> incomingAttackerModifiers;
 
-        public StatRequirement inAttackModReq = StatRequirement.Always;
-
         public List<StatDef> incomingAttackerDivisors;
 
         public StatRequirement inAttackDivReq = StatRequirement.Always;
 
         public List<StatDef> incomingTargetFactors;
+
+        public StatRequirement inTargetFactorReq = StatRequirement.Always;
 
         public List<StatModifier> incomingTargetModifiers;
 
