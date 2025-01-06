@@ -27,6 +27,11 @@
     <EBSG_GenesRemoved>Genes removed from {0}.</EBSG_GenesRemoved>
     <EBSG_XenotypeApplied>Xenotype applied to {0}.</EBSG_XenotypeApplied>
 
+    <!--Color selecter-->
+    <EBSG_AddToPalette>Add to palette</EBSG_AddToPalette>
+    <EBSG_PrimaryColor>Primary color</EBSG_PrimaryColor>
+    <EBSG_SecondaryColor>Secondary color</EBSG_SecondaryColor>
+
     <!--Coma Gene stuff-->
     <EBSG_AlertLowComaPawn>{PAWN} needs coma</EBSG_AlertLowComaPawn>
     <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need to start a coma</EBSG_AlertLowComaPawns>  

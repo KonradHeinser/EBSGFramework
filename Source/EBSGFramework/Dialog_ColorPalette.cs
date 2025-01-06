@@ -134,13 +134,13 @@ namespace EBSGFramework
 
                 using (new TextBlock(GameFont.Small))
                 {
-                    if (Widgets.ButtonText(row.NewCol(150f, HorizontalJustification.Right), "Secondary color"))
+                    if (Widgets.ButtonText(row.NewCol(150f, HorizontalJustification.Right), "EBSG_SecondaryColor".Translate()))
                     {
                         editColor = secondaryColor;
                         usePrimary = false;
                     }
 
-                    if (Widgets.ButtonText(row.NewCol(150f, HorizontalJustification.Right), "Primary color"))
+                    if (Widgets.ButtonText(row.NewCol(150f, HorizontalJustification.Right), "EBSG_PrimaryColor".Translate()))
                     {
                         editColor = primaryColor;
                         usePrimary = true;
@@ -158,7 +158,7 @@ namespace EBSGFramework
                 Close();
             }
 
-            if (Widgets.ButtonText(rectDivider.NewCol(150f), "Add to palette"))
+            if (Widgets.ButtonText(rectDivider.NewCol(150f), "EBSG_AddToPalette".Translate()))
             {
                 colors.Add(usePrimary ? primaryColor : secondaryColor);
             }
