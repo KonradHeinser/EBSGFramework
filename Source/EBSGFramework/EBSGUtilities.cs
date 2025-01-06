@@ -1540,7 +1540,6 @@ namespace EBSGFramework
 
         public static float OutStatModifiedDamage(float damage, DamageModifyingStatsExtension extension, Thing victim, Thing attacker = null)
         {
-            float dmg = damage;
             float offset = 0;
             
             if (attacker != null)
@@ -1551,7 +1550,7 @@ namespace EBSGFramework
                 
                 if (!extension.outgoingAttackerModifiers.NullOrEmpty())
                     foreach (StatModifier stat in extension.outgoingAttackerModifiers)
-                        offset += dmg * attacker.StatOrOne(stat.stat) * stat.value;
+                        offset += attacker.StatOrOne(stat.stat) * stat.value;
                 
                 if (!extension.outgoingAttackerDivisors.NullOrEmpty())
                     foreach (StatDef stat in extension.outgoingAttackerDivisors)
@@ -1564,7 +1563,7 @@ namespace EBSGFramework
 
             if (!extension.outgoingTargetModifiers.NullOrEmpty())
                 foreach (StatModifier stat in extension.outgoingTargetModifiers)
-                    offset += dmg * victim.StatOrOne(stat.stat, extension.outTargetModReq) * stat.value;
+                    offset += victim.StatOrOne(stat.stat, extension.outTargetModReq) * stat.value;
 
             if (!extension.outgoingTargetDivisors.NullOrEmpty())
                 foreach (StatDef stat in extension.outgoingTargetDivisors)
@@ -1583,7 +1582,6 @@ namespace EBSGFramework
 
         public static float IncStatModifiedDamage(float damage, DamageModifyingStatsExtension extension, Thing victim, Thing attacker = null)
         {
-            float dmg = damage;
             float offset = 0;
 
             if (attacker != null)
@@ -1594,7 +1592,7 @@ namespace EBSGFramework
 
                 if (!extension.incomingAttackerModifiers.NullOrEmpty())
                     foreach (StatModifier stat in extension.incomingAttackerModifiers)
-                        offset += dmg * attacker.StatOrOne(stat.stat, extension.inAttackModReq) * stat.value;
+                        offset += attacker.StatOrOne(stat.stat, extension.inAttackModReq) * stat.value;
 
                 if (!extension.incomingAttackerDivisors.NullOrEmpty())
                     foreach (StatDef stat in extension.incomingAttackerDivisors)
@@ -1607,7 +1605,7 @@ namespace EBSGFramework
 
             if (!extension.incomingTargetModifiers.NullOrEmpty())
                 foreach (StatModifier stat in extension.incomingTargetModifiers)
-                    offset += dmg * victim.StatOrOne(stat.stat) * stat.value;
+                    offset += victim.StatOrOne(stat.stat) * stat.value;
 
             if (!extension.incomingTargetDivisors.NullOrEmpty())
                 foreach (StatDef stat in extension.incomingTargetDivisors)
