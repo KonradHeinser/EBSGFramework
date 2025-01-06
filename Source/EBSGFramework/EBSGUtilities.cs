@@ -1555,7 +1555,7 @@ namespace EBSGFramework
                 
                 if (!extension.outgoingAttackerDivisors.NullOrEmpty())
                     foreach (StatDef stat in extension.outgoingAttackerDivisors)
-                        damage /= attacker.StatOrOne(stat);
+                        damage /= attacker.StatOrOne(stat, extension.outAttackDivReq);
             }
 
             if (!extension.outgoingTargetFactors.NullOrEmpty())
@@ -1612,7 +1612,7 @@ namespace EBSGFramework
             if (!extension.incomingTargetDivisors.NullOrEmpty())
                 foreach (StatDef stat in extension.incomingTargetDivisors)
                 {
-                    damage /= Mathf.Max(victim.StatOrOne(stat), 0.0001f);
+                    damage /= Mathf.Max(victim.StatOrOne(stat, extension.inTargetDivReq), 0.0001f);
                 }
 
             damage += offset;

@@ -12,6 +12,8 @@ namespace EBSGFramework
 
         public List<StatDef> outgoingAttackerDivisors;
 
+        public StatRequirement outAttackDivReq = StatRequirement.Always;
+
         public List<StatDef> outgoingTargetFactors;
 
         public StatRequirement outTargetFactorReq = StatRequirement.Always;
@@ -59,6 +61,8 @@ namespace EBSGFramework
         public List<StatModifier> incomingTargetModifiers;
 
         public List<StatDef> incomingTargetDivisors;
+
+        public StatRequirement inTargetDivReq = StatRequirement.Always;
 
         public float maxInRemaining = -1f;
 
