@@ -144,7 +144,13 @@ namespace EBSGFramework
         {
             base.CompTick();
 
-            if (Props.attachedMoteDef != null && PawnOwner != null)
+            if (PawnOwner == null)
+            {
+                energy = 0;
+                return;
+            }
+
+            if (Props.attachedMoteDef != null)
             {
                 if (attachedMote == null || attachedMote.Destroyed)
                 {
@@ -172,12 +178,6 @@ namespace EBSGFramework
                 {
                     Reset();
                 }
-            }
-
-            if (PawnOwner == null)
-            {
-                energy = 0;
-                return;
             }
 
             if (energy >= MaxEnergy)
