@@ -62,9 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AthenaSpecificStuff\Dialog_ColorPalette.cs" />
-    <None Include="AthenaSpecificStuff\IColorSelector.cs" />
-    <Compile Include="Generic List Classes\ColorPackageGenerator.cs" />
+    <Compile Include="Generic List Classes\DamageInfoPack.cs" />
+    <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
@@ -74,6 +73,9 @@
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
+    <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
+    <Compile Include="Things\Comps\CompShieldEquipment.cs" />
+    <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
