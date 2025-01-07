@@ -31,6 +31,8 @@ namespace EBSGFramework
         public float minBodySize = 0f;
         public float maxBodySize = 999f;
         public TargetGroup targetGroup = TargetGroup.None;
+        public List<FactionDef> validTargetFactions;
+        public List<FactionDef> forbiddenTargetFactions;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;
@@ -42,6 +44,8 @@ namespace EBSGFramework
         public List<SkillCheck> casterSkillLimiters;
         public List<StatCheck> casterStatLimiters;
         public List<NeedLevel> casterNeedLevels;
+        public List<FactionDef> validCasterFactions;
+        public List<FactionDef> forbiddenCasterFactions;
 
         // % Light
         public float minTargetLightLevel = 0f;

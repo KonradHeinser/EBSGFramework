@@ -31,6 +31,7 @@
     <EBSG_AddToPalette>Add to palette</EBSG_AddToPalette>
     <EBSG_PrimaryColor>Primary color</EBSG_PrimaryColor>
     <EBSG_SecondaryColor>Secondary color</EBSG_SecondaryColor>
+    <EBSG_ChangeColorFor>Change colors for</EBSG_ChangeColorFor>
 
     <!--Coma Gene stuff-->
     <EBSG_AlertLowComaPawn>{PAWN} needs coma</EBSG_AlertLowComaPawn>
@@ -208,11 +209,17 @@
     <AbilityNoTargetHediff>Target is missing a required hediff</AbilityNoTargetHediff>
     <AbilityTargetHediffOne>Target has the {0} hediff</AbilityTargetHediffOne>
     <AbilityTargetHediff>Target has certain hediff(s)</AbilityTargetHediff>
+    <AbilityTargetFaction>Target not in the right faction</AbilityTargetFaction>
+    <AbilityTargetFactionOne>Target not a part of the {0} faction</AbilityTargetFactionOne>
+    <AbilityTargetNoFaction>Target cannot be in the {0} faction</AbilityTargetNoFaction>
 
     <AbilityNoCasterHediffOne>Caster must have the hediff {0}</AbilityNoCasterHediffOne>
     <AbilityNoCasterHediff>Caster is missing a required hediff</AbilityNoCasterHediff>
     <AbilityCasterHediffOne>Caster has the {0} hediff</AbilityCasterHediffOne>
     <AbilityCasterHediff>Caster has certain hediff(s)</AbilityCasterHediff>
+    <AbilityCasterFaction>Caster not in the right faction</AbilityCasterFaction>
+    <AbilityCasterFactionOne>Caster not a part of the {0} faction</AbilityCasterFactionOne>
+    <AbilityCasterNoFaction>Caster cannot be in the {0} faction</AbilityCasterNoFaction>
 
     <AbilityGameNoConditionOne>This map is not currently experiencing a(n) {0}</AbilityGameNoConditionOne>
     <AbilityGameNoCondition>The map must be experiencing certain conditions</AbilityGameNoCondition>

@@ -408,6 +408,25 @@ namespace EBSGFramework
                     return false;
                 }
             }
+            if (!Props.validCasterFactions.NullOrEmpty())
+            {
+                if (pawn.Faction == null || !Props.validCasterFactions.Contains(pawn.Faction.def))
+                {
+                    if (Props.validCasterFactions.Count == 1)
+                        explanation = "AbilityCasterFactionOne".Translate(Props.validCasterFactions[0].LabelCap);
+                    else
+                        explanation = "AbilityCasterFaction".Translate();
+                    return false;
+                }
+            }
+            if (!Props.forbiddenCasterFactions.NullOrEmpty())
+            {
+                if (pawn.Faction != null && Props.forbiddenCasterFactions.Contains(pawn.Faction.def))
+                {
+                    explanation = "AbilityCasterNoFaction".Translate(pawn.Faction.Name);
+                    return false;
+                }
+            }
 
             explanation = null;
             return true;
@@ -855,6 +874,25 @@ namespace EBSGFramework
                                 return false;
                             }
                             break;
+                    }
+                }
+                if (!Props.validTargetFactions.NullOrEmpty())
+                {
+                    if (pawn.Faction == null || !Props.validTargetFactions.Contains(pawn.Faction.def))
+                    {
+                        if (Props.validTargetFactions.Count == 1)
+                            explanation = "AbilityTargetFactionOne".Translate(Props.validTargetFactions[0].LabelCap);
+                        else
+                            explanation = "AbilityTargetFaction".Translate();
+                        return false;
+                    }
+                }
+                if (!Props.forbiddenTargetFactions.NullOrEmpty())
+                {
+                    if (pawn.Faction != null && Props.forbiddenTargetFactions.Contains(pawn.Faction.def))
+                    {
+                        explanation = "AbilityTargetNoFaction".Translate(pawn.Faction.Name);
+                        return false;
                     }
                 }
             }
