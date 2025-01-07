@@ -35,6 +35,7 @@ namespace EBSGFramework
 
         // Shield sounds and flecks
         public SoundDef absorbSound;
+        public SoundDef shatterSound;
         public SoundDef resetSound;
 
         public FleckDef absorbFleck;

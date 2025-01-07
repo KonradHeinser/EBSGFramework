@@ -144,7 +144,7 @@ namespace EBSGFramework
         {
             base.CompTick();
 
-            if (Props.attachedMoteDef != null)
+            if (Props.attachedMoteDef != null && PawnOwner != null)
             {
                 if (attachedMote == null || attachedMote.Destroyed)
                 {
@@ -311,7 +311,7 @@ namespace EBSGFramework
         {
             energy = 0;
             ticksToReset = Props.resetDelay;
-
+            Props.shatterSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
             if (Props.shieldBreakEffecter != null)
             {
                 float scale = Props.minDrawSize + (Props.maxDrawSize - Props.minDrawSize) * energy / MaxEnergy;
