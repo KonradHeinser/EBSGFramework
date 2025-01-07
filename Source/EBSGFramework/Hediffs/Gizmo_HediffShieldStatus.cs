@@ -5,14 +5,14 @@ using Verse;
 namespace EBSGFramework
 {
     [StaticConstructorOnStartup]
-    public class Gizmo_ShieldStatus : Gizmo
+    public class Gizmo_HediffShieldStatus : Gizmo
     {
-        public CompShieldEquipment shieldComp;
+        public HediffComp_Shield shieldComp;
 
         public static readonly Texture2D FullShieldBarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.24f));
         public static readonly Texture2D EmptyShieldBarTex = SolidColorMaterials.NewSolidColorTexture(Color.clear);
 
-        public Gizmo_ShieldStatus(CompShieldEquipment comp) 
+        public Gizmo_HediffShieldStatus(HediffComp_Shield comp)
         {
             Order = -100f;
             shieldComp = comp;
@@ -32,7 +32,7 @@ namespace EBSGFramework
             textRect.height = backgroundRect.height / 2f - 12f;
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(textRect, shieldComp.Props.gizmoTitle ?? (shieldComp.parent.def.IsApparel ? shieldComp.parent.LabelCap : "ShieldInbuilt".Translate().Resolve()));
+            Widgets.Label(textRect, shieldComp.Props.gizmoTitle ?? shieldComp.parent.LabelCap);
             Rect barRect = drawRect;
             barRect.yMin = drawRect.y + drawRect.height / 2f;
             float num = shieldComp.energy / Mathf.Max(1f, shieldComp.MaxEnergy);

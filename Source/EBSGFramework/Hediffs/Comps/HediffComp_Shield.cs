@@ -8,10 +8,9 @@ using Verse.Sound;
 namespace EBSGFramework
 {
     [StaticConstructorOnStartup]
-    public class CompShieldEquipment : ThingComp
+    public class HediffComp_Shield : HediffComp
     {
-        public CompProperties_ShieldEquipment Props => (CompProperties_ShieldEquipment)props;
-
+        public HediffCompProperties_Shield Props => (HediffCompProperties_Shield)props;
         public float energy;
         public int ticksToReset = -1;
         public int lastImpactTick = -1;
@@ -19,30 +18,15 @@ namespace EBSGFramework
         public Vector3 impactAngleVect;
 
         public Matrix4x4 matrix;
-        public Gizmo_ShieldStatus gizmo;
+        public Gizmo_HediffShieldStatus gizmo;
 
         public Mote attachedMote;
         public Effecter attachedEffecter;
         private static readonly Material BubbleMat = MaterialPool.MatFrom("Other/ShieldBubble", ShaderDatabase.Transparent);
 
-        public float MaxEnergy => parent.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
-        public float EnergyRechargeRate => parent.GetStatValue(StatDefOf.EnergyShieldRechargeRate) / 60f;
-
-        private Pawn PawnOwner
-        {
-            get
-            {
-                if (parent is Apparel apparel)
-                    return apparel.Wearer;
-                if (parent is Pawn p)
-                    return p;
-                if (parent.ParentHolder is Pawn_EquipmentTracker tracker)
-                    return tracker.pawn;
-                return null;
-            }
-        }
-
-        private bool ShouldDisplay
+        public float MaxEnergy => Mathf.Max((Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldEnergyMax) : Props.maxEnergy) * (Props.multiplyMaxBySeverity ? parent.Severity : 1f), 0.01f);
+        public float EnergyRechargeRate => (Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldRechargeRate) : Props.energyRechargeRate) * (Props.multiplyRechargeBySeverity ? parent.Severity : 1f) / 60f;
+        public bool ShouldDisplay
         {
             get
             {
@@ -52,42 +36,26 @@ namespace EBSGFramework
                 if (ticksToReset > 0)
                     return false;
 
-                if (PawnOwner == null)
+                if (!Pawn.Spawned || Pawn.Dead || Pawn.Downed)
                     return false;
 
-                if (!PawnOwner.Spawned || PawnOwner.Dead || PawnOwner.Downed)
-                    return false;
-
-                if (!Props.onlyRenderWhenDrafted || PawnOwner.InAggroMentalState || PawnOwner.Drafted)
+                if (!Props.onlyRenderWhenDrafted || Pawn.InAggroMentalState || Pawn.Drafted)
                     return true;
 
-                if (PawnOwner.Faction?.HostileTo(Faction.OfPlayer) == true && !PawnOwner.IsPrisoner)
+                if (Pawn.Faction?.HostileTo(Faction.OfPlayer) == true && !Pawn.IsPrisoner)
                     return true;
 
-                if (ModsConfig.BiotechActive && PawnOwner.IsColonyMech && Find.Selector.SingleSelectedThing == PawnOwner)
+                if (ModsConfig.BiotechActive && Pawn.IsColonyMech && Find.Selector.SingleSelectedThing == Pawn)
                     return true;
 
                 return false;
             }
         }
 
-        public override void CompDrawWornExtras()
+        public bool Draw(Vector3 drawPos)
         {
-            base.CompDrawWornExtras();
-            if (ShouldDisplay)
-                Draw();
-        }
+            if (!ShouldDisplay) return false;
 
-        public override void PostDraw()
-        {
-            base.PostDraw();
-            if (ShouldDisplay)
-                Draw();
-        }
-
-        private void Draw()
-        {
-            Vector3 drawPos = PawnOwner.Drawer.DrawPos;
             float angle = Props.spinning ? Rand.Range(0, 360) : 0;
 
             if (Props.graphicData != null)
@@ -97,13 +65,13 @@ namespace EBSGFramework
 
                 if (Props.scaleWithOwner)
                 {
-                    if (PawnOwner.RaceProps.Humanlike)
+                    if (Pawn.RaceProps.Humanlike)
                     {
-                        scale *= PawnOwner.DrawSize.x;
+                        scale *= Pawn.DrawSize.x;
                     }
                     else
                     {
-                        scale = (scale - 1) + PawnOwner.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize.x;
+                        scale = (scale - 1) + Pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize.x;
                     }
                 }
 
@@ -139,23 +107,19 @@ namespace EBSGFramework
                 matrix.SetTRS(drawPos, Quaternion.AngleAxis(angle, Vector3.up), s);
                 Graphics.DrawMesh(MeshPool.plane10, matrix, BubbleMat, 0);
             }
+
+            return true;
         }
 
-        public override void CompTick()
+        public override void CompPostTick(ref float severityAdjustment)
         {
-            base.CompTick();
-
-            if (PawnOwner == null)
-            {
-                energy = 0;
-                return;
-            }
+            base.CompPostTick(ref severityAdjustment);
 
             if (Props.attachedMoteDef != null)
             {
                 if (attachedMote == null || attachedMote.Destroyed)
                 {
-                    attachedMote = MoteMaker.MakeAttachedOverlay(PawnOwner, Props.attachedMoteDef, Props.attachedMoteOffset, Props.attachedMoteScale);
+                    attachedMote = MoteMaker.MakeAttachedOverlay(Pawn, Props.attachedMoteDef, Props.attachedMoteOffset, Props.attachedMoteScale);
                 }
 
                 attachedMote.Maintain();
@@ -165,10 +129,10 @@ namespace EBSGFramework
             {
                 if (attachedEffecter == null)
                 {
-                    attachedEffecter = Props.attachedEffecterDef.SpawnAttached(PawnOwner, PawnOwner.Map);
+                    attachedEffecter = Props.attachedEffecterDef.SpawnAttached(Pawn, Pawn.Map);
                 }
 
-                attachedEffecter.EffectTick(PawnOwner, PawnOwner);
+                attachedEffecter.EffectTick(Pawn, Pawn);
             }
 
             if (ticksToReset > 0)
@@ -189,41 +153,41 @@ namespace EBSGFramework
             energy = Math.Min(energy + EnergyRechargeRate, MaxEnergy);
         }
 
-        public override void Notify_Equipped(Pawn pawn)
+        public override void CompPostPostAdd(DamageInfo? dinfo)
         {
-            base.Notify_Equipped(pawn);
+            base.CompPostPostAdd(dinfo);
             energy = MaxEnergy * Props.energyOnReset;
         }
 
-        public override IEnumerable<Gizmo> CompGetWornGizmosExtra()
+        public override IEnumerable<Gizmo> CompGetGizmos()
         {
-            if (!base.CompGetWornGizmosExtra().EnumerableNullOrEmpty())
-                foreach (Gizmo gizmo in base.CompGetWornGizmosExtra())
+            if (!base.CompGetGizmos().EnumerableNullOrEmpty())
+                foreach (Gizmo gizmo in base.CompGetGizmos())
                 {
                     yield return gizmo;
                 }
-
+            
             if (Props.displayGizmo)
             {
-                if (PawnOwner.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == PawnOwner)
+                if (Pawn.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == Pawn)
                 {
                     if (gizmo == null)
                     {
-                        gizmo = new Gizmo_ShieldStatus(this);
+                        gizmo = new Gizmo_HediffShieldStatus(this);
                     }
 
                     yield return gizmo;
                 }
             }
-
+            
             yield break;
         }
 
-        public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+        public void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             absorbed = false;
 
-            if (PawnOwner == null || ticksToReset > 0) return;
+            if (Pawn == null || ticksToReset > 0) return;
             lastImpactTick = Find.TickManager.TicksGame;
 
             if (!Props.shatterOn.NullOrEmpty() && Props.shatterOn.Contains(dinfo.Def))
@@ -296,16 +260,16 @@ namespace EBSGFramework
             else
             {
                 absorbed = true;
-                Props.absorbSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
+                Props.absorbSound?.PlayOneShot(new TargetInfo(Pawn.Position, Pawn.Map, false));
                 impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
-                Vector3 offsetVector = PawnOwner.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
+                Vector3 offsetVector = Pawn.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
                 float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
 
                 if (Props.absorbFleck != null)
-                    FleckMaker.Static(offsetVector, PawnOwner.MapHeld, Props.absorbFleck, damagePower);
+                    FleckMaker.Static(offsetVector, Pawn.MapHeld, Props.absorbFleck, damagePower);
 
                 for (int i = 0; i < damagePower; i++)
-                    FleckMaker.ThrowDustPuff(offsetVector, PawnOwner.MapHeld, Rand.Range(0.8f, 1.2f));
+                    FleckMaker.ThrowDustPuff(offsetVector, Pawn.MapHeld, Rand.Range(0.8f, 1.2f));
             }
         }
 
@@ -313,34 +277,37 @@ namespace EBSGFramework
         {
             energy = 0;
             ticksToReset = Props.resetDelay;
-            Props.shatterSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
+            Props.shatterSound?.PlayOneShot(new TargetInfo(Pawn.Position, Pawn.Map, false));
             if (Props.shieldBreakEffecter != null)
             {
                 float scale = Props.minDrawSize + (Props.maxDrawSize - Props.minDrawSize) * energy / MaxEnergy;
                 if (Props.scaleWithOwner)
-                    if (PawnOwner.RaceProps.Humanlike)
-                        scale *= PawnOwner.DrawSize.x;
+                    if (Pawn.RaceProps.Humanlike)
+                        scale *= Pawn.DrawSize.x;
                     else
-                        scale = (scale - 1) + PawnOwner.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize.x;
+                        scale = (scale - 1) + Pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize.x;
 
-                Props.shieldBreakEffecter.SpawnAttached(PawnOwner, PawnOwner.MapHeld, scale * 0.5f);
+                Props.shieldBreakEffecter.SpawnAttached(Pawn, Pawn.MapHeld, scale * 0.5f);
             }
 
             if (Props.breakFleck != null)
-                FleckMaker.Static(PawnOwner.DrawPos, PawnOwner.Map, Props.breakFleck, 12f);
+                FleckMaker.Static(Pawn.DrawPos, Pawn.Map, Props.breakFleck, 12f);
 
             for (int i = 0; i < 6; i++)
-                FleckMaker.ThrowDustPuff(PawnOwner.DrawPos + Vector3Utility.HorizontalVectorFromAngle(Rand.Range(0, 360)) * Rand.Range(0.3f, 0.6f), PawnOwner.MapHeld, Rand.Range(0.8f, 1.2f));
+                FleckMaker.ThrowDustPuff(Pawn.DrawPos + Vector3Utility.HorizontalVectorFromAngle(Rand.Range(0, 360)) * Rand.Range(0.3f, 0.6f), Pawn.MapHeld, Rand.Range(0.8f, 1.2f));
 
-            Props.shieldBreakExplosion?.DoExplosion(PawnOwner, PawnOwner.PositionHeld, PawnOwner.MapHeld);
+            Props.shieldBreakExplosion?.DoExplosion(Pawn, Pawn.PositionHeld, Pawn.MapHeld);
+
+            if (Props.removeOnBreak)
+                parent.pawn.health.RemoveHediff(parent);
         }
 
         public void Reset()
         {
-            if (PawnOwner?.Spawned == true)
+            if (Pawn?.Spawned == true)
             {
-                Props.resetSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.MapHeld, false));
-                FleckMaker.ThrowLightningGlow(PawnOwner.DrawPos, PawnOwner.MapHeld, 3f);
+                Props.resetSound?.PlayOneShot(new TargetInfo(Pawn.Position, Pawn.MapHeld, false));
+                FleckMaker.ThrowLightningGlow(Pawn.DrawPos, Pawn.MapHeld, 3f);
             }
 
             ticksToReset = -1;
@@ -349,16 +316,16 @@ namespace EBSGFramework
             lastResetTick = Find.TickManager.TicksGame;
         }
 
-        public override bool CompAllowVerbCast(Verb verb)
+        public bool CompAllowVerbCast(Verb verb)
         {
             if (Props.blocksRangedWeapons)
                 return !(verb is Verb_LaunchProjectile);
-            return base.CompAllowVerbCast(verb);
+            return true;
         }
 
-        public override void PostExposeData()
+        public override void CompExposeData()
         {
-            base.PostExposeData();
+            base.CompExposeData();
             Scribe_Values.Look(ref energy, "energy");
             Scribe_Values.Look(ref ticksToReset, "ticksToReset");
             Scribe_Values.Look(ref lastImpactTick, "lastImpactTick");

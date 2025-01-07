@@ -4,8 +4,16 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class CompProperties_ShieldEquipment : CompProperties
+    public class HediffCompProperties_Shield : HediffCompProperties
     {
+        // Max information
+        public float maxEnergy = 1f;
+        public bool multiplyMaxBySeverity = false;
+        // Recharge information
+        public float energyRechargeRate = 0.45f;
+        public bool multiplyRechargeBySeverity = false;
+        // Override for max and recharge
+        public bool usePawnMaxAndRecharge = false;
         // How much energy is lost per unit of damage
         public float energyPerDamageModifier = 0.033f;
         // How long (in ticks) it takes for a shield to go back online after it has been destroyed
@@ -16,6 +24,8 @@ namespace EBSGFramework
         public bool blockOverdamage = true;
         // Causes the shield to reduce damage after it's destroyed based on the energy it still had
         public bool reduceDamagePostDestroy = false;
+
+        public bool removeOnBreak = false;
 
         // Whenever the shield blocks ranged/explosive/melee damage
         public bool blocksRangedDamage = true;
@@ -74,9 +84,10 @@ namespace EBSGFramework
 
         public bool blocksRangedWeapons = false;
 
-        public CompProperties_ShieldEquipment()
+        public HediffCompProperties_Shield()
         {
-            compClass = typeof(CompShieldEquipment);
+            compClass = typeof(HediffComp_Shield);
         }
+
     }
 }

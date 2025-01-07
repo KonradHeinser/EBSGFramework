@@ -88,6 +88,7 @@ namespace EBSGFramework
         // Cached hediffs of interest
         public List<HediffDef> explosiveAttackHediffs = new List<HediffDef>();
         public List<HediffDef> skillChangeHediffs = new List<HediffDef>();
+        public List<HediffDef> shieldHediffs = new List<HediffDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -504,6 +505,7 @@ namespace EBSGFramework
         {
             explosiveAttackHediffs = new List<HediffDef>();
             skillChangeHediffs = new List<HediffDef>();
+            shieldHediffs = new List<HediffDef>();
 
             foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
             {
@@ -519,6 +521,11 @@ namespace EBSGFramework
                     {
                         if (!skillChange.skillChanges.Where((arg) => arg.skillChange != new IntRange(0, 0)).EnumerableNullOrEmpty())
                             skillChangeHediffs.Add(hediff);
+                        continue;
+                    }
+                    if (comp is HediffCompProperties_Shield)
+                    {
+                        shieldHediffs.Add(hediff);
                         continue;
                     }
                 }

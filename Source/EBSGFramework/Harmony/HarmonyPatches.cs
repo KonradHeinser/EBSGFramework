@@ -79,6 +79,12 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PostLovinPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "ButcherProducts"),
                 postfix: new HarmonyMethod(patchType, nameof(ButcherProductsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnAt"),
+                postfix: new HarmonyMethod(patchType, nameof(RenderPawnAtPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Thing), "PreApplyDamage"),
+                postfix: new HarmonyMethod(patchType, nameof(PreApplyDamagePostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
+                postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1653,6 +1659,41 @@ namespace EBSGFramework
 
                 __result = newResult.AsEnumerable();
             }
+        }
+
+        public static void RenderPawnAtPostfix(Vector3 drawLoc, Pawn ___pawn)
+        {
+            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+                foreach (var shield in shields)
+                    if (shield.TryGetComp<HediffComp_Shield>()?.Draw(drawLoc) == true)
+                        break; // Only draws the first one it finds to avoid clutter
+        }
+
+        public static void PreApplyDamagePostfix(ref DamageInfo dinfo, ref bool absorbed, Thing __instance)
+        {
+            if (!absorbed && Cache?.shieldHediffs.NullOrEmpty() == false &&
+                __instance is Pawn pawn && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+                foreach (var shield in shields)
+                {
+                    HediffComp_Shield s = shield.TryGetComp<HediffComp_Shield>();
+
+                    s.PostPreApplyDamage(ref dinfo, out absorbed);
+                    if (absorbed) return;
+                }
+        }
+
+        public static void CanHitTargetFromPostfix(ref bool __result, Thing ___caster, Verb __instance)
+        {
+            if (!__result) return;
+
+            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___caster is Pawn pawn &&
+                pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+                foreach (var shield in shields)
+                    if (shield.TryGetComp<HediffComp_Shield>()?.CompAllowVerbCast(__instance) == false)
+                    {
+                        __result = false;
+                        return;
+                    }
         }
 
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)

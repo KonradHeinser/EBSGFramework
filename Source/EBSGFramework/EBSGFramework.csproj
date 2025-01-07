@@ -68,7 +68,10 @@
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_Shield.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventSlaveRebellion.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_Shield.cs" />
+    <Compile Include="Hediffs\Gizmo_HediffShieldStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
