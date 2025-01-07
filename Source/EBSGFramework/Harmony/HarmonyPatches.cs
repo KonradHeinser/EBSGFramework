@@ -1933,15 +1933,16 @@ namespace EBSGFramework
         {
             if (target is Pawn pawn)
             {
+                List<Gene> remXenogenes = new List<Gene>();
+                List<Gene> remEndogenes = new List<Gene>();
+                
                 if (pawn.genes?.Xenotype?.GetModExtension<EBSGExtension>()?.hideAllInactiveGenesForXenotype == true)
                 {
-                    foreach (Gene gene in pawn.genes.Xenogenes)
-                        if (gene.Overridden && ___xenogenes.Contains(gene))
-                            ___xenogenes.Remove(gene);
+                    if (!___xenogenes.NullOrEmpty())
+                        remXenogenes.AddRange(___xenogenes.Where((arg) => arg.Overridden));
 
-                    foreach (Gene gene in pawn.genes.Endogenes)
-                        if (gene.Overridden && ___endogenes.Contains(gene))
-                            ___endogenes.Remove(gene);
+                    if (!___endogenes.NullOrEmpty())
+                        remEndogenes.AddRange(___endogenes.Where(arg => arg.Overridden));
                 }
                 else
                 {
@@ -1950,38 +1951,38 @@ namespace EBSGFramework
                         EBSGExtension extension = pawn.genes.Xenotype.GetModExtension<EBSGExtension>();
                         if (extension.hideAllInactiveSkinColorGenesForXenotype)
                         {
-                            foreach (Gene gene in pawn.genes.Xenogenes)
-                                if (gene.def.skinColorOverride != null && gene.Overridden && ___xenogenes.Contains(gene))
-                                    ___xenogenes.Remove(gene);
+                            if (!___xenogenes.NullOrEmpty())
+                                remXenogenes.AddRange(___xenogenes.Where((arg) => arg.Overridden && arg.def.endogeneCategory == EndogeneCategory.Melanin));
 
-                            foreach (Gene gene in pawn.genes.Endogenes)
-                                if (gene.def.skinColorOverride != null && gene.Overridden && ___endogenes.Contains(gene))
-                                    ___endogenes.Remove(gene);
+                            if (!___endogenes.NullOrEmpty())
+                                remEndogenes.AddRange(___endogenes.Where(arg => arg.Overridden && arg.def.endogeneCategory == EndogeneCategory.Melanin));
                         }
 
                         if (extension.hideAllInactiveHairColorGenesForXenotype)
                         {
-                            foreach (Gene gene in pawn.genes.Xenogenes)
-                                if (gene.def.endogeneCategory == EndogeneCategory.HairColor && gene.Overridden && ___xenogenes.Contains(gene))
-                                    ___xenogenes.Remove(gene);
+                            if (!___xenogenes.NullOrEmpty())
+                                remXenogenes.AddRange(___xenogenes.Where((arg) => arg.Overridden && arg.def.endogeneCategory == EndogeneCategory.HairColor));
 
-                            foreach (Gene gene in pawn.genes.Endogenes)
-                                if (gene.def.endogeneCategory == EndogeneCategory.HairColor && gene.Overridden && ___endogenes.Contains(gene))
-                                    ___endogenes.Remove(gene);
+                            if (!___endogenes.NullOrEmpty())
+                                remEndogenes.AddRange(___endogenes.Where(arg => arg.Overridden && arg.def.endogeneCategory == EndogeneCategory.HairColor));
                         }
                     }
 
-                    if (Cache.hiddenWhenInactive?.NullOrEmpty() == false)
+                    if (Cache?.hiddenWhenInactive?.NullOrEmpty() == false)
                     {
-                        foreach (Gene gene in pawn.genes.Xenogenes)
-                            if (gene.Overridden && ___xenogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
-                                ___xenogenes.Remove(gene);
+                        if (!___xenogenes.NullOrEmpty())
+                            remXenogenes.AddRange(___xenogenes.Where((arg) => arg.Overridden && Cache.hiddenWhenInactive.Contains(arg.def)));
 
-                        foreach (Gene gene in pawn.genes.Endogenes)
-                            if (gene.Overridden && ___endogenes.Contains(gene) && Cache.hiddenWhenInactive.Contains(gene.def))
-                                ___endogenes.Remove(gene);
+                        if (!___endogenes.NullOrEmpty())
+                            remEndogenes.AddRange(___endogenes.Where(arg => arg.Overridden && Cache.hiddenWhenInactive.Contains(arg.def)));
                     }
                 }
+
+                if (!remXenogenes.NullOrEmpty())
+                    ___xenogenes.RemoveWhere((arg) => remXenogenes.Contains(arg));
+
+                if (!remEndogenes.NullOrEmpty())
+                    ___endogenes.RemoveWhere((arg) => remEndogenes.Contains(arg));
             }
         }
 
