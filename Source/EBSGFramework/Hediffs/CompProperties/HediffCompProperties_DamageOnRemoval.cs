@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool trulyRandomPart;
 
+        public FloatRange severity = FloatRange.Zero;
+
         public HediffCompProperties_DamageOnRemoval()
         {
             compClass = typeof(HediffComp_DamageOnRemoval);
