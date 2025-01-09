@@ -8,9 +8,20 @@ namespace EBSGFramework
     {
         HediffCompProperties_SpawnPawnKindOnRemoval Props => (HediffCompProperties_SpawnPawnKindOnRemoval)props;
 
+        Thing instigator = null;
+
+        public override void CompPostPostAdd(DamageInfo? dinfo)
+        {
+            base.CompPostPostAdd(dinfo);
+            instigator = dinfo?.Instigator;
+        }
+
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
+
+            Thing source = instigator ?? Pawn;
+            Pawn sourcePawn = source as Pawn;
 
             Map map = Pawn.MapHeld;
             if (map == null) return; // Ensures there is a map to target, and that the pawn is spawned or inside something
@@ -28,10 +39,16 @@ namespace EBSGFramework
                     break;
             }
 
-            PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, Props.inCreatorFaction ? Pawn.Faction : null, forceGenerateNewPawn: true,
+            PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, 
+                    Props.inCreatorFaction ? source.Faction : null, forceGenerateNewPawn: true,
                     developmentalStages: Props.stage);
 
-            Lord lord = Pawn.GetLord();
+            Lord lord = null;
+            if (instigator != null)
+                if (sourcePawn != null)
+                    lord = sourcePawn.GetLord();
+            else
+                lord = Pawn.GetLord();
 
             int numToSpawn = Props.count.RandomInRange;
 
@@ -41,11 +58,11 @@ namespace EBSGFramework
                 GenSpawn.Spawn(pawn, pos, map);
                 lord?.AddPawn(pawn);
 
-                if (Props.inCreatorFaction && pawn.RaceProps.IsMechanoid && Pawn.mechanitor?.CanOverseeSubject(pawn) == true)
+                if (Props.inCreatorFaction && pawn.RaceProps.IsMechanoid && sourcePawn.mechanitor?.CanOverseeSubject(pawn) == true)
                 {
                     pawn.GetOverseer()?.relations.TryRemoveDirectRelation(PawnRelationDefOf.Overseer, pawn);
-                    Pawn.relations?.AddDirectRelation(PawnRelationDefOf.Overseer, pawn);
-                    Pawn.mechanitor.CanOverseeSubject(pawn);
+                    sourcePawn.relations?.AddDirectRelation(PawnRelationDefOf.Overseer, pawn);
+                    sourcePawn.mechanitor.CanOverseeSubject(pawn);
                 }
 
                 if (Props.mentalStateOnSpawn != null)
@@ -59,7 +76,7 @@ namespace EBSGFramework
                 }
 
                 if (Props.hediffOnPawns != null)
-                    pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, Pawn);
+                    pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, sourcePawn);
             }
 
             if (Props.effecter != null)
@@ -68,6 +85,12 @@ namespace EBSGFramework
                 effecter.Trigger(Pawn.Dead ? new TargetInfo(pos, map) : Pawn, TargetInfo.Invalid);
                 effecter.Cleanup();
             }
+        }
+
+        public override void CompExposeData()
+        {
+            base.CompExposeData();
+            Scribe_References.Look(ref instigator, "instigator");
         }
     }
 }
