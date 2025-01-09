@@ -8,6 +8,7 @@ using Verse;
 using Verse.AI;
 using Verse.AI.Group;
 using Verse.Sound;
+using static UnityEngine.GraphicsBuffer;
 
 namespace EBSGFramework
 {
@@ -602,7 +603,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static Hediff AddHediffToPart(this Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false)
+        public static Hediff AddHediffToPart(this Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false, Pawn other = null)
         {
             Hediff firstHediffOfDef = null;
             if (HasHediff(pawn, hediffDef))
@@ -623,44 +624,154 @@ namespace EBSGFramework
 
             if (firstHediffOfDef != null && !onlyNew)
             {
-                try
-                {
-                    try // Try to make it a psylink
-                    {
-                        Hediff_Psylink hediff_Level = (Hediff_Psylink)firstHediffOfDef;
-                        hediff_Level.ChangeLevel(Mathf.CeilToInt(severityAdded), false);
-                    }
-                    catch // Try to make it a leveling hediff
-                    {
-                        Hediff_Level hediff_Level = (Hediff_Level)firstHediffOfDef;
-                        hediff_Level.ChangeLevel(Mathf.CeilToInt(severityAdded));
-                    }
-                }
-                catch // Just increase the severity
-                {
+                if (firstHediffOfDef is Hediff_Psylink psylink)
+                    psylink.ChangeLevel(Mathf.CeilToInt(severityAdded), false);
+                else if (firstHediffOfDef is Hediff_Level level)
+                    level.ChangeLevel(Mathf.CeilToInt(severityAdded));
+                else
                     firstHediffOfDef.Severity += severityAdded;
-                }
             }
             else
             {
-                firstHediffOfDef = pawn.health.AddHediff(hediffDef, bodyPart);
+                firstHediffOfDef = pawn.CreateComplexHediff(initialSeverity, hediffDef, other, bodyPart);
                 firstHediffOfDef.Severity = initialSeverity;
+                pawn.health.AddHediff(firstHediffOfDef);
             }
 
             return firstHediffOfDef;
         }
 
-        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target,  float baseDuration = -1f, bool psychic = false)
+        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
         {
+            bool checkCaster = psychic ? caster.GetStatValue(StatDefOf.PsychicSensitivity) > 0 : true;
+            bool checkTarget = target != null ? (psychic ? target.GetStatValue(StatDefOf.PsychicSensitivity) > 0 : true) : false;
+
             foreach (HediffToGive hediff in hediffs)
             {
-                
+                if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && 
+                    (!hediff.psychic || caster.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
+                {
+                    Hediff firstHediffOfDef = caster.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
+                    if (hediff.replaceExisting)
+                    {
+                        if (firstHediffOfDef != null)
+                            caster.health.RemoveHediff(firstHediffOfDef);
+                    }
+                    else
+                    {
+                        if (firstHediffOfDef != null)
+                            firstHediffOfDef.Severity += hediff.severity;
+                        else
+                        {
+                            List<Hediff> newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hediff.hediffDef, hediff.severity, target, 
+                                hediff.bodyParts, hediff.replaceExisting));
+
+                            if (!newHediffs.NullOrEmpty() && durationCaster != -1)
+                                foreach (Hediff h in newHediffs)
+                                {
+                                    HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                                    if (hediffComp_Disappears != null)
+                                        hediffComp_Disappears.ticksToDisappear = durationCaster;
+                                }
+
+                            if (!hediff.hediffDefs.NullOrEmpty())
+                                foreach (HediffDef hd in hediff.hediffDefs)
+                                {
+                                    newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hd, hediff.severity, target,
+                                        hediff.bodyParts, hediff.replaceExisting));
+
+                                    if (!newHediffs.NullOrEmpty() && durationCaster != -1)
+                                        foreach (Hediff h in newHediffs)
+                                        {
+                                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                                            if (hediffComp_Disappears != null)
+                                                hediffComp_Disappears.ticksToDisappear = durationCaster;
+                                        }
+                                }
+                        }
+                    }
+                }
+                if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf &&
+                    (!hediff.psychic || target.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
+                {
+                    Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
+                    if (hediff.replaceExisting)
+                    {
+                        if (firstHediffOfDef != null)
+                            target.health.RemoveHediff(firstHediffOfDef);
+                    }
+                    else
+                    {
+                        if (firstHediffOfDef != null)
+                            firstHediffOfDef.Severity += hediff.severity;
+                        else
+                        {
+                            List<Hediff> newHediffs = new List<Hediff>(target.CreateHediffOnParts(hediff.hediffDef, hediff.severity, caster,
+                                hediff.bodyParts, hediff.replaceExisting));
+
+                            if (!newHediffs.NullOrEmpty() && durationTarget != -1)
+                                foreach (Hediff h in newHediffs)
+                                {
+                                    HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                                    if (hediffComp_Disappears != null)
+                                        hediffComp_Disappears.ticksToDisappear = durationTarget;
+                                }
+
+                            if (!hediff.hediffDefs.NullOrEmpty())
+                                foreach (HediffDef hd in hediff.hediffDefs)
+                                {
+                                    newHediffs = new List<Hediff>(target.CreateHediffOnParts(hd, hediff.severity, caster,
+                                        hediff.bodyParts, hediff.replaceExisting));
+
+                                    if (!newHediffs.NullOrEmpty() && durationTarget != -1)
+                                        foreach (Hediff h in newHediffs)
+                                        {
+                                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                                            if (hediffComp_Disappears != null)
+                                                hediffComp_Disappears.ticksToDisappear = durationTarget;
+                                        }
+                                }
+                        }
+                    }
+                }
             }
+        }
+
+        public static List<Hediff> CreateHediffOnParts(this Pawn pawn, HediffDef hediff, float severity, Pawn other = null, List<BodyPartDef> bodyParts = null, bool replaceExisting = false)
+        {
+            if (hediff == null || pawn == null) return null;
+            List<Hediff> hediffs = new List<Hediff>();
+
+            if (bodyParts.NullOrEmpty())
+            {
+                Hediff newHediff = pawn.CreateComplexHediff(severity, hediff, other, null);
+                pawn.health.AddHediff(newHediff);
+                hediffs.Add(newHediff);
+            }
+            else
+            {
+                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
+
+                foreach (BodyPartDef bodyPartDef in bodyParts)
+                {
+                    if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).NullOrEmpty()) continue;
+                    if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
+                        foundParts.Add(bodyPartDef, 0);
+                    else if (pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).Count <= foundParts[bodyPartDef])
+                        continue;
+                    // Prevents someone from putting arm 4 times and breaking things. Ideally will allow race mods to make use of this
+
+                    Hediff newHediff = pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediff, severity, severity, replaceExisting, other);
+                    foundParts[bodyPartDef]++;
+                    hediffs.Add(newHediff);
+                }
+            }
+            return hediffs;
         }
 
         public static Hediff CreateComplexHediff(this Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
         {
-            if (pawn?.health == null) return null;
+            if (pawn?.health == null || hediff == null) return null;
 
             Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn, bodyPart);
             newHediff.Severity = severity;
