@@ -75,6 +75,12 @@ namespace EBSGFramework
                     hediffComp_SpawnBaby.father = other;
                 }
 
+                HediffComp_SpawnPawnKindOnRemoval hediffComp_SpawnPawnKindOnRemoval = hediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>();
+                if (hediffComp_SpawnPawnKindOnRemoval != null)
+                {
+                    hediffComp_SpawnPawnKindOnRemoval.instigator = other;
+                }
+
                 target.health.AddHediff(hediff);
             }
             else

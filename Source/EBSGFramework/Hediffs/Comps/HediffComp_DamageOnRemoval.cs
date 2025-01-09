@@ -11,7 +11,7 @@ namespace EBSGFramework
         {
             base.CompPostPostRemoved();
 
-            if (Props.severity != FloatRange.Zero && !EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity))
+            if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity))
                 return;
             if (Props.neverWhenDead && Pawn.Dead) return;
 

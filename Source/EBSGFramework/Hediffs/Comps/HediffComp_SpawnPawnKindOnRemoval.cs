@@ -8,18 +8,20 @@ namespace EBSGFramework
     {
         HediffCompProperties_SpawnPawnKindOnRemoval Props => (HediffCompProperties_SpawnPawnKindOnRemoval)props;
 
-        Thing instigator = null;
+        public Thing instigator = null;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
-            instigator = dinfo?.Instigator;
+            if (instigator == null)
+                instigator = dinfo?.Instigator;
         }
 
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
-
+            if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
+                return;
             Thing source = instigator ?? Pawn;
             Pawn sourcePawn = source as Pawn;
 

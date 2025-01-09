@@ -33,6 +33,7 @@ namespace EBSGFramework
 
         public static void GiveSimplePlayerMessage(string message, TargetInfo target, MessageTypeDef messageType)
         {
+            if (message == null) return;
             if (message.CanTranslate())
                 Messages.Message(message.Translate(), target, messageType);
             else
@@ -351,7 +352,7 @@ namespace EBSGFramework
 
         public static bool WithinSeverityRanges(float severity, FloatRange? severityRange = null, List<FloatRange> severityRanges = null, bool assumeMin = true)
         {
-            if (severityRange != null)
+            if (severityRange != null && severityRange != FloatRange.Zero)
             {
                 var s = (FloatRange)severityRange;
                 if (s.min == s.max)
@@ -377,9 +378,10 @@ namespace EBSGFramework
                         else if (severity <= f.min)
                             return true;
                 }
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
@@ -648,6 +650,14 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
+        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target,  float baseDuration = -1f, bool psychic = false)
+        {
+            foreach (HediffToGive hediff in hediffs)
+            {
+                
+            }
+        }
+
         public static Hediff CreateComplexHediff(this Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
         {
             if (pawn?.health == null) return null;
@@ -671,6 +681,12 @@ namespace EBSGFramework
                 hediffComp_SpawnBaby.faction = pawn.Faction;
                 hediffComp_SpawnBaby.father = other;
                 hediffComp_SpawnBaby.mother = pawn;
+            }
+
+            HediffComp_SpawnPawnKindOnRemoval hediffComp_SpawnPawnKindOnRemoval = newHediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>();
+            if (hediffComp_SpawnPawnKindOnRemoval != null)
+            {
+                hediffComp_SpawnPawnKindOnRemoval.instigator = other;
             }
 
             return newHediff;

@@ -44,18 +44,18 @@ namespace EBSGFramework
                 {
                     targetPawn.health.RemoveHediff(firstHediffOfDef);
                 }
-                HediffWithTarget targetHediff = (HediffWithTarget)HediffMaker.MakeHediff(Props.hediffOnTarget, targetPawn, Props.targetHediffOnBrain ? targetPawn.health.hediffSet.GetBrain() : null);
-                targetHediff.target = caster;
-                if (Props.psychic)
+                Hediff targetHediff = EBSGUtilities.CreateComplexHediff(targetPawn, Props.hediffOnTarget.initialSeverity, Props.hediffOnTarget, caster, Props.targetHediffOnBrain ? targetPawn.health.hediffSet.GetBrain() : null);
+                
+                HediffComp_Disappears hediffComp_Disappears = targetHediff.TryGetComp<HediffComp_Disappears>();
+                if (hediffComp_Disappears != null)
                 {
-                    HediffComp_Disappears hediffComp_Disappears = targetHediff.TryGetComp<HediffComp_Disappears>();
-                    if (hediffComp_Disappears != null)
+                    float num = parent.def.EffectDuration(parent.pawn);
+                    if (Props.psychic)
                     {
-                        float num = parent.def.EffectDuration(parent.pawn);
                         num *= targetPawn.GetStatValue(StatDefOf.PsychicSensitivity);
                         num *= caster.GetStatValue(StatDefOf.PsychicSensitivity);
-                        hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                     }
+                    hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                 }
                 targetPawn.health.AddHediff(targetHediff);
             }
@@ -68,18 +68,18 @@ namespace EBSGFramework
                 {
                     caster.health.RemoveHediff(firstHediffOfDef);
                 }
-                HediffWithTarget casterHediff = (HediffWithTarget)HediffMaker.MakeHediff(Props.hediffOnCaster, caster, Props.casterHediffOnBrain ? caster.health.hediffSet.GetBrain() : null);
-                casterHediff.target = targetPawn;
-                if (Props.psychic)
+                Hediff casterHediff = EBSGUtilities.CreateComplexHediff(caster, Props.hediffOnCaster.initialSeverity, Props.hediffOnCaster, targetPawn, Props.casterHediffOnBrain ? caster.health.hediffSet.GetBrain() : null);
+                
+                HediffComp_Disappears hediffComp_Disappears = casterHediff.TryGetComp<HediffComp_Disappears>();
+                if (hediffComp_Disappears != null)
                 {
-                    HediffComp_Disappears hediffComp_Disappears = casterHediff.TryGetComp<HediffComp_Disappears>();
-                    if (hediffComp_Disappears != null)
+                    float num = parent.def.EffectDuration(parent.pawn);
+                    if (Props.psychic)
                     {
-                        float num = parent.def.EffectDuration(parent.pawn);
                         num *= caster.GetStatValue(StatDefOf.PsychicSensitivity);
                         num *= targetPawn.GetStatValue(StatDefOf.PsychicSensitivity);
-                        hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                     }
+                    hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                 }
                 caster.health.AddHediff(casterHediff);
             }

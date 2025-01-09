@@ -26,6 +26,8 @@ namespace EBSGFramework
 
         public float severity = 1f;
 
+        public FloatRange validSeverity = FloatRange.Zero;
+
         public HediffCompProperties_SpawnPawnKindOnRemoval()
         {
             compClass = typeof(HediffComp_SpawnPawnKindOnRemoval);
