@@ -642,7 +642,7 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
-        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
+        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
         {
             bool checkCaster = psychic ? caster.GetStatValue(StatDefOf.PsychicSensitivity) > 0 : true;
             bool checkTarget = target != null ? (psychic ? target.GetStatValue(StatDefOf.PsychicSensitivity) > 0 : true) : false;

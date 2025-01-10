@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public List<HediffToGive> hediffsToGive;
 
+        public FloatRange validSeverity = FloatRange.Zero;
+
         public HediffCompProperties_HediffsOnRemoval()
         {
             compClass = typeof(HediffComp_HediffsOnRemoval);
