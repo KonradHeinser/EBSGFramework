@@ -28,6 +28,17 @@
     <EBSG_XenotypeApplied>Xenotype applied to {0}.</EBSG_XenotypeApplied>
 
     <EBSG_Shield>A protective shield.</EBSG_Shield>
+
+    <!--Modular stuff-->
+    <EBSG_RejectApply>Cannot apply</EBSG_RejectApply>
+    <EBSG_NoSlots>No valid slots availible.</EBSG_NoSlots>
+    <EBSG_EjectModuleFrom>Eject module from</EBSG_EjectModuleFrom>
+    <EBSG_Eject>Eject</EBSG_Eject>
+    <EBSG_CannotEject>Unable to eject</EBSG_CannotEject>
+    <EBSG_NoEject>No ejectable modules</EBSG_NoEject>
+    <EBSG_Install>Install {0}</EBSG_Install>
+    <EBSG_InstallIn>Install {0} in {1} ({2})</EBSG_InstallIn>
+
     <!--Coma Gene stuff-->
     <EBSG_AlertLowComaPawn>{PAWN} needs coma</EBSG_AlertLowComaPawn>
     <EBSG_AlertLowComaPawns>{NUMCULPRITS} colonists need to start a coma</EBSG_AlertLowComaPawns>  

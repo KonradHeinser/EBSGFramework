@@ -1,6 +1,6 @@
 ﻿namespace EBSGFramework
 {
-    public class ModuleSlotPackage
+    public class ModuleSlot
     {
         public string slotID;
         public string slotName = "Undefined";

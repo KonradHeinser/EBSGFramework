@@ -64,14 +64,25 @@
   <ItemGroup>
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
+    <Compile Include="Generic List Classes\ModuleSlot.cs" />
+    <Compile Include="Generic List Classes\Prerequisites.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="DamageModifyingStatsExtension.cs" />
+    <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_Modular.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_Shield.cs" />
+    <Compile Include="Hediffs\CompProperties_UseEffectHediffModule.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_Modular.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_Shield.cs" />
+    <Compile Include="Hediffs\CompUsable_HediffModule.cs" />
+    <Compile Include="Hediffs\CompUseEffect_HediffModule.cs" />
     <Compile Include="Hediffs\Gizmo_HediffShieldStatus.cs" />
+    <Compile Include="Hediffs\Hediff_Modular.cs" />
+    <Compile Include="Hediffs\Hediff_ModularAddedPart.cs" />
+    <Compile Include="Hediffs\Hediff_ModularImplant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
@@ -456,7 +467,6 @@
     <Compile Include="Things\CompProperties\CompProperties_HediffOnDamage.cs" />
     <Compile Include="Things\Comps\CompHediffOnDamage.cs" />
     <Compile Include="Genes\ButcherProductExtension.cs" />
-    <Compile Include="ModularStuff\ModuleSlotPackage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_DamageOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_DamageOnRemoval.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
@@ -477,9 +487,6 @@
     <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
     <None Include="Things\PlaceWorker_WallTombs_InsideWallBlock.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModularStuff\ModularEquipment\" />
-    <Folder Include="ModularStuff\ModularHediffs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

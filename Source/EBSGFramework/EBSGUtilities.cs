@@ -118,8 +118,9 @@ namespace EBSGFramework
 
         public static int RemoveAllOfHediffs(this Pawn pawn, List<Hediff> hediffs)
         {
+            if (hediffs.NullOrEmpty()) return 0;
             int removeCount = 0;
-            if (pawn != null && !hediffs.NullOrEmpty() && pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
+            if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() == false)
                 foreach (Hediff hediff in hediffs)
                     if (pawn.HediffInHediffSet(hediff))
                     {
@@ -776,28 +777,30 @@ namespace EBSGFramework
             Hediff newHediff = HediffMaker.MakeHediff(hediff, pawn, bodyPart);
             newHediff.Severity = severity;
 
-            if (newHediff is HediffWithTarget targetHediff)
-                targetHediff.target = other;
-
-            HediffComp_Link hediffComp_Link = newHediff.TryGetComp<HediffComp_Link>();
-            if (hediffComp_Link != null)
+            if (other != null)
             {
-                hediffComp_Link.other = other;
-                hediffComp_Link.drawConnection = other != pawn;
+                if (newHediff is HediffWithTarget targetHediff)
+                    targetHediff.target = other;
+
+                HediffComp_Link hediffComp_Link = newHediff.TryGetComp<HediffComp_Link>();
+                if (hediffComp_Link != null)
+                {
+                    hediffComp_Link.other = other;
+                    hediffComp_Link.drawConnection = other != pawn;
+                }
+
+                HediffComp_SpawnPawnKindOnRemoval hediffComp_SpawnPawnKindOnRemoval = newHediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>();
+                if (hediffComp_SpawnPawnKindOnRemoval != null)
+                    hediffComp_SpawnPawnKindOnRemoval.instigator = other;
             }
 
             HediffComp_SpawnHumanlike hediffComp_SpawnBaby = newHediff.TryGetComp<HediffComp_SpawnHumanlike>();
             if (hediffComp_SpawnBaby != null)
             {
                 hediffComp_SpawnBaby.faction = pawn.Faction;
-                hediffComp_SpawnBaby.father = other;
+                if (other != null)
+                    hediffComp_SpawnBaby.father = other;
                 hediffComp_SpawnBaby.mother = pawn;
-            }
-
-            HediffComp_SpawnPawnKindOnRemoval hediffComp_SpawnPawnKindOnRemoval = newHediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>();
-            if (hediffComp_SpawnPawnKindOnRemoval != null)
-            {
-                hediffComp_SpawnPawnKindOnRemoval.instigator = other;
             }
 
             return newHediff;
@@ -823,7 +826,54 @@ namespace EBSGFramework
                 }
             }
         }
-
+        
+        public static void CopyStageValues(this HediffStage stage, HediffStage newStage)
+        {
+            stage.minSeverity = newStage.minSeverity;
+            stage.label = newStage.label;
+            stage.overrideLabel = newStage.overrideLabel;
+            stage.untranslatedLabel = newStage.untranslatedLabel;
+            stage.becomeVisible = newStage.becomeVisible;
+            stage.lifeThreatening = newStage.lifeThreatening;
+            stage.tale = newStage.tale;
+            stage.vomitMtbDays = newStage.vomitMtbDays;
+            stage.deathMtbDays = newStage.deathMtbDays;
+            stage.mtbDeathDestroysBrain = newStage.mtbDeathDestroysBrain;
+            stage.painFactor = newStage.painFactor;
+            stage.painOffset = newStage.painOffset;
+            stage.totalBleedFactor = newStage.totalBleedFactor;
+            stage.naturalHealingFactor = newStage.naturalHealingFactor;
+            stage.forgetMemoryThoughtMtbDays = newStage.forgetMemoryThoughtMtbDays;
+            stage.pctConditionalThoughtsNullified = newStage.pctConditionalThoughtsNullified;
+            stage.opinionOfOthersFactor = newStage.opinionOfOthersFactor;
+            stage.fertilityFactor = newStage.fertilityFactor;
+            stage.hungerRateFactor = newStage.hungerRateFactor;
+            stage.hungerRateFactorOffset = newStage.hungerRateFactorOffset;
+            stage.restFallFactor = newStage.restFallFactor;
+            stage.restFallFactorOffset = newStage.restFallFactorOffset;
+            stage.socialFightChanceFactor = newStage.socialFightChanceFactor;
+            stage.foodPoisoningChanceFactor = newStage.foodPoisoningChanceFactor;
+            stage.mentalBreakMtbDays = newStage.mentalBreakMtbDays;
+            stage.mentalBreakExplanation = newStage.mentalBreakExplanation;
+            stage.allowedMentalBreakIntensities = newStage.allowedMentalBreakIntensities;
+            stage.makeImmuneTo = newStage.makeImmuneTo;
+            stage.capMods = newStage.capMods;
+            stage.hediffGivers = newStage.hediffGivers;
+            stage.mentalStateGivers = newStage.mentalStateGivers;
+            stage.statOffsets = newStage.statOffsets;
+            stage.statFactors = newStage.statFactors;
+            stage.multiplyStatChangesBySeverity = newStage.multiplyStatChangesBySeverity;
+            stage.statOffsetEffectMultiplier = newStage.statOffsetEffectMultiplier;
+            stage.statFactorEffectMultiplier = newStage.statFactorEffectMultiplier;
+            stage.capacityFactorEffectMultiplier = newStage.capacityFactorEffectMultiplier;
+            stage.disabledWorkTags = newStage.disabledWorkTags;
+            stage.overrideTooltip = newStage.overrideTooltip;
+            stage.extraTooltip = newStage.extraTooltip;
+            stage.partEfficiencyOffset = newStage.partEfficiencyOffset;
+            stage.partIgnoreMissingHP = newStage.partIgnoreMissingHP;
+            stage.destroyPart = newStage.destroyPart;
+        }
+        
         public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
             if (pawn == null || pawn.genes == null) return false;
@@ -835,13 +885,13 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null)
+        public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
             if (pawn == null || pawn.health == null) return false;
 
-            if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs)) return false;
-            if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs)) return false;
-            if (!noneOfHediffs.NullOrEmpty() && PawnHasAnyOfHediffs(pawn, noneOfHediffs)) return false;
+            if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
+            if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
+            if (!noneOfHediffs.NullOrEmpty() && PawnHasAnyOfHediffs(pawn, noneOfHediffs, bodyPart)) return false;
 
             return true;
         }
@@ -996,29 +1046,40 @@ namespace EBSGFramework
             return result != null;
         }
 
-        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches)
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
         {
             matches = new List<Hediff>();
             if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
             foreach (HediffDef hediff in hediffs)
-                if (HasHediff(pawn, hediff, out var match)) matches.Add(match);
+                if (bodyPart != null)
+                {
+                    if (HasHediff(pawn, hediff, bodyPart, out var match)) matches.Add(match);
+                }
+                else if (HasHediff(pawn, hediff, out var match)) matches.Add(match);
             return !matches.NullOrEmpty();
         }
 
-        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs)
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, BodyPartRecord bodyPart = null)
         {
-            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
+            if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
             foreach (HediffDef hediff in hediffs)
-                if (HasHediff(pawn, hediff)) return true;
+                if (bodyPart != null)
+                {
+                    if (HasHediff(pawn, hediff, bodyPart)) return true;
+                }
+                else if (HasHediff(pawn, hediff)) return true;
             return false;
         }
 
-        public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffDef> hediffs)
+        public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffDef> hediffs, BodyPartRecord bodyPart = null)
         {
             if (hediffs.NullOrEmpty()) return true;
             foreach (HediffDef hediff in hediffs)
-                if (!HasHediff(pawn, hediff))
-                    return false;
+                if (bodyPart != null)
+                {
+                    if (!HasHediff(pawn, hediff, bodyPart)) return false;
+                }
+                else if (!HasHediff(pawn, hediff)) return false;
             return true;
         }
 
