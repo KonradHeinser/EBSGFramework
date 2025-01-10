@@ -139,6 +139,13 @@
         <recoverFromCollapsingExhausted>false</recoverFromCollapsingExhausted>
     </MentalStateDef>
 
+    <JobDef>
+        <defName>EBSG_InstallItem</defName>
+        <driverClass>JobDriver_UseItem</driverClass>
+        <reportString>installing TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>
         <label>EBSG recorder</label>
