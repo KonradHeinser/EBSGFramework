@@ -34,10 +34,4 @@ namespace EBSGFramework
     {
         public List<RandomProjectilePackage> projectiles = new List<RandomProjectilePackage>();
     }
-
-    public class RandomProjectilePackage
-    {
-        public ThingDef projectile;
-        public float weight = 1;
-    }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />
     <Compile Include="Generic List Classes\Prerequisites.cs" />
+    <Compile Include="Generic List Classes\RandomProjectilePackage.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\StageOverlay.cs" />

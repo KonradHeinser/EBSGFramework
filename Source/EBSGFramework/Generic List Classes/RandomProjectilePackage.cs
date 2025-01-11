@@ -1,28 +1,34 @@
 ﻿using System.Xml;
 using Verse;
 
+
 namespace EBSGFramework
 {
-    public class ThingLink
+    public class RandomProjectilePackage
     {
-        public ThingDef thing;
+        public ThingDef projectile;
+        public float weight = 1f;
 
-        public float change;
-
-        public ThingLink()
+        public RandomProjectilePackage()
         {
         }
 
-        public ThingLink(ThingDef thing, float change)
+        public RandomProjectilePackage(ThingDef p, float weight)
         {
-            this.thing = thing;
-            this.change = change;
+            this.projectile = p;
+            this.weight = weight;
+
+            if (weight < 0)
+            {
+                Log.Warning($"Enweightered a random shot package where the projectile of {projectile} has a weight below 0.");
+                weight = 0f;
+            }
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
             int num = xmlRoot.ChildNodes.Count;
-            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thing", xmlRoot.Name);
+            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "projectile", xmlRoot.Name);
             if (num == 1)
             {
                 LoadFromSingleNode(xmlRoot.FirstChild);
@@ -37,7 +43,7 @@ namespace EBSGFramework
         {
             if (node is XmlText xmlText)
             {
-                change = ParseHelper.FromString<float>(xmlText.InnerText);
+                weight = ParseHelper.FromString<float>(xmlText.InnerText);
             }
             else if (node is XmlElement element)
             {
@@ -55,9 +61,9 @@ namespace EBSGFramework
 
         private void ParseXmlElement(XmlElement element)
         {
-            if (element.Name == "change")
+            if (element.Name == "weight")
             {
-                change = ParseHelper.FromString<float>(element.InnerText);
+                weight = ParseHelper.FromString<float>(element.InnerText);
             }
         }
     }
