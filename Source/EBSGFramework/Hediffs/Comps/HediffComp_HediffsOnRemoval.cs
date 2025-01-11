@@ -12,7 +12,7 @@ namespace EBSGFramework
             base.CompPostPostRemoved();
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
                 return;
-            Props.hediffsToGive?.GiveHediffs(Pawn);
+            Props.hediffsToGive?.GiveHediffs(null, Pawn);
         }
     }
 }
