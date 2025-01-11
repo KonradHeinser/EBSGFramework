@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Verse;
 
 namespace EBSGFramework
@@ -39,6 +38,6 @@ namespace EBSGFramework
     public class RandomProjectilePackage
     {
         public ThingDef projectile;
-        public int weight = 1;
+        public float weight = 1;
     }
 }
