@@ -51,6 +51,26 @@ namespace EBSGFramework
             }
         }
 
+        public float RemainingCapacityInCurrentSlot
+        {
+            get
+            {
+                ModuleSlot slot = GetSlot;
+                float num = slot?.capacity ?? 0;
+
+                if (num > 0)
+                    foreach (ThingWithComps thing in OwnerComp.moduleHolder)
+                    {
+                        CompUseEffect_HediffModule moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
+
+                        if (moduleComp.usedSlot == slot.slotID)
+                            num -= moduleComp.Props.requiredCapacity;
+                    }
+
+                return num;
+            }
+        }
+
         public void Install(HediffComp_Modular holder)
         {
             Props.installSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn, MaintenanceType.None));
@@ -69,6 +89,9 @@ namespace EBSGFramework
         public bool Remove(HediffComp_Modular holder)
         {
             if (!Props.ejectable)
+                return false;
+
+            if (Props.requiredCapacity < 0 && RemainingCapacityInCurrentSlot + Props.requiredCapacity < 0)
                 return false;
 
             Props.ejectSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn, MaintenanceType.None));
