@@ -673,6 +673,7 @@ namespace EBSGFramework
                                     HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
                                     if (hediffComp_Disappears != null)
                                         hediffComp_Disappears.ticksToDisappear = durationCaster;
+                                    caster.health.AddHediff(h);
                                 }
 
                             if (!hediff.hediffDefs.NullOrEmpty())
@@ -687,6 +688,7 @@ namespace EBSGFramework
                                             HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
                                             if (hediffComp_Disappears != null)
                                                 hediffComp_Disappears.ticksToDisappear = durationCaster;
+                                            caster.health.AddHediff(h);
                                         }
                                 }
                         }
@@ -716,6 +718,7 @@ namespace EBSGFramework
                                     HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
                                     if (hediffComp_Disappears != null)
                                         hediffComp_Disappears.ticksToDisappear = durationTarget;
+                                    target.health.AddHediff(h);
                                 }
 
                             if (!hediff.hediffDefs.NullOrEmpty())
@@ -730,6 +733,7 @@ namespace EBSGFramework
                                             HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
                                             if (hediffComp_Disappears != null)
                                                 hediffComp_Disappears.ticksToDisappear = durationTarget;
+                                            target.health.AddHediff(h);
                                         }
                                 }
                         }
