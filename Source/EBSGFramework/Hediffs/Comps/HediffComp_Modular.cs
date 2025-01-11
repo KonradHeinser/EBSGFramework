@@ -155,11 +155,11 @@ namespace EBSGFramework
 
                     if (!comp.Props.ejectable)
                     {
-                        options.Add(new FloatMenuOption($"{"EBSG_CannotEject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName})", null));
+                        options.Add(new FloatMenuOption($"{"EBSG_CannotEject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrLiteral()})", null));
                         continue;
                     }
 
-                    options.Add(new FloatMenuOption($"{"EBSG_Eject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName})", delegate () { RemoveModule(module); }));
+                    options.Add(new FloatMenuOption($"{"EBSG_Eject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrLiteral()})", delegate () { RemoveModule(module); }));
                     validOptions += 1;
                 }
 
