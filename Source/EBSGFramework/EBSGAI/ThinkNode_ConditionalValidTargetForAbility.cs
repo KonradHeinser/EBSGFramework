@@ -21,20 +21,7 @@ namespace EBSGFramework
             Ability pawnAbility = pawn.abilities?.GetAbility(ability);
             if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty() || !ability.targetRequired) return false;
 
-            Thing target = pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch);
-            
-            try
-            {
-                ability.verbProperties.targetParams.CanTarget(target);
-                foreach (CompAbilityEffect abilityEffect in pawnAbility.comps)
-                    if (!abilityEffect.Valid((LocalTargetInfo)target)) return false;
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
+            return pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch, ability: pawnAbility) != null;
         }
     }
 }

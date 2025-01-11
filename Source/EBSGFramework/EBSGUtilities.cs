@@ -1952,7 +1952,7 @@ namespace EBSGFramework
 
         // EBSGAI Utilities
 
-        public static Thing GetCurrentTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false, bool allowDowned = false)
+        public static Thing GetCurrentTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, bool autoSearch = false, float searchRadius = 50, bool LoSRequired = false, bool allowDowned = false, Ability ability = null)
         {
             if (!pawn.Spawned) return null;
             if (onlyHostiles && onlyInFaction) return null;
@@ -1961,12 +1961,17 @@ namespace EBSGFramework
                 Thing thing = stance_Busy.verb.CurrentTarget.Thing;
                 if (thing.Position.DistanceTo(pawn.Position) > searchRadius)
                 {
-                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired);
+                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
                     return null;
                 }
                 if ((LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) || (onlyHostiles && !thing.HostileTo(pawn)))
                 {
-                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired);
+                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
+                    return null;
+                }
+                if (ability?.Valid(thing) == false)
+                {
+                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
                     return null;
                 }
                 if (thing is Pawn otherPawn)
@@ -1974,7 +1979,7 @@ namespace EBSGFramework
                     if (otherPawn == pawn) return null;
                     if (!allowDowned && (otherPawn.Downed || otherPawn.Dead))
                     {
-                        if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired);
+                        if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
                         return null;
                     }
                     if (onlyInFaction)
@@ -1991,6 +1996,7 @@ namespace EBSGFramework
                 Thing thing = pawn.CurJob.targetA.Thing;
                 if (thing != null)
                 {
+                    if (ability?.Valid(thing) == false) return null;
                     if (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) return null;
                     if (onlyHostiles && !thing.HostileTo(pawn)) return null;
                     if (onlyInFaction)
@@ -2001,30 +2007,66 @@ namespace EBSGFramework
                     return thing;
                 }
             }
-            if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired);
+            if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
 
             return null;
         }
 
-        public static Pawn AutoSearchTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, float searchRadius = 50, bool LoSRequired = false)
+        public static Pawn AutoSearchTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, float searchRadius = 50, bool LoSRequired = false, Ability ability = null)
         {
 
             List<Pawn> pawns = pawn.Map.mapPawns.AllPawns;
             pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
             foreach (Pawn otherPawn in pawns)
             {
+                if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
                 if (otherPawn == pawn) continue;
                 if (LoSRequired && !GenSight.LineOfSight(pawn.Position, otherPawn.Position, pawn.Map)) continue;
                 if (otherPawn.Dead || otherPawn.Downed) continue;
-                if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
+                if (ability?.Valid(otherPawn) == false) continue;
                 if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
                 if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
                 if (!onlyHostiles && !onlyInFaction) return otherPawn;
             }
-
+            
             return null;
         }
+        
+        public static bool Valid(this Ability ability, Thing target)
+        {
+            if (ability == null) return true; // This shouldn't ever happen, and is acting more as error catching
 
+            if (!ability.verb.targetParams.CanTarget(target)) return false;
+            if (!ability.comps.NullOrEmpty())
+                foreach (CompAbilityEffect abilityEffect in ability.comps)
+                {
+                    if (!abilityEffect.Valid((LocalTargetInfo)target)) return false;
+                    if (target is Pawn pawn)
+                    {
+                        if (abilityEffect is CompAbilityEffect_GiveHediff giveComp && 
+                            ((giveComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) || 
+                            giveComp.Props.durationMultiplier != null && pawn.GetStatValue(giveComp.Props.durationMultiplier) <= 0))
+                            return false;
+                        if (abilityEffect is CompAbilityEffect_GiveMultipleHediffs giveMultiComp &&
+                            ((giveMultiComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                            giveMultiComp.Props.durationMultiplier != null && pawn.GetStatValue(giveMultiComp.Props.durationMultiplier) <= 0))
+                            return false;
+                        if (abilityEffect is CompAbilityEffect_BloodDrain bloodComp && 
+                            ((bloodComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                            (bloodComp.Props.replacementHediff != null && pawn.HasHediff(bloodComp.Props.replacementHediff))))
+                            return false;
+                        if (abilityEffect is CompAbilityEffect_Stun stunComp && 
+                            ((stunComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                            (stunComp.Props.durationMultiplier != null && pawn.GetStatValue(stunComp.Props.durationMultiplier) <= 0) ||
+                            (ability.lastCastTick >= 0 && ability.def.EffectDuration() > 0 &&
+                            Find.TickManager.TicksGame - ability.lastCastTick < ability.def.EffectDuration())))
+                                return false;
+                    }
+                }
+
+            return true;
+        }
+        
         public static bool NeedToMove(Ability ability, Pawn pawn, Pawn targetPawn = null)
         {
             if (ability.verb.verbProps.rangeStat != null) // If there's a range stat and the target is at risk for becoming too far away, move closer

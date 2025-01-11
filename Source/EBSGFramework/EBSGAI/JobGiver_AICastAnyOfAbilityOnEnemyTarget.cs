@@ -33,46 +33,12 @@ namespace EBSGFramework
                 if (tempAbility != null && tempAbility.CanCast)
                 {
                     if (!tempAbility.ValidateGlobalTarget(currentEnemy)) continue;
+                    if (!tempAbility.Valid(currentEnemy)) continue;
                     if (tempAbility.verb.verbProps.requireLineOfSight && !los) continue;
-                    bool flag = false;
-                    if (currentEnemy is Pawn otherPawn && !tempAbility.comps.NullOrEmpty())
-                        foreach (AbilityComp compAbility in tempAbility.comps)
-                        {
-                            if (compAbility is CompAbilityEffect_GiveHediff comp)
-                            {
-                                flag |= ((comp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (comp.Props.durationMultiplier != null && otherPawn.GetStatValue(comp.Props.durationMultiplier) <= 0) ||
-                                    otherPawn.HasHediff(comp.Props.hediffDef));
-                            }
-                            else if (compAbility is CompAbilityEffect_GiveMultipleHediffs multiComp)
-                            {
-                                if ((multiComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (multiComp.Props.durationMultiplier != null && otherPawn.GetStatValue(multiComp.Props.durationMultiplier) <= 0)) flag = true;
-                                else
-                                    foreach (HediffToGive hediff in multiComp.Props.hediffsToGive)
-                                        if ((hediff.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                            otherPawn.HasHediff(hediff.hediffDef))
-                                        {
-                                            flag = true;
-                                            break;
-                                        }
-                            }
-                            else if (compAbility is CompAbilityEffect_BloodDrain bloodComp)
-                            {
-                                flag |= (bloodComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (bloodComp.Props.replacementHediff != null && otherPawn.HasHediff(bloodComp.Props.replacementHediff));
-                            }
-                            else if (compAbility is CompAbilityEffect_Stun stunComp)
-                            {
-                                flag |= (stunComp.Props.psychic && otherPawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                                    (stunComp.Props.durationMultiplier != null && otherPawn.GetStatValue(stunComp.Props.durationMultiplier) <= 0) ||
-                                    (tempAbility.lastCastTick >= 0 && tempAbility.def.EffectDuration() > 0 &&
-                                    Find.TickManager.TicksGame - tempAbility.lastCastTick < tempAbility.def.EffectDuration());
-                            }
-                            if (flag) break;
-                        }
+                    if (tempAbility.def.EffectRadius > 0 && tempAbility.def.targetRequired &&
+                        enemyPosition.DistanceTo(pawn.Position) <= tempAbility.def.EffectRadius)
+                        continue;
 
-                    if (flag) continue;
                     if (tempAbility.verb.verbProps.rangeStat != null)
                     {
                         if (enemyPosition.DistanceTo(pawn.Position) < pawn.GetStatValue(tempAbility.verb.verbProps.rangeStat))
