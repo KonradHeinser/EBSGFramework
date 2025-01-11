@@ -9,6 +9,7 @@ namespace EBSGFramework
         // Adds custom requirements for an ability to be usable on a target
         public bool disableGizmo = true; // Disables gizmo when caster or map conditions prevent the ability from working
         public bool hideGizmo = false; // Hides the gizmo if it's disabled
+        public bool noMessage = false; // Makes it so the message never appears
 
         // Target Genes
         public List<GeneDef> targetHasAnyOfGenes;

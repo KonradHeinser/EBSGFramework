@@ -22,7 +22,7 @@ namespace EBSGFramework
             if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty() || !ability.targetRequired) return false;
 
             Thing target = pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch);
-
+            
             try
             {
                 ability.verbProperties.targetParams.CanTarget(target);
