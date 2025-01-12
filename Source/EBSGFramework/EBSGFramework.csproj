@@ -71,6 +71,8 @@
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_Shield.cs" />
