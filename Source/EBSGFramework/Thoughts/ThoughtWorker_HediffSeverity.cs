@@ -9,14 +9,13 @@ namespace EBSGFramework
         {
             EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
 
-            if (thoughtExtension?.hediff != null && thoughtExtension.curve != null)
+            if (thoughtExtension?.hediff != null && thoughtExtension.curve != null &&
+                p.HasHediff(thoughtExtension.hediff, out var hediff))
             {
-                if (p.HasHediff(thoughtExtension.hediff, out var hediff))
-                {
-                    if (hediff.def.stages.Count > 1)
-                        return hediff.Severity > hediff.def.stages[1].minSeverity;
-                    return hediff.Severity > 1f;
-                }
+                if (hediff is Hediff_Dependency && hediff.def.stages.Count > 1)
+                    return hediff.Severity > hediff.def.stages[1].minSeverity;
+                
+                return thoughtExtension.curve.Evaluate(hediff.Severity) >= 1;
             }
 
             return ThoughtState.Inactive;
