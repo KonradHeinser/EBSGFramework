@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System;
 using Verse;
 
 namespace EBSGFramework
@@ -15,7 +16,7 @@ namespace EBSGFramework
                 if (hediff is Hediff_Dependency && hediff.def.stages.Count > 1)
                     return hediff.Severity > hediff.def.stages[1].minSeverity;
                 
-                return thoughtExtension.curve.Evaluate(hediff.Severity) >= 1;
+                return Math.Abs(thoughtExtension.curve.Evaluate(hediff.Severity)) >= 1;
             }
 
             return ThoughtState.Inactive;
