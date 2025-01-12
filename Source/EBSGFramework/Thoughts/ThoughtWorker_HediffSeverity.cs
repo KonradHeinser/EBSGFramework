@@ -22,5 +22,17 @@ namespace EBSGFramework
 
             return ThoughtState.Inactive;
         }
+
+        public override string PostProcessLabel(Pawn p, string label)
+        {
+            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (p.health.hediffSet.TryGetHediff(thoughtExtension.hediff, out var hediff))
+            {
+                if (hediff is Hediff_Dependency dependency)
+                    return label.Formatted(p.Named("PAWN"), dependency.Label.Named("HEDIFF"), dependency.GetLabel().Named("DEPENDENCY"));
+                return label.Formatted(p.Named("PAWN"), hediff.Label.Named("HEDIFF"));
+            }
+            return base.PostProcessLabel(p, label);
+        }
     }
 }

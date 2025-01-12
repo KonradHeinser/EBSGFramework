@@ -21,7 +21,7 @@ namespace EBSGFramework
 
         public IDGExtension cachedExtension;
 
-        private string GetLabel()
+        public string GetLabel()
         {
             if (Extension != null && Extension.dependencyLabel != null)
             {
