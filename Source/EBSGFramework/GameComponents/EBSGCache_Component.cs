@@ -101,6 +101,7 @@ namespace EBSGFramework
 
         // Cached things of interest
         public bool needEquippableAbilityPatches = false;
+        public List<ThingDef> shieldEquipment = new List<ThingDef>();
 
         // Other
 
@@ -537,7 +538,9 @@ namespace EBSGFramework
             foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
             {
                 needEquippableAbilityPatches |= thing.HasComp<CompAbilityLimitedCharges>();
-                if (needEquippableAbilityPatches) break;
+                
+                if (thing.HasComp<CompShieldEquipment>())
+                    shieldEquipment.Add(thing);
             }
         }
 

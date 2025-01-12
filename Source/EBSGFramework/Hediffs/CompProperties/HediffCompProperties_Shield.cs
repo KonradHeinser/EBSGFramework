@@ -26,6 +26,7 @@ namespace EBSGFramework
         public bool reduceDamagePostDestroy = false;
 
         public bool removeOnBreak = false;
+        public bool onlyBlockWhileDraftedOrHostile = false;
 
         // Whenever the shield blocks ranged/explosive/melee damage
         public bool blocksRangedDamage = true;

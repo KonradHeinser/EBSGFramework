@@ -21,6 +21,7 @@ namespace EBSGFramework
         public bool blocksRangedDamage = true;
         public bool blocksExplosions = true;
         public bool blocksMeleeDamage = false;
+        public bool onlyBlockWhileDraftedOrHostile = false;
 
         // DamageDefs to check for
         public List<DamageDef> blockedDamageDefs;

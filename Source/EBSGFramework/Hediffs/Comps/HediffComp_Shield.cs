@@ -15,6 +15,7 @@ namespace EBSGFramework
         public int ticksToReset = -1;
         public int lastImpactTick = -1;
         public int lastResetTick = -1;
+        public int lastKeepDisplayTick = -1000;
         public Vector3 impactAngleVect;
 
         public Matrix4x4 matrix;
@@ -26,6 +27,28 @@ namespace EBSGFramework
 
         public float MaxEnergy => Mathf.Max((Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldEnergyMax) : Props.maxEnergy) * (Props.multiplyMaxBySeverity ? parent.Severity : 1f), 0.01f);
         public float EnergyRechargeRate => (Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldRechargeRate) : Props.energyRechargeRate) * (Props.multiplyRechargeBySeverity ? parent.Severity : 1f) / 60f;
+
+        public ShieldState ShieldState
+        {
+            get
+            {
+                if (Pawn.IsCharging() || Pawn.IsSelfShutdown())
+                {
+                    return ShieldState.Disabled;
+                }
+                CompCanBeDormant comp = Pawn.GetComp<CompCanBeDormant>();
+                if (comp != null && !comp.Awake)
+                {
+                    return ShieldState.Disabled;
+                }
+                if (ticksToReset <= 0)
+                {
+                    return ShieldState.Active;
+                }
+                return ShieldState.Resetting;
+            }
+        }
+
         public bool ShouldDisplay
         {
             get
@@ -33,7 +56,7 @@ namespace EBSGFramework
                 if (Props.noDisplay) return false;
                 // Same conditions as the vanilla shield comp
 
-                if (ticksToReset > 0)
+                if (ShieldState != ShieldState.Active)
                     return false;
 
                 if (!Pawn.Spawned || Pawn.Dead || Pawn.Downed)
@@ -45,11 +68,22 @@ namespace EBSGFramework
                 if (Pawn.Faction?.HostileTo(Faction.OfPlayer) == true && !Pawn.IsPrisoner)
                     return true;
 
+                if (Find.TickManager.TicksGame < lastKeepDisplayTick + 1000)
+                    return true;
+
                 if (ModsConfig.BiotechActive && Pawn.IsColonyMech && Find.Selector.SingleSelectedThing == Pawn)
                     return true;
 
                 return false;
             }
+        }
+
+        public void ResetDisplayCooldown()
+        {
+            if (Props.onlyBlockWhileDraftedOrHostile && !Pawn.InAggroMentalState && !Pawn.Drafted &&
+                Pawn.LastAttackTargetTick + 1000 < Find.TickManager.TicksGame)
+                return;
+            lastKeepDisplayTick = Find.TickManager.TicksGame;
         }
 
         public bool Draw(Vector3 drawPos)
@@ -186,7 +220,10 @@ namespace EBSGFramework
         public void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             absorbed = false;
-
+            if (Props.onlyBlockWhileDraftedOrHostile && !Pawn.InAggroMentalState && !Pawn.Drafted &&
+                Pawn.LastAttackTargetTick + 1000 < Find.TickManager.TicksGame)
+                return;
+            
             if (Pawn == null || ticksToReset > 0) return;
             lastImpactTick = Find.TickManager.TicksGame;
 

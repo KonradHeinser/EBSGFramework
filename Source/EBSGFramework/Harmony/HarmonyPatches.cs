@@ -85,6 +85,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PreApplyDamagePostfix)));
             harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(Stance_Warmup), new[] {typeof(int), typeof(LocalTargetInfo), typeof(Verb)}),
+                postfix: new HarmonyMethod(patchType, nameof(StanceWarmupPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1696,6 +1698,31 @@ namespace EBSGFramework
                     }
         }
 
+        public static void StanceWarmupPostfix(Verb verb, LocalTargetInfo focusTarg)
+        {
+            if (Cache?.shieldEquipment.NullOrEmpty() == false || Cache?.shieldHediffs.NullOrEmpty() == false)
+                if (focusTarg.HasThing && focusTarg.Thing is Pawn pawn && !pawn.Downed &&
+                    (!(verb is Verb_CastAbility cast) || cast.Ability.def.hostile))
+                {
+                    if (!Cache.shieldEquipment.NullOrEmpty() && pawn.apparel?.WornApparel.NullOrEmpty() == false)
+                    {
+                        List<Apparel> shields = new List<Apparel>(pawn.apparel.WornApparel.Where((arg) => Cache.shieldEquipment.Contains(arg.def)));
+                        if (!shields.NullOrEmpty())
+                            foreach (Apparel apparel in shields)
+                            {
+                                CompShieldEquipment shield = apparel.GetComp<CompShieldEquipment>();
+                                shield.ResetDisplayCooldown();
+                            }
+                    }
+                    if (!Cache.shieldHediffs.NullOrEmpty() && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shieldHediffs))
+                        foreach (Hediff hediff in shieldHediffs)
+                        {
+                            HediffComp_Shield shield = hediff.TryGetComp<HediffComp_Shield>();
+                            shield.ResetDisplayCooldown();
+                        }
+                }
+        }
+
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
@@ -2592,13 +2619,11 @@ namespace EBSGFramework
         {
             if (__result && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false)
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-                {
                     if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
                     {
                         __result = false;
                         break;
                     }
-                }
         }
     }
 }

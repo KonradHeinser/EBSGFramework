@@ -16,6 +16,7 @@ namespace EBSGFramework
         public int ticksToReset = -1;
         public int lastImpactTick = -1;
         public int lastResetTick = -1;
+        public int lastKeepDisplayTick = -1;
         public Vector3 impactAngleVect;
 
         public Matrix4x4 matrix;
@@ -42,6 +43,27 @@ namespace EBSGFramework
             }
         }
 
+        public ShieldState ShieldState
+        {
+            get
+            {
+                if (parent is Pawn p && (p.IsCharging() || p.IsSelfShutdown()))
+                {
+                    return ShieldState.Disabled;
+                }
+                CompCanBeDormant comp = parent.GetComp<CompCanBeDormant>();
+                if (comp != null && !comp.Awake)
+                {
+                    return ShieldState.Disabled;
+                }
+                if (ticksToReset <= 0)
+                {
+                    return ShieldState.Active;
+                }
+                return ShieldState.Resetting;
+            }
+        }
+
         private bool ShouldDisplay
         {
             get
@@ -49,7 +71,7 @@ namespace EBSGFramework
                 if (Props.noDisplay) return false;
                 // Same conditions as the vanilla shield comp
 
-                if (ticksToReset > 0)
+                if (ShieldState != ShieldState.Active)
                     return false;
 
                 if (PawnOwner == null)
@@ -64,11 +86,22 @@ namespace EBSGFramework
                 if (PawnOwner.Faction?.HostileTo(Faction.OfPlayer) == true && !PawnOwner.IsPrisoner)
                     return true;
 
+                if (Find.TickManager.TicksGame < lastKeepDisplayTick + 1000)
+                    return true;
+
                 if (ModsConfig.BiotechActive && PawnOwner.IsColonyMech && Find.Selector.SingleSelectedThing == PawnOwner)
                     return true;
 
                 return false;
             }
+        }
+
+        public void ResetDisplayCooldown()
+        {
+            if (Props.onlyBlockWhileDraftedOrHostile && !PawnOwner.InAggroMentalState && !PawnOwner.Drafted &&
+                PawnOwner.LastAttackTargetTick + 1000 < Find.TickManager.TicksGame)
+                return;
+            lastKeepDisplayTick = Find.TickManager.TicksGame;
         }
 
         public override void CompDrawWornExtras()
@@ -223,7 +256,7 @@ namespace EBSGFramework
         {
             absorbed = false;
 
-            if (PawnOwner == null || ticksToReset > 0) return;
+            if (PawnOwner == null || ShieldState != ShieldState.Active) return;
             lastImpactTick = Find.TickManager.TicksGame;
 
             if (!Props.shatterOn.NullOrEmpty() && Props.shatterOn.Contains(dinfo.Def))
