@@ -79,7 +79,7 @@ namespace EBSGFramework
             {
                 return false;
             }
-            return hediff_ChemicalDependency.ShouldSatify;
+            return hediff_ChemicalDependency.ShouldSatisfy;
         }
 
         private Thing FindIngestibleFor(Pawn pawn, Hediff_Dependency dependency)

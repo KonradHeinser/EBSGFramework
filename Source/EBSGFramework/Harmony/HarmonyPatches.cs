@@ -87,6 +87,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
             harmony.Patch(AccessTools.Constructor(typeof(Stance_Warmup), new[] {typeof(int), typeof(LocalTargetInfo), typeof(Verb)}),
                 postfix: new HarmonyMethod(patchType, nameof(StanceWarmupPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(GeneUtility), "SatisfyChemicalGenes"),
+                postfix: new HarmonyMethod(patchType, nameof(SatisfyChemicalGenesPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Caravan_NeedsTracker), "TrySatisfyChemicalDependencies"),
+                postfix: new HarmonyMethod(patchType, nameof(TrySatisfyChemicalDependenciesPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1721,6 +1725,32 @@ namespace EBSGFramework
                             shield.ResetDisplayCooldown();
                         }
                 }
+        }
+
+        public static void SatisfyChemicalGenesPostfix(Pawn pawn)
+        {
+            if (Cache?.idgGenes.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.idgGenes))
+                foreach (Gene gene in pawn.genes.GenesListForReading)
+                    if (gene is Gene_Dependency dependency)
+                        dependency.Reset();
+        }
+
+        public static void TrySatisfyChemicalDependenciesPostfix(Pawn pawn, Caravan_NeedsTracker __instance, Caravan ___caravan)
+        {
+            if (Cache?.idgGenes.NullOrEmpty() == false && pawn.HasAnyOfRelatedGene(Cache.idgGenes))
+                foreach (Gene gene in pawn.genes.GenesListForReading)
+                    if (gene is Gene_Dependency dependency && dependency.LinkedHediff.ShouldSatisfy)
+                    {
+                        List<Thing> inventory = CaravanInventoryUtility.AllInventoryItems(___caravan);
+                        if (!inventory.NullOrEmpty())
+                            foreach (Thing thing in inventory)
+                                if (dependency.ValidIngest(thing))
+                                {
+                                    __instance.IngestDrug(pawn, thing, CaravanInventoryUtility.GetOwnerOf(___caravan, thing));
+                                    break;
+                                }
+                    }
+
         }
 
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)

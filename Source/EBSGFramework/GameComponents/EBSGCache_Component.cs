@@ -49,6 +49,7 @@ namespace EBSGFramework
         public List<GeneDef> noWeapon = new List<GeneDef>();
         public List<GeneDef> equipRestricting = new List<GeneDef>();
 
+        public List<GeneDef> idgGenes = new List<GeneDef>();
         public List<GeneDef> grcGenes = new List<GeneDef>();
         public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
         public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
@@ -356,6 +357,7 @@ namespace EBSGFramework
             noApparel = new List<GeneDef>();
             noWeapon = new List<GeneDef>();
             equipRestricting = new List<GeneDef>();
+            idgGenes = new List<GeneDef>();
             grcGenes = new List<GeneDef>();
             bloodReplacingGenes = new List<GeneDef>();
             bloodSmearReplacingGenes = new List<GeneDef>();
@@ -370,6 +372,8 @@ namespace EBSGFramework
             {
                 if (gene.HasModExtension<FertilityByGenderAgeExtension>())
                     fertilityChangingGenes.Add(gene);
+                if (gene.geneClass == typeof(Gene_Dependency))
+                    idgGenes.Add(gene);
                 if (gene.HasModExtension<GRCExtension>())
                     grcGenes.Add(gene);
                 if (gene.geneClass == typeof(ResourceGene))
@@ -535,6 +539,7 @@ namespace EBSGFramework
 
         private void CacheThingsOfInterest()
         {
+            shieldEquipment = new List<ThingDef>();
             foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
             {
                 needEquippableAbilityPatches |= thing.HasComp<CompAbilityLimitedCharges>();

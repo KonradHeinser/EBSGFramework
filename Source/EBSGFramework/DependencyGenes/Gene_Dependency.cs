@@ -106,7 +106,7 @@ namespace EBSGFramework
             }
         }
 
-        public override void Notify_IngestedThing(Thing thing, int numTaken)
+        public bool ValidIngest(Thing thing)
         {
             if (def.chemical != null)
             {
@@ -114,78 +114,51 @@ namespace EBSGFramework
                 {
                     CompDrug compDrug = thing.TryGetComp<CompDrug>();
                     if (compDrug != null && compDrug.Props.chemical == def.chemical)
-                    {
-                        Reset();
-                    }
+                        return true;
                 }
             }
             else
             {
                 CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
-                bool flag = false;
-                if (!flag && !Extension.validThings.NullOrEmpty())
-                {
+                if (!Extension.validThings.NullOrEmpty())
                     foreach (ThingDef thingDef in Extension.validThings)
                     {
                         if (thing.def == thingDef)
-                        {
-                            flag = true;
-                            break;
-                        }
-                        if (Extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                        {
-                            if (ingredients.ingredients.Contains(thingDef))
-                            {
-                                flag = true;
-                                break;
-                            }
-                        }
+                            return true;
+                        if (Extension.checkIngredients && ingredients != null && 
+                            !ingredients.ingredients.NullOrEmpty() && 
+                            ingredients.ingredients.Contains(thingDef))
+                            return true;
                     }
-                }
-                if (!flag && !Extension.validCategories.NullOrEmpty())
+                if (!Extension.validCategories.NullOrEmpty())
                 {
-                    if (!flag && !thing.def.thingCategories.NullOrEmpty())
-                    {
+                    if (!thing.def.thingCategories.NullOrEmpty())
                         foreach (ThingCategoryDef thingCategory in Extension.validCategories)
-                        {
                             if (thing.def.thingCategories.Contains(thingCategory))
-                            {
-                                flag = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!flag && Extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                    {
+                                return true;
+                    if (!Extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
                         foreach (ThingDef ingredient in ingredients.ingredients)
-                        {
                             if (!ingredient.thingCategories.NullOrEmpty())
-                            {
                                 foreach (ThingCategoryDef thingCategory in Extension.validCategories)
-                                {
                                     if (ingredient.thingCategories.Contains(thingCategory))
-                                    {
-                                        flag = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (flag) break;
-                        }
-                    }
+                                        return true;
                 }
-
-                if (flag) Reset();
             }
+
+            return false;
+        }
+
+        public override void Notify_IngestedThing(Thing thing, int numTaken)
+        {
+            if (ValidIngest(thing))
+                Reset();
         }
 
         public override void Reset()
         {
             Hediff_Dependency linkedHediff = LinkedHediff;
             if (linkedHediff != null)
-            {
                 linkedHediff.Severity = linkedHediff.def.initialSeverity;
-            }
             else AddDependencyHediff();
 
             lastIngestedTick = Find.TickManager.TicksGame;
