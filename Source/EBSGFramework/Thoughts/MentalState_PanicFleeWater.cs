@@ -34,12 +34,16 @@ namespace EBSGFramework
 
         private bool NearbyWater()
         {
+            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (thoughtExtension != null)
+                return pawn.CheckNearbyWater(1, out _, thoughtExtension.maxWaterDistance);
+
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
             if (extension == null)
-                return pawn.CheckNearbyWater(1, out int waterCount);
+                return pawn.CheckNearbyWater(1, out _);
 
-            return pawn.CheckNearbyWater(1, out int count, extension.maxWaterDistance);
+            return pawn.CheckNearbyWater(1, out _, extension.maxWaterDistance);
         }
     }
 }

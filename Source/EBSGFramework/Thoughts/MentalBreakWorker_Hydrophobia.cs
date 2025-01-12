@@ -9,6 +9,10 @@ namespace EBSGFramework
         {
             if (!pawn.Spawned || !base.BreakCanOccur(pawn)) return false;
 
+            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (thoughtExtension != null)
+                return pawn.CheckNearbyWater(1, out _, thoughtExtension.maxWaterDistance);
+
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
             if (extension == null)

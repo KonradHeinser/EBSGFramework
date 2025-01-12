@@ -8,23 +8,20 @@ namespace EBSGFramework
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive)
-            {
                 return ThoughtState.Inactive;
-            }
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            if (!extension.checkNotPresent)
-            {
-                return HasRelatedGene(p, extension.relatedGene);
-            }
-            else
-            {
-                return !HasRelatedGene(p, extension.relatedGene);
-            }
-        }
+            
+            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (thoughtExtension?.relatedGenes.NullOrEmpty() == false)
+                return thoughtExtension.checkNotPresent != p.HasAnyOfRelatedGene(thoughtExtension.relatedGenes);
 
-        public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)
-        {
-            return pawn.HasRelatedGene(relatedGene); // Has related gene checks for biotech active and genes existing
+            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
+            if (extension?.relatedGene != null)
+                if (!extension.checkNotPresent)
+                    return p.HasRelatedGene(extension.relatedGene);
+                else
+                    return !p.HasRelatedGene(extension.relatedGene);
+
+            return ThoughtState.Inactive;
         }
     }
 }

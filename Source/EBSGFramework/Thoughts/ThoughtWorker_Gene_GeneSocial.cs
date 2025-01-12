@@ -14,6 +14,70 @@ namespace EBSGFramework
 
             if (RelationsUtility.PawnsKnowEachOther(p, otherPawn))
             {
+                EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+                if (thoughtExtension != null)
+                {
+                    if (!thoughtExtension.nullifyingGenes.NullOrEmpty() && !thoughtExtension.opinionOfAllOthers
+                        && p.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes))
+                        return ThoughtState.Inactive;
+
+                    if (!thoughtExtension.requiredGenes.NullOrEmpty() && !p.HasAnyOfRelatedGene(thoughtExtension.relatedGenes))
+                        return ThoughtState.Inactive;
+
+                    if (!thoughtExtension.compoundingHatred)
+                    {
+                        if (thoughtExtension.opinionOfAllOthers)
+                        {
+                            if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes))
+                                return ThoughtState.Inactive;
+
+                            if (thoughtExtension.xenophilobic && p.genes.Xenotype == otherPawn.genes?.Xenotype)
+                                return ThoughtState.Inactive;
+
+                            if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                            {
+                                if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.requiredGenes))
+                                    return ThoughtState.ActiveAtStage(0);
+                                return ThoughtState.Inactive;
+                            }
+
+                            return ThoughtState.ActiveAtStage(0);
+                        }
+
+                        if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                        {     
+                            if (otherPawn.HasAnyOfRelatedGene(thoughtExtension?.requiredGenes))
+                                return ThoughtState.ActiveAtStage(0);
+                        }
+                        else
+                            Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");
+                    }
+                    else
+                    {
+                        int num = 0;
+                        if (thoughtExtension.opinionOfAllOthers)
+                        {
+                            if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes)) return ThoughtState.Inactive;
+                            if (thoughtExtension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
+                        }
+                        if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                        {
+                            if (thoughtExtension.opinionOfAllOthers) num++;
+                            foreach (Gene gene in otherPawn.genes.GenesListForReading)
+                            {
+                                if (thoughtExtension.requiredGenes.Contains(gene.def)) num++;
+                                if (num >= def.stages.Count) return ThoughtState.ActiveAtStage(def.stages.Count - 1);
+                            }
+                            if (num > 0) return ThoughtState.ActiveAtStage(num - 1);
+                        }
+                        else if (thoughtExtension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
+                        else
+                            Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");
+                    }
+
+                    return ThoughtState.Inactive;
+                }
+
                 EBSGExtension extension = def.GetModExtension<EBSGExtension>();
 
                 if (!extension.nullifyingGenes.NullOrEmpty() && !extension.opinionOfAllOthers)

@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace EBSGFramework
@@ -8,10 +9,37 @@ namespace EBSGFramework
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive || p.Faction == null)
-            {
                 return ThoughtState.Inactive;
+            
+            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (thoughtExtension != null)
+            {
+                bool active = false;
+
+                List<Pawn> pawns = p.MapHeld?.mapPawns?.SpawnedPawnsInFaction(p.Faction);
+
+                if (!pawns.NullOrEmpty())
+                    foreach (Pawn pawn in pawns)
+                    {
+                        if (!pawn.IsColonist) continue;
+
+                        bool t = pawn.HasAnyOfRelatedGene(thoughtExtension.relatedGenes) != thoughtExtension.checkNotPresent;
+
+                        if (t)
+                        {
+                            Precept_Role role = pawn.Ideo?.GetRole(pawn);
+                            if (role?.ideo == p.Ideo && role.def == PreceptDefOf.IdeoRole_Leader)
+                                return ThoughtState.ActiveAtStage(2);
+                        }
+
+                        active |= t;
+                    }
+
+                if (active)
+                    return ThoughtState.ActiveAtStage(1);
+                return ThoughtState.ActiveAtStage(0);
             }
-            _ = p.Ideo;
+
             bool flag = false;
             EBSGExtension extension = def.GetModExtension<EBSGExtension>();
             foreach (Pawn item in p.MapHeld.mapPawns.SpawnedPawnsInFaction(p.Faction))

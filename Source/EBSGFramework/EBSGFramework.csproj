@@ -93,6 +93,9 @@
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Things\Verb_RandomShot.cs" />
+    <Compile Include="Thoughts\EBSGThoughtExtension.cs" />
+    <Compile Include="Thoughts\ThoughtWorker_HediffSeverity.cs" />
+    <Compile Include="Thoughts\Thought_Situational_HediffSeverity.cs" />
     <Compile Include="Thoughts\Thought_Situational_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_PeopleInColony.cs" />
     <Compile Include="Thoughts\ThoughtWorker_Precept_GeneExtension_Social.cs" />
