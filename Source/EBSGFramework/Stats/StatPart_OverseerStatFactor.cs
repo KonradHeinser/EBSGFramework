@@ -12,7 +12,7 @@ namespace EBSGFramework
 
         public override string ExplanationPart(StatRequest req)
         {
-            if (GetFactor(req, out var factor))
+            if (GetFactor(req, out var factor) && factor != 1)
                 return $"{label} : x{factor.ToStringByStyle(stat.toStringStyle, stat.toStringNumberSense)}";
             return null;
         }

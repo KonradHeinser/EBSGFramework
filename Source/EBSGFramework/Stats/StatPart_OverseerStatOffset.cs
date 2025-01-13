@@ -12,7 +12,7 @@ namespace EBSGFramework
 
         public override string ExplanationPart(StatRequest req)
         {
-            if (GetOffset(req, out var offset))
+            if (GetOffset(req, out var offset) && offset != 0)
                 return $"{label} : +{offset.ToStringByStyle(stat.toStringStyle, stat.toStringNumberSense)}";
             return null;
         }
