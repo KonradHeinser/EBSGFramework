@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="MoveSpeed"]/parts</xpath>
+        <value>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                <stat>EBSG_MoveSpeedOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                <stat>EBSG_MoveSpeedFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </value>
+    </Operation>
+</Patch>

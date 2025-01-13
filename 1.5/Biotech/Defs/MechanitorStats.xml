@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <!--Offsets-->
+    <StatDef Name="EBSG_MechanitorOffsetStatBase" Abstract="True">
+        <category>Mechanitor</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <minValue>0</minValue>
+        <hideAtValue>0</hideAtValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <scenarioRandomizable>true</scenarioRandomizable>
+        <displayPriorityInCategory>5000</displayPriorityInCategory>
+        <showOnMechanoids>false</showOnMechanoids>
+        <showOnAnimals>false</showOnAnimals>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MoveSpeedOffsetMech</defName>
+        <label>mech move speed offset</label>
+        <description>A move speed offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>FloatTwo</toStringStyle>
+        <formatString>{0} c/s</formatString>
+        <minValue>-100</minValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase" Name="EBSG_MechanitorFactorStatBase" Abstract="True">
+        <minValue>0.0001</minValue>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MoveSpeedFactorMech</defName>
+        <label>mech move speed factor</label>
+        <description>A move speed factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+
+    <HediffDef ParentName="EBSG_TestHediffBase">
+        <defName>MechanitorStuff</defName>
+        <stages>
+            <li>
+                <statOffsets>
+                    <EBSG_MoveSpeedOffsetMech>-1</EBSG_MoveSpeedOffsetMech>
+                    <EBSG_MoveSpeedFactorMech>1</EBSG_MoveSpeedFactorMech>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>
