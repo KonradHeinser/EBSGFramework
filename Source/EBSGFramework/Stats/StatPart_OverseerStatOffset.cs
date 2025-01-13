@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System;
+using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -13,7 +14,10 @@ namespace EBSGFramework
         public override string ExplanationPart(StatRequest req)
         {
             if (GetOffset(req, out var offset) && offset != 0)
-                return $"{label} : +{offset.ToStringByStyle(stat.toStringStyle, stat.toStringNumberSense)}";
+            {
+                string sign = offset < 0 ? "-" : "+";
+                return $"{label} : {sign}{Math.Abs(offset).ToStringByStyle(stat.toStringStyle, stat.toStringNumberSense)}";
+            }
             return null;
         }
 
