@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace EBSGFramework.Stats
+namespace EBSGFramework
 {
     public class StatPart_OverseerStatFactor : StatPart
     {
