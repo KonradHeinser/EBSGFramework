@@ -17,6 +17,8 @@ namespace EBSGFramework
 
         public bool rotateWithPawn = true;
 
+        public bool scaleMoteWithSize = false;
+
         public HediffCompProperties_AttachMote()
         {
             compClass = typeof(HediffComp_AttachMote);
