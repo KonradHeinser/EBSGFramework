@@ -1,11 +1,7 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
-using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Reflection;
-using HarmonyLib;
 
 namespace EBSGFramework
 {
@@ -43,14 +39,16 @@ namespace EBSGFramework
         private static bool showEBSGAiOOptions = true;
         private static bool showEBSGBleedOptions = true;
         private static bool showEBSGPsychicOptions = true;
+        private static bool showEBSGMechanitorOptions = true;
         private static bool showEAGOptions = true;
-        //private static bool showCustomizableOptions = true;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
         public static bool hideInactiveSkinGenes = false;
         public static bool hideInactiveHairGenes = false;
         public static bool defaultToRecipeIcon = true;
 
+        public static bool noInnateMechlinkPrereq = false;
+        public static bool noInnatePsylinkPrereq = false;
         public static bool psychicInsulationBondOpinion = true;
         public static bool psychicInsulationBondMood = true;
 
@@ -63,11 +61,6 @@ namespace EBSGFramework
         public static List<bool> thinkTreeSettingBools;
 
         private static bool alreadyCheckThinkSettings = false;
-
-        public Dictionary<string, int> asexualDaysSettings;
-
-        private List<HediffDef> cachedAsexualHediffs = new List<HediffDef>();
-        public bool checkedAsexual = false;
 
         private List<TabRecord> tabsList;
 
@@ -104,7 +97,7 @@ namespace EBSGFramework
         {
             EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
 
-            if (recorder != null && !recorder.thinkTreeSettings.NullOrEmpty())
+            if (recorder?.thinkTreeSettings.NullOrEmpty() == false)
             {
                 if (thinkTreeSettings.NullOrEmpty())
                 {
@@ -204,21 +197,18 @@ namespace EBSGFramework
             base.ExposeData();
             if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();
 
-            //if (asexualDaysSettings == null) asexualDaysSettings = new Dictionary<string, int>();
-
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
             Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
+            Scribe_Values.Look(ref noInnateMechlinkPrereq, "noInnateMechlinkPrereq", false);
+            Scribe_Values.Look(ref noInnatePsylinkPrereq, "noInnatePsylinkPrereq", false);
             Scribe_Values.Look(ref psychicInsulationBondOpinion, "psychicInsulationBondOpinion", true);
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
             Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
-
-            Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
-
-            //Scribe_Collections.Look(ref asexualDaysSettings, "EBSG_asexualDaysSettings", LookMode.Value, LookMode.Value);
+        Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
         }
 
         public void DoWindowContents(Rect inRect, out bool activeSettings)
@@ -259,6 +249,7 @@ namespace EBSGFramework
                     bool EAGActive = ModsConfig.IsActive("EBSG.Archite");
                     bool EBSGBleedActive = ModsConfig.IsActive("EBSG.Bleeding");
                     bool EBSGPsychicActive = ModsConfig.IsActive("EBSG.Psychic");
+                    bool EBSGMechanitorActive = ModsConfig.IsActive("EBSG.Mechanitor");
 
                     // Find out how much room is needed
                     int numberOfOptions = 1;
@@ -272,7 +263,7 @@ namespace EBSGFramework
                     if (EBSGAllInOneActive)
                     {
                         numberOfOptions += 1;
-                        if (showEBSGAiOOptions) numberOfOptions += 3;
+                        if (showEBSGAiOOptions) numberOfOptions += 5;
                         if (EAGActive)
                         {
                             numberOfOptions += 1;
@@ -289,18 +280,18 @@ namespace EBSGFramework
                         }
                         if (EBSGPsychicActive)
                         {
-                            numberOfOptions += 1;
+                            numberOfOptions += 2;
                             if (showEBSGPsychicOptions)
                                 numberOfOptions += 2;
                         }
+                        if (EBSGMechanitorActive)
+                            numberOfOptions += 1;
 
                         if (EAGActive)
                         {
                             numberOfOptions += 1;
-                            if (showEAGOptions)
-                            {
-                                if (EBSGPsychicActive) numberOfOptions += 1;
-                            }
+                            if (showEAGOptions && EBSGPsychicActive)
+                                numberOfOptions += 1;
                         }
                     }
 
@@ -334,6 +325,10 @@ namespace EBSGFramework
                         {
                             optionsMenu.CheckboxLabeled("SuperclottingArchite".Translate(), ref superclottingArchite);
                             optionsMenu.Gap(10f);
+                            optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
+                            optionsMenu.Gap(10f);
+                            optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
+                            optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("PsychicInsulationMood".Translate(), ref psychicInsulationBondMood);
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
@@ -358,9 +353,21 @@ namespace EBSGFramework
                             optionsMenu.Gap(7f);
                             if (showEBSGPsychicOptions)
                             {
+                                optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
+                                optionsMenu.Gap(10f);
                                 optionsMenu.CheckboxLabeled("PsychicInsulationMood".Translate(), ref psychicInsulationBondMood);
                                 optionsMenu.Gap(10f);
                                 optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
+                                optionsMenu.Gap(10f);
+                            }
+                        }
+                        if (EBSGMechanitorActive)
+                        {
+                            optionsMenu.CheckboxLabeled("EBSGMechanitor_ModName".Translate(), ref showEBSGMechanitorOptions);
+                            optionsMenu.Gap(7f);
+                            if (showEBSGMechanitorOptions)
+                            {
+                                optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
                                 optionsMenu.Gap(10f);
                             }
                         }

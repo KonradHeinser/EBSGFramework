@@ -41,6 +41,14 @@ namespace EBSGFramework
             {
                 if (EBSG_Settings.architePsychicInfluencerBondTorn && active != null) return active.Apply(xml);
             }
+            else if (setting == "noInnateMechlinkPrereq")
+            {
+                if (EBSG_Settings.noInnateMechlinkPrereq && active != null) return active.Apply(xml);
+            }
+            else if (setting == "noInnatePsylinkPrereq")
+            {
+                if (EBSG_Settings.noInnatePsylinkPrereq && active != null) return active.Apply(xml);
+            }
             else if (setting != null) Log.Error("A patch is using a setting that is either mispelled or unhandled");
             else Log.Error("A patch is using this mod's settings, but doesn't specify which one.");
             return true;

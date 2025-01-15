@@ -164,8 +164,15 @@
     <SuperclottingArchite>    Superclotting uses archite, not metabolic efficiency</SuperclottingArchite>
 
     <EBSGPsychic_ModName>EBSG - Expanded Psychic Genes</EBSGPsychic_ModName>
+    <NoInnatePsylinkPrereq>    No innate psychic amplifier prereq on psychic genes.</NoInnatePsylinkPrereq>
+    <NoInnatePsylinkPrereqDescription>Prevents EBSG genes from requiring the innate psychic amplifier gene. This can make it easy to create unbalanced xenotypes if you add negative psychic genes on a pawn without the psychic amplifier gene.</NoInnatePsylinkPrereqDescription>
+
     <PsychicInsulationMood>    Psychic Insulation removes Psychic Bond mood bonuses and penalties.</PsychicInsulationMood>
     <PsychicInsulationOpinion>    Psychic Insulation removes the Psychic Bond opinion bonus.</PsychicInsulationOpinion>
+
+    <EBSGMechanitor_ModName>EBSG - Mechanitor Genes</EBSGMechanitor_ModName>
+    <NoInnateMechlinkPrereq>    No innate mechlink prereq on psychic genes.</NoInnateMechlinkPrereq>
+    <NoInnateMechlinkPrereqDescription>Prevents EBSG genes from requiring the innate mechlink gene. This can make it easy to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the mechlink gene.</NoInnateMechlinkPrereqDescription>
 
     <EAG_ModName>Expanded Archite Genes</EAG_ModName>
     <EAG_ModDescription>Expanded Archite Genes gives a bunch of archite level genes for any genes added through the Biotech Style Genes series.</EAG_ModDescription>
