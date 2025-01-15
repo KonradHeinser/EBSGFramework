@@ -15,7 +15,7 @@ namespace EBSGFramework
             get
             {
                 if (!Props.brightnessBySeverity) return Props.staticBrightness;
-                return Mathf.Max(parent.Severity, 1);
+                return Mathf.Min(parent.Severity, 1);
             }
         }
 
