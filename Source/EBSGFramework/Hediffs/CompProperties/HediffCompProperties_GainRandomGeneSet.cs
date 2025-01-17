@@ -27,7 +27,6 @@ namespace EBSGFramework
         ///  6) Hediff is removed
         /// 
         /// One of the reasons this was added to a hediffcomp instead of a gene extension to make it easier for fellow modders to create items that add items that add genes to pawns with items
-        /// If you need an example of this, take a look at Superhero Genes - Deus Ex Machina. If that doesn't exist yet, welcome to spoiler town again!
         /// The Super Creating Pill that can be found in Superhero Genes Base also technically provides and example, it's just not as robust
 
         public HediffCompProperties_GainRandomGeneSet()
