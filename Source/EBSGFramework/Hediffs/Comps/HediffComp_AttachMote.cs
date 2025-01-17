@@ -29,7 +29,7 @@ namespace EBSGFramework
                     mote = MoteMaker.MakeAttachedOverlay(Pawn, Props.moteDef, Vector3.zero);
                     mote.link1.rotateWithTarget = Props.rotateWithPawn;
                 }
-
+                
                 if (Props.scaleMoteWithSize)
                     mote.Scale = Pawn.BodySize;
                 mote.instanceColor = new Color(Props.color.r, Props.color.g, Props.color.b, Brightness);

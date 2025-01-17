@@ -91,6 +91,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(SatisfyChemicalGenesPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Caravan_NeedsTracker), "TrySatisfyChemicalDependencies"),
                 postfix: new HarmonyMethod(patchType, nameof(TrySatisfyChemicalDependenciesPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GenerateInitialHediffs"),
+                postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1750,7 +1752,13 @@ namespace EBSGFramework
                                     break;
                                 }
                     }
+        }
 
+        public static void GenerateInitialHediffsPostfix(Pawn pawn, PawnGenerationRequest request)
+        {
+            if (pawn.kindDef.HasModExtension<ForceStartingHediffsExtension>() && request.AllowedDevelopmentalStages.Newborn() &&
+                !pawn.kindDef.startingHediffs.NullOrEmpty())
+                HealthUtility.AddStartingHediffs(pawn, pawn.kindDef.startingHediffs);
         }
 
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)

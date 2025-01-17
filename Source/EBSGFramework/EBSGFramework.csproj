@@ -94,6 +94,7 @@
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
     <Compile Include="Things\Comps\CompShieldEquipment.cs" />
+    <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Things\Verb_RandomShot.cs" />
