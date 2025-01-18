@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -8,9 +7,13 @@ namespace EBSGFramework
     // Named as such because this was originally solely for spawn age limiting, it now serves as a universal base for various things
     public class SpawnAgeLimiter : Gene
     {
-        public int mutationDelayTicks = 5;
-
         public int cachedGeneCount = 0;
+
+        public int rerenderInterval = 500;
+
+        public int lastChangeTick = -1;
+
+        public int stage = 0;
 
         public List<AbilityDef> addedAbilities;
 
@@ -86,17 +89,6 @@ namespace EBSGFramework
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
-                /*
-                if (!Extension.mutationGeneSets.NullOrEmpty())
-                {
-                    if (mutationDelayTicks >= 5) mutationDelayTicks = Extension.delayTicks;
-                    if (pawn.gender == Gender.Male) mutationDelayTicks += 1;
-                    else if (pawn.gender == Gender.Female) mutationDelayTicks += 2;
-                    if (pawn.genes != null && pawn.genes.GenesListForReading.Count() < 30) mutationDelayTicks += pawn.genes.GenesListForReading.Count();
-                    if (pawn.equipment != null && !pawn.equipment.AllEquipmentListForReading.NullOrEmpty()) mutationDelayTicks += pawn.equipment.AllEquipmentListForReading.Count();
-                    if (pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty()) mutationDelayTicks += pawn.health.hediffSet.hediffs.Count();
-                    if (!pawn.relations.RelatedPawns.EnumerableNullOrEmpty()) mutationDelayTicks += pawn.relations.RelatedPawns.Count();
-                }*/
                 pawn.AddHediffToParts(Extension.hediffsToApplyAtAges);
             }
             if (def.HasModExtension<EquipRestrictExtension>() && (pawn.equipment != null || pawn.apparel != null))
@@ -166,8 +158,14 @@ namespace EBSGFramework
                 }
             }
 
-            if (def.HasModExtension<EBSGBodyExtension>())
+            EBSGBodyExtension bodyExtension = def.GetModExtension<EBSGBodyExtension>();
+            if (bodyExtension != null)
+            {
                 pawn.Drawer.renderer.SetAllGraphicsDirty();
+                rerenderInterval = bodyExtension.interval;
+            }
+            else
+                rerenderInterval = 0;
         }
 
         // Things represents the temporary list, while equipment represents the universal one. thing is the item in question. False means it wasn't in either list
@@ -192,11 +190,16 @@ namespace EBSGFramework
                 }
             }
 
-            if (pawn.IsHashIntervalTick(2500))
+            if (rerenderInterval > 0 && pawn.IsHashIntervalTick(rerenderInterval))
             {
                 if (def.HasModExtension<EBSGBodyExtension>()) // Refreshes the drawer to ensure the visual is up to date
                     pawn.Drawer.renderer.SetAllGraphicsDirty();
+                else
+                    rerenderInterval = 0;
+            }
 
+            if (pawn.IsHashIntervalTick(2500))
+            {
                 if (Extension != null)
                 {
                     if (Extension.removePastAge > 0 && pawn.ageTracker.AgeBiologicalYearsFloat > Extension.removePastAge)
@@ -208,18 +211,6 @@ namespace EBSGFramework
                     pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
                 }
             }
-
-            // Mutation should always be the last thing processed, along with anything else attached to the timer
-            /*
-            if (mutationDelayTicks < 0) return;
-            if (mutationDelayTicks == 0)
-            {
-                if (Extension != null)
-                {
-                    if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
-                }
-            }
-            mutationDelayTicks--;*/
         }
 
         public override void PostRemove()
@@ -266,8 +257,18 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref mutationDelayTicks, "EBSG_MutationDelayTicks", 5);
+            Scribe_Values.Look(ref lastChangeTick, "lastChangeTick", -1);
+            Scribe_Values.Look(ref stage, "stage", 0);
             Scribe_Collections.Look(ref addedAbilities, "EBSG_AddedAbilities");
+
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                EBSGBodyExtension bodyExtension = def.GetModExtension<EBSGBodyExtension>();
+                if (bodyExtension != null)
+                    rerenderInterval = bodyExtension.interval;
+                else
+                    rerenderInterval = 0;
+            }
         }
     }
 }

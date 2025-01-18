@@ -1,14 +1,17 @@
-﻿using RimWorld;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
 {
-    public class PawnRenderNode_EBSGAttachmentHead : PawnRenderNode_AttachmentHead
+    public class PawnRenderNode_EBSGAttachmentBody : PawnRenderNode
     {
-        public PawnRenderNode_EBSGAttachmentHead(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
-            : base(pawn, props, tree)
+        public PawnRenderNode_EBSGAttachmentBody(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree) : base(pawn, props, tree)
         {
         }
 
@@ -33,7 +36,7 @@ namespace EBSGFramework
                     }
 
                     if (EBSGProps.multi)
-                        return GraphicDatabase.Get<Graphic_Multi>(texPaths[ebsgGene.stage], shader, 
+                        return GraphicDatabase.Get<Graphic_Multi>(texPaths[ebsgGene.stage], shader,
                             Vector2.one, ColorFor(pawn));
                     else
                         return GraphicDatabase.Get<Graphic_Single>(texPaths[ebsgGene.stage], shader,

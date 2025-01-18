@@ -5,6 +5,14 @@ namespace EBSGFramework
 {
     public class PawnRenderNodeProperties_EBSG : PawnRenderNodeProperties
     {
+        public bool changing = false;
+
+        public bool multi = false;
+
+        public bool cutoutComplex = false;
+
+        public int interval = 60;
+
         public string desMale;
 
         public string desFemale;

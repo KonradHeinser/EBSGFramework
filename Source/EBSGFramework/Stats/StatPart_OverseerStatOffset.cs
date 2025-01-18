@@ -6,7 +6,7 @@ namespace EBSGFramework
 {
     public class StatPart_OverseerStatOffset : StatPart
     {
-        private StatDef stat;
+        private StatDef stat = null;
 
         [MustTranslate]
         public string label;

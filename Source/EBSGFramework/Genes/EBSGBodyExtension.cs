@@ -5,6 +5,8 @@ namespace EBSGFramework
 {
     public class EBSGBodyExtension : DefModExtension
     {
+        public int interval = 300;
+
         public string desChildHead;
 
         public string desFemaleChildHead;
