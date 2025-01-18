@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public bool multi = false;
 
+        public bool random = false;
+
         public bool cutoutComplex = false;
 
         public int interval = 60;

@@ -29,10 +29,15 @@ namespace EBSGFramework
                         ebsgGene.lastChangeTick = Find.TickManager.TicksGame;
                     else if (ebsgGene.lastChangeTick + EBSGProps.interval <= Find.TickManager.TicksGame)
                     {
-                        ebsgGene.stage++;
-                        if (ebsgGene.stage == texPaths.Count)
-                            ebsgGene.stage = 0;
-                        ebsgGene.lastChangeTick = Find.TickManager.TicksGame;
+                        if (EBSGProps.random)
+                            ebsgGene.stage = Rand.Range(0, texPaths.Count - 1);
+                        else
+                        {
+                            ebsgGene.stage++;
+                            if (ebsgGene.stage == texPaths.Count)
+                                ebsgGene.stage = 0;
+                            ebsgGene.lastChangeTick = Find.TickManager.TicksGame;
+                        }
                     }
 
                     if (EBSGProps.multi)
