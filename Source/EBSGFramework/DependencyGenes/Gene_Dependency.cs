@@ -125,8 +125,8 @@ namespace EBSGFramework
                     {
                         if (thing.def == thingDef)
                             return true;
-                        if (Extension.checkIngredients && ingredients != null && 
-                            !ingredients.ingredients.NullOrEmpty() && 
+                        if (Extension.checkIngredients && 
+                            !ingredients?.ingredients.NullOrEmpty() == false && 
                             ingredients.ingredients.Contains(thingDef))
                             return true;
                     }
@@ -136,12 +136,22 @@ namespace EBSGFramework
                         foreach (ThingCategoryDef thingCategory in Extension.validCategories)
                             if (thing.def.thingCategories.Contains(thingCategory))
                                 return true;
-                    if (!Extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                        foreach (ThingDef ingredient in ingredients.ingredients)
-                            if (!ingredient.thingCategories.NullOrEmpty())
-                                foreach (ThingCategoryDef thingCategory in Extension.validCategories)
-                                    if (ingredient.thingCategories.Contains(thingCategory))
-                                        return true;
+                    if (Extension.checkIngredients)
+                    {
+                        if (Extension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
+                            FoodUtility.GetFoodKind(thing) == FoodKind.Meat)
+                            return true;
+                        if (Extension.validCategories.Contains(ThingCategoryDefOf.PlantFoodRaw) &&
+                            FoodUtility.GetFoodKind(thing) == FoodKind.NonMeat)
+                            return true;
+
+                        if (ingredients?.ingredients.NullOrEmpty() == false)
+                            foreach (ThingDef ingredient in ingredients.ingredients)
+                                if (!ingredient.thingCategories.NullOrEmpty())
+                                    foreach (ThingCategoryDef thingCategory in Extension.validCategories)
+                                        if (ingredient.thingCategories.Contains(thingCategory))
+                                            return true;
+                    }
                 }
             }
 

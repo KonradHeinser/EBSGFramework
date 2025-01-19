@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
-using RimWorld;
-using UnityEngine;
 
 namespace EBSGFramework
 {
@@ -55,7 +54,7 @@ namespace EBSGFramework
                         return takeJob;
                     }
                     Job IngestJob = JobMaker.MakeJob(JobDefOf.Ingest, thing);
-                    IngestJob.count = Mathf.Min(thing.stackCount, thing.def.ingestible.maxNumToIngestAtOnce, 10);
+                    IngestJob.count = 1;
                     CompDrug compDrug = thing.TryGetComp<CompDrug>();
                     if (compDrug != null && pawn.drugs != null)
                     {
@@ -76,9 +75,7 @@ namespace EBSGFramework
         private bool ShouldSatify(Hediff hediff)
         {
             if (!(hediff is Hediff_Dependency hediff_ChemicalDependency))
-            {
                 return false;
-            }
             return hediff_ChemicalDependency.ShouldSatisfy;
         }
 
@@ -115,6 +112,14 @@ namespace EBSGFramework
                     return thing;
                 }
             }
+            else
+            {
+                Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, (Thing x) => IngestibleValidator(pawn, dependency, x));
+                if (thing != null)
+                {
+                    return thing;
+                }
+            }
             if (dependency.Extension != null)
             {
                 IDGExtension extension = dependency.Extension;
@@ -122,25 +127,25 @@ namespace EBSGFramework
                 {
                     foreach (ThingDef thingDef in extension.validThings)
                     {
-                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn));
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, dependency, t));
                         if (thing != null) return thing;
                     }
                     if (extension.checkIngredients)
                     {
-                        List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => CheckIngredients(t));
+                        List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => dependency.LinkedGene.ValidIngest(t));
                         if (!things.NullOrEmpty())
                         {
-                            Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn));
+                            Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, dependency, t));
                             if (thing != null) return thing;
                         }
                     }
                 }
                 if (!extension.validCategories.NullOrEmpty())
                 {
-                    List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => CheckCategories(t, extension));
+                    List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => t.IngestibleNow && !t.IsForbidden(pawn) && pawn.CanReserve(t) && CheckCategories(t, extension));
                     if (!things.NullOrEmpty())
                     {
-                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn));
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, dependency, t));
                         if (thing != null) return thing;
                     }
                 }
@@ -148,79 +153,38 @@ namespace EBSGFramework
             return null;
         }
 
-        private bool CheckIngredients(Thing thing)
-        {
-            CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
-            if (ingredients != null && !ingredients.ingredients.NullOrEmpty())
-            {
-                if (ingredients.ingredients.Contains(thing.def)) return true;
-            }
-            return false;
-        }
-
         private bool CheckCategories(Thing thing, IDGExtension extension)
         {
-            if (thing.def.thingCategories.NullOrEmpty()) return false;
-            foreach (ThingCategoryDef thingCategory in thing.def.thingCategories)
+            if (!thing.def.thingCategories.NullOrEmpty())
+                foreach (ThingCategoryDef thingCategory in thing.def.thingCategories)
+                    if (extension.validCategories.Contains(thingCategory))
+                        return true;
+
+            CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
+            
+            if (extension.checkIngredients && ingredients?.ingredients.NullOrEmpty() == false)
             {
-                if (extension.validCategories.Contains(thingCategory)) return true;
-                CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
-                if (extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                {
-                    foreach (ThingDef ingredient in ingredients.ingredients)
-                    {
-                        if (!ingredient.thingCategories.NullOrEmpty())
-                        {
-                            foreach (ThingCategoryDef ingredientCategory in ingredient.thingCategories)
-                            {
-                                if (extension.validCategories.Contains(ingredientCategory)) return true;
-                            }
-                        }
-                    }
-                }
+                if (extension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
+                 FoodUtility.GetFoodKind(thing) == FoodKind.Meat)
+                    return true;
+                if (extension.validCategories.Contains(ThingCategoryDefOf.PlantFoodRaw) &&
+                    FoodUtility.GetFoodKind(thing) == FoodKind.NonMeat)
+                    return true;
+
+                foreach (ThingDef ingredient in ingredients.ingredients)
+                    if (!ingredient.thingCategories.NullOrEmpty())
+                        foreach (ThingCategoryDef ingredientCategory in ingredient.thingCategories)
+                            if (extension.validCategories.Contains(ingredientCategory)) 
+                                return true;
             }
+
             return false;
         }
 
         private bool IngestibleValidator(Pawn pawn, Hediff_Dependency dependency, Thing item)
         {
-            if (!item.IngestibleNow) return false;
-            CompIngredients ingredients = item.TryGetComp<CompIngredients>();
-            if (dependency.Extension != null) // Checks item list first just in case there's some weird situation going on in the chemical
-            {
-                IDGExtension extension = dependency.Extension;
-                if (!extension.validThings.NullOrEmpty())
-                {
-                    if (extension.validThings.Contains(item.def)) return true;
-                    if (extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                    {
-                        foreach (ThingDef ingredient in ingredients.ingredients)
-                        {
-                            if (extension.validThings.Contains(ingredient)) return true;
-                        }
-                    }
-                }
-                if (!extension.validCategories.NullOrEmpty() && !item.def.thingCategories.NullOrEmpty())
-                {
-                    foreach (ThingCategoryDef thingCategory in item.def.thingCategories)
-                    {
-                        if (extension.validCategories.Contains(thingCategory)) return true;
-                    }
-                    if (extension.checkIngredients && ingredients != null && !ingredients.ingredients.NullOrEmpty())
-                    {
-                        foreach (ThingDef ingredient in ingredients.ingredients)
-                        {
-                            if (!ingredient.thingCategories.NullOrEmpty())
-                            {
-                                foreach (ThingCategoryDef thingCategory in ingredient.thingCategories)
-                                {
-                                    if (extension.validCategories.Contains(thingCategory)) return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            if (!item.IngestibleNow || !pawn.CanReserve(item) && item.IsForbidden(pawn)) return false;
+
             if (dependency.chemical != null)
             {
                 if (!item.def.IsDrug)
@@ -242,6 +206,7 @@ namespace EBSGFramework
                 }
                 return true;
             }
+            if (dependency.LinkedGene.ValidIngest(item)) return true;
             return false;
         }
     }

@@ -32,7 +32,9 @@ namespace EBSGFramework
 
         public override bool ShouldRemove => LinkedGene?.Active != true;
 
-        public bool ShouldSatisfy => Severity >= def.stages[1].minSeverity - 0.1f;
+        public float FirstNotableStageSeverity => LinkedGene.Extension.minSatisfySeverity ?? def.stages[1].minSeverity - 0.1f;
+
+        public bool ShouldSatisfy => Severity >= FirstNotableStageSeverity;
 
         public Gene_Dependency LinkedGene
         {
@@ -115,7 +117,7 @@ namespace EBSGFramework
                             text += " " + "EBSG_DependencyNeedDurationDescriptionBase".Translate(AssignedLabel, pawn.Named("PAWN")).Resolve();
                             foreach (HediffStage stage in def.stages)
                             {
-                                if (stage.minSeverity <= 0) continue;
+                                if (stage.minSeverity <= FirstNotableStageSeverity) continue;
                                 double days = Math.Round((double)(stage.minSeverity / severityPerDay), 1);
 
                                 string experienceLabel = AssignedLabel + " ";

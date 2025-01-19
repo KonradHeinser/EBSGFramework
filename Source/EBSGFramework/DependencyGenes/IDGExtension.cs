@@ -11,6 +11,8 @@ namespace EBSGFramework
         public List<ThingCategoryDef> validCategories;
         public HediffDef dependencyHediff;
 
+        public float? minSatisfySeverity;
+
         public string dependencyLabel; // Required if not using a chemical
         public string descriptionOverride; // If you don't like the default description added to the hediff tooltip, make your own here. You will not be able to reference things like pawn name and pronoun in this, so use generic theys if you use this
         public bool checkIngredients; // If true, then consuming items with registered ingredients that fall under one of the above lists counts as consuming
