@@ -22,7 +22,6 @@ namespace EBSGFramework
         {
             if (req.Thing is Pawn pawn)
                 return pawn.AllNeedLevelsMet(needLevels);
-            Log.Message("Null pawn");
             return false;
         }
     }

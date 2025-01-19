@@ -48,7 +48,6 @@ namespace EBSGFramework
                         foreach (HediffComp c in hediff.comps)
                             if (c is HediffComp_Modular comp && !comp.GetOpenSlots(parentComp).NullOrEmpty())
                                 return true;
-            Log.Message("A");
             return "EBSG_RejectApply".Translate() + ": " + "EBSG_NoSlots".Translate();
         }
 
