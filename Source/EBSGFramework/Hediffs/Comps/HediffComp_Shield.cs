@@ -268,6 +268,9 @@ namespace EBSGFramework
             if (!Props.damageInfoPacks.NullOrEmpty())
                 foreach (DamageInfoPack pack in Props.damageInfoPacks)
                 {
+                    if (pack.damageDef != null && pack.damageDef != dinfo.Def)
+                        continue;
+
                     if (dinfo.Def.isRanged)
                     {
                         if (!pack.ranged)
@@ -284,8 +287,8 @@ namespace EBSGFramework
                             continue;
                     }
 
-                    if (pack.damageDef != null && pack.damageDef != dinfo.Def)
-                        continue;
+                    if (pack.factor <= 0)
+                        return;
 
                     epdm *= pack.factor;
                 }
