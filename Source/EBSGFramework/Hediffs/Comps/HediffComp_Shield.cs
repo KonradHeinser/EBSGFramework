@@ -249,6 +249,13 @@ namespace EBSGFramework
                     return;
             }
 
+            if (!Props.immuneDamageDefs.NullOrEmpty() && Props.immuneDamageDefs.Contains(dinfo.Def))
+            {
+                dinfo.SetAmount(0f);
+                absorbed = true;
+                return;
+            }
+
             if (!Props.blockedDamageDefs.NullOrEmpty() && !Props.blockedDamageDefs.Contains(dinfo.Def))
                 return;
 

@@ -24,6 +24,7 @@ namespace EBSGFramework
         public bool onlyBlockWhileDraftedOrHostile = false;
 
         // DamageDefs to check for
+        public List<DamageDef> immuneDamageDefs;
         public List<DamageDef> blockedDamageDefs;
         public List<DamageDef> ignoredDamageDefs;
 
