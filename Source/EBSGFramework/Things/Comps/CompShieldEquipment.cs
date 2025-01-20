@@ -319,7 +319,7 @@ namespace EBSGFramework
                             continue;
                     }
 
-                    if (pack.factor <= 0)
+                    if (pack.factor < 0)
                         return;
                     
                     epdm *= pack.factor;
