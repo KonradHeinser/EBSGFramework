@@ -253,6 +253,7 @@ namespace EBSGFramework
             {
                 dinfo.SetAmount(0f);
                 absorbed = true;
+                Absorb(dinfo);
                 return;
             }
 
@@ -304,17 +305,22 @@ namespace EBSGFramework
             else
             {
                 absorbed = true;
-                Props.absorbSound?.PlayOneShot(new TargetInfo(Pawn.Position, Pawn.Map, false));
-                impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
-                Vector3 offsetVector = Pawn.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
-                float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
-
-                if (Props.absorbFleck != null)
-                    FleckMaker.Static(offsetVector, Pawn.MapHeld, Props.absorbFleck, damagePower);
-
-                for (int i = 0; i < damagePower; i++)
-                    FleckMaker.ThrowDustPuff(offsetVector, Pawn.MapHeld, Rand.Range(0.8f, 1.2f));
+                Absorb(dinfo);
             }
+        }
+
+        private void Absorb(DamageInfo dinfo)
+        {
+            Props.absorbSound?.PlayOneShot(new TargetInfo(Pawn.Position, Pawn.Map, false));
+            impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
+            Vector3 offsetVector = Pawn.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
+            float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
+
+            if (Props.absorbFleck != null)
+                FleckMaker.Static(offsetVector, Pawn.MapHeld, Props.absorbFleck, damagePower);
+
+            for (int i = 0; i < damagePower; i++)
+                FleckMaker.ThrowDustPuff(offsetVector, Pawn.MapHeld, Rand.Range(0.8f, 1.2f));
         }
 
         public void Shatter()

@@ -285,6 +285,7 @@ namespace EBSGFramework
             {
                 dinfo.SetAmount(0f);
                 absorbed = true;
+                Absorb(dinfo);
                 return;
             }
 
@@ -336,17 +337,22 @@ namespace EBSGFramework
             else
             {
                 absorbed = true;
-                Props.absorbSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
-                impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
-                Vector3 offsetVector = PawnOwner.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
-                float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
-
-                if (Props.absorbFleck != null)
-                    FleckMaker.Static(offsetVector, PawnOwner.MapHeld, Props.absorbFleck, damagePower);
-
-                for (int i = 0; i < damagePower; i++)
-                    FleckMaker.ThrowDustPuff(offsetVector, PawnOwner.MapHeld, Rand.Range(0.8f, 1.2f));
+                Absorb(dinfo);
             }
+        }
+
+        private void Absorb(DamageInfo dinfo)
+        {
+            Props.absorbSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
+            impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
+            Vector3 offsetVector = PawnOwner.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
+            float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
+
+            if (Props.absorbFleck != null)
+                FleckMaker.Static(offsetVector, PawnOwner.MapHeld, Props.absorbFleck, damagePower);
+
+            for (int i = 0; i < damagePower; i++)
+                FleckMaker.ThrowDustPuff(offsetVector, PawnOwner.MapHeld, Rand.Range(0.8f, 1.2f));
         }
 
         public void Shatter()
