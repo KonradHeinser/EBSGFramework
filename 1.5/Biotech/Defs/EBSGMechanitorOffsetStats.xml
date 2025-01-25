@@ -14,7 +14,6 @@
         <description>A move speed offset applied to a mechanitor's mechs.</description>
         <toStringStyle>FloatTwo</toStringStyle>
         <formatString>{0} c/s</formatString>
-        <minValue>-100</minValue>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
@@ -55,6 +54,7 @@
         <defName>EBSG_BandwidthCostOffsetMech</defName>
         <label>mech bandwidth cost offset</label>
         <description>A bandwidth cost offset applied to a mechanitor's mechs.</description>
+        <minValue>-1</minValue>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">

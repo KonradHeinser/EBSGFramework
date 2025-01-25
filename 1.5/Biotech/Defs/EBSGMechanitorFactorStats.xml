@@ -53,6 +53,7 @@
         <defName>EBSG_BandwidthCostFactorMech</defName>
         <label>mech bandwidth cost factor</label>
         <description>A bandwidth cost factor applied to a mechanitor's mechs.</description>
+        <minValue>0</minValue>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorFactorStatBase">
