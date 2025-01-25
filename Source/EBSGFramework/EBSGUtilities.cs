@@ -322,6 +322,16 @@ namespace EBSGFramework
             return addedHediffs;
         }
 
+        public static void RemovePregnancies(this Pawn pawn)
+        {
+            if (pawn?.health?.hediffSet == null) return;
+            List<Hediff> hediffsToRemove = new List<Hediff>();
+            foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                if (hediff.def.pregnant)
+                    hediffsToRemove.Add(hediff);
+            pawn.RemoveAllOfHediffs(hediffsToRemove);
+        }
+
         public static void RemoveHediffs(this Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
             if (pawn?.health?.hediffSet == null) return;

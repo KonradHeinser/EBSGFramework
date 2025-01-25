@@ -17,7 +17,7 @@ namespace EBSGFramework
         public List<int> thresholds;
         public List<GeneticMultiplier> geneticMultipliers;
         public float universalMoodFactor = 1;
-        public Gender staticGender = Gender.None;
+        public List<GenderByAge> genderByAge;
         public List<HediffToParts> hediffsToGivePostConsumption;
 
         public EffecterDef effecter;

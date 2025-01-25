@@ -65,27 +65,7 @@ namespace EBSGFramework
             base.PostAdd();
             if (Extension != null)
             {
-                if (Extension.staticGender != Gender.None)
-                {
-                    pawn.gender = Extension.staticGender;
-                    switch (pawn.gender)
-                    {
-                        case Gender.Female:
-                            if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Male)
-                            {
-                                pawn.story.bodyType = BodyTypeDefOf.Female;
-                                pawn.Drawer.renderer.SetAllGraphicsDirty();
-                            }
-                            break;
-                        case Gender.Male:
-                            if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Female)
-                            {
-                                pawn.story.bodyType = BodyTypeDefOf.Male;
-                                pawn.Drawer.renderer.SetAllGraphicsDirty();
-                            }
-                            break;
-                    }
-                }
+                GetGender(pawn, Extension, def);
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
@@ -207,7 +187,8 @@ namespace EBSGFramework
                         pawn.genes.RemoveGene(this);
                         return;
                     }
-
+                    if (!Extension.genderByAge.NullOrEmpty() && Extension.genderByAge.Count > 1)
+                        GetGender(pawn, Extension, def);
                     pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
                 }
             }
@@ -217,6 +198,39 @@ namespace EBSGFramework
         {
             if (Extension != null && !Extension.hediffsToApplyAtAges.NullOrEmpty())
                 pawn.RemoveHediffsFromParts(Extension.hediffsToApplyAtAges);
+        }
+
+        public static void GetGender(Pawn pawn, EBSGExtension extension, GeneDef def)
+        {
+            if (extension?.genderByAge.NullOrEmpty() == false)
+                foreach (GenderByAge genderByAge in extension.genderByAge)
+                    if (EBSGUtilities.WithinSeverityRanges(pawn.ageTracker.AgeBiologicalYearsFloat, genderByAge.range))
+                    { 
+                        if (genderByAge.gender != Gender.None)
+                        {
+                            if (!genderByAge.gender.Equals(pawn.gender)) return;
+                            pawn.gender = genderByAge.gender;
+                            switch (pawn.gender)
+                            {
+                                case Gender.Female:
+                                    if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Male)
+                                    {
+                                        pawn.story.bodyType = BodyTypeDefOf.Female;
+                                        pawn.Drawer.renderer.SetAllGraphicsDirty();
+                                    }
+                                    break;
+                                case Gender.Male:
+                                    if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Female)
+                                    {
+                                        pawn.story.bodyType = BodyTypeDefOf.Male;
+                                        pawn.Drawer.renderer.SetAllGraphicsDirty();
+                                    }
+                                    pawn.RemovePregnancies();
+                                    break;
+                            }
+                        }
+                        return;
+                    }
         }
 
         public static void LimitAge(Pawn pawn, FloatRange expectedAges, FloatRange ageRange, bool sameBioAndChrono = false, bool removeChronic = true)

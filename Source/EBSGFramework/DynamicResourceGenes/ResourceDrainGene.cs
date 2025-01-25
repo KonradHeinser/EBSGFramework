@@ -54,9 +54,6 @@ namespace EBSGFramework
             }
         }
 
-
-        private const float MinAgeForDrain = 3f;
-
         public Gene_Resource Resource
         {
             get
@@ -98,6 +95,13 @@ namespace EBSGFramework
                 }
             }
 
+            if (pawn.IsHashIntervalTick(2500))
+            {
+                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+                if (!EBSGextension.genderByAge.NullOrEmpty() && EBSGextension.genderByAge.Count > 1)
+                    SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
+            }
+
             if (extension == null && !extensionAlreadyChecked)
             {
                 extension = def.GetModExtension<DRGExtension>();
@@ -114,6 +118,7 @@ namespace EBSGFramework
             if (EBSGextension != null)
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
                 SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }

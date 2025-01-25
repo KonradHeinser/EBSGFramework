@@ -108,6 +108,7 @@ namespace EBSGFramework
             if (EBSGextension != null)
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
                 SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
@@ -123,7 +124,7 @@ namespace EBSGFramework
             }
         }
 
-        private List<IGeneResourceDrain> DrainGenes
+        public List<IGeneResourceDrain> DrainGenes
         {
             get
             {
@@ -174,6 +175,13 @@ namespace EBSGFramework
                     addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGextension.geneAbilities, addedAbilities);
                     cachedGeneCount = pawn.genes.GenesListForReading.Count;
                 }
+            }
+
+            if (pawn.IsHashIntervalTick(2500))
+            {
+                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
+                if (!EBSGextension.genderByAge.NullOrEmpty() && EBSGextension.genderByAge.Count > 1)
+                    SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
             }
 
             if (extension == null && !extensionAlreadyChecked)
