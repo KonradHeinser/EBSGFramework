@@ -6,16 +6,14 @@
         <hideAtValue>0</hideAtValue>
         <minValue>-999999</minValue>
         <toStringStyle>PercentZero</toStringStyle>
+        <scenarioRandomizable>true</scenarioRandomizable>
         <cacheable>true</cacheable>
     </StatDef>
 
-    <StatDef Name="EBSG_FactoringStat" Abstract="True">
-        <category>BasicsPawn</category>
+    <StatDef Name="EBSG_FactoringStat" ParentName="EBSG_OffsetingStat" Abstract="True">
         <defaultBaseValue>1</defaultBaseValue>
         <hideAtValue>1</hideAtValue>
         <minValue>0.0001</minValue>
-        <toStringStyle>PercentZero</toStringStyle>
-        <cacheable>true</cacheable>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
@@ -40,13 +38,16 @@
         <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
         <minValue>0.1</minValue>
         <displayPriorityInCategory>2203</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_HungerRateFactor</defName>
-        <label>hunger rate factor</label>
-        <description>Changes the rate that a pawn's food need falls.\n\nDue to how the food consumption stat display works, this will be reflected in the total, but cannot be listed as one of the causes in the breakdown.</description>
-        <displayPriorityInCategory>1400</displayPriorityInCategory>
+        <parts>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_HealthinessOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_HealthinessFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </parts>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
@@ -55,83 +56,6 @@
         <description>The rate at which the pawn loses their skill knowledge.</description>
         <displayPriorityInCategory>3930</displayPriorityInCategory>
         <category>PawnMisc</category>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestRiseRate</defName>
-        <label>deathrest rise rate</label>
-        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes. This should stack with deathrest efficiency.</description>
-        <displayPriorityInCategory>3999</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestFallRate</defName>
-        <label>deathrest fall rate</label>
-        <description>Changes the rate that a pawn requires deathrest. The higher this value, the more often they need to deathrest.</description>
-        <displayPriorityInCategory>3400</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestEfficiency</defName>
-        <label>deathrest efficiency</label>
-        <description>Changes the rate that a pawn progresses through deathrest. Higher values mean the minimum time a pawn needs to deathrest to avoid a debuff is decreased.</description>
-        <displayPriorityInCategory>3401</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_KillThirstRate</defName>
-        <label>kill satiety rate</label>
-        <description>Alters how long it takes for a pawn to reach peak murderous tendencies. The higher this is, the more often the pawn must kill pawns to remain happy.</description>
-        <displayPriorityInCategory>3402</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_ComfortRiseRate</defName>
-        <label>comfort rise rate</label>
-        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is below the target level.</description>
-        <displayPriorityInCategory>3403</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_ComfortFallRate</defName>
-        <label>comfort fall rate</label>
-        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is above the target level.</description>
-        <displayPriorityInCategory>3404</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_BeautyRiseRate</defName>
-        <label>beauty rise rate</label>
-        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is below the target level.</description>
-        <displayPriorityInCategory>3405</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_BeautyFallRate</defName>
-        <label>beauty fall rate</label>
-        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is above the target level.</description>
-        <displayPriorityInCategory>3406</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_MoodRiseRate</defName>
-        <label>mood rise rate</label>
-        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is below the target level.</description>
-        <displayPriorityInCategory>3407</displayPriorityInCategory>
-    </StatDef>
-    
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_MoodFallRate</defName>
-        <label>mood fall rate</label>
-        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is above the target level.</description>
-        <displayPriorityInCategory>3408</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_JoyRiseRate</defName>
-        <label>recreation rise rate</label>
-        <description>Alters how much this pawn gains from recreational activities.</description>
-        <displayPriorityInCategory>3409</displayPriorityInCategory>
     </StatDef>
     
     <StatDef ParentName="EBSG_FactoringStat">
@@ -142,34 +66,6 @@
         <showDevelopmentalStageFilter>Child</showDevelopmentalStageFilter>
         <displayPriorityInCategory>3600</displayPriorityInCategory>
     </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_IndoorsRiseRate</defName>
-        <label>indoors rise rate</label>
-        <description>Alters how long this pawn takes to recover from being outdoors for a long time.</description>
-        <displayPriorityInCategory>3410</displayPriorityInCategory>
-    </StatDef>
-    
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_IndoorsFallRate</defName>
-        <label>indoors fall rate</label>
-        <description>Alters how quickly a pawn misses being indoors.</description>
-        <displayPriorityInCategory>3411</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutdoorsRiseRate</defName>
-        <label>outdoors rise rate</label>
-        <description>Alters how long this pawn takes to recover from being indoors for a long time.</description>
-        <displayPriorityInCategory>3412</displayPriorityInCategory>
-    </StatDef>
-    
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutdoorsFallRate</defName>
-        <label>outdoors fall rate</label>
-        <description>Alters how quickly a pawn misses being outdoors.</description>
-        <displayPriorityInCategory>3413</displayPriorityInCategory>
-    </StatDef>    
 
     <StatDef ParentName="EBSG_OffsetingStat">
         <defName>EBSG_PsyfocusFallRateOffset</defName>
@@ -198,91 +94,25 @@
         <description>A multiplier on maximum hemogen, with a value of 200% allowing pawns to store 200 hemogen instead of 100. This also multiplies the maximum hemogen offset when applicable.</description>
         <minValue>0</minValue>
     </StatDef>
-
-    <!--Outgoing damage stats-->
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor</defName>
-        <label>outgoing damage factor</label>
-        <description>A multiplier on all outgoing damage.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5201</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor_Humanlike</defName>
-        <label>outgoing damage factor (humanlike)</label>
-        <description>A multiplier on outgoing damage against humanlike targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5202</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowHumanlikes>True</allowHumanlikes>
-            </li>
-        </modExtensions>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Ideology">
-        <defName>EBSG_OutgoingDamageFactor_Dryad</defName>
-        <label>outgoing damage factor (dryad)</label>
-        <description>A multiplier on outgoing damage against dryad targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5203</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowDryads>True</allowDryads>
-            </li>
-        </modExtensions>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor_Insect</defName>
-        <label>outgoing damage factor (insect)</label>
-        <description>A multiplier on outgoing damage against insect targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5204</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowInsects>True</allowInsects>
-            </li>
-        </modExtensions>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor_Animal</defName>
-        <label>outgoing damage factor (animal)</label>
-        <description>A multiplier on outgoing damage against animal targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5205</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowAnimals>True</allowAnimals>
-            </li>
-        </modExtensions>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_OutgoingDamageFactor_Mechanoid</defName>
-        <label>outgoing damage factor (mechanoid)</label>
-        <description>A multiplier on outgoing damage against mechanoid targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5206</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowMechanoids>True</allowMechanoids>
-            </li>
-        </modExtensions>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Anomaly">
-        <defName>EBSG_OutgoingDamageFactor_Entity</defName>
-        <label>outgoing damage factor (entity)</label>
-        <description>A multiplier on outgoing damage against entity targets.</description>
-        <category>PawnCombat</category>
-        <displayPriorityInCategory>5207</displayPriorityInCategory>
-        <modExtensions>
-            <li Class="EBSGFramework.EBSGDamageExtension">
-                <allowEntities>True</allowEntities>
-            </li>
-        </modExtensions>
-    </StatDef>
 </Defs>
+
+<!--
+MechEnergyLossPerHP
+WastepacksPerRecharge
+ArmorRating_Blunt
+ArmorRating_Sharp
+EnergyShieldRechargeRate
+EnergyShieldEnergyMax
+EMPResistance
+WorkSpeedGlobal
+
+
+~~~
+
+
+Experimental
+
+BandwidthCost
+EBSG_Healthiness
+EBSG_OutgoingDamageFactor
+-->

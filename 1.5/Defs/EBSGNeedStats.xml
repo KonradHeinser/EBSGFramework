@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_HungerRateFactor</defName>
+        <label>hunger rate factor</label>
+        <description>Changes the rate that a pawn's food need falls.\n\nDue to how the food consumption stat display works, this will be reflected in the total, but cannot be listed as one of the causes in the breakdown.</description>
+        <displayPriorityInCategory>1400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestRiseRate</defName>
+        <label>deathrest rise rate</label>
+        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes. This should stack with deathrest efficiency.</description>
+        <displayPriorityInCategory>3999</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestFallRate</defName>
+        <label>deathrest fall rate</label>
+        <description>Changes the rate that a pawn requires deathrest. The higher this value, the more often they need to deathrest.</description>
+        <displayPriorityInCategory>3400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestEfficiency</defName>
+        <label>deathrest efficiency</label>
+        <description>Changes the rate that a pawn progresses through deathrest. Higher values mean the minimum time a pawn needs to deathrest to avoid a debuff is decreased.</description>
+        <displayPriorityInCategory>3401</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_KillThirstRate</defName>
+        <label>kill satiety rate</label>
+        <description>Alters how long it takes for a pawn to reach peak murderous tendencies. The higher this is, the more often the pawn must kill pawns to remain happy.</description>
+        <displayPriorityInCategory>3402</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_ComfortRiseRate</defName>
+        <label>comfort rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3403</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_ComfortFallRate</defName>
+        <label>comfort fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3404</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_BeautyRiseRate</defName>
+        <label>beauty rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3405</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_BeautyFallRate</defName>
+        <label>beauty fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current beauty limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3406</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_MoodRiseRate</defName>
+        <label>mood rise rate</label>
+        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is below the target level.</description>
+        <displayPriorityInCategory>3407</displayPriorityInCategory>
+    </StatDef>
+    
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_MoodFallRate</defName>
+        <label>mood fall rate</label>
+        <description>Alters how long it takes for a pawn to reach their current mood limit. This only takes effect if the current level is above the target level.</description>
+        <displayPriorityInCategory>3408</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_JoyRiseRate</defName>
+        <label>recreation rise rate</label>
+        <description>Alters how much this pawn gains from recreational activities.</description>
+        <displayPriorityInCategory>3409</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_IndoorsRiseRate</defName>
+        <label>indoors rise rate</label>
+        <description>Alters how long this pawn takes to recover from being outdoors for a long time.</description>
+        <displayPriorityInCategory>3410</displayPriorityInCategory>
+    </StatDef>
+    
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_IndoorsFallRate</defName>
+        <label>indoors fall rate</label>
+        <description>Alters how quickly a pawn misses being indoors.</description>
+        <displayPriorityInCategory>3411</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutdoorsRiseRate</defName>
+        <label>outdoors rise rate</label>
+        <description>Alters how long this pawn takes to recover from being indoors for a long time.</description>
+        <displayPriorityInCategory>3412</displayPriorityInCategory>
+    </StatDef>
+    
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutdoorsFallRate</defName>
+        <label>outdoors fall rate</label>
+        <description>Alters how quickly a pawn misses being outdoors.</description>
+        <displayPriorityInCategory>3413</displayPriorityInCategory>
+    </StatDef>
+</Defs>
