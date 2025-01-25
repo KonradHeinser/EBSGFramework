@@ -162,7 +162,7 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(300))
             {
-                if (Extension != null && !Extension.geneAbilities.NullOrEmpty() && pawn.genes != null && pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                if (Extension?.geneAbilities.NullOrEmpty() == false && pawn.genes != null && pawn.genes.GenesListForReading.Count != cachedGeneCount)
                 {
                     if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                     addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
@@ -187,7 +187,7 @@ namespace EBSGFramework
                         pawn.genes.RemoveGene(this);
                         return;
                     }
-                    if (!Extension.genderByAge.NullOrEmpty() && Extension.genderByAge.Count > 1)
+                    if (!Extension.genderByAge.NullOrEmpty() && (Extension.genderByAge.Count > 1 || Extension.genderByAge[0].range != GenderByAge.defaultRange))
                         GetGender(pawn, Extension, def);
                     pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
                 }

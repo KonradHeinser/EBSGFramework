@@ -15,7 +15,7 @@ namespace EBSGFramework
 
         public FloatRange range = new FloatRange(0f, 99999f);
 
-        public FloatRange defaultRange = new FloatRange(0f, 99999f);
+        public static FloatRange defaultRange = new FloatRange(0f, 99999f);
 
         public GenderByAge() { }
 

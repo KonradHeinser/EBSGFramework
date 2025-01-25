@@ -13,6 +13,23 @@ namespace EBSGFramework
 
         DRGExtension extension = null;
 
+        private EBSGExtension EBSGextension = null;
+
+        private bool checkedEBSGExtension;
+
+        public EBSGExtension EBSGExtension
+        {
+            get
+            {
+                if (!checkedEBSGExtension)
+                {
+                    EBSGextension = def.GetModExtension<EBSGExtension>();
+                    checkedEBSGExtension = true;
+                }
+                return EBSGextension;
+            }
+        }
+
         public int cachedGeneCount = 0;
 
         public List<AbilityDef> addedAbilities;
@@ -103,13 +120,12 @@ namespace EBSGFramework
             base.PostAdd();
             if (extension == null) InitializeExtension();
             Reset();
-            EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
             HediffAdder.HediffAdding(pawn, this);
-            if (EBSGextension != null)
+            if (EBSGExtension != null)
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
-                SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
-                SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
+                SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
+                SpawnAgeLimiter.LimitAge(pawn, EBSGExtension.expectedAges, EBSGExtension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
 
@@ -168,20 +184,18 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(200))
             {
-                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-                if (EBSGextension != null && !EBSGextension.geneAbilities.NullOrEmpty() && pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                if (EBSGExtension?.geneAbilities.NullOrEmpty() == false && pawn.genes.GenesListForReading.Count != cachedGeneCount)
                 {
                     if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
-                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGextension.geneAbilities, addedAbilities);
+                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGExtension.geneAbilities, addedAbilities);
                     cachedGeneCount = pawn.genes.GenesListForReading.Count;
                 }
             }
 
             if (pawn.IsHashIntervalTick(2500))
             {
-                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-                if (!EBSGextension.genderByAge.NullOrEmpty() && EBSGextension.genderByAge.Count > 1)
-                    SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
+                if (!EBSGExtension.genderByAge.NullOrEmpty() && (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
+                    SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
             }
 
             if (extension == null && !extensionAlreadyChecked)

@@ -4,16 +4,25 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class ResourceDrainGene : Gene, IGeneResourceDrain
+    public class ResourceDrainGene : HediffAdder, IGeneResourceDrain
     {
         [Unsaved(false)]
         private ResourceGene cachedResourceGene;
 
-        DRGExtension extension = null;
+        DRGExtension DRGextension = null;
 
-        public List<AbilityDef> addedAbilities;
-
-        public int cachedGeneCount = 0;
+        public DRGExtension DRGExtension
+        {
+            get
+            {
+                if (!extensionAlreadyChecked)
+                {
+                    DRGextension = def.GetModExtension<DRGExtension>();
+                    extensionAlreadyChecked = true;
+                }
+                return DRGextension;
+            }
+        }
 
         public bool extensionAlreadyChecked = false;
 
@@ -23,30 +32,25 @@ namespace EBSGFramework
             {
                 if (Active && !pawn.Dead)
                 {
-                    if (extension == null && !extensionAlreadyChecked)
-                    {
-                        extension = def.GetModExtension<DRGExtension>();
-                        extensionAlreadyChecked = true;
-                    }
-                    if (extension != null)
+                    if (DRGExtension != null)
                     {
                         if (pawn.Spawned)
                         {
                             float time = GenLocalDate.DayPercent(Pawn);
-                            if (time < extension.startTime || time > extension.endTime) return false;
+                            if (time < DRGExtension.startTime || time > DRGExtension.endTime) return false;
 
                             if (pawn.Map != null)
                             {
                                 float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
-                                if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
+                                if (light < DRGExtension.minLightLevel || light > DRGExtension.maxLightLevel) return false;
                             }
                         }
 
-                        if (!extension.requireOneOfHediffs.NullOrEmpty() && !pawn.PawnHasAnyOfHediffs(extension.requireOneOfHediffs)) return false;
-                        if (!pawn.PawnHasAllOfHediffs(extension.requiredHediffs)) return false;
-                        if (pawn.PawnHasAnyOfHediffs(extension.forbiddenHediffs)) return false;
+                        if (!DRGExtension.requireOneOfHediffs.NullOrEmpty() && !pawn.PawnHasAnyOfHediffs(DRGExtension.requireOneOfHediffs)) return false;
+                        if (!pawn.PawnHasAllOfHediffs(DRGExtension.requiredHediffs)) return false;
+                        if (pawn.PawnHasAnyOfHediffs(DRGExtension.forbiddenHediffs)) return false;
 
-                        if (!pawn.AllNeedLevelsMet(extension.needLevels)) return false;
+                        if (!pawn.AllNeedLevelsMet(DRGExtension.needLevels)) return false;
                     }
                     return true;
                 }
@@ -83,55 +87,7 @@ namespace EBSGFramework
         public override void Tick()
         {
             base.Tick();
-
-            if (pawn.IsHashIntervalTick(200))
-            {
-                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-                if (EBSGextension != null && !EBSGextension.geneAbilities.NullOrEmpty() && pawn.genes.GenesListForReading.Count != cachedGeneCount)
-                {
-                    if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
-                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGextension.geneAbilities, addedAbilities);
-                    cachedGeneCount = pawn.genes.GenesListForReading.Count;
-                }
-            }
-
-            if (pawn.IsHashIntervalTick(2500))
-            {
-                EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-                if (!EBSGextension.genderByAge.NullOrEmpty() && EBSGextension.genderByAge.Count > 1)
-                    SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
-            }
-
-            if (extension == null && !extensionAlreadyChecked)
-            {
-                extension = def.GetModExtension<DRGExtension>();
-                extensionAlreadyChecked = true;
-            }
-            if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1, cachedResourceGene, extension, false, true, true);
-        }
-
-        public override void PostAdd()
-        {
-            base.PostAdd();
-            EBSGExtension EBSGextension = def.GetModExtension<EBSGExtension>();
-            HediffAdder.HediffAdding(pawn, this);
-            if (EBSGextension != null)
-            {
-                if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
-                SpawnAgeLimiter.GetGender(pawn, EBSGextension, def);
-                SpawnAgeLimiter.LimitAge(pawn, EBSGextension.expectedAges, EBSGextension.ageRange, EBSGextension.sameBioAndChrono);
-            }
-        }
-
-        public override void PostRemove()
-        {
-            base.PostRemove();
-            HediffAdder.HediffRemoving(pawn, this);
-
-            if (!addedAbilities.NullOrEmpty())
-            {
-                pawn.RemovePawnAbilities(addedAbilities);
-            }
+            if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1, cachedResourceGene, DRGExtension, false, true, true);
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
@@ -140,12 +96,6 @@ namespace EBSGFramework
             {
                 yield return resourceDrainGizmo;
             }
-        }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Collections.Look(ref addedAbilities, "EBSG_DRGDAddedAbilities");
         }
     }
 }

@@ -4,21 +4,21 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class Gene_Dependency : Gene
+    public class Gene_Dependency : HediffAdder
     {
         public int lastIngestedTick;
 
-        public IDGExtension cachedExtension;
+        public IDGExtension cachedIDGExtension;
 
-        public IDGExtension Extension
+        public IDGExtension IDGExtension
         {
             get
             {
-                if (cachedExtension == null)
+                if (cachedIDGExtension == null)
                 {
-                    cachedExtension = def.GetModExtension<IDGExtension>();
+                    cachedIDGExtension = def.GetModExtension<IDGExtension>();
                 }
-                return cachedExtension;
+                return cachedIDGExtension;
             }
         }
 
@@ -32,7 +32,7 @@ namespace EBSGFramework
                     if (hediffs[i] is Hediff_Dependency hediff_Dependency)
                     {
                         if (def.chemical != null) if (hediff_Dependency.chemical == def.chemical) return hediff_Dependency;
-                        if (hediff_Dependency.AssignedLabel == Extension.dependencyLabel) return hediff_Dependency;
+                        if (hediff_Dependency.AssignedLabel == IDGExtension.dependencyLabel) return hediff_Dependency;
                     }
                 }
                 return null;
@@ -44,19 +44,17 @@ namespace EBSGFramework
             if (!ModLister.CheckBiotech("Chemical dependency")) return;
             base.PostAdd();
 
-            HediffAdder.HediffAdding(pawn, this);
-
-            if (Extension == null)
+            if (IDGExtension == null)
             {
                 Log.Error(def + " is missing the IDGExtension. Removing the gene to avoid more errors.");
                 pawn.genes.RemoveGene(this);
             }
-            if (def.chemical == null && Extension.dependencyLabel == null)
+            if (def.chemical == null && IDGExtension.dependencyLabel == null)
             {
                 Log.Error(def + " is not using a chemical and doesn't have a dependency label. Removing the gene to avoid more errors.");
                 pawn.genes.RemoveGene(this);
             }
-            if (Extension.dependencyHediff == null)
+            if (IDGExtension.dependencyHediff == null)
             {
                 Log.Error(def + " doesn't have an assigned hediff. Removing the gene to avoid more errors.");
                 pawn.genes.RemoveGene(this);
@@ -81,15 +79,13 @@ namespace EBSGFramework
         {
             Hediff_Dependency linkedHediff = LinkedHediff;
             if (LinkedHediff != null)
-            {
                 pawn.health.RemoveHediff(linkedHediff);
-            }
             base.PostRemove();
         }
 
         private void AddDependencyHediff()
         {
-            Hediff hediff = HediffMaker.MakeHediff(Extension.dependencyHediff, pawn);
+            Hediff hediff = HediffMaker.MakeHediff(IDGExtension.dependencyHediff, pawn);
             if (hediff is Hediff_Dependency hediff_Dependency)
             {
                 if (def.chemical != null) hediff_Dependency.chemical = def.chemical;
@@ -120,35 +116,35 @@ namespace EBSGFramework
             else
             {
                 CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
-                if (!Extension.validThings.NullOrEmpty())
-                    foreach (ThingDef thingDef in Extension.validThings)
+                if (!IDGExtension.validThings.NullOrEmpty())
+                    foreach (ThingDef thingDef in IDGExtension.validThings)
                     {
                         if (thing.def == thingDef)
                             return true;
-                        if (Extension.checkIngredients && 
+                        if (IDGExtension.checkIngredients && 
                             !ingredients?.ingredients.NullOrEmpty() == false && 
                             ingredients.ingredients.Contains(thingDef))
                             return true;
                     }
-                if (!Extension.validCategories.NullOrEmpty())
+                if (!IDGExtension.validCategories.NullOrEmpty())
                 {
                     if (!thing.def.thingCategories.NullOrEmpty())
-                        foreach (ThingCategoryDef thingCategory in Extension.validCategories)
+                        foreach (ThingCategoryDef thingCategory in IDGExtension.validCategories)
                             if (thing.def.thingCategories.Contains(thingCategory))
                                 return true;
-                    if (Extension.checkIngredients)
+                    if (IDGExtension.checkIngredients)
                     {
-                        if (Extension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
+                        if (IDGExtension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
                             FoodUtility.GetFoodKind(thing) == FoodKind.Meat)
                             return true;
-                        if (Extension.validCategories.Contains(ThingCategoryDefOf.PlantFoodRaw) &&
+                        if (IDGExtension.validCategories.Contains(ThingCategoryDefOf.PlantFoodRaw) &&
                             FoodUtility.GetFoodKind(thing) == FoodKind.NonMeat)
                             return true;
 
                         if (ingredients?.ingredients.NullOrEmpty() == false)
                             foreach (ThingDef ingredient in ingredients.ingredients)
                                 if (!ingredient.thingCategories.NullOrEmpty())
-                                    foreach (ThingCategoryDef thingCategory in Extension.validCategories)
+                                    foreach (ThingCategoryDef thingCategory in IDGExtension.validCategories)
                                         if (ingredient.thingCategories.Contains(thingCategory))
                                             return true;
                     }

@@ -32,7 +32,7 @@ namespace EBSGFramework
 
         public override bool ShouldRemove => LinkedGene?.Active != true;
 
-        public float FirstNotableStageSeverity => LinkedGene.Extension.minSatisfySeverity ?? def.stages[1].minSeverity - 0.1f;
+        public float FirstNotableStageSeverity => Extension.minSatisfySeverity ?? def.stages[1].minSeverity - 0.1f;
 
         public bool ShouldSatisfy => Severity >= FirstNotableStageSeverity;
 
