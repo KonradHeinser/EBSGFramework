@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <!--Offsets-->
+    <StatDef Name="EBSG_MechanitorOffsetStatBase" ParentName="EBSG_OffsetingStat" Abstract="True">
+        <category>Mechanitor</category>
+        <displayPriorityInCategory>5000</displayPriorityInCategory>
+        <showOnMechanoids>false</showOnMechanoids>
+        <showOnAnimals>false</showOnAnimals>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MoveSpeedOffsetMech</defName>
+        <label>mech move speed offset</label>
+        <description>A move speed offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>FloatTwo</toStringStyle>
+        <formatString>{0} c/s</formatString>
+        <minValue>-100</minValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MechEnergyLossPerHPOffsetMech</defName>
+        <label>mech repair energy cost offset</label>
+        <description>A repair energy cost offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>Integer</toStringStyle>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_WastepacksPerRechargeOffsetMech</defName>
+        <label>mech wastepacks per recharge offset</label>
+        <description>A wastepacks per recharge offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>FloatOne</toStringStyle>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_ArmorRating_BluntOffsetMech</defName>
+        <label>mech blunt armor offset</label>
+        <description>A blunt armor offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>PercentOne</toStringStyle>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_ArmorRating_SharpOffsetMech</defName>
+        <label>mech sharp armor offset</label>
+        <description>A sharp armor offset applied to a mechanitor's mechs.</description>
+        <toStringStyle>PercentOne</toStringStyle>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_EMPResistanceOffsetMech</defName>
+        <label>mech EMP resistance offset</label>
+        <description>A EMP resistance offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_BandwidthCostOffsetMech</defName>
+        <label>mech bandwidth cost offset</label>
+        <description>A bandwidth cost offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_HealthinessOffsetMech</defName>
+        <label>mech health offset</label>
+        <description>A health offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_OutgoingDamageFactorOffsetMech</defName>
+        <label>mech outgoing damage factor offset</label>
+        <description>An outgoing damage factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_IncomingDamageFactorOffsetMech</defName>
+        <label>mech incoming damage factor offset</label>
+        <description>An incoming damage factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+</Defs>
