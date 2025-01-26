@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EBSGAI\JobGiver_AICastHostileAbilityBetween.cs" />
+    <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyCover.cs" />
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\GenderByAge.cs" />
