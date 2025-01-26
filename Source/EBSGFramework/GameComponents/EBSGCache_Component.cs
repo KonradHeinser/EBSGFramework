@@ -103,7 +103,6 @@ namespace EBSGFramework
         // Cached things of interest
         public bool needEquippableAbilityPatches = false;
         public List<ThingDef> shieldEquipment = new List<ThingDef>();
-        public List<ThingDef> regenStuffing = new List<ThingDef>();
 
         // Other
 
@@ -541,7 +540,6 @@ namespace EBSGFramework
         private void CacheThingsOfInterest()
         {
             shieldEquipment = new List<ThingDef>();
-            regenStuffing = new List<ThingDef>();
 
             foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
             {
@@ -549,9 +547,6 @@ namespace EBSGFramework
                 
                 if (thing.HasComp<CompShieldEquipment>())
                     shieldEquipment.Add(thing);
-
-                if (thing.HasComp<CompRegenerating>() && thing.stuffProps?.categories.NullOrEmpty() == false)
-                    regenStuffing.Add(thing);
             }
         }
 

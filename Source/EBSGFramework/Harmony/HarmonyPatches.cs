@@ -2644,14 +2644,16 @@ namespace EBSGFramework
 
         public static void ThingSpawnSetupPostfix(ref Thing __instance, bool respawningAfterLoad)
         {
-            if (respawningAfterLoad && Cache?.regenStuffing.NullOrEmpty() == false &&
-                __instance.Stuff != null && Cache.regenStuffing.Contains(__instance.Stuff) &&
-                __instance is ThingWithComps compThing)
+            if (respawningAfterLoad && __instance.Stuff?.comps.NullOrEmpty() == false && __instance is ThingWithComps compThing)
             {
-                CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
-                compRegenerating.parent = compThing;
-                compThing.AllComps.Add(compRegenerating);
-                compRegenerating.Initialize(__instance.Stuff.comps.First((CompProperties c) => c.GetType() == typeof(CompProperties_Regenerating)));
+                CompProperties_Regenerating regen = __instance.Stuff.GetCompProperties<CompProperties_Regenerating>();
+                if (regen != null)
+                {
+                    CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
+                    compRegenerating.parent = compThing;
+                    compThing.AllComps.Add(compRegenerating);
+                    compRegenerating.Initialize(regen); 
+                }
             }
         }
 

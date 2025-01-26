@@ -1,6 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBSGFramework", "EBSGFramework.csproj", "{1C15B537-0A69-4ED9-952B-5435016FA4F7}"
 EndProject
 Global
@@ -9,10 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C15B537-0A69-4ED9-952B-5435016FA4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		outputpath = ../../1.5/Assemblies
