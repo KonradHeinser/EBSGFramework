@@ -137,7 +137,9 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
-            
+            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
+                postfix: new HarmonyMethod(patchType, nameof(ThingSpawnSetupPostfix)));
+
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
@@ -2637,6 +2639,19 @@ namespace EBSGFramework
 
                     __result = newResult.AsEnumerable();
                 }
+            }
+        }
+
+        public static void ThingSpawnSetupPostfix(ref Thing __instance, bool respawningAfterLoad)
+        {
+            if (respawningAfterLoad && Cache?.regenStuffing.NullOrEmpty() == false &&
+                __instance.Stuff != null && Cache.regenStuffing.Contains(__instance.Stuff) &&
+                __instance is ThingWithComps compThing)
+            {
+                CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
+                compRegenerating.parent = compThing;
+                compThing.AllComps.Add(compRegenerating);
+                compRegenerating.Initialize(__instance.Stuff.comps.First((CompProperties c) => c.GetType() == typeof(CompProperties_Regenerating)));
             }
         }
 
