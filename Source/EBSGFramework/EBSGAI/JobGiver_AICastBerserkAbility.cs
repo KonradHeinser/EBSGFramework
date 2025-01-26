@@ -24,9 +24,7 @@ namespace EBSGFramework
             TargetingParameters validTargets = verb.targetParams;
 
             // Get range
-            float MaxDistanceFromCaster = 0;
-            if (verb.rangeStat != null) MaxDistanceFromCaster = caster.GetStatValue(verb.rangeStat);
-            else MaxDistanceFromCaster = verb.range;
+            float MaxDistanceFromCaster = ability.verb.EffectiveRange;
             if (ability.def.verbProperties.warmupTime > 1) MaxDistanceFromCaster *= (1 / ability.def.verbProperties.warmupTime) * 0.8f; // Trying to avoid chance of target wandering out of range mid-cast
 
             // Create curve based on range

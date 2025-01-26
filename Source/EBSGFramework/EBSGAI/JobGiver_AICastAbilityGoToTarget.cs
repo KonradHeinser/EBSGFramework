@@ -33,10 +33,8 @@ namespace EBSGFramework
                 }
             }
             if (teleportComp == null)
-            {
-                if (ability.verb.verbProps.rangeStat != null) range = pawn.GetStatValue(ability.verb.verbProps.rangeStat);
-                else range = ability.verb.verbProps.range;
-            }
+                range = ability.verb.EffectiveRange;
+
             if (safeJumpsOnly) range /= 2;
             if (currentEnemyDistance < 5 || currentEnemyDistance > range) return null;
             LocalTargetInfo destination = GetTarget(pawn, ability);

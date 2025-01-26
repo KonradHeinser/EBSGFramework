@@ -30,14 +30,7 @@ namespace EBSGFramework
                 if (pawn.mindState.resurrectTarget == null)
                     return null;
 
-                if (castingAbility.verb.verbProps.rangeStat != null) // If there's a range stat and the target is at risk for becoming too far away, move closer
-                {
-                    if (pawn.mindState.resurrectTarget.corpse.Position.DistanceTo(pawn.Position) > pawn.GetStatValue(castingAbility.verb.verbProps.rangeStat)) return EBSGUtilities.GoToTarget(pawn.mindState.resurrectTarget.corpse.Position);
-                }
-                else
-                {
-                    if (pawn.mindState.resurrectTarget.corpse.Position.DistanceTo(pawn.Position) > castingAbility.verb.verbProps.range) return EBSGUtilities.GoToTarget(pawn.mindState.resurrectTarget.corpse.Position);
-                }
+                if (pawn.mindState.resurrectTarget.corpse.Position.DistanceTo(pawn.Position) > castingAbility.verb.EffectiveRange) return EBSGUtilities.GoToTarget(pawn.mindState.resurrectTarget.corpse.Position);
 
                 Job job = castingAbility.GetJob(pawn.mindState.resurrectTarget.corpse, pawn.mindState.resurrectTarget.castPosition);
                 job.expiryInterval = expiryInterval;
@@ -80,7 +73,7 @@ namespace EBSGFramework
                     newReq.caster = pawn;
                     newReq.target = corpse;
                     newReq.verb = castingAbility.verb;
-                    newReq.maxRangeFromTarget = castingAbility.verb.verbProps.range;
+                    newReq.maxRangeFromTarget = castingAbility.verb.EffectiveRange;
                     newReq.wantCoverFromTarget = false;
                     newReq.maxRegions = maxRegions;
                     if (CastPositionFinder.TryFindCastPosition(newReq, out var dest))

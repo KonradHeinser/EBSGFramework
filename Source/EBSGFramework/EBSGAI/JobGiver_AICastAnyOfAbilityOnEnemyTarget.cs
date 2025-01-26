@@ -39,19 +39,15 @@ namespace EBSGFramework
                         enemyPosition.DistanceTo(pawn.Position) <= tempAbility.def.EffectRadius)
                         continue;
 
-                    if (tempAbility.verb.verbProps.rangeStat != null)
+                    if (!tempAbility.def.targetRequired)
                     {
-                        if (enemyPosition.DistanceTo(pawn.Position) < pawn.GetStatValue(tempAbility.verb.verbProps.rangeStat))
-                            presentAbilities.Add(tempAbility);
-                    }
-                    else if (!tempAbility.def.targetRequired && tempAbility.def.EffectRadius > 0)
-                    {
+                        if (tempAbility.def.EffectRadius <= 0) continue;
                         if (enemyPosition.DistanceTo(pawn.Position) < tempAbility.def.EffectRadius)
                             presentAbilities.Add(tempAbility);
                     }
                     else
                     {
-                        if (enemyPosition.DistanceTo(pawn.Position) < tempAbility.verb.verbProps.range)
+                        if (enemyPosition.DistanceTo(pawn.Position) < tempAbility.verb.EffectiveRange)
                             presentAbilities.Add(tempAbility);
                     }
                 }
