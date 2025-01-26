@@ -67,6 +67,7 @@
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\GenderByAge.cs" />
+    <Compile Include="Generic List Classes\HediffWithRange.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />
     <Compile Include="Generic List Classes\Prerequisites.cs" />
     <Compile Include="Generic List Classes\RandomProjectilePackage.cs" />

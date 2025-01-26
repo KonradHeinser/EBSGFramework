@@ -3,44 +3,26 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class GenderByAge
+    public class HediffWithRange
     {
-        public Gender gender = Gender.None;
+        public HediffDef hediff;
 
-        public FloatRange range = new FloatRange(0f, 99999f);
+        public FloatRange range;
 
         public static FloatRange defaultRange = new FloatRange(0f, 99999f);
 
-        public GenderByAge() { }
+        public HediffWithRange() { }
 
-        public GenderByAge(Gender gender, FloatRange range)
+        public HediffWithRange(HediffDef hediff, FloatRange range)
         {
-            this.gender = gender;
-            if (range == null)
-                this.range = defaultRange;
-            else
-                this.range = range;
+            this.hediff = hediff;
+            this.range = range;
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
             int num = xmlRoot.ChildNodes.Count;
-
-            switch (xmlRoot.Name)
-            {
-                case "Male":
-                    gender = Gender.Male;
-                    break;
-                case "Female":
-                    gender = Gender.Female;
-                    break;
-                case "None":
-                    gender = Gender.None;
-                    break;
-                default:
-                    Log.Error($"Tried to convert {xmlRoot.Name} into a gender, but couldn't.");
-                    break;
-            }
+            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "hediff", xmlRoot.Name);
 
             if (num == 0)
                 range = defaultRange;
@@ -69,5 +51,6 @@ namespace EBSGFramework
             if (element.Name == "range")
                 range = ParseHelper.FromString<FloatRange>(element.InnerText);
         }
+
     }
 }

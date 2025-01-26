@@ -140,11 +140,13 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
                 postfix: new HarmonyMethod(patchType, nameof(ThingSpawnSetupPostfix)));
 
+            /*
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
                 prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
-            
+            */
+
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
