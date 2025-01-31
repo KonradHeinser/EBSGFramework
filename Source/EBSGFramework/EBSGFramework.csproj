@@ -67,6 +67,7 @@
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\GenderByAge.cs" />
+    <Compile Include="Generic List Classes\GeneticEvolution.cs" />
     <Compile Include="Generic List Classes\HediffWithRange.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />
     <Compile Include="Generic List Classes\Prerequisites.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
+    <Compile Include="Genes\Gene_EvolvingGene.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />

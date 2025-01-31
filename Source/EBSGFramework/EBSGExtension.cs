@@ -9,6 +9,7 @@ namespace EBSGFramework
         public SimpleCurve peopleToMoodCurve;
         public GeneDef relatedGene;
         public List<GeneDef> relatedGenes;
+        public List<GeneticEvolution> geneticEvolutions;
         public bool checkNotPresent = false;
         public bool hideInGeneTabWhenInactive = false;
         public bool hideAllInactiveGenesForXenotype = false;

@@ -1,28 +1,34 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+using RimWorld;
 using Verse;
 
 namespace EBSGFramework
 {
-    public class HediffWithRange
+    public class SkillLevel
     {
-        public HediffDef hediff;
+        public SkillDef skill;
 
-        public FloatRange range;
+        public IntRange range = new IntRange(0, 20);
 
-        public static FloatRange defaultRange = new FloatRange(0f, 0f);
+        public IntRange defaultRange = new IntRange(0, 20);
 
-        public HediffWithRange() { }
+        public SkillLevel() { }
 
-        public HediffWithRange(HediffDef hediff, FloatRange range)
+        public SkillLevel(SkillDef skill, IntRange range)
         {
-            this.hediff = hediff;
+            this.skill = skill;
             this.range = range;
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
             int num = xmlRoot.ChildNodes.Count;
-            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "hediff", xmlRoot.Name);
+            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "skill", xmlRoot.Name);
 
             if (num == 0)
                 range = defaultRange;
@@ -35,7 +41,7 @@ namespace EBSGFramework
         private void LoadFromSingleNode(XmlNode node)
         {
             if (node is XmlText xmlText)
-                range = ParseHelper.FromString<FloatRange>(xmlText.InnerText);
+                range = ParseHelper.FromString<IntRange>(xmlText.InnerText);
             else if (node is XmlElement element)
                 ParseXmlElement(element);
         }
@@ -49,8 +55,7 @@ namespace EBSGFramework
         private void ParseXmlElement(XmlElement element)
         {
             if (element.Name == "range")
-                range = ParseHelper.FromString<FloatRange>(element.InnerText);
+                range = ParseHelper.FromString<IntRange>(element.InnerText);
         }
-
     }
 }

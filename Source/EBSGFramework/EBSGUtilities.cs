@@ -7,6 +7,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Verse.Noise;
 using Verse.Sound;
 
 namespace EBSGFramework
@@ -889,16 +890,27 @@ namespace EBSGFramework
         
         public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
-            if (pawn == null || pawn.genes == null) return false;
+            if (pawn?.genes == null) return false;
 
-            if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, out var oneOfGene, oneOfGenes)) return false;
+            if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, out _, oneOfGenes)) return false;
             if (!allOfGenes.NullOrEmpty() && !PawnHasAllOfGenes(pawn, allOfGenes)) return false;
-            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, out var noneOfGene, noneOfGenes)) return false;
+            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, out _, noneOfGenes)) return false;
 
             return true;
         }
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null, BodyPartRecord bodyPart = null)
+        {
+            if (pawn == null || pawn.health == null) return false;
+
+            if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
+            if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
+            if (!noneOfHediffs.NullOrEmpty() && PawnHasAnyOfHediffs(pawn, noneOfHediffs, bodyPart)) return false;
+
+            return true;
+        }
+
+        public static bool CheckHediffTrio(this Pawn pawn, List<HediffWithRange> oneOfHediffs = null, List<HediffWithRange> allOfHediffs = null, List<HediffWithRange> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
             if (pawn == null || pawn.health == null) return false;
 
@@ -1072,6 +1084,19 @@ namespace EBSGFramework
             return !matches.NullOrEmpty();
         }
 
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
+        {
+            matches = new List<Hediff>();
+            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
+            foreach (var hediff in hediffs)
+            {
+                var found = pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range));
+                if (!found.EnumerableNullOrEmpty())
+                    matches.AddRange(found);
+            }
+            return !matches.NullOrEmpty();
+        }
+
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, BodyPartRecord bodyPart = null)
         {
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
@@ -1084,6 +1109,15 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
+        {
+            if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
+            foreach (var hediff in hediffs)
+                if (!pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range)).EnumerableNullOrEmpty())
+                    return true;
+            return false;
+        }
+
         public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffDef> hediffs, BodyPartRecord bodyPart = null)
         {
             if (hediffs.NullOrEmpty()) return true;
@@ -1093,6 +1127,15 @@ namespace EBSGFramework
                     if (!HasHediff(pawn, hediff, bodyPart)) return false;
                 }
                 else if (!HasHediff(pawn, hediff)) return false;
+            return true;
+        }
+
+        public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
+        {
+            if (hediffs.NullOrEmpty()) return true;
+            foreach (var hediff in hediffs)
+                if (pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range)).EnumerableNullOrEmpty())
+                    return false;
             return true;
         }
 
@@ -1129,6 +1172,37 @@ namespace EBSGFramework
                     return false;
             }
             return true;
+        }
+
+        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLevels)
+        {
+            if (skillLevels.NullOrEmpty() || pawn.skills == null) return true;
+
+            foreach (SkillLevel skillLevel in skillLevels)
+            {
+                SkillRecord skill = pawn.skills.GetSkill(skillLevel.skill);
+
+                if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
+                {
+                    if (skillLevel.range.min > 0)
+                        return false;
+                    continue;
+                }
+
+                if (!skillLevel.range.Includes(skill.Level))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool Includes(this IntRange range, int val)
+        {
+            if (val >= range.min)
+            {
+                return val <= range.max;
+            }
+            return false;
         }
 
         public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillCheck> skillLimiters)
