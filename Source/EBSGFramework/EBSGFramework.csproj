@@ -74,6 +74,7 @@
     <Compile Include="Generic List Classes\RandomProjectilePackage.cs" />
     <Compile Include="Generic List Classes\RoofCheck.cs" />
     <Compile Include="DamageModifyingStatsExtension.cs" />
+    <Compile Include="Generic List Classes\SkillLevel.cs" />
     <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />

@@ -2228,14 +2228,15 @@ namespace EBSGFramework
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
         {
-            if (__instance.CurLevel <= 0 || __instance.CurLevel >= 1) return; // If already at min/max, no need to do anything else
+            if (__instance == null || ___def == null || __instance.CurLevel <= 0 || __instance.CurLevel >= 1) return; // If already at min/max, no need to do anything else
+            if (___pawn?.NeedFrozen(___def) != false) return;
             float increase = ___def.seekerRisePerHour * 0.06f;
             float decrease = ___def.seekerFallPerHour * 0.06f;
             float curInstantLevel;
-            if (___pawn.NeedFrozen(___def)) return;
             switch (___def.ToString())
             {
                 case "Beauty":
+                    if (___pawn.needs?.beauty == null) return;
                     curInstantLevel = ___pawn.needs.beauty.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.beauty.CurLevel)
                     {
@@ -2249,6 +2250,7 @@ namespace EBSGFramework
                     }
                     break;
                 case "Comfort":
+                    if (___pawn.needs?.comfort == null) return;
                     curInstantLevel = ___pawn.needs.comfort.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.comfort.CurLevel)
                     {
@@ -2262,6 +2264,7 @@ namespace EBSGFramework
                     }
                     break;
                 case "Mood":
+                    if (___pawn.needs?.mood == null) return;
                     curInstantLevel = ___pawn.needs.mood.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.mood.CurLevel)
                     {
