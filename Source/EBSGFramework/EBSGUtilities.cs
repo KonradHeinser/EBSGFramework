@@ -890,7 +890,7 @@ namespace EBSGFramework
         
         public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
-            if (pawn?.genes == null) return false;
+            if (pawn?.genes == null) return oneOfGenes.NullOrEmpty() && allOfGenes.NullOrEmpty();
 
             if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, out _, oneOfGenes)) return false;
             if (!allOfGenes.NullOrEmpty() && !PawnHasAllOfGenes(pawn, allOfGenes)) return false;
@@ -901,7 +901,7 @@ namespace EBSGFramework
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
-            if (pawn == null || pawn.health == null) return false;
+            if (pawn == null || pawn.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
 
             if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
             if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
@@ -912,7 +912,7 @@ namespace EBSGFramework
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffWithRange> oneOfHediffs = null, List<HediffWithRange> allOfHediffs = null, List<HediffWithRange> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
-            if (pawn == null || pawn.health == null) return false;
+            if (pawn == null || pawn.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
 
             if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
             if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
