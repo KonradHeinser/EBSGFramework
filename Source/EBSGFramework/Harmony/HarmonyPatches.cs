@@ -101,7 +101,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
 
             // Technically not Athena, but related to Athena stuff
-            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
+            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom", new[] {typeof(IntVec3), typeof(LocalTargetInfo)}),
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
             
             // Coma Gene stuff
