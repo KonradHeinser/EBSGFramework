@@ -52,9 +52,6 @@ namespace EBSGFramework
         public List<GeneDef> idgGenes = new List<GeneDef>();
         public List<GeneDef> grcGenes = new List<GeneDef>();
 
-        public List<GeneDef> bloodReplacingGenes = new List<GeneDef>();
-        public List<GeneDef> bloodSmearReplacingGenes = new List<GeneDef>();
-
         public List<GeneDef> pregnancyReplacingGenes = new List<GeneDef>();
         public List<GeneDef> lovinAddinGenes = new List<GeneDef>();
         public List<GeneDef> butcherProductGenes = new List<GeneDef>();
@@ -363,9 +360,6 @@ namespace EBSGFramework
             idgGenes = new List<GeneDef>();
             grcGenes = new List<GeneDef>();
             
-            bloodReplacingGenes = new List<GeneDef>();
-            bloodSmearReplacingGenes = new List<GeneDef>();
-            
             pregnancyReplacingGenes = new List<GeneDef>();
             lovinAddinGenes = new List<GeneDef>();
             butcherProductGenes = new List<GeneDef>();
@@ -396,12 +390,6 @@ namespace EBSGFramework
 
                     if (!extension.skillChanges.NullOrEmpty())
                         skillChanging.Add(gene);
-
-                    if (extension.bloodDropChance != 1 || extension.bloodReplacement != null)
-                        bloodReplacingGenes.Add(gene);
-
-                    if (extension.bloodSmearDropChance != 1 || extension.bloodSmearReplacement != null)
-                        bloodReplacingGenes.Add(gene);
                 }
 
                 if (gene.HasModExtension<EquipRestrictExtension>())

@@ -174,11 +174,5 @@ namespace EBSGFramework
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;
         public bool staticQuality = false; // Only need set to true if there are products that have quality. Will set for all of them at once.
-
-        public ThingDef bloodReplacement;
-        public float bloodDropChance = 1f; // Doesn't change bloodloss rate, just how much of it is actually spawned
-        public int bloodFilthAmount = 1;
-        public ThingDef bloodSmearReplacement;
-        public float bloodSmearDropChance = 1f; // Doesn't change bloodloss rate, just how much of it is actually spawned
     }
 }

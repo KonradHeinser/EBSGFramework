@@ -56,10 +56,6 @@ namespace EBSGFramework
                         {
                             bloodType = Props.filthReplacement;
                         }
-                        else if (victim.PawnHasAnyOfGenes(out var first, Cache?.bloodReplacingGenes))
-                        {
-                            bloodType = first.GetModExtension<EBSGExtension>().bloodReplacement;
-                        }
 
                         FilthMaker.TryMakeFilth(c, victim.MapHeld, bloodType, victim.LabelShort);
                     }

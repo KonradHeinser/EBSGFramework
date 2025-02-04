@@ -100,6 +100,10 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.PropertyGetter(typeof(CompTurretGun), "CanShoot"),
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
 
+            // Technically not Athena, but related to Athena stuff
+            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
+                postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
+            
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
                 postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
@@ -139,13 +143,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
                 postfix: new HarmonyMethod(patchType, nameof(ThingSpawnSetupPostfix)));
-
-            /*
-            harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodFilth)),
-                prefix: new HarmonyMethod(patchType, nameof(DropBloodFilthPrefix)));
-            harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.DropBloodSmear)),
-                prefix: new HarmonyMethod(patchType, nameof(DropBloodSmearPrefix)));
-            */
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -1773,8 +1770,14 @@ namespace EBSGFramework
 
         public static void TurretCanShootPostfix(CompTurretGun __instance, ref bool __result)
         {
-            if (__result && __instance.gun.def.HasModExtension<TurretRoofBlocked>() && __instance.parent is Pawn p && p.MapHeld != null) // MapHeld shouldn't be an issue, but yada yada sorry
-                __result = !p.PositionHeld.Roofed(p.MapHeld);
+            if (__result && __instance.gun.def.HasModExtension<TurretRoofBlocked>() && __instance.parent is Thing t && t.MapHeld != null) // MapHeld shouldn't be an issue, but yada yada sorry
+                __result = !t.PositionHeld.Roofed(t.MapHeld);
+        }
+
+        public static void CanHitTargetFromPostfix(IntVec3 root, LocalTargetInfo targ, ref bool __result, Verb __instance, Thing ___caster)
+        {
+            if (__result && __instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true && ___caster.MapHeld != null) // The map shouldn't ever be null, but there may be unexpected results
+                __result = !root.Roofed(___caster.MapHeld);
         }
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)
@@ -2085,42 +2088,6 @@ namespace EBSGFramework
                             break;
                         }
             }
-        }
-
-        public static bool DropBloodFilthPrefix(Pawn ___pawn)
-        {
-            if (Cache?.bloodReplacingGenes?.NullOrEmpty() == false && ___pawn?.MapHeld != null &&
-                ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodReplacingGenes))
-            {
-                EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
-                if (Rand.Chance(bloodExtension.bloodDropChance) && bloodExtension.bloodFilthAmount > 0 
-                    && bloodExtension.bloodReplacement != null)
-                    FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodReplacement, 
-                        ___pawn.LabelIndefinite(), bloodExtension.bloodFilthAmount);
-                return false;
-            }
-            return true;
-        }
-
-        public static bool DropBloodSmearPrefix(Pawn ___pawn, ref Vector3? ___lastSmearDropPos)
-        {
-            if (___pawn?.MapHeld != null && Cache?.bloodSmearReplacingGenes?.NullOrEmpty() == false && 
-                ___pawn.PawnHasAnyOfGenes(out GeneDef bloodGene, Cache.bloodSmearReplacingGenes))
-            {
-                EBSGExtension bloodExtension = bloodGene.GetModExtension<EBSGExtension>();
-                if (Rand.Chance(bloodExtension.bloodSmearDropChance) && bloodExtension.bloodSmearReplacement != null)
-                {
-                    FilthMaker.TryMakeFilth(___pawn.PositionHeld, ___pawn.MapHeld, bloodExtension.bloodSmearReplacement, out var outFilth, ___pawn.LabelIndefinite());
-                    if (outFilth != null)
-                    {
-                        float rotation = ((!___lastSmearDropPos.HasValue) ? ___pawn.pather.lastMoveDirection : (___lastSmearDropPos.Value - ___pawn.DrawPos).AngleFlat());
-                        outFilth.SetOverrideDrawPositionAndRotation(___pawn.DrawPos.WithY(bloodExtension.bloodSmearReplacement.Altitude), rotation);
-                        ___lastSmearDropPos = ___pawn.DrawPos;
-                    }
-                }
-                return false;
-            }
-            return true;
         }
 
         // Harmony patches for stats
