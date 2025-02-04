@@ -99,10 +99,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(CompTurretGun), "CanShoot"),
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
-
-            // Technically not Athena, but related to Athena stuff
-            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom", new[] {typeof(IntVec3), typeof(LocalTargetInfo)}),
-                postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
             
             // Coma Gene stuff
             harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
@@ -1691,9 +1687,15 @@ namespace EBSGFramework
                 }
         }
 
-        public static void CanHitTargetFromPostfix(ref bool __result, Thing ___caster, Verb __instance)
+        public static void CanHitTargetFromPostfix(IntVec3 root, ref bool __result, Thing ___caster, Verb __instance)
         {
             if (!__result) return;
+
+            if (__instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true && __instance.Caster.MapHeld != null) // The map shouldn't ever be null, but there may be unexpected results
+            {
+                __result = !root.Roofed(__instance.Caster.MapHeld);
+                return;
+            }
 
             if (Cache?.shieldHediffs.NullOrEmpty() == false && ___caster is Pawn pawn &&
                 pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
@@ -1772,12 +1774,6 @@ namespace EBSGFramework
         {
             if (__result && __instance.gun.def.HasModExtension<TurretRoofBlocked>() && __instance.parent is Thing t && t.MapHeld != null) // MapHeld shouldn't be an issue, but yada yada sorry
                 __result = !t.PositionHeld.Roofed(t.MapHeld);
-        }
-
-        public static void CanHitTargetFromPostfix(IntVec3 root, LocalTargetInfo targ, ref bool __result, Verb __instance, Thing ___caster)
-        {
-            if (__result && __instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true && ___caster.MapHeld != null) // The map shouldn't ever be null, but there may be unexpected results
-                __result = !root.Roofed(___caster.MapHeld);
         }
 
         public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)
