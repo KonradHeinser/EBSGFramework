@@ -40,10 +40,10 @@ namespace EBSGFramework
                         return;
                     break;
             }
-
+            
             PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, 
-                    Props.inCreatorFaction ? source.Faction : null, forceGenerateNewPawn: true,
-                    developmentalStages: Props.stage);
+                    Props.inCreatorFaction ? source.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionType)), 
+                    forceGenerateNewPawn: true, developmentalStages: Props.stage);
 
             Lord lord = null;
             if (instigator != null)

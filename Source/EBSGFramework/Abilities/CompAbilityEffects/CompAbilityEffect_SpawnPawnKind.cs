@@ -18,8 +18,9 @@ namespace EBSGFramework
             if (map == null) return; // Shouldn't be an issue, but better safe than erroring
             IntVec3 pos = target.Cell;
 
-            PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, Props.inCreatorFaction ? Caster.Faction : null, forceGenerateNewPawn: true,
-                    developmentalStages: Props.stage);
+            PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind,
+                Props.inCreatorFaction ? Caster.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionType)),
+                forceGenerateNewPawn: true, developmentalStages: Props.stage);
 
             Lord lord = Caster.GetLord();
 

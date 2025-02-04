@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool inCreatorFaction = true;
 
+        public FactionDef staticFaction;
+
         public MentalStateDef mentalStateOnSpawn;
 
         public HediffDef hediffOnPawns;

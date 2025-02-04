@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -19,6 +20,8 @@ namespace EBSGFramework
         public bool attachEffecterToPawn = false;
 
         public bool inCreatorFaction = false;
+
+        public FactionDef staticFaction;
 
         public MentalStateDef mentalStateOnSpawn;
 
