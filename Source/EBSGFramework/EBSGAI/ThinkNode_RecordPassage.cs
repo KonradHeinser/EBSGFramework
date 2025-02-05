@@ -1,5 +1,6 @@
 ﻿using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace EBSGFramework
 {
@@ -11,6 +12,7 @@ namespace EBSGFramework
         private bool reportStance = false;
         private bool reportTarget = false;
         private bool autoSearchForTarget = true;
+        private bool reportLord = false;
         private PawnKindDef requiredPawnKindDef = null;
 
         protected override bool Satisfied(Pawn pawn)
@@ -33,6 +35,12 @@ namespace EBSGFramework
                 Thing target = pawn.GetCurrentTarget(false, false, autoSearchForTarget);
                 if (target == null) Log.Message("EBSG_NoTargetFound".Translate());
                 else Log.Message("EBSG_PawnCurrentTarget".Translate(target.Label, target.Position.DistanceTo(pawn.Position)));
+            }
+            if (reportLord)
+            {
+                Lord lord = pawn.GetLord();
+                if (lord == null) Log.Message("No lord found.");
+                else Log.Message($"Currently has a lord of {lord.GetType()}");
             }
             return true;
         }
