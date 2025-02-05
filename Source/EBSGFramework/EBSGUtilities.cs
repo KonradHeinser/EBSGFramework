@@ -7,7 +7,6 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
-using Verse.Noise;
 using Verse.Sound;
 
 namespace EBSGFramework
