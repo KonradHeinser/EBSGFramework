@@ -53,6 +53,7 @@ namespace EBSGFramework
                 else message += $"Mind current melee threat is {pawn.mindState.meleeThreat.Label}. ";
                 if (pawn.mindState.duty == null) message += "Mind does not have a duty listed. ";
                 else message += $"Mind listed duty is {pawn.mindState.duty}. ";
+                Log.Message(message);
             }
             return true;
         }
