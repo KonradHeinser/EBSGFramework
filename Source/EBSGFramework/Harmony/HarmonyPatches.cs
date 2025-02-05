@@ -1691,7 +1691,7 @@ namespace EBSGFramework
         {
             if (!__result) return;
 
-            if (__instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true && __instance.Caster.MapHeld != null) // The map shouldn't ever be null, but there may be unexpected results
+            if (__instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true)
             {
                 __result = !root.Roofed(__instance.Caster.MapHeld);
                 return;

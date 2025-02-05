@@ -57,6 +57,10 @@ namespace EBSGFramework
             for (int i = 0; i < numToSpawn; i++)
             {
                 Pawn pawn = PawnGenerator.GeneratePawn(request);
+
+                if (Props.hediffOnPawns != null)
+                    pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, sourcePawn);
+
                 GenSpawn.Spawn(pawn, pos, map);
                 lord?.AddPawn(pawn);
 
@@ -76,9 +80,6 @@ namespace EBSGFramework
                     effecter.Trigger(Props.attachEffecterToPawn ? pawn : new TargetInfo(pos, map), TargetInfo.Invalid);
                     effecter.Cleanup();
                 }
-
-                if (Props.hediffOnPawns != null)
-                    pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, sourcePawn);
             }
 
             if (Props.effecter != null)
