@@ -38,8 +38,10 @@ namespace EBSGFramework
             }
             if (reportLord)
             {
-                if (pawn.GetLord() == null) Log.Message("No lord found.");
-                else Log.Message($"Currently has a lord of {pawn.GetLord().GetType()}");
+                Lord lord = pawn.GetLord();
+                if (lord == null) Log.Message("No lord found.");
+                else if (lord.CurLordToil == null) Log.Message("Has a lord, but no toil.");
+                else Log.Message($"Currently has a lord toil of {lord.CurLordToil}");
             }
             return true;
         }
