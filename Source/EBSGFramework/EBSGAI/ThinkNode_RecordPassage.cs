@@ -48,21 +48,20 @@ namespace EBSGFramework
             if (reportMindState)
             {
                 string message = "";
-                if (pawn.mindState.enemyTarget == null) message += "Mind has no target. ";
-                else message += $"Mind target is {pawn.mindState.enemyTarget.Label}. ";
-                if (pawn.mindState.meleeThreat == null) message += "Mind doesn't have a melee threat. ";
-                else message += $"Mind current melee threat is {pawn.mindState.meleeThreat.Label}. ";
-                if (pawn.mindState.duty == null) message += "Mind does not have a duty listed. ";
-                else message += $"Mind listed duty is {pawn.mindState.duty}. ";
+                if (pawn.mindState.enemyTarget == null) message += "Mind has no target, ";
+                else message += $"Mind target is {pawn.mindState.enemyTarget.Label}, ";
+                if (pawn.mindState.meleeThreat == null) message += "doesn't have a melee threat, ";
+                else message += $"has a current melee threat of {pawn.mindState.meleeThreat.Label}, ";
+                if (pawn.mindState.duty == null) message += "and does not have a duty listed. ";
+                else message += $"and has a listed duty of {pawn.mindState.duty}. ";
                 Log.Message(message);
             }
             if (reportVerb)
             {
                 Thing enemy = pawn.mindState.enemyTarget ?? pawn.GetCurrentTarget(true, false, autoSearchForTarget);
-                if (enemy == null) Log.Message("No enemy found, so no verb can be obtained.");
                 Verb verb = pawn.TryGetAttackVerb(enemy);
-                if (verb == null) Log.Message($"No verb was available to attack {enemy.Label}");
-                else Log.Message($"Attack verb is {verb}");
+                if (verb == null) Log.Message($"No verb was available to attack {enemy?.Label + " " ?? ""}with");
+                else Log.Message($"Attack verb ({enemy?.Label ?? "no target"}) is {verb}");
             }
             return true;
         }
