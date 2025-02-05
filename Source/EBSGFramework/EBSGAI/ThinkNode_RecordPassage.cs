@@ -14,6 +14,7 @@ namespace EBSGFramework
         private bool autoSearchForTarget = true;
         private bool reportLord = false;
         private bool reportMindState = false;
+        private bool reportVerb = false;
         private PawnKindDef requiredPawnKindDef = null;
 
         protected override bool Satisfied(Pawn pawn)
@@ -33,7 +34,7 @@ namespace EBSGFramework
             }
             if (reportTarget)
             {
-                Thing target = pawn.GetCurrentTarget(false, false, autoSearchForTarget);
+                Thing target = pawn.GetCurrentTarget(true, false, autoSearchForTarget);
                 if (target == null) Log.Message("EBSG_NoTargetFound".Translate());
                 else Log.Message("EBSG_PawnCurrentTarget".Translate(target.Label, target.Position.DistanceTo(pawn.Position)));
             }
@@ -54,6 +55,14 @@ namespace EBSGFramework
                 if (pawn.mindState.duty == null) message += "Mind does not have a duty listed. ";
                 else message += $"Mind listed duty is {pawn.mindState.duty}. ";
                 Log.Message(message);
+            }
+            if (reportVerb)
+            {
+                Thing enemy = pawn.mindState.enemyTarget ?? pawn.GetCurrentTarget(true, false, autoSearchForTarget);
+                if (enemy == null) Log.Message("No enemy found, so no verb can be obtained.");
+                Verb verb = pawn.TryGetAttackVerb(enemy);
+                if (verb == null) Log.Message($"No verb was available to attack {enemy.Label}");
+                else Log.Message($"Attack verb is {verb}");
             }
             return true;
         }
