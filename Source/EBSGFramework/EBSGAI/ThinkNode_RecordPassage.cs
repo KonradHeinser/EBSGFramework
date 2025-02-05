@@ -13,6 +13,7 @@ namespace EBSGFramework
         private bool reportTarget = false;
         private bool autoSearchForTarget = true;
         private bool reportLord = false;
+        private bool reportMindState = false;
         private PawnKindDef requiredPawnKindDef = null;
 
         protected override bool Satisfied(Pawn pawn)
@@ -42,6 +43,16 @@ namespace EBSGFramework
                 if (lord == null) Log.Message("No lord found.");
                 else if (lord.CurLordToil == null) Log.Message("Has a lord, but no toil.");
                 else Log.Message($"Currently has a lord toil of {lord.CurLordToil}");
+            }
+            if (reportMindState)
+            {
+                string message = "";
+                if (pawn.mindState.enemyTarget == null) message += "Mind has no target. ";
+                else message += $"Mind target is {pawn.mindState.enemyTarget.Label}. ";
+                if (pawn.mindState.meleeThreat == null) message += "Mind doesn't have a melee threat. ";
+                else message += $"Mind current melee threat is {pawn.mindState.meleeThreat.Label}. ";
+                if (pawn.mindState.duty == null) message += "Mind does not have a duty listed. ";
+                else message += $"Mind listed duty is {pawn.mindState.duty}. ";
             }
             return true;
         }
