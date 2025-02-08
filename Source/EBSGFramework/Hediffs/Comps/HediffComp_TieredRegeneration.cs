@@ -168,7 +168,7 @@ namespace EBSGFramework
                         regrowthAllowed = true;
                         regrowthInterval = regenSet.ticksToRegrowPart;
                     }
-                    else { regrowthAllowed = false; }
+                    else regrowthAllowed = false;
 
 
                     if (regenSet.ticksToHealInterval > 0)
@@ -176,7 +176,7 @@ namespace EBSGFramework
                         healInterval = regenSet.ticksToHealInterval;
                         healAllowed = true; 
                     }
-                    else { healAllowed = false; }
+                    else healAllowed = false;
                     healAmount = regenSet.healAmount;
                     repeatCount = regenSet.repeatHealCount;
 
@@ -186,6 +186,7 @@ namespace EBSGFramework
                     healTicksPerTick = regenSet.healTicksPerTick;
                     regrowTicksPerTick = regenSet.regrowTicksPerTick;
 
+                    healInProgress = healAllowed || regrowthAllowed;
                     break;
                 }
             }
