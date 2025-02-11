@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         public bool cutoutComplex = false;
 
+        public List<ApparelLayerDef> hiddenByLayers;
+
         public int interval = 60;
 
         public string desMale;
@@ -69,6 +71,23 @@ namespace EBSGFramework
                 checkedDes = true;
             }
             return hasDes;
+        }
+
+        public bool PropsNeeded(Pawn pawn)
+        {
+            if (changing)
+                return true;
+
+            if (!hiddenByLayers.NullOrEmpty())
+                return true;
+
+            if (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated && HasDesGraphics())
+                return true;
+
+            if (InAges(pawn))
+                return true;
+
+            return false;
         }
     }
 }

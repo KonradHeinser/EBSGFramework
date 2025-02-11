@@ -98,6 +98,25 @@ namespace EBSGFramework
             return finalChance;
         }
 
+        public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null)
+        {
+            if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 
+                return false;
+
+            if (layer != null)
+                foreach (Apparel a in pawn.apparel.WornApparel)
+                    if (a.def.apparel.layers.Contains(layer)) 
+                        return true;
+
+            if (!layers.NullOrEmpty())
+                foreach (Apparel a in pawn.apparel.WornApparel)
+                    foreach (var l in a.def.apparel.layers)
+                        if (layers.Contains(l))
+                            return true;
+            
+            return false;
+        }
+
         public static bool TargetIsPawn(this LocalTargetInfo target, out Pawn pawn)
         {
             if (target.HasThing && target.Thing is Pawn targetPawn)

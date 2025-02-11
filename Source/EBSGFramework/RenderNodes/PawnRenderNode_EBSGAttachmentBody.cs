@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -19,6 +15,10 @@ namespace EBSGFramework
         {
             if (props is PawnRenderNodeProperties_EBSG EBSGProps)
             {
+                Log.Message("C");
+                if (pawn.PawnHasApparelOnLayer(null, EBSGProps.hiddenByLayers))
+                    return null;
+                Log.Message("D");
                 Shader shader = EBSGProps.cutoutComplex ? ShaderDatabase.CutoutComplex : ShaderFor(pawn);
                 if (EBSGProps.changing && gene != null && gene is SpawnAgeLimiter ebsgGene)
                 {
@@ -169,13 +169,13 @@ namespace EBSGFramework
                 }
             }
 
-            return null;
+            return base.GraphicFor(pawn);
         }
 
         protected override IEnumerable<Graphic> GraphicsFor(Pawn pawn)
         {
             PawnRenderNodeProperties_EBSG EBSGProps = props as PawnRenderNodeProperties_EBSG;
-            if (HasGraphic(tree.pawn) && EBSGProps != null && (EBSGProps.changing || EBSGProps.InAges(tree.pawn) || (pawn.Drawer.renderer.CurRotDrawMode == RotDrawMode.Dessicated && EBSGProps.HasDesGraphics())))
+            if (EBSGProps?.PropsNeeded(pawn) == true && HasGraphic(tree.pawn))
             {
                 Graphic ebsgGraphic = GraphicFor(pawn);
                 if (ebsgGraphic != null)

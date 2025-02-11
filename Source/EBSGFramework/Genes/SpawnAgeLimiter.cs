@@ -82,7 +82,7 @@ namespace EBSGFramework
                             pawn.equipment.DropAllEquipment(pawn.Position);
                         else // In theory this should never occur, but it's the final backup for if a pawn happens to somehow gain a gene without having a position
                             pawn.equipment.DestroyAllEquipment();
-                    if (pawn.apparel != null) pawn.apparel.DropAllOrMoveAllToInventory();
+                    pawn.apparel?.DropAllOrMoveAllToInventory();
                 }
                 else
                 {
