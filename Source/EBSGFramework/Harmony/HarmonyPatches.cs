@@ -835,7 +835,7 @@ namespace EBSGFramework
                             GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
                             if (extension.carrierStat != null)
                             {
-                                float statValue = otherPawn.GetStatValue(extension.carrierStat);
+                                float statValue = otherPawn.GetStatValue(extension.carrierStat, true, 60);
                                 if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -843,14 +843,14 @@ namespace EBSGFramework
                             if (!extension.carrierStats.NullOrEmpty())
                                 foreach (StatDef stat in extension.carrierStats)
                                 {
-                                    float statValue = otherPawn.GetStatValue(stat);
+                                    float statValue = otherPawn.GetStatValue(stat, true, 60);
                                     if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                     else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                     else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                                 }
                             if (extension.otherStat != null)
                             {
-                                float statValue = ___pawn.GetStatValue(extension.otherStat);
+                                float statValue = ___pawn.GetStatValue(extension.otherStat, true, 60);
                                 if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -858,7 +858,7 @@ namespace EBSGFramework
                             if (!extension.otherStats.NullOrEmpty())
                                 foreach (StatDef stat in extension.otherStats)
                                 {
-                                    float statValue = ___pawn.GetStatValue(stat);
+                                    float statValue = ___pawn.GetStatValue(stat, true, 60);
                                     if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                     else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                     else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -886,7 +886,7 @@ namespace EBSGFramework
                         GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
                         if (extension.carrierStat != null)
                         {
-                            float statValue = romancer.GetStatValue(extension.carrierStat);
+                            float statValue = romancer.GetStatValue(extension.carrierStat, true, 60);
                             if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -894,14 +894,14 @@ namespace EBSGFramework
                         if (!extension.carrierStats.NullOrEmpty())
                             foreach (StatDef stat in extension.carrierStats)
                             {
-                                float statValue = romancer.GetStatValue(stat);
+                                float statValue = romancer.GetStatValue(stat, true, 60);
                                 if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                             }
                         if (extension.otherStat != null)
                         {
-                            float statValue = romanceTarget.GetStatValue(extension.otherStat);
+                            float statValue = romanceTarget.GetStatValue(extension.otherStat, true, 60);
                             if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -909,7 +909,7 @@ namespace EBSGFramework
                         if (!extension.otherStats.NullOrEmpty())
                             foreach (StatDef stat in extension.otherStats)
                             {
-                                float statValue = romanceTarget.GetStatValue(stat);
+                                float statValue = romanceTarget.GetStatValue(stat, true, 60);
                                 if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -1904,7 +1904,7 @@ namespace EBSGFramework
         public static void MeleeDPSPostfix(ref float __result, StatRequest req, bool applyPostProcess = true)
         {
             if (req.Thing is Pawn pawn)
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
+                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor, true, 60);
         }
 
         public static void FertilityByAgeAgeFactorPostfix(ref float __result, Pawn pawn)
@@ -2271,7 +2271,7 @@ namespace EBSGFramework
         public static void PawnHealthinessPostfix(Pawn __instance, ref float __result)
         {
             if (__instance != null)
-                __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness);
+                __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness, true, 60);
         }
 
         public static bool HasSpecialExplosion(Pawn pawn)
@@ -2363,37 +2363,37 @@ namespace EBSGFramework
                     {
                         if (!Cache.humanoidSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.humanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                     else if (victim.RaceProps.Animal)
                     {
                         if (!Cache.animalSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.animalSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                     else if (victim.RaceProps.IsMechanoid)
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.mechanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                     else if (victim.RaceProps.Insect)
                     {
                         if (!Cache.insectSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.insectSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                     else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
                     {
                         if (!Cache.entitySlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.entitySlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                     else if (victim.RaceProps.Dryad)
                     {
                         if (!Cache.dryadSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.dryadSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat));
+                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
                     }
                 }
 
@@ -2493,7 +2493,7 @@ namespace EBSGFramework
         public static void DamageAmountPostfix(ref float __result, DamageInfo __instance)
         {
             if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor);
+                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor, true, 60);
         }
 
         public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result, GeneDef ___def)
@@ -2508,7 +2508,7 @@ namespace EBSGFramework
         public static void SkillFallPrefix(Pawn ___pawn, ref float xp, bool direct)
         {
             if (xp < 0 && !direct)
-                xp *= ___pawn.GetStatValue(EBSGDefOf.EBSG_SkillLossRate);
+                xp *= ___pawn.GetStatValue(EBSGDefOf.EBSG_SkillLossRate, true, 60);
         }
 
         public static void PostAddGenePostfix(Pawn ___pawn)
@@ -2528,7 +2528,7 @@ namespace EBSGFramework
 
                     float efficiency = ((recipeDef.efficiencyStat != null) ? worker.GetStatValue(recipeDef.efficiencyStat) : 1f);
                     if (recipeDef.workTableEfficiencyStat != null && billGiver is Building_WorkTable thing)
-                        efficiency *= thing.GetStatValue(recipeDef.workTableEfficiencyStat);
+                        efficiency *= thing.GetStatValue(recipeDef.workTableEfficiencyStat, true, 60);
 
                     foreach (List<ThingDefCountClass> options in extension.thingCountList)
                     {
