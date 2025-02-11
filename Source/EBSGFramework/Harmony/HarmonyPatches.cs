@@ -835,7 +835,7 @@ namespace EBSGFramework
                             GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
                             if (extension.carrierStat != null)
                             {
-                                float statValue = otherPawn.GetStatValue(extension.carrierStat, true, 60);
+                                float statValue = otherPawn.StatOrOne(extension.carrierStat);
                                 if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -843,14 +843,14 @@ namespace EBSGFramework
                             if (!extension.carrierStats.NullOrEmpty())
                                 foreach (StatDef stat in extension.carrierStats)
                                 {
-                                    float statValue = otherPawn.GetStatValue(stat, true, 60);
+                                    float statValue = otherPawn.StatOrOne(stat);
                                     if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                     else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                     else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                                 }
                             if (extension.otherStat != null)
                             {
-                                float statValue = ___pawn.GetStatValue(extension.otherStat, true, 60);
+                                float statValue = ___pawn.StatOrOne(extension.otherStat);
                                 if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -858,7 +858,7 @@ namespace EBSGFramework
                             if (!extension.otherStats.NullOrEmpty())
                                 foreach (StatDef stat in extension.otherStats)
                                 {
-                                    float statValue = ___pawn.GetStatValue(stat, true, 60);
+                                    float statValue = ___pawn.StatOrOne(stat);
                                     if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                     else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                     else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -886,7 +886,7 @@ namespace EBSGFramework
                         GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
                         if (extension.carrierStat != null)
                         {
-                            float statValue = romancer.GetStatValue(extension.carrierStat, true, 60);
+                            float statValue = romancer.StatOrOne(extension.carrierStat);
                             if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -894,14 +894,14 @@ namespace EBSGFramework
                         if (!extension.carrierStats.NullOrEmpty())
                             foreach (StatDef stat in extension.carrierStats)
                             {
-                                float statValue = romancer.GetStatValue(stat, true, 60);
+                                float statValue = romancer.StatOrOne(stat);
                                 if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                             }
                         if (extension.otherStat != null)
                         {
-                            float statValue = romanceTarget.GetStatValue(extension.otherStat, true, 60);
+                            float statValue = romanceTarget.StatOrOne(extension.otherStat);
                             if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -909,7 +909,7 @@ namespace EBSGFramework
                         if (!extension.otherStats.NullOrEmpty())
                             foreach (StatDef stat in extension.otherStats)
                             {
-                                float statValue = romanceTarget.GetStatValue(stat, true, 60);
+                                float statValue = romanceTarget.StatOrOne(stat);
                                 if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                                 else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                                 else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -1647,7 +1647,7 @@ namespace EBSGFramework
                         if (newResult[i].def == __instance.RaceProps.meatDef)
                         {
                             Thing thing = ThingMaker.MakeThing(meat);
-                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.MeatAmount) * efficiency * meatAmountFactor);
+                            thing.stackCount = GenMath.RoundRandom(__instance.StatOrOne(StatDefOf.MeatAmount) * efficiency * meatAmountFactor);
                             newResult.Replace(newResult[i], thing);
                             break;
                         }
@@ -1657,7 +1657,7 @@ namespace EBSGFramework
                         if (newResult[i].def == __instance.RaceProps.leatherDef)
                         {
                             Thing thing = ThingMaker.MakeThing(leather);
-                            thing.stackCount = GenMath.RoundRandom(__instance.GetStatValue(StatDefOf.LeatherAmount) * efficiency * leatherAmountFactor);
+                            thing.stackCount = GenMath.RoundRandom(__instance.StatOrOne(StatDefOf.LeatherAmount) * efficiency * leatherAmountFactor);
                             newResult.Replace(newResult[i], thing);
                             break;
                         }
@@ -1904,7 +1904,7 @@ namespace EBSGFramework
         public static void MeleeDPSPostfix(ref float __result, StatRequest req, bool applyPostProcess = true)
         {
             if (req.Thing is Pawn pawn)
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor, true, 60);
+                __result *= pawn.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor);
         }
 
         public static void FertilityByAgeAgeFactorPostfix(ref float __result, Pawn pawn)
@@ -2091,21 +2091,21 @@ namespace EBSGFramework
         public static void DeathrestEfficiencyPostfix(ref float __result, Pawn ___pawn)
         {
             if (___pawn != null)
-                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestEfficiency);
+                __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_DeathrestEfficiency);
         }
 
         public static void DeathrestNeedIntervalPostfix(ref Need_Deathrest __instance, Pawn ___pawn)
         {
             if (!__instance.Deathresting)
-                __instance.CurLevel += -1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestFallRate) - 1);
+                __instance.CurLevel += -1f / 30f / 400f * (___pawn.StatOrOne(EBSGDefOf.EBSG_DeathrestFallRate) - 1);
             else
-                __instance.CurLevel += 1f / 30f / 400f * (___pawn.GetStatValue(EBSGDefOf.EBSG_DeathrestRiseRate) - 1);
+                __instance.CurLevel += 1f / 30f / 400f * (___pawn.StatOrOne(EBSGDefOf.EBSG_DeathrestRiseRate) - 1);
         }
 
         public static void GrowthPointStatPostfix(ref float __result, Pawn ___pawn)
         {
             if (___pawn != null)
-                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_GrowthPointRate);
+                __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_GrowthPointRate);
         }
 
         public static void KillThirstPostfix(Pawn ___pawn)
@@ -2114,13 +2114,13 @@ namespace EBSGFramework
             {
                 Need killThirst = ___pawn.needs.TryGetNeed<Need_KillThirst>();
                 if (killThirst != null)
-                    ___pawn.needs.TryGetNeed<Need_KillThirst>().CurLevel -= 8.333333E-05f * (___pawn.GetStatValue(EBSGDefOf.EBSG_KillThirstRate) - 1);
+                    ___pawn.needs.TryGetNeed<Need_KillThirst>().CurLevel -= 8.333333E-05f * (___pawn.StatOrOne(EBSGDefOf.EBSG_KillThirstRate) - 1);
             }
         }
 
         public static void GainJoyPrefix(ref float amount, Pawn ___pawn)
         {
-            amount *= ___pawn.GetStatValue(EBSGDefOf.EBSG_JoyRiseRate);
+            amount *= ___pawn.StatOrOne(EBSGDefOf.EBSG_JoyRiseRate);
         }
 
         public static void IndoorsIntervalPostfix(Need __instance, Pawn ___pawn)
@@ -2136,12 +2136,12 @@ namespace EBSGFramework
 
                 if (num < 0f)
                 {
-                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_IndoorsFallRate) - 1;
+                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsFallRate) - 1;
                     __instance.CurLevel += num;
                 }
                 else
                 {
-                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_IndoorsRiseRate) - 1;
+                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsRiseRate) - 1;
                     __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
                 }
             }
@@ -2178,12 +2178,12 @@ namespace EBSGFramework
                 float curLevel = __instance.CurLevel;
                 if (num < 0f)
                 {
-                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_OutdoorsFallRate) - 1;
+                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsFallRate) - 1;
                     __instance.CurLevel += num;
                 }
                 else
                 {
-                    num *= ___pawn.GetStatValue(EBSGDefOf.EBSG_OutdoorsRiseRate) - 1;
+                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsRiseRate) - 1;
                     __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
                 }
             }
@@ -2203,12 +2203,12 @@ namespace EBSGFramework
                     curInstantLevel = ___pawn.needs.beauty.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.beauty.CurLevel)
                     {
-                        ___pawn.needs.beauty.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_BeautyRiseRate) - 1);
+                        ___pawn.needs.beauty.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyRiseRate) - 1);
                         ___pawn.needs.beauty.CurLevel = Mathf.Min(___pawn.needs.beauty.CurLevel, curInstantLevel);
                     }
                     if (curInstantLevel < ___pawn.needs.beauty.CurLevel)
                     {
-                        ___pawn.needs.beauty.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_BeautyFallRate) - 1);
+                        ___pawn.needs.beauty.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyFallRate) - 1);
                         ___pawn.needs.beauty.CurLevel = Mathf.Max(___pawn.needs.beauty.CurLevel, curInstantLevel);
                     }
                     break;
@@ -2217,12 +2217,12 @@ namespace EBSGFramework
                     curInstantLevel = ___pawn.needs.comfort.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.comfort.CurLevel)
                     {
-                        ___pawn.needs.comfort.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_ComfortRiseRate) - 1);
+                        ___pawn.needs.comfort.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortRiseRate) - 1);
                         ___pawn.needs.comfort.CurLevel = Mathf.Min(___pawn.needs.comfort.CurLevel, curInstantLevel);
                     }
                     if (curInstantLevel < ___pawn.needs.comfort.CurLevel)
                     {
-                        ___pawn.needs.comfort.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_ComfortFallRate) - 1);
+                        ___pawn.needs.comfort.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortFallRate) - 1);
                         ___pawn.needs.comfort.CurLevel = Mathf.Max(___pawn.needs.comfort.CurLevel, curInstantLevel);
                     }
                     break;
@@ -2231,12 +2231,12 @@ namespace EBSGFramework
                     curInstantLevel = ___pawn.needs.mood.CurInstantLevel;
                     if (curInstantLevel > ___pawn.needs.mood.CurLevel)
                     {
-                        ___pawn.needs.mood.CurLevel += increase * (___pawn.GetStatValue(EBSGDefOf.EBSG_MoodRiseRate) - 1);
+                        ___pawn.needs.mood.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodRiseRate) - 1);
                         ___pawn.needs.mood.CurLevel = Mathf.Min(___pawn.needs.mood.CurLevel, curInstantLevel);
                     }
                     if (curInstantLevel < ___pawn.needs.mood.CurLevel)
                     {
-                        ___pawn.needs.mood.CurLevel -= decrease * (___pawn.GetStatValue(EBSGDefOf.EBSG_MoodFallRate) - 1);
+                        ___pawn.needs.mood.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodFallRate) - 1);
                         ___pawn.needs.mood.CurLevel = Mathf.Max(___pawn.needs.mood.CurLevel, curInstantLevel);
                     }
                     break;
@@ -2246,32 +2246,32 @@ namespace EBSGFramework
         public static void BodyResourceGrowthSpeedPostfix(ref float __result, Pawn pawn)
         {
             if (pawn != null)
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed);
+                __result *= pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed);
         }
 
         public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
         {
 
             if (___pawn != null && ___pawn.GetPsylinkLevel() > 0)
-                __result = (__result + ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.GetStatValue(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
+                __result = (__result + ___pawn.StatOrOne(EBSGDefOf.EBSG_PsyfocusFallRateOffset)) * ___pawn.StatOrOne(EBSGDefOf.EBSG_PsyfocusFallRateFactor);
         }
 
         public static void FoodFallRatePostfix(Pawn ___pawn, ref float __result)
         {
-            __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_HungerRateFactor);
+            __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_HungerRateFactor);
         }
 
         public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
         {
             HediffSet hediffSet = pawn.health.hediffSet;
             if (hediffSet.BleedRateTotal < 0.1f)
-                HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.GetStatValue(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
+                HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.StatOrOne(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
         }
 
         public static void PawnHealthinessPostfix(Pawn __instance, ref float __result)
         {
             if (__instance != null)
-                __result *= __instance.GetStatValue(EBSGDefOf.EBSG_Healthiness, true, 60);
+                __result *= __instance.StatOrOne(EBSGDefOf.EBSG_Healthiness);
         }
 
         public static bool HasSpecialExplosion(Pawn pawn)
@@ -2363,37 +2363,37 @@ namespace EBSGFramework
                     {
                         if (!Cache.humanoidSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.humanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Animal)
                     {
                         if (!Cache.animalSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.animalSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.IsMechanoid)
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.mechanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Insect)
                     {
                         if (!Cache.insectSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.insectSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                     else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
                     {
                         if (!Cache.entitySlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.entitySlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Dryad)
                     {
                         if (!Cache.dryadSlayingStats.NullOrEmpty())
                             foreach (StatDef stat in Cache.dryadSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.GetStatValue(stat, true, 60));
+                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
                     }
                 }
 
@@ -2493,22 +2493,22 @@ namespace EBSGFramework
         public static void DamageAmountPostfix(ref float __result, DamageInfo __instance)
         {
             if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
-                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_OutgoingDamageFactor, true, 60);
+                __result *= pawn.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor);
         }
 
         public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result, GeneDef ___def)
         {
             if (___def.geneClass == typeof(Gene_Hemogen))
             {
-                __result += ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxOffset);
-                __result *= ___pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxFactor);
+                __result += ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxOffset);
+                __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxFactor);
             }
         }
 
         public static void SkillFallPrefix(Pawn ___pawn, ref float xp, bool direct)
         {
             if (xp < 0 && !direct)
-                xp *= ___pawn.GetStatValue(EBSGDefOf.EBSG_SkillLossRate, true, 60);
+                xp *= ___pawn.StatOrOne(EBSGDefOf.EBSG_SkillLossRate);
         }
 
         public static void PostAddGenePostfix(Pawn ___pawn)
@@ -2526,9 +2526,9 @@ namespace EBSGFramework
                 {
                     List<Thing> newResult = new List<Thing>(__result);
 
-                    float efficiency = ((recipeDef.efficiencyStat != null) ? worker.GetStatValue(recipeDef.efficiencyStat) : 1f);
+                    float efficiency = ((recipeDef.efficiencyStat != null) ? worker.StatOrOne(recipeDef.efficiencyStat) : 1f);
                     if (recipeDef.workTableEfficiencyStat != null && billGiver is Building_WorkTable thing)
-                        efficiency *= thing.GetStatValue(recipeDef.workTableEfficiencyStat, true, 60);
+                        efficiency *= thing.StatOrOne(recipeDef.workTableEfficiencyStat);
 
                     foreach (List<ThingDefCountClass> options in extension.thingCountList)
                     {

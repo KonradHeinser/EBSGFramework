@@ -77,20 +77,20 @@ namespace EBSGFramework
 
             if (caster != null && casterStat != null)
             {
-                float casterStatValue = caster.GetStatValue(casterStat);
+                float casterStatValue = caster.StatOrOne(casterStat);
                 if (!casterDivides) finalChance *= casterStatValue;
                 else if (casterStatValue <= 0) finalChance = 1; // Avoiding weird divisors making things act out of the expected
-                else finalChance /= caster.GetStatValue(casterStat);
+                else finalChance /= caster.StatOrOne(casterStat);
             }
 
             if (target != null && targetStat != null)
             {
-                float targetStatValue = target.GetStatValue(targetStat);
+                float targetStatValue = target.StatOrOne(targetStat);
                 if (!targetMultiplies)
                     // Avoids weird stat situations where we suddenly end up with a 0 or negative divisor by just making the result 1. That's presumably the general goal when lower is supposed to make the value higher
                     if (targetStatValue <= 0) finalChance = 1;
                     else finalChance /= targetStatValue;
-                else finalChance *= target.GetStatValue(targetStat);
+                else finalChance *= target.StatOrOne(targetStat);
             }
 
             if (finalChance <= 0) return 0f;
@@ -694,13 +694,13 @@ namespace EBSGFramework
 
         public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
         {
-            bool checkCaster = caster != null && (!psychic || caster.GetStatValue(StatDefOf.PsychicSensitivity) > 0);
-            bool checkTarget = target != null && (!psychic || target.GetStatValue(StatDefOf.PsychicSensitivity) > 0);
+            bool checkCaster = caster != null && (!psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0);
+            bool checkTarget = target != null && (!psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0);
 
             foreach (HediffToGive hediff in hediffs)
             {
                 if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && 
-                    (!hediff.psychic || caster.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
+                    (!hediff.psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
                     Hediff firstHediffOfDef = caster.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
                     if (hediff.replaceExisting)
@@ -745,7 +745,7 @@ namespace EBSGFramework
                     }
                 }
                 if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf &&
-                    (!hediff.psychic || target.GetStatValue(StatDefOf.PsychicSensitivity) > 0))
+                    (!hediff.psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
                     Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
                     if (hediff.replaceExisting)
@@ -1015,7 +1015,7 @@ namespace EBSGFramework
             {
                 foreach (StatCheck statCheck in statChecks)
                 {
-                    float statValue = pawn.GetStatValue(statCheck.stat);
+                    float statValue = pawn.StatOrOne(statCheck.stat);
                     if (statValue < statCheck.minStatValue)
                     {
                         return false;
@@ -1286,7 +1286,7 @@ namespace EBSGFramework
                 {
                     alreadyPickedNeeds.Add(need);
                     float offset = needOffset.offset;
-                    if (needOffset.offsetFactorStat != null) offset *= pawn.GetStatValue(needOffset.offsetFactorStat);
+                    if (needOffset.offsetFactorStat != null) offset *= pawn.StatOrOne(needOffset.offsetFactorStat);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
                     need.CurLevel += offset;
@@ -1303,7 +1303,7 @@ namespace EBSGFramework
                 if (HasRelatedGene(pawn, geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
                 {
                     float offset = geneEffect.offset;
-                    if (geneEffect.statFactor != null) offset *= pawn.GetStatValue(geneEffect.statFactor);
+                    if (geneEffect.statFactor != null) offset *= pawn.StatOrOne(geneEffect.statFactor);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
                     ResourceGene.OffsetResource(pawn, offset, resourceGene);
@@ -1805,46 +1805,46 @@ namespace EBSGFramework
             switch (statReq)
             {
                 case StatRequirement.Always:
-                    return thing.GetStatValue(statDef);
+                    return thing.GetStatValue(statDef, true, 60);
                 case StatRequirement.Lower:
-                    return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                 case StatRequirement.Higher:
-                    return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                 case StatRequirement.Pawn:
                     if (thing is Pawn)
-                        return thing.GetStatValue(statDef);
+                        return thing.GetStatValue(statDef, true, 60);
                     return 1f;
                 case StatRequirement.PawnLower:
                     if (thing is Pawn)
-                        return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                        return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.PawnHigher:
                     if (thing is Pawn)
-                        return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                        return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.NonPawn:
                     if (thing is Pawn)
                         return 1f;
-                    return thing.GetStatValue(statDef);
+                    return thing.GetStatValue(statDef, true, 60);
                 case StatRequirement.NonPawnLower:
                     if (thing is Pawn)
                         return 1f;
-                    return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                 case StatRequirement.NonPawnHigher:
                     if (thing is Pawn)
                         return 1f;
-                    return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                    return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                 case StatRequirement.Humanlike:
                     if (thing is Pawn p && p.RaceProps.Humanlike)
-                        return thing.GetStatValue(statDef);
+                        return thing.GetStatValue(statDef, true, 60);
                     return 1f;
                 case StatRequirement.HumanlikeLower:
                     if (thing is Pawn l && l.RaceProps.Humanlike)
-                        return Mathf.Min(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                        return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.HumanlikeHigher:
                     if (thing is Pawn h && h.RaceProps.Humanlike)
-                        return Mathf.Max(thing.GetStatValue(statDef), statDef.defaultBaseValue);
+                        return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
                     return 1f;
             }
             return 1f;
@@ -2166,20 +2166,20 @@ namespace EBSGFramework
                     if (target.Thing != null && target.Thing is Pawn pawn)
                     {
                         if (abilityEffect is CompAbilityEffect_GiveHediff giveComp &&
-                            ((giveComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                            giveComp.Props.durationMultiplier != null && pawn.GetStatValue(giveComp.Props.durationMultiplier) <= 0))
+                            ((giveComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
+                            giveComp.Props.durationMultiplier != null && pawn.StatOrOne(giveComp.Props.durationMultiplier) <= 0))
                             return false;
                         if (abilityEffect is CompAbilityEffect_GiveMultipleHediffs giveMultiComp &&
-                            ((giveMultiComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                            giveMultiComp.Props.durationMultiplier != null && pawn.GetStatValue(giveMultiComp.Props.durationMultiplier) <= 0))
+                            ((giveMultiComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
+                            giveMultiComp.Props.durationMultiplier != null && pawn.StatOrOne(giveMultiComp.Props.durationMultiplier) <= 0))
                             return false;
                         if (abilityEffect is CompAbilityEffect_BloodDrain bloodComp &&
-                            ((bloodComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
+                            ((bloodComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
                             (bloodComp.Props.replacementHediff != null && pawn.HasHediff(bloodComp.Props.replacementHediff))))
                             return false;
                         if (abilityEffect is CompAbilityEffect_Stun stunComp &&
-                            ((stunComp.Props.psychic && pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) ||
-                            (stunComp.Props.durationMultiplier != null && pawn.GetStatValue(stunComp.Props.durationMultiplier) <= 0) ||
+                            ((stunComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
+                            (stunComp.Props.durationMultiplier != null && pawn.StatOrOne(stunComp.Props.durationMultiplier) <= 0) ||
                             (ability.lastCastTick >= 0 && ability.def.EffectDuration() > 0 &&
                             Find.TickManager.TicksGame - ability.lastCastTick < ability.def.EffectDuration())))
                             return false;

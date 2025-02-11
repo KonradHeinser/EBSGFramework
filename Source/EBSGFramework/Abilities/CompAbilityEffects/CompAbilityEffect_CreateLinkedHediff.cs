@@ -52,8 +52,8 @@ namespace EBSGFramework
                     float num = parent.def.EffectDuration(parent.pawn);
                     if (Props.psychic)
                     {
-                        num *= targetPawn.GetStatValue(StatDefOf.PsychicSensitivity);
-                        num *= caster.GetStatValue(StatDefOf.PsychicSensitivity);
+                        num *= targetPawn.StatOrOne(StatDefOf.PsychicSensitivity);
+                        num *= caster.StatOrOne(StatDefOf.PsychicSensitivity);
                     }
                     hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                 }
@@ -76,8 +76,8 @@ namespace EBSGFramework
                     float num = parent.def.EffectDuration(parent.pawn);
                     if (Props.psychic)
                     {
-                        num *= caster.GetStatValue(StatDefOf.PsychicSensitivity);
-                        num *= targetPawn.GetStatValue(StatDefOf.PsychicSensitivity);
+                        num *= caster.StatOrOne(StatDefOf.PsychicSensitivity);
+                        num *= targetPawn.StatOrOne(StatDefOf.PsychicSensitivity);
                     }
                     hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                 }

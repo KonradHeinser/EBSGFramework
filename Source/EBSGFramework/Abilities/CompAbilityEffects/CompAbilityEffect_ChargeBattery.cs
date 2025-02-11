@@ -15,7 +15,7 @@ namespace EBSGFramework
                 if (battery != null)
                 {
                     float charge = Props.batteryChangeAmount;
-                    if (Props.efficiencyFactorStat != null) charge *= parent.pawn.GetStatValue(Props.efficiencyFactorStat);
+                    if (Props.efficiencyFactorStat != null) charge *= parent.pawn.StatOrOne(Props.efficiencyFactorStat);
                     battery.AddEnergy(charge);
                 }
             }
@@ -37,7 +37,7 @@ namespace EBSGFramework
                 if (battery != null)
                 {
                     float charge = Props.batteryChangeAmount;
-                    if (Props.efficiencyFactorStat != null) charge *= parent.pawn.GetStatValue(Props.efficiencyFactorStat);
+                    if (Props.efficiencyFactorStat != null) charge *= parent.pawn.StatOrOne(Props.efficiencyFactorStat);
 
                     if (charge < 0 && battery.StoredEnergy + (charge * battery.Props.efficiency) < 0)
                     {

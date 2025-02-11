@@ -361,7 +361,7 @@ namespace EBSGFramework
             {
                 foreach (StatCheck statCheck in Props.casterStatLimiters)
                 {
-                    float statValue = pawn.GetStatValue(statCheck.stat);
+                    float statValue = pawn.StatOrOne(statCheck.stat);
                     if (statValue < statCheck.minStatValue)
                     {
                         explanation = "AbilityCasterLowCheck".Translate(statCheck.stat.LabelCap);
@@ -780,7 +780,7 @@ namespace EBSGFramework
                 {
                     foreach (StatCheck statCheck in Props.targetStatLimiters)
                     {
-                        float statValue = pawn.GetStatValue(statCheck.stat);
+                        float statValue = pawn.StatOrOne(statCheck.stat);
                         if (statValue < statCheck.minStatValue)
                         {
                             explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
@@ -936,7 +936,7 @@ namespace EBSGFramework
                         }
                         else
                         {
-                            float statValue = thing.GetStatValue(statCheck.stat);
+                            float statValue = thing.StatOrOne(statCheck.stat);
                             if (statValue < statCheck.minStatValue)
                             {
                                 explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
