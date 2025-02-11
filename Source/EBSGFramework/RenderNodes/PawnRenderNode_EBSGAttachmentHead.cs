@@ -17,7 +17,7 @@ namespace EBSGFramework
             if (props is PawnRenderNodeProperties_EBSG EBSGProps)
             {
                 Log.Message("A");
-                if (pawn.PawnHasApparelOnLayer(null, EBSGProps.hiddenByLayers))
+                if (pawn.PawnHasApparelOnLayer(null, EBSGProps.hiddenByLayers, EBSGProps.relatedBodyPartGroups, EBSGProps.apparelExceptions))
                     return null;
                 Log.Message("B");
                 Shader shader = EBSGProps.cutoutComplex ? ShaderDatabase.CutoutComplex : ShaderFor(pawn);

@@ -15,6 +15,10 @@ namespace EBSGFramework
 
         public List<ApparelLayerDef> hiddenByLayers;
 
+        public List<BodyPartGroupDef> relatedBodyPartGroups;
+
+        public List<ThingDef> apparelExceptions;
+
         public int interval = 60;
 
         public string desMale;

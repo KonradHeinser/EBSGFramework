@@ -98,22 +98,44 @@ namespace EBSGFramework
             return finalChance;
         }
 
-        public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null)
+        public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null, List<BodyPartGroupDef> groups = null, List<ThingDef> exceptions = null)
         {
             if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 
                 return false;
 
             if (layer != null)
                 foreach (Apparel a in pawn.apparel.WornApparel)
-                    if (a.def.apparel.layers.Contains(layer)) 
+                {
+                    if (!exceptions.NullOrEmpty() && exceptions.Contains(a.def))
+                        continue;
+
+                    if (a.def.apparel.layers.Contains(layer) && ApparelHasAnyOfGroup(a, groups))
                         return true;
+                }
 
             if (!layers.NullOrEmpty())
                 foreach (Apparel a in pawn.apparel.WornApparel)
+                {
+                    if (!exceptions.NullOrEmpty() && exceptions.Contains(a.def))
+                        continue;
+
                     foreach (var l in a.def.apparel.layers)
-                        if (layers.Contains(l))
+                        if (layers.Contains(l) && ApparelHasAnyOfGroup(a, groups))
                             return true;
-            
+                }
+
+            return false;
+        }
+
+        public static bool ApparelHasAnyOfGroup(Apparel apparel, List<BodyPartGroupDef> groups)
+        {
+            if (groups.NullOrEmpty()) return true;
+            if (apparel.def.apparel.bodyPartGroups.NullOrEmpty()) return false;
+
+            foreach (var group in apparel.def.apparel.bodyPartGroups)
+                if (groups.Contains(group))
+                    return true;
+
             return false;
         }
 
