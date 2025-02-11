@@ -15,10 +15,8 @@ namespace EBSGFramework
         {
             if (props is PawnRenderNodeProperties_EBSG EBSGProps)
             {
-                Log.Message("C");
                 if (pawn.PawnHasApparelOnLayer(null, EBSGProps.hiddenByLayers, EBSGProps.relatedBodyPartGroups, EBSGProps.apparelExceptions))
                     return null;
-                Log.Message("D");
                 Shader shader = EBSGProps.cutoutComplex ? ShaderDatabase.CutoutComplex : ShaderFor(pawn);
                 if (EBSGProps.changing && gene != null && gene is SpawnAgeLimiter ebsgGene)
                 {
