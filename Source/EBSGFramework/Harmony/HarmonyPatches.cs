@@ -171,8 +171,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.HealthScale)),
-                postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
+            //harmony.Patch(AccessTools.Method(typeof(BodyPartDef), nameof(BodyPartDef.GetMaxHealth)),
+            //    postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
                 postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
@@ -2268,10 +2268,9 @@ namespace EBSGFramework
                 HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.StatOrOne(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
         }
 
-        public static void PawnHealthinessPostfix(Pawn __instance, ref float __result)
+        public static void PawnHealthinessPostfix(Pawn pawn, ref float __result)
         {
-            if (__instance != null)
-                __result *= __instance.StatOrOne(EBSGDefOf.EBSG_Healthiness);
+            __result *= pawn.GetStatValue(EBSGDefOf.EBSG_Healthiness, true, 2500);
         }
 
         public static bool HasSpecialExplosion(Pawn pawn)
