@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RimWorld;
 using UnityEngine;
-using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -28,7 +23,6 @@ namespace EBSGFramework
         public float Chance(Pawn caster, Thing target)
         {
             float chance = baseSuccessChance;
-            Log.Message($"Chance A: {chance}");
             if (caster != null && casterStatChance != null)
             {
 
@@ -51,7 +45,6 @@ namespace EBSGFramework
                         break;
                 }
             }
-            Log.Message($"Chance B: {chance}");
             if (target != null && targetStatChance != null)
             {
                 float val = target.StatOrOne(targetStatChance);
@@ -73,7 +66,6 @@ namespace EBSGFramework
                         break;
                 }
             }
-            Log.Message($"Chance C: {chance}");
             return Mathf.Clamp01(chance);
         }
 
