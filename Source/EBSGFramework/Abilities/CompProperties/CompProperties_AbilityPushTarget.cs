@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         public bool flyWithCarriedThing = true;
 
+        public SuccessChance successChance;
+
         public CompProperties_AbilityPushTarget()
         {
             compClass = typeof(CompAbilityEffect_PushTarget);

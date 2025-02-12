@@ -10,6 +10,8 @@ namespace EBSGFramework
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
+            if (Props.successChance != null && target.Thing != null)
+                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
             if (target.Pawn != null && (Props.baseSuccessChance != 1 || Props.casterStatChance != null || Props.targetStatChance != null))
             {
                 float finalChance = EBSGUtilities.AbilityCompSuccessChance(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies);
@@ -21,6 +23,9 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            if (Props.successChance?.Success(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) == false)
+                return;
+
             if (target.Pawn == null || target.Pawn == parent.pawn) return;
             if (EBSGUtilities.AbilityCompSucceeds(Props.baseSuccessChance, parent.pawn, Props.casterStatChance, Props.casterStatDivides, target.Pawn, Props.targetStatChance, Props.targetStatMultiplies))
             {

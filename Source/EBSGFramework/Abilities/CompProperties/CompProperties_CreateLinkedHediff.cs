@@ -14,6 +14,8 @@ namespace EBSGFramework
 
         public bool targetHediffOnBrain = false;
 
+        public SuccessChance successChance;
+
         public float baseSuccessChance = 1f;
 
         public StatDef casterStatChance;

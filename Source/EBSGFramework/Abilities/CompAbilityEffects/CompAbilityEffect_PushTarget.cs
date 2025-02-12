@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System;
+using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -9,6 +10,9 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            if (Props.successChance?.Success(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) == false)
+                return;
+
             base.Apply(target, dest);
             LocalTargetInfo destination = GetDestination(dest.IsValid ? dest : target);
             if (!destination.IsValid)
@@ -78,7 +82,12 @@ namespace EBSGFramework
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
-            return CanMoveTarget(target).Reason;
+            AcceptanceReport report = CanMoveTarget(target);
+            if (!report.Accepted)
+                return CanMoveTarget(target).Reason;
+            if (Props.successChance != null && target.Thing != null)
+                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
+            return null;
         }
     }
 }
