@@ -185,8 +185,6 @@ namespace EBSGFramework
             // Vanilla code bug fixes
             harmony.Patch(AccessTools.Method(typeof(Widgets), nameof(Widgets.DefIcon)),
                 prefix: new HarmonyMethod(patchType, nameof(DefIconPrefix)));
-            harmony.Patch(AccessTools.Method(typeof(Widgets), "CreateMouseAttachedLabelRect"),
-                postfix: new HarmonyMethod(patchType, nameof(MouseAttachedLabelPostfix)));
 
             // Slavery Harmony Patches
             if (ModsConfig.IdeologyActive)
@@ -210,11 +208,6 @@ namespace EBSGFramework
                 }
             }
             return true;
-        }
-
-        public static void MouseAttachedLabelPostfix(ref Rect __result)
-        {
-            __result.y -= __result.height/2f;
         }
 
         // EBSG Framework stuff
