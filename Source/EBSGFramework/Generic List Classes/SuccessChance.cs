@@ -15,11 +15,11 @@ namespace EBSGFramework
 
         public StatDef casterStatChance;
 
-        public bool casterStatDivides = false;
+        public StatEffect casterStatEffect = StatEffect.Multiply;
 
         public StatDef targetStatChance;
 
-        public bool targetStatMultiplies = false;
+        public StatEffect targetStatEffect = StatEffect.Divide;
 
         public string successMessage = null;
 
@@ -28,21 +28,52 @@ namespace EBSGFramework
         public float Chance(Pawn caster, Thing target)
         {
             float chance = baseSuccessChance;
-
+            Log.Message($"Chance A: {chance}");
             if (caster != null && casterStatChance != null)
             {
-                float val = caster.StatOrOne(casterStatChance);
-                if (!casterStatDivides || val == 0) chance *= val;
-                else chance /= val;
-            }
 
+                float val = caster.StatOrOne(casterStatChance);
+                switch (casterStatEffect)
+                {
+                    case StatEffect.Divide:
+                        if (val != 0)
+                            chance /= val;
+                        break;
+                    case StatEffect.Multiply:
+                        chance *= val;
+                        break;
+                    case StatEffect.OneMinusDivide:
+                        if (val != 1)
+                            chance /= (1 - val);
+                        break;
+                    case StatEffect.OneMinusMultiply:
+                        chance *= (1 - val);
+                        break;
+                }
+            }
+            Log.Message($"Chance B: {chance}");
             if (target != null && targetStatChance != null)
             {
                 float val = target.StatOrOne(targetStatChance);
-                if (!targetStatMultiplies && val != 0) chance /= val; 
-                else chance *= val;
+                switch (targetStatEffect)
+                {
+                    case StatEffect.Divide:
+                        if (val != 0)
+                            chance /= val;
+                        break;
+                    case StatEffect.Multiply:
+                        chance *= val;
+                        break;
+                    case StatEffect.OneMinusDivide:
+                        if (val != 1)
+                            chance /= (1 - val);
+                        break;
+                    case StatEffect.OneMinusMultiply:
+                        chance *= (1 - val);
+                        break;
+                }
             }
-
+            Log.Message($"Chance C: {chance}");
             return Mathf.Clamp01(chance);
         }
 

@@ -76,6 +76,7 @@
     <Compile Include="DamageModifyingStatsExtension.cs" />
     <Compile Include="Generic List Classes\SkillLevel.cs" />
     <Compile Include="Generic List Classes\StageOverlay.cs" />
+    <Compile Include="Generic List Classes\StatEffect.cs" />
     <Compile Include="Generic List Classes\StatRequirement.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
