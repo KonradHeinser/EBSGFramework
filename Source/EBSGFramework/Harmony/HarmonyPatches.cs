@@ -93,6 +93,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(TrySatisfyChemicalDependenciesPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GenerateInitialHediffs"),
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
+                postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1579,7 +1581,8 @@ namespace EBSGFramework
                     PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
                     if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
                         (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
-                        (extension.partnerRequiresOneOf.NullOrEmpty() || Partner.HasAnyOfRelatedGene(extension.partnerRequiresOneOf)))
+                        (extension.partnerRequiresOneOf.NullOrEmpty() || Partner.HasAnyOfRelatedGene(extension.partnerRequiresOneOf)) &&
+                        (extension.partnerHasNoneOf.NullOrEmpty() || !Partner.HasAnyOfRelatedGene(extension.partnerHasNoneOf)))
                     {
                         pawn.AddHediffToParts(extension.hediffsToApplySelf);
                         Partner.AddHediffToParts(extension.hediffsToApplyPartner);
@@ -1594,6 +1597,12 @@ namespace EBSGFramework
                         }
                         if (extension.filth != null && pawn.Spawned)
                             FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
+
+                        if (extension.damageToSelf != null && Rand.Chance(extension.selfDamageChance))
+                            pawn.TakeDamage(new DamageInfo(extension.damageToSelf, extension.damageToSelfAmount));
+
+                        if (extension.damageToPartner != null && Rand.Chance(extension.partnerDamageChance))
+                            Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount));
                     }
                 }
             }
@@ -1755,6 +1764,15 @@ namespace EBSGFramework
             if (pawn.kindDef.HasModExtension<ForceStartingHediffsExtension>() && request.AllowedDevelopmentalStages.Newborn() &&
                 !pawn.kindDef.startingHediffs.NullOrEmpty())
                 HealthUtility.AddStartingHediffs(pawn, pawn.kindDef.startingHediffs);
+        }
+
+        public static void WarmupInterruptPostfix(Verb ___verb)
+        {
+            if (___verb is Verb_CastAbility abilityVerb)
+            {
+                CompAbilityEffect_DamageOverTime dot = abilityVerb.ability.CompOfType<CompAbilityEffect_DamageOverTime>();
+                dot?.Interrupted();
+            }
         }
 
         public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)

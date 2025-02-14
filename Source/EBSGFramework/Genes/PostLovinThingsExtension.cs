@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public List<GeneDef> partnerRequiresOneOf; // If the partner doesn't have one of these genes, then this stuff doesn't occur
 
+        public List<GeneDef> partnerHasNoneOf;
+
         public Gender gender = Gender.None;
 
         public Gender partnerGender = Gender.None;
@@ -20,5 +22,17 @@ namespace EBSGFramework
         public ThingDef filth;
 
         public IntRange filthCount = new IntRange(4, 7);
+
+        public DamageDef damageToSelf;
+
+        public int damageToSelfAmount = -1;
+
+        public float selfDamageChance = 1f;
+
+        public DamageDef damageToPartner;
+
+        public int damageAmount = -1;
+
+        public float partnerDamageChance = 1f;
     }
 }
