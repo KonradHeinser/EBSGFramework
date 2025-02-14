@@ -1575,60 +1575,64 @@ namespace EBSGFramework
 
         public static void PostLovinPostfix(Pawn pawn, JobDriver_Lovin __instance)
         {
-            if (Cache?.lovinAddinGenes.NullOrEmpty() == false && pawn.PawnHasAnyOfGenes(out _, Cache.lovinAddinGenes))
+            if (Cache?.lovinAddinGenes.NullOrEmpty() == false)
             {
                 Pawn Partner = (Pawn)(Thing)__instance.job.GetTarget(TargetIndex.A);
-                foreach (GeneDef gene in pawn.GetAllGenesOnListFromPawn(Cache.lovinAddinGenes))
-                {
-                    PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
-                    if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
-                        (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
-                        (extension.partnerRequiresOneOf.NullOrEmpty() || Partner.HasAnyOfRelatedGene(extension.partnerRequiresOneOf)) &&
-                        (extension.partnerHasNoneOf.NullOrEmpty() || !Partner.HasAnyOfRelatedGene(extension.partnerHasNoneOf)))
+                if (pawn.PawnHasAnyOfGenes(out _, Cache.lovinAddinGenes))
+                    foreach (GeneDef gene in pawn.GetAllGenesOnListFromPawn(Cache.lovinAddinGenes))
                     {
-                        pawn.AddHediffToParts(extension.hediffsToApplySelf);
-                        Partner.AddHediffToParts(extension.hediffsToApplyPartner);
-                        if (!extension.spawnThings.NullOrEmpty())
+                        PostLovinThingsExtension extension = gene.GetModExtension<PostLovinThingsExtension>();
+                        if ((extension.gender == Gender.None || pawn.gender == extension.gender) &&
+                            (extension.partnerGender == Gender.None || Partner.gender == extension.partnerGender) &&
+                            (extension.partnerRequiresOneOf.NullOrEmpty() || Partner.HasAnyOfRelatedGene(extension.partnerRequiresOneOf)) &&
+                            (extension.partnerHasNoneOf.NullOrEmpty() || !Partner.HasAnyOfRelatedGene(extension.partnerHasNoneOf)))
                         {
-                            if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, Partner))
-                                if (pawn.Spawned)
-                                    foreach (Thing thing in things)
-                                        GenSpawn.Spawn(thing, pawn.Position, pawn.Map);
-                                else
-                                    pawn.inventory.innerContainer.TryAddRangeOrTransfer(things);
-                        }
-                        if (extension.filth != null && pawn.Spawned)
-                            FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
+                            pawn.AddHediffToParts(extension.hediffsToApplySelf);
+                            Partner.AddHediffToParts(extension.hediffsToApplyPartner);
+                            if (!extension.spawnThings.NullOrEmpty())
+                            {
+                                if (EBSGUtilities.GenerateThingFromCountClass(extension.spawnThings, out var things, pawn, Partner))
+                                    if (pawn.Spawned)
+                                        foreach (Thing thing in things)
+                                            GenSpawn.Spawn(thing, pawn.Position, pawn.Map);
+                                    else
+                                        pawn.inventory.innerContainer.TryAddRangeOrTransfer(things);
+                            }
+                            if (extension.filth != null && pawn.Spawned)
+                                FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
 
-                        if (extension.damageToSelf != null && Rand.Chance(extension.selfDamageChance))
-                        {
-                            BodyPartRecord hitPart = null;
-                            if (!extension.selfBodyParts.NullOrEmpty())
-                                hitPart = pawn.GetSemiRandomPartFromList(extension.selfBodyParts);
-                            pawn.TakeDamage(new DamageInfo(extension.damageToSelf, extension.damageToSelfAmount, hitPart: hitPart));
-                        }
+                            if (extension.damageToSelf != null && Rand.Chance(extension.selfDamageChance))
+                            {
+                                BodyPartRecord hitPart = null;
+                                if (!extension.selfBodyParts.NullOrEmpty())
+                                    hitPart = pawn.GetSemiRandomPartFromList(extension.selfBodyParts);
+                                pawn.TakeDamage(new DamageInfo(extension.damageToSelf, extension.damageToSelfAmount, hitPart: hitPart));
+                            }
 
-                        if (extension.damageToPartner != null && Rand.Chance(extension.partnerDamageChance))
-                        {
-                            BodyPartRecord hitPart = null;
-                            if (!extension.partnerBodyParts.NullOrEmpty())
-                                hitPart = Partner.GetSemiRandomPartFromList(extension.partnerBodyParts);
-                            Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount, hitPart: hitPart));
-                        }
+                            if (extension.damageToPartner != null && Rand.Chance(extension.partnerDamageChance))
+                            {
+                                BodyPartRecord hitPart = null;
+                                if (!extension.partnerBodyParts.NullOrEmpty())
+                                    hitPart = Partner.GetSemiRandomPartFromList(extension.partnerBodyParts);
+                                Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount, hitPart: hitPart));
+                            }
 
-                        if (extension.selfMemory != null && pawn.needs?.mood?.thoughts?.memories != null)
-                        {
-                            pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, Partner);
-                            pawn.needs.mood.thoughts.memories.TryGainMemory(extension.selfMemory, Partner);
-                        }
+                            if (extension.selfMemory != null && pawn.needs?.mood?.thoughts?.memories != null)
+                            {
+                                pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, Partner);
+                                pawn.needs.mood.thoughts.memories.TryGainMemory(extension.selfMemory, Partner);
+                            }
 
-                        if (extension.partnerMemory != null && Partner.needs?.mood?.thoughts?.memories != null)
-                        {
-                            Partner.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, pawn);
-                            Partner.needs.mood.thoughts.memories.TryGainMemory(extension.partnerMemory, pawn);
+                            if (extension.partnerMemory != null && Partner.needs?.mood?.thoughts?.memories != null)
+                            {
+                                Partner.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, pawn);
+                                Partner.needs.mood.thoughts.memories.TryGainMemory(extension.partnerMemory, pawn);
+                            }
                         }
                     }
-                }
+
+                if (Cache?.partnerLovinMemoryReplacer.NullOrEmpty() == false && Partner.HasAnyOfRelatedGene(Cache.partnerLovinMemoryReplacer))
+                    pawn.needs?.mood?.thoughts?.memories?.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, Partner);
             }
         }
 

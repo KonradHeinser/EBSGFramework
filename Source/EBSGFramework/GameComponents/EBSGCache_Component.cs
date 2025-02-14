@@ -54,6 +54,7 @@ namespace EBSGFramework
 
         public List<GeneDef> pregnancyReplacingGenes = new List<GeneDef>();
         public List<GeneDef> lovinAddinGenes = new List<GeneDef>();
+        public List<GeneDef> partnerLovinMemoryReplacer = new List<GeneDef>();
         public List<GeneDef> butcherProductGenes = new List<GeneDef>();
         public List<GeneDef> leatherProductGenes = new List<GeneDef>();
 
@@ -362,6 +363,7 @@ namespace EBSGFramework
             
             pregnancyReplacingGenes = new List<GeneDef>();
             lovinAddinGenes = new List<GeneDef>();
+            partnerLovinMemoryReplacer = new List<GeneDef>();
             butcherProductGenes = new List<GeneDef>();
             leatherProductGenes = new List<GeneDef>();
             outgoingDamageStatGenes = new List<GeneDef>();
@@ -438,8 +440,13 @@ namespace EBSGFramework
                 if (gene.HasModExtension<PregnancyReplacerExtension>())
                     pregnancyReplacingGenes.Add(gene);
 
-                if (gene.HasModExtension<PostLovinThingsExtension>())
+                PostLovinThingsExtension lovinExtension = gene.GetModExtension<PostLovinThingsExtension>();
+                if (lovinExtension != null)
+                {
                     lovinAddinGenes.Add(gene);
+                    if (lovinExtension.partnerMemory != null)
+                        partnerLovinMemoryReplacer.Add(gene);
+                }
 
                 ButcherProductExtension butcher = gene.GetModExtension<ButcherProductExtension>();
                 if (butcher != null)

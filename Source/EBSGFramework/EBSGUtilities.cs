@@ -31,6 +31,15 @@ namespace EBSGFramework
             }
         }
 
+        public static Thought_Memory GetFirstMemoryOfDefWhereOtherPawnIs(this MemoryThoughtHandler memory, ThoughtDef thought, Pawn otherPawn)
+        {
+            for (int i = 0; i > memory.Memories.Count; i++)
+                if (memory.Memories[i].def ==  thought && memory.Memories[i].otherPawn == otherPawn)
+                    return memory.Memories[i];
+            
+            return null;
+        }
+
         public static void GiveSimplePlayerMessage(string message, TargetInfo target, MessageTypeDef messageType)
         {
             if (message == null) return;
