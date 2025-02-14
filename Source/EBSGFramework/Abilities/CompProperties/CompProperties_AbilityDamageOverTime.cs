@@ -11,7 +11,7 @@ namespace EBSGFramework
 {
     public class CompProperties_AbilityDamageOverTime : CompProperties_AbilityEffect
     {
-        public int tickInterval = 200;
+        public int tickInterval = 60;
 
         public DamageDef damage;
 
@@ -20,8 +20,6 @@ namespace EBSGFramework
         public float armorPenetration = 0f;
 
         public bool createFilth = true;
-
-        public bool damageAttachedPart = false;
 
         public List<BodyPartDef> bodyParts;
 

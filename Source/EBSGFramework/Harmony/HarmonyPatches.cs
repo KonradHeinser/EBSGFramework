@@ -1615,6 +1615,18 @@ namespace EBSGFramework
                                 hitPart = Partner.GetSemiRandomPartFromList(extension.partnerBodyParts);
                             Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount, hitPart: hitPart));
                         }
+
+                        if (extension.selfMemory != null && pawn.needs?.mood?.thoughts?.memories != null)
+                        {
+                            pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, Partner);
+                            pawn.needs.mood.thoughts.memories.TryGainMemory(extension.selfMemory, Partner);
+                        }
+
+                        if (extension.partnerMemory != null && Partner.needs?.mood?.thoughts?.memories != null)
+                        {
+                            Partner.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.GotSomeLovin, pawn);
+                            Partner.needs.mood.thoughts.memories.TryGainMemory(extension.partnerMemory, pawn);
+                        }
                     }
                 }
             }
@@ -1778,12 +1790,12 @@ namespace EBSGFramework
                 HealthUtility.AddStartingHediffs(pawn, pawn.kindDef.startingHediffs);
         }
 
-        public static void WarmupInterruptPostfix(Verb ___verb)
+        public static void WarmupInterruptPostfix(Verb ___verb, LocalTargetInfo ___focusTarg)
         {
             if (___verb is Verb_CastAbility abilityVerb)
             {
                 CompAbilityEffect_DamageOverTime dot = abilityVerb.ability.CompOfType<CompAbilityEffect_DamageOverTime>();
-                dot?.Interrupted();
+                dot?.Interrupted(___focusTarg.Pawn);
             }
         }
 

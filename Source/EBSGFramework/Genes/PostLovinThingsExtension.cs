@@ -1,5 +1,6 @@
-﻿using Verse;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RimWorld;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -8,6 +9,10 @@ namespace EBSGFramework
         public List<GeneDef> partnerRequiresOneOf; // If the partner doesn't have one of these genes, then this stuff doesn't occur
 
         public List<GeneDef> partnerHasNoneOf;
+
+        public ThoughtDef selfMemory;
+
+        public ThoughtDef partnerMemory;
 
         public Gender gender = Gender.None;
 
