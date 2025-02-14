@@ -27,11 +27,15 @@ namespace EBSGFramework
 
         public int damageToSelfAmount = -1;
 
+        public List<BodyPartDef> selfBodyParts;
+
         public float selfDamageChance = 1f;
 
         public DamageDef damageToPartner;
 
         public int damageAmount = -1;
+
+        public List<BodyPartDef> partnerBodyParts;
 
         public float partnerDamageChance = 1f;
     }

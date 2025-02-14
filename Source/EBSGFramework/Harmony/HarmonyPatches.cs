@@ -8,6 +8,8 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using static HarmonyLib.Code;
+using static UnityEngine.GraphicsBuffer;
 
 namespace EBSGFramework
 {
@@ -1599,10 +1601,20 @@ namespace EBSGFramework
                             FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, extension.filth, extension.filthCount.RandomInRange);
 
                         if (extension.damageToSelf != null && Rand.Chance(extension.selfDamageChance))
-                            pawn.TakeDamage(new DamageInfo(extension.damageToSelf, extension.damageToSelfAmount));
+                        {
+                            BodyPartRecord hitPart = null;
+                            if (!extension.selfBodyParts.NullOrEmpty())
+                                hitPart = pawn.GetSemiRandomPartFromList(extension.selfBodyParts);
+                            pawn.TakeDamage(new DamageInfo(extension.damageToSelf, extension.damageToSelfAmount, hitPart: hitPart));
+                        }
 
                         if (extension.damageToPartner != null && Rand.Chance(extension.partnerDamageChance))
-                            Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount));
+                        {
+                            BodyPartRecord hitPart = null;
+                            if (!extension.partnerBodyParts.NullOrEmpty())
+                                hitPart = Partner.GetSemiRandomPartFromList(extension.partnerBodyParts);
+                            Partner.TakeDamage(new DamageInfo(extension.damageToPartner, extension.damageAmount, hitPart: hitPart));
+                        }
                     }
                 }
             }
