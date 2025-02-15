@@ -44,13 +44,12 @@ namespace EBSGFramework
                 if (!pawn.CheckHediffTrio(evo.hasAnyOfHediff, evo.hasAllOfHediff, evo.hasNoneOfHediff))
                     continue;
 
-                if (!pawn.AllSkillLevelsMet(evo.skillRequirements))
+                if (!pawn.AllSkillLevelsMet(evo.skillRequirements, false))
                     continue;
 
                 if (evo.validAges != FloatRange.Zero && !evo.validAges.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
                     continue;
 
-                
                 if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                     Messages.Message(evo.message.TranslateOrLiteral(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
 

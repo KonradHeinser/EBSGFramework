@@ -1223,7 +1223,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLevels)
+        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLevels, bool includeAptitudes = true)
         {
             if (skillLevels.NullOrEmpty() || pawn.skills == null) return true;
 
@@ -1238,7 +1238,7 @@ namespace EBSGFramework
                     continue;
                 }
 
-                if (!skillLevel.range.Includes(skill.Level))
+                if (!skillLevel.range.Includes(skill.GetLevel(includeAptitudes)))
                     return false;
             }
 
