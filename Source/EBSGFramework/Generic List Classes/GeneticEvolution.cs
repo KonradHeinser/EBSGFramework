@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         public bool skipIfCarrierHasResult = false;
 
-        public Inheritance inheritable;
+        public Inheritance inheritable = Inheritance.Same;
 
         public float chancePerCheck = 1f;
 
