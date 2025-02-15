@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace EBSGFramework
@@ -31,7 +32,11 @@ namespace EBSGFramework
         {
             foreach (var evo in Extension.geneticEvolutions)
             {
-                if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && !Rand.Chance(evo.chancePerCheck)) continue;
+                if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && 
+                    !Rand.Chance(evo.chancePerCheck)) continue;
+
+                if (evo.skipIfCarrierHasResult && pawn.HasRelatedGene(evo.result))
+                    continue;
 
                 if (!pawn.CheckGeneTrio(evo.hasAnyOfGene, evo.hasAllOfGene, evo.hasNoneOfGene))
                     continue;
@@ -45,7 +50,7 @@ namespace EBSGFramework
                 if (evo.validAges != FloatRange.Zero && !evo.validAges.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
                     continue;
 
-                if ((pawn.IsColonist || pawn.IsPrisonerOfColony) && evo.message != null)
+                if ((pawn.IsColonist || pawn.IsPrisonerOfColony) && evo.message != null && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                     Messages.Message(evo.message.TranslateOrLiteral(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
 
                 bool xenogene;

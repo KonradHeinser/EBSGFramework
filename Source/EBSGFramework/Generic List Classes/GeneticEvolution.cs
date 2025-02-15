@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public GeneDef result;
 
+        public bool skipIfCarrierHasResult = false;
+
         public Inheritance inheritable;
 
         public float chancePerCheck = 1f;
