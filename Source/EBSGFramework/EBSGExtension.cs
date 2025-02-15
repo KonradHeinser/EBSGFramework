@@ -9,7 +9,7 @@ namespace EBSGFramework
         public SimpleCurve peopleToMoodCurve;
         public GeneDef relatedGene;
         public List<GeneDef> relatedGenes;
-        public bool checkEvolutionsPostAdd = true;
+        public bool checkEvolutionsPostAdd = false;
         public List<GeneticEvolution> geneticEvolutions;
         public bool checkNotPresent = false;
         public bool hideInGeneTabWhenInactive = false;
