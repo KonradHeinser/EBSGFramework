@@ -112,9 +112,9 @@ namespace EBSGFramework
                             if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
                             {
                                 if (link.child != null)
-                                {
                                     return GraphicDatabase.Get<Graphic_Multi>(link.child, shader, Vector2.one, ColorFor(pawn));
-                                }
+                                else if (link.graphic != null)
+                                    return GraphicDatabase.Get<Graphic_Multi>(link.graphic, shader, Vector2.one, ColorFor(pawn));
                             }
                             else
                             {
