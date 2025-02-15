@@ -1233,7 +1233,7 @@ namespace EBSGFramework
 
                 if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                 {
-                    if (skillLevel.range.min > 0)
+                    if (skillLevel.range.min > 0 || skillLevel.range == skillLevel.defaultRange)
                         return false;
                     continue;
                 }

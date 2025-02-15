@@ -51,7 +51,7 @@ namespace EBSGFramework
                     continue;
 
                 
-                if ((pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && evo.message != null && (pawn.MapHeld != null || pawn.GetCaravan() != null))
+                if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                     Messages.Message(evo.message.TranslateOrLiteral(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
 
                 bool xenogene;
