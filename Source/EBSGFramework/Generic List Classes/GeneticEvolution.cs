@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using System.Collections.Generic;
 using Verse;
 
 namespace EBSGFramework
@@ -12,7 +7,11 @@ namespace EBSGFramework
     {
         public GeneDef result;
 
-        public bool xenogene = true;
+        public Inheritance inheritable;
+
+        public float chancePerCheck = 1f;
+
+        public bool ignoreChanceDuringPostAdd = false;
 
         public string message;
 

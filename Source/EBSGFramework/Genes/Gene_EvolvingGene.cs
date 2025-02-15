@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -20,21 +15,24 @@ namespace EBSGFramework
                 pawn.genes.RemoveGene(this);
                 return;
             }
-            CheckEvolution();
+            if (Extension.checkEvolutionsPostAdd)
+                CheckEvolution(true);
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (pawn.IsHashIntervalTick(10000))
+            if (pawn.IsHashIntervalTick(2500))
                 CheckEvolution();
         }
 
-        public void CheckEvolution()
+        public void CheckEvolution(bool postAdd = false)
         {
             foreach (var evo in Extension.geneticEvolutions)
             {
+                if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && !Rand.Chance(evo.chancePerCheck)) continue;
+
                 if (!pawn.CheckGeneTrio(evo.hasAnyOfGene, evo.hasAllOfGene, evo.hasNoneOfGene))
                     continue;
 
@@ -50,7 +48,20 @@ namespace EBSGFramework
                 if ((pawn.IsColonist || pawn.IsPrisonerOfColony) && evo.message != null)
                     Messages.Message(evo.message.TranslateOrLiteral(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
 
-                pawn.AddGenesToPawn(evo.xenogene, null, evo.result);
+                bool xenogene;
+                switch (evo.inheritable)
+                {
+                    case Inheritance.Same:
+                        xenogene = !pawn.genes.Endogenes.Contains(this);
+                        break;
+                    case Inheritance.Endo:
+                        xenogene = false;
+                        break;
+                    default:
+                        xenogene = true; 
+                        break;
+                }
+                pawn.AddGenesToPawn(xenogene, null, evo.result);
                 pawn.genes.RemoveGene(this);
                 return;
             }
