@@ -5,8 +5,9 @@ namespace EBSGFramework
 {
     public class Gene_AgingXenotype : Gene
     {
-        private AgingXenotypeExtension extension;
+        private bool alreadyChanged = false;
 
+        private AgingXenotypeExtension extension;
         public AgingXenotypeExtension Extension
         {
             get
@@ -32,7 +33,7 @@ namespace EBSGFramework
         public override void Tick()
         {
             base.Tick();
-            if (pawn.IsHashIntervalTick(2500))
+            if (!alreadyChanged && pawn.IsHashIntervalTick(2500))
                 CheckXenotypes();
         }
 
@@ -42,9 +43,16 @@ namespace EBSGFramework
             foreach (XenoRange xeno in extension.xenotypes) 
                 if (xeno.range.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
                 {
+                    alreadyChanged = true;
                     pawn.AlterXenotype(xeno.xenotype, extension.filth, extension.filthAmount, extension.setXenotype, extension.message != null, extension.message);
                     return;
                 }
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref alreadyChanged, "alreadyChanged", false);
         }
     }
 }
