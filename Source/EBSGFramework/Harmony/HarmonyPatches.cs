@@ -8,8 +8,6 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static HarmonyLib.Code;
-using static UnityEngine.GraphicsBuffer;
 
 namespace EBSGFramework
 {
@@ -947,7 +945,8 @@ namespace EBSGFramework
 
         public static void MakeThingPostfix(ref ThingDef def, ref ThingDef stuff, ref Thing __result)
         {
-            if (stuff != null && __result is ThingWithComps compThing && !stuff.comps.NullOrEmpty() && stuff.HasComp(typeof(CompRegenerating)))
+            if (stuff?.comps.NullOrEmpty() == false && __result is ThingWithComps compThing && 
+                !(__result is Pawn) && stuff.HasComp(typeof(CompRegenerating)))
             {
                 CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
                 compRegenerating.parent = compThing;
