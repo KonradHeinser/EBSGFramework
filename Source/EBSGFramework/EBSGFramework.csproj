@@ -84,6 +84,9 @@
     <Compile Include="Enums\StatEffect.cs" />
     <Compile Include="Enums\StatRequirement.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
+    <Compile Include="Generic List Classes\XenoRange.cs" />
+    <Compile Include="Genes\AgingXenotypeExtension.cs" />
+    <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />

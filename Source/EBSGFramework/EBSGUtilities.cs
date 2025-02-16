@@ -1557,7 +1557,7 @@ namespace EBSGFramework
             AlterXenotype(pawn, xenotypes.RandomElementByWeight((arg) => arg.weight).xenotype, filth, filthCount, setXenotype, sendMessage);
         }
 
-        public static void AlterXenotype(this Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
+        public static void AlterXenotype(this Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true, string message = "EBSG_XenotypeApplied")
         {
             if (pawn?.genes == null || xenotype == null) return;
 
@@ -1593,8 +1593,8 @@ namespace EBSGFramework
             if (pawn.Spawned && filth != null)
                 FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, filth, pawn.LabelIndefinite(), filthCount.RandomInRange);
 
-            if (sendMessage)
-                Messages.Message("EBSG_XenotypeApplied".Translate(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+            if (sendMessage && pawn.Faction.IsPlayer)
+                Messages.Message(message.TranslateOrLiteral(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
 
             pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
