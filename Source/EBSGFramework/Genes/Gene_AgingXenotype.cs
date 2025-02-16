@@ -1,27 +1,26 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 
 namespace EBSGFramework
 {
-    public class Gene_AgingXenotype : Gene
+    public class Gene_AgingXenotype : HediffAdder
     {
         private bool alreadyChanged = false;
 
-        private AgingXenotypeExtension extension;
-        public AgingXenotypeExtension Extension
+        private AgingXenotypeExtension agingExtension;
+        public AgingXenotypeExtension AgingExtension
         {
             get
             {
-                if (extension == null)
-                    extension = def.GetModExtension<AgingXenotypeExtension>();
-                return extension;
+                if (agingExtension == null)
+                    agingExtension = def.GetModExtension<AgingXenotypeExtension>();
+                return agingExtension;
             }
         }
 
         public override void PostAdd()
         {
             base.PostAdd();
-            if (Extension?.xenotypes.NullOrEmpty() != false)
+            if (AgingExtension?.xenotypes.NullOrEmpty() != false)
             {
                 Log.Error($"{def} is missing a list of xenotypes in AgingXenotypeExtension. Removing gene to avoid more errors");
                 pawn.genes.RemoveGene(this);
@@ -40,11 +39,11 @@ namespace EBSGFramework
 
         private void CheckXenotypes()
         {
-            foreach (XenoRange xeno in extension.xenotypes) 
-                if (xeno.range.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+            foreach (XenoRange xeno in AgingExtension.xenotypes) 
+                if (xeno.range.Includes(pawn.ageTracker.AgeBiologicalYearsFloat) && pawn.genes.Xenotype != xeno.xenotype)
                 {
                     alreadyChanged = true;
-                    pawn.AlterXenotype(xeno.xenotype, extension.filth, extension.filthAmount, extension.setXenotype, extension.message != null, extension.message);
+                    pawn.AlterXenotype(xeno.xenotype, AgingExtension.filth, AgingExtension.filthAmount, agingExtension.setXenotype, agingExtension.message != null, agingExtension.message);
                     return;
                 }
         }

@@ -1593,7 +1593,7 @@ namespace EBSGFramework
             if (pawn.Spawned && filth != null)
                 FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, filth, pawn.LabelIndefinite(), filthCount.RandomInRange);
 
-            if (sendMessage && pawn.Faction.IsPlayer)
+            if (sendMessage && pawn.Faction.IsPlayer && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                 Messages.Message(message.TranslateOrLiteral(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
 
             pawn.Drawer.renderer.SetAllGraphicsDirty();
