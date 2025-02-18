@@ -14,17 +14,14 @@ namespace EBSGFramework
 
         public override void CompTick()
         {
-            Log.Message("A");
             if (!parent.Casting) return;
             base.CompTick();
             if (tick == null)
                 tick = Math.Min(Props.initialTick, Props.tickInterval);
             else
                 tick++;
-            Log.Message($"{tick} {Props.tickInterval}");
             if (tick == Props.tickInterval)
             {
-                Log.Message("B");
                 tick = 0;
                 Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
                 BodyPartRecord hitPart = null;
