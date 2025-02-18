@@ -378,7 +378,7 @@ namespace EBSGFramework
             {
                 foreach (SkillCheck skillCheck in Props.casterSkillLimiters)
                 {
-                    SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
+                    SkillRecord skill = pawn.skills?.GetSkill(skillCheck.skill);
                     if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                     {
                         if (skillCheck.minLevel > 0)
@@ -539,9 +539,10 @@ namespace EBSGFramework
         // Target specific
         public bool CheckTargetLight(LocalTargetInfo target, out string explanation)
         {
-            Map map;
-            if (target.HasThing) map = target.Thing.Map;
-            else map = parent.pawn.Map;
+            explanation = null;
+            Map map = target.Thing?.MapHeld ?? parent.pawn.MapHeld;
+            if (!target.Cell.InBounds(map))
+                return false;
 
             if (map == null)
             {
@@ -560,7 +561,6 @@ namespace EBSGFramework
                     return false;
                 }
             }
-            explanation = null;
             return true;
         }
 
@@ -797,7 +797,7 @@ namespace EBSGFramework
                 {
                     foreach (SkillCheck skillCheck in Props.targetSkillLimiters)
                     {
-                        SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
+                        SkillRecord skill = pawn.skills?.GetSkill(skillCheck.skill);
                         if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                         {
                             if (skillCheck.minLevel > 0)
@@ -922,8 +922,7 @@ namespace EBSGFramework
                 }
                 if (!Props.targetStatLimiters.NullOrEmpty())
                 {
-                    Thing thing = null;
-                    if (target.HasThing) thing = target.Thing;
+                    Thing thing = target.Thing;
                     foreach (StatCheck statCheck in Props.targetStatLimiters)
                     {
                         if (thing == null)

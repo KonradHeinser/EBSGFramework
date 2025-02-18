@@ -9,6 +9,8 @@ namespace EBSGFramework
     {
         public int tickInterval = 60;
 
+        public int initialTick = 0;
+
         public DamageDef damage;
 
         public float damageAmount = 1f;

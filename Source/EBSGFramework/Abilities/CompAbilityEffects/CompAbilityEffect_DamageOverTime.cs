@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using Verse;
+using System;
 
 namespace EBSGFramework
 {
@@ -9,15 +10,21 @@ namespace EBSGFramework
 
         private Pawn Caster => parent.pawn;
 
-        private int tick = 0;
+        private int? tick;
 
         public override void CompTick()
         {
+            Log.Message("A");
             if (!parent.Casting) return;
             base.CompTick();
-            tick++;
+            if (tick == null)
+                tick = Math.Min(Props.initialTick, Props.tickInterval);
+            else
+                tick++;
+            Log.Message($"{tick} {Props.tickInterval}");
             if (tick == Props.tickInterval)
             {
+                Log.Message("B");
                 tick = 0;
                 Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
                 BodyPartRecord hitPart = null;
@@ -30,13 +37,13 @@ namespace EBSGFramework
         public void Interrupted(Pawn target)
         {
             target?.stances?.stunner?.StopStun();
-            tick = 0;
+            tick = null;
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref tick, "tick", 0);
+            Scribe_Values.Look(ref tick, "tick", null);
         }
     }
 }
