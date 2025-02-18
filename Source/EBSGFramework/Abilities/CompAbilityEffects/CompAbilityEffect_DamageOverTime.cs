@@ -24,9 +24,7 @@ namespace EBSGFramework
             base.CompTick();
             if (tick == null)
                 tick = Math.Min(Props.initialTick, Props.tickInterval);
-            else
-                tick++;
-            if (tick == Props.tickInterval)
+            else if (tick == Props.tickInterval)
             {
                 tick = 0;
                 Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
@@ -35,6 +33,8 @@ namespace EBSGFramework
                     hitPart = t.GetSemiRandomPartFromList(Props.bodyParts);
                 target.TakeDamage(new DamageInfo(Props.damage, Props.damageAmount, Props.armorPenetration, hitPart: hitPart, spawnFilth: Props.createFilth));
             }
+            else
+                tick++;
         }
 
         public void Interrupted(Pawn target)
