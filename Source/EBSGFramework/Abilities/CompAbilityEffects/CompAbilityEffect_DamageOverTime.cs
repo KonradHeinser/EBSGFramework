@@ -33,7 +33,6 @@ namespace EBSGFramework
 
         public void Interrupted(Pawn target)
         {
-            target?.stances?.stunner?.StopStun();
             tick = null;
         }
 

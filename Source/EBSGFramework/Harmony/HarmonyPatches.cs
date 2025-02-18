@@ -1799,6 +1799,9 @@ namespace EBSGFramework
             {
                 CompAbilityEffect_DamageOverTime dot = abilityVerb.ability.CompOfType<CompAbilityEffect_DamageOverTime>();
                 dot?.Interrupted(___focusTarg.Pawn);
+                CompAbilityEffect_InterruptOnDamaged interrupt = abilityVerb.ability.CompOfType<CompAbilityEffect_InterruptOnDamaged>();
+                if (interrupt != null)
+                    interrupt.Interrupted(___focusTarg.Pawn);
             }
         }
 
