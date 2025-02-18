@@ -12,6 +12,12 @@ namespace EBSGFramework
 
         private int? tick;
 
+        public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
+        {
+            base.Apply(target, dest);
+            tick = Math.Min(Props.initialTick, Props.tickInterval);
+        }
+
         public override void CompTick()
         {
             if (!parent.Casting) return;
@@ -33,7 +39,7 @@ namespace EBSGFramework
 
         public void Interrupted(Pawn target)
         {
-            tick = null;
+            tick = Math.Min(Props.initialTick, Props.tickInterval);
         }
 
         public override void PostExposeData()
