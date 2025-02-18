@@ -24,7 +24,8 @@ namespace EBSGFramework
             base.CompTick();
             if (tick == null)
                 tick = Math.Min(Props.initialTick, Props.tickInterval);
-            else if (tick == Props.tickInterval)
+            
+            if (tick == Props.tickInterval)
             {
                 tick = 0;
                 Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
