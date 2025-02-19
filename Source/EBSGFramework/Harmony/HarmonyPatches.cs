@@ -95,7 +95,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Expire"),
+                postfix: new HarmonyMethod(patchType, nameof(WarmupExpirePostfix)));
 
+            
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
@@ -1797,10 +1800,19 @@ namespace EBSGFramework
         {
             if (___verb is Verb_CastAbility abilityVerb)
             {
-                CompAbilityEffect_DamageOverTime dot = abilityVerb.ability.CompOfType<CompAbilityEffect_DamageOverTime>();
+                var dot = abilityVerb.ability.CompOfType<CompAbilityEffect_DamageOverTime>();
                 dot?.Interrupted(___focusTarg.Pawn);
-                CompAbilityEffect_InterruptOnDamaged interrupt = abilityVerb.ability.CompOfType<CompAbilityEffect_InterruptOnDamaged>();
+                var interrupt = abilityVerb.ability.CompOfType<CompAbilityEffect_InterruptOnDamaged>();
                 interrupt?.Interrupted(___focusTarg.Pawn);
+            }
+        }
+
+        public static void WarmupExpirePostfix(Verb ___verb, LocalTargetInfo ___focusTarg)
+        {
+            if (___verb is Verb_CastAbility abilityVerb)
+            {
+                var cooldown = abilityVerb.ability.CompOfType<CompAbilityEffect_WithCooldown>();
+                cooldown?.Finished(___focusTarg);
             }
         }
 

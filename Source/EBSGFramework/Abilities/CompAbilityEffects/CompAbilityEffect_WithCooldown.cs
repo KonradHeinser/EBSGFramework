@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -9,10 +7,9 @@ namespace EBSGFramework
     {
         public new CompProperties_AbilityWithCooldown Props => (CompProperties_AbilityWithCooldown)props;
 
-        public override void PostApplied(List<LocalTargetInfo> targets, Map map)
+        public void Finished(LocalTargetInfo target)
         {
-            base.PostApplied(targets, map);
-            Stance_Cooldown cooldown = new Stance_Cooldown(Props.cooldownTicks, targets.First(), null)
+            Stance_Cooldown cooldown = new Stance_Cooldown(Props.cooldownTicks, target, null)
             {
                 neverAimWeapon = true
             };
