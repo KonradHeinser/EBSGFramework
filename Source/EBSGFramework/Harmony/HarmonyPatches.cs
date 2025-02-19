@@ -2528,10 +2528,11 @@ namespace EBSGFramework
                 }
             }
 
-            if (__instance is Pawn t && t.stances?.curStance != null &&
-                t.stances.curStance is Stance_Warmup warmup &&
-                t.CurJob?.ability?.CompOfType<CompAbilityEffect_InterruptOnDamaged>() != null)
-                warmup.Interrupt();
+            if (__instance is Pawn t && t.stances?.curStance != null && t.stances.curStance is Stance_Warmup warmup) {  
+                if(t.CurJob?.ability?.CompOfType<CompAbilityEffect_InterruptOnDamaged>() != null ||
+                    warmup.verb?.verbTracker?.directOwner is Ability a)
+                    warmup.Interrupt();
+            }
         }
 
         public static void DamageAmountPostfix(ref float __result, DamageInfo __instance)

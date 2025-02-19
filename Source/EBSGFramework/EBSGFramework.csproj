@@ -64,8 +64,10 @@
   <ItemGroup>
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_WithCooldown.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityWithCooldown.cs" />
     <Compile Include="EBSGAI\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ThinkNode_ConditionalNearbyCover.cs" />
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
