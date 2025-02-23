@@ -506,8 +506,7 @@ namespace EBSGFramework
                             if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                                 foundParts.Add(bodyPartDef, 0);
 
-                            if (hediffParts.onlyIfNew) pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity);
-                            else pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity, hediffParts.severity);
+                            pawn.AddHediffToPart(pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], hediffParts.hediff, hediffParts.severity, hediffParts.severity, hediffParts.onlyIfNew);
                             foundParts[bodyPartDef]++;
                         }
                     }

@@ -92,7 +92,9 @@
     <Compile Include="Genes\AgingXenotypeExtension.cs" />
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
