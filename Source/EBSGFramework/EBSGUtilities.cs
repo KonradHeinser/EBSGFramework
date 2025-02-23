@@ -1622,7 +1622,7 @@ namespace EBSGFramework
         public static void GainRandomGeneSet(this Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
                 List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null, bool showMessage = true)
         {
-            if (pawn.genes == null) return;
+            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false) return;
             List<GeneDef> genesToAdd = new List<GeneDef>();
             bool reverseInheritence = false;
 

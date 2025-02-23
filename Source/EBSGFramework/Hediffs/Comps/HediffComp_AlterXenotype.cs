@@ -25,8 +25,6 @@ namespace EBSGFramework
                 Pawn.AlterXenotype(Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
                 Pawn.health.RemoveHediff(parent);
             }
-            else if (Pawn.genes == null)
-                Pawn.health.RemoveHediff(parent);
         }
     }
 }

@@ -120,6 +120,8 @@
     <Compile Include="Things\Comps\CompShieldEquipment.cs" />
     <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
+    <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterGenes.cs" />
+    <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterXenotype.cs" />
     <Compile Include="Things\TurretRoofBlocked.cs" />
     <Compile Include="Things\Verb_RandomShot.cs" />
     <Compile Include="Thoughts\EBSGThoughtExtension.cs" />
@@ -201,7 +203,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LearnSkill.cs" />
     <Compile Include="Genes\GRCExtension.cs" />
     <Compile Include="Things\EquipRestrictExtension.cs" />
-    <Compile Include="Things\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
+    <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
     <Compile Include="Hediffs\BurstHediffPropertiesBase.cs" />
     <Compile Include="Hediffs\BurstHediffCompBase.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
@@ -472,7 +474,7 @@
     <Compile Include="Things\Comps\CompIndestructible.cs" />
     <Compile Include="Things\Comps\CompRegenerating.cs" />
     <Compile Include="Things\Comps\CompSpawnBaby.cs" />
-    <Compile Include="Things\IngestionOutcomeDoer_RechargeSpawnBabyComp.cs" />
+    <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_RechargeSpawnBabyComp.cs" />
     <Compile Include="Things\CompProperties\CompProperties_SpawnBabyRecharger.cs" />
     <Compile Include="Things\Comps\CompSpawnBabyRecharger.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_AttachMote.cs" />
