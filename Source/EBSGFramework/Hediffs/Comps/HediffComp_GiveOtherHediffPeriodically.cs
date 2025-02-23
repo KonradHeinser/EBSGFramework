@@ -53,15 +53,8 @@ namespace EBSGFramework
                     }
                 }
                 else
-                {
-                    if (Pawn.HasHediff(Props.hediff, out var hediff))
-                    {
-                        if (!Props.onlyIfNew)
-                            hediff.Severity += SeverityChange;
-                    }
-                    else
-                        Pawn.AddOrAppendHediffs(SeverityChange, 0, Props.hediff, null, other);
-                }
+                    Pawn.AddOrAppendHediffs(SeverityChange, Props.onlyIfNew ? 0 : SeverityChange, 
+                        Props.hediff, null, other);
             }
         }
     }

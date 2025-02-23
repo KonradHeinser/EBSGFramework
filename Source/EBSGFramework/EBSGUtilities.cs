@@ -665,9 +665,8 @@ namespace EBSGFramework
         public static Hediff AddHediffToPart(this Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false, Pawn other = null)
         {
             Hediff firstHediffOfDef = null;
-            if (HasHediff(pawn, hediffDef))
+            if (HasHediff(pawn, hediffDef, other, out var testHediff))
             {
-                Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
                 if (testHediff.Part == bodyPart) firstHediffOfDef = testHediff;
                 else
                 {
@@ -872,8 +871,8 @@ namespace EBSGFramework
         {
             if (hediff != null)
             {
-                if (HasHediff(pawn, hediff))
-                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity += severityIncrease;
+                if (HasHediff(pawn, hediff, other, out var h))
+                    h.Severity += severityIncrease;
                 else if (initialSeverity > 0)
                     pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediff, other));
             }
@@ -881,8 +880,8 @@ namespace EBSGFramework
             {
                 foreach (HediffDef hediffDef in hediffs)
                 {
-                    if (HasHediff(pawn, hediffDef))
-                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity += severityIncrease;
+                    if (HasHediff(pawn, hediffDef, other, out var h))
+                        h.Severity += severityIncrease;
                     else if (initialSeverity > 0)
                         pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediffDef, other));
                 }
@@ -1096,6 +1095,28 @@ namespace EBSGFramework
             result = null;
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
             result = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
+            return result != null;
+        }
+
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff, Pawn other, out Hediff result)
+        {
+            if (other == null)
+                return pawn.HasHediff(hediff, out result);
+
+            result = null;
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+
+            // Test to see if there's an easy way out
+            result = pawn.health.hediffSet.GetFirstHediffOfDef(hediff); 
+            if (result != null && result is HediffWithTarget targeter && targeter.target == other)
+                return true;
+
+            result = null;
+            var listH = pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff && 
+                arg is HediffWithTarget t && t.target == other);
+            if (!listH.EnumerableNullOrEmpty())
+                result = listH.First();
+
             return result != null;
         }
 
