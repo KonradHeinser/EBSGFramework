@@ -7,6 +7,18 @@ namespace EBSGFramework
     {
         public HediffCompProperties_GiveOtherHediffPeriodically Props => (HediffCompProperties_GiveOtherHediffPeriodically)props;
 
+
+        private float SeverityChange
+        {
+            get
+            {
+                float sc = Props.severity;
+                if (Props.multiplySeverityByParentSeverity)
+                    sc *= parent.Severity;
+                return sc;
+            }
+        }
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
@@ -36,7 +48,7 @@ namespace EBSGFramework
                         if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                             foundParts.Add(bodyPartDef, 0);
 
-                        Pawn.AddHediffToPart(Pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], Props.hediff, Props.severity, Props.severity, Props.onlyIfNew, other);
+                        Pawn.AddHediffToPart(Pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], Props.hediff, SeverityChange, SeverityChange, Props.onlyIfNew, other);
                         foundParts[bodyPartDef]++;
                     }
                 }
@@ -45,10 +57,10 @@ namespace EBSGFramework
                     if (Pawn.HasHediff(Props.hediff, out var hediff))
                     {
                         if (!Props.onlyIfNew)
-                            hediff.Severity += Props.severity;
+                            hediff.Severity += SeverityChange;
                     }
                     else
-                        Pawn.AddOrAppendHediffs(Props.severity, 0, Props.hediff, null, other);
+                        Pawn.AddOrAppendHediffs(SeverityChange, 0, Props.hediff, null, other);
                 }
             }
         }

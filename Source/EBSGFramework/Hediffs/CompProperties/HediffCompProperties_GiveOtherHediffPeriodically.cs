@@ -11,6 +11,8 @@ namespace EBSGFramework
 
         public float severity = 1f;
 
+        public bool multiplySeverityByParentSeverity = false;
+
         public bool onlyIfNew = false;
 
         public List<BodyPartDef> bodyParts;
