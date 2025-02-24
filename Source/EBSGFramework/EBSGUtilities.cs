@@ -1215,8 +1215,10 @@ namespace EBSGFramework
             {
                 Need need = pawn.needs.TryGetNeed(needLevel.need);
                 if (need != null)
-                    if (need.CurLevelPercentage < needLevel.minNeedLevel || need.CurLevelPercentage > needLevel.maxNeedLevel)
+                {
+                    if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel)
                         return false;
+                }
                 // Doesn't have an else section because if the need doesn't exist, it's presumed to be at whatever level it needs to be
             }
             return true;
@@ -1429,6 +1431,31 @@ namespace EBSGFramework
                     if (!HasRelatedGene(pawn, gene.def)) return false;
                 }
             }
+
+            return true;
+        }
+
+        public static bool PawnHasAllOfGenes(this Pawn pawn, out GeneDef failOn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        {
+            failOn = null;
+            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
+            if (pawn.genes == null) return false;
+
+            if (!geneDefs.NullOrEmpty())
+                foreach (GeneDef gene in geneDefs)
+                    if (!HasRelatedGene(pawn, gene))
+                    {
+                        failOn = gene;
+                        return false;
+                    }
+
+            if (!genes.NullOrEmpty())
+                foreach (Gene gene in genes)
+                    if (!HasRelatedGene(pawn, gene.def))
+                    {
+                        failOn = gene.def;
+                        return false;
+                    }
 
             return true;
         }
