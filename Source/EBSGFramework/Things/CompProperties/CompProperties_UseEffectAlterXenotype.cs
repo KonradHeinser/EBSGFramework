@@ -8,8 +8,6 @@ namespace EBSGFramework
     {
         public List<RandomXenotype> xenotypes;
 
-        public FloatRange severities = new FloatRange(0f, 999f);
-
         public ThingDef filth;
 
         public IntRange filthCount = new IntRange(4, 7);
