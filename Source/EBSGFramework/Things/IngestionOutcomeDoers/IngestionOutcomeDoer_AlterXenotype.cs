@@ -18,7 +18,8 @@ namespace EBSGFramework
 
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
-            pawn.AlterXenotype(xenotypes, filth, filthCount, setXenotype, sendMessage);
+            if (!xenotypes.NullOrEmpty())
+                pawn.AlterXenotype(xenotypes, filth, filthCount, setXenotype, sendMessage);
         }
     }
 }
