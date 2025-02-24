@@ -117,7 +117,11 @@
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
+    <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterGenes.cs" />
+    <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotype.cs" />
     <Compile Include="Things\Comps\CompShieldEquipment.cs" />
+    <Compile Include="Things\Comps\CompUseEffect_AlterGenes.cs" />
+    <Compile Include="Things\Comps\CompUseEffect_AlterXenotype.cs" />
     <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterGenes.cs" />

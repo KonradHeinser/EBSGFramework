@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using RimWorld;
 using Verse;
 
 namespace EBSGFramework
 {
-    public class IngestionOutcomeDoer_AlterGenes : IngestionOutcomeDoer
+    public class CompProperties_UseEffectAlterGenes : CompProperties_UseEffect
     {
         public List<GeneDef> alwaysAddedGenes;
 
@@ -18,10 +22,11 @@ namespace EBSGFramework
 
         public bool showMessage = true;
 
-        protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
+        public Prerequisites prerequisites;
+
+        public CompProperties_UseEffectAlterGenes()
         {
-            pawn.GainRandomGeneSet(inheritable, removeGenesFromOtherLists, geneSets, 
-                alwaysAddedGenes, alwaysRemovedGenes, showMessage);
+            compClass = typeof(CompUseEffect_AlterGenes);
         }
     }
 }

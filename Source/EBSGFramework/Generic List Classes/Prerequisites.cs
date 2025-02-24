@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Verse;
-using RimWorld;
 
 namespace EBSGFramework
 {
@@ -17,6 +12,7 @@ namespace EBSGFramework
         public List<GeneDef> hasAnyOfGenes;
         public List<GeneDef> hasAllOfGenes;
         public List<GeneDef> hasNoneOfGenes;
+        public string notMetString = "EBSG_ConditionsNotMet";
 
         public bool ValidPawn(Pawn pawn, BodyPartRecord bodyPart = null)
         {
