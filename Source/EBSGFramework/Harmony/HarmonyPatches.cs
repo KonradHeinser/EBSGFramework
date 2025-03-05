@@ -95,8 +95,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Expire"),
-                postfix: new HarmonyMethod(patchType, nameof(WarmupExpirePostfix)));
 
             
             // Stuff From Athena
@@ -1805,17 +1803,7 @@ namespace EBSGFramework
                 interrupt?.Interrupted(___focusTarg.Pawn);
             }
         }
-
-        public static void WarmupExpirePostfix(Verb ___verb, LocalTargetInfo ___focusTarg)
-        {
-            if (___verb is Verb_CastAbility abilityVerb)
-            {
-                var cooldown = abilityVerb.ability.CompOfType<CompAbilityEffect_WithCooldown>();
-                cooldown?.Finished(___focusTarg);
-            }
-        }
-
-        public static void ProjectileImpactPostfix(Projectile __instance, Thing hitThing, ref bool blockedByShield)
+        public static void ProjectileImpactPostfix(Projectile __instance)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
             impactEffect?.Impact();
