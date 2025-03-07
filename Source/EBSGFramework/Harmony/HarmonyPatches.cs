@@ -348,7 +348,7 @@ namespace EBSGFramework
                     }
                 }
             }
-            if (flag && pawn.genes != null && !pawn.genes.GenesListForReading.NullOrEmpty())
+            if (flag && pawn.genes?.GenesListForReading.NullOrEmpty() == false)
             {
                 XenotypeDef xenotype = pawn.genes.Xenotype;
                 if (xenotype != null && xenotype.HasModExtension<EquipRestrictExtension>())
@@ -735,6 +735,59 @@ namespace EBSGFramework
                         if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
                     }
                 }
+
+                // If the pawn is generated before a game is loaded, the cache doesn't exist and we need to brute force search
+                if ((flagApparel || flagWeapon) && Cache == null && __result.genes?.GenesListForReading.NullOrEmpty() == false)
+                    foreach (Gene gene in __result.genes.GenesListForReading)
+                    {
+                        EquipRestrictExtension equipRestrict = gene.def.GetModExtension<EquipRestrictExtension>();
+                        if (equipRestrict != null)
+                        {
+                            if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
+                            {
+                                if (flagApparel)
+                                {
+                                    List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
+                                    foreach (Apparel apparel in apparels)
+                                        if (equipRestrict.forbiddenEquipments.Contains(apparel.def))
+                                            __result.apparel.Remove(apparel);
+                                }
+                                if (flagWeapon)
+                                {
+                                    List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
+                                    foreach (ThingWithComps thing in equipment)
+                                        if (equipRestrict.forbiddenEquipments.Contains(thing.def))
+                                            __result.equipment.DestroyEquipment(thing);
+                                }
+
+                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                            }
+
+                            if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() ||
+                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            {
+                                List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
+                                foreach (Apparel apparel in apparels)
+                                    if (!CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def))
+                                        __result.apparel.Remove(apparel);
+                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                            }
+
+                            if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() ||
+                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            {
+                                List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
+                                foreach (ThingWithComps thing in equipment)
+                                    if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
+                                        __result.equipment.DestroyEquipment(thing);
+                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                            }
+
+                            if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
+                        }
+                    }
+
             }
         }
 
