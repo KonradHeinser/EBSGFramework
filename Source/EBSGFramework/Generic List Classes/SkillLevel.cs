@@ -8,6 +8,10 @@ namespace EBSGFramework
     {
         public SkillDef skill;
 
+        public int minLevel = 0; // Kept for compatibility
+
+        public int maxLevel = 20; // Kept for compatibility
+
         public IntRange range = new IntRange(0, 20);
 
         public IntRange defaultRange = new IntRange(0, 20);
@@ -23,7 +27,9 @@ namespace EBSGFramework
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
             int num = xmlRoot.ChildNodes.Count;
-            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "skill", xmlRoot.Name);
+
+            if (xmlRoot.Name != "li")
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "skill", xmlRoot.Name);
 
             if (num == 0)
                 range = defaultRange;
@@ -49,8 +55,14 @@ namespace EBSGFramework
 
         private void ParseXmlElement(XmlElement element)
         {
+            if (element.Name == "skill")
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "skill", element.InnerText);
             if (element.Name == "range")
                 range = ParseHelper.FromString<IntRange>(element.InnerText);
+            else if (element.Name == "minLevel")
+                range.min = ParseHelper.FromString<int>(element.InnerText);
+            else if (element.Name == "maxLevel")
+                range.max = ParseHelper.FromString<int>(element.InnerText);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace EBSGFramework
 {
     public class ConditionalStatAffecter_Skills : ConditionalStatAffecter
     {
-        public List<SkillCheck> skillLimiters;
+        public List<SkillLevel> skillLimiters;
 
         public string label = null;
 

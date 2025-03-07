@@ -969,7 +969,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool CheckPawnCapabilitiesTrio(this Pawn pawn, List<CapCheck> capChecks = null, List<SkillCheck> skillChecks = null, List<StatCheck> statChecks = null)
+        public static bool CheckPawnCapabilitiesTrio(this Pawn pawn, List<CapCheck> capChecks = null, List<SkillLevel> skillChecks = null, List<StatCheck> statChecks = null)
         {
             if (pawn == null) return false;
 
@@ -998,7 +998,7 @@ namespace EBSGFramework
             }
             if (!skillChecks.NullOrEmpty())
             {
-                foreach (SkillCheck skillCheck in skillChecks)
+                foreach (SkillLevel skillCheck in skillChecks)
                 {
                     SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
                     if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
@@ -1277,11 +1277,11 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillCheck> skillLimiters)
+        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLimiters)
         {
             if (skillLimiters.NullOrEmpty() || pawn.skills == null) return true;
 
-            foreach (SkillCheck skillCheck in skillLimiters)
+            foreach (SkillLevel skillCheck in skillLimiters)
             {
                 SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
                 if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)

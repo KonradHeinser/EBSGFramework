@@ -376,26 +376,26 @@ namespace EBSGFramework
             }
             if (!Props.casterSkillLimiters.NullOrEmpty())
             {
-                foreach (SkillCheck skillCheck in Props.casterSkillLimiters)
+                foreach (SkillLevel skillLevel in Props.casterSkillLimiters)
                 {
-                    SkillRecord skill = pawn.skills?.GetSkill(skillCheck.skill);
+                    SkillRecord skill = pawn.skills?.GetSkill(skillLevel.skill);
                     if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                     {
-                        if (skillCheck.minLevel > 0)
+                        if (skillLevel.range.min > 0)
                         {
-                            explanation = "AbilityCasterNoneCheck".Translate(skillCheck.skill.LabelCap);
+                            explanation = "AbilityCasterNoneCheck".Translate(skillLevel.skill.LabelCap);
                             return false;
                         }
                         continue;
                     }
-                    if (skill.Level < skillCheck.minLevel)
+                    if (skill.Level < skillLevel.range.min)
                     {
-                        explanation = "AbilityCasterLowCheck".Translate(skillCheck.skill.LabelCap);
+                        explanation = "AbilityCasterLowCheck".Translate(skillLevel.skill.LabelCap);
                         return false;
                     }
-                    if (skill.Level > skillCheck.maxLevel)
+                    if (skill.Level > skillLevel.maxLevel)
                     {
-                        explanation = "AbilityCasterHighCheck".Translate(skillCheck.skill.LabelCap);
+                        explanation = "AbilityCasterHighCheck".Translate(skillLevel.skill.LabelCap);
                         return false;
                     }
                 }
@@ -795,26 +795,26 @@ namespace EBSGFramework
                 }
                 if (!Props.targetSkillLimiters.NullOrEmpty())
                 {
-                    foreach (SkillCheck skillCheck in Props.targetSkillLimiters)
+                    foreach (SkillLevel skillLevel in Props.targetSkillLimiters)
                     {
-                        SkillRecord skill = pawn.skills?.GetSkill(skillCheck.skill);
+                        SkillRecord skill = pawn.skills?.GetSkill(skillLevel.skill);
                         if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                         {
-                            if (skillCheck.minLevel > 0)
+                            if (skillLevel.range.min > 0)
                             {
-                                explanation = "AbilityTargetNoneCheck".Translate(skillCheck.skill.LabelCap);
+                                explanation = "AbilityTargetNoneCheck".Translate(skillLevel.skill.LabelCap);
                                 return false;
                             }
                             continue;
                         }
-                        if (skill.Level < skillCheck.minLevel)
+                        if (skill.Level < skillLevel.range.min)
                         {
-                            explanation = "AbilityTargetLowCheck".Translate(skillCheck.skill.LabelCap);
+                            explanation = "AbilityTargetLowCheck".Translate(skillLevel.skill.LabelCap);
                             return false;
                         }
-                        if (skill.Level > skillCheck.maxLevel)
+                        if (skill.Level > skillLevel.maxLevel)
                         {
-                            explanation = "AbilityTargetHighCheck".Translate(skillCheck.skill.LabelCap);
+                            explanation = "AbilityTargetHighCheck".Translate(skillLevel.skill.LabelCap);
                             return false;
                         }
                     }
@@ -911,9 +911,9 @@ namespace EBSGFramework
                 }
                 if (!Props.targetSkillLimiters.NullOrEmpty())
                 {
-                    foreach (SkillCheck skillCheck in Props.targetSkillLimiters)
+                    foreach (SkillLevel skillLevel in Props.targetSkillLimiters)
                     {
-                        if (skillCheck.minLevel > 0)
+                        if (skillLevel.range.min > 0)
                         {
                             explanation = "AbilityTargetMustBePawn".Translate();
                             return false;

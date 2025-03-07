@@ -25,7 +25,7 @@ namespace EBSGFramework
 
         // Target Pawn Checks
         public List<CapCheck> targetCapLimiters;
-        public List<SkillCheck> targetSkillLimiters;
+        public List<SkillLevel> targetSkillLimiters;
         public List<StatCheck> targetStatLimiters;
         public List<NeedLevel> targetNeedLevels;
         public List<PawnKindDef> targetPawnKinds;
@@ -42,7 +42,7 @@ namespace EBSGFramework
 
         // Caster Pawn Checks
         public List<CapCheck> casterCapLimiters;
-        public List<SkillCheck> casterSkillLimiters;
+        public List<SkillLevel> casterSkillLimiters;
         public List<StatCheck> casterStatLimiters;
         public List<NeedLevel> casterNeedLevels;
         public List<FactionDef> validCasterFactions;

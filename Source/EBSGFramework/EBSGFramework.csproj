@@ -232,7 +232,6 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InstantKill.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_InstantKill.cs" />
     <Compile Include="Generic List Classes\NeedLevel.cs" />
-    <Compile Include="Generic List Classes\SkillCheck.cs" />
     <Compile Include="Generic List Classes\StatCheck.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AbilityValidator.cs" />
     <Compile Include="Generic List Classes\CapCheck.cs" />

@@ -21,7 +21,7 @@ namespace EBSGFramework
 
         // Pawn Checks
         public List<CapCheck> pawnCapLimiters;
-        public List<SkillCheck> pawnSkillLimiters;
+        public List<SkillLevel> pawnSkillLimiters;
         public List<StatCheck> pawnStatLimiters;
 
         public List<TerrainLinker> terrainSets;

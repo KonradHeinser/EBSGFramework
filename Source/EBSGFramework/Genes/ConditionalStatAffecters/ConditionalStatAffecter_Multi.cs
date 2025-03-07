@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public List<NeedLevel> needLevels;
 
-        public List<SkillCheck> skillLimiters;
+        public List<SkillLevel> skillLimiters;
 
         public List<HediffDef> anyOfHediffs;
 
