@@ -227,7 +227,8 @@ namespace EBSGFramework
 
         public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creater = null)
         {
-            if (!Rand.Chance(item.chance)) return null;
+            if (!Rand.Chance(item.chance) || (item.requireLink && item.linkingHediff != null &&
+                !creater.HasHediff(item.linkingHediff))) return null;
 
             Thing thing = ThingMaker.MakeThing(item.thing, item.stuff);
             thing.stackCount = Math.Min(item.count, item.thing.stackLimit);

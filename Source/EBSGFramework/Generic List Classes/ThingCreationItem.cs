@@ -17,6 +17,8 @@ namespace EBSGFramework
 
         public HediffDef linkingHediff;
 
+        public bool requireLink = true;
+
         public float minSeverity = 0f;
 
         public float maxSeverity = 999f;
