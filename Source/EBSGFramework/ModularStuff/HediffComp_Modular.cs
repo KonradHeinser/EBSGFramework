@@ -169,13 +169,15 @@ namespace EBSGFramework
                 ejectableModules = false;
             }
 
-            ejectAction = new Command_Action();
-            ejectAction.defaultLabel = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap}");
-            ejectAction.defaultDesc = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap} {(parent.Part != null ? $" ({parent.Part.LabelCap})" : "")}");
-            ejectAction.icon = cachedEjectTex;
-            ejectAction.action = delegate ()
+            ejectAction = new Command_Action
             {
-                Find.WindowStack.Add(new FloatMenu(options));
+                defaultLabel = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap}"),
+                defaultDesc = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap} {(parent.Part != null ? $" ({parent.Part.LabelCap})" : "")}"),
+                icon = cachedEjectTex,
+                action = delegate ()
+                {
+                    Find.WindowStack.Add(new FloatMenu(options));
+                }
             };
         }
 
@@ -188,7 +190,6 @@ namespace EBSGFramework
                 yield break;
 
             yield return ejectAction;
-            yield break;
         }
     }
 }
