@@ -23,12 +23,13 @@ namespace EBSGFramework
                     icon = ContentFinder<Texture2D>.Get(Props.iconPath);
                 else
                     icon = null;
+
                 var stages = parent.def.stages;
                 for (var i = 0; i < stages.Count; i++)
                 {
                     var stage = stages[i];
-                    StageSet set = Props.sets.Count < i ? Props.sets[i] : null;
-
+                    StageSet set = !Props.sets.NullOrEmpty() && Props.sets.Count < i ? Props.sets[i] : null;
+                    
                     if (stage == parent.CurStage)
                     {
                         if (set?.iconPath != null)
@@ -44,13 +45,15 @@ namespace EBSGFramework
                     options.Add(new FloatMenuOption(label, delegate ()
                     {
                         parent.Severity = stage.minSeverity;
+                        if (set != null && set.ticks > 0)
+                            Pawn.stances.SetStance(new Stance_Cooldown(set.ticks, null, null));
                         action = null;
                     }));
                 }
-
+                
                 if (options.NullOrEmpty())
                     options.Add(new FloatMenuOption("EBSG_NoOptionsAvailable".Translate(), null));
-
+                
                 action = new Command_Action
                 {
                     defaultLabel = Props.label?.TranslateOrLiteral() ?? parent.LabelCap,
@@ -61,6 +64,7 @@ namespace EBSGFramework
                         Find.WindowStack.Add(new FloatMenu(options));
                     }
                 };
+                
             }
             yield return action;
         }

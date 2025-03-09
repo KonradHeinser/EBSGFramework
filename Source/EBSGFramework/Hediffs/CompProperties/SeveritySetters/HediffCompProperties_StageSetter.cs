@@ -26,5 +26,7 @@ namespace EBSGFramework
         public Prerequisites prerequisites;
 
         public string iconPath;
+
+        public int ticks = 0;
     }
 }
