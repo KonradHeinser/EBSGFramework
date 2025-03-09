@@ -359,7 +359,6 @@
     <Compile Include="Generic List Classes\GeneEvent.cs" />
     <Compile Include="Stats\StatPart_FertilityByGenes.cs" />
     <Compile Include="Stats\EBSGDamageExtension.cs" />
-    <Compile Include="Settings\EBSG_ModderDebugger.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_OrbitalStrike.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_OrbitalStrike.cs" />
     <Compile Include="Things\CustomizeableOrbitalStrike.cs" />
