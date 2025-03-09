@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RimWorld;
-using Verse;
 using UnityEngine;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -28,7 +24,7 @@ namespace EBSGFramework
                 else
                     icon = null;
                 var stages = parent.def.stages;
-                for (var i = 0; i > stages.Count; i++)
+                for (var i = 0; i < stages.Count; i++)
                 {
                     var stage = stages[i];
                     StageSet set = Props.sets.Count < i ? Props.sets[i] : null;
