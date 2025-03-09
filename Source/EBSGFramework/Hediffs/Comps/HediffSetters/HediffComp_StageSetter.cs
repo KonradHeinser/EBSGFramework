@@ -52,6 +52,9 @@ namespace EBSGFramework
                     }));
                 }
 
+                if (options.NullOrEmpty())
+                    options.Add(new FloatMenuOption("EBSG_NoOptionsAvailable".Translate(), null));
+
                 action = new Command_Action
                 {
                     defaultLabel = Props.label?.TranslateOrLiteral() ?? parent.LabelCap,
