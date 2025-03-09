@@ -11,6 +11,8 @@ namespace EBSGFramework
 
         public string iconPath;
 
+        public bool usableDuringCooldowns = false;
+
         public List<StageSet> sets;
 
         public HediffCompProperties_StageSetter()

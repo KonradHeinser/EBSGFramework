@@ -17,7 +17,9 @@ namespace EBSGFramework
         public bool ValidPawn(Pawn pawn, BodyPartRecord bodyPart = null)
         {
             if (samePartPrerequisites)
+            {
                 if (!pawn.CheckHediffTrio(hasAnyOfHediffs, hasAllOfHediffs, hasNoneOfHediffs, bodyPart)) return false;
+            }
             else
                 if (!pawn.CheckHediffTrio(hasAnyOfHediffs, hasAllOfHediffs, hasNoneOfHediffs)) return false;
 

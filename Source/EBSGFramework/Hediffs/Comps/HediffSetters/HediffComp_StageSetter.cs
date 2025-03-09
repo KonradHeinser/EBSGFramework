@@ -13,9 +13,32 @@ namespace EBSGFramework
 
         private Texture2D icon;
 
+        private bool? prereqs = null;
+
+        private bool Prereqs
+        {
+            get
+            {
+                if (prereqs == null)
+                {
+                    if (Props.sets.NullOrEmpty())
+                        prereqs = false;
+                    else
+                        foreach (var set in Props.sets)
+                            if (set.prerequisites != null)
+                            {
+                                prereqs = true;
+                                break;
+                            }
+                }
+                return (bool)prereqs;
+            }
+        }
+
         public override IEnumerable<Gizmo> CompGetGizmos()
         {
-            if (action == null)
+            // Refreshes regularly to ensure nothing with unmet prereqs remains
+            if (action == null || (Prereqs && Pawn.IsHashIntervalTick(30)))
             {
                 List<FloatMenuOption> options = new List<FloatMenuOption>();
 
@@ -28,8 +51,8 @@ namespace EBSGFramework
                 for (var i = 0; i < stages.Count; i++)
                 {
                     var stage = stages[i];
-                    StageSet set = !Props.sets.NullOrEmpty() && Props.sets.Count < i ? Props.sets[i] : null;
-                    
+                    StageSet set = !Props.sets.NullOrEmpty() && Props.sets.Count > i ? Props.sets[i] : null;
+
                     if (stage == parent.CurStage)
                     {
                         if (set?.iconPath != null)
@@ -44,10 +67,20 @@ namespace EBSGFramework
 
                     options.Add(new FloatMenuOption(label, delegate ()
                     {
-                        parent.Severity = stage.minSeverity;
-                        if (set != null && set.ticks > 0)
-                            Pawn.stances.SetStance(new Stance_Cooldown(set.ticks, null, null));
                         action = null;
+
+                        if (set != null)
+                        {
+                            if (set.prerequisites?.ValidPawn(Pawn) == false)
+                                return;
+                            
+                            if (set.ticks > 0)
+                                Pawn.stances.SetStance(new Stance_StageSetting(set.ticks, null, null)
+                                {
+                                    neverAimWeapon = true,
+                                });
+                        }
+                        parent.Severity = stage.minSeverity;
                     }));
                 }
                 
@@ -64,8 +97,16 @@ namespace EBSGFramework
                         Find.WindowStack.Add(new FloatMenu(options));
                     }
                 };
-                
             }
+
+            if (!Props.usableDuringCooldowns && Pawn.stances.curStance is Stance_Cooldown)
+            {
+                action.Disabled = true;
+                action.disabledReason = "CooldownTime".Translate();
+            }
+            else
+                action.Disabled = false;
+            
             yield return action;
         }
     }

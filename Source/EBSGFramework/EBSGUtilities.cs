@@ -949,18 +949,18 @@ namespace EBSGFramework
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
-            if (pawn == null || pawn.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
-
+            if (pawn?.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
+            
             if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
             if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
             if (!noneOfHediffs.NullOrEmpty() && PawnHasAnyOfHediffs(pawn, noneOfHediffs, bodyPart)) return false;
-
+            
             return true;
         }
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffWithRange> oneOfHediffs = null, List<HediffWithRange> allOfHediffs = null, List<HediffWithRange> noneOfHediffs = null, BodyPartRecord bodyPart = null)
         {
-            if (pawn == null || pawn.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
+            if (pawn?.health == null) return oneOfHediffs.NullOrEmpty() && allOfHediffs.NullOrEmpty();
 
             if (!oneOfHediffs.NullOrEmpty() && !PawnHasAnyOfHediffs(pawn, oneOfHediffs, bodyPart)) return false;
             if (!allOfHediffs.NullOrEmpty() && !PawnHasAllOfHediffs(pawn, allOfHediffs, bodyPart)) return false;
@@ -1144,7 +1144,7 @@ namespace EBSGFramework
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
         {
             matches = new List<Hediff>();
-            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
+            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
             foreach (HediffDef hediff in hediffs)
                 if (bodyPart != null)
                 {

@@ -100,6 +100,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_StageSetter.cs" />
+    <Compile Include="Hediffs\Stance_StageSetting.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_Shield.cs" />
