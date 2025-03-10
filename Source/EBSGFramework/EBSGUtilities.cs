@@ -1862,46 +1862,46 @@ namespace EBSGFramework
             switch (statReq)
             {
                 case StatRequirement.Always:
-                    return thing.GetStatValue(statDef, true, 60);
+                    return thing.GetStatValue(statDef, true, 600);
                 case StatRequirement.Lower:
-                    return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                    return Mathf.Min(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                 case StatRequirement.Higher:
-                    return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                    return Mathf.Max(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                 case StatRequirement.Pawn:
                     if (thing is Pawn)
-                        return thing.GetStatValue(statDef, true, 60);
+                        return thing.GetStatValue(statDef, true, 600);
                     return 1f;
                 case StatRequirement.PawnLower:
                     if (thing is Pawn)
-                        return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                        return Mathf.Min(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.PawnHigher:
                     if (thing is Pawn)
-                        return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                        return Mathf.Max(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.NonPawn:
                     if (thing is Pawn)
                         return 1f;
-                    return thing.GetStatValue(statDef, true, 60);
+                    return thing.GetStatValue(statDef, true, 600);
                 case StatRequirement.NonPawnLower:
                     if (thing is Pawn)
                         return 1f;
-                    return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                    return Mathf.Min(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                 case StatRequirement.NonPawnHigher:
                     if (thing is Pawn)
                         return 1f;
-                    return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                    return Mathf.Max(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                 case StatRequirement.Humanlike:
                     if (thing is Pawn p && p.RaceProps.Humanlike)
-                        return thing.GetStatValue(statDef, true, 60);
+                        return thing.GetStatValue(statDef, true, 600);
                     return 1f;
                 case StatRequirement.HumanlikeLower:
                     if (thing is Pawn l && l.RaceProps.Humanlike)
-                        return Mathf.Min(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                        return Mathf.Min(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                     return 1f;
                 case StatRequirement.HumanlikeHigher:
                     if (thing is Pawn h && h.RaceProps.Humanlike)
-                        return Mathf.Max(thing.GetStatValue(statDef, true, 60), statDef.defaultBaseValue);
+                        return Mathf.Max(thing.GetStatValue(statDef, true, 600), statDef.defaultBaseValue);
                     return 1f;
             }
             return 1f;

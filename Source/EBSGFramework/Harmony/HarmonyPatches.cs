@@ -737,7 +737,7 @@ namespace EBSGFramework
                 }
 
                 // If the pawn is generated before a game is loaded, the cache doesn't exist and we need to brute force search
-                if ((flagApparel || flagWeapon) && Cache == null && __result.genes?.GenesListForReading.NullOrEmpty() == false)
+                if (Cache == null && __result.genes?.GenesListForReading.NullOrEmpty() == false)
                     foreach (Gene gene in __result.genes.GenesListForReading)
                     {
                         EquipRestrictExtension equipRestrict = gene.def.GetModExtension<EquipRestrictExtension>();
@@ -787,7 +787,6 @@ namespace EBSGFramework
                             if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
                         }
                     }
-
             }
         }
 
@@ -870,100 +869,90 @@ namespace EBSGFramework
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, Pawn ___pawn)
         {
-            if (__result != 0 && ModsConfig.BiotechActive && otherPawn.genes != null && Cache != null && !Cache.grcGenes.NullOrEmpty())
-            {
-                if (otherPawn.PawnHasAnyOfGenes(out GeneDef firstMatch, Cache.grcGenes))
+            if (__result != 0 && ModsConfig.BiotechActive && otherPawn.genes != null && 
+                Cache?.grcGenes.NullOrEmpty() == false && otherPawn.GetAllGenesOnListFromPawn(Cache.grcGenes, out var matches))
+                foreach (GeneDef gene in matches)
                 {
-                    List<Gene> genesListForReading = otherPawn.genes.GenesListForReading;
-
-                    foreach (Gene gene in genesListForReading)
-                        if (gene.def.HasModExtension<GRCExtension>())
+                    float num = 1f;
+                    GRCExtension extension = gene.GetModExtension<GRCExtension>();
+                    if (extension.carrierStat != null)
+                    {
+                        float statValue = otherPawn.StatOrOne(extension.carrierStat);
+                        if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
+                        else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
+                        else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
+                    }
+                    if (!extension.carrierStats.NullOrEmpty())
+                        foreach (StatDef stat in extension.carrierStats)
                         {
-                            float num = 1f;
-                            GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
-                            if (extension.carrierStat != null)
-                            {
-                                float statValue = otherPawn.StatOrOne(extension.carrierStat);
-                                if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                                else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                                else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                            }
-                            if (!extension.carrierStats.NullOrEmpty())
-                                foreach (StatDef stat in extension.carrierStats)
-                                {
-                                    float statValue = otherPawn.StatOrOne(stat);
-                                    if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                                    else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                                    else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                                }
-                            if (extension.otherStat != null)
-                            {
-                                float statValue = ___pawn.StatOrOne(extension.otherStat);
-                                if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                                else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                                else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                            }
-                            if (!extension.otherStats.NullOrEmpty())
-                                foreach (StatDef stat in extension.otherStats)
-                                {
-                                    float statValue = ___pawn.StatOrOne(stat);
-                                    if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                                    else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                                    else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                                }
-                            __result *= num;
-                            if (__result < 0) __result = 0;
-                            if (__result == 0) return;
+                            float statValue = otherPawn.StatOrOne(stat);
+                            if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
+                            else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
+                            else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                         }
-                }
+                    if (extension.otherStat != null)
+                    {
+                        float statValue = ___pawn.StatOrOne(extension.otherStat);
+                        if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
+                        else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
+                        else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
+                    }
+                    if (!extension.otherStats.NullOrEmpty())
+                        foreach (StatDef stat in extension.otherStats)
+                        {
+                            float statValue = ___pawn.StatOrOne(stat);
+                            if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
+                            else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
+                            else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
+                        }
+                    __result = Mathf.Clamp01(__result * num);
+                    if (__result == 0) return;
             }
         }
 
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
         {
             if (ModsConfig.BiotechActive && romancer.genes != null && Cache?.grcGenes.NullOrEmpty() == false &&
-                romancer.PawnHasAnyOfGenes(out GeneDef firstMatch, Cache.grcGenes))
+                romancer.GetAllGenesOnListFromPawn(Cache.grcGenes, out var matches))
             {
-                List<Gene> genesListForReading = romancer.genes.GenesListForReading;
                 float num = 1f;
                 bool flag = false;
 
-                foreach (Gene gene in genesListForReading)
-                    if (gene.def.HasModExtension<GRCExtension>())
+                foreach (GeneDef gene in matches)
+                {
+                    GRCExtension extension = gene.GetModExtension<GRCExtension>();
+                    if (extension.carrierStat != null)
                     {
-                        GRCExtension extension = gene.def.GetModExtension<GRCExtension>();
-                        if (extension.carrierStat != null)
+                        float statValue = romancer.StatOrOne(extension.carrierStat);
+                        if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
+                        else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
+                        else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
+                    }
+                    if (!extension.carrierStats.NullOrEmpty())
+                        foreach (StatDef stat in extension.carrierStats)
                         {
-                            float statValue = romancer.StatOrOne(extension.carrierStat);
+                            float statValue = romancer.StatOrOne(stat);
                             if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                         }
-                        if (!extension.carrierStats.NullOrEmpty())
-                            foreach (StatDef stat in extension.carrierStats)
-                            {
-                                float statValue = romancer.StatOrOne(stat);
-                                if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                                else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                                else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                            }
-                        if (extension.otherStat != null)
+                    if (extension.otherStat != null)
+                    {
+                        float statValue = romanceTarget.StatOrOne(extension.otherStat);
+                        if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
+                        else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
+                        else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
+                    }
+                    if (!extension.otherStats.NullOrEmpty())
+                        foreach (StatDef stat in extension.otherStats)
                         {
-                            float statValue = romanceTarget.StatOrOne(extension.otherStat);
+                            float statValue = romanceTarget.StatOrOne(stat);
                             if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
                         }
-                        if (!extension.otherStats.NullOrEmpty())
-                            foreach (StatDef stat in extension.otherStats)
-                            {
-                                float statValue = romanceTarget.StatOrOne(stat);
-                                if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                                else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                                else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                            }
-                        flag = true;
-                    }
+                    flag = true;
+                }
 
                 if (flag)
                 {
@@ -2338,7 +2327,7 @@ namespace EBSGFramework
         public static void BodyResourceGrowthSpeedPostfix(ref float __result, Pawn pawn)
         {
             if (pawn != null)
-                __result *= pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed);
+                __result *= pawn.GetStatValue(EBSGDefOf.EBSG_PawnGestationSpeed, true, 10000);
         }
 
         public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
@@ -2353,7 +2342,7 @@ namespace EBSGFramework
             __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_HungerRateFactor);
         }
 
-        public static void BloodRecoveryPostfix(Pawn pawn, Hediff cause)
+        public static void BloodRecoveryPostfix(Pawn pawn)
         {
             HediffSet hediffSet = pawn.health.hediffSet;
             if (hediffSet.BleedRateTotal < 0.1f)
