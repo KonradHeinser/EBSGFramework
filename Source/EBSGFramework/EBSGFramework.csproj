@@ -119,6 +119,9 @@
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentBody.cs" />
+    <Compile Include="Settings\FlexibleSettings.cs" />
+    <Compile Include="Settings\Setting.cs" />
+    <Compile Include="Settings\SettingType.cs" />
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
@@ -213,8 +216,8 @@
     <Compile Include="Genes\GRCExtension.cs" />
     <Compile Include="Things\EquipRestrictExtension.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
-    <Compile Include="Hediffs\BurstHediffPropertiesBase.cs" />
-    <Compile Include="Hediffs\BurstHediffCompBase.cs" />
+    <Compile Include="Hediffs\CompProperties\Explosive\BurstHediffPropertiesBase.cs" />
+    <Compile Include="Hediffs\Comps\Explosive\BurstHediffCompBase.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />

@@ -278,8 +278,7 @@ namespace EBSGFramework
         private void OnReviveStart()
         {
             if (Pawn.Corpse == null || Pawn.Corpse.Destroyed) return;
-            Map map = Pawn.Corpse.Map;
-            if (map == null) map = Pawn.Corpse.MapHeld;
+            Map map = Pawn.MapHeld;
 
             EBSGUtilities.ThingAndSoundMaker(Pawn.Corpse.Position, map, Props.thingSpawnOnReviveStart, Props.thingsToSpawnOnReviveStart, Props.reviveStartSound);
         }
@@ -299,8 +298,7 @@ namespace EBSGFramework
                     Find.LetterStack.ReceiveLetter(letter);
                 }
             }
-            Map map = Pawn.Corpse.Map;
-            if (map == null) map = Pawn.Corpse.MapHeld;
+            Map map = Pawn.MapHeld;
 
             EBSGUtilities.ThingAndSoundMaker(Pawn.Corpse.Position, map, Props.thingSpawnOnFail, Props.thingsToSpawnOnFail, Props.failSound);
             if (Props.deleteOnFailedRevive && Pawn.Corpse != null && !Pawn.Corpse.Destroyed)

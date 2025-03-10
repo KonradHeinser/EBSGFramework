@@ -28,37 +28,36 @@ namespace EBSGFramework
             }
             else if (parent.Severity < Props.validSeverities.min) return;
             List<Thing> ignoreList = new List<Thing>();
-            Pawn caster = parent.pawn;
 
-            Map map = caster.Corpse.MapHeld;
+            Map map = Pawn.MapHeld;
             if (map == null) return;
 
             float radius = Props.radius;
-            if (Props.statRadius != null && caster.GetStatValue(Props.statRadius) > 0) radius = caster.GetStatValue(Props.statRadius);
+            if (Props.statRadius != null && Pawn.GetStatValue(Props.statRadius) > 0) radius = Pawn.GetStatValue(Props.statRadius);
             if (Props.multiplyRadiusBySeverity)
                 radius *= parent.Severity;
 
             Faction faction;
-            if (caster.Dead) faction = caster.Corpse.Faction;
-            else faction = caster.Faction;
+            if (Pawn.Dead) faction = Pawn.Corpse.Faction;
+            else faction = Pawn.Faction;
 
             if (Props.exclusions != null)
             {
                 switch (Props.exclusions)
                 {
                     case ExclusionLevel.Self:
-                        if (!caster.Dead)
-                            ignoreList.Add(caster);
+                        if (!Pawn.Dead)
+                            ignoreList.Add(Pawn);
                         break;
                     case ExclusionLevel.Allies:
-                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
+                        foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
                             ignoreList.Add(pawn);
                         break;
                     case ExclusionLevel.NonHostiles:
-                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned)
-                            if (!caster.Dead)
+                        foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+                            if (!Pawn.Dead)
                             {
-                                if (!pawn.HostileTo(caster))
+                                if (!pawn.HostileTo(Pawn))
                                     ignoreList.Add(pawn);
                             }
                             else
@@ -73,11 +72,11 @@ namespace EBSGFramework
             {
                 if (!Props.injureNonHostiles)
                 {
-                    foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned)
+                    foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
                     {
-                        if (!caster.Dead)
+                        if (!Pawn.Dead)
                         {
-                            if (!pawn.HostileTo(caster))
+                            if (!pawn.HostileTo(Pawn))
                             {
                                 ignoreList.Add(pawn);
                             }
@@ -94,21 +93,21 @@ namespace EBSGFramework
                 }
                 else if (!Props.injureAllies)
                 {
-                    foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
+                    foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
                     {
                         ignoreList.Add(pawn);
                     }
                 }
-                else if (!Props.injureSelf && !caster.Dead)
+                else if (!Props.injureSelf && !Pawn.Dead)
                 {
-                    ignoreList.Add(caster);
+                    ignoreList.Add(Pawn);
                 }
             }
 
 
             if ((int)Props.extraGasType != 1)
             {
-                GenExplosion.DoExplosion(center, map, radius, Props.damageDef, caster, Mathf.CeilToInt(Props.damageAmount * DamageFactor),
+                GenExplosion.DoExplosion(center, map, radius, Props.damageDef, Pawn, Mathf.CeilToInt(Props.damageAmount * DamageFactor),
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, (GasType)(int)Props.extraGasType, Props.applyDamageToExplosionCellsNeighbors,
                      Props.preExplosionThing, Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire,
@@ -117,7 +116,7 @@ namespace EBSGFramework
             }
             else
             {
-                GenExplosion.DoExplosion(center, map, radius, Props.damageDef, caster, Mathf.CeilToInt(Props.damageAmount * DamageFactor),
+                GenExplosion.DoExplosion(center, map, radius, Props.damageDef, Pawn, Mathf.CeilToInt(Props.damageAmount * DamageFactor),
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, null, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionThing,
                     Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, ignoreList,
