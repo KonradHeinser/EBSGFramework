@@ -152,7 +152,7 @@ namespace EBSGFramework
         }
 
         private Dictionary<string, List<ThinkBranchSetting>> treeSettings; // All the settings that need to show up in the menu. This doesn't mess with settings themselves
-        private Dictionary<string, List<string>> treeSettingLabelsAndDescriptions; // The key is the label, and this relies on the counts of this and treeSettings remaining the same
+        private Dictionary<string, List<string>> treeLabelsAndDescs; // The key is the label, and this relies on the counts of this and treeSettings remaining the same
         private List<string> treeSettingIDs = new List<string>(); // Gives a list that can be iterated through
         private bool builtTreeSettingMenuOptions = false;
         private List<FloatMenuOption> thinkMenus;
@@ -161,7 +161,7 @@ namespace EBSGFramework
         private void BuildTreeSettingMenuOptions()
         {
             treeSettings = new Dictionary<string, List<ThinkBranchSetting>>();
-            treeSettingLabelsAndDescriptions = new Dictionary<string, List<string>>();
+            treeLabelsAndDescs = new Dictionary<string, List<string>>();
             thinkMenus = new List<FloatMenuOption>();
 
             if (Recorder != null)
@@ -178,7 +178,7 @@ namespace EBSGFramework
                     if (treeSettings.NullOrEmpty() || !treeSettings.ContainsKey(setting.uniqueID))
                     {
                         treeSettings.Add(setting.uniqueID, setting.individualSettings);
-                        treeSettingLabelsAndDescriptions.Add(setting.uniqueID, new List<string> { setting.label, setting.description });
+                        treeLabelsAndDescs.Add(setting.uniqueID, new List<string> { setting.label, setting.description });
                         treeSettingIDs.Add(setting.uniqueID);
                     }
                     else
@@ -425,8 +425,10 @@ namespace EBSGFramework
                         {
                             var settings = treeSettings[currentThinkMenu];
                             contentRect.height = (settings.Count + 1) * 35;
-
-                            optionsMenu.Label(treeSettingLabelsAndDescriptions[currentThinkMenu][0], -1, treeSettingLabelsAndDescriptions[currentThinkMenu][1]);
+                            if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.75f)){
+                                Find.WindowStack.Add(new FloatMenu(thinkMenus));
+                            }
+                            optionsMenu.Label(treeLabelsAndDescs[currentThinkMenu][0], -1, treeLabelsAndDescs[currentThinkMenu][1]);
                             optionsMenu.Gap(7f);
 
                             foreach (ThinkBranchSetting branchSetting in settings)
