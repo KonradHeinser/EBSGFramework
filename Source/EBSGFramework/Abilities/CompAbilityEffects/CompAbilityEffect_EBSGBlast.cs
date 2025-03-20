@@ -105,7 +105,7 @@ namespace EBSGFramework
                 }
             }
 
-            int damageAmount = Mathf.FloorToInt(Props.damageStat != null ? caster.StatOrOne(Props.damageStat) : Props.damageAmount);
+            int damageAmount = Props.damageStat != null ? Mathf.FloorToInt(caster.StatOrOne(Props.damageStat)) : Props.damageAmount;
 
             if ((int)Props.extraGasType != 1)
             {
