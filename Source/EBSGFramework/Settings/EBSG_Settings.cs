@@ -250,7 +250,7 @@ namespace EBSGFramework
                 case 1: // Main EBSG settings
                         // Check for various mods
 
-                    bool EBSGAllInOneActive = ModsConfig.IsActive("EBSG.AiO");
+                    bool EBSGAllInOneActive = ModsConfig.IsActive("EBSG.AiO") || ModsConfig.IsActive("EBSG.Lite");
                     bool EAGActive = ModsConfig.IsActive("EBSG.Archite");
                     bool EBSGBleedActive = ModsConfig.IsActive("EBSG.Bleeding");
                     bool EBSGPsychicActive = ModsConfig.IsActive("EBSG.Psychic");
@@ -425,7 +425,7 @@ namespace EBSGFramework
                         {
                             var settings = treeSettings[currentThinkMenu];
                             contentRect.height = (settings.Count + 1) * 35;
-                            if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.75f)){
+                            if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.25f)){
                                 Find.WindowStack.Add(new FloatMenu(thinkMenus));
                             }
                             optionsMenu.Label(treeLabelsAndDescs[currentThinkMenu][0], -1, treeLabelsAndDescs[currentThinkMenu][1]);
