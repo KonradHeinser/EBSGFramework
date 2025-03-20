@@ -105,9 +105,11 @@ namespace EBSGFramework
                 }
             }
 
+            int damageAmount = Mathf.FloorToInt(Props.damageStat != null ? caster.StatOrOne(Props.damageStat) : Props.damageAmount);
+
             if ((int)Props.extraGasType != 1)
             {
-                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, Props.damageDef, caster, Props.damageAmount,
+                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, Props.damageDef, caster, damageAmount,
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, (GasType)(int)Props.extraGasType, Props.applyDamageToExplosionCellsNeighbors,
                     Props.preExplosionThing, Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire,
@@ -116,7 +118,7 @@ namespace EBSGFramework
             }
             else
             {
-                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, Props.damageDef, caster, Props.damageAmount,
+                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, Props.damageDef, caster, damageAmount,
                     Props.armorPenetration, Props.explosionSound, null, null, null, Props.postExplosionThing, Props.postExplosionThingChance,
                     Props.postExplosionSpawnThingCount, null, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionThing,
                     Props.preExplosionThingChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, ignoreList,
