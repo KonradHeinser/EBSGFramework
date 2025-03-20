@@ -115,6 +115,7 @@ namespace EBSGFramework
                         {
                             bool firstFlag = true;
                             text += " " + "EBSG_DependencyNeedDurationDescriptionBase".Translate(AssignedLabel, pawn.Named("PAWN")).Resolve();
+                            bool deathStage = false;
                             foreach (HediffStage stage in def.stages)
                             {
                                 if (stage.minSeverity <= FirstNotableStageSeverity) continue;
@@ -124,7 +125,6 @@ namespace EBSGFramework
                                 if (stage.label != null) experienceLabel += stage.label;
                                 if (stage.overrideLabel != null) experienceLabel = stage.overrideLabel;
 
-                                bool deathStage = false;
                                 if (!stage.capMods.NullOrEmpty())
                                 {
                                     foreach (PawnCapacityModifier capMod in stage.capMods)
@@ -151,6 +151,8 @@ namespace EBSGFramework
                                 }
                                 else text += " " + "EBSG_DependencyNeedDurationDescription".Translate(days, experienceLabel, pawn.Named("PAWN")).Resolve();
                             }
+                            if (!deathStage && IsLethal)
+                                text += " " + "EBSG_DependencyNeedDurationDescriptionDeath".Translate(Math.Round((double)(def.lethalSeverity / severityPerDay), 1), pawn.Named("PAWN")).Resolve();
                         }
                         else
                         {
