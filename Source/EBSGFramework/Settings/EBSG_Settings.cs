@@ -237,10 +237,9 @@ namespace EBSGFramework
             var frameRect = innerContainer.ContractedBy(5);
             frameRect.y += 15;
             frameRect.height -= 15;
-            var contentRect = frameRect;
-            contentRect.x = 0;
+            var contentRect = frameRect.ContractedBy(5);
+            contentRect.x = -5;
             contentRect.y = 0;
-            contentRect.width -= 20;
 
             Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
             optionsMenu.Begin(contentRect.AtZero());

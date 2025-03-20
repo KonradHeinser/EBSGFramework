@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-    <EBSG_ChooseCategory>Choose category</EBSG_ChooseCategory>
+    <EBSG_ChooseCategory>    Choose category</EBSG_ChooseCategory>
     <EBSG_GeneticRomanceChance>Carrier Gene(s)</EBSG_GeneticRomanceChance>
     <EBSG_NeedOffsets>Base target need offsets:</EBSG_NeedOffsets>
     <EBSG_CasterNeedOffsets>Base caster need offsets:</EBSG_CasterNeedOffsets>
