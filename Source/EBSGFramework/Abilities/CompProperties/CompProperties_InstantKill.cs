@@ -13,9 +13,19 @@ namespace EBSGFramework
 
         public ThingDef filthReplacement;
 
+        public bool makeFilth = true;
+
         public IntRange bloodFilthToSpawnRange;
 
         public bool multiplyBloodByBodySize = true;
+
+        public ThingDef thingToMake;
+
+        public float bodySizeFactor = 1f;
+
+        public int count = 0;
+
+        public ThingDef stuff;
 
         public CompProperties_InstantKill()
         {
