@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -76,8 +77,6 @@ namespace EBSGFramework
                             tabInt = 1;
                             tabsList.Clear(); // Resets list to get new tab, and potentially allow for more dynamic tab creation in the future
                         }, tabInt == 1),
-
-                        // new TabRecord("EBSG_SettingMenuLabel_Unbugger".Translate(), delegate () { tabInt = 5; }, tabInt == 5)
                     };
 
                     if (NeedEBSGThinkTree())
@@ -154,26 +153,32 @@ namespace EBSGFramework
 
         private Dictionary<string, List<ThinkBranchSetting>> treeSettings; // All the settings that need to show up in the menu. This doesn't mess with settings themselves
         private Dictionary<string, List<string>> treeSettingLabelsAndDescriptions; // The key is the label, and this relies on the counts of this and treeSettings remaining the same
-        private Dictionary<string, bool> hiddenTreeSettings; // Gives ability to hide sections
         private List<string> treeSettingIDs = new List<string>(); // Gives a list that can be iterated through
         private bool builtTreeSettingMenuOptions = false;
+        private List<FloatMenuOption> thinkMenus;
+        private string currentThinkMenu = "EBSGFramework";
 
         private void BuildTreeSettingMenuOptions()
         {
             treeSettings = new Dictionary<string, List<ThinkBranchSetting>>();
             treeSettingLabelsAndDescriptions = new Dictionary<string, List<string>>();
-            hiddenTreeSettings = new Dictionary<string, bool>();
+            thinkMenus = new List<FloatMenuOption>();
 
             if (Recorder != null)
                 foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
                 {
                     if (setting.individualSettings.NullOrEmpty())
                         continue;
+
+                    thinkMenus.Add(new FloatMenuOption(setting.label, delegate
+                    {
+                        currentThinkMenu = setting.uniqueID;
+                    }));
+
                     if (treeSettings.NullOrEmpty() || !treeSettings.ContainsKey(setting.uniqueID))
                     {
                         treeSettings.Add(setting.uniqueID, setting.individualSettings);
                         treeSettingLabelsAndDescriptions.Add(setting.uniqueID, new List<string> { setting.label, setting.description });
-                        hiddenTreeSettings.Add(setting.uniqueID, true);
                         treeSettingIDs.Add(setting.uniqueID);
                     }
                     else
@@ -418,33 +423,20 @@ namespace EBSGFramework
                     {
                         if (Recorder != null && !treeSettingIDs.NullOrEmpty())
                         {
-                            contentRect.height = treeSettingIDs.Count * 35; // To avoid weird white space, height is based off of option count of present mods
+                            var settings = treeSettings[currentThinkMenu];
+                            contentRect.height = (settings.Count + 1) * 35;
 
-                            foreach (ThinkTreeSetting setting in Recorder.thinkTreeSettings)
-                                if (hiddenTreeSettings.ContainsKey(setting.uniqueID) && hiddenTreeSettings[setting.uniqueID] && !setting.individualSettings.NullOrEmpty())
-                                    contentRect.height += setting.individualSettings.Count * 35;
+                            optionsMenu.Label(treeSettingLabelsAndDescriptions[currentThinkMenu][0], -1, treeSettingLabelsAndDescriptions[currentThinkMenu][1]);
+                            optionsMenu.Gap(7f);
 
-                            foreach (string id in treeSettingIDs)
+                            foreach (ThinkBranchSetting branchSetting in settings)
                             {
-                                bool showFlag = hiddenTreeSettings[id];
-                                optionsMenu.CheckboxLabeled(treeSettingLabelsAndDescriptions[id][0], ref showFlag, treeSettingLabelsAndDescriptions[id][1]);
-                                optionsMenu.Gap(7f);
+                                bool settingFlag = thinkTreeSettings[currentThinkMenu + branchSetting.settingID];
 
-                                if (showFlag)
-                                    foreach (ThinkBranchSetting branchSetting in treeSettings[id])
-                                    {
-                                        bool settingFlag = thinkTreeSettings[id + branchSetting.settingID];
+                                optionsMenu.CheckboxLabeled("    " + branchSetting.label.CapitalizeFirst(), ref settingFlag, branchSetting.description);
+                                optionsMenu.Gap(5f);
 
-                                        optionsMenu.CheckboxLabeled("    " + branchSetting.label.CapitalizeFirst(), ref settingFlag, branchSetting.description);
-                                        optionsMenu.Gap(3f);
-
-                                        thinkTreeSettings[id + branchSetting.settingID] = settingFlag;
-                                    }
-
-
-
-                                hiddenTreeSettings[id] = showFlag;
-                                optionsMenu.Gap(10f);
+                                thinkTreeSettings[currentThinkMenu + branchSetting.settingID] = settingFlag;
                             }
                         }
                     }

@@ -119,9 +119,6 @@
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentBody.cs" />
-    <Compile Include="Settings\FlexibleSettings.cs" />
-    <Compile Include="Settings\Setting.cs" />
-    <Compile Include="Settings\SettingType.cs" />
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
