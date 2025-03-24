@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -14,8 +10,6 @@ namespace EBSGFramework
     [StaticConstructorOnStartup]
     public class Command_AbilityAutocastToggle : Command
     {
-        private bool autocast = true;
-
         CompAbilityEffect_AutocastToggle toggle = null;
 
         protected Ability ability;

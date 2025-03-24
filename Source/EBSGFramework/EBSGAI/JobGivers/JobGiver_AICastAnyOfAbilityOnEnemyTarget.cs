@@ -32,6 +32,8 @@ namespace EBSGFramework
                 Ability tempAbility = pawn.abilities?.GetAbility(abilityDef);
                 if (tempAbility != null && tempAbility.CanCast)
                 {
+                    if (tempAbility.CompOfType<CompAbilityEffect_AutocastToggle>()?.autocast == false)
+                        continue;
                     if (!tempAbility.ValidateGlobalTarget(currentEnemy)) continue;
                     if (!tempAbility.Valid(currentEnemy)) continue;
                     if (tempAbility.verb.verbProps.requireLineOfSight && !los) continue;
