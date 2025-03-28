@@ -174,7 +174,7 @@
     <NoInnateMechlinkPrereq>    No innate mechlink prereq on mechanitor genes.</NoInnateMechlinkPrereq>
     <NoInnateMechlinkPrereqDescription>Prevents EBSG genes from requiring the innate mechlink gene. This can make it easy to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the mechlink gene.</NoInnateMechlinkPrereqDescription>
     <NoInnateRemotePrereq>        No innate remotes prereq on mechanitor genes.</NoInnateRemotePrereq>
-    <NoInnateRemotePrereqDescription>Prevents EBSG genes from requiring the innate remote shielder and repairer genes. This makes it even easier to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the related innate gene.</NoInnateRemotePrereqDescription>
+    <NoInnateRemotePrereqDescription>Expands no innate mechlink to include the innate remote shielder and repairer genes. This makes it even easier to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the related innate gene.</NoInnateRemotePrereqDescription>
 
     <EAG_ModName>Expanded Archite Genes</EAG_ModName>
     <ArchitePsychicInfluencer>     Archite Psychic Influencer removes the Psychic Bond Torn mood.</ArchitePsychicInfluencer>
