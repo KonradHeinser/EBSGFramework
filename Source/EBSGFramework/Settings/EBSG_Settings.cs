@@ -332,7 +332,7 @@ namespace EBSGFramework
                     if (MainMenuOptions.Count > 1)
                         if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), mainMenuLabels[mainMenu], 0.25f))
                         {
-                            Find.WindowStack.Add(new FloatMenu(thinkMenus));
+                            Find.WindowStack.Add(new FloatMenu(mainMenuOptions));
                         }
 
                     optionsMenu.Label(mainMenuLabels[mainMenu]);
