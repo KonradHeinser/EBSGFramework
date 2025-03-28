@@ -49,6 +49,7 @@ namespace EBSGFramework
         public static bool defaultToRecipeIcon = true;
 
         public static bool noInnateMechlinkPrereq = false;
+        public static bool noInnateRemotePrereqs = false;
         public static bool noInnatePsylinkPrereq = false;
         public static bool psychicInsulationBondOpinion = true;
         public static bool psychicInsulationBondMood = true;
@@ -206,6 +207,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
             Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
             Scribe_Values.Look(ref noInnateMechlinkPrereq, "noInnateMechlinkPrereq", false);
+            Scribe_Values.Look(ref noInnateRemotePrereqs, "noInnateRemotePrereqs", false);
             Scribe_Values.Look(ref noInnatePsylinkPrereq, "noInnatePsylinkPrereq", false);
             Scribe_Values.Look(ref psychicInsulationBondOpinion, "psychicInsulationBondOpinion", true);
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
@@ -267,7 +269,7 @@ namespace EBSGFramework
                     if (EBSGAllInOneActive)
                     {
                         numberOfOptions += 1;
-                        if (showEBSGAiOOptions) numberOfOptions += 5;
+                        if (showEBSGAiOOptions) numberOfOptions += 6;
                         if (EAGActive)
                         {
                             numberOfOptions += 1;
@@ -289,7 +291,7 @@ namespace EBSGFramework
                                 numberOfOptions += 2;
                         }
                         if (EBSGMechanitorActive)
-                            numberOfOptions += 1;
+                            numberOfOptions += 2;
 
                         if (EAGActive)
                         {
@@ -330,6 +332,8 @@ namespace EBSGFramework
                             optionsMenu.CheckboxLabeled("SuperclottingArchite".Translate(), ref superclottingArchite);
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
+                            optionsMenu.Gap(10f);
+                            optionsMenu.CheckboxLabeled("NoInnateRemotePrereq".Translate(), ref noInnateRemotePrereqs, "NoInnateRemotePrereqDescription".Translate());
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
                             optionsMenu.Gap(10f);
