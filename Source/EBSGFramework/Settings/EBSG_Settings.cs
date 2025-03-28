@@ -330,7 +330,7 @@ namespace EBSGFramework
                 case 1: // Main EBSG settings
                     contentRect.height = 350;
                     if (MainMenuOptions.Count > 1)
-                        if (optionsMenu.ButtonTextLabeledPct("", mainMenuLabels[mainMenu], 0.75f))
+                        if (optionsMenu.ButtonTextLabeledPct("", mainMenuLabels[mainMenu], 0.65f))
                         {
                             Find.WindowStack.Add(new FloatMenu(mainMenuOptions));
                         }
