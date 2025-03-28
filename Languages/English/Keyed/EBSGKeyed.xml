@@ -138,8 +138,7 @@
 
         <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
-    <EBSG_ModName>EBSG Framework (assume every change requires a restart)</EBSG_ModName> <!--This is the one used in the settings themselves-->
-    <EBSG_ModDescription>The Expanded Biotech Style Genes(EBSG) Framework is a compilation of all the code used in the EBSG series, generic versions of most code use in the Superhero Genes Series, along with various other bits of convenient code suggested by others or the voice in my head.\n\nBecause this is a framework, there are very few settings to look at. The only things that will ever be added to this list are the optional quality of life patches made to apply this framework's code to vanilla things.\n\nThe checkmark next to the label just hides the group, if you want to do that for whatever reason.</EBSG_ModDescription>
+    <EBSG_ModName>EBSG Framework</EBSG_ModName> <!--This is the one used in the settings themselves-->
     <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
     <EBSG_AgeLimitedAgelessDescription>When the ageless gene is applied (or the pawn spawns with it) to a pawn with an age over 30, their body will be instantly rejuvenated to be between 18 and 30 years old.</EBSG_AgeLimitedAgelessDescription>
     <EBSG_HideSkinGenes>    Hide Inactive Skin Color Genes</EBSG_HideSkinGenes>
@@ -159,27 +158,25 @@
     <EBSG_CustomizableAsexualHediffs>    Customizable Asexual Hediffs</EBSG_CustomizableAsexualHediffs>
 
     <!--These settings are for all of the EBSG mods-->
-    <EBSGAiO_ModName>Expanded Biotech Style Genes - All in One</EBSGAiO_ModName>
-    <EBSGAiO_ModDescription>Expanded Biotech Style Genes is a mod series that seeks to provide massive amounts of customization options for pawns, from how they fight to what kind of work they are skilled in to how long they live. While I'm not going to claim the list is completely exhaustive, the hundreds of options will leave you thinking "maybe the dev needs another hobby?", and the bad artwork will make you think "well at least I'm more here for the gameplay".</EBSGAiO_ModDescription>
+    <EBSGAiO_ModName>Expanded Biotech Style Genes</EBSGAiO_ModName>
 
-    <EBSGBleed_ModName>EBSG - Bleed Genes</EBSGBleed_ModName>
+    <EBSGBleed_ModName>Bleeding Genes</EBSGBleed_ModName>
     <SuperclottingArchite>    Superclotting uses archite, not metabolic efficiency</SuperclottingArchite>
 
-    <EBSGPsychic_ModName>EBSG - Expanded Psychic Genes</EBSGPsychic_ModName>
+    <EBSGPsychic_ModName>Expanded Psychic Genes</EBSGPsychic_ModName>
     <NoInnatePsylinkPrereq>    No innate psychic amplifier prereq on psychic genes.</NoInnatePsylinkPrereq>
     <NoInnatePsylinkPrereqDescription>Prevents EBSG genes from requiring the innate psychic amplifier gene. This can make it easy to create unbalanced xenotypes if you add negative psychic genes on a pawn without the psychic amplifier gene.</NoInnatePsylinkPrereqDescription>
 
     <PsychicInsulationMood>    Psychic Insulation removes Psychic Bond mood bonuses and penalties.</PsychicInsulationMood>
     <PsychicInsulationOpinion>    Psychic Insulation removes the Psychic Bond opinion bonus.</PsychicInsulationOpinion>
 
-    <EBSGMechanitor_ModName>EBSG - Mechanitor Genes</EBSGMechanitor_ModName>
+    <EBSGMechanitor_ModName>Mechanitor Genes</EBSGMechanitor_ModName>
     <NoInnateMechlinkPrereq>    No innate mechlink prereq on mechanitor genes.</NoInnateMechlinkPrereq>
     <NoInnateMechlinkPrereqDescription>Prevents EBSG genes from requiring the innate mechlink gene. This can make it easy to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the mechlink gene.</NoInnateMechlinkPrereqDescription>
     <NoInnateRemotePrereq>        No innate remotes prereq on mechanitor genes.</NoInnateRemotePrereq>
     <NoInnateRemotePrereqDescription>Prevents EBSG genes from requiring the innate remote shielder and repairer genes. This makes it even easier to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the related innate gene.</NoInnateRemotePrereqDescription>
 
     <EAG_ModName>Expanded Archite Genes</EAG_ModName>
-    <EAG_ModDescription>Expanded Archite Genes gives a bunch of archite level genes for any genes added through the Biotech Style Genes series.</EAG_ModDescription>
     <ArchitePsychicInfluencer>     Archite Psychic Influencer removes the Psychic Bond Torn mood.</ArchitePsychicInfluencer>
 
         <!--Revival hediff comp-->

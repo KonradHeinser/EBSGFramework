@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 
 namespace EBSGFramework
 {
@@ -35,13 +36,6 @@ namespace EBSGFramework
     public class EBSG_Settings : ModSettings
     {
         private static Vector2 scrollPosition = Vector2.zero;
-
-        private static bool showMainOptions = true;
-        private static bool showEBSGAiOOptions = true;
-        private static bool showEBSGBleedOptions = true;
-        private static bool showEBSGPsychicOptions = true;
-        private static bool showEBSGMechanitorOptions = true;
-        private static bool showEAGOptions = true;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
         public static bool hideInactiveSkinGenes = false;
@@ -218,9 +212,94 @@ namespace EBSGFramework
         Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
         }
 
+        private List<FloatMenuOption> mainMenuOptions;
+        private Dictionary<string, string> mainMenuLabels;
+        private string mainMenu = "EBSG.Framework";
+
+        public List<FloatMenuOption> MainMenuOptions
+        {
+            get
+            {
+                if (mainMenuOptions.NullOrEmpty())
+                {
+                    mainMenuOptions = new List<FloatMenuOption>()
+                    {
+                        new FloatMenuOption("EBSG_ModName".Translate(), delegate
+                        {
+                            mainMenu = "EBSG.Framework";
+                        })
+                    };
+                    mainMenuLabels = new Dictionary<string, string>
+                    {
+                        { "EBSG.Framework", "EBSG_ModName".Translate() }
+                    };
+
+                    if (ModsConfig.IsActive("EBSG.AiO") || ModsConfig.IsActive("EBSG.Lite"))
+                    {
+                        mainMenuOptions.Add(new FloatMenuOption("EBSGAiO_ModName".Translate(), delegate
+                        {
+                            mainMenu = "EBSG.AiO";
+                        }));
+                        mainMenuLabels.Add("EBSG.AiO", "EBSGAiO_ModName".Translate());
+
+                        if (ModsConfig.IsActive("EBSG.Archite"))
+                        {
+                            mainMenuOptions.Add(new FloatMenuOption("EAG_ModName".Translate(), delegate
+                            {
+                                mainMenu = "EBSG.Archite";
+                            }));
+                            mainMenuLabels.Add("EBSG.Archite", "EAG_ModName".Translate());
+                        }
+                    }
+                    else
+                    {
+                        if (ModsConfig.IsActive("EBSG.Bleeding"))
+                        {
+                            mainMenuOptions.Add(new FloatMenuOption("EBSGBleed_ModName".Translate(), delegate
+                            {
+                                mainMenu = "EBSG.Bleeding";
+                            }));
+                            mainMenuLabels.Add("EBSG.Bleeding", "EBSGBleed_ModName".Translate());
+                        }
+
+                        if (ModsConfig.IsActive("EBSG.Psychic"))
+                        {
+                            mainMenuOptions.Add(new FloatMenuOption("EBSGPsychic_ModName".Translate(), delegate
+                            {
+                                mainMenu = "EBSG.Psychic";
+                            }));
+                            mainMenuLabels.Add("EBSG.Psychic", "EBSGPsychic_ModName".Translate());
+
+                            if (ModsConfig.IsActive("EBSG.Archite"))
+                            {
+                                mainMenuOptions.Add(new FloatMenuOption("EAG_ModName".Translate(), delegate
+                                {
+                                    mainMenu = "EBSG.Archite";
+                                }));
+                                mainMenuLabels.Add("EBSG.Archite", "EAG_ModName".Translate());
+                            }
+                        }
+
+                        if (ModsConfig.IsActive("EBSG.Mechanitor"))
+                        {
+                            mainMenuOptions.Add(new FloatMenuOption("EBSGMechanitor_ModName".Translate(), delegate
+                            {
+                                mainMenu = "EBSG.Mechanitor";
+                            }));
+                            mainMenuLabels.Add("EBSG.Mechanitor", "EBSGMechanitor_ModName".Translate());
+                        }
+                    }
+                }
+                
+                return mainMenuOptions;
+            }
+            
+        }
+
         public void DoWindowContents(Rect inRect, out bool activeSettings)
         {
             Listing_Standard optionsMenu = new Listing_Standard();
+            
 
             Rect tabs = new Rect(inRect)
             {
@@ -249,170 +328,74 @@ namespace EBSGFramework
             switch (tabInt)
             {
                 case 1: // Main EBSG settings
-                        // Check for various mods
-
-                    bool EBSGAllInOneActive = ModsConfig.IsActive("EBSG.AiO") || ModsConfig.IsActive("EBSG.Lite");
-                    bool EAGActive = ModsConfig.IsActive("EBSG.Archite");
-                    bool EBSGBleedActive = ModsConfig.IsActive("EBSG.Bleeding");
-                    bool EBSGPsychicActive = ModsConfig.IsActive("EBSG.Psychic");
-                    bool EBSGMechanitorActive = ModsConfig.IsActive("EBSG.Mechanitor");
-
-                    // Find out how much room is needed
-                    int numberOfOptions = 1;
-                    if (showMainOptions)
-                    {
-                        if (ModsConfig.BiotechActive)
-                            numberOfOptions += 3;
-                        numberOfOptions += 1;
-                    }
-
-                    if (EBSGAllInOneActive)
-                    {
-                        numberOfOptions += 1;
-                        if (showEBSGAiOOptions) numberOfOptions += 6;
-                        if (EAGActive)
+                    contentRect.height = 350;
+                    if (MainMenuOptions.Count > 1)
+                        if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), mainMenuLabels[mainMenu], 0.25f))
                         {
-                            numberOfOptions += 1;
-                            if (showEAGOptions)
-                                numberOfOptions += 1;
+                            Find.WindowStack.Add(new FloatMenu(thinkMenus));
                         }
-                    }
-                    else
-                    {
-                        if (EBSGBleedActive)
-                        {
-                            numberOfOptions += 1;
-                            if (showEBSGBleedOptions) numberOfOptions += 1;
-                        }
-                        if (EBSGPsychicActive)
-                        {
-                            numberOfOptions += 2;
-                            if (showEBSGPsychicOptions)
-                                numberOfOptions += 2;
-                        }
-                        if (EBSGMechanitorActive)
-                            numberOfOptions += 2;
 
-                        if (EAGActive)
-                        {
-                            numberOfOptions += 1;
-                            if (showEAGOptions && EBSGPsychicActive)
-                                numberOfOptions += 1;
-                        }
-                    }
-
-                    contentRect.height = numberOfOptions * 35; // To avoid weird white space, height is based off of option count of present mods
-
-                    optionsMenu.CheckboxLabeled("EBSG_ModName".Translate(), ref showMainOptions, "EBSG_ModDescription".Translate());
+                    optionsMenu.Label(mainMenuLabels[mainMenu]);
                     optionsMenu.Gap(7f);
-                    if (showMainOptions)
+
+                    switch (mainMenu)
                     {
-                        if (ModsConfig.BiotechActive)
-                        {
-                            optionsMenu.CheckboxLabeled("EBSG_AgeLimitedAgeless".Translate(), ref ageLimitedAgeless, "EBSG_AgeLimitedAgelessDescription".Translate());
+                        case "EBSG.Framework":
+                            if (ModsConfig.BiotechActive)
+                            {
+                                optionsMenu.CheckboxLabeled("EBSG_AgeLimitedAgeless".Translate(), ref ageLimitedAgeless, "EBSG_AgeLimitedAgelessDescription".Translate());
+                                optionsMenu.Gap(10f);
+                                optionsMenu.CheckboxLabeled("EBSG_HideSkinGenes".Translate(), ref hideInactiveSkinGenes, "EBSG_HideSkinGenesDescription".Translate());
+                                optionsMenu.Gap(10f);
+                                optionsMenu.CheckboxLabeled("EBSG_HideHairGenes".Translate(), ref hideInactiveHairGenes, "EBSG_HideHairGenesDescription".Translate());
+                                optionsMenu.Gap(10f);
+                            }
+                            optionsMenu.CheckboxLabeled("EBSG_DefaultToRecipeIcon".Translate(), ref defaultToRecipeIcon, "EBSG_DefaultToRecipeIconDescription".Translate());
                             optionsMenu.Gap(10f);
-                            optionsMenu.CheckboxLabeled("EBSG_HideSkinGenes".Translate(), ref hideInactiveSkinGenes, "EBSG_HideSkinGenesDescription".Translate());
-                            optionsMenu.Gap(10f);
-                            optionsMenu.CheckboxLabeled("EBSG_HideHairGenes".Translate(), ref hideInactiveHairGenes, "EBSG_HideHairGenesDescription".Translate());
-                            optionsMenu.Gap(10f);
-                        }
-                        optionsMenu.CheckboxLabeled("EBSG_DefaultToRecipeIcon".Translate(), ref defaultToRecipeIcon, "EBSG_DefaultToRecipeIconDescription".Translate());
-                        optionsMenu.Gap(10f);
-                    }
-
-                    optionsMenu.Gap(10f);
-
-                    if (EBSGAllInOneActive)
-                    {
-                        optionsMenu.CheckboxLabeled("EBSGAiO_ModName".Translate(), ref showEBSGAiOOptions, "EBSGAiO_ModDescription".Translate());
-                        optionsMenu.Gap(7f);
-
-                        if (showEBSGAiOOptions)
-                        {
+                            break;
+                        case "EBSG.AiO":
                             optionsMenu.CheckboxLabeled("SuperclottingArchite".Translate(), ref superclottingArchite);
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
                             optionsMenu.Gap(10f);
-                            optionsMenu.CheckboxLabeled("NoInnateRemotePrereq".Translate(), ref noInnateRemotePrereqs, "NoInnateRemotePrereqDescription".Translate());
-                            optionsMenu.Gap(10f);
+                            if (noInnateMechlinkPrereq)
+                            {
+                                optionsMenu.CheckboxLabeled("NoInnateRemotePrereq".Translate(), ref noInnateRemotePrereqs, "NoInnateRemotePrereqDescription".Translate());
+                                optionsMenu.Gap(10f);
+                            }
                             optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("PsychicInsulationMood".Translate(), ref psychicInsulationBondMood);
                             optionsMenu.Gap(10f);
                             optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
                             optionsMenu.Gap(10f);
-                        }
+                            break;
+                        case "EBSG.Archite":
+                            optionsMenu.CheckboxLabeled("ArchitePsychicInfluencer".Translate(), ref architePsychicInfluencerBondTorn);
+                            optionsMenu.Gap(10f);
+                            break;
+                        case "EBSG.Bleeding":
+                            optionsMenu.CheckboxLabeled("SuperclottingArchite".Translate(), ref superclottingArchite);
+                            optionsMenu.Gap(10f);
+                            break;
+                        case "EBSG.Psychic":
+                            optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
+                            optionsMenu.Gap(10f);
+                            optionsMenu.CheckboxLabeled("PsychicInsulationMood".Translate(), ref psychicInsulationBondMood);
+                            optionsMenu.Gap(10f);
+                            optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
+                            optionsMenu.Gap(10f);
+                            break;
+                        case "EBSG.Mechanitor":
+                            optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
+                            optionsMenu.Gap(10f);
+                            if (noInnateMechlinkPrereq)
+                            {
+                                optionsMenu.CheckboxLabeled("NoInnateRemotePrereq".Translate(), ref noInnateRemotePrereqs, "NoInnateRemotePrereqDescription".Translate());
+                                optionsMenu.Gap(10f);
+                            }
+                            break;
                     }
-                    else
-                    {
-                        if (EBSGBleedActive)
-                        {
-                            optionsMenu.CheckboxLabeled("EBSGBleed_ModName".Translate(), ref showEBSGBleedOptions);
-                            optionsMenu.Gap(7f);
-                            if (showEBSGBleedOptions)
-                            {
-                                optionsMenu.CheckboxLabeled("SuperclottingArchite".Translate(), ref superclottingArchite);
-                                optionsMenu.Gap(10f);
-                            }
-                        }
-                        if (EBSGPsychicActive)
-                        {
-                            optionsMenu.CheckboxLabeled("EBSGPsychic_ModName".Translate(), ref showEBSGPsychicOptions);
-                            optionsMenu.Gap(7f);
-                            if (showEBSGPsychicOptions)
-                            {
-                                optionsMenu.CheckboxLabeled("NoInnatePsylinkPrereq".Translate(), ref noInnatePsylinkPrereq, "NoInnatePsylinkPrereqDescription".Translate());
-                                optionsMenu.Gap(10f);
-                                optionsMenu.CheckboxLabeled("PsychicInsulationMood".Translate(), ref psychicInsulationBondMood);
-                                optionsMenu.Gap(10f);
-                                optionsMenu.CheckboxLabeled("PsychicInsulationOpinion".Translate(), ref psychicInsulationBondOpinion);
-                                optionsMenu.Gap(10f);
-                            }
-                        }
-                        if (EBSGMechanitorActive)
-                        {
-                            optionsMenu.CheckboxLabeled("EBSGMechanitor_ModName".Translate(), ref showEBSGMechanitorOptions);
-                            optionsMenu.Gap(7f);
-                            if (showEBSGMechanitorOptions)
-                            {
-                                optionsMenu.CheckboxLabeled("NoInnateMechlinkPrereq".Translate(), ref noInnateMechlinkPrereq, "NoInnateMechlinkPrereqDescription".Translate());
-                                optionsMenu.Gap(10f);
-                            }
-                        }
-                    }
-
-                    optionsMenu.Gap(10f);
-
-                    if (EAGActive)
-                    {
-                        bool needArchiteDisplay = EBSGAllInOneActive || EBSGPsychicActive;
-
-                        if (needArchiteDisplay)
-                        {
-                            optionsMenu.CheckboxLabeled("EAG_ModName".Translate(), ref showEAGOptions, "EAG_ModDescription".Translate());
-                            optionsMenu.Gap(7f);
-
-                            if (showEAGOptions)
-                            {
-                                if (EBSGAllInOneActive)
-                                {
-                                    optionsMenu.CheckboxLabeled("ArchitePsychicInfluencer".Translate(), ref architePsychicInfluencerBondTorn);
-                                    optionsMenu.Gap(10f);
-                                }
-                                else
-                                {
-                                    if (EBSGPsychicActive)
-                                    {
-                                        optionsMenu.CheckboxLabeled("ArchitePsychicInfluencer".Translate(), ref architePsychicInfluencerBondTorn);
-                                        optionsMenu.Gap(10f);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    optionsMenu.Gap(10f);
-
                     break;
 
                 case 2: // Think Tree

@@ -45,6 +45,10 @@ namespace EBSGFramework
             {
                 if (EBSG_Settings.noInnateMechlinkPrereq && active != null) return active.Apply(xml);
             }
+            else if (setting == "noInnateRemotePrereqs")
+            {
+                if (EBSG_Settings.noInnateMechlinkPrereq && EBSG_Settings.noInnateRemotePrereqs && active != null) return active.Apply(xml);
+            }
             else if (setting == "noInnatePsylinkPrereq")
             {
                 if (EBSG_Settings.noInnatePsylinkPrereq && active != null) return active.Apply(xml);
