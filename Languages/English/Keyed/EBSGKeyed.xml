@@ -175,8 +175,8 @@
     <EBSGMechanitor_ModName>EBSG - Mechanitor Genes</EBSGMechanitor_ModName>
     <NoInnateMechlinkPrereq>    No innate mechlink prereq on mechanitor genes.</NoInnateMechlinkPrereq>
     <NoInnateMechlinkPrereqDescription>Prevents EBSG genes from requiring the innate mechlink gene. This can make it easy to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the mechlink gene.</NoInnateMechlinkPrereqDescription>
-    <NoInnateRemotePrereq>        No innate remotes prereq on mechanitor genes.</NoInnateMechlinkPrereq>
-    <NoInnateRemotePrereqDescription>Prevents EBSG genes from requiring the innate remote shielder and repairer genes. This makes it even easier to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the related innate gene.</NoInnateMechlinkPrereqDescription>
+    <NoInnateRemotePrereq>        No innate remotes prereq on mechanitor genes.</NoInnateRemotePrereq>
+    <NoInnateRemotePrereqDescription>Prevents EBSG genes from requiring the innate remote shielder and repairer genes. This makes it even easier to create unbalanced xenotypes if you add negative mechanitor genes on a pawn without the related innate gene.</NoInnateRemotePrereqDescription>
 
     <EAG_ModName>Expanded Archite Genes</EAG_ModName>
     <EAG_ModDescription>Expanded Archite Genes gives a bunch of archite level genes for any genes added through the Biotech Style Genes series.</EAG_ModDescription>
