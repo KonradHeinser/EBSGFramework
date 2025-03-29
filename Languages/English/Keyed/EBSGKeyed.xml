@@ -327,4 +327,11 @@
     <AbilityDisabledNoResourceGene>{0_labelShort} lacks the {1} gene.</AbilityDisabledNoResourceGene>
     <AbilityDisabledNoResource>{0_labelShort} does not have enough {1}.</AbilityDisabledNoResource>
     <DRG_Consuming>Consuming {0}</DRG_Consuming>
+
+    <!--Rituals-->
+    <EBSG_RitualReady>{0} can be started again.</EBSG_RitualReady>
+    <EBSG_RitualCooldown>{0} will be available again in {1}.</EBSG_RitualCooldown>
+    <EBSG_NoPocketMap>{0} can only be used while on the surface.</EBSG_NoPocketMap>
+    <EBSG_RitualNoResource>No {0} available</EBSG_RitualNoResource>
+    <EBSG_RitualInsufficientResource>Not enough {0} available</EBSG_RitualInsufficientResource>
 </LanguageData>

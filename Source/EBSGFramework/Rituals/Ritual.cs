@@ -21,7 +21,6 @@ namespace EBSGFramework
 
         public int loadID = -1;
 
-
         public Ritual(RitualDef def)
         {
             this.def = def;
@@ -59,8 +58,7 @@ namespace EBSGFramework
 
         public void Activate()
         {
-            //Need to reference component instead
-            //cooldownTicks = def.cooldown;
+            Current.Game.GetComponent<GameComponent_EBSGRitualManager>().StartCooldown(def);
             if (!comps.NullOrEmpty())
                 foreach (var comp in comps)
                 {

@@ -119,6 +119,8 @@
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentBody.cs" />
+    <Compile Include="Rituals\CompProperties_RitualBuilding.cs" />
+    <Compile Include="Rituals\CompRitualBuilding.cs" />
     <Compile Include="Rituals\GameComponent_EBSGRitualManager.cs" />
     <Compile Include="Rituals\Ritual.cs" />
     <Compile Include="Rituals\RitualComp.cs" />

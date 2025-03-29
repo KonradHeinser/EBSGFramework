@@ -18,7 +18,26 @@ namespace EBSGFramework
 
         public List<RitualCompProperties> comps = new List<RitualCompProperties>();
 
-        public int cooldown;
+        public bool sendReadyMessage = true;
+
+        public string readyMessage;
+
+        public bool allowInPocketMaps = false;
+
+        public int cooldown = 60000;
+
+        private static GameComponent_EBSGRitualManager manager;
+
+        public static GameComponent_EBSGRitualManager Manager
+        {
+            get
+            {
+                if (manager == null)
+                    manager = Current.Game.GetComponent<GameComponent_EBSGRitualManager>();
+
+                return manager;
+            }
+        }
 
         public bool Visible
         {
@@ -32,11 +51,12 @@ namespace EBSGFramework
             }
         }
 
-        public bool Available(Map map, IntVec3 center, List<Pawn> participants)
+        public AcceptanceReport Available(Map map, IntVec3 center, List<Pawn> participants)
         {
-            // Need to reference the component instead
-            //if (cooldownTicks > 0)
-            //  return false;
+            var managerCheck = Manager.Available(this, map);
+            if (managerCheck != true)
+                return managerCheck;
+
             using (new ProfilerBlock("Ritual supplies reachable"))
             {
                 List<Thing> thingList = new List<Thing>();
@@ -49,7 +69,7 @@ namespace EBSGFramework
                             matches = map.listerThings.ThingsMatchingFilter(cost.filter);
                         }
                         if (matches.NullOrEmpty())
-                            return false;
+                            return new AcceptanceReport("EBSG_RitualNoResource".Translate(cost.filter.Summary));
                         matches.SortBy((arg) => arg.PositionHeld.DistanceTo(center));
 
                         int required = Mathf.CeilToInt(cost.GetBaseCount());
@@ -69,7 +89,7 @@ namespace EBSGFramework
                         }
 
                         if (required > 0)
-                            return false;
+                            return new AcceptanceReport("EBSG_RitualInsufficientResource".Translate(cost.filter.Summary));
                     }
                 if (!scalingCosts.NullOrEmpty())
                     foreach (IngredientCount cost in scalingCosts)
@@ -80,7 +100,7 @@ namespace EBSGFramework
                             matches = map.listerThings.ThingsMatchingFilter(cost.filter);
                         }
                         if (matches.NullOrEmpty())
-                            return false;
+                            return new AcceptanceReport("EBSG_RitualNoResource".Translate(cost.filter.Summary));
                         matches.SortBy((arg) => arg.PositionHeld.DistanceTo(center));
 
                         int required = Mathf.CeilToInt(cost.GetBaseCount()) * participants.Count;
@@ -98,6 +118,9 @@ namespace EBSGFramework
                             if (required <= 0)
                                 break;
                         }
+
+                        if (required > 0)
+                            new AcceptanceReport("EBSG_RitualInsufficientResource".Translate(cost.filter.Summary));
                     }
             }
             return true;
