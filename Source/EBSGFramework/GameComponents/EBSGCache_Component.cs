@@ -555,7 +555,7 @@ namespace EBSGFramework
         public override void GameComponentTick()
         {
             tick++;
-            if (tick % 200 == 0)
+            if (tick % 60000 == 0)
             {
                 if (!cachedHemogenicPawns.NullOrEmpty())
                 {
@@ -577,7 +577,12 @@ namespace EBSGFramework
                                         baseAmount += bindable.Props.hemogenLimitOffset;
                                     }
                             }
-                            pawn.genes.GetFirstGeneOfType<Gene_Hemogen>()?.ResetMax();
+                            Gene_Hemogen gene = pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
+                            if (gene != null)
+                            {
+                                gene.ResetMax();
+                                gene.SetMax(gene.Max + baseAmount);
+                            }
                         }
                     }
                     if (!purgePawns.NullOrEmpty())
