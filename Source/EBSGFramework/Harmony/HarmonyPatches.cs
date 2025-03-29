@@ -2582,13 +2582,10 @@ namespace EBSGFramework
                 __result *= pawn.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor);
         }
 
-        public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result, GeneDef ___def)
+        public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result)
         {
-            if (___def.geneClass == typeof(Gene_Hemogen))
-            {
-                __result += ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxOffset);
-                __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxFactor);
-            }
+            __result += ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxOffset);
+            __result *= ___pawn.StatOrOne(EBSGDefOf.EBSG_HemogenMaxFactor);
         }
 
         public static void SkillFallPrefix(Pawn ___pawn, ref float xp, bool direct)

@@ -577,8 +577,7 @@ namespace EBSGFramework
                                         baseAmount += bindable.Props.hemogenLimitOffset;
                                     }
                             }
-                            Gene_Hemogen gene = pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
-                            gene.SetMax((baseAmount + pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxOffset)) * pawn.GetStatValue(EBSGDefOf.EBSG_HemogenMaxFactor));
+                            pawn.genes.GetFirstGeneOfType<Gene_Hemogen>()?.ResetMax();
                         }
                     }
                     if (!purgePawns.NullOrEmpty())
