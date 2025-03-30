@@ -34,9 +34,9 @@ namespace EBSGFramework
         public static Thought_Memory GetFirstMemoryOfDefWhereOtherPawnIs(this MemoryThoughtHandler memory, ThoughtDef thought, Pawn otherPawn)
         {
             for (int i = 0; i > memory.Memories.Count; i++)
-                if (memory.Memories[i].def ==  thought && memory.Memories[i].otherPawn == otherPawn)
+                if (memory.Memories[i].def == thought && memory.Memories[i].otherPawn == otherPawn)
                     return memory.Memories[i];
-            
+
             return null;
         }
 
@@ -109,7 +109,7 @@ namespace EBSGFramework
 
         public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null, List<BodyPartGroupDef> groups = null, List<ThingDef> exceptions = null)
         {
-            if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 
+            if (pawn.apparel?.WornApparel?.NullOrEmpty() != false)
                 return false;
 
             if (layer != null)
@@ -409,7 +409,14 @@ namespace EBSGFramework
 
         public static bool WithinAges(this Pawn pawn, FloatRange ageRange)
         {
+            if (ageRange.min == ageRange.max)
+                return pawn.ageTracker.AgeBiologicalYearsFloat >= ageRange.min;
             return ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
+        }
+
+        public static bool OfTheColony(this Pawn pawn)
+        {
+            return pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony;
         }
 
         public static bool WithinSeverityRanges(float severity, FloatRange? severityRange = null, List<FloatRange> severityRanges = null, bool assumeMin = true)

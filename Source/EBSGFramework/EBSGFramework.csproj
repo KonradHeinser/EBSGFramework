@@ -82,6 +82,7 @@
     <Compile Include="Generic List Classes\HediffWithRange.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />
     <Compile Include="Generic List Classes\Prerequisites.cs" />
+    <Compile Include="Generic List Classes\SpeciesCategory.cs" />
     <Compile Include="Generic List Classes\RandomProjectilePackage.cs" />
     <Compile Include="Enums\RoofCheck.cs" />
     <Compile Include="DamageModifyingStatsExtension.cs" />
@@ -126,6 +127,8 @@
     <Compile Include="Rituals\RitualComp.cs" />
     <Compile Include="Rituals\RitualCompProperties.cs" />
     <Compile Include="Rituals\RitualDef.cs" />
+    <Compile Include="Rituals\RitualRole.cs" />
+    <Compile Include="Rituals\RitualWillingness.cs" />
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />

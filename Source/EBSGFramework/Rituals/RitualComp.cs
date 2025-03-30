@@ -15,7 +15,7 @@ namespace EBSGFramework
 
         public bool attempt = true;
 
-        public bool ActiveInRitual
+        public virtual bool ActiveInRitual
         {
             get
             {
@@ -33,11 +33,11 @@ namespace EBSGFramework
             attempt = props.attemptDefault;
         }
 
-        public void DoEffects()
+        public virtual void DoEffects()
         {
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
         }
 

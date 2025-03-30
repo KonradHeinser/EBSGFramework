@@ -26,6 +26,8 @@ namespace EBSGFramework
 
         public int cooldown = 60000;
 
+        public List<RitualRole> roles = new List<RitualRole>();
+
         private static GameComponent_EBSGRitualManager manager;
 
         public static GameComponent_EBSGRitualManager Manager
@@ -56,6 +58,11 @@ namespace EBSGFramework
             var managerCheck = Manager.Available(this, map);
             if (managerCheck != true)
                 return managerCheck;
+
+            if (!comps.NullOrEmpty())
+                foreach (var comp in comps)
+                    if (!comp.Available(map, center, participants))
+                        return false;
 
             using (new ProfilerBlock("Ritual supplies reachable"))
             {
@@ -131,8 +138,11 @@ namespace EBSGFramework
             foreach (string item in base.ConfigErrors())
                 yield return item;
 
+            if (roles.NullOrEmpty())
+                yield return "has no roles, which means nobody can actually do the ritual.";
+
             if (comps.NullOrEmpty())
-                yield return $"has no comps, which will cause future errors.";
+                yield return "has no comps, which will cause future errors.";
             else
                 foreach (var comp in comps)
                     foreach (string item in comp.ConfigErrors())
