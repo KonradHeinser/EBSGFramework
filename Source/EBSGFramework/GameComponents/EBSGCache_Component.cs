@@ -578,11 +578,10 @@ namespace EBSGFramework
                                     }
                             }
                             Gene_Hemogen gene = pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
-                            if (gene != null)
-                            {
-                                gene.ResetMax();
-                                gene.SetMax(gene.Max + baseAmount);
-                            }
+                            var value = gene.Value;
+                            gene.ResetMax();
+                            gene.SetMax(gene.Max + baseAmount);
+                            gene.Value = value;
                         }
                     }
                     if (!purgePawns.NullOrEmpty())
