@@ -41,12 +41,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(ApparelScoreGainPostFix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
                 postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
-            harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
-                postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
-            harmony.Patch(AccessTools.Method(typeof(Thought), nameof(Thought.MoodOffset)),
-                postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
-            harmony.Patch(AccessTools.Method(typeof(Thought_SituationalSocial), nameof(Thought_SituationalSocial.OpinionOffset)),
-                postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+             
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
                 prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
@@ -63,8 +58,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PreActivatePostfix)));
             harmony.Patch(AccessTools.Method(typeof(StatWorker_MeleeDPS), "GetMeleeDamage"),
                 postfix: new HarmonyMethod(patchType, nameof(MeleeDPSPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
-                postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_Ownership), "ClaimBedIfNonMedical"),
                 prefix: new HarmonyMethod(patchType, nameof(ClaimBedIfNonMedicalPrefix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(SkillRecord), "Aptitude"),
@@ -73,8 +66,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GraphicForHeadPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnRenderNode_Body), "GraphicFor"),
                 postfix: new HarmonyMethod(patchType, nameof(GraphicForBodyPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Hediff_Pregnant), "PostAdd"),
-                postfix: new HarmonyMethod(patchType, nameof(PregnantAddPostfix)));
             harmony.Patch(AccessTools.Method(typeof(JobDriver_Lovin), "GenerateRandomMinTicksToNextLovin"),
                 postfix: new HarmonyMethod(patchType, nameof(PostLovinPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn), "ButcherProducts"),
@@ -87,10 +78,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
             harmony.Patch(AccessTools.Constructor(typeof(Stance_Warmup), new[] {typeof(int), typeof(LocalTargetInfo), typeof(Verb)}),
                 postfix: new HarmonyMethod(patchType, nameof(StanceWarmupPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(GeneUtility), "SatisfyChemicalGenes"),
-                postfix: new HarmonyMethod(patchType, nameof(SatisfyChemicalGenesPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Caravan_NeedsTracker), "TrySatisfyChemicalDependencies"),
-                postfix: new HarmonyMethod(patchType, nameof(TrySatisfyChemicalDependenciesPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GenerateInitialHediffs"),
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
@@ -120,24 +107,10 @@ namespace EBSGFramework
 
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(GeneUtility), nameof(GeneUtility.IsBloodfeeder)),
-                postfix: new HarmonyMethod(patchType, nameof(IsBloodfeederPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(GeneUIUtility), "RecacheGenes"),
-                postfix: new HarmonyMethod(patchType, nameof(RecacheGenesPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant)),
-                 postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
-                 postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
                 postfix: new HarmonyMethod(patchType, nameof(TryGenerateNewPawnInternalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GeneratePawnRelations"),
                 prefix: new HarmonyMethod(patchType, nameof(GeneratePawnRelationsPrefix)));
-            harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
-                prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
-            harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGenes"),
-                postfix: new HarmonyMethod(patchType, nameof(DrawGenesPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
-                postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
@@ -146,42 +119,25 @@ namespace EBSGFramework
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(SeekerNeedMultiplier)));
-            if (ModsConfig.BiotechActive)
-            {
-                harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
-                    postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
-            }
-
             harmony.Patch(AccessTools.Method(typeof(Need_Joy), nameof(Need_Joy.GainJoy)),
                 prefix: new HarmonyMethod(patchType, nameof(GainJoyPrefix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Indoors), nameof(Need_Indoors.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(IndoorsIntervalPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Outdoors), nameof(Need_Outdoors.NeedInterval)),
                 postfix: new HarmonyMethod(patchType, nameof(OutdoorsIntervalPostfix)));
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
-                postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_PsychicEntropyTracker), "PsyfocusFallPerDay"),
                 postfix: new HarmonyMethod(patchType, nameof(PsyfocusFallPerDayPostFix)));
             harmony.Patch(AccessTools.Method(typeof(Need_Food), nameof(Need_Food.FoodFallPerTickAssumingCategory)),
                 postfix: new HarmonyMethod(patchType, nameof(FoodFallRatePostfix)));
 
             // Stat Harmony patches
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.DeathrestEfficiency)),
-                postfix: new HarmonyMethod(patchType, nameof(DeathrestEfficiencyPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Need_Deathrest), nameof(Need_Deathrest.NeedInterval)),
-                postfix: new HarmonyMethod(patchType, nameof(DeathrestNeedIntervalPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.BodyResourceGrowthSpeed)),
-                postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
             //harmony.Patch(AccessTools.Method(typeof(BodyPartDef), nameof(BodyPartDef.GetMaxHealth)),
             //    postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
                 postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
-                postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
-            harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
-                postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
+            
             harmony.Patch(AccessTools.Method(typeof(SkillRecord), nameof(SkillRecord.Learn)),
                 prefix: new HarmonyMethod(patchType, nameof(SkillFallPrefix)));
 
@@ -196,6 +152,53 @@ namespace EBSGFramework
                     postfix: new HarmonyMethod(patchType, nameof(InitiateSlaveRebellionPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(SlaveRebellionUtility), nameof(SlaveRebellionUtility.CanParticipateInSlaveRebellion)),
                     postfix: new HarmonyMethod(patchType, nameof(ParticipateInSlaveRebellionPostfix)));
+            }
+
+            // Biotech specific stuff
+            if (ModsConfig.BiotechActive)
+            {
+                harmony.Patch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RomanceFactors)),
+                    postfix: new HarmonyMethod(patchType, nameof(RomanceFactorsPostFix)));
+                harmony.Patch(AccessTools.Method(typeof(Thought), nameof(Thought.MoodOffset)),
+                    postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+                harmony.Patch(AccessTools.Method(typeof(Thought_SituationalSocial), nameof(Thought_SituationalSocial.OpinionOffset)),
+                    postfix: new HarmonyMethod(patchType, nameof(GeneticThoughtMultiplier)));
+                harmony.Patch(AccessTools.Method(typeof(Hediff_Pregnant), "PostAdd"),
+                    postfix: new HarmonyMethod(patchType, nameof(PregnantAddPostfix)));
+                harmony.Patch(AccessTools.PropertyGetter(typeof(Pawn_AgeTracker), nameof(Pawn_AgeTracker.GrowthPointsPerDay)),
+                    postfix: new HarmonyMethod(patchType, nameof(GrowthPointStatPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(GeneUtility), "SatisfyChemicalGenes"),
+                    postfix: new HarmonyMethod(patchType, nameof(SatisfyChemicalGenesPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Caravan_NeedsTracker), "TrySatisfyChemicalDependencies"),
+                    postfix: new HarmonyMethod(patchType, nameof(TrySatisfyChemicalDependenciesPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(GeneUtility), nameof(GeneUtility.IsBloodfeeder)),
+                    postfix: new HarmonyMethod(patchType, nameof(IsBloodfeederPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(GeneUIUtility), "RecacheGenes"),
+                    postfix: new HarmonyMethod(patchType, nameof(RecacheGenesPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGene"),
+                    prefix: new HarmonyMethod(patchType, nameof(DrawGenePrefix)));
+                harmony.Patch(AccessTools.Method(typeof(Dialog_CreateXenotype), "DrawGenes"),
+                    postfix: new HarmonyMethod(patchType, nameof(DrawGenesPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(GeneDef), nameof(GeneDef.ConflictsWith)),
+                    postfix: new HarmonyMethod(patchType, nameof(GeneConflictsWithPostfix)));
+                harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Deathrest), nameof(Gene_Deathrest.DeathrestEfficiency)),
+                    postfix: new HarmonyMethod(patchType, nameof(DeathrestEfficiencyPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Need_Deathrest), nameof(Need_Deathrest.NeedInterval)),
+                    postfix: new HarmonyMethod(patchType, nameof(DeathrestNeedIntervalPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Need_KillThirst), nameof(Need_KillThirst.NeedInterval)),
+                    postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
+                harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
+                    postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
+                harmony.Patch(AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.BodyResourceGrowthSpeed)),
+                    postfix: new HarmonyMethod(patchType, nameof(BodyResourceGrowthSpeedPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant)),
+                    postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
+                     postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
+                harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
+                    postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
+                    postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
             }
         }
 
@@ -912,7 +915,7 @@ namespace EBSGFramework
 
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
         {
-            if (ModsConfig.BiotechActive && romancer.genes != null && Cache?.grcGenes.NullOrEmpty() == false &&
+            if (romancer.genes != null && Cache?.grcGenes.NullOrEmpty() == false &&
                 romancer.GetAllGenesOnListFromPawn(Cache.grcGenes, out var matches))
             {
                 float num = 1f;
