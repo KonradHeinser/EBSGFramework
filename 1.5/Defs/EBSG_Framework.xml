@@ -44,20 +44,6 @@
         <reportString>using recharger.</reportString>
     </JobDef>
 
-    <ConceptDef>
-        <defName>EBSG_SpecialComa</defName>
-        <label>Special coma rest genes</label>
-        <helpText>Some pawns require going into a special type of coma on occassion to avoid receiving penalties. This rest must be initiated in a bed, or a special building type in some cases. The specific details of the benefits and penalties may vary greatly based on mod author.</helpText>
-        <priority>52</priority>
-        <needsOpportunity>true</needsOpportunity>
-    </ConceptDef>
-
-    <RoomRoleDef>
-        <defName>EBSG_ComaRestChamber</defName>
-        <label>coma rest chamber</label>
-        <workerClass>EBSGFramework.RoomRoleWorker_ComaRestChamber</workerClass>
-    </RoomRoleDef>
-    
     <WorldObjectDef Name="EBSG_PawnFlying">
         <defName>EBSG_PawnFlying</defName>
         <label>flying pawn</label>
@@ -88,27 +74,6 @@
             <ticksToImpactRange><min>-40</min><max>-15</max></ticksToImpactRange>
         </skyfaller>
     </ThingDef>
-
-    <HediffDef>
-        <defName>EBSG_BriefSterility</defName>
-        <label>brief sterility</label>
-        <description>This pawn is very briefly sterile to avoid having Rimworld attempt to make them pregnant again so quickly.</description>
-        <hediffClass>HediffWithComps</hediffClass>
-        <stages>
-            <li>
-                <statFactors>
-                    <Fertility>0</Fertility>
-                </statFactors>
-                <becomeVisible>false</becomeVisible>
-            </li>
-        </stages>
-        <comps>
-            <li Class="HediffCompProperties_Disappears">
-                <disappearsAfterTicks>60</disappearsAfterTicks>
-                <showRemainingTime>true</showRemainingTime>
-            </li>
-        </comps>
-    </HediffDef>
 
     <JobDef>
         <defName>EBSG_EnterSleepCasket</defName>
@@ -145,6 +110,21 @@
         <reportString>installing TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
+
+    <ThinkTreeDef>
+        <defName>DRG_PackRetrieval</defName>
+        <insertTag>Humanlike_PostDuty</insertTag>
+        <insertPriority>100</insertPriority>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="EBSGFramework.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
+                <li Class="EBSGFramework.JobGiver_SatisfyDependency" MayRequire="Ludeon.RimWorld.Biotech" /> <!--Technically for IDG, but no need to make a new tree for that-->
+                <li Class="EBSGFramework.JobGiver_PawnNeedCharger" /> <!--Technically both DRG and not DRG, so I stand by this one-->
+                <li Class="EBSGFramework.JobGiver_GetComaRest" /> <!--Similar to the IDG stuff, usually not related DRG, but no reason to make a new tree-->
+                <li Class="EBSGFramework.JobGiver_ReloadAbility" /> <!--Yeah, I've just given up the pretense by this point-->
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
 
     <EBSGFramework.EBSGRecorder>
         <defName>EBSG_Recorder</defName>

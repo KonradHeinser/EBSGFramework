@@ -16,14 +16,6 @@
         <minValue>0.0001</minValue>
     </StatDef>
 
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_PawnGestationSpeed</defName>
-        <label>pregnancy speed</label>
-        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
-        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
-        <displayPriorityInCategory>2201</displayPriorityInCategory>
-    </StatDef>
-
     <StatDef ParentName="EBSG_OffsetingStat">
         <defName>EBSG_BloodlossRecoveryBonus</defName>
         <label>bloodloss recovery bonus</label>
@@ -57,15 +49,6 @@
         <displayPriorityInCategory>3930</displayPriorityInCategory>
         <category>PawnMisc</category>
     </StatDef>
-    
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_GrowthPointRate</defName>
-        <label>growth point rate</label>
-        <description>Multiplies how quickly this pawn gains growth points. The higher this multiplier is, the greater the effects of things like growth vats and high learning values.</description>
-        <minValue>0</minValue>
-        <showDevelopmentalStageFilter>Child</showDevelopmentalStageFilter>
-        <displayPriorityInCategory>3600</displayPriorityInCategory>
-    </StatDef>
 
     <StatDef ParentName="EBSG_OffsetingStat">
         <defName>EBSG_PsyfocusFallRateOffset</defName>
@@ -81,38 +64,4 @@
         <minValue>0</minValue>
         <displayPriorityInCategory>4012</displayPriorityInCategory>
     </StatDef>
-
-    <StatDef ParentName="EBSG_OffsetingStat">
-        <defName>EBSG_HemogenMaxOffset</defName>
-        <label>maximum hemogen offset</label>
-        <description>An offset on maximum hemogen, with a value of 200% allowing pawns to store 300 hemogen instead of 100. This is added before the maximum hemogen multiplier takes effect.</description>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_HemogenMaxFactor</defName>
-        <label>maximum hemogen multiplier</label>
-        <description>A multiplier on maximum hemogen, with a value of 200% allowing pawns to store 200 hemogen instead of 100. This also multiplies the maximum hemogen offset when applicable.</description>
-        <minValue>0</minValue>
-    </StatDef>
 </Defs>
-
-<!--
-MechEnergyLossPerHP
-WastepacksPerRecharge
-ArmorRating_Blunt
-ArmorRating_Sharp
-EnergyShieldRechargeRate
-EnergyShieldEnergyMax
-EMPResistance
-WorkSpeedGlobal
-
-
-~~~
-
-
-Experimental
-
-BandwidthCost
-EBSG_Healthiness
-EBSG_OutgoingDamageFactor
--->

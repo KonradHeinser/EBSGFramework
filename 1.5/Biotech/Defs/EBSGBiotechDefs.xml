@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ConceptDef>
+        <defName>EBSG_SpecialComa</defName>
+        <label>Special coma rest genes</label>
+        <helpText>Some pawns require going into a special type of coma on occassion to avoid receiving penalties. This rest must be initiated in a bed, or a special building type in some cases. The specific details of the benefits and penalties may vary greatly based on mod author.</helpText>
+        <priority>52</priority>
+        <needsOpportunity>true</needsOpportunity>
+    </ConceptDef>
+
+    <RoomRoleDef>
+        <defName>EBSG_ComaRestChamber</defName>
+        <label>coma rest chamber</label>
+        <workerClass>EBSGFramework.RoomRoleWorker_ComaRestChamber</workerClass>
+    </RoomRoleDef>
+
+    <HediffDef>
+        <defName>EBSG_BriefSterility</defName>
+        <label>brief sterility</label>
+        <description>This pawn is very briefly sterile to avoid having Rimworld attempt to make them pregnant again so quickly.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <statFactors>
+                    <Fertility>0</Fertility>
+                </statFactors>
+                <becomeVisible>false</becomeVisible>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>60</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+    </HediffDef>
+
+
+</Defs>
