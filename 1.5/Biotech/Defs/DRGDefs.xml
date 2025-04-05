@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-    <ThinkTreeDef>
-        <defName>DRG_PackRetrieval</defName>
-        <insertTag>Humanlike_PostDuty</insertTag>
-        <insertPriority>100</insertPriority>
-        <thinkRoot Class="ThinkNode_Priority">
-            <subNodes>
-                <li Class="EBSGFramework.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
-                <li Class="EBSGFramework.JobGiver_SatisfyDependency" MayRequire="Ludeon.RimWorld.Biotech" /> <!--Technically for IDG, but no need to make a new tree for that-->
-                <li Class="EBSGFramework.JobGiver_PawnNeedCharger" /> <!--Technically both DRG and not DRG, so I stand by this one-->
-                <li Class="EBSGFramework.JobGiver_GetComaRest" /> <!--Similar to the IDG stuff, usually not related DRG, but no reason to make a new tree-->
-                <li Class="EBSGFramework.JobGiver_ReloadAbility" /> <!--Yeah, I've just given up the pretense by this point-->
-            </subNodes>
-        </thinkRoot>
-    </ThinkTreeDef>
-
     <JobDef>
         <defName>DRG_Consume</defName>
         <driverClass>EBSGFramework.JobDriver_DRGConsume</driverClass>
@@ -62,5 +47,4 @@
             <li>Manipulation</li>
         </requiredCapacities>
     </WorkGiverDef>
-
 </Defs>

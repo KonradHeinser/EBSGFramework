@@ -6,15 +6,19 @@ namespace EBSGFramework
     [DefOf]
     public static class EBSGDefOf
     {
+        [MayRequireBiotech]
         public static StatDef EBSG_PawnGestationSpeed;
         public static StatDef EBSG_BloodlossRecoveryBonus;
         public static StatDef EBSG_Healthiness;
         public static DamageDef EBSG_GeneticDamage;
 
+        [MayRequireBiotech]
         public static JobDef DRG_Consume;
+        [MayRequireBiotech]
         public static JobDef DRG_Deliver;
+        [MayRequireBiotech]
         public static JobDef DRG_FeedPatient;
-
+        [MayRequireBiotech]
         public static ConceptDef EBSG_SpecialComa;
 
         public static PawnCapacityDef Metabolism;
@@ -31,11 +35,14 @@ namespace EBSGFramework
 
         // Need Stuff
         public static StatDef EBSG_HungerRateFactor;
+        [MayRequireBiotech]
         public static StatDef EBSG_DeathrestEfficiency;
+        [MayRequireBiotech]
         public static StatDef EBSG_DeathrestRiseRate;
+        [MayRequireBiotech]
         public static StatDef EBSG_DeathrestFallRate;
+        [MayRequireBiotech]
         public static StatDef EBSG_KillThirstRate;
-
         [MayRequireBiotech]
         public static NeedDef KillThirst;
 
@@ -54,11 +61,14 @@ namespace EBSGFramework
         // More StatDef stuff
 
         public static StatDef EBSG_SkillLossRate;
+        [MayRequireBiotech]
         public static StatDef EBSG_GrowthPointRate;
         public static StatDef EBSG_OutgoingDamageFactor;
         public static StatDef EBSG_PsyfocusFallRateFactor;
         public static StatDef EBSG_PsyfocusFallRateOffset;
+        [MayRequireBiotech]
         public static StatDef EBSG_HemogenMaxOffset;
+        [MayRequireBiotech]
         public static StatDef EBSG_HemogenMaxFactor;
     }
 }

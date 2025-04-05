@@ -8,34 +8,6 @@
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestRiseRate</defName>
-        <label>deathrest rise rate</label>
-        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes. This should stack with deathrest efficiency.</description>
-        <displayPriorityInCategory>3999</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestFallRate</defName>
-        <label>deathrest fall rate</label>
-        <description>Changes the rate that a pawn requires deathrest. The higher this value, the more often they need to deathrest.</description>
-        <displayPriorityInCategory>3400</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_DeathrestEfficiency</defName>
-        <label>deathrest efficiency</label>
-        <description>Changes the rate that a pawn progresses through deathrest. Higher values mean the minimum time a pawn needs to deathrest to avoid a debuff is decreased.</description>
-        <displayPriorityInCategory>3401</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_KillThirstRate</defName>
-        <label>kill satiety rate</label>
-        <description>Alters how long it takes for a pawn to reach peak murderous tendencies. The higher this is, the more often the pawn must kill pawns to remain happy.</description>
-        <displayPriorityInCategory>3402</displayPriorityInCategory>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
         <defName>EBSG_ComfortRiseRate</defName>
         <label>comfort rise rate</label>
         <description>Alters how long it takes for a pawn to reach their current comfort limit. This only takes effect if the current level is below the target level.</description>
