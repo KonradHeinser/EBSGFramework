@@ -24,9 +24,13 @@ namespace EBSGFramework
 
         public bool allowInPocketMaps = false;
 
+        public int castTime = 600;
+
         public int cooldown = 60000;
 
         public List<RitualRole> roles = new List<RitualRole>();
+
+        public HistoryEventDef historyEvent;
 
         private static GameComponent_EBSGRitualManager manager;
 

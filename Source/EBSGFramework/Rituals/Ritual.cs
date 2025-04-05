@@ -58,6 +58,8 @@ namespace EBSGFramework
 
         public void Activate()
         {
+            if (def.historyEvent != null)
+                Find.HistoryEventsManager.RecordEvent(new HistoryEvent(def.historyEvent));
             Current.Game.GetComponent<GameComponent_EBSGRitualManager>().StartCooldown(def);
             if (!comps.NullOrEmpty())
                 foreach (var comp in comps)
