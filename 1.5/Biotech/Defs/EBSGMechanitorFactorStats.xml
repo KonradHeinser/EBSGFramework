@@ -104,10 +104,3 @@
         <description>An aiming delay factor applied to a mechanitor's mechs.</description>
     </StatDef>
 </Defs>
-<!-- 
-MeleeHitChance
-MeleeDodgeChance
-ShootingAccuracyPawn
-AimingDelayFactor
-
--->
