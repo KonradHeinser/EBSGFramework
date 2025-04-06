@@ -193,4 +193,110 @@
             </value>
         </nomatch>
     </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="MeleeDamageFactor"]/parts</xpath>
+        <value>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                <stat>EBSG_MeleeDamageFactorOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                <stat>EBSG_MeleeDamageFactorFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="MeleeHitChance"]/parts</xpath>
+        <value>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                <stat>EBSG_MeleeHitChanceOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                <stat>EBSG_MeleeHitChanceFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/StatDef[defName="MeleeDodgeChance"]/parts</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="MeleeDodgeChance"]/parts</xpath>
+            <value>
+                <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                    <stat>EBSG_MeleeDodgeChanceOffsetMech</stat>
+                    <label>Offset from mechanitor</label>
+                </li>
+                <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                    <stat>EBSG_MeleeDodgeChanceFactorMech</stat>
+                    <label>Factor from mechanitor</label>
+                </li>
+            </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="MeleeDodgeChance"]</xpath>
+            <value>
+                <parts>
+                    <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                        <stat>EBSG_MeleeDodgeChanceOffsetMech</stat>
+                        <label>Offset from mechanitor</label>
+                    </li>
+                    <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                        <stat>EBSG_MeleeDodgeChanceFactorMech</stat>
+                        <label>Factor from mechanitor</label>
+                    </li>
+                </parts>
+            </value>
+        </nomatch>
+    </Operation>
+
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/StatDef[defName="ShootingAccuracyPawn"]/parts</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="ShootingAccuracyPawn"]/parts</xpath>
+            <value>
+                <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                    <stat>EBSG_ShootingAccuracyPawnOffsetMech</stat>
+                    <label>Offset from mechanitor</label>
+                </li>
+                <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                    <stat>EBSG_ShootingAccuracyPawnFactorMech</stat>
+                    <label>Factor from mechanitor</label>
+                </li>
+            </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="ShootingAccuracyPawn"]</xpath>
+            <value>
+                <parts>
+                    <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                        <stat>EBSG_ShootingAccuracyPawnOffsetMech</stat>
+                        <label>Offset from mechanitor</label>
+                    </li>
+                    <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                        <stat>EBSG_ShootingAccuracyPawnFactorMech</stat>
+                        <label>Factor from mechanitor</label>
+                    </li>
+                </parts>
+            </value>
+        </nomatch>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="AimingDelayFactor"]/parts</xpath>
+        <value>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset">
+                <stat>EBSG_AimingDelayFactorOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor">
+                <stat>EBSG_AimingDelayFactorFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </value>
+    </Operation>
 </Patch>

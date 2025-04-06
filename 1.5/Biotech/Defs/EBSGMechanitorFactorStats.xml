@@ -73,4 +73,41 @@
         <label>mech incoming damage factor</label>
         <description>An incoming damage factor applied to a mechanitor's mechs.</description>
     </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeDamageFactorFactorMech</defName>
+        <label>mech melee damage factor</label>
+        <description>A melee damage factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeHitChanceFactorMech</defName>
+        <label>mech melee hit chance factor</label>
+        <description>A melee hit chance factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+    
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeDodgeChanceFactorMech</defName>
+        <label>mech melee dodge chance factor</label>
+        <description>A melee dodge chance factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_ShootingAccuracyPawnFactorMech</defName>
+        <label>mech shooting accuracy factor</label>
+        <description>A shooting accuracy factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_AimingDelayFactorFactorMech</defName>
+        <label>mech aiming delay factor</label>
+        <description>An aiming delay factor applied to a mechanitor's mechs.</description>
+    </StatDef>
 </Defs>
+<!-- 
+MeleeHitChance
+MeleeDodgeChance
+ShootingAccuracyPawn
+AimingDelayFactor
+
+-->

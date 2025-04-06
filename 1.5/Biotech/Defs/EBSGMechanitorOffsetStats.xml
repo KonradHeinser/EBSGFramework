@@ -47,7 +47,7 @@
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
         <defName>EBSG_EMPResistanceOffsetMech</defName>
         <label>mech EMP resistance offset</label>
-        <description>A EMP resistance offset applied to a mechanitor's mechs.</description>
+        <description>An EMP resistance offset applied to a mechanitor's mechs.</description>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
@@ -74,4 +74,39 @@
         <label>mech incoming damage factor offset</label>
         <description>An incoming damage factor offset applied to a mechanitor's mechs.</description>
     </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MeleeDamageFactorOffsetMech</defName>
+        <label>mech melee damage factor offset</label>
+        <description>A melee damage factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MeleeHitChanceOffsetMech</defName>
+        <label>mech melee hit chance factor offset</label>
+        <description>A melee hit chance factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_MeleeDodgeChanceOffsetMech</defName>
+        <label>mech melee dodge chance factor offset</label>
+        <description>A melee dodge chance factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_ShootingAccuracyPawnOffsetMech</defName>
+        <label>mech shooting accuracy factor offset</label>
+        <description>A shooting accuracy factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
+        <defName>EBSG_AimingDelayFactorOffsetMech</defName>
+        <label>mech aiming delay factor offset</label>
+        <description>An aiming delay factor offset applied to a mechanitor's mechs.</description>
+    </StatDef>
 </Defs>
+<!-- 
+
+ShootingAccuracyPawn
+
+-->
