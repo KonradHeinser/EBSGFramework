@@ -20,7 +20,7 @@ namespace EBSGFramework
                 (Props.validDamageDefs.NullOrEmpty() || (dinfo.Def != null && Props.validDamageDefs.Contains(dinfo.Def))))
             {
                 parent.Severity += Props.severityChange;
-                parent.Severity += dinfo.Amount * Props.severityChangeFactor;
+                parent.Severity += totalDamageDealt * Props.severityChangeFactor;
 
                 if (Props.cooldownTicks > 0)
                     cooldownTicks = Props.cooldownTicks;
