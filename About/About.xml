@@ -23,6 +23,7 @@
     <li>Ludeon.RimWorld.Biotech</li>
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>lts.I</li>
   </loadAfter>
 
   <description>
