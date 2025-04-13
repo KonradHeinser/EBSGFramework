@@ -7,6 +7,7 @@ namespace EBSGFramework
     public class SkillXP
     {
         public SkillDef skill;
+
         public int experience;
 
         public SkillXP() { }

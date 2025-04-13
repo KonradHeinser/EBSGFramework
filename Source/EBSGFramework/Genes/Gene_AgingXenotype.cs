@@ -40,7 +40,7 @@ namespace EBSGFramework
         private void CheckXenotypes()
         {
             foreach (XenoRange xeno in AgingExtension.xenotypes) 
-                if (xeno.range.Includes(pawn.ageTracker.AgeBiologicalYearsFloat) && pawn.genes.Xenotype != xeno.xenotype)
+                if (xeno.range.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat) && pawn.genes.Xenotype != xeno.xenotype)
                 {
                     alreadyChanged = true;
                     pawn.AlterXenotype(xeno.xenotype, AgingExtension.filth, AgingExtension.filthAmount, agingExtension.setXenotype, agingExtension.message != null, agingExtension.message);

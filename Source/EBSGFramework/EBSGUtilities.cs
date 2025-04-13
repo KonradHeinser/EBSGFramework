@@ -409,28 +409,39 @@ namespace EBSGFramework
 
         public static bool WithinAges(this Pawn pawn, FloatRange ageRange)
         {
-            return ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat);
+            return ageRange.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat);
+        }
+
+        public static bool ValidValue(this FloatRange range, float value, bool assumeMin = true)
+        {
+            if (range == FloatRange.Zero)
+                if (assumeMin)
+                    return value >= range.min;
+                else
+                    return value <= range.min;
+            return range.ValidValue(value);
+        }
+
+        public static bool ValidValue(this IntRange range, int value, bool assumeMin = true)
+        {
+            if (range == IntRange.zero)
+                if (assumeMin)
+                    return value >= range.min;
+                else
+                    return value <= range.min;
+            return range.ValidValue(value);
         }
 
         public static bool WithinSeverityRanges(float severity, FloatRange? severityRange = null, List<FloatRange> severityRanges = null, bool assumeMin = true)
         {
-            if (severityRange != null && severityRange != FloatRange.Zero)
-            {
-                var s = (FloatRange)severityRange;
-                if (s.min == s.max)
-                {
-                    if (assumeMin)
-                        return severity >= s.min;
-                    return severity <= s.min;
-                }
-                return s.Includes(severity);
-            }
+            if (severityRange != null)
+                return ((FloatRange)severityRange).ValidValue(severity, assumeMin);
 
             if (!severityRanges.NullOrEmpty())
             {
                 foreach (FloatRange f in severityRanges)
                 {
-                    if (f.Includes(severity)) return true;
+                    if (f.ValidValue(severity)) return true;
                     if (f.min == f.max)
                         if (assumeMin)
                         {
@@ -986,7 +997,7 @@ namespace EBSGFramework
                         continue;
                     }
                     float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
-                    if (!capCheck.range.Includes(capValue))
+                    if (!capCheck.range.ValidValue(capValue))
                         return false;
                 }
             }
@@ -1003,7 +1014,7 @@ namespace EBSGFramework
                         }
                         continue;
                     }
-                    if (!skillCheck.range.Includes(skill.Level))
+                    if (!skillCheck.range.ValidValue(skill.Level))
                         return false;
                 }
             }
@@ -1012,7 +1023,7 @@ namespace EBSGFramework
                 foreach (StatCheck statCheck in statChecks)
                 {
                     float statValue = pawn.StatOrOne(statCheck.stat);
-                    if (!statCheck.range.Includes(statValue))
+                    if (!statCheck.range.ValidValue(statValue))
                         return false;
                 }
             }
@@ -1142,7 +1153,7 @@ namespace EBSGFramework
             if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty() || hediffs.NullOrEmpty()) return false;
             foreach (var hediff in hediffs)
             {
-                var found = pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range));
+                var found = pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity));
                 if (!found.EnumerableNullOrEmpty())
                     matches.AddRange(found);
             }
@@ -1165,7 +1176,7 @@ namespace EBSGFramework
         {
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
             foreach (var hediff in hediffs)
-                if (!pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range)).EnumerableNullOrEmpty())
+                if (!pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty())
                     return true;
             return false;
         }
@@ -1186,7 +1197,7 @@ namespace EBSGFramework
         {
             if (hediffs.NullOrEmpty()) return true;
             foreach (var hediff in hediffs)
-                if (pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && WithinSeverityRanges(arg.Severity, hediff.range)).EnumerableNullOrEmpty())
+                if (pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty())
                     return false;
             return true;
         }
@@ -1197,12 +1208,8 @@ namespace EBSGFramework
             foreach (NeedLevel needLevel in needLevels)
             {
                 Need need = pawn.needs.TryGetNeed(needLevel.need);
-                if (need != null)
-                {
-                    if (need.CurLevel < needLevel.minNeedLevel || need.CurLevel > needLevel.maxNeedLevel)
-                        return false;
-                }
-                // Doesn't have an else section because if the need doesn't exist, it's presumed to be at whatever level it needs to be
+                if (need != null && !needLevel.range.ValidValue(need.CurLevel))
+                    return false;
             }
             return true;
         }
@@ -1214,15 +1221,13 @@ namespace EBSGFramework
             {
                 if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                 {
-                    if (capCheck.minCapValue > 0)
+                    if (capCheck.range.min > 0)
                         return false;
                     continue;
                 }
 
                 float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
-                if (capValue < capCheck.minCapValue)
-                    return false;
-                if (capValue > capCheck.maxCapValue)
+                if (!capCheck.range.ValidValue(capValue))
                     return false;
             }
             return true;
@@ -1243,7 +1248,7 @@ namespace EBSGFramework
                     continue;
                 }
 
-                if (!skillLevel.range.Includes(skill.GetLevel(includeAptitudes)))
+                if (!skillLevel.range.ValidValue(skill.GetLevel(includeAptitudes)))
                     return false;
             }
 
@@ -1268,14 +1273,11 @@ namespace EBSGFramework
                 SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
                 if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                 {
-                    if (skillCheck.minLevel > 0)
+                    if (skillCheck.range.min > 0)
                         return false;
                     continue;
                 }
-
-                if (skill.Level < skillCheck.minLevel)
-                    return false;
-                if (skill.Level > skillCheck.maxLevel)
+                if (!skillCheck.range.ValidValue(skill.Level))
                     return false;
             }
 

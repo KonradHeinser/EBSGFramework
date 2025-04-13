@@ -204,7 +204,7 @@ namespace EBSGFramework
         {
             if (extension?.genderByAge.NullOrEmpty() == false)
                 foreach (GenderByAge genderByAge in extension.genderByAge)
-                    if (EBSGUtilities.WithinSeverityRanges(pawn.ageTracker.AgeBiologicalYearsFloat, genderByAge.range))
+                    if (genderByAge.range.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
                     { 
                         if (genderByAge.gender != Gender.None)
                         {
