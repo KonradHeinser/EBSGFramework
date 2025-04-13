@@ -979,21 +979,15 @@ namespace EBSGFramework
                 {
                     if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                     {
-                        if (capCheck.minCapValue > 0)
+                        if (capCheck.range.min > 0)
                         {
                             return false;
                         }
                         continue;
                     }
                     float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
-                    if (capValue < capCheck.minCapValue)
-                    {
+                    if (!capCheck.range.Includes(capValue))
                         return false;
-                    }
-                    if (capValue > capCheck.maxCapValue)
-                    {
-                        return false;
-                    }
                 }
             }
             if (!skillChecks.NullOrEmpty())
@@ -1003,20 +997,14 @@ namespace EBSGFramework
                     SkillRecord skill = pawn.skills.GetSkill(skillCheck.skill);
                     if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                     {
-                        if (skillCheck.minLevel > 0)
+                        if (skillCheck.range.min > 0)
                         {
                             return false;
                         }
                         continue;
                     }
-                    if (skill.Level < skillCheck.minLevel)
-                    {
+                    if (!skillCheck.range.Includes(skill.Level))
                         return false;
-                    }
-                    if (skill.Level > skillCheck.maxLevel)
-                    {
-                        return false;
-                    }
                 }
             }
             if (!statChecks.NullOrEmpty())
@@ -1024,14 +1012,8 @@ namespace EBSGFramework
                 foreach (StatCheck statCheck in statChecks)
                 {
                     float statValue = pawn.StatOrOne(statCheck.stat);
-                    if (statValue < statCheck.minStatValue)
-                    {
+                    if (!statCheck.range.Includes(statValue))
                         return false;
-                    }
-                    if (statValue > statCheck.maxStatValue)
-                    {
-                        return false;
-                    }
                 }
             }
 

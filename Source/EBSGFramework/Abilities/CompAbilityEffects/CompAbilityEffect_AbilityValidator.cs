@@ -382,7 +382,7 @@ namespace EBSGFramework
                 {
                     if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                     {
-                        if (capCheck.minCapValue > 0)
+                        if (capCheck.range.min > 0)
                         {
                             explanation = "AbilityCasterNoneCheck".Translate(capCheck.capacity.LabelCap);
                             return false;
@@ -390,12 +390,12 @@ namespace EBSGFramework
                         continue;
                     }
                     float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
-                    if (capValue < capCheck.minCapValue)
+                    if (capValue < capCheck.range.min)
                     {
                         explanation = "AbilityCasterLowCheck".Translate(capCheck.capacity.LabelCap);
                         return false;
                     }
-                    if (capValue > capCheck.maxCapValue)
+                    if (capValue > capCheck.range.max)
                     {
                         explanation = "AbilityCasterHighCheck".Translate(capCheck.capacity.LabelCap);
                         return false;
@@ -407,12 +407,12 @@ namespace EBSGFramework
                 foreach (StatCheck statCheck in Props.casterStatLimiters)
                 {
                     float statValue = pawn.StatOrOne(statCheck.stat);
-                    if (statValue < statCheck.minStatValue)
+                    if (statValue < statCheck.range.min)
                     {
                         explanation = "AbilityCasterLowCheck".Translate(statCheck.stat.LabelCap);
                         return false;
                     }
-                    if (statValue > statCheck.maxStatValue)
+                    if (statValue > statCheck.range.max)
                     {
                         explanation = "AbilityCasterHighCheck".Translate(statCheck.stat.LabelCap);
                         return false;
@@ -428,19 +428,19 @@ namespace EBSGFramework
                     {
                         if (skillLevel.range.min > 0)
                         {
-                            explanation = "AbilityCasterNoneCheck".Translate(skillLevel.skill.LabelCap);
+                            explanation = "AbilityCasterNoneCheck".Translate(skill.def.LabelCap);
                             return false;
                         }
                         continue;
                     }
                     if (skill.Level < skillLevel.range.min)
                     {
-                        explanation = "AbilityCasterLowCheck".Translate(skillLevel.skill.LabelCap);
+                        explanation = "AbilityCasterLowCheck".Translate(skill.def.LabelCap);
                         return false;
                     }
-                    if (skill.Level > skillLevel.maxLevel)
+                    if (skill.Level > skillLevel.range.max)
                     {
-                        explanation = "AbilityCasterHighCheck".Translate(skillLevel.skill.LabelCap);
+                        explanation = "AbilityCasterHighCheck".Translate(skill.def.LabelCap);
                         return false;
                     }
                 }
@@ -818,7 +818,7 @@ namespace EBSGFramework
                     {
                         if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                         {
-                            if (capCheck.minCapValue > 0)
+                            if (capCheck.range.min > 0)
                             {
                                 explanation = "AbilityTargetNoneCheck".Translate(capCheck.capacity.LabelCap);
                                 return false;
@@ -826,12 +826,12 @@ namespace EBSGFramework
                             continue;
                         }
                         float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
-                        if (capValue < capCheck.minCapValue)
+                        if (capValue < capCheck.range.min)
                         {
                             explanation = "AbilityTargetLowCheck".Translate(capCheck.capacity.LabelCap);
                             return false;
                         }
-                        if (capValue > capCheck.maxCapValue)
+                        if (capValue > capCheck.range.max)
                         {
                             explanation = "AbilityTargetHighCheck".Translate(capCheck.capacity.LabelCap);
                             return false;
@@ -843,12 +843,12 @@ namespace EBSGFramework
                     foreach (StatCheck statCheck in Props.targetStatLimiters)
                     {
                         float statValue = pawn.StatOrOne(statCheck.stat);
-                        if (statValue < statCheck.minStatValue)
+                        if (statValue < statCheck.range.min)
                         {
                             explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
                             return false;
                         }
-                        if (statValue > statCheck.maxStatValue)
+                        if (statValue > statCheck.range.max)
                         {
                             explanation = "AbilityTargetHighCheck".Translate(statCheck.stat.LabelCap);
                             return false;
@@ -864,19 +864,19 @@ namespace EBSGFramework
                         {
                             if (skillLevel.range.min > 0)
                             {
-                                explanation = "AbilityTargetNoneCheck".Translate(skillLevel.skill.LabelCap);
+                                explanation = "AbilityTargetNoneCheck".Translate(skill.def.LabelCap);
                                 return false;
                             }
                             continue;
                         }
                         if (skill.Level < skillLevel.range.min)
                         {
-                            explanation = "AbilityTargetLowCheck".Translate(skillLevel.skill.LabelCap);
+                            explanation = "AbilityTargetLowCheck".Translate(skill.def.LabelCap);
                             return false;
                         }
-                        if (skill.Level > skillLevel.maxLevel)
+                        if (skill.Level > skillLevel.range.max)
                         {
-                            explanation = "AbilityTargetHighCheck".Translate(skillLevel.skill.LabelCap);
+                            explanation = "AbilityTargetHighCheck".Translate(skill.def.LabelCap);
                             return false;
                         }
                     }
@@ -974,7 +974,7 @@ namespace EBSGFramework
                 {
                     foreach (CapCheck capCheck in Props.targetCapLimiters)
                     {
-                        if (capCheck.minCapValue > 0)
+                        if (capCheck.range.min > 0)
                         {
                             explanation = "AbilityTargetMustBePawn".Translate();
                             return false;
@@ -999,7 +999,7 @@ namespace EBSGFramework
                     {
                         if (thing == null)
                         {
-                            if (statCheck.minStatValue > 0)
+                            if (statCheck.range.min > 0)
                             {
                                 explanation = "AbilityTargetMustBePawn".Translate();
                                 return false;
@@ -1008,12 +1008,12 @@ namespace EBSGFramework
                         else
                         {
                             float statValue = thing.StatOrOne(statCheck.stat);
-                            if (statValue < statCheck.minStatValue)
+                            if (statValue < statCheck.range.min)
                             {
                                 explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
                                 return false;
                             }
-                            if (statValue > statCheck.maxStatValue)
+                            if (statValue > statCheck.range.max)
                             {
                                 explanation = "AbilityTargetHighCheck".Translate(statCheck.stat.LabelCap);
                                 return false;
@@ -1024,7 +1024,7 @@ namespace EBSGFramework
                 if (!Props.targetNeedLevels.NullOrEmpty())
                 {
                     foreach (NeedLevel needLevel in Props.targetNeedLevels)
-                        if (needLevel.minNeedLevel > 0)
+                        if (needLevel.range.min > 0)
                         {
                             explanation = "AbilityTargetMustBePawn".Translate();
                             return false;
