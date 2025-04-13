@@ -172,17 +172,34 @@ namespace EBSGFramework
             Map map = parent.pawn.Map;
             if (map != null)
             {
-                if (Props.minimumRainRate > map.weatherManager.RainRate)
+                var rainRate = map.weatherManager.RainRate;
+                if (rainRate < Props.rainRate.min)
                 {
                     explanation = "AbilityLowRain".Translate();
                     return false;
                 }
-                if (Props.maximumRainRate < map.weatherManager.RainRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
+                if (rainRate < Props.rainRate.max && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
                 {
                     explanation = "AbilityHighRain".Translate();
                     return false;
                 }
-                if (Props.checkRoofForRainSnowRate && parent.pawn.Position.Roofed(map) && Props.minimumRainRate >= 0)
+                if (Props.checkRoofForRainSnowRate && Props.rainRate.min >= 0 && parent.pawn.Position.Roofed(map) )
+                {
+                    explanation = "Roofed".Translate();
+                    return false;
+                }
+
+                if (Props.minimumRainRate > rainRate)
+                {
+                    explanation = "AbilityLowRain".Translate();
+                    return false;
+                }
+                if (Props.maximumRainRate < rainRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
+                {
+                    explanation = "AbilityHighRain".Translate();
+                    return false;
+                }
+                if (Props.checkRoofForRainSnowRate && Props.minimumRainRate >= 0 && parent.pawn.Position.Roofed(map))
                 {
                     explanation = "Roofed".Translate();
                     return false;
@@ -197,17 +214,35 @@ namespace EBSGFramework
             Map map = parent.pawn.Map;
             if (map != null)
             {
-                if (Props.minimumSnowRate > map.weatherManager.SnowRate)
+                var snowRate = map.weatherManager.SnowRate;
+
+                if (Props.snowRate.min > snowRate)
                 {
                     explanation = "AbilityLowSnow".Translate();
                     return false;
                 }
-                if (Props.maximumSnowRate < map.weatherManager.SnowRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
+                if (Props.snowRate.max < snowRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
                 {
                     explanation = "AbilityHighSnow".Translate();
                     return false;
                 }
-                if (Props.checkRoofForRainSnowRate && parent.pawn.Position.Roofed(map) && Props.minimumSnowRate >= 0)
+                if (Props.checkRoofForRainSnowRate && Props.snowRate.min >= 0 && parent.pawn.Position.Roofed(map))
+                {
+                    explanation = "Roofed".Translate();
+                    return false;
+                }
+
+                if (Props.minimumSnowRate > snowRate)
+                {
+                    explanation = "AbilityLowSnow".Translate();
+                    return false;
+                }
+                if (Props.maximumSnowRate < snowRate && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
+                {
+                    explanation = "AbilityHighSnow".Translate();
+                    return false;
+                }
+                if (Props.checkRoofForRainSnowRate && Props.minimumSnowRate >= 0 && parent.pawn.Position.Roofed(map))
                 {
                     explanation = "Roofed".Translate();
                     return false;
@@ -223,6 +258,11 @@ namespace EBSGFramework
         {
             if (parent.pawn.Map == null)
             {
+                if (Props.casterLightLevel != FloatRange.ZeroToOne)
+                {
+                    explanation = "AbilityCasterLightLevel".Translate(Props.minCasterLightLevel.ToStringPercent(), Props.maxCasterLightLevel.ToStringPercent());
+                    return false;
+                }
                 if (Props.minCasterLightLevel > 0 || Props.maxCasterLightLevel < 1)
                 {
                     explanation = "AbilityCasterLightLevel".Translate(Props.minCasterLightLevel.ToStringPercent(), Props.maxCasterLightLevel.ToStringPercent());
@@ -232,6 +272,11 @@ namespace EBSGFramework
             else
             {
                 float light = parent.pawn.Map.glowGrid.GroundGlowAt(parent.pawn.Position);
+                if (!Props.casterLightLevel.Includes(light))
+                {
+                    explanation = "AbilityCasterLightLevel".Translate(Props.minCasterLightLevel.ToStringPercent(), Props.maxCasterLightLevel.ToStringPercent());
+                    return false;
+                }
                 if (light < Props.minCasterLightLevel || light > Props.maxCasterLightLevel)
                 {
                     explanation = "AbilityCasterLightLevel".Translate(Props.minCasterLightLevel.ToStringPercent(), Props.maxCasterLightLevel.ToStringPercent());
@@ -523,6 +568,13 @@ namespace EBSGFramework
             }
 
             float time = GenLocalDate.DayPercent(parent.pawn);
+            if (!Props.progressThroughDay.Includes(time))
+            {
+                int minHour = GenDate.HourOfDay((long)(Props.minPartOfDay * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
+                int maxHour = GenDate.HourOfDay((long)((Props.maxPartOfDay + 0.1f) * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
+                explanation = "AbilityTime".Translate(minHour.ToString(), maxHour.ToString(), parent.pawn);
+                return false;
+            }
             if (time < Props.minPartOfDay || time > Props.maxPartOfDay)
             {
                 int minHour = GenDate.HourOfDay((long)(Props.minPartOfDay * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
@@ -546,6 +598,11 @@ namespace EBSGFramework
 
             if (map == null)
             {
+                if (Props.targetLightLevel != FloatRange.ZeroToOne)
+                {
+                    explanation = "AbilityTargetLightLevel".Translate(Props.minTargetLightLevel.ToStringPercent(), Props.maxTargetLightLevel.ToStringPercent());
+                    return false;
+                }
                 if (Props.minTargetLightLevel > 0 || Props.maxTargetLightLevel < 1)
                 {
                     explanation = "AbilityTargetLightLevel".Translate(Props.minTargetLightLevel.ToStringPercent(), Props.maxTargetLightLevel.ToStringPercent());
@@ -555,6 +612,11 @@ namespace EBSGFramework
             else
             {
                 float light = map.glowGrid.GroundGlowAt(target.Cell);
+                if (!Props.targetLightLevel.Includes(light))
+                {
+                    explanation = "AbilityTargetLightLevel".Translate(Props.minTargetLightLevel.ToStringPercent(), Props.maxTargetLightLevel.ToStringPercent());
+                    return false;
+                }
                 if (light < Props.minTargetLightLevel || light > Props.maxTargetLightLevel)
                 {
                     explanation = "AbilityTargetLightLevel".Translate(Props.minTargetLightLevel.ToStringPercent(), Props.maxTargetLightLevel.ToStringPercent());
@@ -826,6 +888,16 @@ namespace EBSGFramework
                         explanation = "AbilityTargetNeedsCheck".Translate();
                         return false;
                     }
+                }
+                if (pawn.BodySize < Props.bodySize.min)
+                {
+                    explanation = "TargetTooSmall".Translate();
+                    return false;
+                }
+                if (pawn.BodySize > Props.bodySize.max)
+                {
+                    explanation = "TargetTooLarge".Translate();
+                    return false;
                 }
                 if (pawn.BodySize < Props.minBodySize)
                 {

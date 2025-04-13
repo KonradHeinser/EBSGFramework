@@ -31,6 +31,7 @@ namespace EBSGFramework
         public List<PawnKindDef> targetPawnKinds;
         public float minBodySize = 0f;
         public float maxBodySize = 999f;
+        public FloatRange bodySize = new FloatRange(0, 999);
         public TargetGroup targetGroup = TargetGroup.None;
         public List<FactionDef> validTargetFactions;
         public List<FactionDef> forbiddenTargetFactions;
@@ -51,8 +52,10 @@ namespace EBSGFramework
         // % Light
         public float minTargetLightLevel = 0f;
         public float maxTargetLightLevel = 1f;
+        public FloatRange targetLightLevel = FloatRange.ZeroToOne;
         public float minCasterLightLevel = 0f;
         public float maxCasterLightLevel = 1f;
+        public FloatRange casterLightLevel = FloatRange.ZeroToOne;
 
         // Roof Check
         public RoofCheck casterRoof = RoofCheck.NoCheck;
@@ -61,13 +64,16 @@ namespace EBSGFramework
         // % of progress through the day
         public float minPartOfDay = 0f;
         public float maxPartOfDay = 1f;
+        public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
         // Map Condition
         public bool checkRoofForRainSnowRate;
         public float minimumRainRate = 0f;
         public float maximumRainRate = 9999f;
+        public FloatRange rainRate = new FloatRange(0, 9999);
         public float minimumSnowRate = 0f;
         public float maximumSnowRate = 9999f;
+        public FloatRange snowRate = new FloatRange(0, 9999);
 
         public List<WeatherDef> requireOneOfWeather;
         public List<WeatherDef> forbiddenWeather;
