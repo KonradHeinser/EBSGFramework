@@ -32,7 +32,7 @@ namespace EBSGFramework
             if (addedHediffs == null) addedHediffs = new List<HediffDef>();
             foreach (HediffSeverityLevel severityLevel in Props.hediffsAtSeverities)
             {
-                if (parent.Severity >= severityLevel.minSeverity && parent.Severity <= severityLevel.maxSeverity)
+                if (EBSGUtilities.WithinSeverityRanges(parent.Severity, severityLevel.range))
                 {
                     if (!addedHediffs.Contains(severityLevel.hediff) && !Pawn.HasHediff(severityLevel.hediff))
                     {
@@ -42,7 +42,7 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    if (addedHediffs.Contains(severityLevel.hediff) && Pawn.HasHediff(severityLevel.hediff))
+                    if (addedHediffs.Contains(severityLevel.hediff))
                     {
                         Pawn.RemoveHediffs(severityLevel.hediff);
                         addedHediffs.Remove(severityLevel.hediff);
