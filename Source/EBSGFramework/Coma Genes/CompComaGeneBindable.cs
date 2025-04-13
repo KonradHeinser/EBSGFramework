@@ -1,9 +1,8 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
-using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {

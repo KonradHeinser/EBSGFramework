@@ -13,10 +13,6 @@ namespace EBSGFramework
 
         public const TargetIndex ConsumableSourceInd = TargetIndex.A;
 
-        private const TargetIndex TableCellInd = TargetIndex.B;
-
-        private const TargetIndex ExtraIngestiblesToCollectInd = TargetIndex.C;
-
         public bool EatingFromInventory => consumingFromInventory;
 
         private Thing ConsumableSource => job.GetTarget(TargetIndex.A).Thing;

@@ -8,14 +8,6 @@ namespace EBSGFramework
 {
     public class JobDriver_DRGFeedPatient : JobDriver
     {
-        private const TargetIndex ItemSourceInd = TargetIndex.A;
-
-        private const TargetIndex DelivereeInd = TargetIndex.B;
-
-        private const TargetIndex ItemHolderInd = TargetIndex.C;
-
-        private const float FeedDurationMultiplier = 1.5f;
-
         protected Thing Item => job.targetA.Thing;
 
         protected Pawn Deliveree => job.targetB.Pawn;

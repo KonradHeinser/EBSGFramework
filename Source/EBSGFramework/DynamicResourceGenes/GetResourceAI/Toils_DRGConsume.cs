@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -10,12 +8,6 @@ namespace EBSGFramework
     public static class Toils_DRGConsume
     {
         public const int MaxPawnReservations = 10;
-
-        private static List<IntVec3> spotSearchList = new List<IntVec3>();
-
-        private static List<IntVec3> cardinals = GenAdj.CardinalDirections.ToList();
-
-        private static List<IntVec3> diagonals = GenAdj.DiagonalDirections.ToList();
 
         public static Toil ConsumeConsumable(Pawn consumer, Pawn deliverer, TargetIndex consumeInd, TargetIndex eatSurfaceInd = TargetIndex.None)
         {

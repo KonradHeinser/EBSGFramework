@@ -14,10 +14,6 @@ namespace EBSGFramework
 
         protected Gene_Coma gene;
 
-        private const float Padding = 6f;
-
-        private const float Width = 140f;
-
         public override float GetWidth(float maxWidth)
         {
             return 140f;

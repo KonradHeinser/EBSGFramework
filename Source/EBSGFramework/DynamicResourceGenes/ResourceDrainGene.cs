@@ -37,11 +37,13 @@ namespace EBSGFramework
                         if (pawn.Spawned)
                         {
                             float time = GenLocalDate.DayPercent(Pawn);
+                            if (!DRGExtension.progressThroughDay.Includes(time)) return false;
                             if (time < DRGExtension.startTime || time > DRGExtension.endTime) return false;
 
                             if (pawn.Map != null)
                             {
                                 float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
+                                if (!DRGExtension.lightLevel.Includes(light)) return false;
                                 if (light < DRGExtension.minLightLevel || light > DRGExtension.maxLightLevel) return false;
                             }
                         }

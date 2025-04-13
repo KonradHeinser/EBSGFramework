@@ -9,10 +9,6 @@ namespace EBSGFramework
 {
     public class JobDriver_GeneComa : JobDriver
     {
-        private const TargetIndex BedIndex = TargetIndex.A;
-
-        private const int MoteIntervalTicks = 160;
-
         private Building_Bed Bed => job.GetTarget(TargetIndex.A).Thing as Building_Bed;
 
         public override bool PlayerInterruptable => !OnLastToil;

@@ -92,37 +92,67 @@ namespace EBSGFramework
                 if (caster.Dead) faction = caster.Corpse.Faction;
                 else faction = caster.Faction;
 
-                if (!Props.injureNonHostiles)
+                if (Props.exclusions != null)
                 {
-                    foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned)
+                    switch (Props.exclusions)
                     {
-                        if (!caster.Dead)
-                        {
-                            if (!pawn.HostileTo(caster))
-                            {
+                        case ExclusionLevel.Self:
+                            if (!caster.Dead)
+                                ignoreList.Add(caster);
+                            break;
+                        case ExclusionLevel.Allies:
+                            foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
                                 ignoreList.Add(pawn);
-                            }
-                        }
-                        else
+                            break;
+                        case ExclusionLevel.NonHostiles:
+                            foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned)
+                                if (!caster.Dead)
+                                {
+                                    if (!pawn.HostileTo(caster))
+                                        ignoreList.Add(pawn);
+                                }
+                                else
+                                {
+                                    if (!pawn.Faction.HostileTo(faction))
+                                        ignoreList.Add(pawn);
+                                }
+                            break;
+                    }
+                }
+                else
+                {
+                    if (!Props.injureNonHostiles)
+                    {
+                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned)
                         {
-                            if (!pawn.Faction.HostileTo(faction))
+                            if (!caster.Dead)
                             {
-                                ignoreList.Add(pawn);
+                                if (!pawn.HostileTo(caster))
+                                {
+                                    ignoreList.Add(pawn);
+                                }
                             }
-                        }
+                            else
+                            {
+                                if (!pawn.Faction.HostileTo(faction))
+                                {
+                                    ignoreList.Add(pawn);
+                                }
+                            }
 
+                        }
                     }
-                }
-                else if (!Props.injureAllies)
-                {
-                    foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
+                    else if (!Props.injureAllies)
                     {
-                        ignoreList.Add(pawn);
+                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
+                        {
+                            ignoreList.Add(pawn);
+                        }
                     }
-                }
-                else if (!Props.injureSelf && !caster.Dead)
-                {
-                    ignoreList.Add(caster);
+                    else if (!Props.injureSelf && !caster.Dead)
+                    {
+                        ignoreList.Add(caster);
+                    }
                 }
 
                 if ((int)Props.extraGasType != 1)

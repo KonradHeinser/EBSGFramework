@@ -11,8 +11,6 @@ namespace EBSGFramework
     {
         private static readonly Texture2D ResourceCostTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.116f, 0.129f, 0.190f));
 
-        private const float TotalPulsateTime = 0.85f;
-
         private List<Pair<IGeneResourceDrain, float>> tmpDrainGenes = new List<Pair<IGeneResourceDrain, float>>();
 
         public GeneGizmo_ResourceGene(Gene_Resource gene, List<IGeneResourceDrain> drainGenes, Color barColor, Color barhighlightColor)

@@ -27,6 +27,7 @@ namespace EBSGFramework
         public bool injureSelf = false;
         public bool injureAllies = true;
         public bool injureNonHostiles = true;
+        public ExclusionLevel? exclusions;
 
         public float resourceCost = 0; // Amount taken beforehand that alters how much the converted percentage can take, and doesn't directly change the radius or damage
         public float convertedResource = 0; // Flat amount used. Taken after percentage if applicable, though they probably shouldn't be used together

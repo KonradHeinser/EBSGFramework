@@ -22,10 +22,6 @@ namespace EBSGFramework
             }
         }
 
-        private const float MinLevelForFeedingResourceUnforced = 0.25f;
-
-        private const float ResourcePctMax = 0.95f;
-
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;

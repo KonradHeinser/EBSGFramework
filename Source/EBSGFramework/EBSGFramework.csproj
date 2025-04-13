@@ -351,7 +351,7 @@
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosiveRetaliation.cs" />
     <Compile Include="DynamicResourceGenes\HediffComp_DRGOnKill.cs" />
     <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGOnKill.cs" />
-    <Compile Include="DynamicResourceGenes\GeneLinker.cs" />
+    <Compile Include="Generic List Classes\GeneLinker.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HemogenPerHour.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HemogenPerHour.cs" />
     <Compile Include="DynamicResourceGenes\HediffCompProperties_DRGPerHour.cs" />
