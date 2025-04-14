@@ -11,6 +11,8 @@ namespace EBSGFramework
 
         public float maxSeverity = 99999f;
 
+        public FloatRange validSeverity = FloatRange.Zero;
+
         public float maxDistance = 4.9f;
 
         public float staticHemogenGain = 0f; // If not 0, this is used instead of a portion of the remaining blood in a corpse

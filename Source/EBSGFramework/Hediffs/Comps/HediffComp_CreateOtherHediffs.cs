@@ -14,7 +14,8 @@ namespace EBSGFramework
             {
                 foreach (HediffsAtSeverities hediffSet in Props.hediffSets)
                 {
-                    if (parent.Severity >= hediffSet.minSeverity && parent.Severity <= hediffSet.maxSeverity)
+                    if (hediffSet.validSeverity.ValidValue(parent.Severity) &&
+                        parent.Severity >= hediffSet.minSeverity && parent.Severity <= hediffSet.maxSeverity)
                     {
                         if (hediffSet.hediffDef != null)
                         {

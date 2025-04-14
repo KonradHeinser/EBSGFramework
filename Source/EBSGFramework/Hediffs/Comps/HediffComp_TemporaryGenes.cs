@@ -25,7 +25,8 @@ namespace EBSGFramework
 
             foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
             {
-                if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
+                if (geneSet.validSeverity.ValidValue(parent.Severity) &&
+                    parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
                     if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
                     parent.pawn.RemoveGenesFromPawn(addedGenes);
@@ -42,7 +43,8 @@ namespace EBSGFramework
 
             foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
             {
-                if (parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
+                if (geneSet.validSeverity.ValidValue(parent.Severity) &&
+                    parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
                 {
                     if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
                     parent.pawn.RemoveGenesFromPawn(addedGenes);

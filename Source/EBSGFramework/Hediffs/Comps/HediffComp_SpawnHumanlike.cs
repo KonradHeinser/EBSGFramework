@@ -61,7 +61,8 @@ namespace EBSGFramework
 
             if (Props.linkedHediff != null && !Pawn.HasHediff(Props.linkedHediff)) return;
 
-            if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
+            if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) && Props.validSeverity.ValidValue(parent.Severity)
+                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
             {
                 ticksLeft--;
 
@@ -84,7 +85,8 @@ namespace EBSGFramework
 
         public override void Notify_PawnKilled()
         {
-            if (spawnLeft != 0 && Props.onDeath && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity
+            if (spawnLeft != 0 && Props.onDeath && Props.validSeverity.ValidValue(parent.Severity)
+                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity
                 && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
@@ -100,7 +102,8 @@ namespace EBSGFramework
             if (!Pawn.Dead && spawnLeft != 0 && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
-                if (Props.onRemoval && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
+                if (Props.onRemoval && Props.validSeverity.ValidValue(parent.Severity) &&
+                    parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
                     SpawnPawns(Props.devStageForRemovalOrDeath, Props.spawnRemainingOnRemovalOrDeath);
 
                 if (Props.killHostOnRemoval)

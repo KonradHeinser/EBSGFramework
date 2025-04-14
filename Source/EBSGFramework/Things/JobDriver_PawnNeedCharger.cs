@@ -7,8 +7,6 @@ namespace EBSGFramework
 {
     public class JobDriver_PawnNeedCharger : JobDriver
     {
-        private const TargetIndex ChargerInd = TargetIndex.A;
-
         public Building_PawnNeedCharger NeedCharger => (Building_PawnNeedCharger)job.targetA.Thing;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)

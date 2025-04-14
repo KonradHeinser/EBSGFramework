@@ -26,7 +26,8 @@ namespace EBSGFramework
             {
                 try
                 {
-                    if (Gene.Value < Props.minHemogen || Gene.Value > Props.maxHemogen)
+                    if ((Props.validHemogen != FloatRange.Zero && !Props.validHemogen.Includes(Gene.Value)) ||
+                        Gene.Value < Props.minHemogen || Gene.Value > Props.maxHemogen)
                     {
                         if (Props.removeWhenLimitsPassed)
                             Pawn.health.RemoveHediff(parent);
@@ -39,6 +40,7 @@ namespace EBSGFramework
                     if (Gene == null)
                         return;
                 }
+                if (!Props.validSeverity.ValidValue(parent.Severity)) return;
                 if (parent.Severity < Props.minSeverity || parent.Severity > Props.maxSeverity) return;
 
                 Gene.Value += Props.hemogenPerHour * 0.08f;

@@ -12,5 +12,7 @@ namespace EBSGFramework
         public bool xenogenes = true;
 
         public List<GeneDef> genes;
+
+        public FloatRange validSeverity = FloatRange.Zero;
     }
 }

@@ -161,7 +161,8 @@ namespace EBSGFramework
         {
             foreach (RegenSet regenSet in Props.regenSets)
             {
-                if (parent.Severity >= regenSet.minSeverity && parent.Severity <= regenSet.maxSeverity)
+                if (regenSet.validSeverity.ValidValue(parent.Severity) &&
+                    parent.Severity >= regenSet.minSeverity && parent.Severity <= regenSet.maxSeverity)
                 {
                     if (regenSet.ticksToRegrowPart > 0)
                     { 
@@ -180,8 +181,16 @@ namespace EBSGFramework
                     healAmount = regenSet.healAmount;
                     repeatCount = regenSet.repeatHealCount;
 
-                    tempMinSeverity = regenSet.minSeverity;
-                    tempMaxSeverity = regenSet.maxSeverity;
+                    if (regenSet.validSeverity != FloatRange.Zero)
+                    {
+                        tempMinSeverity = regenSet.validSeverity.min;
+                        tempMaxSeverity = regenSet.validSeverity.max;
+                    }
+                    else
+                    {
+                        tempMinSeverity = regenSet.minSeverity;
+                        tempMaxSeverity = regenSet.maxSeverity;
+                    }
 
                     healTicksPerTick = regenSet.healTicksPerTick;
                     regrowTicksPerTick = regenSet.regrowTicksPerTick;

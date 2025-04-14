@@ -41,7 +41,8 @@ namespace EBSGFramework
                     parent.pawn.health.RemoveHediff(parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def));
                 }
             }
-            else if (parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
+            else if (Props.validSeverity.ValidValue(parent.Severity) 
+                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
             {
                 delayTicks--;
             }

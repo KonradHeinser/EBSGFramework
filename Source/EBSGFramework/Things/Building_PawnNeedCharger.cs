@@ -8,10 +8,6 @@ namespace EBSGFramework
     [StaticConstructorOnStartup]
     public class Building_PawnNeedCharger : Building
     {
-        private static readonly Material WasteBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.9f, 0.85f, 0.2f));
-
-        private static readonly Material WasteBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f, 1f));
-
         public GenDraw.FillableBarRequest BarDrawData => def.building.BarDrawDataFor(Rotation);
 
         private Pawn currentPawn;

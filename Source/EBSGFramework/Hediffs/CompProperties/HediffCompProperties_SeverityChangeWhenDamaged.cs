@@ -11,6 +11,8 @@ namespace EBSGFramework
 
         public float maxSeverity = 99999f;
 
+        public FloatRange validSeverity = FloatRange.Zero;
+
         public float severityChange = 0f;
 
         public float severityChangeFactor = 0f;

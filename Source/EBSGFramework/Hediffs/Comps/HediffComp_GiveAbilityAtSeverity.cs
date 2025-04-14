@@ -32,7 +32,8 @@ namespace EBSGFramework
 
             foreach (AbilitiesAtSeverities severitySet in Props.abilitiesAtSeverities)
             {
-                if (parent.Severity >= severitySet.minSeverity && parent.Severity <= severitySet.maxSeverity)
+                if (severitySet.validSeverity.ValidValue(parent.Severity) &&
+                    parent.Severity >= severitySet.minSeverity && parent.Severity <= severitySet.maxSeverity)
                 {
                     if (severitySet.abilityDef != null)
                     {

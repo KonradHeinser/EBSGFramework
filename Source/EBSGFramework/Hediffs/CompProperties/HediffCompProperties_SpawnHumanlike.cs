@@ -23,6 +23,8 @@ namespace EBSGFramework
 
         public float maxSeverity = 999f;
 
+        public FloatRange validSeverity = FloatRange.Zero;
+
         public int maxTotalSpawn = 1; // Setting to -1 makes it continue forever
 
         public IntRange spawnPerCompletion = new IntRange(1, 1);

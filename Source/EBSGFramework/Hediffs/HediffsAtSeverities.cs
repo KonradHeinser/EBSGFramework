@@ -12,5 +12,6 @@ namespace EBSGFramework
         public float severityPerDay = 0; // By default increases by 1 each day. This can be made negative to start removing hediffs that normally don't go down
         public float minSeverity = 0; // By default gives hediff while hediff exists
         public float maxSeverity = 9999; // By default always incrememnts hediffs
+        public FloatRange validSeverity = FloatRange.Zero;
     }
 }
