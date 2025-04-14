@@ -58,30 +58,8 @@ namespace EBSGFramework
         public List<GeneDef> butcherProductGenes = new List<GeneDef>();
         public List<GeneDef> leatherProductGenes = new List<GeneDef>();
 
-        public List<GeneDef> forbidFoods = new List<GeneDef>();
-        public List<GeneDef> restrictFoods = new List<GeneDef>();
-        public List<GeneDef> nonIngestibleFoods = new List<GeneDef>();
-        public List<GeneDef> noStandardFoods = new List<GeneDef>();
-        public List<GeneDef> foodTypeOverrides = new List<GeneDef>();
-
         public List<GeneDef> outgoingDamageStatGenes = new List<GeneDef>();
         public List<GeneDef> incomingDamageStatGenes = new List<GeneDef>();
-
-        public bool NeedEatPatch
-        {
-            get
-            {
-                return !forbidFoods.NullOrEmpty() || !restrictFoods.NullOrEmpty() || !noStandardFoods.NullOrEmpty();
-            }
-        }
-
-        public bool FoodTypeOverride
-        {
-            get
-            {
-                return !noStandardFoods.NullOrEmpty() || !foodTypeOverrides.NullOrEmpty();
-            }
-        }
 
         // Cached needs of interest
         public List<NeedDef> murderousNeeds = new List<NeedDef>();
@@ -406,17 +384,6 @@ namespace EBSGFramework
                         noWeapon.Add(gene);
                     else
                         equipRestricting.Add(gene);
-                }
-
-                if (gene.HasModExtension<FoodExtension>())
-                {
-                    FoodExtension foodExtension = gene.GetModExtension<FoodExtension>();
-
-                    if (!foodExtension.forbiddenFoods.NullOrEmpty()) forbidFoods.Add(gene);
-                    if (!foodExtension.allowedFoods.NullOrEmpty()) restrictFoods.Add(gene);
-                    if (!foodExtension.nonIngestibleFoods.NullOrEmpty()) restrictFoods.Add(gene);
-                    if (foodExtension.noStandardFood) noStandardFoods.Add(gene);
-                    if (foodExtension.foodTypeOverride != FoodTypeFlags.None) foodTypeOverrides.Add(gene);
                 }
 
                 EBSGBodyExtension bodyExtension = gene.GetModExtension<EBSGBodyExtension>();

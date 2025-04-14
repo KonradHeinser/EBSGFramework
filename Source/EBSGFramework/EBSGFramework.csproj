@@ -423,7 +423,6 @@
     <Compile Include="Coma Genes\PlaceWorker_DrawLinesToComaRestBuildings.cs" />
     <Compile Include="Coma Genes\RoomRoleWorker_ComaRestChamber.cs" />
     <Compile Include="Coma Genes\ThoughtWorker_ComaRestChamber.cs" />
-    <Compile Include="Genes\FoodExtension.cs" />
     <Compile Include="Generic List Classes\ThingLink.cs" />
     <Compile Include="Coma Genes\ComaExtension.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Capacities.cs" />
