@@ -1873,11 +1873,11 @@ namespace EBSGFramework
                         return 1f;
                     return value;
                 case StatRequirement.NonPawnLower:
-                    if (thing is Pawn && value < statDef.defaultBaseValue)
+                    if (thing is Pawn || value >= statDef.defaultBaseValue)
                         return 1f;
                     return value;
                 case StatRequirement.NonPawnHigher:
-                    if (thing is Pawn && value > statDef.defaultBaseValue)
+                    if (thing is Pawn || value <= statDef.defaultBaseValue)
                         return 1f;
                     return value;
                 case StatRequirement.Humanlike:
