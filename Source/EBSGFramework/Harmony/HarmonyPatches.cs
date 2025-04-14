@@ -880,7 +880,7 @@ namespace EBSGFramework
                     GRCExtension extension = gene.GetModExtension<GRCExtension>();
                     if (extension.carrierStat != null)
                     {
-                        float statValue = otherPawn.StatOrOne(extension.carrierStat);
+                        float statValue = otherPawn.StatOrOne(extension.carrierStat, extension.carrierReq);
                         if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                         else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                         else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -888,14 +888,14 @@ namespace EBSGFramework
                     if (!extension.carrierStats.NullOrEmpty())
                         foreach (StatDef stat in extension.carrierStats)
                         {
-                            float statValue = otherPawn.StatOrOne(stat);
+                            float statValue = otherPawn.StatOrOne(stat, extension.carrierReq);
                             if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                         }
                     if (extension.otherStat != null)
                     {
-                        float statValue = ___pawn.StatOrOne(extension.otherStat);
+                        float statValue = ___pawn.StatOrOne(extension.otherStat, extension.otherReq);
                         if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                         else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                         else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -903,7 +903,7 @@ namespace EBSGFramework
                     if (!extension.otherStats.NullOrEmpty())
                         foreach (StatDef stat in extension.otherStats)
                         {
-                            float statValue = ___pawn.StatOrOne(stat);
+                            float statValue = ___pawn.StatOrOne(stat, extension.otherReq);
                             if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -926,7 +926,7 @@ namespace EBSGFramework
                     GRCExtension extension = gene.GetModExtension<GRCExtension>();
                     if (extension.carrierStat != null)
                     {
-                        float statValue = romancer.StatOrOne(extension.carrierStat);
+                        float statValue = romancer.StatOrOne(extension.carrierStat, extension.carrierReq);
                         if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                         else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                         else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
@@ -934,14 +934,14 @@ namespace EBSGFramework
                     if (!extension.carrierStats.NullOrEmpty())
                         foreach (StatDef stat in extension.carrierStats)
                         {
-                            float statValue = romancer.StatOrOne(stat);
+                            float statValue = romancer.StatOrOne(stat, extension.carrierReq);
                             if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
                         }
                     if (extension.otherStat != null)
                     {
-                        float statValue = romanceTarget.StatOrOne(extension.otherStat);
+                        float statValue = romanceTarget.StatOrOne(extension.otherStat, extension.otherReq);
                         if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                         else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                         else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
@@ -949,7 +949,7 @@ namespace EBSGFramework
                     if (!extension.otherStats.NullOrEmpty())
                         foreach (StatDef stat in extension.otherStats)
                         {
-                            float statValue = romanceTarget.StatOrOne(stat);
+                            float statValue = romanceTarget.StatOrOne(stat, extension.otherReq);
                             if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
                             else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
                             else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;

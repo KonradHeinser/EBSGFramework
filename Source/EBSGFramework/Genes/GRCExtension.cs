@@ -15,6 +15,8 @@ namespace EBSGFramework
         public List<StatDef> carrierStats; // List of carrier stats to check
         public StatDef otherStat; // Stat on target that multiplies romance chance
         public List<StatDef> otherStats; // List of target stats to check
+        public StatRequirement carrierReq = StatRequirement.Always;
+        public StatRequirement otherReq = StatRequirement.Always;
         public bool onlyWhileLoweredCarrier; // Only use romancing stat if it is below 1
         public bool onlyWhileRaisedCarrier; // Only use romancing stat if it is above 1
         public bool onlyWhileLoweredOther; // Only use target's stat if it is below 1
