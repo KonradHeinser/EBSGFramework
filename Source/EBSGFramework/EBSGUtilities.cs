@@ -414,7 +414,7 @@ namespace EBSGFramework
 
         public static bool ValidValue(this FloatRange range, float value, bool assumeMin = true)
         {
-            if (range == FloatRange.Zero)
+            if (range.min == range.max)
                 if (assumeMin)
                     return value >= range.min;
                 else
@@ -424,7 +424,7 @@ namespace EBSGFramework
 
         public static bool ValidValue(this IntRange range, int value, bool assumeMin = true)
         {
-            if (range == IntRange.zero)
+            if (range.min == range.max)
                 if (assumeMin)
                     return value >= range.min;
                 else

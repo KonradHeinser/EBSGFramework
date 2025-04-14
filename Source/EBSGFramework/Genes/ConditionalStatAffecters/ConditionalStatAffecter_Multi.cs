@@ -28,6 +28,8 @@ namespace EBSGFramework
 
         public float maxPartOfDay = 1f;
 
+        public FloatRange progressThroughDay = FloatRange.ZeroToOne;
+
         public bool inPollution = false;
 
         public bool notInPollution = false;
@@ -36,9 +38,13 @@ namespace EBSGFramework
 
         public float maxLightLevel = 1f;
 
+        public FloatRange lightLevel = FloatRange.ZeroToOne;
+
         public float minTemp = -9999f;
 
         public float maxTemp = 9999f;
+
+        public FloatRange temps = new FloatRange(-9999, 9999);
 
         public List<TerrainDef> terrains;
 
@@ -61,6 +67,10 @@ namespace EBSGFramework
         public float minimumSnowRate = 0f;
 
         public float maximumSnowRate = 9999f;
+
+        public FloatRange rainRate = new FloatRange(0, 9999);
+
+        public FloatRange snowRate = new FloatRange(0, 9999);
 
         public List<WeatherDef> weathers;
 
@@ -88,9 +98,10 @@ namespace EBSGFramework
                 if (!pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
                 if (!pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 
-                if (minPartOfDay > 0 || maxPartOfDay < 1)
+                if (minPartOfDay > 0 || maxPartOfDay < 1 || progressThroughDay != FloatRange.ZeroToOne)
                 {
                     float time = GenLocalDate.DayPercent(pawn);
+                    if (!progressThroughDay.Includes(time)) return false;
                     if (time < minPartOfDay && time > maxPartOfDay) return false;
                 }
 
@@ -101,18 +112,23 @@ namespace EBSGFramework
 
                     if (inPollution && !position.IsPolluted(map)) return false;
                     if (notInPollution && position.IsPolluted(map)) return false;
-                    if ((minimumRainRate > 0 || minimumSnowRate > 0) && checkRoof && position.Roofed(map)) return false;
 
-                    if (minLightLevel > 0 || maxLightLevel < 1)
+                    var roofed = position.Roofed(pawn.Map);
+                    if ((minimumRainRate > 0 || minimumSnowRate > 0 || rainRate.min > 0 || snowRate.min > 0)
+                        && checkRoof && roofed) return false;
+
+                    if (minLightLevel > 0 || maxLightLevel < 1 || lightLevel != FloatRange.ZeroToOne)
                     {
                         float light = map.glowGrid.GroundGlowAt(position);
+                        if (!lightLevel.Includes(light)) return false;
                         if (light < minLightLevel || light > maxLightLevel)
                             return false;
                     }
 
-                    if (minTemp != -9999f || maxTemp != 9999f)
+                    if (minTemp != -9999f || maxTemp != 9999f || temps != new FloatRange(-9999, 9999))
                     {
                         float temp = position.GetTemperature(map);
+                        if (!temps.Includes(temp)) return false;
                         if (temp < minTemp && temp > maxTemp) return false;
                     }
 
@@ -141,9 +157,19 @@ namespace EBSGFramework
                     if (map.weatherManager != null)
                     {
                         WeatherManager weather = map.weatherManager;
-                        if ((minimumRainRate > weather.RainRate) || (minimumSnowRate > weather.SnowRate) ||
-                            (maximumRainRate < weather.RainRate && (!checkRoof || !position.Roofed(map))) ||
-                            (maximumSnowRate < weather.SnowRate && (!checkRoof || !position.Roofed(map))))
+                        var rain = map.weatherManager.RainRate;
+                        var snow = map.weatherManager.SnowRate;
+
+                        if ((!checkRoof || !roofed) &&
+                            (minimumRainRate > rain) || (minimumSnowRate > snow) ||
+                            (maximumRainRate < rain) || (maximumSnowRate < snow))
+                            return false;
+
+
+                        if (!rainRate.ValidValue(rain) && (!checkRoof || !roofed))
+                            return false;
+
+                        if (!snowRate.ValidValue(snow) && (!checkRoof || !roofed))
                             return false;
 
                         if (weathers.Contains(weather.curWeather))

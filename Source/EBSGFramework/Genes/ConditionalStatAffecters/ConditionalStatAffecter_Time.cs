@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public float maxPartOfDay = 1f;
 
+        public FloatRange progressThroughDay = FloatRange.ZeroToOne;
+
         public string label = null;
 
         public override string Label => GetLabel();
@@ -24,6 +26,8 @@ namespace EBSGFramework
             if (req.Thing is Pawn pawn)
             {
                 float time = GenLocalDate.DayPercent(pawn);
+                if (!progressThroughDay.Includes(time))
+                    return false;
                 return time >= minPartOfDay && time <= maxPartOfDay;
             }
             return false;
