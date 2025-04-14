@@ -194,7 +194,7 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(2500))
             {
-                if (!EBSGExtension.genderByAge.NullOrEmpty() && (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
+                if (EBSGExtension?.genderByAge.NullOrEmpty() == false && (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
                     SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
             }
 
