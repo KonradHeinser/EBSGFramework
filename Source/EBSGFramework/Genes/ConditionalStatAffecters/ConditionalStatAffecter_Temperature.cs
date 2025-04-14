@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         public float maxTemp = 9999f;
 
-        public FloatRange temps = new FloatRange(-9999, 9999);
+        public FloatRange temp = new FloatRange(-9999, 9999);
 
         public bool defaultActive;
 
@@ -20,11 +20,11 @@ namespace EBSGFramework
         private string GetLabel()
         {
             if (label != null) return label;
-            if (temps != new FloatRange(-9999, 9999))
+            if (temp != new FloatRange(-9999, 9999))
             {
-                if (temps.min == -9999f) return "EBSG_BelowTemperature".Translate(temps.max);
-                if (temps.max == 9999f) return "EBSG_AboveTemperature".Translate(temps.min);
-                return "EBSG_CorrectTemperature".Translate(temps.min, temps.max);
+                if (temp.min == -9999f) return "EBSG_BelowTemperature".Translate(temp.max);
+                if (temp.max == 9999f) return "EBSG_AboveTemperature".Translate(temp.min);
+                return "EBSG_CorrectTemperature".Translate(temp.min, temp.max);
             }
             if (minTemp == -9999f) return "EBSG_BelowTemperature".Translate(maxTemp);
             if (maxTemp == 9999f) return "EBSG_AboveTemperature".Translate(minTemp);
@@ -35,9 +35,9 @@ namespace EBSGFramework
         {
             if (req.Thing is Pawn pawn && pawn.Spawned)
             {
-                float temp = pawn.Position.GetTemperature(pawn.Map);
-                if (!temps.Includes(temp)) return false;
-                return temp >= minTemp && temp <= maxTemp;
+                float t = pawn.Position.GetTemperature(pawn.Map);
+                if (!temp.Includes(t)) return false;
+                return t >= minTemp && t <= maxTemp;
             }
             return defaultActive;
         }
