@@ -440,17 +440,8 @@ namespace EBSGFramework
             if (!severityRanges.NullOrEmpty())
             {
                 foreach (FloatRange f in severityRanges)
-                {
-                    if (f.ValidValue(severity)) return true;
-                    if (f.min == f.max)
-                        if (assumeMin)
-                        {
-                            if (severity >= f.min)
-                                return true;
-                        }
-                        else if (severity <= f.min)
-                            return true;
-                }
+                    if (f.ValidValue(severity, assumeMin)) 
+                        return true;
                 return false;
             }
 
