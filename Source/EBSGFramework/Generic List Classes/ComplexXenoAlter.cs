@@ -6,7 +6,7 @@ namespace EBSGFramework
 {
     public class ComplexXenoAlter
     {
-        public FloatRange range;
+        public FloatRange severity;
 
         public XenotypeDef xenotype;
 

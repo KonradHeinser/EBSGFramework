@@ -18,7 +18,7 @@ namespace EBSGFramework
             usedBy.AddOrAppendHediffs(Props.severityChange, Props.severityChange, Props.hediff);
             Hediff h = usedBy.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
             foreach (var xeno in Props.xenotypes)
-                if (xeno.range.Includes(h.Severity))
+                if (xeno.severity.Includes(h.Severity))
                 {
                     ThingDef filth = xeno.filth ?? Props.filth;
                     IntRange count = xeno.filth != null ? xeno.filthCount : Props.filthCount;
