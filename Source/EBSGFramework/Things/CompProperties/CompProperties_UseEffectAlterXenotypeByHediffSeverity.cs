@@ -20,7 +20,7 @@ namespace EBSGFramework
 
         public IntRange filthCount = new IntRange(4, 7);
 
-        public bool sendMessage = true;
+        public bool sendMessage = false;
 
         public Prerequisites prerequisites;
 
