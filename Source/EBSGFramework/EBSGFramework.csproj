@@ -74,6 +74,7 @@
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalHasAbilityUsable.cs" />
     <Compile Include="EBSGAI\JobGivers\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalNearbyCover.cs" />
+    <Compile Include="Generic List Classes\ComplexXenoAlter.cs" />
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Enums\Inheritance.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
@@ -124,9 +125,11 @@
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterGenes.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotype.cs" />
+    <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotypeByHediffSeverity.cs" />
     <Compile Include="Things\Comps\CompShieldEquipment.cs" />
     <Compile Include="Things\Comps\CompUseEffect_AlterGenes.cs" />
     <Compile Include="Things\Comps\CompUseEffect_AlterXenotype.cs" />
+    <Compile Include="Things\Comps\CompUseEffect_AlterXenotypeByHediffSeverity.cs" />
     <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterGenes.cs" />
