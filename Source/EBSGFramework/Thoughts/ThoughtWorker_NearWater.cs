@@ -12,7 +12,7 @@ namespace EBSGFramework
             EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
             if (thoughtExtension != null)
             {
-                if (!thoughtExtension.requiredGenes.NullOrEmpty() && !p.PawnHasAnyOfGenes(out var g, thoughtExtension.relatedGenes)) return ThoughtState.Inactive;
+                if (!thoughtExtension.relatedGenes.NullOrEmpty() && !p.PawnHasAnyOfGenes(out _, thoughtExtension.relatedGenes)) return ThoughtState.Inactive;
 
                 if (!p.CheckNearbyWater(1, out int c, thoughtExtension.maxWaterDistance)) return GetThoughtState(0);
                 if (thoughtExtension.thresholds.NullOrEmpty())
@@ -34,7 +34,7 @@ namespace EBSGFramework
                 if (p.CheckNearbyWater(1, out int waterCount)) return GetThoughtState(1);
                 return GetThoughtState(0);
             }
-            if (!extension.requiredGenes.NullOrEmpty() && !p.PawnHasAnyOfGenes(out var gene, extension.relatedGenes)) return ThoughtState.Inactive;
+            if (!extension.relatedGenes.NullOrEmpty() && !p.PawnHasAnyOfGenes(out _, extension.relatedGenes)) return ThoughtState.Inactive;
 
             if (!p.CheckNearbyWater(1, out int count, extension.maxWaterDistance)) return GetThoughtState(0);
             if (extension.thresholds.NullOrEmpty())

@@ -21,7 +21,7 @@ namespace EBSGFramework
                         && p.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes))
                         return ThoughtState.Inactive;
 
-                    if (!thoughtExtension.requiredGenes.NullOrEmpty() && !p.HasAnyOfRelatedGene(thoughtExtension.relatedGenes))
+                    if (!thoughtExtension.requiredGenes.NullOrEmpty() && !p.HasAnyOfRelatedGene(thoughtExtension.requiredGenes))
                         return ThoughtState.Inactive;
 
                     if (!thoughtExtension.compoundingHatred)
@@ -34,7 +34,7 @@ namespace EBSGFramework
                             if (thoughtExtension.xenophilobic && p.genes.Xenotype == otherPawn.genes?.Xenotype)
                                 return ThoughtState.Inactive;
 
-                            if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                            if (!thoughtExtension.relatedGenes.NullOrEmpty())
                             {
                                 if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.requiredGenes))
                                     return ThoughtState.ActiveAtStage(0);
@@ -44,9 +44,9 @@ namespace EBSGFramework
                             return ThoughtState.ActiveAtStage(0);
                         }
 
-                        if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                        if (!thoughtExtension.relatedGenes.NullOrEmpty())
                         {     
-                            if (otherPawn.HasAnyOfRelatedGene(thoughtExtension?.requiredGenes))
+                            if (otherPawn.HasAnyOfRelatedGene(thoughtExtension?.relatedGenes))
                                 return ThoughtState.ActiveAtStage(0);
                         }
                         else
@@ -54,21 +54,21 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        int num = 0;
+                        int num = -1;
                         if (thoughtExtension.opinionOfAllOthers)
                         {
                             if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes)) return ThoughtState.Inactive;
                             if (thoughtExtension.xenophilobic && p.genes.Xenotype == otherPawn.genes.Xenotype) return ThoughtState.Inactive;
                         }
-                        if (!thoughtExtension.requiredGenes.NullOrEmpty())
+                        if (!thoughtExtension.relatedGenes.NullOrEmpty())
                         {
                             if (thoughtExtension.opinionOfAllOthers) num++;
                             foreach (Gene gene in otherPawn.genes.GenesListForReading)
                             {
-                                if (thoughtExtension.requiredGenes.Contains(gene.def)) num++;
+                                if (thoughtExtension.relatedGenes.Contains(gene.def)) num++;
                                 if (num >= def.stages.Count) return ThoughtState.ActiveAtStage(def.stages.Count - 1);
                             }
-                            if (num > 0) return ThoughtState.ActiveAtStage(num - 1);
+                            if (num >= 0) return ThoughtState.ActiveAtStage(num);
                         }
                         else if (thoughtExtension.opinionOfAllOthers) return ThoughtState.ActiveAtStage(0);
                         else

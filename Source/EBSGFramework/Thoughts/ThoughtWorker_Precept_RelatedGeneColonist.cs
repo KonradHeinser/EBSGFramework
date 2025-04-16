@@ -21,7 +21,7 @@ namespace EBSGFramework
                 if (!pawns.NullOrEmpty())
                     foreach (Pawn pawn in pawns)
                     {
-                        if (!pawn.IsColonist) continue;
+                        if (!pawn.IsColonist || pawn.genes == null) continue;
 
                         bool t = pawn.HasAnyOfRelatedGene(thoughtExtension.relatedGenes) != thoughtExtension.checkNotPresent;
 
