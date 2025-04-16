@@ -20,11 +20,14 @@ namespace EBSGFramework
             foreach (var xeno in Props.xenotypes)
                 if (xeno.severity.Includes(h.Severity))
                 {
-                    ThingDef filth = xeno.filth ?? Props.filth;
-                    IntRange count = xeno.filth != null ? xeno.filthCount : Props.filthCount;
-                    usedBy.AlterXenotype(xeno.xenotype, filth, count, xeno.setXenotype, Props.sendMessage);
+                    if (xeno.xenotype != null)
+                    {
+                        ThingDef filth = xeno.filth ?? Props.filth;
+                        IntRange count = xeno.filth != null ? xeno.filthCount : Props.filthCount;
+                        usedBy.AlterXenotype(xeno.xenotype, filth, count, xeno.setXenotype, Props.sendMessage);
+                    }
                     usedBy.RemoveGenesFromPawn(xeno.removeGenes);
-                    usedBy.AddGenesToPawn(!xeno.xenotype.inheritable, xeno.addGenes);
+                    usedBy.AddGenesToPawn(xeno.xenotype != null ? !xeno.xenotype.inheritable : !usedBy.genes.Xenotype.inheritable, xeno.addGenes);
                     return;
                 }
         }
