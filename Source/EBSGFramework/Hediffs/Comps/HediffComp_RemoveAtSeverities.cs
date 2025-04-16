@@ -6,13 +6,12 @@ namespace EBSGFramework
     {
         public HediffCompProperties_RemoveAtSeverities Props => (HediffCompProperties_RemoveAtSeverities)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override bool CompShouldRemove
         {
-            base.CompPostTick(ref severityAdjustment);
-
-            if (Pawn.IsHashIntervalTick(60))
-                if (EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity, Props.severities))
-                    Pawn.health.RemoveHediff(parent);
+            get
+            {
+                return EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity, Props.severities);
+            }
         }
     }
 }
