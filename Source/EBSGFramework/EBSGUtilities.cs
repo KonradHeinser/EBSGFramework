@@ -1586,7 +1586,9 @@ namespace EBSGFramework
 
             if (setXenotype)
             {
-                pawn.genes.Endogenes.RemoveWhere((arg) => arg.def.endogeneCategory != EndogeneCategory.HairColor && arg.def.endogeneCategory != EndogeneCategory.Melanin);
+                List<Gene> removeGenes = new List<Gene>(pawn.genes.Endogenes.Where((arg) => arg.def.endogeneCategory != EndogeneCategory.HairColor && arg.def.endogeneCategory != EndogeneCategory.Melanin));
+                foreach (Gene gene in removeGenes)
+                    pawn.genes.RemoveGene(gene);
                 pawn.genes.SetXenotype(xenotype);
             }
             else
