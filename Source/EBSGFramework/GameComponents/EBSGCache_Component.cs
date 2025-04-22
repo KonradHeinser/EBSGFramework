@@ -533,7 +533,7 @@ namespace EBSGFramework
                             purgePawns.Add(pawn);
                         else if (!pawn.Dead)
                         {
-                            float baseAmount = 1f;
+                            float baseAmount = 0f;
                             Gene_Deathrest deathrest = pawn.genes.GetFirstGeneOfType<Gene_Deathrest>();
                             if (deathrest != null && !deathrest.BoundBuildings.NullOrEmpty())
                             {
