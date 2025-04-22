@@ -419,7 +419,7 @@ namespace EBSGFramework
                     return value >= range.min;
                 else
                     return value <= range.min;
-            return range.ValidValue(value);
+            return range.Includes(value);
         }
 
         public static bool ValidValue(this IntRange range, int value, bool assumeMin = true)
@@ -429,7 +429,7 @@ namespace EBSGFramework
                     return value >= range.min;
                 else
                     return value <= range.min;
-            return range.ValidValue(value);
+            return range.Includes(value);
         }
 
         public static bool WithinSeverityRanges(float severity, FloatRange? severityRange = null, List<FloatRange> severityRanges = null, bool assumeMin = true)
