@@ -31,6 +31,7 @@
     <EBSG_XenotypeApplied>Xenotype applied to {0}.</EBSG_XenotypeApplied>
 
     <EBSG_Shield>A protective shield.</EBSG_Shield>
+    <EBSG_NoValidItem>No valid item</EBSG_NoValidItem>
 
     <!--Modular stuff-->
     <EBSG_RejectApply>Cannot apply</EBSG_RejectApply>
