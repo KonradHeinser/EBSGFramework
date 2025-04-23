@@ -68,6 +68,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
+    <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
     <Compile Include="EBSGAI\Command_AbilityAutocastToggle.cs" />
     <Compile Include="EBSGAI\CompAbilityEffect_AutocastToggle.cs" />

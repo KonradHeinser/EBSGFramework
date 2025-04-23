@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -40,10 +36,7 @@ namespace EBSGFramework
                 return null;
             if (WardenFeedUtility.ShouldBeFed(p)) 
                 return null;
-            if (!p.HasAnyOfRelatedGene(Cache.idgGenes))
-                return null;
-
-            if (!pawn.NeedToSatisfyIDG(out var tmpDependencies))
+            if (!p.NeedToSatisfyIDG(out var tmpDependencies))
                 return null;
 
             foreach (var hediff in tmpDependencies)

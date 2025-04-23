@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -28,9 +27,6 @@ namespace EBSGFramework
                 return 0f;
             
             if (Cache?.idgGenes.NullOrEmpty() != false)
-                return 0f;
-
-            if (!pawn.HasAnyOfRelatedGene(Cache.idgGenes))
                 return 0f;
 
             if (pawn.NeedToSatisfyIDG(out _))
