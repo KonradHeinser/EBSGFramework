@@ -178,7 +178,7 @@ namespace EBSGFramework
                     explanation = "AbilityLowRain".Translate();
                     return false;
                 }
-                if (rainRate < Props.rainRate.max && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
+                if (rainRate > Props.rainRate.max && (!Props.checkRoofForRainSnowRate || !parent.pawn.Position.Roofed(map)))
                 {
                     explanation = "AbilityHighRain".Translate();
                     return false;
