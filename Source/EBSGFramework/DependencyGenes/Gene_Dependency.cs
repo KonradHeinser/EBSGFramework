@@ -89,7 +89,7 @@ namespace EBSGFramework
             if (hediff is Hediff_Dependency hediff_Dependency)
             {
                 if (def.chemical != null) hediff_Dependency.chemical = def.chemical;
-                else hediff_Dependency.linkedGene = def;
+                else hediff_Dependency.LinkedGene.def = def;
 
                 // hediff_Dependency.Severity = hediff_Dependency.def.initialSeverity;
 

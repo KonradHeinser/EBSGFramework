@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using System;
+using Verse.AI;
 
 namespace EBSGFramework
 {
@@ -17,7 +18,7 @@ namespace EBSGFramework
 
         public int cachedGeneCount = 0;
 
-        public GeneDef linkedGene;
+        private GeneDef linkedGene;
 
         public IDGExtension cachedExtension;
 
@@ -200,5 +201,129 @@ namespace EBSGFramework
             Scribe_Defs.Look(ref chemical, "chemical");
             Scribe_Defs.Look(ref linkedGene, "linkedGene");
         }
+
+        // The pawn in question is the getter, but not always the consumer
+        public Thing FindIngestibleFor(Pawn pawn)
+        {
+            ThingOwner<Thing> innerContainer = pawn.inventory.innerContainer;
+            for (int i = 0; i < innerContainer.Count; i++)
+            {
+                if (IngestibleValidator(pawn, innerContainer[i]))
+                {
+                    return innerContainer[i];
+                }
+            }
+
+            if (pawn.IsColonist && pawn.Map?.mapPawns?.SpawnedColonyAnimals.NullOrEmpty() == false)
+                foreach (Pawn spawnedColonyAnimal in pawn.Map.mapPawns.SpawnedColonyAnimals)
+                    foreach (Thing item in spawnedColonyAnimal.inventory.innerContainer)
+                        if (IngestibleValidator(pawn, item) && !spawnedColonyAnimal.IsForbidden(pawn) && pawn.CanReach(spawnedColonyAnimal, PathEndMode.OnCell, Danger.Some))
+                            return item;
+
+            if (chemical != null)
+            {
+                Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, (Thing x) => IngestibleValidator(pawn, x));
+                if (thing != null)
+                    return thing;
+            }
+            else
+            {
+                Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, (Thing x) => IngestibleValidator(pawn, x));
+                if (thing != null)
+                    return thing;
+            }
+
+            if (Extension != null)
+            {
+                if (!Extension.validThings.NullOrEmpty())
+                {
+                    foreach (ThingDef thingDef in Extension.validThings)
+                    {
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                        if (thing != null)
+                            return thing;
+                    }
+                    if (Extension.checkIngredients)
+                    {
+                        List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => LinkedGene.ValidIngest(t));
+                        if (!things.NullOrEmpty())
+                        {
+                            Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                            if (thing != null)
+                                return thing;
+                        }
+                    }
+                }
+                if (!Extension.validCategories.NullOrEmpty())
+                {
+                    List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => t.IngestibleNow && !t.IsForbidden(pawn) && pawn.CanReserve(t) && CheckCategories(t));
+                    if (!things.NullOrEmpty())
+                    {
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                        if (thing != null)
+                            return thing;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private bool CheckCategories(Thing thing)
+        {
+            if (!thing.def.thingCategories.NullOrEmpty())
+                foreach (ThingCategoryDef thingCategory in thing.def.thingCategories)
+                    if (Extension.validCategories.Contains(thingCategory))
+                        return true;
+
+            CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
+
+            if (Extension.checkIngredients && ingredients?.ingredients.NullOrEmpty() == false)
+            {
+                if (Extension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
+                 FoodUtility.GetFoodKind(thing) == FoodKind.Meat)
+                    return true;
+                if (Extension.validCategories.Contains(ThingCategoryDefOf.PlantFoodRaw) &&
+                    FoodUtility.GetFoodKind(thing) == FoodKind.NonMeat)
+                    return true;
+
+                foreach (ThingDef ingredient in ingredients.ingredients)
+                    if (!ingredient.thingCategories.NullOrEmpty())
+                        foreach (ThingCategoryDef ingredientCategory in ingredient.thingCategories)
+                            if (Extension.validCategories.Contains(ingredientCategory))
+                                return true;
+            }
+
+            return false;
+        }
+
+        private bool IngestibleValidator(Pawn pawn, Thing item)
+        {
+            if (!item.IngestibleNow || !pawn.CanReserve(item) && item.IsForbidden(pawn)) return false;
+
+            if (chemical != null)
+            {
+                if (!item.def.IsDrug)
+                {
+                    return false;
+                }
+                if (item.Spawned && (!pawn.CanReserve(item) || item.IsForbidden(pawn) || !item.IsSociallyProper(pawn)))
+                {
+                    return false;
+                }
+                CompDrug compDrug = item.TryGetComp<CompDrug>();
+                if (compDrug == null || compDrug.Props.chemical == null || compDrug.Props.chemical != chemical)
+                {
+                    return false;
+                }
+                if (pawn.drugs != null && !pawn.drugs.CurrentPolicy[item.def].allowedForAddiction && (!pawn.InMentalState || pawn.MentalStateDef.ignoreDrugPolicy))
+                {
+                    return false;
+                }
+                return true;
+            }
+            if (LinkedGene.ValidIngest(item)) return true;
+            return false;
+        }
+
     }
 }

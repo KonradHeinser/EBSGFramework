@@ -937,6 +937,17 @@ namespace EBSGFramework
             stage.partIgnoreMissingHP = newStage.partIgnoreMissingHP;
             stage.destroyPart = newStage.destroyPart;
         }
+
+        public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies)
+        {
+            dependencies = new List<Hediff_Dependency>();
+
+            foreach (Gene gene in pawn.genes.GenesListForReading)
+                if (gene is Gene_Dependency d && d.LinkedHediff?.ShouldSatisfy == true)
+                    dependencies.Add(d.LinkedHediff);
+
+            return !dependencies.NullOrEmpty();
+        }
         
         public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
