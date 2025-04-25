@@ -89,9 +89,7 @@ namespace EBSGFramework
             if (hediff is Hediff_Dependency hediff_Dependency)
             {
                 if (def.chemical != null) hediff_Dependency.chemical = def.chemical;
-                else hediff_Dependency.LinkedGene.def = def;
-
-                // hediff_Dependency.Severity = hediff_Dependency.def.initialSeverity;
+                else hediff_Dependency.LinkedGene = this;
 
                 pawn.health.AddHediff(hediff_Dependency);
             }

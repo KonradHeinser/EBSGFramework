@@ -66,6 +66,10 @@ namespace EBSGFramework
                 }
                 return cachedDependencyGene;
             }
+            set
+            {
+                cachedDependencyGene = value;
+            }
         }
 
         public IDGExtension Extension
