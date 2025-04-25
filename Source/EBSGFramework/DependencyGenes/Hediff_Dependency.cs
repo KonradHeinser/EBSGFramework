@@ -16,8 +16,6 @@ namespace EBSGFramework
 
         public string AssignedLabel => GetLabel();
 
-        public int cachedGeneCount = 0;
-
         private GeneDef linkedGene;
 
         public IDGExtension cachedExtension;
@@ -42,10 +40,9 @@ namespace EBSGFramework
             get
             {
                 if (pawn.genes == null) pawn.health.RemoveHediff(this);
-                if (cachedDependencyGene == null || pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                if (cachedDependencyGene == null)
                 {
                     List<Gene> genesListForReading = pawn.genes.GenesListForReading;
-                    cachedGeneCount = genesListForReading.Count;
                     foreach (Gene gene in genesListForReading)
                         if (gene is Gene_Dependency gene_Dependency)
                         {
@@ -69,6 +66,7 @@ namespace EBSGFramework
             set
             {
                 cachedDependencyGene = value;
+                linkedGene = cachedDependencyGene.def;
             }
         }
 

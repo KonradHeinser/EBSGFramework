@@ -28,6 +28,8 @@ namespace EBSGFramework
 
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
+
         public override Danger MaxPathDanger(Pawn pawn)
         {
             return Danger.Deadly;
