@@ -2008,6 +2008,8 @@ namespace EBSGFramework
                         {
                             if (alreadyFoundGenes.Contains(first)) break; // Ensures nobody can put it in an eternal loop
                             extension = first.GetModExtension<FertilityByGenderAgeExtension>();
+                            if (extension == null) // In the event that an overriding gene doesn't have the extension, assuming it's just there to override the effects from the base gene
+                                return;
                             alreadyFoundGenes.Add(first);
                         }
                         else break; // If the pawn doesn't have an overriding gene, then this is the final gene to use
