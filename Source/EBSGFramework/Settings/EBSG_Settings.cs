@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -100,6 +101,9 @@ namespace EBSGFramework
         private static SettingCategoryDef currentCategory;
         private static Dictionary<string, bool> flexibleBools;
         private static Dictionary<string, float> flexibleNums;
+
+        private static Dictionary<SettingDef, List<FloatMenuOption>> flexDropDownOptions;
+
         private static List<FloatMenuOption> flexSettingOptions;
         public List<FloatMenuOption> FlexSettingOptions
         {
@@ -127,6 +131,8 @@ namespace EBSGFramework
                 flexibleBools = new Dictionary<string, bool>();
             if (flexibleNums.NullOrEmpty())
                 flexibleNums = new Dictionary<string, float>();
+            if (flexDropDownOptions.NullOrEmpty())
+                flexDropDownOptions = new Dictionary<SettingDef, List<FloatMenuOption>>();
             var categories = new List<SettingCategoryDef>(DefDatabase<SettingCategoryDef>.AllDefsListForReading);
             if (!categories.NullOrEmpty())
                 foreach (SettingCategoryDef i in categories)
@@ -136,6 +142,7 @@ namespace EBSGFramework
                     {
                         flexibleSettings.Add(i, settings);
                         foreach (SettingDef s in settings)
+                        {
                             if (s.type == SettingType.Toggle)
                             {
                                 if (!flexibleBools.ContainsKey(s.defName))
@@ -146,6 +153,16 @@ namespace EBSGFramework
                                 if (!flexibleNums.ContainsKey(s.defName))
                                     flexibleNums.Add(s.defName, s.defaultValue);
                             }
+                            if (s.type == SettingType.DropDown)
+                            {
+                                var options = new List<FloatMenuOption>();
+                                for (int l = 0; l < s.dropLabels.Count; l++)
+                                    options.Add(new FloatMenuOption(s.dropLabels[l], delegate ()
+                                    {
+                                        flexibleNums[s.defName] = l;
+                                    }));
+                            }
+                        }
                     }
                 }
         }
@@ -319,7 +336,7 @@ namespace EBSGFramework
                         { "EBSG.Framework", "EBSG_ModName".Translate() }
                     };
 
-                    if (ModsConfig.IsActive("EBSG.AiO") || ModsConfig.IsActive("EBSG.Lite"))
+                    if (ModsConfig.IsActive("EBSG.AiO"))
                     {
                         mainMenuOptions.Add(new FloatMenuOption("EBSGAiO_ModName".Translate(), delegate
                         {
@@ -527,22 +544,33 @@ namespace EBSGFramework
                 case 3: // Flexible Settings
                     if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), currentCategory?.label ?? "EBSG_ChooseCategory".Translate(), 0.25f))
                         Find.WindowStack.Add(new FloatMenu(FlexSettingOptions));
-                    
+                    optionsMenu.Gap(7f);
                     if (currentCategory != null)
                     {
+                        contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
                         foreach (var setting in flexibleSettings[currentCategory])
                         {
                             switch ((int)setting.type)
                             {
-                                case 0: // Error
+                                case 0: // None
                                     break;
                                 case 1: // Toggle
+                                    bool set = flexibleBools[setting.defName];
+                                    optionsMenu.CheckboxLabeled(setting.label, ref set, setting.description);
+                                    optionsMenu.Gap(5f);
+                                    flexibleBools[setting.defName] = set;
                                     break;
                                 case 2: // Slider
+                                    float slide = flexibleNums[setting.defName];
+                                    flexibleNums[setting.defName] = optionsMenu.SliderLabeled(setting.label, slide, setting.validRange.min, setting.validRange.max, 0.5f, setting.description);
                                     break;
                                 case 3: // Slider (Int)
+                                    int slideInt = (int)flexibleNums[setting.defName];
+                                    flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.label, slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
                                     break;
-                                case 4: // Numeric
+                                case 4: // Dropdown
+                                    break;
+                                case 5: // Numeric
                                     break;
                             }
                         }
