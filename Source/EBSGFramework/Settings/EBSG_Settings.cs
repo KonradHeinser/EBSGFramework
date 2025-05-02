@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.Noise;
 
 namespace EBSGFramework
 {
@@ -75,16 +74,98 @@ namespace EBSGFramework
                     };
 
                     if (NeedEBSGThinkTree())
-                        tabsList.Insert(1, new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
+                        tabsList.Append(new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
                                 delegate ()
                                 {
                                     tabInt = 2;
                                     tabsList.Clear();
-                                }, tabInt == 2)
-                            );
+                                }, tabInt == 2));
+
+                    if (!alreadyBuiltFlexSettings)
+                        BuildFlexibleSettings();
+                    if (!flexibleSettings.NullOrEmpty())
+                        tabsList.Append(new TabRecord("EBSG_SettingMenuLabel_FlexSettings".Translate(),
+                            delegate ()
+                            {
+                                tabInt = 3;
+                                tabsList.Clear();
+                            }, tabInt == 3));
                 }
                 return tabsList;
             }
+        }
+
+        private static bool alreadyBuiltFlexSettings = false;
+        private static Dictionary<SettingCategoryDef, List<SettingDef>> flexibleSettings;
+        private static SettingCategoryDef currentCategory;
+        private static Dictionary<string, bool> flexibleBools;
+        private static Dictionary<string, float> flexibleNums;
+        private static List<FloatMenuOption> flexSettingOptions;
+        public List<FloatMenuOption> FlexSettingOptions
+        {
+            get
+            {
+                if (flexSettingOptions == null)
+                {
+                    var categories = new List<SettingCategoryDef>(flexibleSettings.Keys);
+                    categories.SortBy(arg => arg.label);
+                    foreach (var i in categories)
+                        flexSettingOptions.Add(new FloatMenuOption(i.LabelCap, delegate ()
+                        {
+                            currentCategory = i;
+                        }));
+                }
+                return flexSettingOptions;
+            }
+        }
+
+
+        public static void BuildFlexibleSettings()
+        {
+            alreadyBuiltFlexSettings = true;
+            if (flexibleBools.NullOrEmpty())
+                flexibleBools = new Dictionary<string, bool>();
+            if (flexibleNums.NullOrEmpty())
+                flexibleNums = new Dictionary<string, float>();
+            var categories = new List<SettingCategoryDef>(DefDatabase<SettingCategoryDef>.AllDefsListForReading);
+            if (!categories.NullOrEmpty())
+                foreach (SettingCategoryDef i in categories)
+                {
+                    var settings = new List<SettingDef>(DefDatabase<SettingDef>.AllDefsListForReading.Where(arg => arg.category == i));
+                    if (!settings.NullOrEmpty())
+                    {
+                        flexibleSettings.Add(i, settings);
+                        foreach (SettingDef s in settings)
+                            if (s.type == SettingType.Toggle)
+                            {
+                                if (!flexibleBools.ContainsKey(s.defName))
+                                    flexibleBools.Add(s.defName, s.defaultToggle);
+                            }
+                            else
+                            {
+                                if (!flexibleNums.ContainsKey(s.defName))
+                                    flexibleNums.Add(s.defName, s.defaultValue);
+                            }
+                    }
+                }
+        }
+
+        public static bool GetBoolSetting(SettingDef setting)
+        {
+            if (flexibleBools.NullOrEmpty())
+                flexibleBools = new Dictionary<string, bool>() { { setting.defName, setting.defaultToggle } };
+            else if (!flexibleBools.ContainsKey(setting.defName))
+                flexibleBools.Add(setting.defName, setting.defaultToggle);
+            return flexibleBools[setting.defName];
+        }
+
+        public static float GetNumSetting(SettingDef setting)
+        {
+            if (flexibleNums.NullOrEmpty())
+                flexibleNums = new Dictionary<string, float>() { { setting.defName, setting.defaultValue } };
+            else if (!flexibleNums.ContainsKey(setting.defName))
+                flexibleNums.Add(setting.defName, setting.defaultValue);
+            return flexibleNums[setting.defName];
         }
 
         public static void BuildThinkTreeSettings()
@@ -110,7 +191,6 @@ namespace EBSGFramework
                         {
                             thinkTreeSettings.Add(treeSetting.uniqueID + setting.settingID, setting.defaultSetting);
                         }
-
                 }
             }
 
@@ -195,8 +275,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();
-
+            
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
             Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
@@ -209,7 +288,13 @@ namespace EBSGFramework
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
             Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
-        Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
+            if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();
+            Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
+
+            if (flexibleBools == null) flexibleBools = new Dictionary<string, bool>();
+            if (flexibleNums == null) flexibleNums = new Dictionary<string, float>();
+            Scribe_Collections.Look(ref flexibleBools, "EBSG_FlexibleBoolSettings", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref flexibleNums, "EBSG_FlexibleNumSetttings", LookMode.Value, LookMode.Value);
         }
 
         private List<FloatMenuOption> mainMenuOptions;
@@ -411,9 +496,9 @@ namespace EBSGFramework
                         {
                             var settings = treeSettings[currentThinkMenu];
                             contentRect.height = (settings.Count + 1) * 35;
-                            if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.25f)){
+                            if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.25f))
                                 Find.WindowStack.Add(new FloatMenu(thinkMenus));
-                            }
+                            
                             optionsMenu.Label(treeLabelsAndDescs[currentThinkMenu][0], -1, treeLabelsAndDescs[currentThinkMenu][1]);
                             optionsMenu.Gap(7f);
 
@@ -439,35 +524,29 @@ namespace EBSGFramework
                     }
 
                     break;
-                case 4: // Customization settings
-                        /*
-                        if (NeedCustomizationSection)
+                case 3: // Flexible Settings
+                    if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), currentCategory?.label ?? "EBSG_ChooseCategory".Translate(), 0.25f))
+                        Find.WindowStack.Add(new FloatMenu(FlexSettingOptions));
+                    
+                    if (currentCategory != null)
+                    {
+                        foreach (var setting in flexibleSettings[currentCategory])
                         {
-                            numberOfOptions += 1;
-                            if (showCustomizableOptions)
+                            switch ((int)setting.type)
                             {
-                                // This is where the individual customization categories belong
-                                if (!AsexualHediffs.NullOrEmpty())
-                                    numberOfOptions += AsexualHediffs.Count;
+                                case 0: // Error
+                                    break;
+                                case 1: // Toggle
+                                    break;
+                                case 2: // Slider
+                                    break;
+                                case 3: // Slider (Int)
+                                    break;
+                                case 4: // Numeric
+                                    break;
                             }
                         }
-
-                        // Checks all the lists to see if any make this worth it.
-                        if (NeedCustomizationSection)
-                        {
-                            optionsMenu.CheckboxLabeled("EBSG_CustomizableThings".Translate(), ref showCustomizableOptions, "EBSG_CustomizableThingsDescription".Translate());
-
-                            if (showCustomizableOptions)
-                            {
-                                // Column 1
-                                if ()
-                            }
-                        }
-                        */
-
-                    break;
-
-                case 5: // Unbugger
+                    }
                     break;
             }
 
