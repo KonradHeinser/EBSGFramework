@@ -75,7 +75,7 @@ namespace EBSGFramework
                     };
 
                     if (NeedEBSGThinkTree())
-                        tabsList.Append(new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
+                        tabsList.Add(new TabRecord("EBSG_SettingMenuLabel_EBSGThinkTree".Translate(),
                                 delegate ()
                                 {
                                     tabInt = 2;
@@ -85,7 +85,7 @@ namespace EBSGFramework
                     if (!alreadyBuiltFlexSettings)
                         BuildFlexibleSettings();
                     if (!flexibleSettings.NullOrEmpty())
-                        tabsList.Append(new TabRecord("EBSG_SettingMenuLabel_FlexSettings".Translate(),
+                        tabsList.Add(new TabRecord("EBSG_SettingMenuLabel_FlexSettings".Translate(),
                             delegate ()
                             {
                                 tabInt = 3;
