@@ -161,6 +161,11 @@ namespace EBSGFramework
                                     {
                                         flexibleNums[s.defName] = l;
                                     }));
+                                if (!options.NullOrEmpty())
+                                    flexDropDownOptions.Add(s, options);
+
+                                if (flexibleNums[s.defName] > options.Count)
+                                    flexibleNums[s.defName] = s.defaultValue;
                             }
                         }
                     }
@@ -169,6 +174,11 @@ namespace EBSGFramework
 
         public static bool GetBoolSetting(SettingDef setting)
         {
+            if (setting.type != SettingType.Toggle)
+            {
+                Log.Error($"{setting.defName} is not a toggle");
+                return false;
+            }
             if (flexibleBools.NullOrEmpty())
                 flexibleBools = new Dictionary<string, bool>() { { setting.defName, setting.defaultToggle } };
             else if (!flexibleBools.ContainsKey(setting.defName))
@@ -178,6 +188,12 @@ namespace EBSGFramework
 
         public static float GetNumSetting(SettingDef setting)
         {
+            if (setting.type == SettingType.Toggle)
+            {
+                Log.Error($"{setting.defName} is not a setting that has a numeric value");
+                return -9999; // Catching value for incorrect types
+            }
+
             if (flexibleNums.NullOrEmpty())
                 flexibleNums = new Dictionary<string, float>() { { setting.defName, setting.defaultValue } };
             else if (!flexibleNums.ContainsKey(setting.defName))
@@ -556,21 +572,27 @@ namespace EBSGFramework
                                     break;
                                 case 1: // Toggle
                                     bool set = flexibleBools[setting.defName];
-                                    optionsMenu.CheckboxLabeled(setting.label, ref set, setting.description);
+                                    optionsMenu.CheckboxLabeled(setting.LabelCap, ref set, setting.description);
                                     optionsMenu.Gap(5f);
                                     flexibleBools[setting.defName] = set;
                                     break;
                                 case 2: // Slider
                                     float slide = flexibleNums[setting.defName];
-                                    flexibleNums[setting.defName] = optionsMenu.SliderLabeled(setting.label, slide, setting.validRange.min, setting.validRange.max, 0.5f, setting.description);
+                                    flexibleNums[setting.defName] = optionsMenu.SliderLabeled(setting.LabelCap, slide, setting.validRange.min, setting.validRange.max, 0.5f, setting.description);
                                     break;
                                 case 3: // Slider (Int)
                                     int slideInt = (int)flexibleNums[setting.defName];
-                                    flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.label, slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
+                                    flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.LabelCap, slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
                                     break;
                                 case 4: // Dropdown
+                                    if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.25f))
+                                        Find.WindowStack.Add(new FloatMenu(flexDropDownOptions[setting]));
                                     break;
                                 case 5: // Numeric
+                                    float num = flexibleNums[setting.defName];
+                                    string buffer = "0";
+                                    optionsMenu.TextFieldNumericLabeled(setting.LabelCap, ref num, ref buffer, setting.validRange.min, setting.validRange.max);
+                                    flexibleNums[setting.defName] = num;
                                     break;
                             }
                         }

@@ -122,6 +122,7 @@
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentBody.cs" />
+    <Compile Include="Settings\PatchOperationFlexibleSetting.cs" />
     <Compile Include="Settings\SettingCategoryDef.cs" />
     <Compile Include="Settings\SettingDef.cs" />
     <Compile Include="Settings\SettingGroup.cs" />
