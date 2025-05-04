@@ -160,10 +160,14 @@ namespace EBSGFramework
                             {
                                 var options = new List<FloatMenuOption>();
                                 for (int l = 0; l < s.dropLabels.Count; l++)
+                                {
+                                    var n = l;
                                     options.Add(new FloatMenuOption(s.dropLabels[l], delegate ()
                                     {
-                                        flexibleNums[s.defName] = l;
+                                        flexibleNums[s.defName] = n;
                                     }));
+                                }
+
                                 if (!options.NullOrEmpty())
                                     flexDropDownOptions.Add(s, options);
 
@@ -588,7 +592,7 @@ namespace EBSGFramework
                                     flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.LabelCap, slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
                                     break;
                                 case 4: // Dropdown
-                                    if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.25f))
+                                    if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.5f))
                                         Find.WindowStack.Add(new FloatMenu(flexDropDownOptions[setting]));
                                     break;
                                 case 5: // Numeric
