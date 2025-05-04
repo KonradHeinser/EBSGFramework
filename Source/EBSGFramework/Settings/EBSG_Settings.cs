@@ -111,6 +111,7 @@ namespace EBSGFramework
             {
                 if (flexSettingOptions == null)
                 {
+                    flexSettingOptions = new List<FloatMenuOption>();
                     var categories = new List<SettingCategoryDef>(flexibleSettings.Keys);
                     categories.SortBy(arg => arg.label);
                     foreach (var i in categories)

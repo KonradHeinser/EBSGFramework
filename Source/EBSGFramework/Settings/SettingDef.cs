@@ -27,11 +27,11 @@ namespace EBSGFramework
 
     public enum SettingType
     {
-        None,
-        Toggle,
-        Slider,
-        SliderInt,
-        Dropdown,
-        Numeric
+        None = 0,
+        Toggle = 1,
+        Slider = 2,
+        SliderInt = 3,
+        Dropdown = 4,
+        Numeric = 5
     }
 }
