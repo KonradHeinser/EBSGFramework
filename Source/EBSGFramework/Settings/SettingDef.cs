@@ -31,7 +31,7 @@ namespace EBSGFramework
         Toggle,
         Slider,
         SliderInt,
-        DropDown,
+        Dropdown,
         Numeric
     }
 }

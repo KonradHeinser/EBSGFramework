@@ -48,7 +48,7 @@ namespace EBSGFramework
                 else
                     inactive?.Apply(xml);
             }
-            else if (setting.type == SettingType.DropDown)
+            else if (setting.type == SettingType.Dropdown)
             {
                 var num = (int)EBSG_Settings.GetNumSetting(setting);
                 if (num < 0)

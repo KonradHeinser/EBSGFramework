@@ -153,7 +153,7 @@ namespace EBSGFramework
                                 if (!flexibleNums.ContainsKey(s.defName))
                                     flexibleNums.Add(s.defName, s.defaultValue);
                             }
-                            if (s.type == SettingType.DropDown)
+                            if (s.type == SettingType.Dropdown)
                             {
                                 var options = new List<FloatMenuOption>();
                                 for (int l = 0; l < s.dropLabels.Count; l++)
