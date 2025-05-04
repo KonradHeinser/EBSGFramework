@@ -127,6 +127,8 @@ namespace EBSGFramework
         public static void BuildFlexibleSettings()
         {
             alreadyBuiltFlexSettings = true;
+            if (flexibleSettings.NullOrEmpty())
+                flexibleSettings = new Dictionary<SettingCategoryDef, List<SettingDef>>();
             if (flexibleBools.NullOrEmpty())
                 flexibleBools = new Dictionary<string, bool>();
             if (flexibleNums.NullOrEmpty())
