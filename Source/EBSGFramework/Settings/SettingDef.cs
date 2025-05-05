@@ -11,6 +11,7 @@ namespace EBSGFramework
         public int defaultValue;
         public bool defaultToggle;
         public FloatRange validRange;
+        public float positionInCategory = 0;
 
         public override IEnumerable<string> ConfigErrors()
         {

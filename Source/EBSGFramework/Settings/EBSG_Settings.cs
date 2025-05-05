@@ -143,7 +143,7 @@ namespace EBSGFramework
                     var settings = new List<SettingDef>(DefDatabase<SettingDef>.AllDefsListForReading.Where(arg => arg.category == i));
                     if (!settings.NullOrEmpty())
                     {
-                        flexibleSettings.Add(i, settings);
+                        flexibleSettings.Add(i, settings.OrderBy(arg => arg.positionInCategory).ToList());
                         foreach (SettingDef s in settings)
                         {
                             if (s.type == SettingType.Toggle)
