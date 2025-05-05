@@ -19,7 +19,8 @@ namespace EBSGFramework
         public enum FlexAction
         {
             Replace,
-            Factor,
+            Multiply,
+            Divide,
             Offset
         }
 
@@ -88,13 +89,15 @@ namespace EBSGFramework
                             case FlexAction.Replace:
                                 i.InnerText = num.ToString();
                                 break;
-                            case FlexAction.Factor:
+                            case FlexAction.Multiply:
                                 i.InnerText = (float.Parse(i.InnerText) * num).ToString();
+                                break;
+                            case FlexAction.Divide:
+                                i.InnerText = (float.Parse(i.InnerText) / num).ToString();
                                 break;
                             case FlexAction.Offset:
                                 i.InnerText = (float.Parse(i.InnerText) + num).ToString();
                                 break;
-
                         }
                     }
                     catch
