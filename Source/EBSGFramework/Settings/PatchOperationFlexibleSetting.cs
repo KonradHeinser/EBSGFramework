@@ -55,7 +55,7 @@ namespace EBSGFramework
             else if (range != FloatRange.Zero)
             {
 
-                if (range.ValidValue(EBSG_Settings.GetNumSetting(set)))
+                if (range.ValidValue(EBSG_Settings.GetNumSetting(set)) != invertRange)
                     active?.Apply(xml);
                 else
                     inactive?.Apply(xml);
