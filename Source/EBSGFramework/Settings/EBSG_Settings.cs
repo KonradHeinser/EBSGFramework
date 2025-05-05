@@ -609,13 +609,13 @@ namespace EBSGFramework
                                     break;
                                 case 5: // Numeric
                                     float num = flexibleNums[setting.defName];
-                                    string buffer = "0";
+                                    string buffer = num.ToString();
                                     optionsMenu.TextFieldNumericLabeled(setting.LabelCap, TextAnchor.UpperLeft, ref num, ref buffer, setting.validRange.min, setting.validRange.max, setting.description);
                                     flexibleNums[setting.defName] = num;
                                     break;
                                 case 6: // NumericInt
                                     int numInt = (int)flexibleNums[setting.defName];
-                                    string bufferInt = "0";
+                                    string bufferInt = numInt.ToString();
                                     optionsMenu.TextFieldNumericLabeled<int>(setting.LabelCap, TextAnchor.UpperLeft, ref numInt, ref bufferInt, setting.validRange.min, setting.validRange.max, setting.description);
                                     flexibleNums[setting.defName] = numInt;
                                     break;
