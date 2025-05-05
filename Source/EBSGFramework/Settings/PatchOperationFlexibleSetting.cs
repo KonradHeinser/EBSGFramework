@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public SettingDef set;
 
-        public FloatRange range = FloatRange.Zero;
+        public FloatRange range = new FloatRange(-9999);
 
         public bool invertRange;
 
@@ -52,7 +52,7 @@ namespace EBSGFramework
                 else
                     inactive?.Apply(xml);
             }
-            else if (range != FloatRange.Zero)
+            else if (range != new FloatRange(-9999))
             {
 
                 if (range.ValidValue(EBSG_Settings.GetNumSetting(set)) != invertRange)
