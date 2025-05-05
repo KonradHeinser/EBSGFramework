@@ -12,6 +12,10 @@ namespace EBSGFramework
 
         public FloatRange range = new FloatRange(-9999);
 
+        public float factor = 1f;
+
+        public float offset = 0f;
+
         public bool invertRange;
 
         public FlexAction action = FlexAction.Replace;
@@ -87,16 +91,16 @@ namespace EBSGFramework
                         switch (action)
                         {
                             case FlexAction.Replace:
-                                i.InnerText = num.ToString();
+                                i.InnerText = (num + offset * factor).ToString();
                                 break;
                             case FlexAction.Multiply:
-                                i.InnerText = (float.Parse(i.InnerText) * num).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) * (num + offset * factor)).ToString();
                                 break;
                             case FlexAction.Divide:
-                                i.InnerText = (float.Parse(i.InnerText) / num).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) / (num + offset * factor)).ToString();
                                 break;
                             case FlexAction.Offset:
-                                i.InnerText = (float.Parse(i.InnerText) + num).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) + (num + offset * factor )).ToString();
                                 break;
                         }
                     }
