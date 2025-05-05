@@ -567,7 +567,7 @@ namespace EBSGFramework
                 case 3: // Flexible Settings
                     if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), currentCategory?.label ?? "EBSG_ChooseCategory".Translate(), 0.25f))
                         Find.WindowStack.Add(new FloatMenu(FlexSettingOptions));
-                    optionsMenu.Gap(7f);
+                    optionsMenu.Gap(10f);
                     if (currentCategory != null)
                     {
                         if (optionsMenu.ButtonText("EBSG_Reset".Translate(), null, 0.25f))
@@ -581,6 +581,7 @@ namespace EBSGFramework
                                         flexibleNums[s.defName] = s.defaultValue;
                                         break;
                                 }
+                        optionsMenu.Gap(5f);
                         contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
                         foreach (var setting in flexibleSettings[currentCategory])
                         {
@@ -603,19 +604,21 @@ namespace EBSGFramework
                                     flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.LabelCap + $" ({slideInt})", slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
                                     break;
                                 case 4: // Dropdown
-                                    if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.5f))
+                                    if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.5f, TextAnchor.UpperLeft, null, setting.description))
                                         Find.WindowStack.Add(new FloatMenu(flexDropDownOptions[setting]));
                                     break;
                                 case 5: // Numeric
                                     float num = flexibleNums[setting.defName];
                                     string buffer = "0";
-                                    optionsMenu.TextFieldNumericLabeled(setting.LabelCap, ref num, ref buffer, setting.validRange.min, setting.validRange.max);
+                                    optionsMenu.Label(setting.LabelCap, -1, setting.description);
+                                    optionsMenu.TextFieldNumeric(ref num, ref buffer, setting.validRange.min, setting.validRange.max);
                                     flexibleNums[setting.defName] = num;
                                     break;
                                 case 6: // NumericInt
                                     float numInt = flexibleNums[setting.defName];
                                     string bufferInt = "0";
-                                    optionsMenu.TextFieldNumericLabeled(setting.LabelCap, ref numInt, ref bufferInt, (int)setting.validRange.min, (int)setting.validRange.max);
+                                    optionsMenu.Label(setting.LabelCap, -1, setting.description);
+                                    optionsMenu.TextFieldNumeric(ref numInt, ref bufferInt, (int)setting.validRange.min, (int)setting.validRange.max);
                                     flexibleNums[setting.defName] = Mathf.CeilToInt(numInt);
                                     break;
                             }
