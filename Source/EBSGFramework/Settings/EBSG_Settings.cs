@@ -610,16 +610,14 @@ namespace EBSGFramework
                                 case 5: // Numeric
                                     float num = flexibleNums[setting.defName];
                                     string buffer = "0";
-                                    optionsMenu.Label(setting.LabelCap, -1, setting.description);
-                                    optionsMenu.TextFieldNumeric(ref num, ref buffer, setting.validRange.min, setting.validRange.max);
+                                    optionsMenu.TextFieldNumericLabeled(setting.LabelCap, TextAnchor.UpperLeft, ref num, ref buffer, setting.validRange.min, setting.validRange.max, setting.description);
                                     flexibleNums[setting.defName] = num;
                                     break;
                                 case 6: // NumericInt
-                                    float numInt = flexibleNums[setting.defName];
+                                    int numInt = (int)flexibleNums[setting.defName];
                                     string bufferInt = "0";
-                                    optionsMenu.Label(setting.LabelCap, -1, setting.description);
-                                    optionsMenu.TextFieldNumeric(ref numInt, ref bufferInt, (int)setting.validRange.min, (int)setting.validRange.max);
-                                    flexibleNums[setting.defName] = Mathf.CeilToInt(numInt);
+                                    optionsMenu.TextFieldNumericLabeled<int>(setting.LabelCap, TextAnchor.UpperLeft, ref numInt, ref bufferInt, setting.validRange.min, setting.validRange.max, setting.description);
+                                    flexibleNums[setting.defName] = numInt;
                                     break;
                             }
                         }

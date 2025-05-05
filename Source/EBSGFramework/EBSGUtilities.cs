@@ -2051,6 +2051,29 @@ namespace EBSGFramework
             return affectedCells;
         }
 
+        public static void TextFieldNumericLabeled<T>(this Listing_Standard standard, string label, TextAnchor anchor, ref T val, ref string buffer, float min = 0f, float max = 1E+09f, string tooltip = null, float labelPct = 0.75f) where T : struct
+        {
+            Rect rect = standard.GetRect(Text.LineHeight);
+            if (!standard.BoundingRectCached.HasValue || rect.Overlaps(standard.BoundingRectCached.Value))
+            {
+                TextFieldNumericLabeled(rect, label, anchor, ref val, ref buffer, min, max, tooltip, labelPct);
+            }
+
+            standard.Gap(standard.verticalSpacing);
+        }
+
+        public static void TextFieldNumericLabeled<T>(Rect rect, string label, TextAnchor anchor, ref T val, ref string buffer, float min = 0f, float max = 1E+09f, string tooltip = null, float labelPct = 0.75f) where T : struct
+        {
+            Rect rect2 = rect.LeftPart(labelPct);
+            Rect rect3 = rect.RightPart(1 - labelPct);
+            Widgets.Label(rect2, label);
+            if (tooltip != null)
+            {
+                TooltipHandler.TipRegion(rect2, tooltip);
+            }
+            Text.Anchor = anchor;
+            Widgets.TextFieldNumeric(rect3, ref val, ref buffer, min, max);
+        }
 
         // Resurrect utility with bug fix
 
