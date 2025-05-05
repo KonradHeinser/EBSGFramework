@@ -570,6 +570,17 @@ namespace EBSGFramework
                     optionsMenu.Gap(7f);
                     if (currentCategory != null)
                     {
+                        if (optionsMenu.ButtonText("EBSG_Reset".Translate(), null, 0.25f))
+                            foreach (SettingDef s in flexibleSettings[currentCategory])
+                                switch (s.type)
+                                {
+                                    case SettingType.Toggle:
+                                        flexibleBools[s.defName] = s.defaultToggle;
+                                        break;
+                                    default:
+                                        flexibleNums[s.defName] = s.defaultValue;
+                                        break;
+                                }
                         contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
                         foreach (var setting in flexibleSettings[currentCategory])
                         {

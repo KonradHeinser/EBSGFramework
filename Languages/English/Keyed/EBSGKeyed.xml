@@ -154,7 +154,7 @@
     <EBSG_SettingMenuLabel_EBSGThinkTree>EBSG Think Tree</EBSG_SettingMenuLabel_EBSGThinkTree>
     <EBSG_SettingMenuLabel_EBSGThinkTreeDescription>These settings universally toggle whether certain AI things added to the EBSG tree by other mods will work. The main settings are disabled by default to avoid accidentally increasing performance costs with things that either don't actually have a use or are not desired by the player. Settings in this section usually don't require a restart.\n\nThe checkmarks next to the names are just to show and hide the sections, and do not influence anything in-game.</EBSG_SettingMenuLabel_EBSGThinkTreeDescription>
     <EBSG_SettingMenuLabel_FlexSettings>Others' Settings</EBSG_SettingMenuLabel_FlexSettings>
-
+    <EBSG_Reset>Reset</EBSG_Reset>
     <EBSG_CustomizableThings>Customizable Things</EBSG_CustomizableThings>
     <EBSG_CustomizableThingsDescription>This mod makes it easier for other mods to make certain things customizable for users. Whenever another mod requests the EBSG Framework make one of those fields customizable, it will appear here.</EBSG_CustomizableThingsDescription>
     <EBSG_CustomizableAsexualHediffs>    Customizable Asexual Hediffs</EBSG_CustomizableAsexualHediffs>
