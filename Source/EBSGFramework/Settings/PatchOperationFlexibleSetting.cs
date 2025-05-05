@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml;
-using RimWorld;
 using Verse;
 
 namespace EBSGFramework
 {
     public class PatchOperationFlexibleSetting : PatchOperationPathed
     {
-        public SettingDef setting;
+        public string setting;
+
+        public SettingDef set;
 
         public FloatRange range = FloatRange.Zero;
 
@@ -34,38 +31,56 @@ namespace EBSGFramework
 
         protected override bool ApplyWorker(XmlDocument xml)
         {
-            if (setting.type == SettingType.Toggle)
+
+            XmlNode node = xml.SelectSingleNode($"Defs/EBSGFramework.SettingDef[defName=\"{setting}\"]");
+            if (node == null)
             {
-                if (EBSG_Settings.GetBoolSetting(setting))
+                return false;
+            }
+
+            set = DirectXmlToObject.ObjectFromXml<SettingDef>(node, false);
+            if (set == null)
+            {
+                return false;
+            }
+
+            if (set.type == SettingType.Toggle)
+            {
+
+                if (EBSG_Settings.GetBoolSetting(set))
                     active?.Apply(xml);
                 else
                     inactive?.Apply(xml);
             }
             else if (range != FloatRange.Zero)
             {
-                if (range.ValidValue(EBSG_Settings.GetNumSetting(setting)))
+
+                if (range.ValidValue(EBSG_Settings.GetNumSetting(set)))
                     active?.Apply(xml);
                 else
                     inactive?.Apply(xml);
             }
-            else if (setting.type == SettingType.Dropdown)
+            else if (set.type == SettingType.Dropdown)
             {
-                var num = (int)EBSG_Settings.GetNumSetting(setting);
+                var num = (int)EBSG_Settings.GetNumSetting(set);
+
                 if (num < 0)
                     return false;
+
                 if (num < operations.Count && operations[num].GetType() != typeof(PatchOperation))
                     operations[num].Apply(xml);
-                else
-                    Log.Message(num);
             }
             else
             {
-                var num = EBSG_Settings.GetNumSetting(setting);
+                var num = EBSG_Settings.GetNumSetting(set);
                 var l = xml.SelectNodes(xpath);
+
                 if (l.Count == 0)
                     return false;
+
                 foreach (XmlNode i in l)
                 {
+
                     try
                     {
                         switch (action)
@@ -88,7 +103,6 @@ namespace EBSGFramework
                         return false;
                     }
                 }
-                
             }
 
             return true;
