@@ -33,6 +33,7 @@ namespace EBSGFramework
         Slider = 2,
         SliderInt = 3,
         Dropdown = 4,
-        Numeric = 5
+        Numeric = 5,
+        NumbericInt = 6
     }
 }

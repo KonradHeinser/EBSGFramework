@@ -585,11 +585,11 @@ namespace EBSGFramework
                                     break;
                                 case 2: // Slider
                                     float slide = flexibleNums[setting.defName];
-                                    flexibleNums[setting.defName] = optionsMenu.SliderLabeled(setting.LabelCap, slide, setting.validRange.min, setting.validRange.max, 0.5f, setting.description);
+                                    flexibleNums[setting.defName] = optionsMenu.SliderLabeled(setting.LabelCap + $" ({slide})", slide, setting.validRange.min, setting.validRange.max, 0.5f, setting.description);
                                     break;
                                 case 3: // Slider (Int)
                                     int slideInt = (int)flexibleNums[setting.defName];
-                                    flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.LabelCap, slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
+                                    flexibleNums[setting.defName] = Mathf.CeilToInt(optionsMenu.SliderLabeled(setting.LabelCap + $" ({slideInt})", slideInt, (int)setting.validRange.min, (int)setting.validRange.max, 0.5f, setting.description));
                                     break;
                                 case 4: // Dropdown
                                     if (optionsMenu.ButtonTextLabeledPct(setting.LabelCap, setting.dropLabels[(int)flexibleNums[setting.defName]], 0.5f))
@@ -600,6 +600,12 @@ namespace EBSGFramework
                                     string buffer = "0";
                                     optionsMenu.TextFieldNumericLabeled(setting.LabelCap, ref num, ref buffer, setting.validRange.min, setting.validRange.max);
                                     flexibleNums[setting.defName] = num;
+                                    break;
+                                case 6: // NumericInt
+                                    float numInt = flexibleNums[setting.defName];
+                                    string bufferInt = "0";
+                                    optionsMenu.TextFieldNumericLabeled(setting.LabelCap, ref numInt, ref bufferInt, (int)setting.validRange.min, (int)setting.validRange.max);
+                                    flexibleNums[setting.defName] = Mathf.CeilToInt(numInt);
                                     break;
                             }
                         }
