@@ -941,6 +941,8 @@ namespace EBSGFramework
         public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies)
         {
             dependencies = new List<Hediff_Dependency>();
+            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false)
+                return false;
 
             foreach (Gene gene in pawn.genes.GenesListForReading)
                 if (gene is Gene_Dependency d && d.LinkedHediff?.ShouldSatisfy == true)

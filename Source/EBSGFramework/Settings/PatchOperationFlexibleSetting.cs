@@ -85,7 +85,6 @@ namespace EBSGFramework
 
                 foreach (XmlNode i in l)
                 {
-
                     try
                     {
                         switch (action)
