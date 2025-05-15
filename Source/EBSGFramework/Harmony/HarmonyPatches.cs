@@ -1890,7 +1890,6 @@ namespace EBSGFramework
                             needLevel = coma.ComaNeed.CurLevel;
                         }
 
-
                     if (!pawn.CanReach(bed, PathEndMode.OnCell, Danger.Deadly))
                     {
                         opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "NoPath".Translate().CapitalizeFirst(), null));

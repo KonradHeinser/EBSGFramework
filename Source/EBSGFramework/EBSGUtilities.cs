@@ -702,6 +702,37 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
+        public static List<Hediff> GetHediffFromParts(this Pawn pawn, HediffDef hediff, List<BodyPartDef> bodyParts)
+        {
+            if (pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false)
+            {
+                List<Hediff> hediffs = new List<Hediff>();
+                Dictionary<BodyPartDef, int> partCounts = new Dictionary<BodyPartDef, int>();
+                foreach (Hediff h in pawn.health.hediffSet.hediffs)
+                {
+                    if (!bodyParts.NullOrEmpty())
+                    {
+                        if (h.Part == null)
+                            continue;
+                        if (!bodyParts.Contains(h.Part.def))
+                            continue;
+                        if (partCounts.ContainsKey(h.Part.def) && 
+                            partCounts[h.Part.def] == bodyParts.Where(arg => arg == h.Part.def).Count())
+                            continue;
+                    }
+                    hediffs.Add(h);
+                    if (partCounts.ContainsKey(h.Part.def))
+                        partCounts[h.Part.def]++;
+                    else 
+                        partCounts[h.Part.def] = 1;
+                }
+
+                return hediffs;
+            }
+
+            return null;
+        }
+
         public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
         {
             bool checkCaster = caster != null && (!psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0);
@@ -709,23 +740,66 @@ namespace EBSGFramework
 
             foreach (HediffToGive hediff in hediffs)
             {
+                List<BodyPartDef> partChecks = new List<BodyPartDef>();
+                if (!hediff.bodyParts.NullOrEmpty())
+                    partChecks = new List<BodyPartDef>(hediff.bodyParts);
+                else if (hediff.onlyBrain)
+                    partChecks.Add(caster.health.hediffSet.GetBrain().def);
+
                 if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && 
                     (!hediff.psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
-                    Hediff firstHediffOfDef = caster.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
-                    if (hediff.replaceExisting)
+                    var bodyParts = new List<BodyPartDef>(partChecks);
+                    List<Hediff> foundHediffs = caster.GetHediffFromParts(hediff.hediffDef, bodyParts);
+                    for (int i = 0; i < foundHediffs.Count; i++)
                     {
-                        if (firstHediffOfDef != null)
-                            caster.health.RemoveHediff(firstHediffOfDef);
-                    }
-                    else
-                    {
-                        if (firstHediffOfDef != null)
-                            firstHediffOfDef.Severity += hediff.severity;
+                        if (hediff.replaceExisting)
+                            target.health.RemoveHediff(foundHediffs[i]);
                         else
                         {
-                            List<Hediff> newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hediff.hediffDef, hediff.severity, target, 
-                                hediff.bodyParts, hediff.replaceExisting));
+                            foundHediffs[i].Severity += hediff.severity;
+                            if (!bodyParts.NullOrEmpty())
+                                bodyParts.Remove(foundHediffs[i].Part.def);
+                        }
+                    }
+
+                    if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
+                        continue;
+
+                    List<Hediff> newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hediff.hediffDef, 
+                        hediff.severity, target, bodyParts, hediff.replaceExisting));
+
+                    if (!newHediffs.NullOrEmpty() && durationCaster != -1)
+                        foreach (Hediff h in newHediffs)
+                        {
+                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                            if (hediffComp_Disappears != null)
+                                hediffComp_Disappears.ticksToDisappear = durationCaster;
+                            caster.health.AddHediff(h);
+                        }
+
+                    if (!hediff.hediffDefs.NullOrEmpty())
+                        foreach (HediffDef hd in hediff.hediffDefs)
+                        {
+                            bodyParts = new List<BodyPartDef>(partChecks);
+                            foundHediffs = caster.GetHediffFromParts(hd, bodyParts);
+                            for (int i = 0; i < foundHediffs.Count; i++)
+                            {
+                                if (hediff.replaceExisting)
+                                    target.health.RemoveHediff(foundHediffs[i]);
+                                else
+                                {
+                                    foundHediffs[i].Severity += hediff.severity;
+                                    if (!bodyParts.NullOrEmpty())
+                                        bodyParts.Remove(foundHediffs[i].Part.def);
+                                }
+                            }
+
+                            if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
+                                continue;
+
+                            newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hd, 
+                                hediff.severity, target, bodyParts, hediff.replaceExisting));
 
                             if (!newHediffs.NullOrEmpty() && durationCaster != -1)
                                 foreach (Hediff h in newHediffs)
@@ -735,42 +809,62 @@ namespace EBSGFramework
                                         hediffComp_Disappears.ticksToDisappear = durationCaster;
                                     caster.health.AddHediff(h);
                                 }
-
-                            if (!hediff.hediffDefs.NullOrEmpty())
-                                foreach (HediffDef hd in hediff.hediffDefs)
-                                {
-                                    newHediffs = new List<Hediff>(caster.CreateHediffOnParts(hd, hediff.severity, target,
-                                        hediff.bodyParts, hediff.replaceExisting));
-
-                                    if (!newHediffs.NullOrEmpty() && durationCaster != -1)
-                                        foreach (Hediff h in newHediffs)
-                                        {
-                                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
-                                            if (hediffComp_Disappears != null)
-                                                hediffComp_Disappears.ticksToDisappear = durationCaster;
-                                            caster.health.AddHediff(h);
-                                        }
-                                }
                         }
-                    }
                 }
                 if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf &&
                     (!hediff.psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
-                    Hediff firstHediffOfDef = target.health.hediffSet.GetFirstHediffOfDef(hediff.hediffDef);
-                    if (hediff.replaceExisting)
+                    var bodyParts = new List<BodyPartDef>(partChecks);
+                    List<Hediff> foundHediffs = target.GetHediffFromParts(hediff.hediffDef, bodyParts);
+                    for (int i = 0; i < foundHediffs.Count; i++)
                     {
-                        if (firstHediffOfDef != null)
-                            target.health.RemoveHediff(firstHediffOfDef);
-                    }
-                    else
-                    {
-                        if (firstHediffOfDef != null)
-                            firstHediffOfDef.Severity += hediff.severity;
+                        if (hediff.replaceExisting)
+                            target.health.RemoveHediff(foundHediffs[i]);
                         else
                         {
-                            List<Hediff> newHediffs = new List<Hediff>(target.CreateHediffOnParts(hediff.hediffDef, hediff.severity, caster,
-                                hediff.bodyParts, hediff.replaceExisting));
+                            foundHediffs[i].Severity += hediff.severity;
+                            if (!bodyParts.NullOrEmpty())
+                                bodyParts.Remove(foundHediffs[i].Part.def);
+                        }
+                    }
+
+                    if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
+                        continue;
+
+                    List<Hediff> newHediffs = new List<Hediff>(target.CreateHediffOnParts(hediff.hediffDef, 
+                        hediff.severity, caster, bodyParts, hediff.replaceExisting));
+
+                    if (!newHediffs.NullOrEmpty() && durationTarget != -1)
+                        foreach (Hediff h in newHediffs)
+                        {
+                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
+                            if (hediffComp_Disappears != null)
+                                hediffComp_Disappears.ticksToDisappear = durationTarget;
+                            target.health.AddHediff(h);
+                        }
+
+                    if (!hediff.hediffDefs.NullOrEmpty())
+                        foreach (HediffDef hd in hediff.hediffDefs)
+                        {
+                            bodyParts = new List<BodyPartDef>(partChecks);
+                            foundHediffs = target.GetHediffFromParts(hd, bodyParts);
+                            for (int i = 0; i < foundHediffs.Count; i++)
+                            { 
+                                if (hediff.replaceExisting)
+                                    target.health.RemoveHediff(foundHediffs[i]);
+                                else
+                                {
+                                    foundHediffs[i].Severity += hediff.severity;
+                                    if (!bodyParts.NullOrEmpty())
+                                        bodyParts.Remove(foundHediffs[i].Part.def);
+                                }
+                            }
+
+                            if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
+                                continue;
+
+                            newHediffs = new List<Hediff>(target.CreateHediffOnParts(hd, 
+                                hediff.severity, caster, bodyParts, hediff.replaceExisting));
 
                             if (!newHediffs.NullOrEmpty() && durationTarget != -1)
                                 foreach (Hediff h in newHediffs)
@@ -780,24 +874,7 @@ namespace EBSGFramework
                                         hediffComp_Disappears.ticksToDisappear = durationTarget;
                                     target.health.AddHediff(h);
                                 }
-
-                            if (!hediff.hediffDefs.NullOrEmpty())
-                                foreach (HediffDef hd in hediff.hediffDefs)
-                                {
-                                    newHediffs = new List<Hediff>(target.CreateHediffOnParts(hd, hediff.severity, caster,
-                                        hediff.bodyParts, hediff.replaceExisting));
-
-                                    if (!newHediffs.NullOrEmpty() && durationTarget != -1)
-                                        foreach (Hediff h in newHediffs)
-                                        {
-                                            HediffComp_Disappears hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
-                                            if (hediffComp_Disappears != null)
-                                                hediffComp_Disappears.ticksToDisappear = durationTarget;
-                                            target.health.AddHediff(h);
-                                        }
-                                }
                         }
-                    }
                 }
             }
         }
