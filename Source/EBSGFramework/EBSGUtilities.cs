@@ -704,12 +704,16 @@ namespace EBSGFramework
 
         public static List<Hediff> GetHediffFromParts(this Pawn pawn, HediffDef hediff, List<BodyPartDef> bodyParts)
         {
+            List<Hediff> hediffs = new List<Hediff>();
             if (pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false)
             {
-                List<Hediff> hediffs = new List<Hediff>();
+                
                 Dictionary<BodyPartDef, int> partCounts = new Dictionary<BodyPartDef, int>();
                 foreach (Hediff h in pawn.health.hediffSet.hediffs)
                 {
+                    if (hediff != h.def)
+                        continue;
+
                     if (!bodyParts.NullOrEmpty())
                     {
                         if (h.Part == null)
@@ -726,11 +730,9 @@ namespace EBSGFramework
                     else 
                         partCounts[h.Part.def] = 1;
                 }
-
-                return hediffs;
             }
 
-            return null;
+            return hediffs;
         }
 
         public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
@@ -752,18 +754,17 @@ namespace EBSGFramework
                     var bodyParts = new List<BodyPartDef>(partChecks);
                     List<Hediff> foundHediffs = caster.GetHediffFromParts(hediff.hediffDef, bodyParts);
 
-                    if (!foundHediffs.NullOrEmpty())
-                        for (int i = 0; i < foundHediffs.Count; i++)
+                    for (int i = 0; i < foundHediffs.Count; i++)
+                    {
+                        if (hediff.replaceExisting)
+                            target.health.RemoveHediff(foundHediffs[i]);
+                        else
                         {
-                            if (hediff.replaceExisting)
-                                target.health.RemoveHediff(foundHediffs[i]);
-                            else
-                            {
-                                foundHediffs[i].Severity += hediff.severity;
-                                if (!bodyParts.NullOrEmpty())
-                                    bodyParts.Remove(foundHediffs[i].Part.def);
-                            }
+                            foundHediffs[i].Severity += hediff.severity;
+                            if (!bodyParts.NullOrEmpty())
+                                bodyParts.Remove(foundHediffs[i].Part.def);
                         }
+                    }
 
                     if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                         continue;
@@ -785,18 +786,17 @@ namespace EBSGFramework
                         {
                             bodyParts = new List<BodyPartDef>(partChecks);
                             foundHediffs = caster.GetHediffFromParts(hd, bodyParts);
-                            if (!foundHediffs.NullOrEmpty())
-                                for (int i = 0; i < foundHediffs.Count; i++)
+                            for (int i = 0; i < foundHediffs.Count; i++)
+                            {
+                                if (hediff.replaceExisting)
+                                    target.health.RemoveHediff(foundHediffs[i]);
+                                else
                                 {
-                                    if (hediff.replaceExisting)
-                                        target.health.RemoveHediff(foundHediffs[i]);
-                                    else
-                                    {
-                                        foundHediffs[i].Severity += hediff.severity;
-                                        if (!bodyParts.NullOrEmpty())
-                                            bodyParts.Remove(foundHediffs[i].Part.def);
-                                    }
+                                    foundHediffs[i].Severity += hediff.severity;
+                                    if (!bodyParts.NullOrEmpty())
+                                        bodyParts.Remove(foundHediffs[i].Part.def);
                                 }
+                            }
 
                             if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                                 continue;
@@ -819,18 +819,18 @@ namespace EBSGFramework
                 {
                     var bodyParts = new List<BodyPartDef>(partChecks);
                     List<Hediff> foundHediffs = target.GetHediffFromParts(hediff.hediffDef, bodyParts);
-                    if (!foundHediffs.NullOrEmpty())
-                        for (int i = 0; i < foundHediffs.Count; i++)
+
+                    for (int i = 0; i < foundHediffs.Count; i++)
+                    {
+                        if (hediff.replaceExisting)
+                            target.health.RemoveHediff(foundHediffs[i]);
+                        else
                         {
-                            if (hediff.replaceExisting)
-                                target.health.RemoveHediff(foundHediffs[i]);
-                            else
-                            {
-                                foundHediffs[i].Severity += hediff.severity;
-                                if (!bodyParts.NullOrEmpty())
-                                    bodyParts.Remove(foundHediffs[i].Part.def);
-                            }
+                            foundHediffs[i].Severity += hediff.severity;
+                            if (!bodyParts.NullOrEmpty())
+                                bodyParts.Remove(foundHediffs[i].Part.def);
                         }
+                    }
 
                     if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                         continue;
@@ -853,18 +853,17 @@ namespace EBSGFramework
                             bodyParts = new List<BodyPartDef>(partChecks);
                             foundHediffs = target.GetHediffFromParts(hd, bodyParts);
 
-                            if (!foundHediffs.NullOrEmpty())
-                                for (int i = 0; i < foundHediffs.Count; i++)
-                                { 
-                                    if (hediff.replaceExisting)
-                                        target.health.RemoveHediff(foundHediffs[i]);
-                                    else
-                                    {
-                                        foundHediffs[i].Severity += hediff.severity;
-                                        if (!bodyParts.NullOrEmpty())
-                                            bodyParts.Remove(foundHediffs[i].Part.def);
-                                    }
+                            for (int i = 0; i < foundHediffs.Count; i++)
+                            { 
+                                if (hediff.replaceExisting)
+                                    target.health.RemoveHediff(foundHediffs[i]);
+                                else
+                                {
+                                    foundHediffs[i].Severity += hediff.severity;
+                                    if (!bodyParts.NullOrEmpty())
+                                        bodyParts.Remove(foundHediffs[i].Part.def);
                                 }
+                            }
 
                             if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                                 continue;
