@@ -751,17 +751,19 @@ namespace EBSGFramework
                 {
                     var bodyParts = new List<BodyPartDef>(partChecks);
                     List<Hediff> foundHediffs = caster.GetHediffFromParts(hediff.hediffDef, bodyParts);
-                    for (int i = 0; i < foundHediffs.Count; i++)
-                    {
-                        if (hediff.replaceExisting)
-                            target.health.RemoveHediff(foundHediffs[i]);
-                        else
+
+                    if (!foundHediffs.NullOrEmpty())
+                        for (int i = 0; i < foundHediffs.Count; i++)
                         {
-                            foundHediffs[i].Severity += hediff.severity;
-                            if (!bodyParts.NullOrEmpty())
-                                bodyParts.Remove(foundHediffs[i].Part.def);
+                            if (hediff.replaceExisting)
+                                target.health.RemoveHediff(foundHediffs[i]);
+                            else
+                            {
+                                foundHediffs[i].Severity += hediff.severity;
+                                if (!bodyParts.NullOrEmpty())
+                                    bodyParts.Remove(foundHediffs[i].Part.def);
+                            }
                         }
-                    }
 
                     if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                         continue;
@@ -783,17 +785,18 @@ namespace EBSGFramework
                         {
                             bodyParts = new List<BodyPartDef>(partChecks);
                             foundHediffs = caster.GetHediffFromParts(hd, bodyParts);
-                            for (int i = 0; i < foundHediffs.Count; i++)
-                            {
-                                if (hediff.replaceExisting)
-                                    target.health.RemoveHediff(foundHediffs[i]);
-                                else
+                            if (!foundHediffs.NullOrEmpty())
+                                for (int i = 0; i < foundHediffs.Count; i++)
                                 {
-                                    foundHediffs[i].Severity += hediff.severity;
-                                    if (!bodyParts.NullOrEmpty())
-                                        bodyParts.Remove(foundHediffs[i].Part.def);
+                                    if (hediff.replaceExisting)
+                                        target.health.RemoveHediff(foundHediffs[i]);
+                                    else
+                                    {
+                                        foundHediffs[i].Severity += hediff.severity;
+                                        if (!bodyParts.NullOrEmpty())
+                                            bodyParts.Remove(foundHediffs[i].Part.def);
+                                    }
                                 }
-                            }
 
                             if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                                 continue;
@@ -816,17 +819,18 @@ namespace EBSGFramework
                 {
                     var bodyParts = new List<BodyPartDef>(partChecks);
                     List<Hediff> foundHediffs = target.GetHediffFromParts(hediff.hediffDef, bodyParts);
-                    for (int i = 0; i < foundHediffs.Count; i++)
-                    {
-                        if (hediff.replaceExisting)
-                            target.health.RemoveHediff(foundHediffs[i]);
-                        else
+                    if (!foundHediffs.NullOrEmpty())
+                        for (int i = 0; i < foundHediffs.Count; i++)
                         {
-                            foundHediffs[i].Severity += hediff.severity;
-                            if (!bodyParts.NullOrEmpty())
-                                bodyParts.Remove(foundHediffs[i].Part.def);
+                            if (hediff.replaceExisting)
+                                target.health.RemoveHediff(foundHediffs[i]);
+                            else
+                            {
+                                foundHediffs[i].Severity += hediff.severity;
+                                if (!bodyParts.NullOrEmpty())
+                                    bodyParts.Remove(foundHediffs[i].Part.def);
+                            }
                         }
-                    }
 
                     if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                         continue;
@@ -848,17 +852,19 @@ namespace EBSGFramework
                         {
                             bodyParts = new List<BodyPartDef>(partChecks);
                             foundHediffs = target.GetHediffFromParts(hd, bodyParts);
-                            for (int i = 0; i < foundHediffs.Count; i++)
-                            { 
-                                if (hediff.replaceExisting)
-                                    target.health.RemoveHediff(foundHediffs[i]);
-                                else
-                                {
-                                    foundHediffs[i].Severity += hediff.severity;
-                                    if (!bodyParts.NullOrEmpty())
-                                        bodyParts.Remove(foundHediffs[i].Part.def);
+
+                            if (!foundHediffs.NullOrEmpty())
+                                for (int i = 0; i < foundHediffs.Count; i++)
+                                { 
+                                    if (hediff.replaceExisting)
+                                        target.health.RemoveHediff(foundHediffs[i]);
+                                    else
+                                    {
+                                        foundHediffs[i].Severity += hediff.severity;
+                                        if (!bodyParts.NullOrEmpty())
+                                            bodyParts.Remove(foundHediffs[i].Part.def);
+                                    }
                                 }
-                            }
 
                             if (!partChecks.NullOrEmpty() && bodyParts.NullOrEmpty())
                                 continue;
