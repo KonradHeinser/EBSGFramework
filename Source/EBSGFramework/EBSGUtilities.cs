@@ -1233,6 +1233,21 @@ namespace EBSGFramework
             return !matches.NullOrEmpty();
         }
 
+        public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out Hediff match, BodyPartRecord bodyPart = null)
+        {
+            match = null;
+            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
+            foreach (HediffDef hediff in hediffs)
+                if (bodyPart != null)
+                {
+                    if (HasHediff(pawn, hediff, bodyPart, out match))
+                        return true;
+                }
+                else if (HasHediff(pawn, hediff, out match))
+                    return true;
+            return false;
+        }
+
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
         {
             matches = new List<Hediff>();

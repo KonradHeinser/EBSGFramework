@@ -2,6 +2,7 @@
 using RimWorld;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EBSGFramework
 {
@@ -68,6 +69,7 @@ namespace EBSGFramework
         public List<HediffDef> explosiveAttackHediffs = new List<HediffDef>();
         public List<HediffDef> skillChangeHediffs = new List<HediffDef>();
         public List<HediffDef> shieldHediffs = new List<HediffDef>();
+        public List<HediffDef> nameColorHediffs = new List<HediffDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -149,6 +151,28 @@ namespace EBSGFramework
         public bool NeedEquipRestrictGeneCheck()
         {
             return !(noEquipment.NullOrEmpty() && noWeapon.NullOrEmpty() && noApparel.NullOrEmpty() && equipRestricting.NullOrEmpty());
+        }
+
+        // Name Color Caching
+
+        private Dictionary<Pawn, Color> pawnNameColors = new Dictionary<Pawn, Color>();
+        public Color? GetPawnNameColor(Pawn pawn)
+        {
+            Color? result = null;
+
+            if (!nameColorHediffs.NullOrEmpty())
+            {
+                if ((pawn.IsHashIntervalTick(250) || !pawnNameColors.ContainsKey(pawn)) &&
+                    pawn.PawnHasAnyOfHediffs(nameColorHediffs, out Hediff match))
+                {
+                    pawnNameColors[pawn] = match.TryGetComp<HediffComp_NameColor>().Props.color;
+                } 
+
+                if (pawnNameColors.ContainsKey(pawn))
+                    result = pawnNameColors[pawn];
+            }
+            
+            return result;
         }
 
         // Gene result caching
@@ -288,6 +312,7 @@ namespace EBSGFramework
         public void RebuildCaches()
         {
             cachedHemogenicPawns = new List<Pawn>();
+            pawnNameColors = new Dictionary<Pawn, Color>();
 
             foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
                 CachePawnWithGene(pawn);
@@ -478,6 +503,7 @@ namespace EBSGFramework
             explosiveAttackHediffs = new List<HediffDef>();
             skillChangeHediffs = new List<HediffDef>();
             shieldHediffs = new List<HediffDef>();
+            nameColorHediffs = new List<HediffDef>();
 
             foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
             {
@@ -498,6 +524,11 @@ namespace EBSGFramework
                     if (comp is HediffCompProperties_Shield)
                     {
                         shieldHediffs.Add(hediff);
+                        continue;
+                    }
+                    if (comp is HediffCompProperties_NameColor)
+                    {
+                        nameColorHediffs.Add(hediff);
                         continue;
                     }
                 }

@@ -82,8 +82,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(PawnNameColorUtility), "PawnNameColorOf"),
+                postfix: new HarmonyMethod(patchType, nameof(PawnNameColorOfPostfix)));
 
-            
+
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
@@ -1069,7 +1071,7 @@ namespace EBSGFramework
                 foreach (Gene gene in ___pawn.genes.GenesListForReading)
                     if (gene is Gene_SkillChanging skillGene && skillGene.changedSkills?.Contains(___def) == true)
                         __result += skillGene.changedAmounts[skillGene.changedSkills.IndexOf(___def)];
-            if (Cache?.skillChangeHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.skillChangeHediffs, out var matches))
+            if (Cache?.skillChangeHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.skillChangeHediffs, out List<Hediff> matches))
                 foreach (Hediff hediff in matches)
                 {
                     HediffComp_TemporarySkillChange skillChange = hediff.TryGetComp<HediffComp_TemporarySkillChange>();
@@ -1742,7 +1744,7 @@ namespace EBSGFramework
 
         public static void RenderPawnAtPostfix(Vector3 drawLoc, Pawn ___pawn)
         {
-            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                     if (shield.TryGetComp<HediffComp_Shield>()?.Draw(drawLoc) == true)
                         break; // Only draws the first one it finds to avoid clutter
@@ -1751,7 +1753,7 @@ namespace EBSGFramework
         public static void PreApplyDamagePostfix(ref DamageInfo dinfo, ref bool absorbed, Thing __instance)
         {
             if (!absorbed && Cache?.shieldHediffs.NullOrEmpty() == false &&
-                __instance is Pawn pawn && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+                __instance is Pawn pawn && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                 {
                     HediffComp_Shield s = shield.TryGetComp<HediffComp_Shield>();
@@ -1772,7 +1774,7 @@ namespace EBSGFramework
             }
 
             if (Cache?.shieldHediffs.NullOrEmpty() == false && ___caster is Pawn pawn &&
-                pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shields))
+                pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                     if (shield.TryGetComp<HediffComp_Shield>()?.CompAllowVerbCast(__instance) == false)
                     {
@@ -1797,7 +1799,7 @@ namespace EBSGFramework
                                 shield.ResetDisplayCooldown();
                             }
                     }
-                    if (!Cache.shieldHediffs.NullOrEmpty() && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out var shieldHediffs))
+                    if (!Cache.shieldHediffs.NullOrEmpty() && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shieldHediffs))
                         foreach (Hediff hediff in shieldHediffs)
                         {
                             HediffComp_Shield shield = hediff.TryGetComp<HediffComp_Shield>();
@@ -1848,6 +1850,14 @@ namespace EBSGFramework
                 interrupt?.Interrupted(___focusTarg.Pawn);
             }
         }
+
+        public static void PawnNameColorOfPostfix(ref Color __result, Pawn pawn)
+        {
+            Color? newColor = Cache?.GetPawnNameColor(pawn);
+            if (newColor != null)
+                __result = (Color)newColor;
+        }
+
         public static void ProjectileImpactPostfix(Projectile __instance)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
