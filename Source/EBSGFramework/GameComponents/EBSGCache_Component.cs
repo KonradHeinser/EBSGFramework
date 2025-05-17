@@ -155,7 +155,8 @@ namespace EBSGFramework
 
         // Name Color Caching
 
-        private Dictionary<Pawn, Color> pawnNameColors = new Dictionary<Pawn, Color>();
+        public Dictionary<Pawn, Color> pawnNameColors = new Dictionary<Pawn, Color>();
+
         public Color? GetPawnNameColor(Pawn pawn)
         {
             Color? result = null;
