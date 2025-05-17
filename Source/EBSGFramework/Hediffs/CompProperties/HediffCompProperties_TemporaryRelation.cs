@@ -5,9 +5,9 @@ namespace EBSGFramework
 {
     public class HediffCompProperties_TemporaryRelation : HediffCompProperties
     {
-        public PawnRelationDef ownRelation;
+        public PawnRelationDef ownRelation; // This pawn views the other pawn
 
-        public PawnRelationDef otherRelation;
+        public PawnRelationDef otherRelation; // How the other pawn views this pawn
 
         public HediffCompProperties_TemporaryRelation()
         {
