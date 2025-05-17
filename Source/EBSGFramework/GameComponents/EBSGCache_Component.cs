@@ -162,10 +162,12 @@ namespace EBSGFramework
 
             if (!nameColorHediffs.NullOrEmpty())
             {
-                if ((pawn.IsHashIntervalTick(250) || !pawnNameColors.ContainsKey(pawn)) &&
-                    pawn.PawnHasAnyOfHediffs(nameColorHediffs, out Hediff match))
+                if ((pawn.IsHashIntervalTick(250) || !pawnNameColors.ContainsKey(pawn)))
                 {
-                    pawnNameColors[pawn] = match.TryGetComp<HediffComp_NameColor>().Props.color;
+                    if (pawn.PawnHasAnyOfHediffs(nameColorHediffs, out Hediff match))
+                        pawnNameColors[pawn] = match.TryGetComp<HediffComp_NameColor>().Props.color;
+                    else
+                        pawnNameColors.Remove(pawn);
                 } 
 
                 if (pawnNameColors.ContainsKey(pawn))
