@@ -60,7 +60,7 @@ namespace EBSGFramework
                 var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
                 for (int i = otherHediffs.Count; i > 0; i--)
                 {
-                    if (otherHediffs[i] == parent)
+                    if (otherHediffs[i - 1] == parent)
                         continue;
 
                     HediffComp_TemporaryFaction tempComp = otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>();
