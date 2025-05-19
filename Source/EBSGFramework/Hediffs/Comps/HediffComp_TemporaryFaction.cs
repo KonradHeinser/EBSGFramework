@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         private Faction oldFaction = null;
 
+        private PawnKindDef oldKindDef = null;
+
         private HediffWithTarget ParentWithTarget => parent as HediffWithTarget;
 
         private Pawn ParentTarget => ParentWithTarget?.target as Pawn;
@@ -18,17 +20,24 @@ namespace EBSGFramework
             base.CompPostPostAdd(dinfo);
 
             oldFaction = Pawn.Faction;
-            Log.Message(Pawn.kindDef?.label);
+            oldKindDef = Pawn.kindDef;
+
             if (Props.useStatic)
-                Pawn.SetFaction(Find.FactionManager.FirstFactionOfDef(Props.staticFaction));
+            {
+                Faction newFaction = Find.FactionManager.FirstFactionOfDef(Props.staticFaction);
+                if (newFaction != Pawn.Faction)
+                    Pawn.SetFaction(newFaction);
+            }
             else if (ParentTarget != null)
-                Pawn.SetFaction(ParentTarget.Faction, ParentTarget);
+            {
+                if (ParentTarget.Faction != Pawn.Faction)
+                    Pawn.SetFaction(ParentTarget.Faction, ParentTarget);
+            }
             else
             {
                 Log.Error($"{Def} doesn't use static factions, but also doesn't appear to be a HediffWithTarget. No faction can be set, and this hediff will be removed to avoid more errors.");
                 Pawn.health.RemoveHediff(parent);
             }
-            Log.Message(Pawn.kindDef?.label);
         }
 
         public override void CompPostTick(ref float severityAdjustment)
@@ -42,16 +51,16 @@ namespace EBSGFramework
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
-            Log.Message(Pawn.kindDef?.label);
             if (Props.temporary && Pawn.Faction != oldFaction)
                 Pawn.SetFaction(oldFaction);
-            Log.Message(Pawn.kindDef?.label);
+            Pawn.ChangeKind(oldKindDef);
         }
 
         public override void CompExposeData()
         {
             base.CompExposeData();
             Scribe_References.Look(ref oldFaction, "oldFaction");
+            Scribe_Defs.Look(ref oldKindDef, "oldKindDef");
         }
     }
 }
