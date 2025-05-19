@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -14,41 +9,43 @@ namespace EBSGFramework
 
         private Faction oldFaction = null;
 
-        private HediffWithTarget parentWithTarget => parent as HediffWithTarget;
+        private HediffWithTarget ParentWithTarget => parent as HediffWithTarget;
 
-        private Pawn parentTarget => parentWithTarget?.target as Pawn;
+        private Pawn ParentTarget => ParentWithTarget?.target as Pawn;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
 
             oldFaction = Pawn.Faction;
-
+            Log.Message(Pawn.kindDef?.label);
             if (Props.useStatic)
                 Pawn.SetFaction(Find.FactionManager.FirstFactionOfDef(Props.staticFaction));
-            else if (parentTarget != null)
-                Pawn.SetFaction(parentTarget.Faction, parentTarget);
+            else if (ParentTarget != null)
+                Pawn.SetFaction(ParentTarget.Faction, ParentTarget);
             else
             {
                 Log.Error($"{Def} doesn't use static factions, but also doesn't appear to be a HediffWithTarget. No faction can be set, and this hediff will be removed to avoid more errors.");
                 Pawn.health.RemoveHediff(parent);
             }
+            Log.Message(Pawn.kindDef?.label);
         }
 
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(60) && !Props.useStatic && Pawn.Faction != parentTarget.Faction)
-                Pawn.SetFaction(parentTarget.Faction, parentTarget);
+            if (Pawn.IsHashIntervalTick(60) && !Props.useStatic && Pawn.Faction != ParentTarget.Faction)
+                Pawn.SetFaction(ParentTarget.Faction, ParentTarget);
         }
 
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
-
+            Log.Message(Pawn.kindDef?.label);
             if (Props.temporary && Pawn.Faction != oldFaction)
                 Pawn.SetFaction(oldFaction);
+            Log.Message(Pawn.kindDef?.label);
         }
 
         public override void CompExposeData()
