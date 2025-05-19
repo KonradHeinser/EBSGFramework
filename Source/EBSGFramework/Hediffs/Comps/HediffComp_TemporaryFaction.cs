@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
+using Verse.AI.Group;
 
 namespace EBSGFramework
 {
@@ -28,7 +29,12 @@ namespace EBSGFramework
             if (Props.useStatic)
                 faction = Find.FactionManager.FirstFactionOfDef(Props.staticFaction);
             else if (ParentTarget != null)
+            {
                 faction = ParentTarget.Faction;
+                Pawn.GetLord()?.RemovePawn(Pawn);
+                Lord lord = ParentTarget.GetLord();
+                lord?.AddPawn(Pawn);
+            }
             else
             {
                 Log.Error($"{Def} doesn't use static factions, but also doesn't appear to be a HediffWithTarget. No faction can be set, and this hediff will be removed to avoid more errors.");
@@ -54,6 +60,7 @@ namespace EBSGFramework
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
+            Pawn.ChangeKind(oldKindDef);
             if (Props.temporary)
             {
                 bool flag = true;
@@ -74,9 +81,9 @@ namespace EBSGFramework
                 }
                 if (flag && Pawn.Faction != oldFaction)
                     Pawn.SetFaction(oldFaction);
-            }
 
-            Pawn.ChangeKind(oldKindDef);
+                Pawn.GetLord()?.RemovePawn(Pawn);
+            }
         }
 
         public override void CompExposeData()
