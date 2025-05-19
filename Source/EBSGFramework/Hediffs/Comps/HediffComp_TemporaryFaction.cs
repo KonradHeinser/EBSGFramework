@@ -63,7 +63,7 @@ namespace EBSGFramework
                     if (otherHediffs[i - 1] == parent)
                         continue;
 
-                    HediffComp_TemporaryFaction tempComp = otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>();
+                    HediffComp_TemporaryFaction tempComp = otherHediffs[i - 1].TryGetComp<HediffComp_TemporaryFaction>();
                     if (tempComp != null)
                     {
                         if (Pawn.Faction != tempComp.faction)
