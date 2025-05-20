@@ -61,8 +61,11 @@ namespace EBSGFramework
             {
                 Pawn t = target.Pawn;
                 t.GetLord()?.RemovePawn(t);
-                Lord lord = parent.pawn.GetLord();
-                lord?.AddPawn(t);
+                if (!Props.useStatic)
+                {
+                    Lord lord = parent.pawn.GetLord();
+                    lord?.AddPawn(t);
+                }
                 t.SetFaction(Faction);
                 // Make them one of the new faction's pawn kinds so they fit in better
                 t.ChangeKind(Faction.RandomPawnKind());
