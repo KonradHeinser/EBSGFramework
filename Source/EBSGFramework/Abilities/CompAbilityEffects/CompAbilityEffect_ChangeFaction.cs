@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
+using Verse.AI.Group;
 
 namespace EBSGFramework
 {
@@ -58,9 +59,13 @@ namespace EBSGFramework
             if (target.Pawn != null && target.Pawn?.Faction != Faction &&
                 Props.successChance?.Success(parent.pawn, target.Pawn) != false)
             {
-                target.Pawn.SetFaction(Faction);
+                Pawn t = target.Pawn;
+                t.GetLord()?.RemovePawn(t);
+                Lord lord = parent.pawn.GetLord();
+                lord?.AddPawn(t);
+                t.SetFaction(Faction);
                 // Make them one of the new faction's pawn kinds so they fit in better
-                target.Pawn.ChangeKind(Faction.RandomPawnKind());
+                t.ChangeKind(Faction.RandomPawnKind());
             }
         }
 
