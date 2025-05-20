@@ -57,7 +57,11 @@ namespace EBSGFramework
             // Final check is to catch any instance where valid was not checked first
             if (target.Pawn != null && target.Pawn?.Faction != Faction &&
                 Props.successChance?.Success(parent.pawn, target.Pawn) != false)
+            {
                 target.Pawn.SetFaction(Faction);
+                // Make them one of the new faction's pawn kinds so they fit in better
+                target.Pawn.ChangeKind(Faction.RandomPawnKind());
+            }
         }
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
