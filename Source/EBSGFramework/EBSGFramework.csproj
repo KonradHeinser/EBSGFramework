@@ -62,9 +62,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeFaction.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LaunchProjectileBurst.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />

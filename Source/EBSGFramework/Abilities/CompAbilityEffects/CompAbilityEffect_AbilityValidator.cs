@@ -15,7 +15,6 @@ namespace EBSGFramework
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
             if (!base.Valid(target, throwMessages)) return false;
-
             string baseExplanation = "CannotUseAbility".Translate(parent.def.label) + ": ";
 
             // Caster checks

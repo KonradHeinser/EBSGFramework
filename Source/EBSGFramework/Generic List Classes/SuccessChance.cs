@@ -25,7 +25,6 @@ namespace EBSGFramework
             float chance = baseSuccessChance;
             if (caster != null && casterStatChance != null)
             {
-
                 float val = caster.StatOrOne(casterStatChance);
                 switch (casterStatEffect)
                 {

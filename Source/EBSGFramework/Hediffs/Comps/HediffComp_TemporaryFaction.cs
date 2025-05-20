@@ -82,7 +82,8 @@ namespace EBSGFramework
                 if (flag && Pawn.Faction != oldFaction)
                     Pawn.SetFaction(oldFaction);
 
-                Pawn.GetLord()?.RemovePawn(Pawn);
+                if (!Props.useStatic)
+                    Pawn.GetLord()?.RemovePawn(Pawn);
             }
         }
 
