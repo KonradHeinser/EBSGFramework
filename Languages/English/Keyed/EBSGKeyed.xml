@@ -19,6 +19,7 @@
     <EBSG_Recharge>Recharge {0}</EBSG_Recharge>
     <EBSG_ConditionsNotMet>Conditions not met.</EBSG_ConditionsNotMet>
     <EBSG_NoOptionsAvailable>No options available.</EBSG_NoOptionsAvailable>
+    <EBSG_NoIdeologyPossible>Target cannot have an ideology.</EBSG_NoIdeologyPossible>
 
     <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>

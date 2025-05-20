@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RimWorld;
 using Verse;
 
@@ -25,10 +21,17 @@ namespace EBSGFramework
             if (!base.Valid(target, throwMessages))
                 return false;
 
-            if (target.Pawn?.Ideo == null)
+            if (target.Pawn == null)
             {
                 if (throwMessages)
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityTargetMustBePawn".Translate(), target.ToTargetInfo(Find.CurrentMap), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+
+            if (target.Pawn.Ideo == null)
+            {
+                if (throwMessages)
+                    Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoIdeologyPossible".Translate(), target.ToTargetInfo(Find.CurrentMap), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
