@@ -19,6 +19,22 @@ namespace EBSGFramework
 
         public Faction faction = null;
 
+        public bool GetFaction(bool removing = false)
+        {
+            if (Props.useStatic)
+                faction = Find.FactionManager.FirstFactionOfDef(Props.staticFaction);
+            else if (ParentTarget != null)
+                faction = ParentTarget.Faction;
+            else
+            {
+                Log.Error($"{Def} doesn't use a valid static faction, but also doesn't appear to be a HediffWithTarget. No faction can be set, and this hediff will be removed to avoid more errors.");
+                if (!removing)
+                    Pawn.health.RemoveHediff(parent);
+                return false;
+            }
+            return true;
+        }
+
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
@@ -26,34 +42,39 @@ namespace EBSGFramework
             oldFaction = Pawn.Faction;
             oldKindDef = Pawn.kindDef;
 
-            if (Props.useStatic)
-                faction = Find.FactionManager.FirstFactionOfDef(Props.staticFaction);
-            else if (ParentTarget != null)
+            if (GetFaction() && faction != Pawn.Faction)
             {
-                faction = ParentTarget.Faction;
+                Pawn.SetFaction(faction, ParentTarget);
                 Pawn.GetLord()?.RemovePawn(Pawn);
                 Lord lord = ParentTarget.GetLord();
                 lord?.AddPawn(Pawn);
             }
-            else
-            {
-                Log.Error($"{Def} doesn't use static factions, but also doesn't appear to be a HediffWithTarget. No faction can be set, and this hediff will be removed to avoid more errors.");
-                Pawn.health.RemoveHediff(parent);
-                return;
-            }
-
-            if (faction != Pawn.Faction)
-                Pawn.SetFaction(faction, ParentTarget);
         }
 
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(60) && !Props.useStatic && Pawn.Faction != ParentTarget.Faction)
+            if (Pawn.IsHashIntervalTick(60))
             {
-                faction = ParentTarget.Faction;
-                Pawn.SetFaction(faction, ParentTarget);
+                // This checks to make sure this is the hediff that is supposed to be messing with stuff right now
+                var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
+                for (int i = otherHediffs.Count - 1; i >= 0; i--)
+                {
+                    if (otherHediffs[i] == parent)
+                        break;
+
+                    if (otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>() != null)
+                        return;
+                }
+
+                if (GetFaction() && Pawn.Faction != faction)
+                {
+                    Pawn.SetFaction(faction, ParentTarget);
+                    Pawn.GetLord()?.RemovePawn(Pawn);
+                    if (!Props.useStatic)
+                        ParentTarget.GetLord()?.AddPawn(Pawn);
+                }
             }
         }
 
@@ -63,27 +84,31 @@ namespace EBSGFramework
             Pawn.ChangeKind(oldKindDef);
             if (Props.temporary)
             {
-                bool flag = true;
+                // This checks if there's another version of this comp that should be taking over
                 var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
-                for (int i = otherHediffs.Count; i > 0; i--)
+                for (int i = otherHediffs.Count - 1; i > 0; i--)
                 {
-                    if (otherHediffs[i - 1] == parent)
+                    if (otherHediffs[i] == parent)
                         continue;
 
-                    HediffComp_TemporaryFaction tempComp = otherHediffs[i - 1].TryGetComp<HediffComp_TemporaryFaction>();
-                    if (tempComp != null)
+                    var tempComp = otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>();
+                    if (tempComp != null && tempComp.GetFaction(true))
                     {
                         if (Pawn.Faction != tempComp.faction)
+                        {
                             Pawn.SetFaction(tempComp.faction, tempComp.ParentTarget);
-                        flag = false;
-                        break;
+                            if (!Props.useStatic)
+                                Pawn.GetLord()?.RemovePawn(Pawn);
+                        }
+                        return;
                     }
                 }
-                if (flag && Pawn.Faction != oldFaction)
+                if (GetFaction(true) && Pawn.Faction != oldFaction && Pawn.Faction == faction)
+                {
                     Pawn.SetFaction(oldFaction);
-
-                if (!Props.useStatic)
-                    Pawn.GetLord()?.RemovePawn(Pawn);
+                    if (!Props.useStatic)
+                        Pawn.GetLord()?.RemovePawn(Pawn);
+                }
             }
         }
 

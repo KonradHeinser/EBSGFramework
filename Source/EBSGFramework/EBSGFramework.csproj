@@ -105,12 +105,14 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryFaction.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_StageSetter.cs" />
     <Compile Include="Hediffs\Stance_StageSetting.cs" />
