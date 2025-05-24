@@ -9,41 +9,46 @@ namespace EBSGFramework
         {
             if ((def.gender != 0 && otherPawn.gender != def.gender) || otherPawn.genes == null || !ModsConfig.BiotechActive)
             {
+                Log.Message("Z");
                 return ThoughtState.Inactive;
             }
 
             if (RelationsUtility.PawnsKnowEachOther(p, otherPawn))
             {
+                Log.Message($"{p.LabelShort} may have an opinion of {otherPawn.LabelShort}");
                 EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
                 if (thoughtExtension != null)
                 {
+                    Log.Message("A");
                     if (!thoughtExtension.nullifyingGenes.NullOrEmpty() && !thoughtExtension.opinionOfAllOthers
                         && p.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes))
                         return ThoughtState.Inactive;
-
+                    Log.Message("B");
                     if (!thoughtExtension.requiredGenes.NullOrEmpty() && !p.HasAnyOfRelatedGene(thoughtExtension.requiredGenes))
                         return ThoughtState.Inactive;
-
+                    Log.Message("C");
                     if (!thoughtExtension.compoundingHatred)
                     {
+                        Log.Message("D");
                         if (thoughtExtension.opinionOfAllOthers)
                         {
+                            Log.Message("E");
                             if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.nullifyingGenes))
                                 return ThoughtState.Inactive;
-
+                            Log.Message("F");
                             if (thoughtExtension.xenophilobic && p.genes.Xenotype == otherPawn.genes?.Xenotype)
                                 return ThoughtState.Inactive;
-
+                            Log.Message("G");
                             if (!thoughtExtension.relatedGenes.NullOrEmpty())
                             {
                                 if (otherPawn.HasAnyOfRelatedGene(thoughtExtension.requiredGenes))
                                     return ThoughtState.ActiveAtStage(0);
                                 return ThoughtState.Inactive;
                             }
-
+                            Log.Message("H");
                             return ThoughtState.ActiveAtStage(0);
                         }
-
+                        Log.Message("I?");
                         if (!thoughtExtension.relatedGenes.NullOrEmpty())
                         {     
                             if (otherPawn.HasAnyOfRelatedGene(thoughtExtension?.relatedGenes))
@@ -54,6 +59,7 @@ namespace EBSGFramework
                     }
                     else
                     {
+                        Log.Message("J?");
                         int num = -1;
                         if (thoughtExtension.opinionOfAllOthers)
                         {
@@ -74,7 +80,7 @@ namespace EBSGFramework
                         else
                             Log.Error(def + " doesn't have any checked genes, meaning it will always be inactive");
                     }
-
+                    Log.Message("K");
                     return ThoughtState.Inactive;
                 }
 
