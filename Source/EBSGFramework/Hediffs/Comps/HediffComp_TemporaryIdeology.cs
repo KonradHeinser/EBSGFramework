@@ -62,11 +62,8 @@ namespace EBSGFramework
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (!ModsConfig.IdeologyActive || Pawn.ideo == null)
-                return;
-
             // Only checks once every 10 seconds because doing it more often is excessive, and doing it less could create awkward delays
-            if (Pawn.IsHashIntervalTick(600))
+            if (Pawn.IsHashIntervalTick(600) && ModsConfig.IdeologyActive && Pawn.ideo != null)
             {
                 // This checks to make sure this is the hediff that is supposed to be messing with stuff right now
                 var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
