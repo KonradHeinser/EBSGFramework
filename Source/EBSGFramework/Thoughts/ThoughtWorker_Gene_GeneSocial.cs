@@ -7,7 +7,7 @@ namespace EBSGFramework
     {
         protected override ThoughtState CurrentSocialStateInternal(Pawn p, Pawn otherPawn)
         {
-            if (def.gender != 0 && otherPawn.gender != def.gender || otherPawn.genes == null || !ModsConfig.BiotechActive)
+            if ((def.gender != 0 && otherPawn.gender != def.gender) || otherPawn.genes == null || !ModsConfig.BiotechActive)
             {
                 return ThoughtState.Inactive;
             }
