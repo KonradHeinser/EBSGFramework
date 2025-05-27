@@ -201,17 +201,13 @@ namespace EBSGFramework
                     yield return gizmo;
                 }
             
-            if (Props.displayGizmo)
+            if (Props.displayGizmo && Pawn.Spawned && // If the pawn isn't spawned, the shield shouldn't be doing anything and definitely shouldn't display
+                Pawn.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == Pawn)
             {
-                if (Pawn.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == Pawn)
-                {
-                    if (gizmo == null)
-                    {
-                        gizmo = new Gizmo_HediffShieldStatus(this);
-                    }
+                if (gizmo == null)
+                    gizmo = new Gizmo_HediffShieldStatus(this);
 
-                    yield return gizmo;
-                }
+                yield return gizmo;
             }
             
             yield break;

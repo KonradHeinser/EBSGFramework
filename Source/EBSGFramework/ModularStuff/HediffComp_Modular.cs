@@ -183,6 +183,10 @@ namespace EBSGFramework
 
         public override IEnumerable<Gizmo> CompGetGizmos()
         {
+            // If the pawn isn't spawned but getting comps for any reason, we don't want them trying to remove stuff
+            if (!Pawn.Spawned) 
+                yield break;
+
             if (ejectAction == null)
                 RecacheGizmo();
 
