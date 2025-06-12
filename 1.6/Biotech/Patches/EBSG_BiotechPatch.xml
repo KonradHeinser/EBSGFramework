@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/Statdef[defName="Fertility"]</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="Fertility"]/parts</xpath>
+            <value><li Class="EBSGFramework.StatPart_FertilityByGenes" MayRequire="Ludeon.Rimworld.Biotech" /></value>
+        </match>
+    </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>ageLimitedAgeless</setting>
+        <active Class="PatchOperationConditional">
+            <xpath>Defs/GeneDef[defName="Ageless"]/geneClass</xpath>
+            <nomatch Class="PatchOperationConditional">
+                <xpath>Defs/GeneDef[defName="Ageless"]/modExtensions</xpath>
+                <match Class="PatchOperationSequence">
+                    <operations>
+                        <li Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[defName="Ageless"]</xpath>
+                            <value>
+                                <geneClass>EBSGFramework.SpawnAgeLimiter</geneClass>
+                            </value>
+                        </li>
+                        <li Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[defName="Ageless"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <expectedAges>0~30</expectedAges>
+                                    <ageRange>18~30</ageRange>
+                                </li>
+                            </value>
+                        </li>
+                    </operations>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[defName="Ageless"]</xpath>
+                    <value>
+                        <geneClass>EBSGFramework.SpawnAgeLimiter</geneClass>
+                        <modExtensions>
+                            <li Class="EBSGFramework.EBSGExtension">
+                                <expectedAges>0~30</expectedAges>
+                                <ageRange>18~30</ageRange>
+                            </li>
+                        </modExtensions>
+                    </value>
+                </nomatch>
+            </nomatch>
+        </active>
+    </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>hideInactiveSkinGenes</setting>
+        <active Class="PatchOperationSequence">
+            <operations>
+                <li Class="PatchOperationConditional">
+                    <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions</xpath>
+                    <match Class="PatchOperationConditional">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                        <match Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                            <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                        </match>
+                        <nomatch Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </value>
+                        </nomatch>
+                    </match>
+                    <nomatch Class="PatchOperationAdd">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorMelanin"]</xpath>
+                        <value>
+                            <modExtensions>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </modExtensions>
+                        </value>
+                    </nomatch>
+                </li>
+
+                <li Class="PatchOperationConditional">
+                    <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions</xpath>
+                    <match Class="PatchOperationConditional">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                        <match Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                            <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                        </match>
+                        <nomatch Class="PatchOperationAdd">
+                            <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]/modExtensions</xpath>
+                            <value>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </value>
+                        </nomatch>
+                    </match>
+                    <nomatch Class="PatchOperationAdd">
+                        <xpath>Defs/GeneDef[@Name="GeneSkinColorOverride"]</xpath>
+                        <value>
+                            <modExtensions>
+                                <li Class="EBSGFramework.EBSGExtension">
+                                    <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                                </li>
+                            </modExtensions>
+                        </value>
+                    </nomatch>
+                </li>
+            </operations>
+        </active>
+    </Operation>
+
+    <Operation Class="EBSGFramework.PatchOperationSetting">
+        <setting>hideInactiveHairGenes</setting>
+        <active Class="PatchOperationConditional">
+            <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions</xpath>
+            <match Class="PatchOperationConditional">
+                <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                <match Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions/li[@Class="EBSGFramework.EBSGExtension"]</xpath>
+                    <value><hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive></value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                    <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]/modExtensions</xpath>
+                    <value>
+                        <li Class="EBSGFramework.EBSGExtension">
+                            <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                        </li>
+                    </value>
+                </nomatch>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/GeneDef[@Name="GeneHairColorBase"]</xpath>
+                <value>
+                    <modExtensions>
+                        <li Class="EBSGFramework.EBSGExtension">
+                            <hideInGeneTabWhenInactive>True</hideInGeneTabWhenInactive>
+                        </li>
+                    </modExtensions>
+                </value>
+            </nomatch>
+        </active>
+    </Operation>
+
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/GeneDef[defName="Deathrest"]/exclusionTags</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/GeneDef[defName="Deathrest"]/exclusionTags</xpath>
+            <value><li>EBSG_Coma</li></value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/GeneDef[defName="Deathrest"]</xpath>
+            <value>
+                <exclusionTags>
+                    <li>EBSG_Coma</li>
+                </exclusionTags>
+            </value>
+        </nomatch>
+    </Operation>
+</Patch>

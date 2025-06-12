@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <JobDef>
+        <defName>DRG_Consume</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGConsume</driverClass>
+        <reportString>consuming TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>DRG_Deliver</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGDeliver</driverClass>
+        <reportString>giving TargetA to TargetB.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>DRG_FeedPatient</defName>
+        <driverClass>EBSGFramework.JobDriver_DRGFeedPatient</driverClass>
+        <reportString>giving TargetA to TargetB.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <WorkGiverDef>
+        <defName>DRG_AdministerResource</defName>
+        <label>administer resource pack</label>
+        <giverClass>EBSGFramework.Workgiver_AdministerResource</giverClass>
+        <workType>Doctor</workType>
+        <verb>administer resource pack to</verb>
+        <gerund>administering resource pack to</gerund>
+        <priorityInType>65</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+
+    <WorkGiverDef>
+        <defName>DRG_DeliverResourceToPrisoner</defName>
+        <label>deliver resource pack to prisoners</label>
+        <giverClass>EBSGFramework.WorkGiver_Warden_DeliverResource</giverClass>
+        <workType>Warden</workType>
+        <verb>deliver resource pack for</verb>
+        <gerund>delivering resource pack for</gerund>
+        <priorityInType>72</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+</Defs>

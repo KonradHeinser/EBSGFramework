@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <HediffDef Name="EBSG_DependencyHediffBase" Abstract="True">
+        <hediffClass>EBSGFramework.Hediff_Dependency</hediffClass>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.01</initialSeverity>
+        <minSeverity>0.01</minSeverity>
+        <stages>
+            <li />
+            <li>
+                <label>deficiency</label>
+                <minSeverity>1</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.7</setMax>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <setMax>0.8</setMax>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <setMax>0.5</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <overrideLabel>a deficiency coma</overrideLabel>
+                <minSeverity>6</minSeverity>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <minSeverity>12</minSeverity>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <ThoughtDef Name="EBSG_DependencyThoughtBase" Abstract="True">
+        <thoughtClass>EBSGFramework.Thought_Situational_HediffSeverity</thoughtClass>
+        <workerClass>EBSGFramework.ThoughtWorker_HediffSeverity</workerClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <li> <!--This allows the use of {DEPENDENCY} {HEDIFF} and {PAWN} to reference the labels of each-->
+                <label>genetic {DEPENDENCY} dependency</label>
+                <description>I need {DEPENDENCY} because of my genetic deficiency. It's been so long since I've had any.</description>
+                <baseMoodEffect>-1</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticDrugDependency</defName> <!--Labels technically aren't needed since it'll use the gene label, but this ensures no errors pop up-->
+        <label>chemical dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific drug. Without regular consumption of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticDrugDependency</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticDrugDependency</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodDependency</defName>
+        <label>food dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific food/food group. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticFoodDependency</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticFoodDependency</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodGroupDependency</defName>
+        <label>food dependency</label>
+        <description>This person has a genetically-induced biochemical dependency on a specific food group. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticFoodGroupDependency</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticFoodGroupDependency</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticDrugReliance</defName>
+        <label>chemical reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific drug. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticDrugReliance</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticDrugReliance</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodReliance</defName>
+        <label>food reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific food/food group. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticFoodReliance</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticFoodReliance</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+
+    <HediffDef ParentName="EBSG_DependencyHediffBase">
+        <defName>EBSG_GeneticFoodGroupReliance</defName>
+        <label>food reliance</label>
+        <description>This person has a genetically-induced biochemical reliance on a specific food group. Without frequent doses of the drug, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>0.4</severityPerDay> <!--At this rate the thresholds are 2.5, 15, and 30 days-->
+                <minAge>13</minAge>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <ThoughtDef ParentName="EBSG_DependencyThoughtBase">
+        <defName>EBSG_GeneticFoodGroupReliance</defName>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGThoughtExtension">
+                <hediff>EBSG_GeneticFoodGroupReliance</hediff>
+                <curve>
+                    <points>
+                        <li>(0, 0)</li>
+                        <li>(1, -4)</li>
+                        <li>(6, -20)</li>
+                    </points>
+                </curve>
+            </li>
+        </modExtensions>
+    </ThoughtDef>
+</Defs>

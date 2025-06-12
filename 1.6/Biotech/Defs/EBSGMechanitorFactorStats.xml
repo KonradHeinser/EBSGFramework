@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef Name="EBSG_MechanitorFactorStatBase" ParentName="EBSG_FactoringStat" Abstract="True">
+        <category>Mechanitor</category>
+        <displayPriorityInCategory>5000</displayPriorityInCategory>
+        <showOnMechanoids>false</showOnMechanoids>
+        <showOnAnimals>false</showOnAnimals>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MoveSpeedFactorMech</defName>
+        <label>mech move speed factor</label>
+        <description>A move speed factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MechEnergyLossPerHPFactorMech</defName>
+        <label>mech repair energy cost factor</label>
+        <description>A repair energy cost factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_WastepacksPerRechargeFactorMech</defName>
+        <label>mech wastepacks per recharge factor</label>
+        <description>A wastepacks per recharge factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_ArmorRating_BluntFactorMech</defName>
+        <label>mech blunt armor factor</label>
+        <description>A blunt armor factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_ArmorRating_SharpFactorMech</defName>
+        <label>mech sharp armor factor</label>
+        <description>A sharp armor factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_EMPResistanceFactorMech</defName>
+        <label>mech EMP resistance factor</label>
+        <description>A EMP resistance factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_WorkSpeedGlobalFactorMech</defName>
+        <label>mech work speed factor</label>
+        <description>A work speed factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_BandwidthCostFactorMech</defName>
+        <label>mech bandwidth cost factor</label>
+        <description>A bandwidth cost factor applied to a mechanitor's mechs.</description>
+        <minValue>0</minValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_HealthinessFactorMech</defName>
+        <label>mech health factor</label>
+        <description>A health factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_OutgoingDamageFactorFactorMech</defName>
+        <label>mech outgoing damage factor</label>
+        <description>An outgoing damage factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_IncomingDamageFactorFactorMech</defName>
+        <label>mech incoming damage factor</label>
+        <description>An incoming damage factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeDamageFactorFactorMech</defName>
+        <label>mech melee damage factor</label>
+        <description>A melee damage factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeHitChanceFactorMech</defName>
+        <label>mech melee hit chance factor</label>
+        <description>A melee hit chance factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+    
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_MeleeDodgeChanceFactorMech</defName>
+        <label>mech melee dodge chance factor</label>
+        <description>A melee dodge chance factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_ShootingAccuracyPawnFactorMech</defName>
+        <label>mech shooting accuracy factor</label>
+        <description>A shooting accuracy factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
+        <defName>EBSG_AimingDelayFactorFactorMech</defName>
+        <label>mech aiming delay factor</label>
+        <description>An aiming delay factor applied to a mechanitor's mechs.</description>
+    </StatDef>
+</Defs>

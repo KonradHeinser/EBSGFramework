@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <DamageDef>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
+        <workerClass>EBSGFramework.DamageWorker_PermanentInjury</workerClass>
+        <deathMessage>{0} has been killed by bad genes.</deathMessage>
+        <hediff>EBSG_GeneticDamage</hediff>
+        <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
+        <hasForcefulImpact>false</hasForcefulImpact>
+        <canInterruptJobs>false</canInterruptJobs>
+        <makesBlood>False</makesBlood>
+        <externalViolence>False</externalViolence>
+        <impactSoundType />
+        <armorCategory />
+    </DamageDef>
+
+    <HediffDef>
+        <defName>EBSG_GeneticDamage</defName>
+        <label>genetic damage</label>
+        <hediffClass>Hediff_Injury</hediffClass>
+        <labelNounPretty>{0} in the {1}</labelNounPretty>
+        <labelNoun>a geneticly damaged part</labelNoun>
+        <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
+        <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
+        <comps>
+            <li Class="HediffCompProperties_GetsPermanent">
+                <permanentLabel>permanent genetic damage</permanentLabel>
+                <instantlyPermanentLabel>permanent genetic damage</instantlyPermanentLabel>
+            </li>
+        </comps>
+        <injuryProps>
+            <painPerSeverity>0</painPerSeverity>
+            <averagePainPerSeverityPermanent>0</averagePainPerSeverityPermanent>
+            <bleedRate>0</bleedRate>
+            <canMerge>true</canMerge>
+            <destroyedLabel>Genetically Damaged</destroyedLabel>
+        </injuryProps>
+    </HediffDef>
+
+    <JobDef>
+        <defName>EBSG_NeedCharge</defName>
+        <driverClass>EBSGFramework.JobDriver_PawnNeedCharger</driverClass>
+        <reportString>using recharger.</reportString>
+    </JobDef>
+
+    <WorldObjectDef Name="EBSG_PawnFlying">
+        <defName>EBSG_PawnFlying</defName>
+        <label>flying pawn</label>
+        <description>Pawn in flight.</description>
+        <worldObjectClass>EBSGFramework.FlyingPawn</worldObjectClass>
+        <useDynamicDrawer>True</useDynamicDrawer>
+        <allowCaravanIncidentsWhichGenerateMap>False</allowCaravanIncidentsWhichGenerateMap>
+    </WorldObjectDef>
+
+    <ThingDef ParentName="SkyfallerBase" Name="EBSG_PawnLeaving">
+        <defName>EBSG_PawnLeaving</defName>
+        <label>flying pawn</label>
+        <thingClass>EBSGFramework.FlyPawnLeaving</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>10</drawSize>
+        </graphicData>
+        <skyfaller>
+            <movementType>Decelerate</movementType>
+            <rotateGraphicTowardsDirection>True</rotateGraphicTowardsDirection>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(1, 1)</shadowSize>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-10</anticipationSoundTicks>
+            <ticksToImpactRange><min>-40</min><max>-15</max></ticksToImpactRange>
+        </skyfaller>
+    </ThingDef>
+
+    <JobDef>
+        <defName>EBSG_EnterSleepCasket</defName>
+        <driverClass>EBSGFramework.JobDriver_EnterSleepCasket</driverClass>
+        <reportString>entering TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>EBSG_ReloadAbility</defName>
+        <driverClass>EBSGFramework.JobDriver_ReloadAbility</driverClass>
+        <reportString>recharging ability.</reportString>
+        <suspendable>false</suspendable>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <MentalStateDef ParentName="BaseMentalState">
+        <defName>EBSG_AggressiveSummon</defName>
+        <stateClass>EBSGFramework.MentalState_AggressiveSummon</stateClass>
+        <label>aggressive summon</label>
+        <category>Aggro</category>
+        <minTicksBeforeRecovery>99999999</minTicksBeforeRecovery>
+        <nameColor>(0.8,0.2,0.5)</nameColor>
+        <baseInspectLine>Maddened: Aggressive Summon</baseInspectLine>
+        <inCaravanCanDo>true</inCaravanCanDo>
+        <recoverFromSleep>false</recoverFromSleep>
+        <recoverFromDowned>false</recoverFromDowned>
+        <recoverFromCollapsingExhausted>false</recoverFromCollapsingExhausted>
+    </MentalStateDef>
+
+    <JobDef>
+        <defName>EBSG_InstallItem</defName>
+        <driverClass>JobDriver_UseItem</driverClass>
+        <reportString>installing TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <ThinkTreeDef>
+        <defName>DRG_PackRetrieval</defName>
+        <insertTag>Humanlike_PostDuty</insertTag>
+        <insertPriority>100</insertPriority>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="EBSGFramework.JobGiver_GetResourcePack" MayRequire="Ludeon.RimWorld.Biotech" />
+                <li Class="EBSGFramework.JobGiver_SatisfyDependency" MayRequire="Ludeon.RimWorld.Biotech" /> <!--Technically for IDG, but no need to make a new tree for that-->
+                <li Class="EBSGFramework.JobGiver_PawnNeedCharger" /> <!--Technically both DRG and not DRG, so I stand by this one-->
+                <li Class="EBSGFramework.JobGiver_GetComaRest" /> <!--Similar to the IDG stuff, usually not related DRG, but no reason to make a new tree-->
+                <li Class="EBSGFramework.JobGiver_ReloadAbility" /> <!--Yeah, I've just given up the pretense by this point-->
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+
+    <EBSGFramework.EBSGRecorder>
+        <defName>EBSG_Recorder</defName>
+        <label>EBSG recorder</label>
+        <bloodfeederGenes />
+        <geneEvents />
+        <hiddenGenes />
+        <hiddenTemplates />
+        <!-- <hiddenGeneCategories /> -->
+        <pawnKindsWithoutIntialRelationships /> 
+        <thinkTreeSettings>
+            <li>
+                <uniqueID>EBSGFramework</uniqueID>
+                <label>EBSG Think Tree</label>
+                <description>These settings universally toggle whether certain AI things added to the EBSG tree by other mods will work. The main settings are disabled by default to avoid accidentally increasing performance costs with things that are not desired by the player.\n\nSettings in this tab usually don't require a restart. The checkmarks next to the titles are just to show and hide a section, and do not change any of the settings.</description>
+                <individualSettings>
+                    <li>
+                        <settingID>EBSGThinkTree</settingID>
+                        <label>EBSG Think Tree</label>
+                        <description>Toggles whether any mods can use the EBSG Think Tree. If you see this option, then that means there is a mod that adds to the tree, usually to set up ability auto-casts for abilities. Disabling this completely disables the EBSG tree.\n\nThis should only be disabled if you're having performance issues or encountering weird bugs.</description>
+                    </li>
+                    <li>
+                        <settingID>EBSGColonistAI</settingID>
+                        <label>Colonist AI</label>
+                        <description>Toggles whether any mods can cause colonists to autocast. This only impacts mods that directly add to the EBSG Tree's colonist AI, so any mod that uses other methods for implementing think tree stuff for colonists will be completely unaffected.</description>
+                        <defaultSetting>False</defaultSetting>
+                    </li>
+                    <li>
+                        <settingID>EBSGDraftedAI</settingID>
+                        <label>Drafted AI</label>
+                        <description>Toggles whether any mods can cause drafted colonists to autocast. This only impacts mods that directly add to the EBSG Tree's drafted colonist AI, so any mod that uses other methods for implementing think tree stuff for colonists will be completely unaffected.</description>
+                        <defaultSetting>False</defaultSetting>
+                    </li>
+                </individualSettings>
+            </li>
+        </thinkTreeSettings>
+    </EBSGFramework.EBSGRecorder>
+</Defs>

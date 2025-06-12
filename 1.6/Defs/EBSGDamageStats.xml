@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor</defName>
+        <label>outgoing damage factor</label>
+        <description>A multiplier on all outgoing damage.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5201</displayPriorityInCategory>
+        <parts>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_OutgoingDamageFactorOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_OutgoingDamageFactorFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </parts>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Humanlike</defName>
+        <label>outgoing damage factor (humanlike)</label>
+        <description>A multiplier on outgoing damage against humanlike targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5202</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowHumanlikes>True</allowHumanlikes>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Ideology">
+        <defName>EBSG_OutgoingDamageFactor_Dryad</defName>
+        <label>outgoing damage factor (dryad)</label>
+        <description>A multiplier on outgoing damage against dryad targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5203</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowDryads>True</allowDryads>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Insect</defName>
+        <label>outgoing damage factor (insect)</label>
+        <description>A multiplier on outgoing damage against insect targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5204</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowInsects>True</allowInsects>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Animal</defName>
+        <label>outgoing damage factor (animal)</label>
+        <description>A multiplier on outgoing damage against animal targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5205</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowAnimals>True</allowAnimals>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_OutgoingDamageFactor_Mechanoid</defName>
+        <label>outgoing damage factor (mechanoid)</label>
+        <description>A multiplier on outgoing damage against mechanoid targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5206</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowMechanoids>True</allowMechanoids>
+            </li>
+        </modExtensions>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat" MayRequire="Ludeon.Rimworld.Anomaly">
+        <defName>EBSG_OutgoingDamageFactor_Entity</defName>
+        <label>outgoing damage factor (entity)</label>
+        <description>A multiplier on outgoing damage against entity targets.</description>
+        <category>PawnCombat</category>
+        <displayPriorityInCategory>5207</displayPriorityInCategory>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGDamageExtension">
+                <allowEntities>True</allowEntities>
+            </li>
+        </modExtensions>
+    </StatDef>
+</Defs>

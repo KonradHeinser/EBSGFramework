@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef Name="EBSG_OffsetingStat" Abstract="True">
+        <category>BasicsPawn</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <hideAtValue>0</hideAtValue>
+        <minValue>-999999</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <scenarioRandomizable>true</scenarioRandomizable>
+        <cacheable>true</cacheable>
+    </StatDef>
+
+    <StatDef Name="EBSG_FactoringStat" ParentName="EBSG_OffsetingStat" Abstract="True">
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+        <minValue>0.0001</minValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_OffsetingStat">
+        <defName>EBSG_BloodlossRecoveryBonus</defName>
+        <label>bloodloss recovery bonus</label>
+        <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
+        <minValue>-1</minValue>
+        <displayPriorityInCategory>2202</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_Healthiness</defName>
+        <label>healthiness</label>
+        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
+        <minValue>0.1</minValue>
+        <displayPriorityInCategory>2203</displayPriorityInCategory>
+        <parts>
+            <li Class="EBSGFramework.StatPart_OverseerStatOffset" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_HealthinessOffsetMech</stat>
+                <label>Offset from mechanitor</label>
+            </li>
+            <li Class="EBSGFramework.StatPart_OverseerStatFactor" MayRequire="Ludeon.Rimworld.Biotech">
+                <stat>EBSG_HealthinessFactorMech</stat>
+                <label>Factor from mechanitor</label>
+            </li>
+        </parts>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_SkillLossRate</defName>
+        <label>skill loss rate</label>
+        <description>The rate at which the pawn loses their skill knowledge.</description>
+        <displayPriorityInCategory>3930</displayPriorityInCategory>
+        <category>PawnMisc</category>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_OffsetingStat">
+        <defName>EBSG_PsyfocusFallRateOffset</defName>
+        <label>psyfocus fall rate offset</label>
+        <description>An offset on the psyfocus change rate. This takes effect before psyfocus fall rate factor, and when negative it can cause the pawn to regenerate focus without meditating, assuming its value is low enough.</description>
+        <displayPriorityInCategory>4011</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_PsyfocusFallRateFactor</defName>
+        <label>psyfocus fall rate factor</label>
+        <description>A multiplier on the psyfocus change rate. This takes effect after psyfocus fall rate offset.</description>
+        <minValue>0</minValue>
+        <displayPriorityInCategory>4012</displayPriorityInCategory>
+    </StatDef>
+</Defs>

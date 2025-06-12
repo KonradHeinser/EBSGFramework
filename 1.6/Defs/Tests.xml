@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <!--Need to test something? All of these defs should be usable without dlc as a basic parent for testing purposes-->
+    <AbilityDef Name="EBSG_TestAbilityBase" Abstract="True">
+        <label>test ability</label>
+        <description>This ability is testing the functionality of something, and if you see this description in a final product please notify the mod author.</description>
+        <iconPath>Things/Mote/SpeechSymbols/Speech</iconPath>
+        <cooldownTicksRange>60</cooldownTicksRange>
+        <hostile>false</hostile>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <range>30</range>
+            <warmupTime>0.5</warmupTime>
+            <requireLineOfSight>False</requireLineOfSight>
+        </verbProperties>
+    </AbilityDef>
+
+    <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True">
+        <targetRequired>False</targetRequired>
+        <verbProperties>
+            <range>0.9</range>
+            <targetParams>
+                <canTargetSelf>True</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+    </AbilityDef>
+
+    <GeneDef Name="EBSG_TestGeneBase" Abstract="True">
+        <label>test gene</label>
+        <description>This is just a test of a specific gene class/extension</description>
+        <iconPath>UI/Icons/Genes/Gene_HairColor</iconPath> <!--Using a generic icon that's I know will be there-->
+        <displayCategory>Miscellaneous</displayCategory>
+        <geneClass>EBSGFramework.HediffAdder</geneClass>
+    </GeneDef>
+
+    <HediffDef Name="EBSG_TestHediffBase" Abstract="True">
+        <label>test hediff</label>
+        <description>This is a test hediff</description>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.001</initialSeverity>
+        <stages />
+        <hediffClass>HediffWithComps</hediffClass>
+        <scenarioCanAdd>false</scenarioCanAdd>
+    </HediffDef>
+</Defs>
+
+<!-- 
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGExtension">
+            </li>
+        </modExtensions>
+-->
