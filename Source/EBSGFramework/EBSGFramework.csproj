@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>EBSGFramework</RootNamespace>
     <AssemblyName>EBSGFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,45 +22,55 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
-    <OutputPath>..\..\1.5\Assemblies\</OutputPath>
+    <OutputPath>..\..\1.6\Assemblies\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\System.Xml.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Assembly-CSharp, Version=1.6.9302.5642, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\mscorlib.dll</HintPath>
+    </Reference>
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <Reference>
+      <Private>False</Private>
+    </Reference>
+    <ProjectReference>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeFaction.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
@@ -80,6 +90,8 @@
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalHasAbilityUsable.cs" />
     <Compile Include="EBSGAI\JobGivers\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalNearbyCover.cs" />
+    <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ComaGene.cs" />
+    <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ReloadableAbilities.cs" />
     <Compile Include="Generic List Classes\ComplexXenoAlter.cs" />
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Enums\Inheritance.cs" />
@@ -234,8 +246,6 @@
     <Compile Include="Genes\GRCExtension.cs" />
     <Compile Include="Things\EquipRestrictExtension.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_GiveHediffBasedOnHediffSeverity.cs" />
-    <Compile Include="Hediffs\CompProperties\Explosive\BurstHediffPropertiesBase.cs" />
-    <Compile Include="Hediffs\Comps\Explosive\BurstHediffCompBase.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffOnKill.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryGenes.cs" />
@@ -534,7 +544,6 @@
     <Compile Include="Hediffs\Comps\HediffComp_DamageOnRemoval.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SpawnPawnKindOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SpawnPawnKindOnRemoval.cs" />
-    <Compile Include="Enums\Gases.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_SpawnPawnKind.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpawnPawnKind.cs" />
     <Compile Include="MentalState_AggressiveSummon.cs" />

@@ -1,5 +1,5 @@
-﻿using Verse;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -10,6 +10,15 @@ namespace EBSGFramework
         public HediffCompProperties_TemporaryGenes()
         {
             compClass = typeof(HediffComp_TemporaryGenes);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (genesAtSeverities.NullOrEmpty())
+                yield return "genesAtSeverities needs to be set.";
         }
     }
 }

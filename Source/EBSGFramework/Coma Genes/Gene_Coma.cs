@@ -63,20 +63,14 @@ namespace EBSGFramework
         [Unsaved(false)]
         private List<CompComaGeneBindable> cachedBoundComps;
 
-        private const int InitialComaCapacity = 1;
-
         public const float PresencePercentRequiredToApply = 0.75f;
-
-        private const int LessonComaTicks = 200;
-
-        private const int SunlightCheckInterval = 150;
 
         public Need_ComaGene ComaNeed
         {
             get
             {
                 if (cachedComaNeed == null)
-                    cachedComaNeed = pawn.needs?.TryGetNeed(def.causesNeed) as Need_ComaGene;
+                    cachedComaNeed = pawn.needs?.TryGetNeed<Need_ComaGene>();
 
                 return cachedComaNeed;
             }
@@ -195,9 +189,9 @@ namespace EBSGFramework
             Reset();
         }
 
-        public override void Tick()
+        public override void TickInterval(int delta)
         {
-            base.Tick();
+            base.TickInterval(delta);
             if (pawn.IsHashIntervalTick(200) && pawn.IsColonistPlayerControlled)
                 LessonAutoActivator.TeachOpportunity(EBSGDefOf.EBSG_SpecialComa, OpportunityType.Important);
 
@@ -205,8 +199,8 @@ namespace EBSGFramework
 
             ComaNeed.lastComaTick = Find.TickManager.TicksGame;
 
-            comaRestTicks++;
-            adjustedComaTicks += ComaEfficiency;
+            comaRestTicks += delta;
+            adjustedComaTicks += ComaEfficiency * delta;
             if (!BoundComps.NullOrEmpty())
                 foreach (CompComaGeneBindable boundComp in BoundComps)
                     boundComp.TryIncreasePresence();
@@ -225,7 +219,7 @@ namespace EBSGFramework
                 notifiedWakeOK = true;
             }
 
-            if (ComaExtension.needBedOutOfSunlight && pawn.Spawned && pawn.IsHashIntervalTick(150) && PawnOrBedTouchingSunlight())
+            if (ComaExtension.needBedOutOfSunlight && pawn.Spawned && pawn.IsHashIntervalTick(100) && PawnOrBedTouchingSunlight())
             {
                 if (PawnUtility.ShouldSendNotificationAbout(pawn))
                     Messages.Message("EBSG_ComaSunlightWake".Translate(ComaExtension.noun, pawn.Named("PAWN")), pawn, MessageTypeDefOf.NegativeEvent);

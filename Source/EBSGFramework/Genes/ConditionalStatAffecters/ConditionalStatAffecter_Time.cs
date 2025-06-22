@@ -5,10 +5,6 @@ namespace EBSGFramework
 {
     public class ConditionalStatAffecter_Time : ConditionalStatAffecter
     {
-        public float minPartOfDay = 0f;
-
-        public float maxPartOfDay = 1f;
-
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
         public string label = null;
@@ -24,12 +20,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn)
-            {
-                float time = GenLocalDate.DayPercent(pawn);
-                if (!progressThroughDay.Includes(time))
-                    return false;
-                return time >= minPartOfDay && time <= maxPartOfDay;
-            }
+                return progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn));
             return false;
         }
     }

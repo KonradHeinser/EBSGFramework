@@ -32,9 +32,10 @@ namespace EBSGFramework
             Scribe_TargetInfo.Look(ref curTarget, false, "curTarget");
         }
 
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
-            base.CompTick();
+            base.CompTickInterval(delta);
+
             if (shotsLeft == 0)
                 return;
 
@@ -47,11 +48,11 @@ namespace EBSGFramework
 
             if (ticksToShot > 0)
             {
-                ticksToShot--;
+                ticksToShot -= delta;
                 return;
             }
 
-            ticksToShot = Props.ticksBetweenShots;
+            ticksToShot += Props.ticksBetweenShots;
             LaunchProjectile(curTarget);
         }
 

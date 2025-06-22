@@ -174,9 +174,9 @@ namespace EBSGFramework
             }
         }
 
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
-            base.CompTick();
+            base.CompTickInterval(delta);
 
             if (PawnOwner == null)
             {
@@ -184,42 +184,37 @@ namespace EBSGFramework
                 return;
             }
 
+            if (ticksToReset > 0)
+            {
+                ticksToReset -= delta;
+
+                if (ticksToReset <= 0)
+                    Reset();
+                else
+                    return;
+            }
+
             if (Props.attachedMoteDef != null)
             {
                 if (attachedMote == null || attachedMote.Destroyed)
-                {
                     attachedMote = MoteMaker.MakeAttachedOverlay(PawnOwner, Props.attachedMoteDef, Props.attachedMoteOffset, Props.attachedMoteScale);
-                }
-
                 attachedMote.Maintain();
             }
 
-            if (Props.attachedEffecterDef != null)
+            if (energy < MaxEnergy)
+                energy = Math.Min(energy + EnergyRechargeRate, MaxEnergy);
+        }
+
+        public override void CompTick()
+        {
+            base.CompTick();
+
+            if (ticksToReset <= 0 && Props.attachedEffecterDef != null)
             {
                 if (attachedEffecter == null)
-                {
                     attachedEffecter = Props.attachedEffecterDef.SpawnAttached(PawnOwner, PawnOwner.Map);
-                }
-
                 attachedEffecter.EffectTick(PawnOwner, PawnOwner);
             }
-
-            if (ticksToReset > 0)
-            {
-                ticksToReset--;
-
-                if (ticksToReset <= 0)
-                {
-                    Reset();
-                }
-            }
-
-            if (energy >= MaxEnergy)
-            {
-                return;
-            }
-
-            energy = Math.Min(energy + EnergyRechargeRate, MaxEnergy);
         }
 
         public override void Notify_Equipped(Pawn pawn)

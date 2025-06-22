@@ -25,9 +25,11 @@ namespace EBSGFramework
         private EBSGExtension cachedExtension;
 
         private CompWasteProducer cachedWasteProducer;
+
         private bool checkedWaste;
 
         private CompThingContainer cachedContainer;
+
         private bool checkedContainer;
 
         public EBSGExtension Extension
@@ -66,20 +68,6 @@ namespace EBSGFramework
                     checkedContainer = true;
                 }
                 return cachedContainer;
-            }
-        }
-
-        private Material wireMaterial;
-
-        private Material WireMaterial
-        {
-            get
-            {
-                if (wireMaterial == null)
-                {
-                    wireMaterial = MaterialPool.MatFrom("Other/BundledWires", ShaderDatabase.Transparent, Color.white);
-                }
-                return wireMaterial;
             }
         }
 
@@ -206,18 +194,19 @@ namespace EBSGFramework
             }
         }
 
-        public override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();
+            base.TickInterval(delta);
+
             if (currentPawn != null && (currentPawn.CurJobDef != EBSGDefOf.EBSG_NeedCharge || currentPawn.CurJob.targetA.Thing != this))
                 StopCharging();
-            if (currentPawn != null && IsPowered && IsFueled)
+            else if (IsPowered && IsFueled)
             {
                 currentPawn.HandleNeedOffsets(Extension.needOffsetsPerHour, true, 1, true);
                 currentPawn.HandleDRGOffsets(Extension.resourceOffsetsPerHour, 1, true);
                 if (WasteProducer != null && Extension?.wastePerHourOfUse > 0)
                 {
-                    wasteProduced += Extension.wastePerHourOfUse * 0.0004f;
+                    wasteProduced += Extension.wastePerHourOfUse * 0.0004f * delta;
                     wasteProduced = Mathf.Clamp(wasteProduced, 0f, WasteProducedPerChargingCycle);
                     if (wasteProduced >= (float)WasteProducedPerChargingCycle && !Container.innerContainer.Any)
                     {
@@ -228,23 +217,31 @@ namespace EBSGFramework
                 if ((moteCablePulse == null || moteCablePulse.Destroyed) && Extension?.chargeMotePulse != null)
                     moteCablePulse = MoteMaker.MakeInteractionOverlay(Extension.chargeMotePulse, this, new TargetInfo(InteractionCell, base.Map));
                 moteCablePulse?.Maintain();
-            }
-            if (currentPawn != null && IsPowered && IsFueled && CurrentlyInUse)
-            {
-                if (sustainerCharging == null && Extension?.sustainerSound != null)
-                    sustainerCharging = Extension.sustainerSound.TrySpawnSustainer(SoundInfo.InMap(this));
-                sustainerCharging?.Maintain();
+
                 if ((moteCharging == null || moteCharging.Destroyed) && Extension?.chargeMote != null)
                     moteCharging = MoteMaker.MakeAttachedOverlay(currentPawn, ThingDefOf.Mote_MechCharging, Vector3.zero);
                 moteCharging?.Maintain();
             }
-            else if (sustainerCharging != null && (currentPawn == null || !IsPowered || !IsFueled))
+
+            if (wireExtensionTicks < 70)
+                wireExtensionTicks += delta;
+        }
+
+        protected override void Tick()
+        {
+            base.Tick();
+
+            if (IsPowered && IsFueled && CurrentlyInUse)
+            {
+                if (sustainerCharging == null && Extension?.sustainerSound != null)
+                    sustainerCharging = Extension.sustainerSound.TrySpawnSustainer(SoundInfo.InMap(this));
+                sustainerCharging?.Maintain();
+            }
+            else if (sustainerCharging != null)
             {
                 sustainerCharging.End();
                 sustainerCharging = null;
             }
-            if (wireExtensionTicks < 70)
-                wireExtensionTicks++;
         }
 
         public bool PawnShouldStop(Pawn pawn)

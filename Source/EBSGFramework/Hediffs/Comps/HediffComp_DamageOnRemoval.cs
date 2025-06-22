@@ -1,5 +1,4 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 
 namespace EBSGFramework
 {
@@ -13,6 +12,7 @@ namespace EBSGFramework
 
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity))
                 return;
+
             if (Props.neverWhenDead && Pawn.Dead) return;
 
             BodyPartRecord bodyPart = null;

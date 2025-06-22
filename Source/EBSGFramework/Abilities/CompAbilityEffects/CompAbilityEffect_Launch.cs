@@ -25,8 +25,8 @@ namespace EBSGFramework
                 transportComp.GetDirectlyHeldThings().TryAddOrTransfer(parent.pawn.SplitOff(1));
                 ThingOwner directlyHeldThings = transportComp.GetDirectlyHeldThings();
 
-                ActiveDropPod activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(Props.skyfallerArriving ?? ThingDefOf.ActiveDropPod);
-                activeDropPod.Contents = new ActiveDropPodInfo();
+                ActiveTransporter activeDropPod = (ActiveTransporter)ThingMaker.MakeThing(Props.skyfallerArriving ?? ThingDefOf.ActiveDropPod);
+                activeDropPod.Contents = new ActiveTransporterInfo();
                 activeDropPod.Contents.innerContainer.TryAddRangeOrTransfer(directlyHeldThings, true, true);
                 if (activeDropPod is FlyPawnArriving pawnArriving)
                     pawnArriving.pawn = parent.pawn;
@@ -34,7 +34,8 @@ namespace EBSGFramework
                 FlyShipLeaving obj = (FlyShipLeaving)SkyfallerMaker.MakeSkyfaller(Props.skyfallerLeaving ?? EBSGDefOf.EBSG_PawnLeaving, activeDropPod);
                 obj.groupID = transportComp.groupID;
                 obj.destinationTile = target.Tile;
-                obj.arrivalAction = new TransportPodsArrivalAction_FormCaravan("MessagePawnArrived");
+                
+                obj.arrivalAction = new TransportersArrivalAction_FormCaravan("MessagePawnArrived");
                 obj.worldObjectDef = Props.worldObject ?? EBSGDefOf.EBSG_PawnFlying;
                 if (obj is FlyPawnLeaving pawnLeaving)
                     pawnLeaving.pawn = parent.pawn;
@@ -48,18 +49,19 @@ namespace EBSGFramework
             {
                 Caravan caravan = parent.pawn.GetCaravan();
                 if (caravan == null) return;
+                
                 WorldObject newCaravan = WorldObjectMaker.MakeWorldObject(Props.worldObject ?? EBSGDefOf.EBSG_PawnFlying);
-                if (newCaravan is TravelingTransportPods transport)
+                if (newCaravan is TravellingTransporters transport)
                 {
                     transport.Tile = caravan.Tile;
                     transport.destinationTile = target.Tile;
-                    transport.arrivalAction = new TransportPodsArrivalAction_FormCaravan("MessagePawnArrived");
+                    transport.arrivalAction = new TransportersArrivalAction_FormCaravan("MessagePawnArrived");
                     if (transport is FlyingPawn flyingPawn)
                         flyingPawn.pawn = parent.pawn;
-                    ActiveDropPodInfo podInfo = new ActiveDropPodInfo();
+                    ActiveTransporterInfo podInfo = new ActiveTransporterInfo();
                     podInfo.innerContainer.TryAddRangeOrTransfer(caravan.AllThings);
                     podInfo.innerContainer.TryAddRangeOrTransfer(caravan.pawns);
-                    transport.AddPod(podInfo, false);
+                    transport.AddTransporter(podInfo, false);
                     Find.WorldObjects.Add(transport);
                     caravan.Destroy();
                 }

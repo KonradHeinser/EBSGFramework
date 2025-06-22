@@ -53,9 +53,9 @@ namespace EBSGFramework
                 else if (parent.Faction != null) faction = parent.Faction;
         }
 
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
-            base.CompTick();
+            base.CompTickInterval(delta);
 
             if (spawnLeft > 0 || spawnLeft == -1)
             {
@@ -75,7 +75,7 @@ namespace EBSGFramework
 
                 if (flag) return;
 
-                ticksLeft--;
+                ticksLeft -= delta;
 
                 if (ticksLeft <= 0)
                 {
@@ -220,7 +220,7 @@ namespace EBSGFramework
                         parent.Destroy();
 
                     if (spawnLeft > 0)
-                        ticksLeft = Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
+                        ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
                 }
             }
         }

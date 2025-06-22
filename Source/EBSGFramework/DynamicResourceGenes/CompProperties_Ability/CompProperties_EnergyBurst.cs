@@ -14,7 +14,9 @@ namespace EBSGFramework
         public ThingDef postExplosionThing = null; // This is usually what you want
         public float postExplosionThingChance = 0f;
         public int postExplosionSpawnThingCount = 1;
-        public Gases extraGasType = Gases.None; // Converted to gas type in comp
+        public GasType? extraGasType = null;
+        public float? gasRadiusOverride = null;
+        public int postExplosionGasAmount = 255;
         public bool applyDamageToExplosionCellsNeighbors = false; // Should probably stay this way
         public ThingDef preExplosionThing = null; // This is usually what you want
         public float preExplosionThingChance = 0f;
@@ -24,10 +26,7 @@ namespace EBSGFramework
         public float excludeRadius = 0f; // Usability is questionable
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
-        public bool injureSelf = false;
-        public bool injureAllies = true;
-        public bool injureNonHostiles = true;
-        public ExclusionLevel? exclusions;
+        public ExclusionLevel exclusions = ExclusionLevel.Self;
 
         public float resourceCost = 0; // Amount taken beforehand that alters how much the converted percentage can take, and doesn't directly change the radius or damage
         public float convertedResource = 0; // Flat amount used. Taken after percentage if applicable, though they probably shouldn't be used together

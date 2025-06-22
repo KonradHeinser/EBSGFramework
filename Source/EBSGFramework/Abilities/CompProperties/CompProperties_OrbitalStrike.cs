@@ -21,7 +21,10 @@ namespace EBSGFramework
         public float armorPenetration = -1f;
         public bool damageFalloff = false;
         public float fireChance = 1f;
-        public Gases extraGasType = Gases.None; // Converted to int in the comp and to gas type in the orbital strike thing
+
+        public GasType? extraGasType = null;
+        public float? gasRadiusOverride = null;
+        public int postExplosionGasAmount = 255;
 
         public SoundDef explosionSound = null;
         public ThingDef postExplosionThing = null; // This is usually what you want

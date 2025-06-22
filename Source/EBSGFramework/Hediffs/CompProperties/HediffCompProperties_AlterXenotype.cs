@@ -21,5 +21,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_AlterXenotype);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (xenotypes.NullOrEmpty())
+                yield return "xenotypes needs to contain something.";
+        }
     }
 }

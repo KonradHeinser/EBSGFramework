@@ -12,15 +12,15 @@ namespace EBSGFramework
             CheckAlteration();
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            base.CompPostTick(ref severityAdjustment);
+            base.CompPostTickInterval(ref severityAdjustment, delta);
             CheckAlteration();
         }
 
         private void CheckAlteration()
         {
-            if (Props.severities.Includes(parent.Severity))
+            if (Props.severities.ValidValue(parent.Severity))
             {
                 Pawn.AlterXenotype(Props.xenotypes, Props.filth, Props.filthCount, Props.setXenotype, Props.sendMessage);
                 Pawn.health.RemoveHediff(parent);

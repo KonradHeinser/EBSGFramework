@@ -273,9 +273,7 @@ namespace EBSGFramework
         public override void GizmoUpdateOnMouseover()
         {
             if (ability.verb is Verb_CastAbility verb_CastAbility)
-            {
-                verb_CastAbility.verbProps.DrawRadiusRing_NewTemp(verb_CastAbility.caster.Position, verb_CastAbility);
-            }
+                verb_CastAbility.verbProps.DrawRadiusRing(verb_CastAbility.caster.PositionHeld, verb_CastAbility);
 
             ability.OnGizmoUpdate();
         }

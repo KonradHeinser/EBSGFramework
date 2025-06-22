@@ -19,7 +19,7 @@ namespace EBSGFramework
             IntVec3 pos = target.Cell;
 
             PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind,
-                Props.inCreatorFaction ? Caster.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionType)),
+                Props.inCreatorFaction ? Caster.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionDef)),
                 forceGenerateNewPawn: true, developmentalStages: Props.stage);
 
             Lord lord = Caster.GetLord();

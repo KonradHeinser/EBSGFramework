@@ -20,10 +20,14 @@ namespace EBSGFramework
             int count = 0;
             foreach (Pawn p in list)
             {
-                if (p.Position.DistanceTo(pawn.Position) > radius) break;
-                if (p.Downed || p.Dead || p.Faction == null || p.Faction == pawn.Faction || p == pawn) continue;
+                if (p.Position.DistanceTo(pawn.Position) > radius) 
+                    break;
+
+                if (p.Downed || p.Dead || p.Faction == null || p.Faction == pawn.Faction || p == pawn) 
+                    continue;
+
                 CompCanBeDormant comp = p.GetComp<CompCanBeDormant>();
-                if (comp != null && !comp.Awake) continue;
+                if (comp?.Awake == false) continue;
                 count++;
                 if (count >= minCount) return true;
             }

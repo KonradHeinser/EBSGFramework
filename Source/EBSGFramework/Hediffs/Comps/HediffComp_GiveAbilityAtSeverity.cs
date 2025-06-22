@@ -17,9 +17,11 @@ namespace EBSGFramework
             CheckAbilities();
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (parent.Severity == previousSeverity || !Pawn.IsHashIntervalTick(60))
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (parent.Severity == previousSeverity)
                 return;
 
             CheckAbilities();
@@ -32,8 +34,7 @@ namespace EBSGFramework
 
             foreach (AbilitiesAtSeverities severitySet in Props.abilitiesAtSeverities)
             {
-                if (severitySet.validSeverity.ValidValue(parent.Severity) &&
-                    parent.Severity >= severitySet.minSeverity && parent.Severity <= severitySet.maxSeverity)
+                if (severitySet.validSeverity.ValidValue(parent.Severity))
                 {
                     if (severitySet.abilityDef != null)
                     {

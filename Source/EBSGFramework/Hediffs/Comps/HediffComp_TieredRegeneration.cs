@@ -16,8 +16,7 @@ namespace EBSGFramework
         // Stats from the current set
         private bool regrowthAllowed = false;
         private bool healAllowed = true;
-        private float tempMinSeverity;
-        private float tempMaxSeverity;
+        private FloatRange tempSeverityRange = FloatRange.Zero;
         public int regrowthInterval;
         public int healInterval;
         public int regrowTicksPerTick = 1;
@@ -26,9 +25,6 @@ namespace EBSGFramework
         private int repeatCount;
         List<Hediff_Injury> wounds;
 
-        // These are to allow the comp to check if it should be continuing to heal/regrow without having to go through the entire list every time
-
-
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             healWhileRegrowing = Props.healWhileRegrowing;
@@ -36,14 +32,125 @@ namespace EBSGFramework
             GetSet();
         }
 
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+        {
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (!tempSeverityRange.Includes(parent.Severity)) // This checks if the hediff is in a new set
+                GetSet();
+
+            if (healInProgress)
+            {
+                // Regrowth stuff
+                if (regrowTicksRemaining >= 0)
+                {
+                    Hediff missingPart = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.MissingBodyPart);
+
+                    if (missingPart == null || !regrowthAllowed) // If regrowth is no longer possible, quit trying to regrow
+                    {
+                        regrowTicksRemaining = -1;
+                    }
+                    else
+                    {
+                        regrowTicksRemaining -= regrowTicksPerTick * delta;
+                        if (regrowTicksRemaining <= 0) // Otherwise, if the ticks have hit zero, give the part back
+                        {
+                            Pawn.health.RemoveHediff(missingPart);
+                            regrowTicksRemaining = -1;
+                        }
+                    }
+                }
+                // Heal stuff
+                if (healTicksRemaining >= 0)
+                {
+                    GetWounds();
+
+                    if (wounds.Count == 0 || !healAllowed) // If there are no wounds or healing has been disabled, reset heal stuff
+                    {
+                        healTicksRemaining = -1;
+                    }
+                    else
+                    {
+                        healTicksRemaining -= healTicksPerTick * delta;
+                        if (healTicksRemaining <= 0) // If done healing, start grabbing random wounds and healing them
+                        {
+                            for (int i = 0; i > repeatCount; i++)
+                            {
+                                wounds.RandomElement().Severity -= healAmount;
+                            }
+                        }
+                    }
+                }
+
+                if (regrowTicksRemaining < 0 && healTicksRemaining < 0)
+                {
+                    healInProgress = false;
+                }
+                else if (healWhileRegrowing) // If both are supposed to be active at the same time, and one of them is still active, try to activate the other
+                {
+                    if (regrowTicksRemaining < 0 && regrowthAllowed) // If the inactive one is regrowth and there is a missing part, start the timer
+                    {
+                        Hediff missingPart = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.MissingBodyPart);
+                        if (missingPart != null)
+                            regrowTicksRemaining = regrowthInterval;
+                    }
+                    else if (healTicksRemaining < 0 && healAllowed) // If healing is the inactive one, and there are wounds to heal, start a timer
+                    {
+                        GetWounds();
+                        if (wounds.Count > 0)
+                            healTicksRemaining = healInterval;
+                    }
+                }
+            }
+            else
+            {
+                GetWounds();
+                Hediff missingPart = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.MissingBodyPart);
+
+                if (healWhileRegrowing) // If both are supposed to be active at the same time try to activate both. It checks if they are permitted just to ensure no weird xml inputs are given
+                {
+                    if (regrowthAllowed && missingPart != null) // If regrowth is permitted and there is a missing part, start the timer
+                    {
+                        regrowTicksRemaining = regrowthInterval;
+                    }
+                    if (healAllowed && wounds.Count > 0) // If healing is permitted and there are wounds to heal, start a timer
+                    {
+                        healTicksRemaining = healInterval;
+                    }
+                }
+                else if (prioritizeHeal) // If healing is prioritized, try to start that first
+                {
+                    if (healAllowed && wounds.Count > 0) // If healing is permitted and there are wounds to heal, start a timer
+                    {
+                        healTicksRemaining = healInterval;
+                    }
+                    else if (regrowthAllowed && missingPart != null) // If regrowth is permitted and there is a missing part, start the timer
+                    {
+                        regrowTicksRemaining = regrowthInterval;
+                    }
+                }
+                else // Catch tries to regrow first
+                {
+                    if (regrowthAllowed && missingPart != null) // If regrowth is permitted and there is a missing part, start the timer
+                    {
+                        regrowTicksRemaining = regrowthInterval;
+                    }
+                    if (healAllowed && wounds.Count > 0) // If healing is permitted and there are wounds to heal, start a timer
+                    {
+                        healTicksRemaining = healInterval;
+                    }
+                }
+                healInProgress |= (healTicksRemaining > 0 || regrowTicksRemaining > 0);
+            }
+        }
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             Hediff missingPart = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.MissingBodyPart);
 
-            if (parent.Severity < tempMinSeverity || parent.Severity > tempMaxSeverity) // This checks if the hediff is in a new set
-            {
+            if (!tempSeverityRange.Includes(parent.Severity)) // This checks if the hediff is in a new set
                 GetSet();
-            }
+            
             if (healInProgress)
             {
                 // Regrowth stuff
@@ -161,8 +268,7 @@ namespace EBSGFramework
         {
             foreach (RegenSet regenSet in Props.regenSets)
             {
-                if (regenSet.validSeverity.ValidValue(parent.Severity) &&
-                    parent.Severity >= regenSet.minSeverity && parent.Severity <= regenSet.maxSeverity)
+                if (regenSet.validSeverity.ValidValue(parent.Severity))
                 {
                     if (regenSet.ticksToRegrowPart > 0)
                     { 
@@ -181,17 +287,7 @@ namespace EBSGFramework
                     healAmount = regenSet.healAmount;
                     repeatCount = regenSet.repeatHealCount;
 
-                    if (regenSet.validSeverity != FloatRange.Zero)
-                    {
-                        tempMinSeverity = regenSet.validSeverity.min;
-                        tempMaxSeverity = regenSet.validSeverity.max;
-                    }
-                    else
-                    {
-                        tempMinSeverity = regenSet.minSeverity;
-                        tempMaxSeverity = regenSet.maxSeverity;
-                    }
-
+                    tempSeverityRange = regenSet.validSeverity;
                     healTicksPerTick = regenSet.healTicksPerTick;
                     regrowTicksPerTick = regenSet.regrowTicksPerTick;
 

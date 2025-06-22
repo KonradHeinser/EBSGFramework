@@ -9,9 +9,6 @@ namespace EBSGFramework
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
-            if (Props.lightToSeverityCurve == null)
-                parent.AddedHediffError(Pawn);
-
             if (Pawn.Map != null)
                 parent.Severity = Props.lightToSeverityCurve.Evaluate(Pawn.Map.glowGrid.GroundGlowAt(Pawn.Position));
             else if (Props.timeToSeverityCurve != null)

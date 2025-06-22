@@ -2,22 +2,25 @@
 
 namespace EBSGFramework
 {
-    public class HediffComp_ExplodeWhenDamaged : BurstHediffCompBase
+    public class HediffComp_ExplodeWhenDamaged : HediffComp
     {
         public new HediffCompProperties_ExplodeWhenDamaged Props => (HediffCompProperties_ExplodeWhenDamaged)props;
 
         public int cooldownTicks = 0; // Not saved because this is just to avoid performance issues
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (cooldownTicks > 0) cooldownTicks--;
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (cooldownTicks > 0)
+                cooldownTicks -= delta;
         }
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
-            if (cooldownTicks <= 0 && parent.Severity >= Props.minSeverity && parent.Severity < Props.maxSeverity)
+            if (cooldownTicks <= 0 && Props.validSeverities.ValidValue(parent.Severity))
             {
-                DoExplosion(parent.pawn.Position);
+                Props.explosion.DoExplosion(Pawn, Pawn.PositionHeld, Pawn.MapHeld, parent.Severity);
                 cooldownTicks = Props.cooldownTicks;
             }
         }

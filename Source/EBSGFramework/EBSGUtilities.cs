@@ -70,43 +70,6 @@ namespace EBSGFramework
             }
             return input;
         }
-
-        public static bool AbilityCompSucceeds(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
-        {
-            float finalChance = AbilityCompSuccessChance(baseChance, caster, casterStat, casterDivides, target, targetStat, targetMultiplies);
-
-            if (finalChance == 0) return false;
-            if (finalChance == 1) return true;
-            return Rand.RangeInclusive(0, 1) >= finalChance;
-        }
-
-        public static float AbilityCompSuccessChance(float baseChance, Pawn caster, StatDef casterStat, bool casterDivides, Pawn target, StatDef targetStat, bool targetMultiplies)
-        {
-            float finalChance = baseChance;
-
-            if (caster != null && casterStat != null)
-            {
-                float casterStatValue = caster.StatOrOne(casterStat);
-                if (!casterDivides) finalChance *= casterStatValue;
-                else if (casterStatValue <= 0) finalChance = 1; // Avoiding weird divisors making things act out of the expected
-                else finalChance /= caster.StatOrOne(casterStat);
-            }
-
-            if (target != null && targetStat != null)
-            {
-                float targetStatValue = target.StatOrOne(targetStat);
-                if (!targetMultiplies)
-                    // Avoids weird stat situations where we suddenly end up with a 0 or negative divisor by just making the result 1. That's presumably the general goal when lower is supposed to make the value higher
-                    if (targetStatValue <= 0) finalChance = 1;
-                    else finalChance /= targetStatValue;
-                else finalChance *= target.StatOrOne(targetStat);
-            }
-
-            if (finalChance <= 0) return 0f;
-            if (finalChance >= 1) return 1f;
-            return finalChance;
-        }
-
         public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null, List<BodyPartGroupDef> groups = null, List<ThingDef> exceptions = null)
         {
             if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 
@@ -157,12 +120,6 @@ namespace EBSGFramework
             }
             pawn = null;
             return false;
-        }
-
-        public static void AddedHediffError(this Hediff hediff, Pawn pawn)
-        {
-            Log.Error(hediff.def + " is missing things that are required for one of its EBSG comps. Removing the hediff to avoid more errors.");
-            pawn.health.RemoveHediff(hediff);
         }
 
         public static int RemoveAllOfHediffs(this Pawn pawn, List<Hediff> hediffs)
@@ -452,7 +409,7 @@ namespace EBSGFramework
         {
             if (hediffToParts != null)
             {
-                if (!pawn.WithinAges(hediffToParts.validAges) && !pawn.WithinAges(hediffToParts.minAge, hediffToParts.maxAge))
+                if (!pawn.WithinAges(hediffToParts.validAges))
                 {
                     if (removeWhenBeyondAges)
                         pawn.RemoveHediffsFromParts(null, hediffToParts);
@@ -493,7 +450,7 @@ namespace EBSGFramework
             {
                 foreach (HediffToParts hediffParts in hediffs)
                 {
-                    if (!WithinAges(pawn, hediffParts.validAges) || !WithinAges(pawn, hediffParts.minAge, hediffParts.maxAge))
+                    if (!WithinAges(pawn, hediffParts.validAges))
                     {
                         if (removeWhenBeyondAges)
                             pawn.RemoveHediffsFromParts(null, hediffParts);
@@ -1385,7 +1342,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void HandleNeedOffsets(this Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        public static void HandleNeedOffsets(this Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false, int delta = 1)
         {
             if (needOffsets.NullOrEmpty() || pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) return;
             List<Need> alreadyPickedNeeds = new List<Need>();
@@ -1406,12 +1363,12 @@ namespace EBSGFramework
                     if (needOffset.offsetFactorStat != null) offset *= pawn.StatOrOne(needOffset.offsetFactorStat);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
-                    need.CurLevel += offset;
+                    need.CurLevel += offset * delta;
                 }
             }
         }
 
-        public static void HandleDRGOffsets(this Pawn pawn, List<GeneEffect> geneEffects, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false)
+        public static void HandleDRGOffsets(this Pawn pawn, List<GeneEffect> geneEffects, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false, int delta = 1)
         {
             if (geneEffects.NullOrEmpty() || pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return;
 
@@ -1423,7 +1380,7 @@ namespace EBSGFramework
                     if (geneEffect.statFactor != null) offset *= pawn.StatOrOne(geneEffect.statFactor);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
-                    ResourceGene.OffsetResource(pawn, offset, resourceGene);
+                    ResourceGene.OffsetResource(pawn, offset * delta, resourceGene);
                 }
             }
         }

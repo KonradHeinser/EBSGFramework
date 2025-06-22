@@ -16,7 +16,8 @@ namespace EBSGFramework
         public override void CompTick()
         {
             base.CompTick();
-            if (!PowerOn || Casket == null || !Casket.PawnInside || !Casket.IsContentsSuspended)
+            if (parent.IsHashIntervalTick(50) && 
+                (!PowerOn || Casket == null || !Casket.PawnInside || !Casket.IsContentsSuspended))
             {
                 cachedPowerOutput = 0f;
                 return;

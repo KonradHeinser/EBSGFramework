@@ -538,8 +538,8 @@ namespace EBSGFramework
                             contentRect.height = (settings.Count + 1) * 35;
                             if (optionsMenu.ButtonTextLabeledPct("EBSG_ChooseCategory".Translate(), treeLabelsAndDescs[currentThinkMenu][0], 0.25f))
                                 Find.WindowStack.Add(new FloatMenu(thinkMenus));
-                            
-                            optionsMenu.Label(treeLabelsAndDescs[currentThinkMenu][0], -1, treeLabelsAndDescs[currentThinkMenu][1]);
+
+                            optionsMenu.Label(treeLabelsAndDescs[currentThinkMenu][0], tooltip: treeLabelsAndDescs[currentThinkMenu][1]);
                             optionsMenu.Gap(7f);
 
                             foreach (ThinkBranchSetting branchSetting in settings)

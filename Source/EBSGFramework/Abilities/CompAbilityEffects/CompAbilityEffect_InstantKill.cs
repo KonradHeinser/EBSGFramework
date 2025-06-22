@@ -25,9 +25,8 @@ namespace EBSGFramework
                     {
                         IntVec3 c = initialPosition;
                         if (randomInRange > 1)
-                        {
                             c = c.RandomAdjacentCell8Way();
-                        }
+                        
                         if (randomInRange > 10)
                         {
                             float radiusChecker = 10;
@@ -42,9 +41,7 @@ namespace EBSGFramework
                             ThingDef bloodType = victim.RaceProps.BloodDef;
 
                             if (Props.filthReplacement != null && Props.filthReplacement.thingClass == typeof(Filth))
-                            {
                                 bloodType = Props.filthReplacement;
-                            }
 
                             FilthMaker.TryMakeFilth(c, victim.MapHeld, bloodType, victim.LabelShort);
                         }

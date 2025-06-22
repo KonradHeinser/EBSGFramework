@@ -6,17 +6,13 @@ namespace EBSGFramework
 {
     public class EBSGExtension : DefModExtension
     {
-        public SimpleCurve peopleToMoodCurve;
-        public GeneDef relatedGene;
         public List<GeneDef> relatedGenes;
         public bool checkEvolutionsPostAdd = false;
         public List<GeneticEvolution> geneticEvolutions;
-        public bool checkNotPresent = false;
         public bool hideInGeneTabWhenInactive = false;
         public bool hideAllInactiveGenesForXenotype = false;
         public bool hideAllInactiveSkinColorGenesForXenotype = false;
         public bool hideAllInactiveHairColorGenesForXenotype = false;
-        public List<int> thresholds;
         public List<GeneticMultiplier> geneticMultipliers;
         public float universalMoodFactor = 1;
         public List<GenderByAge> genderByAge;
@@ -41,8 +37,7 @@ namespace EBSGFramework
 
         public float newBaseValue = -1f;
         public int clotCheckInterval = 360; // Shouldn't be below 60, but I won't force it. This just determines how often it tries to heal, so a lower number means it's less likely that there will be a delay in clotting
-        public float minTendQuality = 0.2f; // Never below 0
-        public float maxTendQuality = 0.7f; // Never over 1
+        public FloatRange tendQuality = new FloatRange(0.2f, 0.7f);
 
         // Raceprop conditionals
         public bool allowHumanlikes = true;
@@ -95,14 +90,6 @@ namespace EBSGFramework
         public List<NeedOffset> needOffsetsPerHourInTerribleBiome;
         public List<NeedOffset> needOffsetsPerHourInAbysmalBiome;
         public List<NeedOffset> needOffsetsPerHourWhileRaining;
-
-        // Used in ThoughtWorker_Gene_GeneSocial
-        public bool compoundingHatred = false; // When true, each gene that is found in checked genes increases the stage
-        public bool opinionOfAllOthers = false; // Makes the thought apply to all others instead of just those with checked genes. Intended for xenophobe/xenophile
-        public bool xenophilobic = true;
-        public List<GeneDef> checkedGenes; // Genes checked for opinions
-        public List<GeneDef> nullifyingGenes; // Genes checked for early nullification
-        public List<GeneDef> requiredGenes; // The observer musthave one of these genes to feel anything. Acts as a reverse nullifyingGenes
 
         // Curves that can be added to a gene to give pawns an additional age multiplier
         public SimpleCurve fertilityAgeAdditionalFactor;

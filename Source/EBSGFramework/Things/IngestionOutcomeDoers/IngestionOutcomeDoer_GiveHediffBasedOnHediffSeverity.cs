@@ -96,7 +96,7 @@ namespace EBSGFramework
             }
 
             if (divideByBodySize) effect /= pawn.BodySize;
-            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize_NewTemp(pawn, toleranceChemical, ref effect, multiplyByGeneToleranceFactors);
+            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref effect, multiplyByGeneToleranceFactors);
 
             pawn.AddOrAppendHediffs(effect, effect, hediffDef);
         }

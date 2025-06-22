@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -9,6 +10,15 @@ namespace EBSGFramework
         public HediffCompProperties_SeverityByTimeOfDay()
         {
             compClass = typeof(HediffComp_SeverityByTimeOfDay);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (timeToSeverityCurve == null)
+                yield return "timeToSeverityCurve needs to have something in it so severity can be calculated.";
         }
     }
 }

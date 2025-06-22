@@ -42,7 +42,7 @@ namespace EBSGFramework
             }
             
             PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, 
-                    Props.inCreatorFaction ? source.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionType)), 
+                    Props.inCreatorFaction ? source.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionDef)), 
                     forceGenerateNewPawn: true, developmentalStages: Props.stage);
 
             Lord lord = null;

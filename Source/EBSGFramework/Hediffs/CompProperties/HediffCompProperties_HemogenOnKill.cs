@@ -7,10 +7,6 @@ namespace EBSGFramework
     {
         // Only works on things that can bleed to avoid weird situations
 
-        public float minSeverity = 0f;
-
-        public float maxSeverity = 99999f;
-
         public FloatRange validSeverity = FloatRange.Zero;
 
         public float maxDistance = 4.9f;

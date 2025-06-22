@@ -20,5 +20,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_SeverityByGenes);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in base.ConfigErrors(parentDef))
+                yield return error;
+
+            if (geneEffects.NullOrEmpty())
+                yield return "geneEffects is required to calculate severity.";
+        }
     }
 }

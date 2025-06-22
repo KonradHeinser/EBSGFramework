@@ -24,25 +24,13 @@ namespace EBSGFramework
 
         public List<GeneDef> noneOfGenes;
 
-        public float minPartOfDay = 0f;
-
-        public float maxPartOfDay = 1f;
-
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
         public bool inPollution = false;
 
         public bool notInPollution = false;
 
-        public float minLightLevel = 0f;
-
-        public float maxLightLevel = 1f;
-
         public FloatRange lightLevel = FloatRange.ZeroToOne;
-
-        public float minTemp = -9999f;
-
-        public float maxTemp = 9999f;
 
         public FloatRange temps = new FloatRange(-9999, 9999);
 
@@ -59,14 +47,6 @@ namespace EBSGFramework
         public bool forbiddenConditions = false;
 
         public bool checkRoof = true;
-
-        public float minimumRainRate = 0f;
-
-        public float maximumRainRate = 9999f;
-
-        public float minimumSnowRate = 0f;
-
-        public float maximumSnowRate = 9999f;
 
         public FloatRange rainRate = new FloatRange(0, 9999);
 
@@ -98,12 +78,8 @@ namespace EBSGFramework
                 if (!pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
                 if (!pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 
-                if (minPartOfDay > 0 || maxPartOfDay < 1 || progressThroughDay != FloatRange.ZeroToOne)
-                {
-                    float time = GenLocalDate.DayPercent(pawn);
-                    if (!progressThroughDay.Includes(time)) return false;
-                    if (time < minPartOfDay && time > maxPartOfDay) return false;
-                }
+                if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)))
+                    return false;
 
                 if (pawn.Spawned)
                 {
@@ -114,23 +90,14 @@ namespace EBSGFramework
                     if (notInPollution && position.IsPolluted(map)) return false;
 
                     var roofed = position.Roofed(pawn.Map);
-                    if ((minimumRainRate > 0 || minimumSnowRate > 0 || rainRate.min > 0 || snowRate.min > 0)
-                        && checkRoof && roofed) return false;
+                    if ((rainRate.min > 0 || snowRate.min > 0) && checkRoof && roofed) 
+                        return false;
 
-                    if (minLightLevel > 0 || maxLightLevel < 1 || lightLevel != FloatRange.ZeroToOne)
-                    {
-                        float light = map.glowGrid.GroundGlowAt(position);
-                        if (!lightLevel.Includes(light)) return false;
-                        if (light < minLightLevel || light > maxLightLevel)
+                    if (!lightLevel.ValidValue(map.glowGrid.GroundGlowAt(position))) 
                             return false;
-                    }
 
-                    if (minTemp != -9999f || maxTemp != 9999f || temps != new FloatRange(-9999, 9999))
-                    {
-                        float temp = position.GetTemperature(map);
-                        if (!temps.Includes(temp)) return false;
-                        if (temp < minTemp && temp > maxTemp) return false;
-                    }
+                    if (!temps.ValidValue(position.GetTemperature(map)))
+                        return false;
 
                     if (!CheckWater(position, map))
                         if (!terrains.NullOrEmpty())
@@ -157,26 +124,22 @@ namespace EBSGFramework
                     if (map.weatherManager != null)
                     {
                         WeatherManager weather = map.weatherManager;
-                        var rain = map.weatherManager.RainRate;
-                        var snow = map.weatherManager.SnowRate;
 
-                        if ((!checkRoof || !roofed) &&
-                            (minimumRainRate > rain) || (minimumSnowRate > snow) ||
-                            (maximumRainRate < rain) || (maximumSnowRate < snow))
-                            return false;
-
-
-                        if (!rainRate.ValidValue(rain) && (!checkRoof || !roofed))
-                            return false;
-
-                        if (!snowRate.ValidValue(snow) && (!checkRoof || !roofed))
-                            return false;
-
-                        if (weathers.Contains(weather.curWeather))
+                        if (!checkRoof || !roofed)
                         {
-                            if (forbiddenWeathers) return false;
+                            if (!rainRate.ValidValue(weather.RainRate))
+                                return false;
+
+                            if (!snowRate.ValidValue(weather.SnowRate))
+                                return false;
                         }
-                        else if (!forbiddenWeathers) return false;
+
+                        if (!weathers.NullOrEmpty())
+                            if (weathers.Contains(weather.curWeather))
+                            {
+                                if (forbiddenWeathers) return false;
+                            }
+                            else if (!forbiddenWeathers) return false;
                     }
                 }
                 else return defaultActive;

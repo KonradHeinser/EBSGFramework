@@ -8,12 +8,6 @@ namespace EBSGFramework
     {
         private HediffCompProperties_SeverityPerDayByGenes Props => (HediffCompProperties_SeverityPerDayByGenes)props;
 
-        public override void CompPostPostAdd(DamageInfo? dinfo)
-        {
-            if (Props.geneEffects.NullOrEmpty())
-                parent.AddedHediffError(parent.pawn);
-        }
-
         public override void CompPostTick(ref float severityAdjustment)
         {
             if (Pawn.IsHashIntervalTick(200))
@@ -26,12 +20,8 @@ namespace EBSGFramework
             float newSeverity = baseSeverity * pawn.StatOrOne(baseSeverityStatFactor);
 
             foreach (GeneEffect geneEffect in geneEffects)
-            {
                 if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
-                {
                     newSeverity += geneEffect.effect * pawn.StatOrOne(geneEffect.statFactor) * pawn.StatOrOne(geneEffectStatFactor);
-                }
-            }
 
             hediff.Severity += newSeverity * pawn.StatOrOne(globalStatFactor) * 0.003334f;
         }

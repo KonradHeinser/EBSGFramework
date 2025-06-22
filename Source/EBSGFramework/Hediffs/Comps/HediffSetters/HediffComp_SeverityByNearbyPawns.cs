@@ -9,18 +9,15 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByNearbyPawns Props => (HediffCompProperties_SeverityByNearbyPawns)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (Props.onlyDifferentFaction && Props.onlySameFaction)
-            {
-                Log.Error(parent.def + ": has both onlySameFaction and onlyDifferentFaction, which makes no sense for obvious reasons");
-                Pawn.health.RemoveHediff(parent);
-                return;
-            }
-            float range = Props.range;
-            if (Props.rangeStat != null && parent.pawn.GetStatValue(Props.rangeStat) > 0) range = parent.pawn.GetStatValue(Props.rangeStat);
+            base.CompPostTickInterval(ref severityAdjustment, delta);
 
-            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawns.Where((Pawn p) => CheckPawn(p, range)).ToList();
+            float range = Props.range;
+            if (Props.rangeStat != null && Pawn.StatOrOne(Props.rangeStat) > 0) 
+                range = Pawn.StatOrOne(Props.rangeStat);
+
+            List<Pawn> list = Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => CheckPawn(p, range)).ToList();
             parent.Severity = list.Count;
         }
 
@@ -28,17 +25,17 @@ namespace EBSGFramework
         {
             if (p.Dead) return false;
             if (!p.RaceProps.Humanlike && Props.onlyHumanlikes) return false;
-            if (p == parent.pawn)
+            if (p == Pawn)
             {
                 if (!Props.includeSelf) return false;
             }
             else
             {
-                if (Props.onlySameFaction && p.Faction != parent.pawn.Faction) return false;
-                if (Props.onlyDifferentFaction && (p.Faction == null || p.Faction == parent.pawn.Faction)) return false;
-                if (Props.onlyEnemies && !p.HostileTo(parent.pawn)) return false;
+                if (Props.onlySameFaction && p.Faction != Pawn.Faction) return false;
+                if (Props.onlyDifferentFaction && (p.Faction == null || p.Faction == Pawn.Faction)) return false;
+                if (Props.onlyEnemies && !p.HostileTo(Pawn)) return false;
             }
-            if (p.Position.DistanceTo(parent.pawn.Position) > range) return false;
+            if (p.Position.DistanceTo(Pawn.Position) > range) return false;
             return true;
         }
     }

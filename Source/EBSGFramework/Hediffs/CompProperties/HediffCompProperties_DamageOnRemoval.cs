@@ -25,5 +25,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_DamageOnRemoval);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (damage == null)
+                yield return "damage needs to be set.";
+        }
     }
 }

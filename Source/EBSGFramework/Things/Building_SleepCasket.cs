@@ -126,12 +126,12 @@ namespace EBSGFramework
             }
         }
 
-        public override void Tick()
+        protected override void TickInterval(int delta)
         {
-            base.Tick();
+            base.TickInterval(delta);
             if (def.building.defaultStorageSettings != null)
             {
-                storedNutrition = Mathf.Clamp(storedNutrition - NutritionConsumedPerTick, 0f, 2.1474836E+09f);
+                storedNutrition = Mathf.Clamp(storedNutrition - NutritionConsumedPerTick * delta, 0f, 2.1474836E+09f);
                 if (storedNutrition <= 0f)
                     TryAbsorbNutritiousThing();
             }

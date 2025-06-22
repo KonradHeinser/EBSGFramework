@@ -33,7 +33,7 @@ namespace EBSGFramework
 
             Room room = boundBed.GetRoom();
             if (room == null) return ThoughtState.Inactive;
-            int stage = -1;
+            int stage;
             // If they are not wild or it is supposed to be outside, set the stage to 0
             if ((!p.IsWildMan() || def.stages[0].baseMoodEffect > 0) && room.PsychologicallyOutdoors) stage = 0;
             else stage = RoomStatDefOf.Impressiveness.GetScoreStageIndex(room.GetStat(RoomStatDefOf.Impressiveness)) + 1;

@@ -6,7 +6,7 @@ namespace EBSGFramework
     {
         private HediffCompProperties_HediffWhileMoving Props => (HediffCompProperties_HediffWhileMoving)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
             if (Pawn.pather.Moving)
             {

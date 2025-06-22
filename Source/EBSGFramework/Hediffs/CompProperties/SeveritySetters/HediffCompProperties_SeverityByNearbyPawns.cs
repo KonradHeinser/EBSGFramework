@@ -1,5 +1,6 @@
 ﻿using Verse;
 using RimWorld;
+using System.Collections.Generic;
 
 namespace EBSGFramework
 {
@@ -18,6 +19,15 @@ namespace EBSGFramework
         public HediffCompProperties_SeverityByNearbyPawns()
         {
             compClass = typeof(HediffComp_SeverityByNearbyPawns);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (onlyDifferentFaction && onlySameFaction)
+                yield return "Both onlySameFaction and onlyDifferentFaction, which makes no sense for obvious reasons";
         }
     }
 }

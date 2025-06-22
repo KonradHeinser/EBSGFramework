@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -10,12 +11,15 @@ namespace EBSGFramework
         public StatDef statRadius;
         public DamageDef damageDef;
         public int damageAmount = -1;
+        public StatDef damageStat;
         public float armorPenetration = -1f;
         public SoundDef explosionSound = null;
         public ThingDef postExplosionThing = null; // This is usually what you want
         public float postExplosionThingChance = 0f;
         public int postExplosionSpawnThingCount = 1;
-        public Gases extraGasType = Gases.Smoke; // Converted to gas type below
+        public GasType? extraGasType = null; // Converted to gas type below
+        public float? gasRadiusOverride = null;
+        public int postExplosionGasAmount = 255;
         public bool applyDamageToExplosionCellsNeighbors = false; // Should probably stay this way
         public ThingDef preExplosionThing = null;
         public float preExplosionThingChance = 0f;
@@ -28,8 +32,13 @@ namespace EBSGFramework
         public ExclusionLevel exclusions = ExclusionLevel.Self;
         public EffecterDef effecter;
         public int effecterTicks = 0;
+        
 
-        public void DoExplosion(Thing caster, LocalTargetInfo target, Map map)
+        // Hediff stuff
+        public bool multiplyRadiusBySeverity = false;
+        public bool multiplyDamageBySeverity = false;
+
+        public void DoExplosion(Thing caster, LocalTargetInfo target, Map map, float severity = 1f)
         {
             if (map == null) return;
             List<Thing> ignoreList = new List<Thing>();
@@ -48,12 +57,27 @@ namespace EBSGFramework
                 }
             }
 
+            int damage = damageAmount;
+            if (damageStat != null)
+            {
+                if (caster.StatOrOne(damageStat) > 0)
+                    damage = Mathf.CeilToInt(caster.StatOrOne(damageStat));
+                else
+                    damage = 0;
+            }
+            if (multiplyDamageBySeverity)
+                damage = Mathf.CeilToInt(damage * severity);
+
             float r = radius;
             if (statRadius != null)
             {
-                if (caster.GetStatValue(statRadius) > 0) r = caster.GetStatValue(statRadius);
-                else r = 0;
+                if (caster.StatOrOne(statRadius) > 0) 
+                    r = caster.StatOrOne(statRadius);
+                else 
+                    r = 0;
             }
+            if (multiplyRadiusBySeverity)
+                r *= severity;
 
             Faction faction;
             faction = caster?.Faction;
@@ -87,23 +111,14 @@ namespace EBSGFramework
                     break;
             }
 
-            if ((int)extraGasType != 1)
-            {
-                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, damageDef, caster, damageAmount,
-                armorPenetration, explosionSound, null, null, null, postExplosionThing, postExplosionThingChance,
-                postExplosionSpawnThingCount, (GasType)(int)extraGasType, applyDamageToExplosionCellsNeighbors,
-                preExplosionThing, preExplosionThingChance, preExplosionSpawnThingCount, chanceToStartFire,
-                damageFalloff, null, ignoreList, null, true, 1f, excludeRadius, true,
-                postExplosionThingWater, screenShakeFactor);
-            }
-            else
-            {
-                GenExplosion.DoExplosion(target.Cell, caster.Map, radius, damageDef, caster, damageAmount,
-                armorPenetration, explosionSound, null, null, null, postExplosionThing, postExplosionThingChance,
-                postExplosionSpawnThingCount, null, applyDamageToExplosionCellsNeighbors, preExplosionThing,
-                preExplosionThingChance, preExplosionSpawnThingCount, chanceToStartFire, damageFalloff, null, ignoreList,
-                null, true, 1f, excludeRadius, true, postExplosionThingWater, screenShakeFactor);
-            }
+
+            GenExplosion.DoExplosion(target.Cell, caster.Map, radius, damageDef, caster, damage,
+                armorPenetration, explosionSound, null, null, null, postExplosionThing,
+                postExplosionThingChance, postExplosionSpawnThingCount, extraGasType,
+                gasRadiusOverride, postExplosionGasAmount, applyDamageToExplosionCellsNeighbors,
+                preExplosionThing, preExplosionThingChance, preExplosionSpawnThingCount,
+                chanceToStartFire, damageFalloff, null, ignoreList, null, true, 1f, excludeRadius,
+                true, postExplosionThingWater, screenShakeFactor);
         }
     }
 }

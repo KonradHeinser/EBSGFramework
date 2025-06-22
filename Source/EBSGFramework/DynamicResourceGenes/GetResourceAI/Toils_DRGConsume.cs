@@ -27,7 +27,7 @@ namespace EBSGFramework
                         thing4.Map.physicalInteractionReservationManager.Reserve(consumer, deliverer.CurJob, thing4);
                 }
             };
-            toil.tickAction = delegate
+            toil.tickIntervalAction = delegate(int delta)
             {
                 if (consumer != deliverer)
                     deliverer.rotationTracker.FaceCell(consumer.Position);
@@ -40,7 +40,7 @@ namespace EBSGFramework
                     else if (eatSurfaceInd != 0 && deliverer.CurJob.GetTarget(eatSurfaceInd).IsValid)
                         deliverer.rotationTracker.FaceCell(deliverer.CurJob.GetTarget(eatSurfaceInd).Cell);
                 }
-                deliverer.GainComfortFromCellIfPossible();
+                deliverer.GainComfortFromCellIfPossible(delta);
             };
             toil.WithProgressBar(consumeInd, delegate
             {

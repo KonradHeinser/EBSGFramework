@@ -91,7 +91,7 @@ namespace EBSGFramework
 
                     if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
                         foreach (HediffToParts hediffToParts in Extension.hediffsToApplyAtAges)
-                            if (pawn.ageTracker.AgeBiologicalYearsFloat > hediffToParts.minAge && pawn.ageTracker.AgeBiologicalYearsFloat < hediffToParts.maxAge)
+                            if (hediffToParts.validAges.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
                                 if (hediffToParts.bodyParts.NullOrEmpty())
                                     if (pawn.HasHediff(hediffToParts.hediff))
                                     {
@@ -123,13 +123,8 @@ namespace EBSGFramework
 
             // Mutation should always be the last thing processed, along with anything else attached to the timer
             if (delayTicks < 0) return;
-            if (delayTicks == 0)
-            {
-                if (Extension != null)
-                {
-                    if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
-                }
-            }
+            if (delayTicks == 0 && Extension?.mutationGeneSets.NullOrEmpty() == false)
+                pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
             delayTicks--;
         }
 

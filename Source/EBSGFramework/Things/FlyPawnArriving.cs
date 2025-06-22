@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EBSGFramework
 {
-    public class FlyPawnArriving : ActiveDropPod
+    public class FlyPawnArriving : ActiveTransporter
     {
         public Pawn pawn;
 

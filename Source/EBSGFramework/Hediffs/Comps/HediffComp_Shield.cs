@@ -145,46 +145,41 @@ namespace EBSGFramework
             return true;
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            base.CompPostTick(ref severityAdjustment);
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (ticksToReset > 0)
+            {
+                ticksToReset -= delta;
+
+                if (ticksToReset <= 0)
+                    Reset();
+                else
+                    return;
+            }
 
             if (Props.attachedMoteDef != null)
             {
                 if (attachedMote == null || attachedMote.Destroyed)
-                {
                     attachedMote = MoteMaker.MakeAttachedOverlay(Pawn, Props.attachedMoteDef, Props.attachedMoteOffset, Props.attachedMoteScale);
-                }
-
-                attachedMote.Maintain();
+                attachedMote?.Maintain();
             }
 
-            if (Props.attachedEffecterDef != null)
+            if (energy < MaxEnergy)
+                energy = Math.Min(energy + EnergyRechargeRate * delta, MaxEnergy);
+        }
+
+        public override void CompPostTick(ref float severityAdjustment)
+        {
+            base.CompPostTick(ref severityAdjustment);
+
+            if (ticksToReset <= 0 && Props.attachedEffecterDef != null)
             {
                 if (attachedEffecter == null)
-                {
                     attachedEffecter = Props.attachedEffecterDef.SpawnAttached(Pawn, Pawn.Map);
-                }
-
                 attachedEffecter.EffectTick(Pawn, Pawn);
             }
-
-            if (ticksToReset > 0)
-            {
-                ticksToReset--;
-
-                if (ticksToReset <= 0)
-                {
-                    Reset();
-                }
-            }
-
-            if (energy >= MaxEnergy)
-            {
-                return;
-            }
-
-            energy = Math.Min(energy + EnergyRechargeRate, MaxEnergy);
         }
 
         public override void CompPostPostAdd(DamageInfo? dinfo)

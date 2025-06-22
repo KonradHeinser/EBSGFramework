@@ -51,30 +51,27 @@ namespace EBSGFramework
             }
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            base.CompPostTick(ref severityAdjustment);
+            base.CompPostTickInterval(ref severityAdjustment, delta);
 
-            if (Pawn.IsHashIntervalTick(60))
+            // This checks to make sure this is the hediff that is supposed to be messing with stuff right now
+            var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
+            for (int i = otherHediffs.Count - 1; i >= 0; i--)
             {
-                // This checks to make sure this is the hediff that is supposed to be messing with stuff right now
-                var otherHediffs = new List<Hediff>(Pawn.health.hediffSet.hediffs);
-                for (int i = otherHediffs.Count - 1; i >= 0; i--)
-                {
-                    if (otherHediffs[i] == parent)
-                        break;
+                if (otherHediffs[i] == parent)
+                    break;
 
-                    if (otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>() != null)
-                        return;
-                }
+                if (otherHediffs[i].TryGetComp<HediffComp_TemporaryFaction>() != null)
+                    return;
+            }
 
-                if (GetFaction() && Pawn.Faction != faction)
-                {
-                    Pawn.SetFaction(faction, ParentTarget);
-                    Pawn.GetLord()?.RemovePawn(Pawn);
-                    if (!Props.useStatic)
-                        ParentTarget.GetLord()?.AddPawn(Pawn);
-                }
+            if (GetFaction() && Pawn.Faction != faction)
+            {
+                Pawn.SetFaction(faction, ParentTarget);
+                Pawn.GetLord()?.RemovePawn(Pawn);
+                if (!Props.useStatic)
+                    ParentTarget.GetLord()?.AddPawn(Pawn);
             }
         }
 

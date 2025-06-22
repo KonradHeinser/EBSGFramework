@@ -11,31 +11,25 @@ namespace EBSGFramework
 
         public HediffCompProperties_GiveHediffsInRangeGeneRestricting Props => (HediffCompProperties_GiveHediffsInRangeGeneRestricting)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
             if (!parent.pawn.Awake() || parent.pawn.health == null || parent.pawn.health.InPainShock || !parent.pawn.Spawned)
-            {
                 return;
-            }
+            
             if (!Props.hideMoteWhenNotDrafted || parent.pawn.Drafted)
             {
                 if (Props.mote != null && (mote == null || mote.Destroyed))
-                {
                     mote = MoteMaker.MakeAttachedOverlay(parent.pawn, Props.mote, Vector3.zero);
-                }
-                if (mote != null)
-                {
-                    mote.Maintain();
-                }
+                mote?.Maintain();
             }
-            List<Pawn> list = null;
-            list = ((!Props.onlyPawnsInSameFaction || parent.pawn.Faction == null) ? parent.pawn.Map.mapPawns.AllPawns : parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction));
+            List<Pawn> list = ((!Props.onlyPawnsInSameFaction || parent.pawn.Faction == null) ? parent.pawn.Map.mapPawns.AllPawns : parent.pawn.Map.mapPawns.SpawnedPawnsInFaction(parent.pawn.Faction));
             foreach (Pawn item in list)
             {
                 if (!item.RaceProps.Humanlike || item.Dead || item.health == null || item == parent.pawn || !(item.Position.DistanceTo(parent.pawn.Position) <= Props.range) || !Props.targetingParameters.CanTarget(item) || (!Props.forbiddenGenes.NullOrEmpty() && item.PawnHasAnyOfGenes(out var gene, Props.forbiddenGenes)))
-                {
                     continue;
-                }
+                
                 Hediff hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
                 if (hediff == null)
                 {
@@ -50,13 +44,9 @@ namespace EBSGFramework
                 }
                 HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
                 if (hediffComp_Disappears == null)
-                {
                     Log.Error("HediffComp_GiveHediffsInRangeGeneRestricting has a hediff in props which does not have a HediffComp_Disappears");
-                }
                 else
-                {
-                    hediffComp_Disappears.ticksToDisappear = 5;
-                }
+                    hediffComp_Disappears.ticksToDisappear = 30;
             }
         }
     }

@@ -33,15 +33,11 @@ namespace EBSGFramework
         public float genericMeatIngestionEffect = 0f; // This is just raw meat
 
         // Can offset conditions
-        public float minLightLevel = 0f;
-        public float maxLightLevel = 1f;
         public FloatRange lightLevel = FloatRange.ZeroToOne;
         public List<NeedLevel> needLevels;
         public List<HediffDef> requiredHediffs; // Require all of these on the pawn
         public List<HediffDef> requireOneOfHediffs; // Require any one of these on the pawn
         public List<HediffDef> forbiddenHediffs; // Require none of these are on the pawn
-        public float startTime = 0f; // Midnight
-        public float endTime = 1f; // Minute before midnight
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
         // Tied to ResourceDrainGene

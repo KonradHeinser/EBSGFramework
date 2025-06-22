@@ -20,5 +20,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_SeverityPerDayByGenes);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (geneEffects.NullOrEmpty())
+                yield return "geneEffects needs to be set.";
+        }
     }
 }

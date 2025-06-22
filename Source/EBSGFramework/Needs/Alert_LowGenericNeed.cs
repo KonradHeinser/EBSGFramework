@@ -34,7 +34,7 @@ namespace EBSGFramework
             {
                 relatedColonistsResult.Clear();
                 needLabels.Clear();
-                foreach (Pawn pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists_NoSuspended)
+                foreach (Pawn pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_AliveSpawned_FreeColonistsAndPrisoners_NoCryptosleep)
                 {
                     if (pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) continue;
 

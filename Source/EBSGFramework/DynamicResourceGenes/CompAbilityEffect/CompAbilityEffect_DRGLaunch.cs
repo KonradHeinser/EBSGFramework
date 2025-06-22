@@ -49,15 +49,15 @@ namespace EBSGFramework
             transportComp.GetDirectlyHeldThings().TryAddOrTransfer(parent.pawn.SplitOff(1));
             ThingOwner directlyHeldThings = transportComp.GetDirectlyHeldThings();
 
-            ActiveDropPod activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(ThingDefOf.ActiveDropPod);
-            activeDropPod.Contents = new ActiveDropPodInfo();
+            ActiveTransporter activeDropPod = (ActiveTransporter)ThingMaker.MakeThing(ThingDefOf.ActiveDropPod);
+            activeDropPod.Contents = new ActiveTransporterInfo();
             activeDropPod.Contents.innerContainer.TryAddRangeOrTransfer(directlyHeldThings, true, true);
 
             FlyShipLeaving obj = (FlyShipLeaving)SkyfallerMaker.MakeSkyfaller(Props.skyfallerLeaving ?? ThingDefOf.DropPodLeaving, activeDropPod);
             obj.groupID = transportComp.groupID;
             obj.destinationTile = target.Tile;
-            obj.arrivalAction = new TransportPodsArrivalAction_FormCaravan("MessagePawnArrived");
-            obj.worldObjectDef = Props.worldObject ?? WorldObjectDefOf.TravelingTransportPods;
+            obj.arrivalAction = new TransportersArrivalAction_FormCaravan("MessagePawnArrived");
+            obj.worldObjectDef = Props.worldObject ?? WorldObjectDefOf.TravellingTransporters;
 
             transportComp.CleanUpLoadingVars(map);
             transportComp.parent.Destroy();

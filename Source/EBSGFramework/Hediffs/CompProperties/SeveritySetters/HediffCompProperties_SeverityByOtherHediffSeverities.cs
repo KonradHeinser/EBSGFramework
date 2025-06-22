@@ -13,5 +13,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_SeverityByOtherHediffSeverities);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (hediffSets.NullOrEmpty())
+                yield return "hediffSets needs to have at least one item in it to calculate severity.";
+        }
     }
 }

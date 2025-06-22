@@ -8,50 +8,30 @@ namespace EBSGFramework
     {
         private HediffCompProperties_SeverityByGenes Props => (HediffCompProperties_SeverityByGenes)props;
 
+        private GeneDef lastGene = null;
+
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
-            if (Props.geneEffects.NullOrEmpty())
-            {
-                Log.Error(Def + " doesn't have any gene effects specified, so severity cannot be assigned.");
-                parent.Severity = 0;
-            }
-            else
-            {
-                SetSeverity(parent, Pawn, Props.geneEffects, Props.baseSeverity, Props.baseSeverityStatFactor, Props.geneEffectStatFactor, Props.globalStatFactor);
-            }
+            SetSeverity();
         }
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (Pawn.IsHashIntervalTick(300))
-            {
-                if (Props.geneEffects.NullOrEmpty())
-                {
-                    Log.Error(Def + " doesn't have any gene effects specified, so severity cannot be assigned.");
-                    parent.Severity = 0;
-                }
-                else
-                {
-                    SetSeverity(parent, Pawn, Props.geneEffects, Props.baseSeverity, Props.baseSeverityStatFactor, Props.geneEffectStatFactor, Props.globalStatFactor);
-                }
-            }
+            if (Pawn.genes.GenesListForReading.GetLast().def != lastGene || Pawn.IsHashIntervalTick(2500))
+                SetSeverity();
         }
 
-        public static void SetSeverity(Hediff hediff, Pawn pawn, List<GeneEffect> geneEffects, float baseSeverity = 1,
-            StatDef baseSeverityStatFactor = null, StatDef geneEffectStatFactor = null, StatDef globalStatFactor = null)
+        public void SetSeverity()
         {
-            float newSeverity = baseSeverity * pawn.StatOrOne(baseSeverityStatFactor);
+            float newSeverity = Props.baseSeverity * Pawn.StatOrOne(Props.baseSeverityStatFactor);
 
-            foreach (GeneEffect geneEffect in geneEffects)
-            {
-                if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
-                {
-                    newSeverity += geneEffect.effect * pawn.StatOrOne(geneEffect.statFactor) * pawn.StatOrOne(geneEffectStatFactor);
-                }
-            }
+            foreach (GeneEffect geneEffect in Props.geneEffects)
+                if (Pawn.HasRelatedGene(geneEffect.gene) && Pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && Pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
+                    newSeverity += geneEffect.effect * Pawn.StatOrOne(geneEffect.statFactor) * Pawn.StatOrOne(Props.geneEffectStatFactor);
 
-            hediff.Severity = newSeverity * pawn.StatOrOne(globalStatFactor);
+            parent.Severity = newSeverity * Pawn.StatOrOne(Props.globalStatFactor);
+            lastGene = Pawn.genes.GenesListForReading.GetLast().def;
         }
     }
 }

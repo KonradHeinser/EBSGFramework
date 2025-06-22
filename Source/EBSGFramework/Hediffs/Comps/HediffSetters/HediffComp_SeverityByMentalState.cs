@@ -6,12 +6,13 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByMentalState Props => (HediffCompProperties_SeverityByMentalState)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (!parent.pawn.IsHashIntervalTick(100)) return;
-            Pawn pawn = parent.pawn;
+            base.CompPostTickInterval(ref severityAdjustment, delta);
 
-            if (pawn.InMentalState && !Props.mentalStateEffects.NullOrEmpty())
+            if (!Pawn.IsHashIntervalTick(60)) return;
+
+            if (Pawn.InMentalState && !Props.mentalStateEffects.NullOrEmpty())
             {
                 foreach (MentalStateEffect mentalStateEffect in Props.mentalStateEffects)
                 {
@@ -20,12 +21,12 @@ namespace EBSGFramework
                         parent.Severity = mentalStateEffect.mentalSeverity;
                         return;
                     }
-                    if (mentalStateEffect.mentalState != null && pawn.MentalStateDef == mentalStateEffect.mentalState)
+                    if (mentalStateEffect.mentalState != null && Pawn.MentalStateDef == mentalStateEffect.mentalState)
                     {
                         parent.Severity = mentalStateEffect.mentalSeverity;
                         return;
                     }
-                    if (!mentalStateEffect.mentalStates.NullOrEmpty() && mentalStateEffect.mentalStates.Contains(pawn.MentalStateDef))
+                    if (!mentalStateEffect.mentalStates.NullOrEmpty() && mentalStateEffect.mentalStates.Contains(Pawn.MentalStateDef))
                     {
                         parent.Severity = mentalStateEffect.mentalSeverity;
                         return;
@@ -33,8 +34,8 @@ namespace EBSGFramework
                 }
             }
 
-            if (pawn.GetCurrentTarget() != null) parent.Severity = Props.fightingSeverity;
-            else if (pawn.Drafted) parent.Severity = Props.draftedSeverity;
+            if (Pawn.GetCurrentTarget() != null) parent.Severity = Props.fightingSeverity;
+            else if (Pawn.Drafted) parent.Severity = Props.draftedSeverity;
             else parent.Severity = Props.defaultSeverity;
         }
     }

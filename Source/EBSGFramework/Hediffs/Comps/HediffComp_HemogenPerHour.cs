@@ -14,20 +14,21 @@ namespace EBSGFramework
             get
             {
                 if (cachedGene == null)
-                    cachedGene = Pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
+                    cachedGene = Pawn.genes?.GetFirstGeneOfType<Gene_Hemogen>();
 
                 return cachedGene;
             }
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (Pawn.IsHashIntervalTick(200) && Pawn.genes != null && Gene != null)
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (Gene != null)
             {
                 try
                 {
-                    if ((Props.validHemogen != FloatRange.Zero && !Props.validHemogen.Includes(Gene.Value)) ||
-                        Gene.Value < Props.minHemogen || Gene.Value > Props.maxHemogen)
+                    if ((!Props.validHemogen.ValidValue(Gene.Value)))
                     {
                         if (Props.removeWhenLimitsPassed)
                             Pawn.health.RemoveHediff(parent);
@@ -41,9 +42,8 @@ namespace EBSGFramework
                         return;
                 }
                 if (!Props.validSeverity.ValidValue(parent.Severity)) return;
-                if (parent.Severity < Props.minSeverity || parent.Severity > Props.maxSeverity) return;
 
-                Gene.Value += Props.hemogenPerHour * 0.08f;
+                GeneUtility.OffsetHemogen(Pawn, Props.hemogenPerHour / 2500f * (float)delta);
             }
         }
     }

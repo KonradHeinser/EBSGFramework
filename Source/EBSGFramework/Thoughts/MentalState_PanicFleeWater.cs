@@ -15,10 +15,9 @@ namespace EBSGFramework
             return RandomSocialMode.Off;
         }
 
-        public override void MentalStateTick()
+        public override void MentalStateTick(int delta)
         {
-            base.MentalStateTick();
-
+            base.MentalStateTick(delta);
             if (pawn.IsHashIntervalTick(30))
                 if (lastWaterSeenTick < 0 || NearbyWater())
                     lastWaterSeenTick = Find.TickManager.TicksGame;

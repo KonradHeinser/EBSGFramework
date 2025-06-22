@@ -18,24 +18,25 @@ namespace EBSGFramework
             tick = Math.Min(Props.initialTick, Props.tickInterval);
         }
 
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
             if (!parent.Casting) return;
-            base.CompTick();
+            base.CompTickInterval(delta);
+
             if (tick == null)
                 tick = Math.Min(Props.initialTick, Props.tickInterval);
-            
-            if (tick == Props.tickInterval)
+
+            if (tick >= Props.tickInterval)
             {
-                tick = 0;
+                tick -= Props.tickInterval;
                 Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
                 BodyPartRecord hitPart = null;
-                if (!Props.bodyParts.NullOrEmpty() && target is Pawn t) 
+                if (!Props.bodyParts.NullOrEmpty() && target is Pawn t)
                     hitPart = t.GetSemiRandomPartFromList(Props.bodyParts);
                 target.TakeDamage(new DamageInfo(Props.damage, Props.damageAmount, Props.armorPenetration, hitPart: hitPart, spawnFilth: Props.createFilth));
             }
             else
-                tick++;
+                tick += delta;
         }
 
         public void Interrupted(Pawn target)

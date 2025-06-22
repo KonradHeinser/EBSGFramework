@@ -15,7 +15,8 @@ namespace EBSGFramework
 
             if (pawn.genes.GetGene(gene) is Gene_Resource resourceGene)
             {
-                if (useTargetValue) return resourceGene.Value >= resourceGene.targetValue;
+                if (useTargetValue) 
+                    return resourceGene.Value >= resourceGene.targetValue;
                 return resourceGene.Value >= minLevel;
             }
             Log.Error(gene + " doesn't appear to be a resource gene");

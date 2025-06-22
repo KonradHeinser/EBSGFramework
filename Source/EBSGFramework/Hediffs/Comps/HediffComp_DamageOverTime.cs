@@ -6,12 +6,6 @@ namespace EBSGFramework
     {
         public HediffCompProperties_DamageOverTime Props => (HediffCompProperties_DamageOverTime)props;
 
-        public override void CompPostPostAdd(DamageInfo? dinfo)
-        {
-            if (Props.damage == null)
-                parent.AddedHediffError(Pawn);
-        }
-
         public override void CompPostTick(ref float severityAdjustment)
         {
             if (Pawn.IsHashIntervalTick(Props.tickInterval))

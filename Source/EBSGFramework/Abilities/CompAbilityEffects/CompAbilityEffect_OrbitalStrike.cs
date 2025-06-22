@@ -53,7 +53,11 @@ namespace EBSGFramework
                 obj.armorPenetration = Props.armorPenetration;
                 obj.damageFalloff = Props.damageFalloff;
                 obj.impactAreaRadius = Props.explosionRadius.Average * 2;
-                obj.extraGasType = (int)Props.extraGasType;
+
+                obj.extraGasType = Props.extraGasType;
+                obj.gasRadiusOverride = Props.gasRadiusOverride;
+                obj.postExplosionGasAmount = Props.postExplosionGasAmount;
+
                 obj.fireChance = Props.fireChance;
                 obj.screenShakeFactor = Props.screenShakeFactor;
 

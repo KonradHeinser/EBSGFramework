@@ -15,20 +15,6 @@ namespace EBSGFramework
 
         public SuccessChance successChance;
 
-        public float baseSuccessChance = 1f;
-
-        public StatDef casterStatChance;
-
-        public bool casterStatDivides = false;
-
-        public StatDef targetStatChance;
-
-        public bool targetStatMultiplies = false;
-
-        public string successMessage = null;
-
-        public string failureMessage = null;
-
         public CompProperties_CreateLinkedHediff()
         {
             compClass = typeof(CompAbilityEffect_CreateLinkedHediff);

@@ -11,7 +11,6 @@ namespace EBSGFramework
         {
             if (!victim.health.CanBleed || Pawn.genes == null || 
                 !Props.validSeverity.ValidValue(parent.Severity) ||
-                parent.Severity < Props.minSeverity || parent.Severity > Props.maxSeverity ||
                 (Props.maxDistance > 0 && Pawn.Position.DistanceTo(victim.Position) > Props.maxDistance) || Props.hemogenEfficiency <= 0) return;
 
             if (!Props.forbiddenTargetGenes.NullOrEmpty() && victim.HasAnyOfRelatedGene(Props.forbiddenTargetGenes)) return;

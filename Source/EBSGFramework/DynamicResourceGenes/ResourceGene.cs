@@ -57,12 +57,14 @@ namespace EBSGFramework
                         if (pawn.Spawned)
                         {
                             float time = GenLocalDate.DayPercent(Pawn);
-                            if (time < extension.startTime || time > extension.endTime) return false;
+                            if (!extension.progressThroughDay.Includes(time))
+                                return false;
 
                             if (pawn.Map != null)
                             {
                                 float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
-                                if (light < extension.minLightLevel || light > extension.maxLightLevel) return false;
+                                if (!extension.lightLevel.Includes(light))
+                                    return false;
                             }
                         }
 
@@ -99,19 +101,22 @@ namespace EBSGFramework
         private float GetLossPerDay()
         {
             if (extension == null) InitializeExtension();
-            if (extension.passiveFactorStat != null) return def.resourceLossPerDay * pawn.GetStatValue(extension.passiveFactorStat);
+            if (extension.passiveFactorStat != null) 
+                return def.resourceLossPerDay * pawn.GetStatValue(extension.passiveFactorStat);
             return def.resourceLossPerDay;
         }
 
         public Color GetColor()
         {
-            if (def.HasModExtension<DRGExtension>()) return def.GetModExtension<DRGExtension>().barColor;
+            if (def.HasModExtension<DRGExtension>()) 
+                return def.GetModExtension<DRGExtension>().barColor;
             return new ColorInt(138, 3, 3).ToColor;
         }
 
         public Color GetHighlightColor()
         {
-            if (def.HasModExtension<DRGExtension>()) return def.GetModExtension<DRGExtension>().barHighlightColor;
+            if (def.HasModExtension<DRGExtension>()) 
+                return def.GetModExtension<DRGExtension>().barHighlightColor;
             return new ColorInt(145, 42, 42).ToColor;
         }
 
@@ -123,7 +128,8 @@ namespace EBSGFramework
             HediffAdder.HediffAdding(pawn, this);
             if (EBSGExtension != null)
             {
-                if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                if (addedAbilities == null) 
+                    addedAbilities = new List<AbilityDef>();
                 SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
                 SpawnAgeLimiter.LimitAge(pawn, EBSGExtension.expectedAges, EBSGExtension.ageRange, EBSGextension.sameBioAndChrono);
             }
@@ -135,9 +141,7 @@ namespace EBSGFramework
             HediffAdder.HediffRemoving(pawn, this);
 
             if (!addedAbilities.NullOrEmpty())
-            {
                 pawn.RemovePawnAbilities(addedAbilities);
-            }
         }
 
         public List<IGeneResourceDrain> DrainGenes
@@ -147,12 +151,9 @@ namespace EBSGFramework
                 tmpDrainGenes.Clear();
                 List<Gene> genesListForReading = pawn.genes.GenesListForReading;
                 for (int i = 0; i < genesListForReading.Count; i++)
-                {
                     if (genesListForReading[i] is IGeneResourceDrain geneResourceDrain && genesListForReading[i].def.HasModExtension<DRGExtension>() && genesListForReading[i].def.GetModExtension<DRGExtension>().mainResourceGene == def)
-                    {
                         tmpDrainGenes.Add(geneResourceDrain);
-                    }
-                }
+
                 return tmpDrainGenes;
             }
         }
@@ -168,48 +169,44 @@ namespace EBSGFramework
             if (thing.def.IsMeat)
             {
                 if (ingestible.sourceDef?.race?.Humanlike == true)
-                {
                     OffsetResource(pawn, extension.humanlikeIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-                }
                 else
-                {
                     OffsetResource(pawn, extension.genericMeatIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-                }
             }
+        }
+
+        public override void TickInterval(int delta)
+        {
+            base.TickInterval(delta);
+
+            if (extension == null && !extensionAlreadyChecked)
+                InitializeExtension();
+
+            if (extension != null && (extension.maxStat != null || extension.maxFactorStat != null))
+                CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
+
+            OffsetResource(pawn, ResourceLossPerDay * -1 * delta, this, extension, false, true, true);
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (pawn.IsHashIntervalTick(200))
+            if (pawn.IsHashIntervalTick(200) && EBSGExtension?.geneAbilities.NullOrEmpty() == false && 
+                pawn.genes.GenesListForReading.Count != cachedGeneCount)
             {
-                if (EBSGExtension?.geneAbilities.NullOrEmpty() == false && pawn.genes.GenesListForReading.Count != cachedGeneCount)
-                {
-                    if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
-                    addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGExtension.geneAbilities, addedAbilities);
-                    cachedGeneCount = pawn.genes.GenesListForReading.Count;
-                }
+                if (addedAbilities == null) 
+                    addedAbilities = new List<AbilityDef>();
+
+                addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, EBSGExtension.geneAbilities, addedAbilities);
+                cachedGeneCount = pawn.genes.GenesListForReading.Count;
             }
 
-            if (pawn.IsHashIntervalTick(2500))
-            {
-                if (EBSGExtension?.genderByAge.NullOrEmpty() == false && (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
-                    SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
-            }
-
-            if (extension == null && !extensionAlreadyChecked)
-            {
-                InitializeExtension();
-            }
-
-            if (extension != null)
-            {
-                if (extension.maxStat != null || extension.maxFactorStat != null) CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
-            }
-            OffsetResource(pawn, ResourceLossPerDay * -1, this, extension, false, true, true);
+            if (pawn.IsHashIntervalTick(2500) && EBSGExtension?.genderByAge.NullOrEmpty() == false && 
+                (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
+                SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
         }
-
+        
         public void CreateMax(float maximum = 1f, StatDef maxStat = null, StatDef maxFactorStat = null)
         {
             float newMax;

@@ -25,25 +25,6 @@ namespace EBSGFramework
                 return ThoughtState.Inactive;
             }
 
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            if (!extension.checkNotPresent)
-            {
-                foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
-                {
-                    if (item.HasRelatedGene(extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
-                    {
-                        return ThoughtState.ActiveDefault;
-                    }
-                }
-                return ThoughtState.Inactive;
-            }
-            foreach (Pawn item in p.MapHeld.mapPawns.AllPawnsSpawned)
-            {
-                if (!item.HasRelatedGene(extension.relatedGene) && (item.IsPrisonerOfColony || item.IsSlaveOfColony || item.IsColonist))
-                {
-                    return ThoughtState.ActiveDefault;
-                }
-            }
             return ThoughtState.Inactive;
         }
     }

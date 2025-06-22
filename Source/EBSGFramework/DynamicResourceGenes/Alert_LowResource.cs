@@ -48,11 +48,10 @@ namespace EBSGFramework
         {
             targets.Clear();
             targetLabels.Clear();
-            if (!ModsConfig.BiotechActive || (Cache != null && Cache.dynamicResourceGenes.NullOrEmpty()))
-            {
+            if (!ModsConfig.BiotechActive || Cache?.dynamicResourceGenes.NullOrEmpty() != false)
                 return;
-            }
-            foreach (Pawn item in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive)
+            
+            foreach (Pawn item in PawnsFinder.AllCaravansAndTravellingTransporters_Alive)
             {
                 if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer && item.genes != null)
                 {

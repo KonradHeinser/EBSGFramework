@@ -251,8 +251,9 @@ namespace EBSGFramework
             sustainer = null;
         }
 
-        public override void PostDeSpawn(Map map)
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
+            base.PostDeSpawn(map, mode);
             Unbind();
         }
 
@@ -277,9 +278,7 @@ namespace EBSGFramework
         public override void CompTickRare()
         {
             if (PowerTraderComp != null)
-            {
                 PowerTraderComp.PowerOutput = ((presenceTicks > 0) ? (0f - PowerTraderComp.Props.PowerConsumption) : (0f - PowerTraderComp.Props.idlePowerDraw));
-            }
         }
 
         public void BindTo(Pawn pawn)

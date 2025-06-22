@@ -20,12 +20,10 @@ namespace EBSGFramework
 
         public List<List<TerrainDistance>> nearbyTerrainsNeeded;
 
-        public int minTemp = -100; // Not presently in use. Left for potential expansion in the future
+        public IntRange validTemps = new IntRange(-99999); // Not presently in use. Left for potential expansion
 
-        public int maxTemp = 100; // Not presently in use. Left for potential expansion in the future
+        public List<BiomeDef> validBiomes; // Not presently in use. Left for potential expansion
 
-        public List<BiomeDef> validBiomes; // Not presently in use. Left for potential expansion in the future
-
-        public List<BiomeDef> forbiddenBiomes; // Not presently in use. Left for potential expansion in the future
+        public List<BiomeDef> forbiddenBiomes; // Not presently in use. Left for potential expansion
     }
 }

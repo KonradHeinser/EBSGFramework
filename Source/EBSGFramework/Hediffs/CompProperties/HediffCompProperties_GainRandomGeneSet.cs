@@ -12,8 +12,6 @@ namespace EBSGFramework
         public List<GeneDef> alwaysAddedGenes; // These genes will be added regardless of the set picked
         public List<GeneDef> alwaysRemovedGenes; // These genes will be removed regardless of set picked
 
-        public float minSeverity = 0; // Sets the minimum severity that the hediff must be at to start gene generation. Once this is reached, the hediff will disappear shortly after
-        public float maxSeverity = 999; // If a hediff goes down in severity, use this instead of min
         public FloatRange validSeverity = FloatRange.Zero;
         public bool removeHediffAfterwards = true; // Only set to false if the hediff has other comps that you want to keep around.
         public bool showMessage = true; // Give message when done
@@ -21,6 +19,15 @@ namespace EBSGFramework
         public HediffCompProperties_GainRandomGeneSet()
         {
             compClass = typeof(HediffComp_GainRandomGeneSet);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (geneSets.NullOrEmpty())
+                yield return "geneSets needs to be set.";
         }
     }
 }

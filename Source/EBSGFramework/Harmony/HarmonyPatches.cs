@@ -93,8 +93,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
             
             // Coma Gene stuff
-            harmony.Patch(AccessTools.Method(typeof(FloatMenuMakerMap), "AddHumanlikeOrders"),
-                postfix: new HarmonyMethod(patchType, nameof(AddHumanlikeOrdersPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Food), "IsFrozen"),
                 postfix: new HarmonyMethod(patchType, nameof(NeedFrozenPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Learning), "IsFrozen"),
@@ -881,35 +879,19 @@ namespace EBSGFramework
                     float num = 1f;
                     GRCExtension extension = gene.GetModExtension<GRCExtension>();
                     if (extension.carrierStat != null)
-                    {
-                        float statValue = otherPawn.StatOrOne(extension.carrierStat, extension.carrierReq);
-                        if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                        else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                        else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                    }
+                        num *= otherPawn.StatOrOne(extension.carrierStat, extension.carrierReq);
+
                     if (!extension.carrierStats.NullOrEmpty())
                         foreach (StatDef stat in extension.carrierStats)
-                        {
-                            float statValue = otherPawn.StatOrOne(stat, extension.carrierReq);
-                            if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                        }
+                            num *= otherPawn.StatOrOne(stat, extension.carrierReq);
+
                     if (extension.otherStat != null)
-                    {
-                        float statValue = ___pawn.StatOrOne(extension.otherStat, extension.otherReq);
-                        if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                        else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                        else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                    }
+                        num *= ___pawn.StatOrOne(extension.otherStat, extension.otherReq);
+
                     if (!extension.otherStats.NullOrEmpty())
                         foreach (StatDef stat in extension.otherStats)
-                        {
-                            float statValue = ___pawn.StatOrOne(stat, extension.otherReq);
-                            if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                        }
+                            num *= ___pawn.StatOrOne(stat, extension.otherReq);
+
                     __result = Mathf.Clamp01(__result * num);
                     if (__result == 0) return;
             }
@@ -921,50 +903,28 @@ namespace EBSGFramework
                 romancer.GetAllGenesOnListFromPawn(Cache.grcGenes, out var matches))
             {
                 float num = 1f;
-                bool flag = false;
 
                 foreach (GeneDef gene in matches)
                 {
                     GRCExtension extension = gene.GetModExtension<GRCExtension>();
                     if (extension.carrierStat != null)
-                    {
-                        float statValue = romancer.StatOrOne(extension.carrierStat, extension.carrierReq);
-                        if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                        else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                        else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                    }
+                        num *= romancer.StatOrOne(extension.carrierStat, extension.carrierReq);
+                    
                     if (!extension.carrierStats.NullOrEmpty())
                         foreach (StatDef stat in extension.carrierStats)
-                        {
-                            float statValue = romancer.StatOrOne(stat, extension.carrierReq);
-                            if (extension.onlyWhileLoweredCarrier && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedCarrier && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredCarrier && !extension.onlyWhileRaisedCarrier) num *= statValue;
-                        }
+                            num *= romancer.StatOrOne(stat, extension.carrierReq);
+
                     if (extension.otherStat != null)
-                    {
-                        float statValue = romanceTarget.StatOrOne(extension.otherStat, extension.otherReq);
-                        if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                        else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                        else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                    }
+                        num *= romanceTarget.StatOrOne(extension.otherStat, extension.otherReq);
+
                     if (!extension.otherStats.NullOrEmpty())
                         foreach (StatDef stat in extension.otherStats)
-                        {
-                            float statValue = romanceTarget.StatOrOne(stat, extension.otherReq);
-                            if (extension.onlyWhileLoweredOther && statValue < 1) num *= statValue;
-                            else if (extension.onlyWhileRaisedOther && statValue > 1) num *= statValue;
-                            else if (!extension.onlyWhileLoweredOther && !extension.onlyWhileRaisedOther) num *= statValue;
-                        }
-                    flag = true;
+                            num *= romanceTarget.StatOrOne(stat, extension.otherReq);
                 }
 
-                if (flag)
-                {
-                    StringBuilder stringBuilder = new StringBuilder(__result);
-                    stringBuilder.AppendLine(" - " + "EBSG_GeneticRomanceChance".Translate() + ": x" + num.ToStringPercent());
-                    __result = stringBuilder.ToString();
-                }
+                StringBuilder stringBuilder = new StringBuilder(__result);
+                stringBuilder.AppendLine(" - " + "EBSG_GeneticRomanceChance".Translate() + ": x" + num.ToStringPercent());
+                __result = stringBuilder.ToString();
             }
         }
 
@@ -1870,101 +1830,6 @@ namespace EBSGFramework
                 __result = !t.PositionHeld.Roofed(t.MapHeld);
         }
 
-        public static void AddHumanlikeOrdersPostfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> opts)
-        {
-            IntVec3 clickCell = IntVec3.FromVector3(clickPos);
-            if (clickCell.GetThingList(pawn.Map).NullOrEmpty()) return; // If there are no Things, then there's nothing I'd be able to do anyway
-
-            if (Cache?.ComaNeedsExist() == true && pawn.genes != null)
-            {
-                Building_Bed bed = null;
-
-                foreach (Thing thing in clickCell.GetThingList(pawn.Map))
-                    if (thing.def.IsBed)
-                    {
-                        bed = thing as Building_Bed;
-                        break;
-                    }
-                if (bed == null || bed.IsForbidden(pawn) || !pawn.CanReserve(bed)) return;
-
-                Gene_Coma comaGene = pawn.genes.GetFirstGeneOfType<Gene_Coma>();
-                if (comaGene != null)
-                {
-                    // Always ensures the coma gene closest to empty is used. This shouldn't really be needed, but I can't assume that everyone listens to my warning
-                    float needLevel = comaGene.ComaNeed.CurLevel;
-
-                    foreach (Gene gene in pawn.genes.GenesListForReading)
-                        if (gene is Gene_Coma coma && coma.ComaNeed.CurLevel < needLevel)
-                        {
-                            comaGene = coma;
-                            needLevel = coma.ComaNeed.CurLevel;
-                        }
-
-                    if (!pawn.CanReach(bed, PathEndMode.OnCell, Danger.Deadly))
-                    {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "NoPath".Translate().CapitalizeFirst(), null));
-                        return;
-                    }
-                    AcceptanceReport acceptanceReport2 = bed.CompAssignableToPawn.CanAssignTo(pawn);
-                    if (!acceptanceReport2.Accepted)
-                    {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + acceptanceReport2.Reason, null));
-                        return;
-                    }
-                    if ((!bed.CompAssignableToPawn.HasFreeSlot || !RestUtility.BedOwnerWillShare(bed, pawn, pawn.guest.GuestStatus)) && !bed.IsOwner(pawn))
-                    {
-                        opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "AssignedToOtherPawn".Translate(bed).CapitalizeFirst(), null));
-                        return;
-                    }
-
-                    if (comaGene.ComaExtension.needBedOutOfSunlight)
-                        foreach (IntVec3 item25 in bed.OccupiedRect())
-                            if (item25.GetRoof(bed.Map) == null)
-                            {
-                                opts.Add(new FloatMenuOption("EBSG_CannotRest".Translate(comaGene.ComaExtension.noun).CapitalizeFirst() + ": " + "ThingIsSkyExposed".Translate(bed).CapitalizeFirst(), null));
-                                return;
-                            }
-                    if (RestUtility.IsValidBedFor(bed, pawn, pawn, true, false, false, pawn.GuestStatus))
-                        opts.Add(new FloatMenuOption("EBSG_StartRest".Translate(comaGene.ComaExtension.gerund), delegate
-                        {
-                            Job job25 = JobMaker.MakeJob(comaGene.ComaExtension.relatedJob, bed);
-                            job25.forceSleep = true;
-                            pawn.jobs.TryTakeOrderedJob(job25, JobTag.Misc);
-                        }));
-                }
-            }
-
-            if (Cache?.abilityFuel.NullOrEmpty() == false && pawn.PawnHasAnyOfAbilities(Cache.reloadableAbilities, out var abilities) &&
-                EBSGUtilities.GetThings(clickCell.GetThingList(pawn.Map), Cache.abilityFuel, out var things))
-            {
-                foreach (Ability ability in abilities)
-                {
-                    CompAbilityEffect_Reloadable reloadable = ability.CompOfType<CompAbilityEffect_Reloadable>();
-                    if (reloadable.Props.ammoDef == null) continue;
-                    foreach (Thing thing in things)
-                        if (reloadable.Props.ammoDef == thing.def && !thing.IsForbidden(pawn) && pawn.CanReserve(thing))
-                        {
-                            string baseExplanation = "EBSG_Recharge".Translate(ability.def.LabelCap);
-                            if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Deadly))
-                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "NoPath".Translate().CapitalizeFirst(), null));
-                            else if (thing.stackCount < reloadable.Props.ammoPerCharge)
-                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadNotEnough".Translate().CapitalizeFirst(), null));
-                            else if (reloadable.ChargesNeeded <= 0)
-                                opts.Add(new FloatMenuOption(baseExplanation + ": " + "ReloadFull".Translate(), null));
-                            else
-                                opts.Add(new FloatMenuOption(baseExplanation, delegate
-                                {
-                                    Job job = JobMaker.MakeJob(EBSGDefOf.EBSG_ReloadAbility, thing);
-                                    job.count = Mathf.Min(thing.stackCount, reloadable.ChargesNeeded * reloadable.Props.ammoPerCharge);
-                                    job.ability = ability;
-                                    pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
-                                }));
-                            break;
-                        }
-                }
-            }
-        }
-
         public static bool ClaimBedIfNonMedicalPrefix(ref bool __result, Building_Bed newBed, Pawn ___pawn)
         {
             CompComaGeneBindable compComaRestBindable = newBed.TryGetComp<CompComaGeneBindable>();
@@ -2374,11 +2239,11 @@ namespace EBSGFramework
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity) return true;
+                    if (explodingComp != null && explodingComp.Props.validSeverities.ValidValue(hediff.Severity)) return true;
                     HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                    if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity) return true;
+                    if (rangedExplodingComp != null && rangedExplodingComp.Props.validSeverities.ValidValue(hediff.Severity)) return true;
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                    if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity) return true;
+                    if (meleeExplodingComp != null && meleeExplodingComp.Props.validSeverities.ValidValue(hediff.Severity)) return true;
                 }
 
             return false;
@@ -2390,13 +2255,13 @@ namespace EBSGFramework
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null && dinfo.Def == explodingComp.Props.damageDef && explodingComp.currentlyExploding) return true;
+                    if (explodingComp != null && dinfo.Def == explodingComp.Props.explosion.damageDef && explodingComp.currentlyExploding) return true;
 
                     HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                    if (rangedExplodingComp != null && dinfo.Def == rangedExplodingComp.Props.damageDef && rangedExplodingComp.currentlyExploding) return true;
+                    if (rangedExplodingComp != null && dinfo.Def == rangedExplodingComp.Props.explosion.damageDef && rangedExplodingComp.currentlyExploding) return true;
 
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                    if (meleeExplodingComp != null && dinfo.Def == meleeExplodingComp.Props.damageDef && meleeExplodingComp.currentlyExploding) return true;
+                    if (meleeExplodingComp != null && dinfo.Def == meleeExplodingComp.Props.explosion.damageDef && meleeExplodingComp.currentlyExploding) return true;
                 }
             return false;
         }
@@ -2555,29 +2420,29 @@ namespace EBSGFramework
                 {
                     if (hediff.def.comps.NullOrEmpty()) continue;
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null && hediff.Severity >= explodingComp.Props.minSeverity && hediff.Severity <= explodingComp.Props.maxSeverity)
+                    if (explodingComp != null && !explodingComp.currentlyExploding && explodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                     {
                         explodingComp.currentlyExploding = true;
-                        explodingComp.DoExplosion(__instance.PositionHeld);
+                        explodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                     }
                     if (dinfo.Def == null) continue; // Special catch
 
                     if (dinfo.Def.isRanged)
                     {
                         HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                        if (rangedExplodingComp != null && hediff.Severity >= rangedExplodingComp.Props.minSeverity && hediff.Severity <= rangedExplodingComp.Props.maxSeverity)
+                        if (rangedExplodingComp != null && !rangedExplodingComp.currentlyExploding && rangedExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                         {
                             rangedExplodingComp.currentlyExploding = true;
-                            rangedExplodingComp.DoExplosion(__instance.PositionHeld);
+                            rangedExplodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                         }
                     }
                     else if (!dinfo.Def.isExplosive)
                     {
                         HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                        if (meleeExplodingComp != null && hediff.Severity >= meleeExplodingComp.Props.minSeverity && hediff.Severity <= meleeExplodingComp.Props.maxSeverity)
+                        if (meleeExplodingComp != null && !meleeExplodingComp.currentlyExploding && meleeExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                         {
                             meleeExplodingComp.currentlyExploding = true;
-                            meleeExplodingComp.DoExplosion(__instance.PositionHeld);
+                            meleeExplodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                         }
                     }
                 }

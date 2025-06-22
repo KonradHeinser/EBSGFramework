@@ -9,12 +9,28 @@ namespace EBSGFramework
     public class FlyPawnLeaving : FlyShipLeaving
     {
         public Pawn pawn;
-
         public override Graphic Graphic => pawn?.Graphic ?? base.Graphic;
 
         private Effecter effecter;
 
         private bool alreadyLeft;
+
+        private bool alreadyCheckedExtension = false;
+
+        private EBSGExtension extension;
+
+        public EBSGExtension Extension
+        {
+            get
+            {
+                if (extension == null && !alreadyCheckedExtension)
+                {
+                    extension = def.GetModExtension<EBSGExtension>();
+                    alreadyCheckedExtension = true;
+                }
+                return extension;
+            }
+        }
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
@@ -24,22 +40,19 @@ namespace EBSGFramework
             DrawDropSpotShadow();
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
-            if (def.HasModExtension<EBSGExtension>())
+
+            if (Extension?.effecter != null)
             {
-                EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-                if (extension.effecter != null)
+                if (effecter == null)
                 {
-                    if (effecter == null)
-                    {
-                        effecter = extension.effecter.Spawn();
-                        effecter.Trigger(this, TargetInfo.Invalid);
-                    }
-                    else
-                        effecter.EffectTick(this, TargetInfo.Invalid);
+                    effecter = Extension.effecter.Spawn();
+                    effecter.Trigger(this, TargetInfo.Invalid);
                 }
+                else
+                    effecter.EffectTick(this, TargetInfo.Invalid);
             }
         }
 
@@ -78,7 +91,7 @@ namespace EBSGFramework
             {
                 Map.lordManager.RemoveLord(lord);
             }
-            TravelingTransportPods travelingTransportPods = (TravelingTransportPods)WorldObjectMaker.MakeWorldObject(worldObjectDef ?? WorldObjectDefOf.TravelingTransportPods);
+            var travelingTransportPods = (TravellingTransporters)WorldObjectMaker.MakeWorldObject(worldObjectDef ?? WorldObjectDefOf.TravellingTransporters);
             travelingTransportPods.Tile = Map.Tile;
             travelingTransportPods.SetFaction(pawn.Faction);
             travelingTransportPods.destinationTile = destinationTile;
@@ -89,7 +102,7 @@ namespace EBSGFramework
 
             Find.WorldObjects.Add(travelingTransportPods);
             alreadyLeft = true;
-            travelingTransportPods.AddPod(Contents, true);
+            travelingTransportPods.AddTransporter(Contents, true);
             Contents = null;
             Destroy();
         }

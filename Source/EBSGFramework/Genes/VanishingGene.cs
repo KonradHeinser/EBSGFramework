@@ -7,14 +7,15 @@ namespace EBSGFramework
     {
         public int ticksUntilVanish = 30; // This gene class makes it easier to make genes that trigger at the beginning, then disappear
 
-        public override void Tick()
+        public override void TickInterval(int delta)
         {
-            if (ticksUntilVanish == 0)
+            base.TickInterval(delta);
+            ticksUntilVanish -= delta;
+            if (ticksUntilVanish <= 0)
             {
                 pawn.genes.RemoveGene(pawn.genes.GetGene(def));
                 Messages.Message(def + " has been successfully removed!", MessageTypeDefOf.NeutralEvent, false);
             }
-            ticksUntilVanish--;
         }
     }
 }

@@ -8,15 +8,16 @@ namespace EBSGFramework
 
         public int cooldownTicks = 0;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (cooldownTicks > 0) cooldownTicks--;
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+            if (cooldownTicks > 0)
+                cooldownTicks -= delta;
         }
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
-            if (cooldownTicks <= 0 && Props.validSeverity.ValidValue(parent.Severity) && 
-                parent.Severity >= Props.minSeverity && parent.Severity < Props.maxSeverity &&
+            if (cooldownTicks <= 0 && Props.validSeverity.ValidValue(parent.Severity) &&
                 (Props.forbiddenDamageDefs.NullOrEmpty() || dinfo.Def == null || !Props.forbiddenDamageDefs.Contains(dinfo.Def)) &&
                 (Props.validDamageDefs.NullOrEmpty() || (dinfo.Def != null && Props.validDamageDefs.Contains(dinfo.Def))))
             {

@@ -13,7 +13,7 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             GenExplosion.DoExplosion(target.Cell, parent.pawn.MapHeld, 0f, Props.damage, Caster, Props.amount, -1f, null, null, null, null,
-                Props.filthDef, 1f, 1, null, false, null, 0f, 1, Props.fireChance, false, null, null, null, false, 0.6f, 0f, false, null, 1f, null, AffectedCells(target));
+                Props.filthDef, 1f, 1, null, null, 255, false, null, 0f, 1, Props.fireChance, false, null, null, null, false, 0.6f, 0f, false, null, 1f, null, AffectedCells(target));
             base.Apply(target, dest);
         }
 

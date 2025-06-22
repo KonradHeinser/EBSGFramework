@@ -10,9 +10,8 @@ namespace EBSGFramework
         {
             List<Pawn> allies = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
             foreach (Pawn ally in allies) // Then look for any tendable hediff
-            {
                 if (ally.health.hediffSet.HasTendableHediff()) return true;
-            }
+            
             return false;
         }
     }

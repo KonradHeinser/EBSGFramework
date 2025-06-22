@@ -9,12 +9,16 @@ namespace EBSGFramework
 
         public List<GeneDef> addedGenes;
 
+        private FloatRange? currentRange = null;
+
+        private float prevSeverity = 0f;
+
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             if (addedGenes == null)
-            {
                 addedGenes = new List<GeneDef>();
-            }
+
+            currentRange = null;
 
             if (Props.genesAtSeverities.NullOrEmpty())
             {
@@ -23,33 +27,28 @@ namespace EBSGFramework
                 return;
             }
 
-            foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
-            {
-                if (geneSet.validSeverity.ValidValue(parent.Severity) &&
-                    parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
-                {
-                    if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
-                    parent.pawn.RemoveGenesFromPawn(addedGenes);
-                    addedGenes.Clear();
-                    addedGenes = parent.pawn.AddGenesToPawn(geneSet.xenogenes, geneSet.genes);
-                    break;
-                }
-            }
+            CheckGenes();
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (!parent.pawn.IsHashIntervalTick(50)) return;
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+            if (prevSeverity != parent.Severity && currentRange?.ValidValue(parent.Severity) != true)
+                CheckGenes();
+        }
 
+        private void CheckGenes()
+        {
+            prevSeverity = parent.Severity;
             foreach (GenesAtSeverity geneSet in Props.genesAtSeverities)
             {
-                if (geneSet.validSeverity.ValidValue(parent.Severity) &&
-                    parent.Severity >= geneSet.minSeverity && parent.Severity <= geneSet.maxSeverity)
+                if (geneSet.validSeverity.ValidValue(parent.Severity))
                 {
                     if (EBSGUtilities.EquivalentGeneLists(new List<GeneDef>(addedGenes), new List<GeneDef>(geneSet.genes))) break;
                     parent.pawn.RemoveGenesFromPawn(addedGenes);
                     addedGenes.Clear();
                     addedGenes = parent.pawn.AddGenesToPawn(geneSet.xenogenes, geneSet.genes);
+                    currentRange = geneSet.validSeverity;
                     break;
                 }
             }

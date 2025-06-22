@@ -6,31 +6,32 @@ namespace EBSGFramework
     {
         HediffCompProperties_DRGPerHour Props => (HediffCompProperties_DRGPerHour)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (Pawn.IsHashIntervalTick(200) && Pawn.genes != null && !Props.resourcesPerHour.NullOrEmpty())
-            {
-                foreach (GeneLinker linker in Props.resourcesPerHour)
-                    if (Pawn.HasRelatedGene(linker.mainResourceGene))
-                    {
-                        Gene gene = Pawn.genes.GetGene(linker.mainResourceGene);
-                        if (gene is ResourceGene resource)
-                        {
-                            if (resource.Value < linker.minResource || resource.Value > linker.maxResource)
-                            {
-                                if (linker.removeWhenLimitsPassed)
-                                {
-                                    Pawn.health.RemoveHediff(parent);
-                                    return;
-                                }
-                                continue;
-                            }
-                            if (parent.Severity < linker.minSeverity || parent.Severity > linker.maxSeverity)
-                                continue;
+            base.CompPostTickInterval(ref severityAdjustment, delta);
 
-                            ResourceGene.OffsetResource(Pawn, linker.amount * 0.08f, resource, null, linker.usesGainStat, false, linker.usePassiveStat);
+            foreach (GeneLinker linker in Props.resourcesPerHour)
+            {
+                if (!linker.validSeverity.ValidValue(parent.Severity))
+                    continue;
+                if (Pawn.HasRelatedGene(linker.mainResourceGene))
+                {
+                    Gene gene = Pawn.genes.GetGene(linker.mainResourceGene);
+                    if (gene is ResourceGene resource)
+                    {
+                        if (!linker.validResourceLevels.ValidValue(resource.Value))
+                        {
+                            if (linker.removeWhenLimitsPassed)
+                            {
+                                Pawn.health.RemoveHediff(parent);
+                                return;
+                            }
+                            continue;
                         }
+
+                        ResourceGene.OffsetResource(Pawn, linker.amount / 2500f * delta, resource, null, linker.usesGainStat, false, linker.usePassiveStat);
                     }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Verse;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace EBSGFramework
 {
@@ -26,7 +27,11 @@ namespace EBSGFramework
                             }
                         }
                         if (bodyPart == null) continue; // If no part is found, just "continue" down the list
-                        Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, 99999f, 999f, -1f, null, bodyPart));
+                        Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, 99999f, 999f, -1f, null, bodyPart, spawnFilth: false, preventCascade: true));
+
+                        var missing = Pawn.health.hediffSet.GetMissingPartFor(bodyPart);
+                        if (missing?.TendableNow() == true)
+                            missing.Tended(1, 1);
                     }
                 }
                 if (!Props.bodyPartsToDamage.NullOrEmpty())
@@ -47,6 +52,10 @@ namespace EBSGFramework
                         if (bodyPart == null) continue; // If no part is found, just "continue" down the list
                         if (partToDamage.damagePercentage > 0) Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, bodyPart.def.hitPoints * partToDamage.damagePercentage * Pawn.HealthScale, 999f, -1f, null, bodyPart));
                         else Pawn.TakeDamage(new DamageInfo(EBSGDefOf.EBSG_GeneticDamage, partToDamage.damageAmount, 999f, -1f, null, bodyPart));
+
+                        var missing = Pawn.health.hediffSet.GetMissingPartFor(bodyPart);
+                        if (missing?.TendableNow() == true)
+                            missing.Tended(1, 1);
                     }
                 }
                 Pawn.health.RemoveHediff(parent);

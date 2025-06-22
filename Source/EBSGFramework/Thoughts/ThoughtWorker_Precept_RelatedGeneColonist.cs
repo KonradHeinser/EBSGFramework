@@ -40,40 +40,7 @@ namespace EBSGFramework
                 return ThoughtState.ActiveAtStage(0);
             }
 
-            bool flag = false;
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            foreach (Pawn item in p.MapHeld.mapPawns.SpawnedPawnsInFaction(p.Faction))
-            {
-                if (!extension.checkNotPresent)
-                {
-                    if (HasRelatedGene(item, extension.relatedGene))
-                    {
-                        flag = true;
-                        Precept_Role precept_Role = item.Ideo?.GetRole(item);
-                        if (precept_Role != null && precept_Role.ideo == p.Ideo && precept_Role.def == PreceptDefOf.IdeoRole_Leader)
-                        {
-                            return ThoughtState.ActiveAtStage(2);
-                        }
-                    }
-                }
-                else
-                {
-                    if (item.IsColonist && (!HasRelatedGene(item, extension.relatedGene)))
-                    {
-                        flag = true;
-                        Precept_Role precept_Role = item.Ideo?.GetRole(item);
-                        if (precept_Role != null && precept_Role.ideo == p.Ideo && precept_Role.def == PreceptDefOf.IdeoRole_Leader)
-                        {
-                            return ThoughtState.ActiveAtStage(2);
-                        }
-                    }
-                }
-            }
-            if (flag)
-            {
-                return ThoughtState.ActiveAtStage(1);
-            }
-            return ThoughtState.ActiveAtStage(0);
+            return ThoughtState.Inactive;
         }
 
         public static bool HasRelatedGene(Pawn pawn, GeneDef relatedGene)

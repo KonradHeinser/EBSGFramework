@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         protected override bool Satisfied(Pawn pawn)
         {
-            if (onlyPassIfDraftedOrAttacker && pawn.Faction.IsPlayer && (!pawn.Drafted || !pawn.AutoAttackingColonist())) return false;
+            if (onlyPassIfDraftedOrAttacker && pawn.Faction?.IsPlayer == true && (!pawn.Drafted || !pawn.AutoAttackingColonist())) return false;
             return pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon;
         }
     }

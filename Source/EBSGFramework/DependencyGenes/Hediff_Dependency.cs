@@ -82,10 +82,11 @@ namespace EBSGFramework
             }
         }
 
-        public override void Tick()
+        public override void TickInterval(int delta)
         {
-            base.Tick();
-            if (LinkedGene == null) pawn.health.RemoveHediff(this);
+            base.TickInterval(delta);
+            if (LinkedGene == null) 
+                pawn.health.RemoveHediff(this);
         }
 
         public override string TipStringExtra

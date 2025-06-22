@@ -40,7 +40,7 @@ namespace EBSGFramework
         public override void Tick()
         {
             if (extension == null) extension = def.GetModExtension<HiveMindExtension>();
-            if (!pawn.IsHashIntervalTick(200) || extension.hiveRolesToCheckFor.NullOrEmpty()) return; // To avoid some performance issues from constant checking
+            if (!pawn.IsHashIntervalTick(600) || extension.hiveRolesToCheckFor.NullOrEmpty()) return; // To avoid some performance issues from constant checking
             if (hediffsWhenNoAllies.NullOrEmpty()) BuildNoAllyList();
 
             if (allHediffs.NullOrEmpty()) BuildAllHediffsList();

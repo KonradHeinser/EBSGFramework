@@ -26,13 +26,9 @@ namespace EBSGFramework
 
         public HoldOffsetSet consumeHoldOffset; // Similar to ingestHoldOffsetStanding
 
-        public float minSeverity = 0f;
+        public FloatRange validSeverity = FloatRange.Zero;
 
-        public float maxSeverity = 99999f;
-
-        public float minResource = 0f;
-
-        public float maxResource = 1f;
+        public FloatRange validResourceLevels = FloatRange.ZeroToOne;
 
         public bool removeWhenLimitsPassed = false;
 

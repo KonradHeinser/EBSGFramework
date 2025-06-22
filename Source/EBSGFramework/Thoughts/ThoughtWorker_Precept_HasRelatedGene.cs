@@ -14,13 +14,6 @@ namespace EBSGFramework
             if (thoughtExtension?.relatedGenes.NullOrEmpty() == false)
                 return thoughtExtension.checkNotPresent != p.HasAnyOfRelatedGene(thoughtExtension.relatedGenes);
 
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            if (extension?.relatedGene != null)
-                if (!extension.checkNotPresent)
-                    return p.HasRelatedGene(extension.relatedGene);
-                else
-                    return !p.HasRelatedGene(extension.relatedGene);
-
             return ThoughtState.Inactive;
         }
     }

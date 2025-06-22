@@ -29,14 +29,16 @@ namespace EBSGFramework
             MakeThingsFromList(Props.onDeathOrRemovalThings);
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
             if (!Props.intervalThings.NullOrEmpty())
             {
-                ticksLeft--;
-                if (ticksLeft == 0)
+                ticksLeft -= delta;
+                if (ticksLeft <= 0)
                     if (MakeThingsFromList(Props.intervalThings))
-                        ticksLeft = Props.intervalTicks.RandomInRange;
+                        ticksLeft += Props.intervalTicks.RandomInRange;
             }
         }
 

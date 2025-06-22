@@ -7,14 +7,6 @@ namespace EBSGFramework
     {
         public bool checkRoof = true;
 
-        public float minimumRainRate = 0f;
-
-        public float maximumRainRate = 9999f;
-
-        public float minimumSnowRate = 0f;
-
-        public float maximumSnowRate = 9999f;
-
         public FloatRange rainRate = new FloatRange(0, 9999);
 
         public FloatRange snowRate = new FloatRange(0, 9999);
@@ -40,25 +32,11 @@ namespace EBSGFramework
                 // Handles roof checks
                 var roofed = pawn.Position.Roofed(pawn.Map);
                 if (checkRoof && roofed)
-                    return minimumRainRate <= 0 && minimumSnowRate <= 0
-                        && rainRate.min <= 0 && snowRate.min <= 0;
+                    return rainRate.min <= 0 && snowRate.min <= 0;
 
-                var rain = map.weatherManager.RainRate;
-                var snow = map.weatherManager.SnowRate;
-
-                if ((!checkRoof || !roofed) &&
-                    (minimumRainRate > rain) || (minimumSnowRate > snow) ||
-                    (maximumRainRate < rain) || (maximumSnowRate < snow))
-                    return false;
-
-                
-                if (!rainRate.ValidValue(rain) && (!checkRoof || !roofed))
-                    return false;
-                
-                if (!snowRate.ValidValue(snow) && (!checkRoof || !roofed))
-                    return false;
-                
-                return true;
+                if (!checkRoof || !roofed)
+                    return rainRate.ValidValue(map.weatherManager.RainRate) && 
+                        snowRate.ValidValue(map.weatherManager.SnowRate);
             }
             return defaultActive;
         }

@@ -10,8 +10,6 @@ namespace EBSGFramework
         public BodyPartDef bodyPart; // If null applies to whole body
         public float initialSeverity = 1; // If the hediff doesn't exist on the pawn, it uses this
         public float severityPerDay = 0; // By default increases by 1 each day. This can be made negative to start removing hediffs that normally don't go down
-        public float minSeverity = 0; // By default gives hediff while hediff exists
-        public float maxSeverity = 9999; // By default always incrememnts hediffs
         public FloatRange validSeverity = FloatRange.Zero;
     }
 }

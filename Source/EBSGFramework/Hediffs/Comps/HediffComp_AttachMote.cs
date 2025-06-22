@@ -19,17 +19,18 @@ namespace EBSGFramework
             }
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            base.CompPostTick(ref severityAdjustment);
-            if (Pawn.Spawned && (!Pawn.Downed || Props.displayWhileDowned))
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+
+            if (Pawn.Spawned && (Props.displayWhileDowned || !Pawn.Downed))
             {
                 if (mote == null || mote.Destroyed)
                 {
                     mote = MoteMaker.MakeAttachedOverlay(Pawn, Props.moteDef, Vector3.zero);
                     mote.link1.rotateWithTarget = Props.rotateWithPawn;
                 }
-                
+
                 if (Props.scaleMoteWithSize)
                     mote.Scale = Pawn.BodySize;
                 mote.instanceColor = new Color(Props.color.r, Props.color.g, Props.color.b, Brightness);

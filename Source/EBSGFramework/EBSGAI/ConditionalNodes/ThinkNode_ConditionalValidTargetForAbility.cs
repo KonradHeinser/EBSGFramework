@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.AI;
-using RimWorld;
 
 namespace EBSGFramework
 {
@@ -19,7 +19,7 @@ namespace EBSGFramework
             if (ability == null) return false;
 
             Ability pawnAbility = pawn.abilities?.GetAbility(ability);
-            if (pawnAbility == null || !pawnAbility.CanCast || pawnAbility.comps.NullOrEmpty() || !ability.targetRequired) return false;
+            if (pawnAbility?.comps.NullOrEmpty() != false || !pawnAbility.CanCast || !ability.targetRequired) return false;
 
             return pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch, ability: pawnAbility) != null;
         }

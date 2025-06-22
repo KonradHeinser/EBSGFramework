@@ -29,22 +29,17 @@ namespace EBSGFramework
             if (!Pawn.relations.RelatedPawns.EnumerableNullOrEmpty()) delayTicks += Pawn.relations.RelatedPawns.Count();
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (delayTicks < 0) return;
-            if (delayTicks == 0)
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+            if (delayTicks > 0 && Props.validSeverity.ValidValue(parent.Severity))
+                delayTicks -= delta;
+
+            if (delayTicks <= 0)
             {
-                delayTicks--;
-                parent.pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
-                if (parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def) != null && Props.removeHediffAfterwards)
-                {
-                    parent.pawn.health.RemoveHediff(parent.pawn.health.hediffSet.GetFirstHediffOfDef(parent.def));
-                }
-            }
-            else if (Props.validSeverity.ValidValue(parent.Severity) 
-                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
-            {
-                delayTicks--;
+                Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
+                if (Props.removeHediffAfterwards)
+                    Pawn.RemoveHediffs(parent.def);
             }
         }
 

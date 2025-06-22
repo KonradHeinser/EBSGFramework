@@ -8,8 +8,6 @@ namespace EBSGFramework
         public int ticksToHealInterval = 100; // Every x ticks, heal an injury for healAmount
         public float healAmount = 0.1f; // Amount to reduce injury severity by
         public int repeatHealCount = 1; // How many times repeat the healing. The healing will target a random part each repeat
-        public float minSeverity = 0.0f; // By default the hediff only needs to exist to regenerate
-        public float maxSeverity = 999.9f; // By default the hediff only needs to exist to regenerate, unless you have a really weird max value
         public FloatRange validSeverity = FloatRange.Zero;
         public int healTicksPerTick = 1;
         public int regrowTicksPerTick = 1;

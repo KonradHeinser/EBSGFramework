@@ -9,9 +9,8 @@ namespace EBSGFramework
             get
             {
                 if (Severity == 0f)
-                {
                     return null;
-                }
+                
                 return Severity.ToStringPercent();
             }
         }

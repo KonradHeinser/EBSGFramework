@@ -24,7 +24,8 @@ namespace EBSGFramework
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(200)) CheckHediffs();
+            if (Pawn.IsHashIntervalTick(200)) 
+                CheckHediffs();
         }
 
         public void CheckHediffs()

@@ -32,5 +32,12 @@ namespace EBSGFramework
             if (Cache != null)
                 cache.DeRegisterTerrainPawn(Pawn);
         }
+
+        public override void CompExposeData()
+        {
+            base.CompExposeData();
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+                cache.RegisterTerrainPawn(Pawn, parent);
+        }
     }
 }

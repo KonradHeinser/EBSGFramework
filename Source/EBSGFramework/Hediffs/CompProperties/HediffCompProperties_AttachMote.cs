@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -22,6 +24,15 @@ namespace EBSGFramework
         public HediffCompProperties_AttachMote()
         {
             compClass = typeof(HediffComp_AttachMote);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (moteDef == null)
+                yield return "moteDef needs to be set.";
         }
     }
 }

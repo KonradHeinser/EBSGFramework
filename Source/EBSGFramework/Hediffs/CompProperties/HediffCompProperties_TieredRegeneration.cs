@@ -12,5 +12,14 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_TieredRegeneration);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+
+            if (regenSets.NullOrEmpty())
+                yield return "regenSets needs to be set.";
+        }
     }
 }

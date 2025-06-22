@@ -31,7 +31,8 @@ namespace EBSGFramework
             {
                 num2 = 1f - (num - 0.25f) / 0.6f;
             }
-            if (((MainTabWindow_Inspect)MainButtonDefOf.Inspect.TabWindow)?.LastMouseoverGizmo is Command_Ability command_Ability && gene.Max != 0f)
+
+            if (MapGizmoUtility.LastMouseOverGizmo is Command_Ability command_Ability && gene.Max != 0f)
             {
                 foreach (CompAbilityEffect effectComp in command_Ability.Ability.EffectComps)
                 {

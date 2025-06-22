@@ -17,8 +17,7 @@ namespace EBSGFramework
 
                     if (Pawn.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
                     {
-                        if (parent.Severity < linker.minSeverity || parent.Severity > linker.maxSeverity ||
-                            (linker.maxDistance > 0 && Pawn.Position.DistanceTo(victim.Position) > linker.maxDistance)) continue;
+                        if (!linker.validSeverity.ValidValue(parent.Severity) || (linker.maxDistance > 0 && Pawn.Position.DistanceTo(victim.Position) > linker.maxDistance)) continue;
 
                         if ((victim.RaceProps.Humanlike && !linker.allowHumanoids) || (victim.RaceProps.Animal && !linker.allowAnimals) ||
                             (victim.RaceProps.Dryad && !linker.allowDryads) || (victim.RaceProps.Insect && !linker.allowInsects) ||

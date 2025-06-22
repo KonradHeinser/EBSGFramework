@@ -10,7 +10,7 @@ namespace EBSGFramework
         private Mote mote;
         public HediffCompProperties_GiveHediffsToNonAlliesInRange Props => (HediffCompProperties_GiveHediffsToNonAlliesInRange)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
             if (!Pawn.Awake() || Pawn.health == null || Pawn.health.InPainShock || !Pawn.Spawned || (Props.onlyWhileDrafted && !Pawn.Drafted && Pawn.IsPlayerControlled))
                 return;
@@ -24,8 +24,7 @@ namespace EBSGFramework
             {
                 if (Props.mote != null && (mote == null || mote.Destroyed))
                     mote = MoteMaker.MakeAttachedOverlay(parent.pawn, Props.mote, Vector3.zero);
-                if (mote != null)
-                    mote.Maintain();
+                mote?.Maintain();
             }
 
             if (!list.NullOrEmpty())
@@ -55,7 +54,7 @@ namespace EBSGFramework
                     if (hediffComp_Disappears == null)
                         Log.Error("HediffComp_GiveHediffsToNonAlliesInRange has a hediff in props which does not have a HediffComp_Disappears");
                     else
-                        hediffComp_Disappears.ticksToDisappear = 20;
+                        hediffComp_Disappears.ticksToDisappear = 30;
                 }
             }
         }

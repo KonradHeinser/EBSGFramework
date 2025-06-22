@@ -11,38 +11,30 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (!parent.pawn.IsHashIntervalTick(100) || parent.pawn.Faction == null) return;
-            Pawn pawn = parent.pawn;
+            if (!Pawn.IsHashIntervalTick(600) || Pawn.Faction == null) return;
 
             int count = 0;
 
-            if (pawn.Map != null)
-            {
-                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => p.Faction != null && p.Faction == pawn.Faction).ToList());
-            }
+            if (Pawn.Map != null)
+                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => p.Faction != null && p.Faction == Pawn.Faction).ToList());
             else
             {
-                Caravan caravan = pawn.GetCaravan();
+                Caravan caravan = Pawn.GetCaravan();
                 if (caravan != null)
+                    count = CheckGeneCount(caravan.PawnsListForReading.Where((Pawn p) => p.Faction != null && p.Faction == Pawn.Faction).ToList());
+                else if (Pawn.genes != null)
                 {
-                    count = CheckGeneCount(caravan.PawnsListForReading.Where((Pawn p) => p.Faction != null && p.Faction == pawn.Faction).ToList());
-                }
-                else
-                {
-                    if (pawn.genes != null)
-                    {
-                        if (Props.gene != null)
+                    if (Props.gene != null && Pawn.HasRelatedGene(Props.gene))
+                        count++;
+
+                    if (!Props.genes.NullOrEmpty())
+                        if (Props.mustHaveAllGenes)
                         {
-                            if (pawn.HasRelatedGene(Props.gene))
+                            if (Pawn.PawnHasAllOfGenes(Props.genes))
                                 count++;
                         }
-                        if (!Props.genes.NullOrEmpty())
-                            if (Props.mustHaveAllGenes)
-                            {
-                                if (pawn.PawnHasAllOfGenes(Props.genes)) count++;
-                            }
-                            else if (pawn.PawnHasAnyOfGenes(out var gene, Props.genes)) count++;
-                    }
+                        else if (Pawn.PawnHasAnyOfGenes(out var gene, Props.genes))
+                            count++;
                 }
             }
 
@@ -58,19 +50,18 @@ namespace EBSGFramework
 
             foreach (Pawn pawn in pawns)
             {
-                if (pawn.genes == null) continue;
+                if (Pawn.genes == null) 
+                    continue;
 
-                if (Props.gene != null)
-                {
-                    if (pawn.HasRelatedGene(Props.gene))
-                        count++;
-                }
+                if (Props.gene != null && Pawn.HasRelatedGene(Props.gene))
+                    count++;
+
                 if (!Props.genes.NullOrEmpty())
                     if (Props.mustHaveAllGenes)
                     {
-                        if (pawn.PawnHasAllOfGenes(Props.genes)) count++;
+                        if (Pawn.PawnHasAllOfGenes(Props.genes)) count++;
                     }
-                    else if (pawn.PawnHasAnyOfGenes(out var gene, Props.genes)) count++;
+                    else if (Pawn.PawnHasAnyOfGenes(out var gene, Props.genes)) count++;
             }
 
             return count;

@@ -7,18 +7,10 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByTimeOfDay Props => (HediffCompProperties_SeverityByTimeOfDay)props;
 
-        public override void CompPostPostAdd(DamageInfo? dinfo)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            if (Props.timeToSeverityCurve != null)
-                parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
-            else
-                parent.AddedHediffError(Pawn);
-        }
-
-        public override void CompPostTick(ref float severityAdjustment)
-        {
-            if (Pawn.IsHashIntervalTick(200))
-                parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
+            base.CompPostTickInterval(ref severityAdjustment, delta);
+            parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
         }
     }
 }

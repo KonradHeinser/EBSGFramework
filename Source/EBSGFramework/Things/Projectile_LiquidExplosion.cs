@@ -11,7 +11,7 @@ namespace EBSGFramework
             base.Impact(hitThing, blockedByShield);
             GenExplosion.DoExplosion(Position, map, def.projectile.explosionRadius, def.projectile.damageDef, launcher, 0, 0, def.projectile.soundExplode, equipmentDef, def, intendedTarget.Thing,
                 def.projectile.postExplosionSpawnThingDef, def.projectile.postExplosionSpawnChance, def.projectile.postExplosionSpawnThingCount,
-                def.projectile.postExplosionGasType, def.projectile.applyDamageToExplosionCellsNeighbors, null, 0, 1, def.projectile.explosionChanceToStartFire,
+                def.projectile.postExplosionGasType, null, 255, def.projectile.applyDamageToExplosionCellsNeighbors, null, 0, 1, def.projectile.explosionChanceToStartFire,
                 def.projectile.explosionDamageFalloff, null, null, null, def.projectile.doExplosionVFX, def.projectile.damageDef.expolosionPropagationSpeed, 0, def.projectile.soundExplode != null);
         }
     }

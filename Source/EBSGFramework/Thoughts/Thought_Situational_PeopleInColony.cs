@@ -12,10 +12,6 @@ namespace EBSGFramework
             if (thoughtExtension?.curve != null) 
                 return thoughtExtension.curve.Evaluate(freeColonistsAndPrisonersSpawnedCount);
 
-            EBSGExtension extension = def.GetModExtension<EBSGExtension>();
-            if (extension?.peopleToMoodCurve != null)
-                return extension.peopleToMoodCurve.Evaluate(freeColonistsAndPrisonersSpawnedCount);
-
             return base.MoodOffset();
         }
     }

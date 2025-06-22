@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -11,6 +12,14 @@ namespace EBSGFramework
         public HediffCompProperties_SeverityByLightLevel()
         {
             compClass = typeof(HediffComp_SeverityByLightLevel);
+        }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in ConfigErrors(parentDef))
+                yield return error;
+            if (lightToSeverityCurve == null)
+                yield return "A lightToSeverityCurve is required to calculate a severity.";
         }
     }
 }

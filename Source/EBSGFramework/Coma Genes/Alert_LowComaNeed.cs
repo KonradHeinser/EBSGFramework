@@ -43,7 +43,7 @@ namespace EBSGFramework
         {
             targets.Clear();
             targetLabels.Clear();
-            foreach (Pawn item in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive)
+            foreach (Pawn item in PawnsFinder.AllCaravansAndTravellingTransporters_Alive)
             {
                 if (item.RaceProps.Humanlike && item.Faction == Faction.OfPlayer)
                 {

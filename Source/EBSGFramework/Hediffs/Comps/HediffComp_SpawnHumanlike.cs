@@ -55,16 +55,16 @@ namespace EBSGFramework
             // The ability user is the "father", the target the "mother", and the faction is the same as the user's
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
-            base.CompPostTick(ref severityAdjustment);
+            base.CompPostTickInterval(ref severityAdjustment, delta);
 
             if (Props.linkedHediff != null && !Pawn.HasHediff(Props.linkedHediff)) return;
 
-            if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) && Props.validSeverity.ValidValue(parent.Severity)
-                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
+            if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) &&
+                Props.validSeverity.ValidValue(parent.Severity))
             {
-                ticksLeft--;
+                ticksLeft -= delta;
 
                 if (ticksLeft <= 0)
                 {
@@ -78,7 +78,7 @@ namespace EBSGFramework
                         Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f, -1f));
 
                     if (spawnLeft > 0)
-                        ticksLeft = Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
+                        ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
                 }
             }
         }
@@ -86,7 +86,6 @@ namespace EBSGFramework
         public override void Notify_PawnKilled()
         {
             if (spawnLeft != 0 && Props.onDeath && Props.validSeverity.ValidValue(parent.Severity)
-                && parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity
                 && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
@@ -102,8 +101,7 @@ namespace EBSGFramework
             if (!Pawn.Dead && spawnLeft != 0 && (Props.linkedHediff == null || Pawn.HasHediff(Props.linkedHediff)))
             {
                 AssignLinkedFather();
-                if (Props.onRemoval && Props.validSeverity.ValidValue(parent.Severity) &&
-                    parent.Severity >= Props.minSeverity && parent.Severity <= Props.maxSeverity)
+                if (Props.onRemoval && Props.validSeverity.ValidValue(parent.Severity))
                     SpawnPawns(Props.devStageForRemovalOrDeath, Props.spawnRemainingOnRemovalOrDeath);
 
                 if (Props.killHostOnRemoval)
