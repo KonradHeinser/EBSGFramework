@@ -1547,24 +1547,19 @@ namespace EBSGFramework
             if (pawn.genes == null) return null;
             List<GeneDef> addedGenes = new List<GeneDef>();
 
-            if (gene != null)
+            if (gene != null && !HasRelatedGene(pawn, gene))
             {
-                if (!HasRelatedGene(pawn, gene))
-                {
-                    pawn.genes.AddGene(gene, xenogene);
-                    addedGenes.Add(gene);
-                }
+                pawn.genes.AddGene(gene, xenogene);
+                addedGenes.Add(gene);
             }
 
-            if (!genes.NullOrEmpty())
+            for (int i = 0; i < genes.Count; i++)
             {
-                foreach (GeneDef geneDef in genes)
+                GeneDef geneDef = genes[i];
+                if (!HasRelatedGene(pawn, gene))
                 {
-                    if (!HasRelatedGene(pawn, gene))
-                    {
-                        pawn.genes.AddGene(geneDef, xenogene);
-                        addedGenes.Add(geneDef);
-                    }
+                    pawn.genes.AddGene(geneDef, xenogene);
+                    addedGenes.Add(geneDef);
                 }
             }
 
@@ -1747,9 +1742,9 @@ namespace EBSGFramework
             }
 
             // Add and remove genes
+            RemoveGenesFromPawn(pawn, alwaysRemovedGenes);
             AddGenesToPawn(pawn, !inheritGenes, alwaysAddedGenes);
             AddGenesToPawn(pawn, !inheritGenes, genesToAdd);
-            RemoveGenesFromPawn(pawn, alwaysRemovedGenes);
 
             // Wrap things up
             if (pawn.Faction == Faction.OfPlayer && showMessage) // If the pawn is in the player faction, give a message based on what is most relevant to the player.
