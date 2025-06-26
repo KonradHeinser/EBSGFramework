@@ -38,7 +38,7 @@ namespace EBSGFramework
 
             if (delayTicks <= 0)
             {
-                Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, new List<RandomXenoGenes>(Props.geneSets), new List<GeneDef>(Props.alwaysAddedGenes), new List<GeneDef>(Props.alwaysRemovedGenes), Props.showMessage);
+                Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets != null ? new List<RandomXenoGenes>(Props.geneSets) : null, Props.alwaysAddedGenes != null ? new List<GeneDef>(Props.alwaysAddedGenes) : null, Props.alwaysRemovedGenes != null ? new List<GeneDef>(Props.alwaysRemovedGenes) : null, Props.showMessage);
                 if (Props.removeHediffAfterwards)
                     Pawn.RemoveHediffs(parent.def);
             }
