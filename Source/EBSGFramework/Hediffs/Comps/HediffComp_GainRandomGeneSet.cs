@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace EBSGFramework
@@ -37,7 +38,7 @@ namespace EBSGFramework
 
             if (delayTicks <= 0)
             {
-                Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets, Props.alwaysAddedGenes, Props.alwaysRemovedGenes, Props.showMessage);
+                Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, new List<RandomXenoGenes>(Props.geneSets), new List<GeneDef>(Props.alwaysAddedGenes), new List<GeneDef>(Props.alwaysRemovedGenes), Props.showMessage);
                 if (Props.removeHediffAfterwards)
                     Pawn.RemoveHediffs(parent.def);
             }
