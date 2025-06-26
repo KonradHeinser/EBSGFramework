@@ -16,8 +16,9 @@ namespace EBSGFramework
 
         public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
         {
-            foreach (string error in ConfigErrors(parentDef))
+            foreach (string error in base.ConfigErrors(parentDef))
                 yield return error;
+
             if (lightToSeverityCurve == null)
                 yield return "A lightToSeverityCurve is required to calculate a severity.";
         }

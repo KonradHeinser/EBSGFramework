@@ -23,8 +23,12 @@ namespace EBSGFramework
 
         public override IEnumerable<string> ConfigErrors(AbilityDef parentDef)
         {
+            foreach (string error in base.ConfigErrors(parentDef))
+                yield return error;
+
             if (burstCount < 1)
                 yield return "burstCount must be 1 or higher";
+
             if (ticksBetweenShots < 1)
                 yield return "ticksBetweenShots must be 1 or higher";
         }

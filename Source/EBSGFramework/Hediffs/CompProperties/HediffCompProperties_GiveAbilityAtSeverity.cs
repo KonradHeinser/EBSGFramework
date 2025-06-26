@@ -13,7 +13,7 @@ namespace EBSGFramework
         }
         public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
         {
-            foreach (string error in ConfigErrors(parentDef))
+            foreach (string error in base.ConfigErrors(parentDef))
                 yield return error;
 
             if (abilitiesAtSeverities.NullOrEmpty())
