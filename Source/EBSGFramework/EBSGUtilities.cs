@@ -1553,15 +1553,13 @@ namespace EBSGFramework
                 addedGenes.Add(gene);
             }
 
-            for (int i = 0; i < genes.Count; i++)
-            {
-                GeneDef geneDef = genes[i];
-                if (!HasRelatedGene(pawn, gene))
-                {
-                    pawn.genes.AddGene(geneDef, xenogene);
-                    addedGenes.Add(geneDef);
-                }
-            }
+            if (!genes.NullOrEmpty())
+                foreach (GeneDef g in genes)
+                    if (!HasRelatedGene(pawn, g))
+                    {
+                        pawn.genes.AddGene(g, xenogene);
+                        addedGenes.Add(g);
+                    }
 
             return addedGenes;
         }
