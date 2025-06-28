@@ -1893,10 +1893,10 @@ namespace EBSGFramework
             return false;
         }
 
-        public static float StatOrOne(this Thing thing, StatDef statDef = null, StatRequirement statReq = StatRequirement.Always)
+        public static float StatOrOne(this Thing thing, StatDef statDef = null, StatRequirement statReq = StatRequirement.Always, int cacheDuration = 600)
         {
             if (statDef == null) return 1;
-            var value = thing.GetStatValue(statDef, true, 600);
+            var value = thing.GetStatValue(statDef, true, cacheDuration);
             switch (statReq)
             {
                 case StatRequirement.Always:
