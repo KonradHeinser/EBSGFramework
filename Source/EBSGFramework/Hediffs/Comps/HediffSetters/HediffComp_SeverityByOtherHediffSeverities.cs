@@ -3,13 +3,13 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class HediffComp_SeverityByOtherHediffSeverities : HediffComp
+    public class HediffComp_SeverityByOtherHediffSeverities : HediffComp_SetterBase
     {
         public HediffCompProperties_SeverityByOtherHediffSeverities Props => (HediffCompProperties_SeverityByOtherHediffSeverities)props;
 
-        public override void CompPostTick(ref float severityAdjustment)
+        protected override void SetSeverity()
         {
-            if (!Pawn.IsHashIntervalTick(120)) return;
+            base.SetSeverity();
 
             float newSeverity = Props.baseSeverity;
 
@@ -19,15 +19,16 @@ namespace EBSGFramework
                 if (hediff != null)
                 {
                     float add = hediff.Severity * hediffSet.factor;
-                    if (hediffSet.factor < 0) 
+                    if (hediffSet.factor < 0)
                         newSeverity += Math.Max(Math.Min(add, hediffSet.minResult), hediffSet.maxResult);
-                    else 
+                    else
                         newSeverity += Math.Min(Math.Max(add, hediffSet.minResult), hediffSet.maxResult);
                 }
                 else newSeverity += hediffSet.missingHediffResult;
             }
 
             parent.Severity = newSeverity;
+            ticksToNextCheck = 120;
         }
     }
 }

@@ -1,28 +1,22 @@
 ﻿using Verse;
-using RimWorld;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {
-    public class HediffComp_SeverityByGenes : HediffComp
+    public class HediffComp_SeverityByGenes : HediffComp_SetterBase
     {
         private HediffCompProperties_SeverityByGenes Props => (HediffCompProperties_SeverityByGenes)props;
 
         private GeneDef lastGene = null;
 
-        public override void CompPostPostAdd(DamageInfo? dinfo)
+        private int lastCount = 0;
+
+        protected override bool DoCheck()
         {
-            base.CompPostPostAdd(dinfo);
-            SetSeverity();
+            return lastCount != Pawn.genes.GenesListForReading.Count ||
+                Pawn.genes.GenesListForReading.GetLast().def != lastGene;
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
-        {
-            if (Pawn.genes.GenesListForReading.GetLast().def != lastGene || Pawn.IsHashIntervalTick(2500))
-                SetSeverity();
-        }
-
-        public void SetSeverity()
+        protected override void SetSeverity()
         {
             float newSeverity = Props.baseSeverity * Pawn.StatOrOne(Props.baseSeverityStatFactor);
 
@@ -32,6 +26,8 @@ namespace EBSGFramework
 
             parent.Severity = newSeverity * Pawn.StatOrOne(Props.globalStatFactor);
             lastGene = Pawn.genes.GenesListForReading.GetLast().def;
+            lastCount = Pawn.genes.GenesListForReading.Count;
+            ticksToNextCheck = 2500;
         }
     }
 }

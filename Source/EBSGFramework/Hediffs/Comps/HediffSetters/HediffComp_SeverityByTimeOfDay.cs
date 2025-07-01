@@ -1,16 +1,16 @@
-﻿using Verse;
-using RimWorld;
+﻿using RimWorld;
 
 namespace EBSGFramework
 {
-    public class HediffComp_SeverityByTimeOfDay : HediffComp
+    public class HediffComp_SeverityByTimeOfDay : HediffComp_SetterBase
     {
         public HediffCompProperties_SeverityByTimeOfDay Props => (HediffCompProperties_SeverityByTimeOfDay)props;
 
-        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+        protected override void SetSeverity()
         {
-            base.CompPostTickInterval(ref severityAdjustment, delta);
+            base.SetSeverity();
             parent.Severity = Props.timeToSeverityCurve.Evaluate(GenLocalDate.DayPercent(Pawn));
+            ticksToNextCheck = 120;
         }
     }
 }

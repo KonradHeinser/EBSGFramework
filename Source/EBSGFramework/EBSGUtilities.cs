@@ -2053,16 +2053,44 @@ namespace EBSGFramework
 
         public static bool HasRelatedGene(this Pawn pawn, GeneDef relatedGene)
         {
-            if (!ModsConfig.BiotechActive || pawn.genes == null || relatedGene == null) return false;
+            if (!ModsConfig.BiotechActive || pawn.genes == null) 
+                return false;
+
             return pawn.genes.HasActiveGene(relatedGene);
         }
 
         public static bool HasAnyOfRelatedGene(this Pawn pawn, List<GeneDef> relatedGenes)
         {
-            if (!ModsConfig.BiotechActive || pawn == null || relatedGenes.NullOrEmpty() || pawn.genes == null) return false;
+            if (!ModsConfig.BiotechActive || relatedGenes.NullOrEmpty() || pawn.genes == null) 
+                return false;
 
             foreach (GeneDef gene in relatedGenes)
-                if (pawn.genes.HasActiveGene(gene)) return true;
+                if (pawn.genes.HasActiveGene(gene)) 
+                    return true;
+
+            return false;
+        }
+
+        public static bool CheckPawnGenes(this Pawn pawn, GeneDef gene, List<GeneDef> genes, bool mustHaveAll = false)
+        {
+            if (!ModsConfig.BiotechActive || pawn.genes == null)
+                return false;
+
+            if (pawn.genes.HasActiveGene(gene))
+                return true;
+
+            if (!genes.NullOrEmpty())
+                if (mustHaveAll)
+                {
+                    foreach (GeneDef g in genes)
+                        if (!pawn.genes.HasActiveGene(g))
+                            return false;
+                    return true;
+                }
+                else
+                    foreach (GeneDef g in genes)
+                        if (pawn.genes.HasActiveGene(g))
+                            return true;
 
             return false;
         }
