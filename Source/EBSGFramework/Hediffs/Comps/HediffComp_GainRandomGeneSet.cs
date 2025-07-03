@@ -8,7 +8,7 @@ namespace EBSGFramework
     {
         public HediffCompProperties_GainRandomGeneSet Props => (HediffCompProperties_GainRandomGeneSet)props;
         public int delayTicks;
-
+        private bool alreadyGiven;
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             if (Props.delayTicks < 10) // To avoid potential issues of having multiple things happen to a pawn at spawn, wait several ticks
@@ -36,8 +36,9 @@ namespace EBSGFramework
             if (delayTicks > 0 && Props.validSeverity.ValidValue(parent.Severity))
                 delayTicks -= delta;
 
-            if (delayTicks <= 0)
+            if (delayTicks <= 0 && !alreadyGiven)
             {
+                alreadyGiven = true;
                 Pawn.GainRandomGeneSet(Props.inheritable, Props.removeGenesFromOtherLists, Props.geneSets != null ? new List<RandomXenoGenes>(Props.geneSets) : null, Props.alwaysAddedGenes != null ? new List<GeneDef>(Props.alwaysAddedGenes) : null, Props.alwaysRemovedGenes != null ? new List<GeneDef>(Props.alwaysRemovedGenes) : null, Props.showMessage);
                 if (Props.removeHediffAfterwards)
                     Pawn.RemoveHediffs(parent.def);
@@ -48,6 +49,7 @@ namespace EBSGFramework
         {
             base.CompExposeData();
             Scribe_Values.Look(ref delayTicks, "EBSG_GeneSetDelayTicks", 10);
+            Scribe_Values.Look(ref alreadyGiven, "alreadyGiven", false);
         }
     }
 }
