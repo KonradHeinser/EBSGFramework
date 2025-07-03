@@ -18,6 +18,10 @@ namespace EBSGFramework
         {
         }
 
+        private static bool draggingBar;
+
+        protected override bool DraggingBar { get => draggingBar; set => draggingBar = value; }
+
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
         {
             GizmoResult result = base.GizmoOnGUI(topLeft, maxWidth, parms);
