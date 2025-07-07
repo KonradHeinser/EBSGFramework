@@ -9,6 +9,8 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByNearbyPawns Props => (HediffCompProperties_SeverityByNearbyPawns)props;
 
+        protected override bool MustBeSpawned => true;
+
         protected override void SetSeverity()
         {
             base.SetSeverity();

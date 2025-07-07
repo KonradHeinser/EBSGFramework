@@ -6,6 +6,8 @@ namespace EBSGFramework
     {
         protected int ticksToNextCheck;
 
+        protected virtual bool MustBeSpawned => false;
+
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
@@ -16,15 +18,18 @@ namespace EBSGFramework
         {
             base.CompPostTickInterval(ref severityAdjustment, delta);
 
-            if (ticksToNextCheck <= 0 || DoCheck())
-                SetSeverity();
-            else
-                ticksToNextCheck -= delta;
+            if (!MustBeSpawned || Pawn.Spawned)
+            {
+                if (ticksToNextCheck <= 0 || DoCheck())
+                    SetSeverity();
+                else
+                    ticksToNextCheck -= delta;
+            }
         }
 
         protected virtual bool DoCheck()
         {
-            return true;
+            return false;
         }
 
         protected virtual void SetSeverity()

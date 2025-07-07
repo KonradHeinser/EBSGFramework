@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityByLightLevel Props => (HediffCompProperties_SeverityByLightLevel)props;
 
+        protected override bool MustBeSpawned => true;
+
         protected override void SetSeverity()
         {
             if (Pawn.Map != null)
