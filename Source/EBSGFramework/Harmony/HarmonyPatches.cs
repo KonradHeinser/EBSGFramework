@@ -1704,7 +1704,8 @@ namespace EBSGFramework
 
         public static void RenderPawnAtPostfix(Vector3 drawLoc, Pawn ___pawn)
         {
-            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
+            if (!___pawn.DeadOrDowned && Cache?.shieldHediffs.NullOrEmpty() == false && 
+                ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                     if (shield.TryGetComp<HediffComp_Shield>()?.Draw(drawLoc) == true)
                         break; // Only draws the first one it finds to avoid clutter

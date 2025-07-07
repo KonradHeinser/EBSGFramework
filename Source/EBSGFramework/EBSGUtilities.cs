@@ -675,20 +675,22 @@ namespace EBSGFramework
                     {
                         if (h.Part == null)
                             continue;
+
                         if (!bodyParts.Contains(h.Part.def))
                             continue;
-                        if (partCounts.ContainsKey(h.Part.def) && 
+
+                        if (partCounts.ContainsKey(h.Part.def) &&
                             partCounts[h.Part.def] == bodyParts.Where(arg => arg == h.Part.def).Count())
                             continue;
+
+                        if (partCounts.ContainsKey(h.Part.def))
+                            partCounts[h.Part.def]++;
+                        else
+                            partCounts[h.Part.def] = 1;
                     }
                     hediffs.Add(h);
-                    if (partCounts.ContainsKey(h.Part.def))
-                        partCounts[h.Part.def]++;
-                    else 
-                        partCounts[h.Part.def] = 1;
                 }
             }
-
             return hediffs;
         }
 
