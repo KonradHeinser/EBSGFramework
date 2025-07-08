@@ -1544,14 +1544,19 @@ namespace EBSGFramework
             }
         }
 
-        public static List<GeneDef> AddGenesToPawn(this Pawn pawn, bool xenogene = true, List<GeneDef> genes = null, GeneDef gene = null)
+        public static List<GeneDef> AddGenesToPawn(this Pawn pawn, bool xenogene = true, List<GeneDef> genes = null, GeneDef gene = null, Gene parent = null)
         {
             if (pawn.genes == null) return null;
             List<GeneDef> addedGenes = new List<GeneDef>();
 
             if (gene != null && !HasRelatedGene(pawn, gene))
             {
-                pawn.genes.AddGene(gene, xenogene);
+                Gene newGene = pawn.genes.AddGene(gene, xenogene);
+                if (parent != null)
+                {
+                    if (newGene is Gene_EvolvingGene evolving)
+                        evolving.parent = parent as Gene_EvolvingGene;
+                }
                 addedGenes.Add(gene);
             }
 

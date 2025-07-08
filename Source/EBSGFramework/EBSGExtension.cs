@@ -9,6 +9,10 @@ namespace EBSGFramework
         public List<GeneDef> relatedGenes;
         public bool checkEvolutionsPostAdd = false;
         public List<GeneticEvolution> geneticEvolutions;
+        public int maxEvolutions = 1;
+        public bool keepEvolvingGene = false;
+        public bool recoverEvolutions = true;
+
         public bool hideInGeneTabWhenInactive = false;
         public bool hideAllInactiveGenesForXenotype = false;
         public bool hideAllInactiveSkinColorGenesForXenotype = false;

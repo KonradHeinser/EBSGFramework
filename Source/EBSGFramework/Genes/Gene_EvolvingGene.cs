@@ -6,6 +6,10 @@ namespace EBSGFramework
 {
     public class Gene_EvolvingGene : HediffAdder
     {
+        private int evolutionsRemaining = 1;
+
+        public Gene_EvolvingGene parent;
+
         public override void PostAdd()
         {
             base.PostAdd();
@@ -16,6 +20,7 @@ namespace EBSGFramework
                 pawn.genes.RemoveGene(this);
                 return;
             }
+            evolutionsRemaining = Extension.maxEvolutions;
             if (Extension.checkEvolutionsPostAdd)
                 CheckEvolution(true);
         }
@@ -28,8 +33,17 @@ namespace EBSGFramework
                 CheckEvolution();
         }
 
+        public override void PostRemove()
+        {
+            base.PostRemove();
+            parent?.ChildRemoved();
+        }
+
         public void CheckEvolution(bool postAdd = false)
         {
+            if (evolutionsRemaining == 0)
+                return;
+
             foreach (var evo in Extension.geneticEvolutions)
             {
                 if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && 
@@ -67,9 +81,25 @@ namespace EBSGFramework
                         break;
                 }
                 pawn.AddGenesToPawn(xenogene, null, evo.result);
-                pawn.genes.RemoveGene(this);
+
+                evolutionsRemaining--;
+                if (evolutionsRemaining == 0 && !Extension.keepEvolvingGene)
+                    pawn.genes.RemoveGene(this);
                 return;
             }
+        }
+
+        public void ChildRemoved()
+        {
+            if (Extension.recoverEvolutions)
+                evolutionsRemaining++;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref evolutionsRemaining, "remaining", 1);
+            Scribe_References.Look(ref parent, "parent");
         }
     }
 }
