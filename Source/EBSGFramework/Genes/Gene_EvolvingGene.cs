@@ -80,7 +80,7 @@ namespace EBSGFramework
                         xenogene = true; 
                         break;
                 }
-                pawn.AddGenesToPawn(xenogene, null, evo.result);
+                pawn.AddGenesToPawn(xenogene, null, evo.result, parent: this);
 
                 evolutionsRemaining--;
                 if (evolutionsRemaining == 0 && Extension.keepEvolvingGene == evo.overrideKeep)
