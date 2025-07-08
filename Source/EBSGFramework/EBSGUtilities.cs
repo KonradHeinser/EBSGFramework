@@ -2060,7 +2060,7 @@ namespace EBSGFramework
 
         public static bool HasRelatedGene(this Pawn pawn, GeneDef relatedGene)
         {
-            if (!ModsConfig.BiotechActive || pawn.genes == null) 
+            if (!ModsConfig.BiotechActive || pawn.genes == null || relatedGene == null) 
                 return false;
 
             return pawn.genes.HasActiveGene(relatedGene);

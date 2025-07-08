@@ -49,7 +49,7 @@ namespace EBSGFramework
                 if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && 
                     !Rand.Chance(evo.chancePerCheck)) continue;
 
-                if (evo.skipIfCarrierHasResult && pawn.HasRelatedGene(evo.result))
+                if ((evo.skipIfCarrierHasResult || Extension.maxEvolutions != 1) && pawn.HasRelatedGene(evo.result))
                     continue;
 
                 if (!pawn.CheckGeneTrio(evo.hasAnyOfGene, evo.hasAllOfGene, evo.hasNoneOfGene))
