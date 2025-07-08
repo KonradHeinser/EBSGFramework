@@ -83,7 +83,7 @@ namespace EBSGFramework
                 pawn.AddGenesToPawn(xenogene, null, evo.result);
 
                 evolutionsRemaining--;
-                if (evolutionsRemaining == 0 && !Extension.keepEvolvingGene)
+                if (evolutionsRemaining == 0 && Extension.keepEvolvingGene != evo.overrideKeep)
                     pawn.genes.RemoveGene(this);
                 return;
             }

@@ -34,5 +34,7 @@ namespace EBSGFramework
         public FloatRange validAges = new FloatRange(0, 0);
 
         public List<SkillLevel> skillRequirements;
+
+        public bool overrideKeep = false;
     }
 }
