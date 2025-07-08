@@ -21,7 +21,7 @@ namespace EBSGFramework
                 return;
             }
             evolutionsRemaining = Extension.maxEvolutions;
-            if (Extension.checkEvolutionsPostAdd)
+            if (Active && Extension.checkEvolutionsPostAdd)
                 CheckEvolution(true);
         }
 
@@ -29,7 +29,7 @@ namespace EBSGFramework
         {
             base.Tick();
 
-            if (pawn.IsHashIntervalTick(2500))
+            if (Active && pawn.IsHashIntervalTick(2500))
                 CheckEvolution();
         }
 
