@@ -21,25 +21,25 @@ namespace EBSGFramework
             if (!CheckCasterLight(out string casterLightExplanation))
             {
                 if (throwMessages)
-                    Messages.Message(baseExplanation + casterLightExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                    Messages.Message(baseExplanation + casterLightExplanation, parent.pawn, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
             if (!CheckCasterRoof(out string casterRoofExplanation))
             {
                 if (throwMessages)
-                    Messages.Message(baseExplanation + casterRoofExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                    Messages.Message(baseExplanation + casterRoofExplanation, parent.pawn, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
             if (!CheckCasterHediffs(out string casterHediffExplanation))
             {
                 if (throwMessages)
-                    Messages.Message(baseExplanation + casterHediffExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                    Messages.Message(baseExplanation + casterHediffExplanation, parent.pawn, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
             if (!CheckCasterPawn(out string casterExplanation))
             {
                 if (throwMessages)
-                    Messages.Message(baseExplanation + casterExplanation, target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, false);
+                    Messages.Message(baseExplanation + casterExplanation, parent.pawn, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
