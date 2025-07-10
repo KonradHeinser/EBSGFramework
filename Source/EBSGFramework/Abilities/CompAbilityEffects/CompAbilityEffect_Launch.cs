@@ -68,6 +68,16 @@ namespace EBSGFramework
             }
         }
 
+        public override bool GizmoDisabled(out string reason)
+        {
+            if (parent.pawn.InBed())
+            {
+                reason = "StatsReport_InBed".Translate();
+                return true;
+            }
+            return base.GizmoDisabled(out reason);
+        }
+
         public override bool CanApplyOn(GlobalTargetInfo target)
         {
             return Valid(target, true);
