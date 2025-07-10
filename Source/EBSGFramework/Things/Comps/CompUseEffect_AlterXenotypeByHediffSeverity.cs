@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RimWorld;
 using Verse;
+using System;
 
 namespace EBSGFramework
 {
@@ -26,6 +27,9 @@ namespace EBSGFramework
                             initialSeverity = xeno.range.RandomInRange;
                             break;
                         }
+                
+                if (Props.severityChange == Math.Floor(Props.severityChange))
+                    initialSeverity = (int)Math.Ceiling(initialSeverity);
 
                 usedBy.AddOrAppendHediffs(initialSeverity, Props.severityChange, Props.hediff);
             }
