@@ -29,7 +29,7 @@ namespace EBSGFramework
                         }
                 
                 if (Props.severityChange == Math.Floor(Props.severityChange))
-                    initialSeverity = (int)Math.Ceiling(initialSeverity);
+                    initialSeverity = (int)Math.Floor(initialSeverity);
 
                 usedBy.AddOrAppendHediffs(initialSeverity, Props.severityChange, Props.hediff);
             }
