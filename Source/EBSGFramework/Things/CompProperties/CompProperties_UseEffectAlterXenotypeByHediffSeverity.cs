@@ -16,6 +16,8 @@ namespace EBSGFramework
 
         public List<ComplexXenoAlter> xenotypes; // Need to make a new item so genes can be manually removed
 
+        public List<XenoRange> initialSeverity;
+
         public ThingDef filth;
 
         public IntRange filthCount = new IntRange(4, 7);

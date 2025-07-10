@@ -15,7 +15,23 @@ namespace EBSGFramework
         public override void DoEffect(Pawn usedBy)
         {
             base.DoEffect(usedBy);
-            usedBy.AddOrAppendHediffs(Props.severityChange, Props.severityChange, Props.hediff);
+
+            if (!usedBy.HasHediff(Props.hediff, out Hediff result))
+            {
+                float initialSeverity = Props.severityChange;
+                if (!Props.initialSeverity.NullOrEmpty())
+                    foreach (var xeno in Props.initialSeverity)
+                        if (usedBy.genes.Xenotype == xeno.xenotype)
+                        {
+                            initialSeverity = xeno.range.RandomInRange;
+                            break;
+                        }
+
+                usedBy.AddOrAppendHediffs(initialSeverity, Props.severityChange, Props.hediff);
+            }
+            else
+                result.Severity += Props.severityChange;
+
             Hediff h = usedBy.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
             foreach (var xeno in Props.xenotypes)
                 if (xeno.severity.Includes(h.Severity))
