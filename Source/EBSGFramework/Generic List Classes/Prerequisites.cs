@@ -10,11 +10,18 @@ namespace EBSGFramework
         public List<HediffDef> hasAllOfHediffs;
         public List<HediffDef> hasNoneOfHediffs;
         public bool samePartPrerequisites = false;
+
         public List<GeneDef> hasAnyOfGenes;
         public List<GeneDef> hasAllOfGenes;
         public List<GeneDef> hasNoneOfGenes;
+
         public List<XenotypeDef> isAnyOfXenotype;
         public List<XenotypeDef> isNoneOfXenotype;
+
+        public bool includeAptitudes = false;
+        public List<SkillLevel> skillRequirements;
+        public List<List<SkillLevel>> complexSkillRequirements;
+
         public string notMetString = "EBSG_ConditionsNotMet";
 
         public bool ValidPawn(Pawn pawn, BodyPartRecord bodyPart = null)
@@ -26,8 +33,6 @@ namespace EBSGFramework
             else
                 if (!pawn.CheckHediffTrio(hasAnyOfHediffs, hasAllOfHediffs, hasNoneOfHediffs)) return false;
 
-            if (!pawn.CheckGeneTrio(hasAnyOfGenes, hasAllOfGenes, hasNoneOfGenes)) return false;
-            
             if (pawn.genes?.Xenotype != null)
             {
                 if (!isAnyOfXenotype.NullOrEmpty() && !isAnyOfXenotype.Contains(pawn.genes.Xenotype))
@@ -36,6 +41,15 @@ namespace EBSGFramework
                     return false;
             }
             else if (!isAnyOfXenotype.NullOrEmpty()) 
+                return false;
+
+            if (!pawn.CheckGeneTrio(hasAnyOfGenes, hasAllOfGenes, hasNoneOfGenes)) 
+                return false;
+
+            if (!pawn.AllSkillLevelsMet(skillRequirements, includeAptitudes)) 
+                return false;
+
+            if (!pawn.AllSkillLevelsMet(complexSkillRequirements, includeAptitudes)) 
                 return false;
 
             return true;

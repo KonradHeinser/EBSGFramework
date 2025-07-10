@@ -369,10 +369,10 @@ namespace EBSGFramework
             return ageRange.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat);
         }
 
-        public static bool ValidValue(this FloatRange range, float value, bool assumeMin = true)
+        public static bool ValidValue(this FloatRange range, float value, bool min = true)
         {
             if (range.min == range.max)
-                if (assumeMin)
+                if (min)
                     return value >= range.min;
                 else
                     return value <= range.min;
@@ -1291,6 +1291,16 @@ namespace EBSGFramework
                     return false;
             }
             return true;
+        }
+
+        public static bool AllSkillLevelsMet(this Pawn pawn, List<List<SkillLevel>> skillLevels, bool includeAptitudes = true)
+        {
+            if (skillLevels.NullOrEmpty() || pawn.skills == null) return true;
+
+            foreach (var skillLevel in skillLevels)
+                if (AllSkillLevelsMet(pawn, skillLevel, includeAptitudes))
+                    return true;
+            return false;
         }
 
         public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLevels, bool includeAptitudes = true)

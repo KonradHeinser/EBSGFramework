@@ -49,6 +49,9 @@ namespace EBSGFramework
                 if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && 
                     !Rand.Chance(evo.chancePerCheck)) continue;
 
+                if (!evo.validAges.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
+                    continue;
+
                 if ((evo.skipIfCarrierHasResult || Extension.maxEvolutions != 1) && pawn.HasRelatedGene(evo.result))
                     continue;
 
@@ -61,7 +64,7 @@ namespace EBSGFramework
                 if (!pawn.AllSkillLevelsMet(evo.skillRequirements, false))
                     continue;
 
-                if (evo.validAges != FloatRange.Zero && !evo.validAges.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+                if (!pawn.AllSkillLevelsMet(evo.complexSkillRequirements, false))
                     continue;
 
                 if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))

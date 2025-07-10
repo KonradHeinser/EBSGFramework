@@ -35,6 +35,8 @@ namespace EBSGFramework
 
         public List<SkillLevel> skillRequirements;
 
+        public List<List<SkillLevel>> complexSkillRequirements;
+
         public bool overrideKeep = false;
     }
 }
