@@ -21,6 +21,8 @@ namespace EBSGFramework
 
         public bool replaceExisting;
 
+        public bool skipExisting;
+
         public float severity = 1f;
 
         public bool psychic = false;
