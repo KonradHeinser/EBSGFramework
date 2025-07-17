@@ -4,6 +4,6 @@ namespace EBSGFramework
 {
     public class CompEBSGPlaceworker : ThingComp
     {
-        public CompProperties_GathererSpot Props => (CompProperties_GathererSpot)props;
+        public CompProperties_EBSGPlaceworker Props => (CompProperties_EBSGPlaceworker)props;
     }
 }
