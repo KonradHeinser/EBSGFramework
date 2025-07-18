@@ -208,7 +208,7 @@ namespace EBSGFramework
                     { 
                         if (genderByAge.gender != Gender.None)
                         {
-                            if (!genderByAge.gender.Equals(pawn.gender)) return;
+                            if (genderByAge.gender == pawn.gender) return;
                             pawn.gender = genderByAge.gender;
                             switch (pawn.gender)
                             {
