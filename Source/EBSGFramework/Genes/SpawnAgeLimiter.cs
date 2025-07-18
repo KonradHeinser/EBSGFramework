@@ -210,6 +210,8 @@ namespace EBSGFramework
                         {
                             if (genderByAge.gender == pawn.gender) return;
                             pawn.gender = genderByAge.gender;
+                            if (!pawn.style.CanWantBeard)
+                                pawn.style.beardDef = BeardDefOf.NoBeard;
                             switch (pawn.gender)
                             {
                                 case Gender.Female:
