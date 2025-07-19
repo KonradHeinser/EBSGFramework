@@ -230,11 +230,9 @@ namespace EBSGFramework
                 List<GeneDef> forbiddenGenesToEquip = extension.forbiddenGenesToEquip;
                 List<XenotypeDef> requireOneOfXenotypeToEquip = extension.requireOneOfXenotypeToEquip;
                 List<XenotypeDef> forbiddenXenotypesToEquip = extension.forbiddenXenotypesToEquip;
-                List<HediffDef> requiredHediffsToEquip = extension.requiredHediffsToEquip;
-                List<HediffDef> requireOneOfHediffsToEquip = extension.requireOneOfHediffsToEquip;
-                List<HediffDef> forbiddenHediffsToEquip = extension.forbiddenHediffsToEquip;
+                
                 // Gene Check
-                if (!pawn.genes.GenesListForReading.NullOrEmpty())
+                if (pawn.genes?.GenesListForReading.NullOrEmpty() == false)
                 {
                     Pawn_GeneTracker currentGenes = pawn.genes;
                     if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() ||
@@ -270,7 +268,7 @@ namespace EBSGFramework
                             if (!requiredGenesToEquip.NullOrEmpty())
                             {
                                 if (extension.requiredGenesToEquip.Count > 1) cantReason = "EBSG_GeneRestrictedEquipment_All".Translate();
-                                else cantReason = "EBSG_GeneRestrictedEquipment_One".Translate(extension.requiredGenesToEquip[0]);
+                                else cantReason = "EBSG_GeneRestrictedEquipment_One".Translate(extension.requiredGenesToEquip[0].LabelCap);
                                 flag = false;
                             }
                         }
@@ -278,7 +276,7 @@ namespace EBSGFramework
                         {
                             flag = false;
                             if (requireOneOfGenesToEquip.Count > 1) cantReason = "EBSG_GeneRestrictedEquipment_AnyOne".Translate();
-                            else cantReason = "EBSG_GeneRestrictedEquipment_One".Translate(requireOneOfGenesToEquip[0]);
+                            else cantReason = "EBSG_GeneRestrictedEquipment_One".Translate(requireOneOfGenesToEquip[0].LabelCap);
                             foreach (Gene gene in currentGenes.GenesListForReading)
                                 if (requiredGenesToEquip.Contains(gene.def))
                                 {
@@ -299,55 +297,62 @@ namespace EBSGFramework
                 }
 
                 // Hediff Check
-                HediffSet hediffSet = pawn.health?.hediffSet;
-                if (flag && (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty()))
+                
+                if (flag)
                 {
-                    if (hediffSet?.hediffs?.NullOrEmpty() == false)
+                    List<HediffDef> requiredHediffsToEquip = extension.requiredHediffsToEquip;
+                    List<HediffDef> requireOneOfHediffsToEquip = extension.requireOneOfHediffsToEquip;
+                    List<HediffDef> forbiddenHediffsToEquip = extension.forbiddenHediffsToEquip;
+                    if ((!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty()))
                     {
-                        if (!forbiddenHediffsToEquip.NullOrEmpty())
-                            foreach (HediffDef hediffDef in forbiddenHediffsToEquip)
-                                if (hediffSet.HasHediff(hediffDef))
+                        HediffSet hediffSet = pawn.health?.hediffSet;
+                        if (hediffSet?.hediffs?.NullOrEmpty() == false)
+                        {
+                            if (!forbiddenHediffsToEquip.NullOrEmpty())
+                                foreach (HediffDef hediffDef in forbiddenHediffsToEquip)
+                                    if (hediffSet.HasHediff(hediffDef))
+                                    {
+                                        cantReason = "EBSG_HediffRestrictedEquipment_None".Translate(hediffDef.LabelCap);
+                                        flag = false;
+                                        break;
+                                    }
+
+                            if (flag && !requireOneOfHediffsToEquip.NullOrEmpty())
+                            {
+                                if (!pawn.PawnHasAnyOfHediffs(requireOneOfHediffsToEquip))
                                 {
-                                    cantReason = "EBSG_HediffRestrictedEquipment_None".Translate(hediffDef.LabelCap);
+                                    if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
+                                    else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0].LabelCap);
                                     flag = false;
-                                    break;
                                 }
+                            }
 
-                        if (flag && !requireOneOfHediffsToEquip.NullOrEmpty())
-                        {
-                            if (!pawn.PawnHasAnyOfHediffs(requireOneOfHediffsToEquip))
+                            if (flag && !requiredHediffsToEquip.NullOrEmpty())
                             {
-                                if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
-                                else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
-                                flag = false;
+                                foreach (Hediff hediff in hediffSet.hediffs)
+                                {
+                                    if (requiredHediffsToEquip.Contains(hediff.def)) requiredHediffsToEquip.Remove(hediff.def);
+                                }
+                                if (!requiredHediffsToEquip.NullOrEmpty())
+                                {
+                                    if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
+                                    else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0].LabelCap);
+                                    flag = false;
+                                }
                             }
                         }
-
-                        if (flag && !requiredHediffsToEquip.NullOrEmpty())
+                        else if (!requiredHediffsToEquip.NullOrEmpty())
                         {
-                            foreach (Hediff hediff in hediffSet.hediffs)
-                            {
-                                if (requiredHediffsToEquip.Contains(hediff.def)) requiredHediffsToEquip.Remove(hediff.def);
-                            }
-                            if (!requiredHediffsToEquip.NullOrEmpty())
-                            {
-                                if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
-                                else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0]);
-                                flag = false;
-                            }
+                            if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
+                            else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0].LabelCap);
+                            flag = false;
                         }
-                    }
-                    else if (!requiredHediffsToEquip.NullOrEmpty())
-                    {
-                        if (extension.requiredHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_All".Translate();
-                        else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0]);
-                        flag = false;
-                    }
-                    else if (!requireOneOfHediffsToEquip.NullOrEmpty())
-                    {
-                        if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
-                        else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0]);
-                        flag = false;
+                        else if (!requireOneOfHediffsToEquip.NullOrEmpty())
+                        {
+                            if (requireOneOfHediffsToEquip.Count > 1) cantReason = "EBSG_HediffRestrictedEquipment_AnyOne".Translate();
+                            else cantReason = "EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0].LabelCap);
+                            flag = false;
+                        }
                     }
                 }
             }
