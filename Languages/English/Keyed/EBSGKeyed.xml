@@ -293,8 +293,8 @@
         <!--Equip Restrict-->
     <EBSG_GeneRestrictedEquipment_All>Missing at least one required gene.</EBSG_GeneRestrictedEquipment_All>
     <EBSG_GeneRestrictedEquipment_AnyOne>Has none of required genes.</EBSG_GeneRestrictedEquipment_AnyOne>
-    <EBSG_GeneRestrictedEquipment_One>Does not have the gene {0}.</EBSG_GeneRestrictedEquipment_One>
-    <EBSG_GeneRestrictedEquipment_None>Has the gene {0}.</EBSG_GeneRestrictedEquipment_None>
+    <EBSG_GeneRestrictedEquipment_One>Does not have the {0} gene.</EBSG_GeneRestrictedEquipment_One>
+    <EBSG_GeneRestrictedEquipment_None>Has the {0} gene.</EBSG_GeneRestrictedEquipment_None>
 
     <EBSG_XenoRestrictedEquipment_AnyOne>Is not any of the required xenotypes.</EBSG_XenoRestrictedEquipment_AnyOne>
     <EBSG_XenoRestrictedEquipment_One>Is not a {0}.</EBSG_XenoRestrictedEquipment_One>
@@ -304,8 +304,8 @@
 
     <EBSG_HediffRestrictedEquipment_All>Missing at least one required hediff.</EBSG_HediffRestrictedEquipment_All>
     <EBSG_HediffRestrictedEquipment_AnyOne>Has none of required hediffs.</EBSG_HediffRestrictedEquipment_AnyOne>
-    <EBSG_HediffRestrictedEquipment_One>Does not have the hediff {0}.</EBSG_HediffRestrictedEquipment_One>
-    <EBSG_HediffRestrictedEquipment_None>Has the hediff {0}.</EBSG_HediffRestrictedEquipment_None>
+    <EBSG_HediffRestrictedEquipment_One>Does not have the {0} hediff.</EBSG_HediffRestrictedEquipment_One>
+    <EBSG_HediffRestrictedEquipment_None>Has the {0} hediff.</EBSG_HediffRestrictedEquipment_None>
 
     <EBSG_NoEquipment>{0} prevents all equipment from being equipped.</EBSG_NoEquipment>
     <EBSG_NoWeapon>{0} prevents all weapons from being equipped.</EBSG_NoWeapon>
