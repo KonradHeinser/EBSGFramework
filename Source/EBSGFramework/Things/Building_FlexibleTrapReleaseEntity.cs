@@ -44,10 +44,11 @@ namespace EBSGFramework
                 for (int i = 0; i < count; i++)
                 {
                     Pawn pawn = PawnGenerator.GeneratePawn(request);
+                    
+                    GenSpawn.Spawn(pawn, PositionHeld, MapHeld);
                     pawn.mindState.enemyTarget = p;
                     if (Extension?.mentalState != null)
                         pawn.mindState.mentalStateHandler.TryStartMentalState(Extension.mentalState, otherPawn: p);
-                    GenSpawn.Spawn(pawn, PositionHeld, MapHeld);
                 }
             }
         }
