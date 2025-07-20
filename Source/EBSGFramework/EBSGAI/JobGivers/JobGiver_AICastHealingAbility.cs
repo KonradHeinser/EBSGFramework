@@ -20,7 +20,7 @@ namespace EBSGFramework
                 return null;
 
             Ability castingAbility = pawn.abilities?.GetAbility(ability);
-            if (ability == null || !castingAbility.CanCast)
+            if (ability == null || !castingAbility.CanCast.Accepted)
                 return null;
 
             LocalTargetInfo target = GetTarget(pawn, castingAbility);

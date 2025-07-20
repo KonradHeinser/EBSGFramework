@@ -30,7 +30,7 @@ namespace EBSGFramework
             {
                 if (pawn.CurJobDef == abilityDef.jobDef) return null;
                 Ability tempAbility = pawn.abilities?.GetAbility(abilityDef);
-                if (tempAbility != null && tempAbility.CanCast)
+                if (tempAbility != null && tempAbility.CanCast.Accepted)
                 {
                     if (tempAbility.CompOfType<CompAbilityEffect_AutocastToggle>()?.autocast == false)
                         continue;

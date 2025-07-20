@@ -13,7 +13,7 @@ namespace EBSGFramework
         protected override Job TryGiveJob(Pawn pawn)
         {
             Ability castingAbility = pawn.abilities?.GetAbility(ability);
-            if (castingAbility == null || !castingAbility.CanCast || castingAbility.comps.NullOrEmpty()) return null;
+            if (castingAbility == null || !castingAbility.CanCast.Accepted || castingAbility.comps.NullOrEmpty()) return null;
 
             float range = 999f;
             bool flag = false;
