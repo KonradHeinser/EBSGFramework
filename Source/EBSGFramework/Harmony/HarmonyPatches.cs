@@ -98,13 +98,6 @@ namespace EBSGFramework
             harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Learning), "IsFrozen"),
                 postfix: new HarmonyMethod(patchType, nameof(NeedFrozenPostfix)));
 
-            /*
-            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "WillEat", new[] { typeof(Pawn), typeof(ThingDef), typeof(Pawn), typeof(bool), typeof(bool) }),
-                postfix: new HarmonyMethod(patchType, nameof(WillEatPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(FoodUtility), "GetMaxAmountToPickup"),
-                postfix: new HarmonyMethod(patchType, nameof(GetMaxAmountToPickupPostfix)));               
-            */
-
             harmony.Patch(AccessTools.Method(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), new[] { typeof(Thing), typeof(Pawn) }),
                 postfix: new HarmonyMethod(patchType, nameof(IsForbiddenPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "TryGenerateNewPawnInternal"),
@@ -133,8 +126,6 @@ namespace EBSGFramework
             // Stat Harmony patches
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
-            //harmony.Patch(AccessTools.Method(typeof(BodyPartDef), nameof(BodyPartDef.GetMaxHealth)),
-            //    postfix: new HarmonyMethod(patchType, nameof(PawnHealthinessPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
                 postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
             
@@ -1923,30 +1914,6 @@ namespace EBSGFramework
             }
         }
 
-        /*
-        public static void WillEatPostfix(ref bool __result, Pawn p, ThingDef food, Pawn getter, bool careIfNotAcceptableForTitle, bool allowVenerated)
-        {
-            if (__result && Cache?.NeedEatPatch == true && p.genes != null)
-            {
-                if (p.PawnHasAnyOfGenes(out var first, Cache.forbidFoods)) // Switch to get all matches
-                {
-                    FoodExtension foodExtension = first.GetModExtension<FoodExtension>();
-
-                    if (foodExtension.forbiddenFoods.Contains(food))
-                    {
-                        __result = false;
-                        return;
-                    }
-                }
-            }
-        }
-
-       public static void GetMaxAmountToPickupPostfix(ref int __result, Thing food, Pawn pawn, int wantedCount)
-        {
-            if (__result != 0 && Cache?.NeedEatPatch == true && p.genes != null)
-                __result = 0; // This sets the food to be unconsumable. It only greys out the option
-        }
-        */
         public static void IsForbiddenPostfix(Thing t, Pawn pawn, ref bool __result)
         {
             if (!__result && t is Corpse corpse && (t.Faction == null || pawn.Faction == null || t.Faction != pawn.Faction))
@@ -2231,11 +2198,6 @@ namespace EBSGFramework
             HediffSet hediffSet = pawn.health.hediffSet;
             if (hediffSet.BleedRateTotal < 0.1f)
                 HealthUtility.AdjustSeverity(pawn, HediffDefOf.BloodLoss, (-0.00033333333f * pawn.StatOrOne(EBSGDefOf.EBSG_BloodlossRecoveryBonus)));
-        }
-
-        public static void PawnHealthinessPostfix(Pawn pawn, ref float __result)
-        {
-            __result *= pawn.GetStatValue(EBSGDefOf.EBSG_Healthiness, true, 2500);
         }
 
         public static bool HasSpecialExplosion(Pawn pawn)
