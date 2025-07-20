@@ -168,7 +168,7 @@ namespace EBSGFramework
         public SoundDef sound;
         public string message;
         public FloatRange bioAge = FloatRange.Zero;
-        public float chronoAge = 0f;
+        public FloatRange chronoAge = FloatRange.Zero;
         public MentalStateDef mentalState;
 
         // Recipe Stuff

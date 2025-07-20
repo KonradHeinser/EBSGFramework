@@ -39,8 +39,8 @@ namespace EBSGFramework
                 
                 PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction,
                     fixedBiologicalAge: Extension?.bioAge.RandomInRange ?? 0, 
-                    fixedChronologicalAge: Extension?.chronoAge ?? 0);
-
+                    fixedChronologicalAge: Extension?.chronoAge.RandomInRange ?? 0);
+                
                 for (int i = 0; i < count; i++)
                 {
                     Pawn pawn = PawnGenerator.GeneratePawn(request);
