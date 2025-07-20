@@ -443,12 +443,12 @@ namespace EBSGFramework
             var frameRect = innerContainer.ContractedBy(5);
             frameRect.y += 15;
             frameRect.height -= 15;
-            var contentRect = frameRect.ContractedBy(5);
+            var contentRect = frameRect.ContractedBy(10);
             contentRect.x = -5;
             contentRect.y = 0;
 
             if (tabInt == 3 && currentCategory != null)
-                contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
+                contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 33;
 
             Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect);
             optionsMenu.Begin(contentRect.AtZero());
