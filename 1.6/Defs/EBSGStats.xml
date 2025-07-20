@@ -25,24 +25,6 @@
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
-        <defName>EBSG_Healthiness</defName>
-        <label>healthiness</label>
-        <description>Alters how much maximum health this can pawn have. This should act as an additional multiplier to whatever other health changing things the pawn has, like life stage.</description>
-        <minValue>0.1</minValue>
-        <displayPriorityInCategory>2203</displayPriorityInCategory>
-        <parts>
-            <li Class="EBSGFramework.StatPart_OverseerStatOffset" MayRequire="Ludeon.Rimworld.Biotech">
-                <stat>EBSG_HealthinessOffsetMech</stat>
-                <label>Offset from mechanitor</label>
-            </li>
-            <li Class="EBSGFramework.StatPart_OverseerStatFactor" MayRequire="Ludeon.Rimworld.Biotech">
-                <stat>EBSG_HealthinessFactorMech</stat>
-                <label>Factor from mechanitor</label>
-            </li>
-        </parts>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_FactoringStat">
         <defName>EBSG_SkillLossRate</defName>
         <label>skill loss rate</label>
         <description>The rate at which the pawn loses their skill knowledge.</description>

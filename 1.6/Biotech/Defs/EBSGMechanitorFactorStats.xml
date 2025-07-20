@@ -57,12 +57,6 @@
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorFactorStatBase">
-        <defName>EBSG_HealthinessFactorMech</defName>
-        <label>mech health factor</label>
-        <description>A health factor applied to a mechanitor's mechs.</description>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_MechanitorFactorStatBase">
         <defName>EBSG_OutgoingDamageFactorFactorMech</defName>
         <label>mech outgoing damage factor</label>
         <description>An outgoing damage factor applied to a mechanitor's mechs.</description>

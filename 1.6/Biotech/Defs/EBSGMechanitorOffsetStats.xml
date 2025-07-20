@@ -58,12 +58,6 @@
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
-        <defName>EBSG_HealthinessOffsetMech</defName>
-        <label>mech health offset</label>
-        <description>A health offset applied to a mechanitor's mechs.</description>
-    </StatDef>
-
-    <StatDef ParentName="EBSG_MechanitorOffsetStatBase">
         <defName>EBSG_OutgoingDamageFactorOffsetMech</defName>
         <label>mech outgoing damage factor offset</label>
         <description>An outgoing damage factor offset applied to a mechanitor's mechs.</description>
