@@ -169,6 +169,7 @@ namespace EBSGFramework
         public string message;
         public FloatRange bioAge = FloatRange.Zero;
         public float chronoAge = 0f;
+        public MentalStateDef mentalState;
 
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;
