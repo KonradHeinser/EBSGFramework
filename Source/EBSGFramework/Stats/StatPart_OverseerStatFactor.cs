@@ -32,7 +32,7 @@ namespace EBSGFramework
                 Pawn overseer = pawn.GetOverseer();
                 if (overseer != null)
                 {
-                    factor = overseer.GetStatValue(stat);
+                    factor = overseer.StatOrOne(stat);
                     return true;
                 }
             }

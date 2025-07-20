@@ -36,7 +36,7 @@ namespace EBSGFramework
                 Pawn overseer = pawn.GetOverseer();
                 if (overseer != null)
                 {
-                    offset = overseer.GetStatValue(stat);
+                    offset = overseer.StatOrOne(stat);
                     return true;
                 }
             }
