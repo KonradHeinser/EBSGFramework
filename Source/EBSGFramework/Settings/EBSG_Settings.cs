@@ -447,7 +447,10 @@ namespace EBSGFramework
             contentRect.x = -5;
             contentRect.y = 0;
 
-            Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect, true);
+            if (tabInt == 3 && currentCategory != null)
+                contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
+
+            Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect);
             optionsMenu.Begin(contentRect.AtZero());
 
             switch (tabInt)
@@ -582,7 +585,6 @@ namespace EBSGFramework
                                         break;
                                 }
                         optionsMenu.Gap(5f);
-                        contentRect.height = (flexibleSettings[currentCategory].Count + 1) * 35;
                         foreach (var setting in flexibleSettings[currentCategory])
                         {
                             switch ((int)setting.type)
