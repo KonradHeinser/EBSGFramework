@@ -153,6 +153,7 @@
     <Compile Include="Settings\SettingGroup.cs" />
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
+    <Compile Include="Things\Building_FlexibleTrapReleaseEntity.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterGenes.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotype.cs" />

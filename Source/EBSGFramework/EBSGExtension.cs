@@ -163,6 +163,13 @@ namespace EBSGFramework
         public HediffToParts mechEndHediff;
         public ThingDef filth;
 
+        public PawnKindDef pawnKind;
+        public IntRange countRange = IntRange.One;
+        public SoundDef sound;
+        public string message;
+        public FloatRange bioAge = FloatRange.Zero;
+        public float chronoAge = 0f;
+
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;
         public bool staticQuality = false; // Only need set to true if there are products that have quality. Will set for all of them at once.
