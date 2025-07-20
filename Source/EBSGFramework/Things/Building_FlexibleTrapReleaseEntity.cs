@@ -34,9 +34,10 @@ namespace EBSGFramework
                 Extension?.sound?.PlayOneShot(new TargetInfo(PositionHeld, MapHeld));
                 if (!Faction.IsPlayer && Extension?.message != null)
                     Extension.message.Translate(this.Named("TRAP"));
-                Messages.Message(Extension.message.TranslateOrLiteral(LabelCap, Label, LabelShort),
-                    new LookTargets(PositionHeld, MapHeld), MessageTypeDefOf.NegativeEvent);
                 int count = CountToSpawn;
+                Messages.Message(Extension.message.TranslateOrLiteral(LabelCap, Label, LabelShort, count.ToString()),
+                    new LookTargets(PositionHeld, MapHeld), MessageTypeDefOf.NegativeEvent);
+                
                 PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction,
                     biologicalAgeRange: Extension?.bioAge ?? FloatRange.Zero, 
                     fixedChronologicalAge: Extension?.chronoAge ?? 0);
