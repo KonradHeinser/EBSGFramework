@@ -38,7 +38,7 @@ namespace EBSGFramework
                         new LookTargets(PositionHeld, MapHeld), MessageTypeDefOf.NegativeEvent);
                 
                 PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction,
-                    biologicalAgeRange: Extension?.bioAge ?? FloatRange.Zero, 
+                    fixedBiologicalAge: Extension?.bioAge.RandomInRange ?? 0, 
                     fixedChronologicalAge: Extension?.chronoAge ?? 0);
 
                 for (int i = 0; i < count; i++)
