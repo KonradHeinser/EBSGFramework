@@ -17,7 +17,7 @@ namespace EBSGFramework
             base.Apply(target, dest);
             tick = Math.Min(Props.initialTick, Props.tickInterval);
         }
-
+        /* Commented out until Ludeon fixes CompTickInterval
         public override void CompTickInterval(int delta)
         {
             if (!parent.Casting) return;
@@ -37,6 +37,25 @@ namespace EBSGFramework
             }
             else
                 tick += delta;
+        }*/
+
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (tick == null)
+                tick = Math.Min(Props.initialTick, Props.tickInterval);
+
+            if (tick >= Props.tickInterval)
+            {
+                tick -= Props.tickInterval;
+                Thing target = (Caster.stances.curStance as Stance_Busy).focusTarg.Thing;
+                BodyPartRecord hitPart = null;
+                if (!Props.bodyParts.NullOrEmpty() && target is Pawn t)
+                    hitPart = t.GetSemiRandomPartFromList(Props.bodyParts);
+                target.TakeDamage(new DamageInfo(Props.damage, Props.damageAmount, Props.armorPenetration, hitPart: hitPart, spawnFilth: Props.createFilth));
+            }
+            else
+                tick++;
         }
 
         public void Interrupted(Pawn target)
