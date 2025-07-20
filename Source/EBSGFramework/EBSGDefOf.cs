@@ -9,7 +9,6 @@ namespace EBSGFramework
         [MayRequireBiotech]
         public static StatDef EBSG_PawnGestationSpeed;
         public static StatDef EBSG_BloodlossRecoveryBonus;
-        public static StatDef EBSG_Healthiness;
         public static DamageDef EBSG_GeneticDamage;
 
         [MayRequireBiotech]
