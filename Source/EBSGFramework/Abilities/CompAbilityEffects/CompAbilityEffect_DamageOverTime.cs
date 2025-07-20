@@ -42,6 +42,8 @@ namespace EBSGFramework
         public override void CompTick()
         {
             base.CompTick();
+
+            if (!parent.Casting) return;
             if (tick == null)
                 tick = Math.Min(Props.initialTick, Props.tickInterval);
 
