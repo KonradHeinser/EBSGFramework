@@ -14,7 +14,7 @@ namespace EBSGFramework
         {
             if (onlyWhileWieldingMeleeWeapon && (pawn.equipment.Primary == null || pawn.equipment.Primary.def.IsRangedWeapon)) return null;
             Ability ability = pawn.abilities?.GetAbility(this.ability);
-            if (ability == null || !ability.CanCast.Accepted) return null;
+            if (ability == null || !ability.CanCast) return null;
             currentEnemy = pawn.GetCurrentTarget(autoSearch: true, LoSRequired: ability.verb.verbProps.requireLineOfSight);
             if (currentEnemy == null) return null;
             float currentEnemyDistance = currentEnemy.Position.DistanceTo(pawn.Position);

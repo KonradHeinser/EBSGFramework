@@ -20,7 +20,7 @@ namespace EBSGFramework
             using (new ProfilerBlock("JobGiver_AIResurrectHumanoid.TryGiveJob"))
             {
                 Ability castingAbility = pawn.abilities.GetAbility(this.ability);
-                if (castingAbility == null || !castingAbility.CanCast.Accepted)
+                if (castingAbility == null || !castingAbility.CanCast)
                     return null;
 
                 if (!pawn.Spawned)

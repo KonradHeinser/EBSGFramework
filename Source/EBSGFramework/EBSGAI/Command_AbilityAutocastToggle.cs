@@ -134,7 +134,7 @@ namespace EBSGFramework
                 }
             }
 
-            if (result.State == GizmoState.Interacted && ability.CanCast.Accepted && !flag)
+            if (result.State == GizmoState.Interacted && ability.CanCast && !flag)
             {
                 return result;
             }

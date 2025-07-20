@@ -19,7 +19,7 @@ namespace EBSGFramework
             if (ability == null) return false;
 
             Ability pawnAbility = pawn.abilities?.GetAbility(ability);
-            if (pawnAbility?.comps.NullOrEmpty() != false || !pawnAbility.CanCast.Accepted || !ability.targetRequired) return false;
+            if (pawnAbility?.comps.NullOrEmpty() != false || !pawnAbility.CanCast || !ability.targetRequired) return false;
 
             return pawn.GetCurrentTarget(onlyHostiles, onlyInFaction, autoSearch, ability: pawnAbility) != null;
         }
