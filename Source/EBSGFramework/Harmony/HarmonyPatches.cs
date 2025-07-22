@@ -1930,7 +1930,7 @@ namespace EBSGFramework
                 __result = pawn.HasAnyOfRelatedGene(EBSGDefOf.EBSG_Recorder.bloodfeederGenes);
         }
 
-        public static void RecacheGenesPostfix(Thing target, GeneSet genesOverride, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
+        public static void RecacheGenesPostfix(Thing target, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
         {
             if (target is Pawn pawn)
             {
