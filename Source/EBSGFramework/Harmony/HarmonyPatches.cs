@@ -80,6 +80,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(StanceWarmupPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnGenerator), "GenerateInitialHediffs"),
                 postfix: new HarmonyMethod(patchType, nameof(GenerateInitialHediffsPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Bill_ResurrectMech), nameof(Bill_ResurrectMech.CreateProducts)),
+                postfix: new HarmonyMethod(patchType, nameof(ResurrectMechProductsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Stance_Warmup), "Interrupt"),
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnNameColorUtility), "PawnNameColorOf"),
@@ -1793,6 +1795,13 @@ namespace EBSGFramework
         public static void GenerateInitialHediffsPostfix(Pawn pawn, PawnGenerationRequest request)
         {
             if (pawn.kindDef.HasModExtension<ForceStartingHediffsExtension>() && request.AllowedDevelopmentalStages.Newborn() &&
+                !pawn.kindDef.startingHediffs.NullOrEmpty())
+                HealthUtility.AddStartingHediffs(pawn, pawn.kindDef.startingHediffs);
+        }
+
+        public static void ResurrectMechProductsPostfix(ref Thing __result)
+        {
+            if (__result is Pawn pawn && pawn.kindDef.HasModExtension<ForceStartingHediffsExtension>() &&
                 !pawn.kindDef.startingHediffs.NullOrEmpty())
                 HealthUtility.AddStartingHediffs(pawn, pawn.kindDef.startingHediffs);
         }
