@@ -192,7 +192,7 @@ namespace EBSGFramework
                     postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
                     postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
-                harmony.Patch(AccessTools.Method(typeof(Verb_LaunchProjectile), nameof(Verb_LaunchProjectile.Projectile)),
+                harmony.Patch(AccessTools.PropertyGetter(typeof(Verb_LaunchProjectile), nameof(Verb_LaunchProjectile.Projectile)),
                     postfix: new HarmonyMethod(patchType, nameof(LaunchProjectileProjectilePostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Verb_MeleeAttackDamage), "DamageInfosToApply"),
                     postfix: new HarmonyMethod(patchType, nameof(DamageInfosToApplyPostfix)));
