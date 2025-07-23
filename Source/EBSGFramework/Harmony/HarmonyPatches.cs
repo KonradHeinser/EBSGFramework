@@ -2615,24 +2615,25 @@ namespace EBSGFramework
 
             if (!traits.NullOrEmpty())
             {
-                List<DamageInfo> result = __result.ToList();
+                List<DamageInfo> result = new List<DamageInfo>(__result);
                 Vector3 direction = (target.Thing.Position - casterPawn.Position).ToVector3();
                 var bodyPartGroupDef = result[0].WeaponBodyPartGroup;
                 var hediffDef = result[0].WeaponLinkedHediff;
 
                 foreach (var t in traits)
                 {
-                    if (t.damageDefOverride != null)
+                    var extension = t.GetModExtension<WeaponTraitExtension>();
+                    if (extension.meleeDamageDefOverride != null)
                     {
                         DamageInfo dmg = new DamageInfo(result.First())
                         {
-                            Def = t.damageDefOverride
+                            Def = extension.meleeDamageDefOverride
                         };
                         result[0] = dmg;
                     }
 
-                    if (!t.extraDamages.NullOrEmpty())
-                        foreach (var extraMeleeDamage in t.extraDamages)
+                    if (!extension.extraMeleeDamages.NullOrEmpty())
+                        foreach (var extraMeleeDamage in extension.extraMeleeDamages)
                         {
                             if (Rand.Chance(extraMeleeDamage.chance))
                             {
@@ -2647,8 +2648,7 @@ namespace EBSGFramework
                             }
                         }
                 }
-
-                __result = result;
+                __result = result.AsEnumerable();
             }
         }
     }
