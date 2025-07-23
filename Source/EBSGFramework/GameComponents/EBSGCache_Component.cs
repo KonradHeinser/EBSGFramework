@@ -554,7 +554,7 @@ namespace EBSGFramework
                     shieldEquipment.Add(thing);
             }
 
-            if (ModLister.CheckOdyssey("Unique Weapons"))
+            if (ModLister.CheckRoyaltyOrOdyssey("Weapon traits"))
                 foreach (WeaponTraitDef trait in DefDatabase<WeaponTraitDef>.AllDefs)
                 {
                     WeaponTraitExtension extension = trait.GetModExtension<WeaponTraitExtension>();
