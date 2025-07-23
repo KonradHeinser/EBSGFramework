@@ -736,6 +736,44 @@ namespace EBSGFramework
             }
         }
 
+        public static WeaponTraitDef GetWeaponTrait(this ThingWithComps thing, WeaponTraitDef trait = null, List<WeaponTraitDef> traits = null)
+        {
+            var comp = thing.GetComp<CompUniqueWeapon>();
+
+            if (comp?.TraitsListForReading.NullOrEmpty() == false)
+            {
+                if (trait != null && comp.TraitsListForReading.Contains(trait))
+                    return trait;
+                
+                if (!traits.NullOrEmpty())
+                    foreach (var t in comp.TraitsListForReading)
+                        if (traits.Contains(t)) 
+                            return t;
+            }
+
+            return null;
+        }
+
+        public static List<WeaponTraitDef> GetWeaponTraits(this ThingWithComps thing, WeaponTraitDef trait = null, List<WeaponTraitDef> traits = null)
+        {
+            var foundTraits = new List<WeaponTraitDef>();
+
+            var comp = thing.GetComp<CompUniqueWeapon>();
+
+            if (comp?.TraitsListForReading.NullOrEmpty() == false)
+            {
+                if (trait != null && comp.TraitsListForReading.Contains(trait))
+                    foundTraits.Add(trait);
+
+                if (!traits.NullOrEmpty())
+                    foreach (var t in comp.TraitsListForReading)
+                        if (traits.Contains(t))
+                            foundTraits.Add(t);
+            }
+
+            return foundTraits;
+        }
+
         public static void HandleHediffToGive(Pawn p, Pawn o, HediffDef hd, float severity, bool replaceExisting, bool skipExisting, List<BodyPartDef> partChecks, int duration = -1)
         {
             if (hd == null) return;

@@ -192,6 +192,10 @@ namespace EBSGFramework
                     postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
                     postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Verb_LaunchProjectile), nameof(Verb_LaunchProjectile.Projectile)),
+                    postfix: new HarmonyMethod(patchType, nameof(LaunchProjectileProjectilePostfix)));
+                harmony.Patch(AccessTools.Method(typeof(Verb_MeleeAttackDamage), "DamageInfosToApply"),
+                    postfix: new HarmonyMethod(patchType, nameof(DamageInfosToApplyPostfix)));
             }
         }
 
@@ -2587,6 +2591,65 @@ namespace EBSGFramework
                         __result = false;
                         break;
                     }
+        }
+
+        public static void LaunchProjectileProjectilePostfix(ref ThingDef __result, ref Verb_LaunchProjectile __instance)
+        {
+            if (Cache?.projectileOverrideTraits.NullOrEmpty() == false)
+            {
+                var trait = __instance.EquipmentSource?.GetWeaponTrait(null, Cache.projectileOverrideTraits);
+                if (trait != null)
+                    __result = trait.GetModExtension<WeaponTraitExtension>().projectileOverride;
+            }
+        }
+
+        public static void DamageInfosToApplyPostfix(LocalTargetInfo target, Verb_MeleeAttackDamage __instance, ref IEnumerable<DamageInfo> __result, Thing ___caster)
+        {
+            if (Cache?.meleeWeaponTraits.NullOrEmpty() != false || __instance.EquipmentSource == null)
+                return;
+
+            if (!(___caster is Pawn casterPawn))
+                return;
+
+            var traits = __instance.EquipmentSource.GetWeaponTraits(null, Cache.meleeWeaponTraits);
+
+            if (!traits.NullOrEmpty())
+            {
+                List<DamageInfo> result = __result.ToList();
+                Vector3 direction = (target.Thing.Position - casterPawn.Position).ToVector3();
+                var bodyPartGroupDef = result[0].WeaponBodyPartGroup;
+                var hediffDef = result[0].WeaponLinkedHediff;
+
+                foreach (var t in traits)
+                {
+                    if (t.damageDefOverride != null)
+                    {
+                        DamageInfo dmg = new DamageInfo(result.First())
+                        {
+                            Def = t.damageDefOverride
+                        };
+                        result[0] = dmg;
+                    }
+
+                    if (!t.extraDamages.NullOrEmpty())
+                        foreach (var extraMeleeDamage in t.extraDamages)
+                        {
+                            if (Rand.Chance(extraMeleeDamage.chance))
+                            {
+                                var num = extraMeleeDamage.amount;
+                                num = Rand.Range(num * 0.8f, num * 1.2f);
+                                var dmg = new DamageInfo(extraMeleeDamage.def, num, extraMeleeDamage.AdjustedArmorPenetration(__instance, casterPawn), -1f, ___caster, null, __instance.EquipmentSource.def);
+                                dmg.SetBodyRegion(BodyPartHeight.Undefined, BodyPartDepth.Outside);
+                                dmg.SetWeaponBodyPartGroup(bodyPartGroupDef);
+                                dmg.SetWeaponHediff(hediffDef);
+                                dmg.SetAngle(direction);
+                                result.Add(dmg);
+                            }
+                        }
+                }
+
+                __result = result;
+            }
         }
     }
 }

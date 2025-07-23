@@ -83,6 +83,8 @@ namespace EBSGFramework
         // Cached things of interest
         public bool needEquippableAbilityPatches = false;
         public List<ThingDef> shieldEquipment = new List<ThingDef>();
+        public List<WeaponTraitDef> meleeWeaponTraits = new List<WeaponTraitDef>();
+        public List<WeaponTraitDef> projectileOverrideTraits = new List<WeaponTraitDef>();
 
         // Other
 
@@ -541,6 +543,8 @@ namespace EBSGFramework
         private void CacheThingsOfInterest()
         {
             shieldEquipment = new List<ThingDef>();
+            meleeWeaponTraits = new List<WeaponTraitDef>();
+            projectileOverrideTraits = new List<WeaponTraitDef>();
 
             foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
             {
@@ -549,6 +553,19 @@ namespace EBSGFramework
                 if (thing.HasComp<CompShieldEquipment>())
                     shieldEquipment.Add(thing);
             }
+
+            if (ModLister.CheckOdyssey("Unique Weapons"))
+                foreach (WeaponTraitDef trait in DefDatabase<WeaponTraitDef>.AllDefs)
+                {
+                    WeaponTraitExtension extension = trait.GetModExtension<WeaponTraitExtension>();
+                    if (extension != null)
+                    {
+                        if (!extension.extraMeleeDamages.NullOrEmpty() || extension.meleeDamageDefOverride != null)
+                            meleeWeaponTraits.Add(trait);
+                        if (extension.projectileOverride != null)
+                            projectileOverrideTraits.Add(trait);
+                    }
+                }
         }
 
         // Post load
