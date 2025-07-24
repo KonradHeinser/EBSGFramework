@@ -252,7 +252,9 @@
     <AbilityHighSnow>It's snowing too much</AbilityHighSnow>
 
     <AbilityTargetLightLevel>Target must be in an area with brightness between {0} and {1}</AbilityTargetLightLevel>
+    <AbilityTargetLightLevelInvert>Target must be in an area with brightness below {0} and above {1}</AbilityTargetLightLevelInvert>
     <AbilityCasterLightLevel>Caster must be in an area with brightness between {0} and {1}</AbilityCasterLightLevel>
+    <AbilityCasterLightLevelInvert>Caster must be in an area with brightness below {0} and above {1}</AbilityCasterLightLevelInvert>
     <AbilityTime>Hour must be between {0} and {1}</AbilityTime>
 
     <AbilityTargetNoRoof>Target cannot be under a roof</AbilityTargetNoRoof>
@@ -270,6 +272,7 @@
     <AbilityTargetNeedsCheck>Target's needs are not in the correct ranges</AbilityTargetNeedsCheck>
     <TargetTooLarge>Too large</TargetTooLarge>
     <TargetTooSmall>Too small</TargetTooSmall>
+    <TargetSizeInvert>Must have body size smaller than {0} or greater than {1}</TargetSizeInvert>
     
     <AbilityCasterNoneCheck>Caster can't use {0}</AbilityCasterNoneCheck>
     <AbilityCasterLowCheck>Caster's {0} is too low</AbilityCasterLowCheck>

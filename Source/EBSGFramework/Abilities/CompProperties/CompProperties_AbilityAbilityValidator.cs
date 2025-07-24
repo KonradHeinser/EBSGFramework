@@ -30,6 +30,7 @@ namespace EBSGFramework
         public List<NeedLevel> targetNeedLevels;
         public List<PawnKindDef> targetPawnKinds;
         public FloatRange bodySize = new FloatRange(0, 999);
+        public bool invertBodySize = false;
         public TargetGroup targetGroup = TargetGroup.None;
         public List<FactionDef> validTargetFactions;
         public List<FactionDef> forbiddenTargetFactions;
@@ -49,7 +50,9 @@ namespace EBSGFramework
 
         // % Light
         public FloatRange targetLightLevel = FloatRange.ZeroToOne;
+        public bool invertTargetLight = false;
         public FloatRange casterLightLevel = FloatRange.ZeroToOne;
+        public bool invertCasterLight = false;
 
         // Roof Check
         public RoofCheck casterRoof = RoofCheck.NoCheck;
@@ -57,6 +60,7 @@ namespace EBSGFramework
 
         // % of progress through the day
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
+        public bool invertProgressThroughDay = false;
 
         // Map Condition
         public bool checkRoofForRainSnowRate;

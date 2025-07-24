@@ -234,14 +234,10 @@ namespace EBSGFramework
             else
             {
                 float light = parent.pawn.Map.glowGrid.GroundGlowAt(parent.pawn.Position);
-                if (!Props.casterLightLevel.Includes(light))
+                if (Props.casterLightLevel.Includes(light) == Props.invertCasterLight)
                 {
-                    explanation = "AbilityCasterLightLevel".Translate(Props.casterLightLevel.min.ToStringPercent(), Props.casterLightLevel.max.ToStringPercent());
-                    return false;
-                }
-                if (light < Props.casterLightLevel.min || light > Props.casterLightLevel.max)
-                {
-                    explanation = "AbilityCasterLightLevel".Translate(Props.casterLightLevel.min.ToStringPercent(), Props.casterLightLevel.max.ToStringPercent());
+                    var translate = Props.invertCasterLight ? "AbilityCasterLightLevelInvert" : "AbilityCasterLightLevel";
+                    explanation = translate.Translate(Props.casterLightLevel.min.ToStringPercent(), Props.casterLightLevel.max.ToStringPercent());
                     return false;
                 }
             }
@@ -524,11 +520,14 @@ namespace EBSGFramework
         public bool CheckHour(out string explanation)
         {
             float time = GenLocalDate.DayPercent(parent.pawn);
-            if (!Props.progressThroughDay.Includes(time))
+            if (Props.progressThroughDay.Includes(time) == Props.invertProgressThroughDay)
             {
                 int minHour = GenDate.HourOfDay((long)(Props.progressThroughDay.min * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
                 int maxHour = GenDate.HourOfDay((long)((Props.progressThroughDay.max + 0.1f) * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
-                explanation = "AbilityTime".Translate(minHour.ToString(), maxHour.ToString(), parent.pawn);
+                if (!Props.invertProgressThroughDay)
+                    explanation = "AbilityTime".Translate(minHour.ToString(), maxHour.ToString(), parent.pawn);
+                else
+                    explanation = "AbilityTime".Translate(maxHour.ToString(), minHour.ToString(), parent.pawn);
                 return false;
             }
 
@@ -556,9 +555,10 @@ namespace EBSGFramework
             else
             {
                 float light = map.glowGrid.GroundGlowAt(target.Cell);
-                if (!Props.targetLightLevel.Includes(light))
+                if (Props.targetLightLevel.Includes(light) == Props.invertTargetLight)
                 {
-                    explanation = "AbilityTargetLightLevel".Translate(Props.targetLightLevel.min.ToStringPercent(), Props.targetLightLevel.max.ToStringPercent());
+                    var translate = Props.invertTargetLight ? "AbilityTargetLightLevelInvert" : "AbilityTargetLightLevel";
+                    explanation = translate.Translate(Props.targetLightLevel.min.ToStringPercent(), Props.targetLightLevel.max.ToStringPercent());
                     return false;
                 }
             }
@@ -828,16 +828,28 @@ namespace EBSGFramework
                         return false;
                     }
                 }
-                if (pawn.BodySize < Props.bodySize.min)
+                if (Props.invertBodySize)
                 {
-                    explanation = "TargetTooSmall".Translate();
-                    return false;
+                    if (!Props.bodySize.Includes(pawn.BodySize))
+                    {
+                        explanation = "TargetSizeInvert".Translate(Props.bodySize.min, Props.bodySize.max);
+                        return false;
+                    }
                 }
-                if (pawn.BodySize > Props.bodySize.max)
+                else
                 {
-                    explanation = "TargetTooLarge".Translate();
-                    return false;
+                    if (pawn.BodySize < Props.bodySize.min)
+                    {
+                        explanation = "TargetTooSmall".Translate();
+                        return false;
+                    }
+                    if (pawn.BodySize > Props.bodySize.max)
+                    {
+                        explanation = "TargetTooLarge".Translate();
+                        return false;
+                    }
                 }
+                
                 if (!Props.targetPawnKinds.NullOrEmpty() && !Props.targetPawnKinds.Contains(pawn.kindDef))
                 {
                     explanation = "AbilityPawnKind".Translate();
