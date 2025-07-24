@@ -8,13 +8,19 @@ namespace EBSGFramework
     {
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
+        public bool invertTime = false;
+
         public bool inPollution = false;
 
         public bool notInPollution = false;
 
         public FloatRange lightLevel = FloatRange.ZeroToOne;
 
+        public bool invertLight = false;
+
         public FloatRange temps = new FloatRange(-9999, 9999);
+
+        public bool invertTemp = false;
 
         public List<TerrainDef> terrains;
 
@@ -54,7 +60,7 @@ namespace EBSGFramework
         {
             if (req.Thing is Pawn pawn && pawn.Spawned)
             {
-                if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)))
+                if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)) != invertTime)
                     return false;
 
                 Map map = pawn.Map;
@@ -67,10 +73,10 @@ namespace EBSGFramework
                 if ((rainRate.min > 0 || snowRate.min > 0) && checkRoof && roofed)
                     return false;
 
-                if (!lightLevel.ValidValue(map.glowGrid.GroundGlowAt(position)))
+                if (lightLevel.ValidValue(map.glowGrid.GroundGlowAt(position)) != invertLight)
                     return false;
 
-                if (!temps.ValidValue(position.GetTemperature(map)))
+                if (temps.ValidValue(position.GetTemperature(map)) != invertTemp)
                     return false;
 
                 if (!CheckWater(position, map))

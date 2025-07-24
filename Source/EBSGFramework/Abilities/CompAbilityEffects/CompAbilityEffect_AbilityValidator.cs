@@ -520,11 +520,11 @@ namespace EBSGFramework
         public bool CheckHour(out string explanation)
         {
             float time = GenLocalDate.DayPercent(parent.pawn);
-            if (Props.progressThroughDay.Includes(time) == Props.invertProgressThroughDay)
+            if (Props.progressThroughDay.Includes(time) == Props.invertTime)
             {
                 int minHour = GenDate.HourOfDay((long)(Props.progressThroughDay.min * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
                 int maxHour = GenDate.HourOfDay((long)((Props.progressThroughDay.max + 0.1f) * 60000), Find.WorldGrid.LongLatOf(parent.pawn.Tile).x);
-                if (!Props.invertProgressThroughDay)
+                if (!Props.invertTime)
                     explanation = "AbilityTime".Translate(minHour.ToString(), maxHour.ToString(), parent.pawn);
                 else
                     explanation = "AbilityTime".Translate(maxHour.ToString(), minHour.ToString(), parent.pawn);

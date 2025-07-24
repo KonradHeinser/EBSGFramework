@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
+        public bool invert = false;
+
         public string label = null;
 
         public override string Label => GetLabel();
@@ -20,7 +22,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn)
-                return progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn));
+                return progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)) != invert;
             return false;
         }
     }

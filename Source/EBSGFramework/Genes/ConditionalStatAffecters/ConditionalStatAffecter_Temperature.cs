@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public FloatRange temp = new FloatRange(-9999, 9999);
 
+        public bool invert = false;
+
         public bool defaultActive;
 
         public string label = null;
@@ -25,8 +27,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn && pawn.Spawned)
-                return temp.ValidValue(pawn.Position.GetTemperature(pawn.Map));
-            
+                return temp.ValidValue(pawn.Position.GetTemperature(pawn.Map)) != invert;
             return defaultActive;
         }
     }

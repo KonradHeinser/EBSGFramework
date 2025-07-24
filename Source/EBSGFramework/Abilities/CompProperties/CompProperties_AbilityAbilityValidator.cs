@@ -60,7 +60,7 @@ namespace EBSGFramework
 
         // % of progress through the day
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
-        public bool invertProgressThroughDay = false;
+        public bool invertTime = false;
 
         // Map Condition
         public bool checkRoofForRainSnowRate;

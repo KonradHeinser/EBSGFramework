@@ -20,12 +20,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn && pawn.Spawned)
-            {
-                if (inPollution)
-                    return pawn.Position.IsPolluted(pawn.Map);
-                return !pawn.Position.IsPolluted(pawn.Map);
-            }
-
+                return inPollution == pawn.Position.IsPolluted(pawn.Map);
             return defaultActive;
         }
     }

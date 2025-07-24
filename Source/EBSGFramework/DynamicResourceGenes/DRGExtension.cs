@@ -34,11 +34,13 @@ namespace EBSGFramework
 
         // Can offset conditions
         public FloatRange lightLevel = FloatRange.ZeroToOne;
+        public bool invertLight = false;
         public List<NeedLevel> needLevels;
         public List<HediffDef> requiredHediffs; // Require all of these on the pawn
         public List<HediffDef> requireOneOfHediffs; // Require any one of these on the pawn
         public List<HediffDef> forbiddenHediffs; // Require none of these are on the pawn
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
+        public bool invertTime = false;
 
         // Tied to ResourceDrainGene
         public GeneDef mainResourceGene;

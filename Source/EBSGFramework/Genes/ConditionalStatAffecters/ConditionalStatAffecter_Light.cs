@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public FloatRange lightLevel = FloatRange.ZeroToOne;
 
+        public bool invert;
+
         public bool defaultActive;
 
         public string label = null;
@@ -24,7 +26,7 @@ namespace EBSGFramework
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn && pawn.Spawned)
-                return lightLevel.ValidValue(pawn.Map.glowGrid.GroundGlowAt(pawn.Position));
+                return lightLevel.ValidValue(pawn.Map.glowGrid.GroundGlowAt(pawn.Position)) != invert;
             return defaultActive;
         }
     }
