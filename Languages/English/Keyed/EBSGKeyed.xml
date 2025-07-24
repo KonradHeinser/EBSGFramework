@@ -159,6 +159,9 @@
     <EBSG_CustomizableThings>Customizable Things</EBSG_CustomizableThings>
     <EBSG_CustomizableThingsDescription>This mod makes it easier for other mods to make certain things customizable for users. Whenever another mod requests the EBSG Framework make one of those fields customizable, it will appear here.</EBSG_CustomizableThingsDescription>
     <EBSG_CustomizableAsexualHediffs>    Customizable Asexual Hediffs</EBSG_CustomizableAsexualHediffs>
+    <EBSG_SeasonOne>is {0}</EBSG_SeasonOne>
+    <EBSG_Season>valid season</EBSG_Season>
+    <EBSG_DOY>valid day of the year</EBSG_DOY>
 
     <!--These settings are for all of the EBSG mods-->
     <EBSGAiO_ModName>Expanded Biotech Style Genes</EBSGAiO_ModName>

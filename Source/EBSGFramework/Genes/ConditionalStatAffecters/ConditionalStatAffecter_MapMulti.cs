@@ -52,7 +52,7 @@ namespace EBSGFramework
 
         private string GetLabel()
         {
-            if (label != null) return label;
+            if (label != null) return label.TranslateOrLiteral();
             return "EBSG_CorrectConditions".Translate();
         }
 
