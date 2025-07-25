@@ -54,18 +54,26 @@ namespace EBSGFramework
                     if (extension == null && !extensionAlreadyChecked) InitializeExtension();
                     if (extension != null)
                     {
+                        float time = GenLocalDate.DayPercent(Pawn);
+                        if (extension.progressThroughDay.ValidValue(time) != extension.invertTime)
+                            return false;
+
+                        int doq = GenLocalDate.DayOfQuadrum(pawn);
+                        if (extension.daysOfQuadrum.ValidValue(doq) == extension.invertDOQ)
+                            return false;
+
+                        int doy = GenLocalDate.DayOfYear(pawn);
+                        if (extension.daysOfYear.ValidValue(doy) == extension.invertDOY)
+                            return false;
+
+                        if (!pawn.CheckSeason(extension.seasons, true))
+                            return false;
+
                         if (pawn.Spawned)
                         {
-                            float time = GenLocalDate.DayPercent(Pawn);
-                            if (extension.progressThroughDay.ValidValue(time) != extension.invertTime)
+                            float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
+                            if (extension.lightLevel.ValidValue(light) == extension.invertLight)
                                 return false;
-
-                            if (pawn.Map != null)
-                            {
-                                float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
-                                if (extension.lightLevel.ValidValue(light) != extension.invertLight)
-                                    return false;
-                            }
                         }
 
                         if (!extension.requireOneOfHediffs.NullOrEmpty() && !pawn.PawnHasAnyOfHediffs(extension.requireOneOfHediffs)) return false;

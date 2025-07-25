@@ -34,16 +34,24 @@ namespace EBSGFramework
                 {
                     if (DRGExtension != null)
                     {
+                        float time = GenLocalDate.DayPercent(Pawn);
+                        if (DRGExtension.progressThroughDay.ValidValue(time) != DRGExtension.invertTime) return false;
+
+                        int doq = GenLocalDate.DayOfQuadrum(pawn);
+                        if (DRGExtension.daysOfQuadrum.ValidValue(doq) == DRGExtension.invertDOQ)
+                            return false;
+
+                        int doy = GenLocalDate.DayOfYear(pawn);
+                        if (DRGExtension.daysOfYear.ValidValue(doy) == DRGExtension.invertDOY)
+                            return false;
+
+                        if (!pawn.CheckSeason(DRGExtension.seasons, true))
+                            return false;
+
                         if (pawn.Spawned)
                         {
-                            float time = GenLocalDate.DayPercent(Pawn);
-                            if (DRGExtension.progressThroughDay.ValidValue(time) != DRGExtension.invertTime) return false;
-
-                            if (pawn.Map != null)
-                            {
-                                float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
-                                if (DRGExtension.lightLevel.ValidValue(light) != DRGExtension.invertLight) return false;
-                            }
+                            float light = pawn.Map.glowGrid.GroundGlowAt(pawn.Position);
+                            if (DRGExtension.lightLevel.ValidValue(light) == DRGExtension.invertLight) return false;
                         }
 
                         if (!DRGExtension.requireOneOfHediffs.NullOrEmpty() && !pawn.PawnHasAnyOfHediffs(DRGExtension.requireOneOfHediffs)) return false;

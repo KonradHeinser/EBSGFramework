@@ -531,6 +531,12 @@ namespace EBSGFramework
                 return false;
             }
 
+            if (!parent.pawn.CheckSeason(Props.seasons, false))
+            {
+                explanation = "EBSG_SeasonWrong".Translate();
+                return false;
+            }
+
             explanation = null;
             return true;
         }

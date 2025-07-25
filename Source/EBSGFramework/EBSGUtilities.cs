@@ -70,6 +70,25 @@ namespace EBSGFramework
             }
             return input;
         }
+
+        public static bool CheckSeason(this Pawn pawn, List<Season> seasons, bool defaultActive = false)
+        {
+            if (seasons.NullOrEmpty())
+                return true;
+            Season currentSeason = GenLocalDate.Season(pawn);
+            switch (currentSeason)
+            {
+                case Season.Undefined:
+                    return defaultActive;
+                case Season.PermanentSummer:
+                    return seasons.Contains(Season.PermanentSummer) || seasons.Contains(Season.Summer);
+                case Season.PermanentWinter:
+                    return seasons.Contains(Season.PermanentWinter) || seasons.Contains(Season.Winter);
+                default:
+                    return seasons.Contains(currentSeason);
+            }
+        }
+
         public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null, List<BodyPartGroupDef> groups = null, List<ThingDef> exceptions = null)
         {
             if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 

@@ -24,6 +24,16 @@ namespace EBSGFramework
 
         public List<GeneDef> noneOfGenes;
 
+        public IntRange daysOfQuadrum = new IntRange(0, 60);
+
+        public bool invertDOQ;
+
+        public IntRange daysOfYear = new IntRange(0, 60);
+
+        public bool invertDOY;
+
+        public List<Season> seasons;
+
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
 
         public bool invertTime = false;
@@ -84,7 +94,18 @@ namespace EBSGFramework
                 if (!pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
                 if (!pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 
-                if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)) != invertTime)
+                int doq = GenLocalDate.DayOfQuadrum(pawn);
+                if (daysOfQuadrum.ValidValue(doq) == invertDOQ)
+                    return false;
+
+                int doy = GenLocalDate.DayOfYear(pawn);
+                if (daysOfYear.ValidValue(doy) == invertDOY)
+                    return false;
+
+                if (!pawn.CheckSeason(seasons, defaultActive))
+                    return false;
+
+                if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)) == invertTime)
                     return false;
 
                 if (pawn.Spawned)
@@ -99,10 +120,10 @@ namespace EBSGFramework
                     if ((rainRate.min > 0 || snowRate.min > 0) && checkRoof && roofed) 
                         return false;
 
-                    if (lightLevel.ValidValue(map.glowGrid.GroundGlowAt(position)) != invertLight) 
+                    if (lightLevel.ValidValue(map.glowGrid.GroundGlowAt(position)) == invertLight) 
                             return false;
 
-                    if (temps.ValidValue(position.GetTemperature(map)) != invertTemp)
+                    if (temps.ValidValue(position.GetTemperature(map)) == invertTemp)
                         return false;
 
                     if (!CheckWater(position, map))

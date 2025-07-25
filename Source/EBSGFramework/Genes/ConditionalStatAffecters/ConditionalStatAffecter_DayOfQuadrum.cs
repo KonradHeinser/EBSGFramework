@@ -3,9 +3,9 @@ using Verse;
 
 namespace EBSGFramework
 {
-    public class ConditionalStatAffecter_DayOfYear : ConditionalStatAffecter
+    public class ConditionalStatAffecter_DayOfQuadrum : ConditionalStatAffecter
     {
-        public IntRange daysOfYear = new IntRange(0, 60);
+        public IntRange daysOfQuadrum = new IntRange(0, 15);
 
         public bool invert;
 
@@ -18,15 +18,15 @@ namespace EBSGFramework
         private string GetLabel()
         {
             if (label != null) return label.TranslateOrLiteral();
-            return "EBSG_DoY".Translate();
+            return "EBSG_DoQ".Translate();
         }
 
         public override bool Applies(StatRequest req)
         {
             if (req.Thing is Pawn pawn)
             {
-                int doy = GenLocalDate.DayOfYear(pawn);
-                return daysOfYear.ValidValue(doy) != invert;
+                int doq = GenLocalDate.DayOfQuadrum(pawn);
+                return daysOfQuadrum.ValidValue(doq) != invert;
             }
             return defaultActive;
         }

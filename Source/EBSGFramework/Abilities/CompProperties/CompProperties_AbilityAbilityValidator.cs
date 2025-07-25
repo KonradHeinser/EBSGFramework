@@ -58,9 +58,10 @@ namespace EBSGFramework
         public RoofCheck casterRoof = RoofCheck.NoCheck;
         public RoofCheck targetRoof = RoofCheck.NoCheck;
 
-        // % of progress through the day
+        // Time checks
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
         public bool invertTime = false;
+        public List<Season> seasons;
 
         // Map Condition
         public bool checkRoofForRainSnowRate;

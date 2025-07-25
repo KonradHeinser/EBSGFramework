@@ -111,8 +111,10 @@
     <Compile Include="Generic List Classes\SuccessChance.cs" />
     <Compile Include="Generic List Classes\XenoRange.cs" />
     <Compile Include="Genes\AgingXenotypeExtension.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfQuadrum.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfYear.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Season.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_TimeMulti.cs" />
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />

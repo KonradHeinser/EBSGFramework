@@ -41,6 +41,11 @@ namespace EBSGFramework
         public List<HediffDef> forbiddenHediffs; // Require none of these are on the pawn
         public FloatRange progressThroughDay = FloatRange.ZeroToOne;
         public bool invertTime = false;
+        public IntRange daysOfQuadrum = new IntRange(0, 15);
+        public bool invertDOQ;
+        public IntRange daysOfYear = new IntRange(0, 60);
+        public bool invertDOY;
+        public List<Season> seasons;
 
         // Tied to ResourceDrainGene
         public GeneDef mainResourceGene;
