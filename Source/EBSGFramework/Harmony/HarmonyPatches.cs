@@ -90,7 +90,7 @@ namespace EBSGFramework
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
-                postfix: new HarmonyMethod(patchType, nameof(ProjectileImpactPostfix)));
+                prefix: new HarmonyMethod(patchType, nameof(ProjectileImpactPrefix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(CompTurretGun), "CanShoot"),
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
             
@@ -1828,7 +1828,7 @@ namespace EBSGFramework
                 __result = (Color)newColor;
         }
 
-        public static void ProjectileImpactPostfix(Projectile __instance)
+        public static void ProjectileImpactPrefix(Projectile __instance)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();
             impactEffect?.Impact();
