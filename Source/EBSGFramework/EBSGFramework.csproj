@@ -540,8 +540,6 @@
     <Compile Include="Hediffs\Comps\HediffComp_RemoveAtSeverities.cs" />
     <Compile Include="Enums\TargetGroup.cs" />
     <Compile Include="Enums\HediffEffectTrigger.cs" />
-    <Compile Include="Things\CompProperties\CompProperties_EquippableAbility.cs" />
-    <Compile Include="Things\Comps\CompEquippableAbility.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ProjectileImpactEffect.cs" />
     <Compile Include="Things\Comps\ProjectileComp_ImpactEffect.cs" />
     <Compile Include="Things\CompProperties\CompProperties_HediffOnDamage.cs" />
