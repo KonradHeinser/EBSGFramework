@@ -18,6 +18,9 @@
     </li>
   </modDependencies>
 
+  <loadBefore>
+    <li>tiagocc0.FemaleBodyVariants</li>
+  </loadBefore>
   <loadAfter>
     <li>Ludeon.RimWorld.Royalty</li>
     <li>Ludeon.RimWorld.Ideology</li>
