@@ -22,7 +22,8 @@ namespace EBSGFramework
             if (!target.Cell.IsValid)
                 return false;
 
-            var stuff = target.Cell.GetThingList(parent.pawn.Map);
+            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).ToList() : target.Cell.GetThingList(parent.pawn.Map);
+
             if (stuff.NullOrEmpty())
                 return false;
 
@@ -41,8 +42,8 @@ namespace EBSGFramework
             if (!target.Cell.IsValid)
                 return;
 
-            var stuff = target.Cell.GetThingList(parent.pawn.Map);
-            
+            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).ToList() : target.Cell.GetThingList(parent.pawn.Map);
+
             if (!stuff.NullOrEmpty())
                 foreach (var thing in stuff)
                     if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
@@ -55,7 +56,6 @@ namespace EBSGFramework
                             if (filth.Spawned)
                                 filth.Map.mapDrawer.MapMeshDirty(filth.Position, MapMeshFlagDefOf.Things);
                         }
-                        break;
                     }
         }
 
