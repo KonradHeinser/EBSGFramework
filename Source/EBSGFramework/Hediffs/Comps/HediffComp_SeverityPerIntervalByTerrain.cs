@@ -10,9 +10,9 @@ namespace EBSGFramework
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(Props.interval) && Pawn.Spawned)
+            if (Pawn.IsHashIntervalTick(Props.interval))
             {
-                if (ValidTerrain())
+                if (Pawn.Spawned && ValidTerrain())
                     parent.Severity += Props.severityOnValid;
                 else
                     parent.Severity += Props.severityOnInvalid;
