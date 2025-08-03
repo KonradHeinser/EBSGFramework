@@ -53,6 +53,11 @@ namespace EBSGFramework
             return base.CanHitTarget(target);
         }
 
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
+        {
+            return Valid(target, true) && base.CanApplyOn(target, dest);
+        }
+
         public override bool Valid(LocalTargetInfo target, bool showMessages = true)
         {
             if (target.Pawn == null) return false;

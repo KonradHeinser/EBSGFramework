@@ -20,47 +20,37 @@ namespace EBSGFramework
             Pawn targetPawn = target.Pawn;
             Pawn caster = parent.pawn;
 
-            if (!Props.targetSkillsToGiveXP.NullOrEmpty() && targetPawn != null)
-            {
-                if (targetPawn.skills != null)
+            if (!Props.targetSkillsToGiveXP.NullOrEmpty() && targetPawn?.skills != null)
+                foreach (SkillXP skillXP in Props.targetSkillsToGiveXP)
                 {
-                    foreach (SkillXP skillXP in Props.targetSkillsToGiveXP)
+                    SkillRecord skill = null;
+                    if (skillXP.skill != null) skill = targetPawn.skills.GetSkill(skillXP.skill);
+                    else skill = targetPawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
+                    if (skill != null && !skill.TotallyDisabled)
                     {
-                        SkillRecord skill = null;
-                        if (skillXP.skill != null) skill = targetPawn.skills.GetSkill(skillXP.skill);
-                        else skill = targetPawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
-                        if (skill != null && !skill.TotallyDisabled)
-                        {
-                            targetSkills.Add(skill);
-                            targetPawn.skills.Learn(skill.def, skillXP.experience, true);
-                        }
+                        targetSkills.Add(skill);
+                        targetPawn.skills.Learn(skill.def, skillXP.experience, true);
                     }
                 }
-            }
 
-            if (!Props.casterskillsToGiveXP.NullOrEmpty() && caster != null)
-            {
-                if (targetPawn.skills != null)
+            if (!Props.casterskillsToGiveXP.NullOrEmpty() && caster?.skills != null)
+                foreach (SkillXP skillXP in Props.casterskillsToGiveXP)
                 {
-                    foreach (SkillXP skillXP in Props.casterskillsToGiveXP)
+                    SkillRecord skill = null;
+                    if (skillXP.skill != null) skill = caster.skills.GetSkill(skillXP.skill);
+                    else skill = caster.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
+                    if (skill != null && !skill.TotallyDisabled)
                     {
-                        SkillRecord skill = null;
-                        if (skillXP.skill != null) skill = caster.skills.GetSkill(skillXP.skill);
-                        else skill = caster.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
-                        if (skill != null && !skill.TotallyDisabled)
-                        {
-                            casterSkills.Add(skill);
-                            caster.skills.Learn(skill.def, skillXP.experience, true);
-                        }
+                        casterSkills.Add(skill);
+                        caster.skills.Learn(skill.def, skillXP.experience, true);
                     }
                 }
-            }
 
             if (!Props.skillsToGiveXP.NullOrEmpty())
             {
                 foreach (SkillXP skillXP in Props.skillsToGiveXP)
                 {
-                    if (caster != null && caster.skills != null)
+                    if (caster?.skills != null)
                     {
                         SkillRecord skill = null;
                         if (skillXP.skill != null) skill = caster.skills.GetSkill(skillXP.skill);
@@ -71,7 +61,7 @@ namespace EBSGFramework
                             caster.skills.Learn(skill.def, skillXP.experience, true);
                         }
                     }
-                    if (targetPawn != null && targetPawn != caster && targetPawn.skills != null)
+                    if (targetPawn != caster && targetPawn?.skills != null)
                     {
                         SkillRecord skill = null;
                         if (skillXP.skill != null) skill = targetPawn.skills.GetSkill(skillXP.skill);

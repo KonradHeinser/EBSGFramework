@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            return Valid(target, !Props.noMessage);
+            return Valid(target, !Props.noMessage) && base.CanApplyOn(target, dest);
         }
 
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)

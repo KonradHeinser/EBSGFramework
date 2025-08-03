@@ -8,6 +8,11 @@ namespace EBSGFramework
     {
         public new CompProperties_AbilityAlterXenotype Props => (CompProperties_AbilityAlterXenotype)props;
 
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
+        {
+            return Valid(target, true) && base.CanApplyOn(target, dest);
+        }
+
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
             if (!(target.Thing is Pawn pawn) || pawn.genes == null)

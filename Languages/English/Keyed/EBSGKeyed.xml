@@ -164,6 +164,7 @@
     <EBSG_SeasonWrong>wrong season</EBSG_SeasonWrong>
     <EBSG_DoY>valid day of the year</EBSG_DoY>
     <EBSG_DoQ>valid day of the quadrum</EBSG_DoQ>
+    <EBSG_NoViableTarget>no viable target</EBSG_NoViableTarget>
 
     <!--These settings are for all of the EBSG mods-->
     <EBSGAiO_ModName>Expanded Biotech Style Genes</EBSGAiO_ModName>

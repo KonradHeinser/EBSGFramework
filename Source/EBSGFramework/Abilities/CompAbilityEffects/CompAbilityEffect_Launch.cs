@@ -80,7 +80,7 @@ namespace EBSGFramework
 
         public override bool CanApplyOn(GlobalTargetInfo target)
         {
-            return Valid(target, true);
+            return Valid(target, true) && base.CanApplyOn(target);
         }
 
         public override bool Valid(GlobalTargetInfo target, bool throwMessages = false)

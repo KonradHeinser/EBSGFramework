@@ -36,19 +36,27 @@ namespace EBSGFramework
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            base.Apply(target, dest);
+            return Valid(target, true) && base.CanApplyOn(target, dest);
+        }
 
-            if (target.Pawn != null && target.Pawn.ageTracker.AgeBiologicalYearsFloat < 16f)
+        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
+        {
+            if (target.Pawn == null)
+                return false;
+
+            if (target.Pawn.ageTracker.AgeBiologicalYearsFloat < 16f)
             {
-                Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityCantApplyTooYoung".Translate(target.Pawn), target.Pawn, MessageTypeDefOf.RejectInput, historical: false);
+                if (throwMessages)
+                    Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityCantApplyTooYoung".Translate(target.Pawn), target.Pawn, MessageTypeDefOf.RejectInput, historical: false);
                 return false;
             }
             if (parent.pawn.ageTracker.AgeBiologicalYearsFloat < 16f)
             {
-                Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityCantApplyTooYoung".Translate(parent.pawn), parent.pawn, MessageTypeDefOf.RejectInput, historical: false);
+                if (throwMessages)
+                    Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityCantApplyTooYoung".Translate(parent.pawn), parent.pawn, MessageTypeDefOf.RejectInput, historical: false);
                 return false;
             }
-            return true;
+            return base.Valid(target, throwMessages);
         }
     }
 }

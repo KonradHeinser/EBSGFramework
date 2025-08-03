@@ -91,7 +91,7 @@ namespace EBSGFramework
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            return Valid(target, true);
+            return Valid(target, true) && base.CanApplyOn(target, dest);
         }
 
         public override void DrawEffectPreview(LocalTargetInfo target)
