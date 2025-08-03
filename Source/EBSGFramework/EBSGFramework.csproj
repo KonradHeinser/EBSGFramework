@@ -90,6 +90,7 @@
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalHasAbilityUsable.cs" />
     <Compile Include="EBSGAI\JobGivers\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalNearbyCover.cs" />
+    <Compile Include="Enums\TerrainPollution.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ComaGene.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ReloadableAbilities.cs" />
     <Compile Include="Generic List Classes\ComplexXenoAlter.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerIntervalByTerrain.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_SeverityPerIntervalByTerrain.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryFaction.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />

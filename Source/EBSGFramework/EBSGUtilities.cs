@@ -71,6 +71,18 @@ namespace EBSGFramework
             return input;
         }
 
+        public static bool TagCheck(List<string> a, List<string> b)
+        {
+            if (a.NullOrEmpty() || b.NullOrEmpty()) 
+                return false;
+
+            foreach (var str in a)
+                if (b.Contains(str))
+                    return true;
+
+            return false;
+        }
+
         public static bool CheckSeason(this Pawn pawn, List<Season> seasons, bool defaultActive = false)
         {
             if (seasons.NullOrEmpty())
