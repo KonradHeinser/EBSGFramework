@@ -23,19 +23,20 @@ namespace EBSGFramework
         {
             TerrainDef terrain = Pawn.Position.GetTerrain(Pawn.Map);
 
-            switch (Props.pollution)
-            {
-                case TerrainPollution.Polluted:
-                    if (!Pawn.Position.IsPolluted(Pawn.Map))
-                        return false;
-                    break;
-                case TerrainPollution.Clean:
-                    if (Pawn.Position.IsPolluted(Pawn.Map))
-                        return false;
-                    break;
-                default:
-                    break;
-            }
+            if (ModsConfig.BiotechActive)
+                switch (Props.pollution)
+                {
+                    case TerrainPollution.Polluted:
+                        if (!Pawn.Position.IsPolluted(Pawn.Map))
+                            return false;
+                        break;
+                    case TerrainPollution.Clean:
+                        if (Pawn.Position.IsPolluted(Pawn.Map))
+                            return false;
+                        break;
+                    default:
+                        break;
+                }
 
             if (!Props.validTerrains.NullOrEmpty() && Props.validTerrains.Contains(terrain))
                 return true;
