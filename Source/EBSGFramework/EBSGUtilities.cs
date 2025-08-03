@@ -1443,7 +1443,7 @@ namespace EBSGFramework
 
             if (pawn.genes?.GenesListForReading.NullOrEmpty() == false && !searchList.NullOrEmpty())
                 foreach (GeneDef gene in searchList)
-                    if (pawn.genes.GetGene(gene) != null)
+                    if (pawn.QuickHasGene(gene))
                         results.Add(gene);
 
             return results;
@@ -2060,6 +2060,11 @@ namespace EBSGFramework
                     foreach (Hediff hediff in hediffsToRemove) pawn.health.RemoveHediff(hediff);
                 }
             }
+        }
+
+        public static bool QuickHasGene(this Pawn pawn, GeneDef gene)
+        {
+            return pawn.genes.HasActiveGene(gene);
         }
 
         public static bool HasRelatedGene(this Pawn pawn, GeneDef relatedGene)
