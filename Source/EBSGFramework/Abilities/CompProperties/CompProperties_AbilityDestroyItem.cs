@@ -26,7 +26,7 @@ namespace EBSGFramework
                     string text = " - " + "AnyOf".Translate() + ": ";
                     foreach (var link in option)
                         text += link.ToString() + ", ";
-                    yield return text.Remove(text.Length - 3); // Lops off the last ", "
+                    yield return text.Remove(text.Length - 2); // Lops off the last ", "
                 }
             }
         }
