@@ -64,7 +64,7 @@ namespace EBSGFramework
             if (thing.def.IsWeapon && pawn.WorkTagIsDisabled(WorkTags.Violent))
                 return false;
             
-            if (thing.def.IsRangedWeapon && pawn.WorkTagIsDisabled(WorkTags.Shooting))
+            if (thing.def.IsRangedWeapon && (pawn.WorkTagIsDisabled(WorkTags.Shooting) || pawn.story?.traits?.HasTrait(TraitDefOf.Brawler) == true))
                 return false;
 
             if (pawn.health?.capacities?.CapableOf(PawnCapacityDefOf.Manipulation) != true)
