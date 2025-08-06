@@ -58,7 +58,7 @@ namespace EBSGFramework
             if (pawn.equipment == null)
                 return false;
 
-            if (thing.def.equipmentType == EquipmentType.Primary || pawn.equipment.Primary != null)
+            if (thing.def.equipmentType == EquipmentType.Primary && pawn.equipment.Primary != null)
                 return false;
 
             if (thing.def.IsWeapon && pawn.WorkTagIsDisabled(WorkTags.Violent))
