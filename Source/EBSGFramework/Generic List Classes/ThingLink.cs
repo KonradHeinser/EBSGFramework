@@ -60,5 +60,10 @@ namespace EBSGFramework
             else if (element.Name == "thing")
                 DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thing", element.InnerText);
         }
+
+        public override string ToString()
+        {
+            return thing.LabelCap + " x" + amount;
+        }
     }
 }

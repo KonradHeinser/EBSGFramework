@@ -126,14 +126,19 @@ namespace EBSGFramework
                     foreach (ThingLink link in option)
                     {
                         int amount = link.amount;
-
+                        List<Thing> remove = new List<Thing>();
                         foreach (var thing in stuff)
                             if (thing.def == link.thing)
+                            {
                                 amount -= thing.stackCount;
+                                remove.Add(thing);
+                            }
 
                         if (amount <= 0)
                         {
                             flag = true;
+                            foreach (var thing in remove)
+                                stuff.Remove(thing); // Removes them from the stuff marked as available to avoid double-dipping on reqs
                             break;
                         }
                     }
