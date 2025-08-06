@@ -70,6 +70,13 @@ namespace EBSGFramework
                     return false;
                 }
 
+                if (t.stackCount < MinCount) // If all of the options require more stuff than the stack has, no need to look furter
+                {
+                    if (throwMessages)
+                        Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_InsufficientMaterial".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
+                    return false;
+                }
+
                 // This is the "looking further" referenced earlier
                 foreach (var option in Props.options)
                 {
@@ -88,13 +95,6 @@ namespace EBSGFramework
                             Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoViableTarget".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
                         return false;
                     }
-                }
-
-                if (t.stackCount < MinCount) // If all of the options require more stuff than the stack has, no need to look furter
-                {
-                    if (throwMessages)
-                        Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_InsufficientMaterial".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
-                    return false;
                 }
             }
             else
