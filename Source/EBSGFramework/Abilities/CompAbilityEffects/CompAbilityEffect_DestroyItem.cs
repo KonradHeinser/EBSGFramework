@@ -81,18 +81,25 @@ namespace EBSGFramework
                 foreach (var option in Props.options)
                 {
                     bool flag = false;
-
+                    bool flag2 = false;
                     foreach (ThingLink link in option)
-                        if (link.thing == t.def && link.amount <= t.stackCount)
+                        if (link.thing == t.def)
                         {
-                            flag = true;
-                            break;
+                            if (link.amount <= t.stackCount)
+                            {
+                                flag = true;
+                                break;
+                            }
+                            flag2 = true;
                         }
 
                     if (!flag)
                     {
                         if (throwMessages)
-                            Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoViableTarget".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
+                            if (!flag2)
+                                Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoViableTarget".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
+                            else
+                                Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_InsufficientMaterial".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
                         return false;
                     }
                 }
@@ -115,7 +122,7 @@ namespace EBSGFramework
                 foreach (var option in Props.options)
                 {
                     bool flag = false;
-
+                    
                     foreach (ThingLink link in option)
                     {
                         int amount = link.amount;
