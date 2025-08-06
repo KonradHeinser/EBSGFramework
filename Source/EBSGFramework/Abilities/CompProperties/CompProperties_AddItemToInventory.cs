@@ -17,6 +17,8 @@ namespace EBSGFramework
 
         public ThingDef casterStuffing;
 
+        public bool tryEquip = true;
+
         public CompProperties_AddItemToInventory()
         {
             compClass = typeof(CompAbilityEffect_AddItemToInventory);
