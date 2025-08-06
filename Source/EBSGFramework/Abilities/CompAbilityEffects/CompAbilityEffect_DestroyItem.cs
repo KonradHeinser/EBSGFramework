@@ -101,18 +101,15 @@ namespace EBSGFramework
             {
                 if (!target.Cell.IsValid)
                     return false;
-                var stuff = GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).ToList();
+                var stuff = GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).Where(arg => Options.Contains(arg.def)).ToList();
 
-                if (stuff.NullOrEmpty())
-                    return false;
-
-                stuff = stuff.Where(arg => options.Contains(arg.def)).ToList();
                 if (stuff.NullOrEmpty())
                 {
                     if (throwMessages)
                         Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoViableTarget".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
                     return false;
                 }
+
                 stuff.SortBy(t => t.Position.DistanceTo(target.Cell));
 
                 foreach (var option in Props.options)
