@@ -11,20 +11,10 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             if (Props.targetThing != null && target.TargetIsPawn(out Pawn targetPawn))
-            {
-                Thing thing = ThingMaker.MakeThing(Props.targetThing, Props.targetStuffing);
-                thing.stackCount = Props.targetCount;
-
-                
-
-                if (targetPawn.inventory != null && targetPawn.inventory.innerContainer.CanAcceptAnyOf(thing))
-                    targetPawn.inventory.innerContainer.TryAdd(thing, Props.targetCount);
-            }
+                AddItemToInventory(targetPawn, Props.targetThing, Props.targetStuffing, Props.targetCount);
 
             if (Props.casterThing != null && parent.pawn.inventory != null)
-            {
                 AddItemToInventory(parent.pawn, Props.casterThing, Props.casterStuffing, Props.casterCount);
-            }
         }
 
         private void AddItemToInventory(Pawn pawn, ThingDef thing, ThingDef stuff, int count)
