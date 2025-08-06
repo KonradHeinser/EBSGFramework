@@ -5,7 +5,7 @@ namespace EBSGFramework
 {
     public class CompProperties_AbilityDestroyItem : CompProperties_AbilityEffect
     {
-        public List<ThingLink> options;
+        public List<List<ThingLink>> options;
 
         public CompProperties_AbilityDestroyItem()
         {
