@@ -76,12 +76,14 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LaunchProjectileBurst.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeIdeology.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyFilth.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />

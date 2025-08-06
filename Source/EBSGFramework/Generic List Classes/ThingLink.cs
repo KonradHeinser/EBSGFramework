@@ -7,37 +7,37 @@ namespace EBSGFramework
     {
         public ThingDef thing;
 
-        public float change;
+        public int amount = 1;
 
         public ThingLink()
         {
         }
 
-        public ThingLink(ThingDef thing, float change)
+        public ThingLink(ThingDef thing, int amount)
         {
             this.thing = thing;
-            this.change = change;
+            this.amount = amount;
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
             int num = xmlRoot.ChildNodes.Count;
-            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thing", xmlRoot.Name);
-            if (num == 1)
-            {
+            if (xmlRoot.Name != "li")
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thing", xmlRoot.Name);
+
+            if (num == 0)
+                amount = 1;
+            else if (num == 1)
                 LoadFromSingleNode(xmlRoot.FirstChild);
-            }
             else if (num > 1)
-            {
                 LoadMultipleNodes(xmlRoot);
-            }
         }
 
         private void LoadFromSingleNode(XmlNode node)
         {
             if (node is XmlText xmlText)
             {
-                change = ParseHelper.FromString<float>(xmlText.InnerText);
+                amount = ParseHelper.FromString<int>(xmlText.InnerText);
             }
             else if (node is XmlElement element)
             {
@@ -55,10 +55,10 @@ namespace EBSGFramework
 
         private void ParseXmlElement(XmlElement element)
         {
-            if (element.Name == "change")
-            {
-                change = ParseHelper.FromString<float>(element.InnerText);
-            }
+            if (element.Name == "amount")
+                amount = ParseHelper.FromString<int>(element.InnerText);
+            else if (element.Name == "thing")
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thing", element.InnerText);
         }
     }
 }
