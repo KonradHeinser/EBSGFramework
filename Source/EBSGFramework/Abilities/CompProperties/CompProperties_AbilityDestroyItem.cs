@@ -20,7 +20,7 @@ namespace EBSGFramework
             if (!options.NullOrEmpty() && addCostToStatSummary)
             {
                 yield return "";
-                yield return "Cost".Translate();
+                yield return "Cost".Translate().CapitalizeFirst() + ":";
                 foreach (var option in options)
                 {
                     string text = " - " + "AnyOf".Translate() + ": ";
