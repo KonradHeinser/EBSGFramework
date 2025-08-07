@@ -441,7 +441,7 @@ namespace EBSGFramework
             {
                 if (!shownMissingNeedWarning)
                 {
-                    Log.Error($"{def.defName} is missing a linked need. This should be added through causesNeed.");
+                    Log.Error($"{def.defName} is missing a linked need. This should be added through enablesNeeds.");
                     shownMissingNeedWarning = true;
                 }
                 yield break;
