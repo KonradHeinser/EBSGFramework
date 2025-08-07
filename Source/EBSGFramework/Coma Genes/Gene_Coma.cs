@@ -70,7 +70,21 @@ namespace EBSGFramework
             get
             {
                 if (cachedComaNeed == null)
+                {
                     cachedComaNeed = pawn.needs?.TryGetNeed<Need_ComaGene>();
+
+                    // This is for the off chance that my warning about making coma genes exclusive was ignored
+                    if (cachedComaNeed != null && cachedComaNeed.ComaGene != this)
+                    {
+                        cachedComaNeed = null;
+                        foreach (Need need in pawn.needs.AllNeeds)
+                            if (need is Need_ComaGene comaNeed && comaNeed.ComaGene == this)
+                            {
+                                cachedComaNeed = comaNeed;
+                                break;
+                            }
+                    }
+                }
 
                 return cachedComaNeed;
             }
