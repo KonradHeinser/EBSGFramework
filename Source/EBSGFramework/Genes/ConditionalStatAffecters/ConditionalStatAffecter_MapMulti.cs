@@ -54,6 +54,10 @@ namespace EBSGFramework
 
         public bool forbiddenWeathers = false;
 
+        public List<PlanetLayerDef> layers;
+
+        public bool invertLayers = false;
+
         public bool defaultActive = true; // Only applies when the pawn isn't spawned, and should only be messed with if some things are being used that require a spawned pawn
 
         public string label = null;
@@ -83,6 +87,10 @@ namespace EBSGFramework
 
                 if (progressThroughDay.ValidValue(GenLocalDate.DayPercent(pawn)) == invertTime)
                     return false;
+
+                if (pawn.Tile.Valid)
+                    if (!layers.NullOrEmpty() && layers.Contains(pawn.Tile.LayerDef) == invertLayers)
+                        return false;
 
                 Map map = pawn.Map;
                 IntVec3 position = pawn.Position;

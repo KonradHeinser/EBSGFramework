@@ -108,6 +108,9 @@
     <EBSG_MapWeather>correct map weather</EBSG_MapWeather>
     <EBSG_InPollution>in pollution</EBSG_InPollution>
     <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
+    <EBSG_CorrectLayer>in/on correct map layer</EBSG_CorrectLayer>
+    <EBSG_CorrectLayerOne>in/on {0}</EBSG_CorrectLayerOne>
+    <EBSG_CorrectLayerOneNo>not in/on {0}</EBSG_CorrectLayerOneNo>
 
     <!--EBSG Recorder-->
     <EBSG_ThinkingPawnName> - thinking pawn's name: </EBSG_ThinkingPawnName>

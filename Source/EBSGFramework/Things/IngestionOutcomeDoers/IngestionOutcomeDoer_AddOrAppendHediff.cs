@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using RimWorld;
+using Verse;
+using Verse.AI;
+
+namespace EBSGFramework
+{
+    public class IngestionOutcomeDoer_AddOrAppendHediff : IngestionOutcomeDoer
+    {
+        public HediffDef hediffDef;
+
+        public float initialSeverity = 0f;
+
+        public float severityChange = 0f;
+
+        public ChemicalDef toleranceChemical;
+
+        public bool divideByBodySize;
+
+        public bool multiplyByGeneToleranceFactors;
+
+        protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
+        {
+            float initial = initialSeverity >= 0 ? initialSeverity : hediffDef.initialSeverity;
+            float change = severityChange;
+            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref initial, multiplyByGeneToleranceFactors, divideByBodySize);
+            AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref change, multiplyByGeneToleranceFactors, divideByBodySize);
+            pawn.AddOrAppendHediffs(initial + change * (ingestedCount - 1), change * ingestedCount, hediffDef);
+        }
+    }
+}

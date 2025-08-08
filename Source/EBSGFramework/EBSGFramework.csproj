@@ -120,6 +120,7 @@
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfYear.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Season.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_TimeMulti.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_WorldLayer.cs" />
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Things\Comps\CompUseEffect_AlterXenotypeByHediffSeverity.cs" />
     <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
+    <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AddOrAppendHediff.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterGenes.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AlterXenotype.cs" />
     <Compile Include="Things\TurretRoofBlocked.cs" />
