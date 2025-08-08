@@ -28,7 +28,7 @@ namespace EBSGFramework
             float change = severityChange;
             AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref initial, multiplyByGeneToleranceFactors, divideByBodySize);
             AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref change, multiplyByGeneToleranceFactors, divideByBodySize);
-            pawn.AddOrAppendHediffs(initial + change * (ingestedCount - 1), change * ingestedCount, hediffDef);
+            pawn.AddOrAppendHediffs(initial + initial != 0 ? change * (ingestedCount - 1) : 0, change * ingestedCount, hediffDef);
         }
     }
 }
