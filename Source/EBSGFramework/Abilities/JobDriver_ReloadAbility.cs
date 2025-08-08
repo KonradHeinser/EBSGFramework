@@ -66,6 +66,8 @@ namespace EBSGFramework
                 int charges = Mathf.Min(comp.ChargesNeeded, Mathf.FloorToInt(carriedThing.stackCount / comp.Props.ammoPerCharge));
                 comp.RemainingCharges += charges;
                 carriedThing.stackCount -= charges * comp.Props.ammoPerCharge;
+                if (carriedThing.stackCount <= 0)
+                    carriedThing.Destroy();
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return toil;
