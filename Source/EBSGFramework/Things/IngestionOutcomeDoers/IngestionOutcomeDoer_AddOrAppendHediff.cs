@@ -30,5 +30,14 @@ namespace EBSGFramework
             AddictionUtility.ModifyChemicalEffectForToleranceAndBodySize(pawn, toleranceChemical, ref change, multiplyByGeneToleranceFactors, divideByBodySize);
             pawn.AddOrAppendHediffs(initial + initial != 0 ? change * (ingestedCount - 1) : 0, change * ingestedCount, hediffDef);
         }
+
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats(ThingDef parentDef)
+        {
+            if (!parentDef.IsDrug || !(chance >= 1f))
+                yield break;
+
+            foreach (StatDrawEntry item in hediffDef.SpecialDisplayStats(StatRequest.ForEmpty()))
+                yield return item;
+        }
     }
 }
