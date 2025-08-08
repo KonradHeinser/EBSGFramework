@@ -33,7 +33,7 @@ namespace EBSGFramework
                     else buildString += "+" + needOffset.offset;
 
                     if (needOffset.offsetFactorStat != null)
-                        buildString += " x" + needOffset.offsetFactorStat.LabelCap;
+                        buildString += " x " + needOffset.offsetFactorStat.LabelCap;
 
                     yield return buildString;
                 }
