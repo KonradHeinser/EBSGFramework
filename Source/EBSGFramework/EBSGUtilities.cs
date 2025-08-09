@@ -932,7 +932,7 @@ namespace EBSGFramework
                 initialSeverity = Mathf.Clamp(initialSeverity, finalRange.Value.min, finalRange.Value.max);
 
             if (HasHediff(pawn, hediff, other, out var h))
-                if (finalRange.HasValue)
+                if (finalRange.HasValue && severityIncrease != 0)
                     h.ClampedSeverityOffset(severityIncrease, finalRange.Value);
                 else
                     h.Severity += severityIncrease;
