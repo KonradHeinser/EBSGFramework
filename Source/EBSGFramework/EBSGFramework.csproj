@@ -126,6 +126,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerIntervalByTerrain.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityPerIntervalByTerrain.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryFaction.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />

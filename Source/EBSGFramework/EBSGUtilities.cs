@@ -278,13 +278,11 @@ namespace EBSGFramework
                     {
                         hediff = null;
                         foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                        {
                             if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part == bodyPartRecord)
                             {
                                 hediff = hediffOnPawn;
                                 break;
                             }
-                        }
                     }
                 }
                 else if (bodyPartDef != null)
@@ -293,23 +291,17 @@ namespace EBSGFramework
                     {
                         hediff = null;
                         foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                        {
                             if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part.def == bodyPartDef)
                             {
                                 hediff = hediffOnPawn;
                                 break;
                             }
-                        }
                     }
                 }
-                else
-                {
-                    // If there's no set body part, just get the newest version of that hediff def as that's most likely to be the correct one
+                else // If there's no set body part, get the newest version of that hediff def as that's most likely to be the correct one
                     foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                    {
-                        if (hediffOnPawn.def == hediffDef && hediffOnPawn.ageTicks < hediff.ageTicks) hediff = hediffOnPawn;
-                    }
-                }
+                        if (hediffOnPawn.def == hediffDef && hediffOnPawn.ageTicks < hediff.ageTicks) 
+                            hediff = hediffOnPawn;
             }
             return hediff;
         }
@@ -522,7 +514,8 @@ namespace EBSGFramework
         {
             if (hediffToParts != null && HasHediff(pawn, hediffToParts.hediff))
             {
-                if (hediffToParts.bodyParts.NullOrEmpty()) RemoveHediffs(pawn, hediffToParts.hediff);
+                if (hediffToParts.bodyParts.NullOrEmpty()) 
+                    RemoveHediffs(pawn, hediffToParts.hediff);
                 else
                 {
                     foreach (BodyPartDef bodyPart in hediffToParts.bodyParts)
@@ -917,27 +910,40 @@ namespace EBSGFramework
             return newHediff;
         }
 
-        public static void AddOrAppendHediffs(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null)
+        public static void ClampedSeverityOffset(this Hediff hediff, float change,  FloatRange limits)
         {
-            if (hediff != null)
-            {
-                if (HasHediff(pawn, hediff, other, out var h))
-                    h.Severity += severityIncrease;
-                else if (initialSeverity > 0)
-                    pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediff, other));
-            }
-            if (!hediffs.NullOrEmpty())
-            {
-                foreach (HediffDef hediffDef in hediffs)
-                {
-                    if (HasHediff(pawn, hediffDef, other, out var h))
-                        h.Severity += severityIncrease;
-                    else if (initialSeverity > 0)
-                        pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediffDef, other));
-                }
-            }
+            hediff.Severity = Mathf.Clamp(hediff.Severity + change, limits.min, limits.max);
         }
-        
+
+        public static void AddOrAppendHediffs(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null, FloatRange? finalRange = null)
+        {
+            // Clamps the initial value immediately so the change is carried for all new hediffs. Generaaly only relevant in cases where the initial can be changed by other things
+            if (finalRange != null && !finalRange.Value.ValidValue(initialSeverity))
+                initialSeverity = Mathf.Clamp(initialSeverity, finalRange.Value.min, finalRange.Value.max);
+
+            if (hediff != null)
+                pawn.AddOrAppendHediff(initialSeverity, severityIncrease, hediff, other, finalRange);
+
+            if (!hediffs.NullOrEmpty())
+                foreach (HediffDef hediffDef in hediffs)
+                    pawn.AddOrAppendHediff(initialSeverity, severityIncrease, hediffDef, other, finalRange);
+        }
+
+        public static void AddOrAppendHediff(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, Pawn other = null, FloatRange? finalRange = null)
+        {
+            // Usually handled by the multi variant, but better safe than sorry
+            if (finalRange != null && !finalRange.Value.ValidValue(initialSeverity))
+                initialSeverity = Mathf.Clamp(initialSeverity, finalRange.Value.min, finalRange.Value.max);
+
+            if (HasHediff(pawn, hediff, other, out var h))
+                if (finalRange.HasValue)
+                    h.ClampedSeverityOffset(severityIncrease, finalRange.Value);
+                else
+                    h.Severity += severityIncrease;
+            else if (initialSeverity > 0)
+                pawn.health.AddHediff(pawn.CreateComplexHediff(initialSeverity, hediff, other));
+        }
+
         public static void CopyStageValues(this HediffStage stage, HediffStage newStage)
         {
             stage.minSeverity = newStage.minSeverity;
