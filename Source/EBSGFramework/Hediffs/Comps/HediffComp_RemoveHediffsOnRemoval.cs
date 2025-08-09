@@ -9,7 +9,8 @@ namespace EBSGFramework
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
-            Pawn.RemoveHediffsFromParts(Props.hediffs);
+            if (Props.validSeverity.ValidValue(parent.Severity))
+                Pawn.RemoveHediffsFromParts(Props.hediffs);
         }
     }
 }
