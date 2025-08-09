@@ -512,58 +512,41 @@ namespace EBSGFramework
 
         public static void RemoveHediffsFromParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
         {
-            if (hediffToParts != null && HasHediff(pawn, hediffToParts.hediff))
-            {
-                if (hediffToParts.bodyParts.NullOrEmpty()) 
-                    RemoveHediffs(pawn, hediffToParts.hediff);
-                else
-                {
-                    foreach (BodyPartDef bodyPart in hediffToParts.bodyParts)
-                    {
-                        Hediff firstHediffOfDef = null;
-                        Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-
-                        if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
-                        else
-                            foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                                if (hediff.Part.def == bodyPart && hediff.def == hediffToParts.hediff)
-                                {
-                                    firstHediffOfDef = hediff;
-                                    break;
-                                }
-
-                        if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
-                    }
-                }
-            }
+            if (hediffToParts != null)
+                pawn.RemoveHediffFromParts(hediffToParts.hediff, hediffToParts.bodyParts);
+            
             if (!hediffs.NullOrEmpty())
-            {
                 foreach (HediffToParts hediffPart in hediffs)
+                    if (hediffPart.removeOnRemove) 
+                        pawn.RemoveHediffFromParts(hediffPart.hediff, hediffPart.bodyParts);
+        }
+
+        public static void RemoveHediffFromParts(this Pawn pawn, HediffDef hediff, List<BodyPartDef> bodyParts)
+        {
+            if (!pawn.HasHediff(hediff))
+                return;
+
+            if (bodyParts.NullOrEmpty())
+                pawn.RemoveHediffs(hediff);
+            else
+                foreach (BodyPartDef bodyPart in bodyParts)
                 {
-                    if (!hediffPart.removeOnRemove) continue;
-                    if (!HasHediff(pawn, hediffPart.hediff)) continue;
-                    if (hediffPart.bodyParts.NullOrEmpty()) RemoveHediffs(pawn, hediffPart.hediff);
+                    Hediff firstHediffOfDef = null;
+                    Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
+
+                    if (testHediff.Part.def == bodyPart) 
+                        firstHediffOfDef = testHediff;
                     else
-                    {
-                        foreach (BodyPartDef bodyPart in hediffPart.bodyParts)
-                        {
-                            Hediff firstHediffOfDef = null;
-                            Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffPart.hediff);
+                        foreach (Hediff h in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
+                            if (h.Part.def == bodyPart && h.def == hediff)
+                            {
+                                firstHediffOfDef = h;
+                                break;
+                            }
 
-                            if (testHediff.Part.def == bodyPart) firstHediffOfDef = testHediff;
-                            else
-                                foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                                    if (hediff.Part.def == bodyPart && hediff.def == hediffPart.hediff)
-                                    {
-                                        firstHediffOfDef = hediff;
-                                        break;
-                                    }
-
-                            if (firstHediffOfDef != null) pawn.health.RemoveHediff(firstHediffOfDef);
-                        }
-                    }
+                    if (firstHediffOfDef != null) 
+                        pawn.health.RemoveHediff(firstHediffOfDef);
                 }
-            }
         }
 
         public static bool GetThings(List<Thing> lookThrough, List<ThingDef> validThings, out List<Thing> matches)
