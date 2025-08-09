@@ -918,7 +918,7 @@ namespace EBSGFramework
         public static void AddOrAppendHediffs(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, List<HediffDef> hediffs = null, Pawn other = null, FloatRange? finalRange = null)
         {
             // Clamps the initial value immediately so the change is carried for all new hediffs. Generaaly only relevant in cases where the initial can be changed by other things
-            if (finalRange != null && !finalRange.Value.ValidValue(initialSeverity))
+            if (finalRange != null && initialSeverity > 0 && !finalRange.Value.ValidValue(initialSeverity))
                 initialSeverity = Mathf.Clamp(initialSeverity, finalRange.Value.min, finalRange.Value.max);
 
             if (hediff != null)
