@@ -368,18 +368,18 @@ namespace EBSGFramework
             if (pawn?.health?.hediffSet == null) return;
             if (hediff != null)
             {
-                Hediff hediffToRemove = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
-                if (hediffToRemove != null) pawn.health.RemoveHediff(hediffToRemove);
+                Hediff hediffToRemove = pawn.health?.hediffSet?.GetFirstHediffOfDef(hediff);
+                if (hediffToRemove != null)
+                    pawn.health.RemoveHediff(hediffToRemove);
             }
 
             if (!hediffs.NullOrEmpty())
-            {
                 foreach (HediffDef hediffDef in hediffs)
                 {
-                    Hediff hediffToRemove = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
-                    if (hediffToRemove != null) pawn.health.RemoveHediff(hediffToRemove);
+                    Hediff hediffToRemove = pawn.health?.hediffSet?.GetFirstHediffOfDef(hediffDef);
+                    if (hediffToRemove != null)
+                        pawn.health.RemoveHediff(hediffToRemove);
                 }
-            }
         }
 
         public static bool WithinAges(this Pawn pawn, float min, float max)
@@ -532,13 +532,13 @@ namespace EBSGFramework
                 foreach (BodyPartDef bodyPart in bodyParts)
                 {
                     Hediff firstHediffOfDef = null;
-                    Hediff testHediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediff);
+                    Hediff testHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(hediff);
 
-                    if (testHediff.Part.def == bodyPart) 
+                    if (testHediff.Part?.def == bodyPart) 
                         firstHediffOfDef = testHediff;
-                    else
+                    else if (pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false)
                         foreach (Hediff h in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
-                            if (h.Part.def == bodyPart && h.def == hediff)
+                            if (h.def == hediff && h.Part?.def == bodyPart)
                             {
                                 firstHediffOfDef = h;
                                 break;
