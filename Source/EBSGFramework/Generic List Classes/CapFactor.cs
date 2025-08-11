@@ -62,13 +62,13 @@ namespace EBSGFramework
             if (element.Name == "factor")
                 factor = ParseHelper.FromString<float>(element.InnerText);
             else if (element.Name == "statCurve")
-                statCurve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+                statCurve = DirectXmlToObject.ObjectFromXml<SimpleCurve>(element, true);
             else if (element.Name == "multiplyFactorBySeverity")
                 multiplyFactorBySeverity = ParseHelper.FromString<bool>(element.InnerText);
             else if (element.Name == "severityCurve")
-                severityCurve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+                severityCurve = DirectXmlToObject.ObjectFromXml<SimpleCurve>(element, true);
             else if (element.Name == "curve")
-                curve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+                curve = DirectXmlToObject.ObjectFromXml<SimpleCurve>(element, true);
             else
                 DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, element.Name, element.InnerText);
         }
