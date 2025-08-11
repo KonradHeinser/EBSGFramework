@@ -42,7 +42,7 @@ namespace EBSGFramework
         {
             if (node is XmlText xmlText)
             {
-                if (bool.TryParse(xmlText.InnerText.CapitalizeFirst(), out bool factor))
+                if (bool.TryParse(xmlText.InnerText, out bool factor))
                     multiplyFactorBySeverity = factor;
                 else
                     DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "stat", xmlText.InnerText);
