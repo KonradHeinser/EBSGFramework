@@ -86,9 +86,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnNameColorUtility), "PawnNameColorOf"),
                 postfix: new HarmonyMethod(patchType, nameof(PawnNameColorOfPostfix)));
+            /*
             harmony.Patch(AccessTools.Method(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateCapacityLevel)),
                 postfix: new HarmonyMethod(patchType, nameof(CalculateCapacityLevelPostfix)));
-
+            */
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 prefix: new HarmonyMethod(patchType, nameof(ProjectileImpactPrefix)));
