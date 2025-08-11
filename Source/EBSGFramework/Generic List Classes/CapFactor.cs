@@ -30,7 +30,7 @@ namespace EBSGFramework
             int num = xmlRoot.ChildNodes.Count;
 
             if (xmlRoot.Name != "li")
-                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "gene", xmlRoot.Name);
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "capacity", xmlRoot.Name);
 
             if (num == 1)
                 LoadFromSingleNode(xmlRoot.FirstChild);
@@ -41,7 +41,12 @@ namespace EBSGFramework
         private void LoadFromSingleNode(XmlNode node)
         {
             if (node is XmlText xmlText)
-                propagateEvent = ParseHelper.FromString<HistoryEventDef>(xmlText.InnerText);
+            {
+                if (bool.TryParse(xmlText.InnerText.ToLower(), out bool factor))
+                    multiplyFactorBySeverity = factor;
+                else
+                    DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "stat", xmlText.InnerText);
+            }
             else if (node is XmlElement element)
                 ParseXmlElement(element);
         }
@@ -54,10 +59,18 @@ namespace EBSGFramework
 
         private void ParseXmlElement(XmlElement element)
         {
-            if (element.Name == "gene")
-                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "gene", element.InnerText);
-            else if (element.Name == "propagateEvent")
-                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "propagateEvent", element.InnerText);
+            if (element.Name == "factor")
+                factor = ParseHelper.FromString<float>(element.InnerText);
+            else if (element.Name == "statCurve")
+                statCurve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+            else if (element.Name == "multiplyFactorBySeverity")
+                multiplyFactorBySeverity = ParseHelper.FromString<bool>(element.InnerText);
+            else if (element.Name == "severityCurve")
+                severityCurve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+            else if (element.Name == "curve")
+                curve = ParseHelper.FromString<SimpleCurve>(element.InnerText);
+            else
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, element.Name, element.InnerText);
         }
     }
 }

@@ -6,13 +6,13 @@ namespace EBSGFramework
     {
         public HediffCompProperties_CapacityFactor Props => props as HediffCompProperties_CapacityFactor;
 
-        public float Factor(PawnCapacityDef cap)
+        public float GetFactor(PawnCapacityDef cap)
         {
             float num = 1;
 
             if (!Props.validSeverity.ValidValue(parent.Severity))
                 return num;
-
+            
             foreach (var factor in Props.capMods)
                 if (factor.capacity == cap)
                 {

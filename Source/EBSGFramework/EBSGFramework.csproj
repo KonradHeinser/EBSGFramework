@@ -97,7 +97,7 @@
     <Compile Include="Enums\TerrainPollution.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ComaGene.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ReloadableAbilities.cs" />
-    <None Include="Generic List Classes\CapFactor.cs" />
+    <Compile Include="Generic List Classes\CapFactor.cs" />
     <Compile Include="Generic List Classes\ComplexXenoAlter.cs" />
     <Compile Include="Generic List Classes\DamageInfoPack.cs" />
     <Compile Include="Enums\Inheritance.cs" />
@@ -124,7 +124,7 @@
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_WorldLayer.cs" />
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
-    <None Include="Hediffs\CompProperties\HediffCompProperties_CapacityFactor.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_CapacityFactor.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
@@ -134,7 +134,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
-    <None Include="Hediffs\Comps\HediffComp_CapacityFactor.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_CapacityFactor.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />

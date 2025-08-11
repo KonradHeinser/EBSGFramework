@@ -179,8 +179,20 @@ namespace EBSGFramework
 
         private static bool HediffInHediffSet(this Pawn pawn, Hediff hediff)
         {
-            if (pawn.health == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
+            if (pawn.health?.hediffSet == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
             return pawn.health.hediffSet.hediffs.Contains(hediff);
+        }
+
+        public static bool SetHasHediffs(this HediffSet set, List<HediffDef> hediffs, out List<Hediff> matches, bool checkPriceImpact = false)
+        {
+            matches = new List<Hediff>();
+
+            if (!set.hediffs.NullOrEmpty() && !hediffs.NullOrEmpty())
+                foreach (Hediff h in set.hediffs)
+                    if ((!checkPriceImpact || !h.def.priceImpact) && hediffs.Contains(h.def))
+                        matches.Add(h);
+
+            return !matches.NullOrEmpty();
         }
 
         public static bool ConditionOrExclusiveIsActive(this GameConditionDef gameCondition, Map map)

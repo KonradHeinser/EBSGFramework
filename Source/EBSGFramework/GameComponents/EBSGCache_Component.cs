@@ -70,6 +70,7 @@ namespace EBSGFramework
         public List<HediffDef> skillChangeHediffs = new List<HediffDef>();
         public List<HediffDef> shieldHediffs = new List<HediffDef>();
         public List<HediffDef> nameColorHediffs = new List<HediffDef>();
+        public List<HediffDef> capFactors = new List<HediffDef>();
 
         private bool needNeedAlert = false;
         private bool checkedNeedAlert = false;
@@ -509,6 +510,7 @@ namespace EBSGFramework
             skillChangeHediffs = new List<HediffDef>();
             shieldHediffs = new List<HediffDef>();
             nameColorHediffs = new List<HediffDef>();
+            capFactors = new List<HediffDef>();
 
             foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
             {
@@ -516,26 +518,18 @@ namespace EBSGFramework
                 foreach (HediffCompProperties comp in hediff.comps)
                 {
                     if (comp is HediffCompProperties_ExplodingAttacks || comp is HediffCompProperties_ExplodingRangedAttacks || comp is HediffCompProperties_ExplodingMeleeAttacks)
-                    {
                         explosiveAttackHediffs.Add(hediff);
-                        continue;
-                    }
-                    if (comp is HediffCompProperties_TemporarySkillChange skillChange)
+                    else if (comp is HediffCompProperties_TemporarySkillChange skillChange)
                     {
                         if (!skillChange.skillChanges.Where((arg) => arg.skillChange != new IntRange(0, 0)).EnumerableNullOrEmpty())
                             skillChangeHediffs.Add(hediff);
-                        continue;
                     }
-                    if (comp is HediffCompProperties_Shield)
-                    {
+                    else if (comp is HediffCompProperties_Shield)
                         shieldHediffs.Add(hediff);
-                        continue;
-                    }
-                    if (comp is HediffCompProperties_NameColor)
-                    {
+                    else if (comp is HediffCompProperties_NameColor)
                         nameColorHediffs.Add(hediff);
-                        continue;
-                    }
+                    else if (comp is HediffCompProperties_CapacityFactor)
+                        capFactors.Add(hediff);
                 }
             }
         }

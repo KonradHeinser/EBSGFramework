@@ -86,7 +86,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnNameColorUtility), "PawnNameColorOf"),
                 postfix: new HarmonyMethod(patchType, nameof(PawnNameColorOfPostfix)));
-
+            harmony.Patch(AccessTools.Method(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateCapacityLevel)),
+                postfix: new HarmonyMethod(patchType, nameof(CalculateCapacityLevelPostfix)));
 
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
@@ -1656,6 +1657,63 @@ namespace EBSGFramework
             Color? newColor = Cache?.GetPawnNameColor(pawn);
             if (newColor != null)
                 __result = (Color)newColor;
+        }
+
+        public static void CalculateCapacityLevelPostfix(ref float __result, HediffSet diffSet, PawnCapacityDef capacity, List<PawnCapacityUtility.CapacityImpactor> impactors, bool forTradePrice = false)
+        {
+            // If the result is already at the min, its easier to just assume we'd stay at the min without forcing a recalculation of everything
+            if (__result > capacity.minValue && diffSet?.hediffs.NullOrEmpty() == false
+                && diffSet.SetHasHediffs(Cache?.capFactors, out var matches, forTradePrice))
+            {
+                float prev = __result; // Storing so we can see if we need to redo max check later
+                float num = __result;
+                bool flag = false; // Checking if we need to round the result later
+                foreach (var hediff in matches)
+                {
+                    var comp = hediff.TryGetComp<HediffComp_CapacityFactor>();
+                    float val = comp.GetFactor(capacity);
+
+                    // If the value is 1, it's generally due to the capacity being wrong, or the hediff being at the wrong severity
+                    if (val != 1) 
+                    {
+                        if (hediff.CapMods.NullOrEmpty() || hediff.CapMods.Where(arg => arg.capacity == capacity).EnumerableNullOrEmpty())
+                            impactors?.Add(new PawnCapacityUtility.CapacityImpactorHediff
+                            {
+                                hediff = hediff
+                            });
+                        num *= val;
+                        flag = true;
+
+                        // While going through all of them would technically be required for a full list of impactors, that's an uneeded performance cost if it's going to be the minimum anyway
+                        if (num <= capacity.minValue)
+                        {
+                            num = capacity.minValue;
+                            break;
+                        }
+                    }
+                }
+
+                if (num > prev)
+                {
+                    float max = 99999f;
+                    foreach (var hediff in diffSet.hediffs)
+                        if ((!forTradePrice || !hediff.def.priceImpact) && !hediff.CapMods.NullOrEmpty())
+                            foreach (var mod in hediff.CapMods)
+                                if (mod.capacity == capacity)
+                                    max = Math.Min(max, mod.EvaluateSetMax(diffSet.pawn));
+
+                    if (ModsConfig.BiotechActive && diffSet.pawn.genes != null)
+                        foreach (Gene gene in diffSet.pawn.genes.GenesListForReading)
+                            if (gene.Active && !gene.def.capMods.NullOrEmpty())
+                                foreach (var mod in gene.def.capMods)
+                                    if (mod.capacity == capacity)
+                                        max = Math.Min(max, mod.EvaluateSetMax(diffSet.pawn));
+
+                    num = Math.Min(num, max);
+                    num = Math.Max(num, capacity.minValue);
+                }
+                __result = GenMath.RoundedHundredth(num);
+            }
         }
 
         public static void ProjectileImpactPrefix(Projectile __instance)
