@@ -5,6 +5,7 @@ namespace EBSGFramework
     public class Hediff_ModularImplant : Hediff_Implant
     {
         HediffComp_Modular cachedComp;
+
         public override HediffStage CurStage
         {
             get

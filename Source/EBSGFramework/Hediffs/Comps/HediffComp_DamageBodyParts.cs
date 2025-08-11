@@ -11,7 +11,7 @@ namespace EBSGFramework
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
-            if (Pawn.IsHashIntervalTick(62)) // Wait a few ticks before removing just to be safe
+            if (Pawn.IsHashIntervalTick(12)) // Wait a few ticks before removing just to be safe
             {
                 if (!Props.bodyPartsToRemove.NullOrEmpty())
                 {
