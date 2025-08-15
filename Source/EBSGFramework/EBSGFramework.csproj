@@ -103,6 +103,7 @@
     <Compile Include="Enums\Inheritance.cs" />
     <Compile Include="Generic List Classes\ExplosionData.cs" />
     <Compile Include="Generic List Classes\GenderByAge.cs" />
+    <Compile Include="Generic List Classes\GeneThought.cs" />
     <Compile Include="Generic List Classes\GeneticEvolution.cs" />
     <Compile Include="Generic List Classes\HediffWithRange.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />

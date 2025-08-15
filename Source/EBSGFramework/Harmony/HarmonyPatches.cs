@@ -86,6 +86,8 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(WarmupInterruptPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnNameColorUtility), "PawnNameColorOf"),
                 postfix: new HarmonyMethod(patchType, nameof(PawnNameColorOfPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), "MakeDowned"),
+                postfix: new HarmonyMethod(patchType, nameof(MakeDownedPostfix)));
             /*
             harmony.Patch(AccessTools.Method(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateCapacityLevel)),
                 postfix: new HarmonyMethod(patchType, nameof(CalculateCapacityLevelPostfix)));
@@ -1660,6 +1662,55 @@ namespace EBSGFramework
                 __result = (Color)newColor;
         }
 
+        public static void MakeDownedPostfix(DamageInfo? dinfo, ref Pawn ___pawn)
+        {
+            if (dinfo?.Instigator != null && ___pawn?.needs?.mood?.thoughts?.memories != null 
+                && ___pawn.GetAllGenesOnListFromPawn(Cache?.downedMemoryGenes, out var matches))
+            {
+                Pawn enemy = dinfo?.Instigator as Pawn;
+                
+                foreach (var item in matches)
+                {
+                    EBSGExtension extension = item.GetModExtension<EBSGExtension>();
+
+                    if (extension.downedMemory != null)
+                        ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedMemory, enemy);
+
+                    if (enemy != null)
+                    {
+                        if (extension.downedByPawnMemory != null)
+                            ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByPawnMemory, enemy);
+
+                        if (enemy.IsSubhuman || enemy.RaceProps.IsAnomalyEntity)
+                        {
+                            if (extension.downedByEntityMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByEntityMemory, enemy);
+                        }
+                        else if (enemy.RaceProps.Humanlike)
+                        {
+                            if (extension.downedByHumanlikeMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByHumanlikeMemory, enemy);
+                        }
+                        else if (enemy.IsAnimal)
+                        {
+                            if (extension.downedByAnimalMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByAnimalMemory, enemy);
+                        }
+                        else if (enemy.RaceProps.IsMechanoid)
+                        {
+                            if (extension.downedByMechMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByMechMemory, enemy);
+                        }
+                        else if (enemy.RaceProps.Insect)
+                        {
+                            if (extension.downedByInsectMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByInsectMemory, enemy);
+                        }
+                    }
+                }
+            }
+        }
+
         public static void CalculateCapacityLevelPostfix(ref float __result, HediffSet diffSet, PawnCapacityDef capacity, List<PawnCapacityUtility.CapacityImpactor> impactors, bool forTradePrice = false)
         {
             // If the result is already at the min, its easier to just assume we'd stay at the min without forcing a recalculation of everything
@@ -1828,8 +1879,8 @@ namespace EBSGFramework
 
         public static void IsBloodfeederPostfix(Pawn pawn, ref bool __result)
         {
-            if (!__result && EBSGDefOf.EBSG_Recorder != null)
-                __result = pawn.HasAnyOfRelatedGene(EBSGDefOf.EBSG_Recorder.bloodfeederGenes);
+            if (!__result)
+                __result = pawn.HasAnyOfRelatedGene(EBSGDefOf.EBSG_Recorder?.bloodfeederGenes);
         }
 
         public static void RecacheGenesPostfix(Thing target, ref List<Gene> ___xenogenes, ref List<Gene> ___endogenes)
@@ -1891,10 +1942,10 @@ namespace EBSGFramework
 
         public static void PawnIdeoCanAcceptReimplantPostfix(ref bool __result, Pawn implanter, Pawn implantee)
         {
-            if (__result && EBSGDefOf.EBSG_Recorder != null)
+            if (__result)
             {
-                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
-                if (!recorder.geneEvents.NullOrEmpty())
+                EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
+                if (recorder?.geneEvents.NullOrEmpty() == false)
                     foreach (GeneEvent geneEvent in recorder.geneEvents)
                         if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, implantee) &&
                             implanter.genes.GenesListForReading.Any((Gene x) => x.def == geneEvent.gene))
@@ -1907,10 +1958,10 @@ namespace EBSGFramework
 
         public static void PawnIdeoDisallowsImplantingPostFix(ref bool __result, Pawn selPawn, ref Xenogerm __instance)
         {
-            if (!__result && EBSGDefOf.EBSG_Recorder != null)
+            if (!__result)
             {
-                EBSGRecorder recorder = DefDatabase<EBSGRecorder>.GetNamed("EBSG_Recorder");
-                if (!recorder.geneEvents.NullOrEmpty())
+                EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
+                if (recorder?.geneEvents.NullOrEmpty() == false)
                     foreach (GeneEvent geneEvent in recorder.geneEvents)
                         if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, selPawn) &&
                             __instance.GeneSet.GenesListForReading.Any((GeneDef x) => x == geneEvent.gene))

@@ -174,5 +174,14 @@ namespace EBSGFramework
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;
         public bool staticQuality = false; // Only need set to true if there are products that have quality. Will set for all of them at once.
+
+        // Downed Thoughts
+        public ThoughtDef downedMemory;
+        public ThoughtDef downedByPawnMemory;
+        public ThoughtDef downedByHumanlikeMemory;
+        public ThoughtDef downedByMechMemory;
+        public ThoughtDef downedByAnimalMemory;
+        public ThoughtDef downedByInsectMemory;
+        public ThoughtDef downedByEntityMemory;
     }
 }

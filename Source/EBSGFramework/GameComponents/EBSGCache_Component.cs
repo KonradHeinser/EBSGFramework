@@ -61,6 +61,7 @@ namespace EBSGFramework
 
         public List<GeneDef> outgoingDamageStatGenes = new List<GeneDef>();
         public List<GeneDef> incomingDamageStatGenes = new List<GeneDef>();
+        public List<GeneDef> downedMemoryGenes = new List<GeneDef>();
 
         // Cached needs of interest
         public List<NeedDef> murderousNeeds = new List<NeedDef>();
@@ -377,6 +378,7 @@ namespace EBSGFramework
             leatherProductGenes = new List<GeneDef>();
             outgoingDamageStatGenes = new List<GeneDef>();
             incomingDamageStatGenes = new List<GeneDef>();
+            downedMemoryGenes = new List<GeneDef>();
 
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
@@ -401,6 +403,12 @@ namespace EBSGFramework
 
                     if (!extension.skillChanges.NullOrEmpty())
                         skillChanging.Add(gene);
+
+                    if (extension.downedMemory != null || extension.downedByMechMemory != null || 
+                        extension.downedByPawnMemory != null || extension.downedByInsectMemory != null ||
+                        extension.downedByHumanlikeMemory != null || extension.downedByEntityMemory != null || 
+                        extension.downedByAnimalMemory != null)
+                        downedMemoryGenes.Add(gene);
                 }
 
                 if (gene.HasModExtension<EquipRestrictExtension>())

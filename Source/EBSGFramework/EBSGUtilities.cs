@@ -1449,8 +1449,9 @@ namespace EBSGFramework
         public static List<GeneDef> GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList)
         {
             List<GeneDef> results = new List<GeneDef>();
-
-            if (pawn.genes?.GenesListForReading.NullOrEmpty() == false && !searchList.NullOrEmpty())
+            
+            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false 
+                && !searchList.NullOrEmpty())
                 foreach (GeneDef gene in searchList)
                     if (pawn.QuickHasGene(gene))
                         results.Add(gene);

@@ -1,21 +1,26 @@
-﻿using Verse;
-using RimWorld;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml;
+using RimWorld;
+using Verse;
+using Verse.AI;
 
 namespace EBSGFramework
 {
-    public class GeneEvent
+    public class GeneThought
     {
         public GeneDef gene;
 
-        public HistoryEventDef propagateEvent;
+        public ThoughtDef thought;
 
-        public GeneEvent() { }
+        public GeneThought() { }
 
-        public GeneEvent(GeneDef gene, HistoryEventDef propagateEvent)
+        public GeneThought(GeneDef gene, ThoughtDef thought)
         {
             this.gene = gene;
-            this.propagateEvent = propagateEvent;
+            this.thought = thought;
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
@@ -34,7 +39,7 @@ namespace EBSGFramework
         private void LoadFromSingleNode(XmlNode node)
         {
             if (node is XmlText xmlText)
-                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "propagateEvent", xmlText.InnerText);
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thought", xmlText.InnerText);
             else if (node is XmlElement element)
                 ParseXmlElement(element);
         }
@@ -49,8 +54,8 @@ namespace EBSGFramework
         {
             if (element.Name == "gene")
                 DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "gene", element.InnerText);
-            else if (element.Name == "propagateEvent")
-                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "propagateEvent", element.InnerText);
+            else if (element.Name == "thought")
+                DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "thought", element.InnerText);
         }
     }
 }
