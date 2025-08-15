@@ -49,26 +49,12 @@ namespace EBSGFramework
                 Messages.Message(message, target, messageType);
         }
 
-        public static string TranslateOrLiteral(this string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
+        public static string TranslateOrFormat(this string input, string arg1 = null, string arg2 = null, string arg3 = null, string arg4 = null)
         {
             if (input == null) return null;
             if (input.CanTranslate())
                 return input.Translate(arg1, arg2, arg3, arg4).Resolve();
-            if (arg1 != null)
-            {
-                input = input.Replace("{0}", arg1);
-                if (arg2 != null)
-                {
-                    input = input.Replace("{1}", arg2);
-                    if (arg3 != null)
-                    {
-                        input = input.Replace("{2}", arg3);
-                        if (arg4 != null)
-                            input = input.Replace("{3}", arg4);
-                    }
-                }
-            }
-            return input;
+            return input.Formatted(arg1, arg2, arg3, arg4);
         }
 
         public static bool TagCheck(List<string> a, List<string> b)
@@ -1700,7 +1686,7 @@ namespace EBSGFramework
                 FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, filth, pawn.LabelIndefinite(), filthCount.RandomInRange);
 
             if (sendMessage && pawn.Faction.IsPlayer && (pawn.MapHeld != null || pawn.GetCaravan() != null))
-                Messages.Message(message.TranslateOrLiteral(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
+                Messages.Message(message.TranslateOrFormat(pawn.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
 
             pawn.Drawer.renderer.SetAllGraphicsDirty();
         }

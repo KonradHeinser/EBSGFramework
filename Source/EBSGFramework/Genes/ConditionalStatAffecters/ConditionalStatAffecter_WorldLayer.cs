@@ -16,7 +16,7 @@ namespace EBSGFramework
 
         private string GetLabel()
         {
-            if (label != null) return label.TranslateOrLiteral();
+            if (label != null) return label.TranslateOrFormat();
             if (layers.Count == 1)
                 if (invert)
                     return "EBSG_CorrectLayerOneNo".Translate(layers[0].LabelCap);

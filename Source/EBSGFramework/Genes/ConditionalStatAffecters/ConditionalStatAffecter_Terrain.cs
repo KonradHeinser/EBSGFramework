@@ -22,7 +22,7 @@ namespace EBSGFramework
 
         private string GetLabel()
         {
-            if (label != null) return label.TranslateOrLiteral();
+            if (label != null) return label.TranslateOrFormat();
             if (anyWater && anyNonWater && !hateTerrains) return "EBSG_Constant".Translate(); // This should never actually be used
 
             if (terrains.NullOrEmpty())

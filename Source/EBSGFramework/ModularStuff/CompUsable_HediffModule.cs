@@ -124,7 +124,7 @@ namespace EBSGFramework
                                         };
 
                                         string labeled = "EBSG_InstallIn".Translate(parent.Label, hediff.Label, 
-                                            hediff.Part?.Label != null ? $"{hediff.Part.Label}, {slot.slotName.TranslateOrLiteral()}" : slot.slotName.TranslateOrLiteral());
+                                            hediff.Part?.Label != null ? $"{hediff.Part.Label}, {slot.slotName.TranslateOrFormat()}" : slot.slotName.TranslateOrFormat());
                                         foundSlots = true;
 
                                         FloatMenuOption floatMenuOption = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(labeled, action, Icon, IconColor, Props.floatMenuOptionPriority), pawn, parent);

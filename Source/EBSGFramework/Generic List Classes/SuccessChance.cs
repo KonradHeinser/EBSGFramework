@@ -73,12 +73,12 @@ namespace EBSGFramework
             if (!Rand.Chance(Chance(caster, target)))
             {
                 if (failureMessage != null && caster.Faction.IsPlayer)
-                    Messages.Message(failureMessage.TranslateOrLiteral(), MessageTypeDefOf.NegativeEvent);
+                    Messages.Message(failureMessage.TranslateOrFormat(), MessageTypeDefOf.NegativeEvent);
                 return false;
             }
 
             if (successMessage != null && caster.Faction.IsPlayer)
-                Messages.Message(successMessage.TranslateOrLiteral(), MessageTypeDefOf.NeutralEvent);
+                Messages.Message(successMessage.TranslateOrFormat(), MessageTypeDefOf.NeutralEvent);
             return true;
         }
     }

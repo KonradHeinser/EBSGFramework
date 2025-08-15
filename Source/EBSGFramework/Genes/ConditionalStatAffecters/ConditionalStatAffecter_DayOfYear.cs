@@ -17,7 +17,7 @@ namespace EBSGFramework
 
         private string GetLabel()
         {
-            if (label != null) return label.TranslateOrLiteral();
+            if (label != null) return label.TranslateOrFormat();
             return "EBSG_DoY".Translate();
         }
 

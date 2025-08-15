@@ -11,7 +11,7 @@ namespace EBSGFramework
         {
             if (Props.prerequisites?.ValidPawn(p) == false)
             {
-                string failMessage = Props.prerequisites.notMetString?.TranslateOrLiteral();
+                string failMessage = Props.prerequisites.notMetString?.TranslateOrFormat();
                 if (failMessage != null)
                     return failMessage;
                 return AcceptanceReport.WasRejected;

@@ -17,7 +17,7 @@ namespace EBSGFramework
 
         private string GetLabel()
         {
-            if (label != null) return label.TranslateOrLiteral();
+            if (label != null) return label.TranslateOrFormat();
             if (lightLevel.min <= 0f) return "EBSG_BelowLight".Translate(lightLevel.max.ToStringPercent());
             if (lightLevel.max >= 1f) return "EBSG_AboveLight".Translate(lightLevel.min.ToStringPercent());
             return "EBSG_CorrectLight".Translate(lightLevel.min.ToStringPercent(), lightLevel.max.ToStringPercent());

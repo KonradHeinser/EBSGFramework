@@ -89,8 +89,8 @@ namespace EBSGFramework
                 
                 action = new Command_Action
                 {
-                    defaultLabel = Props.label?.TranslateOrLiteral() ?? parent.LabelCap,
-                    defaultDesc = Props.description?.TranslateOrLiteral() ?? parent.Description,
+                    defaultLabel = Props.label?.TranslateOrFormat() ?? parent.LabelCap,
+                    defaultDesc = Props.description?.TranslateOrFormat() ?? parent.Description,
                     icon = icon,
                     action = delegate ()
                     {

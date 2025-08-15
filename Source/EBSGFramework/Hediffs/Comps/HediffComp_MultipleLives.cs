@@ -288,12 +288,12 @@ namespace EBSGFramework
             if (Pawn.Faction.IsPlayer)
             {
                 if (Props.revivalSuccessMessage != null)
-                    Messages.Message(Props.revivalFailedMessage.TranslateOrLiteral(Pawn.LabelShortCap, livesLeft.ToString()),
+                    Messages.Message(Props.revivalFailedMessage.TranslateOrFormat(Pawn.LabelShortCap, livesLeft.ToString()),
                         MessageTypeDefOf.NegativeHealthEvent);
                 if (Props.revivalSuccessLetterLabel != null)
                 {
-                    Letter letter = LetterMaker.MakeLetter(Props.revivalFailedLetterLabel.TranslateOrLiteral(Pawn.LabelShortCap, livesLeft.ToString()),
-                        Props.revivalFailedLetterDescription.TranslateOrLiteral(Pawn.LabelShortCap, livesLeft.ToString()),
+                    Letter letter = LetterMaker.MakeLetter(Props.revivalFailedLetterLabel.TranslateOrFormat(Pawn.LabelShortCap, livesLeft.ToString()),
+                        Props.revivalFailedLetterDescription.TranslateOrFormat(Pawn.LabelShortCap, livesLeft.ToString()),
                         LetterDefOf.NeutralEvent);
                     Find.LetterStack.ReceiveLetter(letter);
                 }

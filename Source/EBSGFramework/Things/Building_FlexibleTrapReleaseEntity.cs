@@ -34,7 +34,7 @@ namespace EBSGFramework
                 Extension?.sound?.PlayOneShot(new TargetInfo(PositionHeld, MapHeld));
                 int count = CountToSpawn;
                 if (!Faction.IsPlayer && Extension?.message != null)
-                    Messages.Message(Extension.message.TranslateOrLiteral(LabelCap, Label, LabelShort, count.ToString()),
+                    Messages.Message(Extension.message.TranslateOrFormat(LabelCap, Label, LabelShort, count.ToString()),
                         new LookTargets(PositionHeld, MapHeld), MessageTypeDefOf.NegativeEvent);
                 
                 PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction,

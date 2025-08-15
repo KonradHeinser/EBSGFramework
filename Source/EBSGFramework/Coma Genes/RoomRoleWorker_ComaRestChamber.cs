@@ -29,7 +29,7 @@ namespace EBSGFramework
 
             string staticName = primary.GetModExtension<ComaExtension>().chamberName;
 
-            return staticName != null ? staticName.TranslateOrLiteral() : "EBSG_ComaChamber".Translate(primary.LabelCap).ToString();
+            return staticName != null ? staticName.TranslateOrFormat() : "EBSG_ComaChamber".Translate(primary.LabelCap).ToString();
         }
 
         public override float GetScore(Room room)

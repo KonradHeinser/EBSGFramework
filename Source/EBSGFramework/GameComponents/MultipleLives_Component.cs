@@ -247,12 +247,12 @@ namespace EBSGFramework
                 if (pawn.InnerPawn.Faction.IsPlayer)
                 {
                     if (multipleLivesComp.Props.revivalSuccessMessage != null)
-                        Messages.Message(multipleLivesComp.Props.revivalSuccessMessage.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                        Messages.Message(multipleLivesComp.Props.revivalSuccessMessage.TranslateOrFormat(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
                             MessageTypeDefOf.PositiveEvent);
                     if (multipleLivesComp.Props.revivalSuccessLetterLabel != null)
                     {
-                        Letter letter = LetterMaker.MakeLetter(multipleLivesComp.Props.revivalSuccessLetterLabel.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
-                            multipleLivesComp.Props.revivalSuccessLetterDescription.TranslateOrLiteral(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                        Letter letter = LetterMaker.MakeLetter(multipleLivesComp.Props.revivalSuccessLetterLabel.TranslateOrFormat(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
+                            multipleLivesComp.Props.revivalSuccessLetterDescription.TranslateOrFormat(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
                             LetterDefOf.PositiveEvent);
                         Find.LetterStack.ReceiveLetter(letter);
                     }
