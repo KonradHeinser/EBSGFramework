@@ -183,5 +183,6 @@ namespace EBSGFramework
         public ThoughtDef downedByAnimalMemory;
         public ThoughtDef downedByInsectMemory;
         public ThoughtDef downedByEntityMemory;
+        public List<HediffDef> ignoredHediffsCausingDowning;
     }
 }

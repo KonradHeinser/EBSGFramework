@@ -1662,16 +1662,21 @@ namespace EBSGFramework
                 __result = (Color)newColor;
         }
 
-        public static void MakeDownedPostfix(DamageInfo? dinfo, ref Pawn ___pawn)
+        public static void MakeDownedPostfix(DamageInfo? dinfo, ref Pawn ___pawn, Hediff hediff)
         {
-            if (dinfo?.Instigator != null && ___pawn?.needs?.mood?.thoughts?.memories != null 
-                && ___pawn.GetAllGenesOnListFromPawn(Cache?.downedMemoryGenes, out var matches))
+            if (dinfo?.Instigator != null && ___pawn?.needs?.mood?.thoughts?.memories != null
+                && dinfo?.Instigator.Faction != ___pawn.Faction && 
+                (___pawn.GuestStatus == null || dinfo?.Instigator.Faction != ___pawn.GetExtraHostFaction()) &&
+                ___pawn.GetAllGenesOnListFromPawn(Cache?.downedMemoryGenes, out var matches))
             {
                 Pawn enemy = dinfo?.Instigator as Pawn;
                 
                 foreach (var item in matches)
                 {
                     EBSGExtension extension = item.GetModExtension<EBSGExtension>();
+
+                    if (!extension.ignoredHediffsCausingDowning.NullOrEmpty() && extension.ignoredHediffsCausingDowning.Contains(hediff.def))
+                        continue;
 
                     if (extension.downedMemory != null)
                         ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedMemory, enemy);
