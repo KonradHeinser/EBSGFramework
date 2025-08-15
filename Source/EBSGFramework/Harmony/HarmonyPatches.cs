@@ -1696,6 +1696,11 @@ namespace EBSGFramework
                             if (extension.downedByHumanlikeMemory != null)
                                 ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByHumanlikeMemory, enemy);
                         }
+                        else if (enemy.RaceProps.Insect)
+                        {
+                            if (extension.downedByInsectMemory != null)
+                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByInsectMemory, enemy);
+                        }
                         else if (enemy.IsAnimal)
                         {
                             if (extension.downedByAnimalMemory != null)
@@ -1705,11 +1710,6 @@ namespace EBSGFramework
                         {
                             if (extension.downedByMechMemory != null)
                                 ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByMechMemory, enemy);
-                        }
-                        else if (enemy.RaceProps.Insect)
-                        {
-                            if (extension.downedByInsectMemory != null)
-                                ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByInsectMemory, enemy);
                         }
                     }
                 }
