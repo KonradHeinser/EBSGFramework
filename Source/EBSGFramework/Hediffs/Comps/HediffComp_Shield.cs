@@ -289,12 +289,11 @@ namespace EBSGFramework
 
             if (energy <= 0)
             {
-                Shatter();
-
                 if (Props.blockOverdamage)
                     absorbed = true;
                 else if (Props.reduceDamagePostDestroy)
                     dinfo.SetAmount(-1f * energy / epdm);
+                Shatter();
             }
             else
             {
