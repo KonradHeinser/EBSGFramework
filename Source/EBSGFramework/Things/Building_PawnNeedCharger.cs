@@ -181,17 +181,14 @@ namespace EBSGFramework
 
         public void StartCharging(Pawn pawn)
         {
-            if (ModLister.CheckBiotech("Mech charging"))
+            if (currentPawn != null)
             {
-                if (currentPawn != null)
-                {
-                    Log.Error("Tried charging on already charging mech charger!");
-                    return;
-                }
-                currentPawn = pawn;
-                wireExtensionTicks = 0;
-                Extension?.startSound?.PlayOneShot(this);
+                Log.Error("Tried charging on already charging mech charger!");
+                return;
             }
+            currentPawn = pawn;
+            wireExtensionTicks = 0;
+            Extension?.startSound?.PlayOneShot(this);
         }
 
         protected override void TickInterval(int delta)

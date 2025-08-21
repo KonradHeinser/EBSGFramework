@@ -556,7 +556,7 @@ namespace EBSGFramework
                     shieldEquipment.Add(thing);
             }
 
-            if ((ModsConfig.RoyaltyActive || ModsConfig.OdysseyActive) && ModLister.CheckRoyaltyOrOdyssey("Weapon traits"))
+            if (ModsConfig.RoyaltyActive || ModsConfig.OdysseyActive)
                 foreach (WeaponTraitDef trait in DefDatabase<WeaponTraitDef>.AllDefs)
                 {
                     WeaponTraitExtension extension = trait.GetModExtension<WeaponTraitExtension>();
