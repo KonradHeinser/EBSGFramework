@@ -20,14 +20,6 @@ namespace EBSGFramework
 
         public FlexAction action = FlexAction.Replace;
 
-        public enum FlexAction
-        {
-            Replace,
-            Multiply,
-            Divide,
-            Offset
-        }
-
         public PatchOperation active;
 
         public PatchOperation inactive;
@@ -36,7 +28,6 @@ namespace EBSGFramework
 
         protected override bool ApplyWorker(XmlDocument xml)
         {
-
             XmlNode node = xml.SelectSingleNode($"Defs/EBSGFramework.SettingDef[defName=\"{setting}\"]");
             if (node == null)
             {

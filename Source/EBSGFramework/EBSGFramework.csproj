@@ -160,6 +160,8 @@
     <Compile Include="ModularStuff\Hediff_Modular.cs" />
     <Compile Include="ModularStuff\Hediff_ModularAddedPart.cs" />
     <Compile Include="ModularStuff\Hediff_ModularImplant.cs" />
+    <Compile Include="PatchOperations\FlexAction.cs" />
+    <Compile Include="PatchOperations\PatchOperationMath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EBSGExtension.cs" />
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
