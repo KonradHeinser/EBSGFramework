@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
-using RimWorld;
-using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace EBSGFramework
 {
     public class PatchOperationMath : PatchOperationPathed
     {
         public float value;
-        
-        public bool round;
 
         public FlexAction action = FlexAction.Multiply;
 
@@ -29,22 +21,29 @@ namespace EBSGFramework
                 try
                 {
                     var newValue = value;
+                    var oldVal = float.Parse(i.InnerText);
                     switch (action)
                     {
                         case FlexAction.Multiply:
-                            newValue *= float.Parse(i.InnerText);
+                            newValue *= oldVal;
                             break;
                         case FlexAction.Divide:
-                            newValue /= float.Parse(i.InnerText);
+                            newValue /= oldVal;
                             break;
                         case FlexAction.Offset:
-                            newValue += float.Parse(i.InnerText);
+                            newValue += oldVal;
+                            break;
+                        case FlexAction.MultRound:
+                            newValue *= oldVal;
+                            newValue = MathF.Round(newValue);
+                            break;
+                        case FlexAction.DivRound:
+                            newValue /= oldVal;
+                            newValue = MathF.Round(newValue);
                             break;
                         default:
                             break;
                     }
-                    if (round)
-                        newValue = MathF.Round(newValue);
                     i.InnerText = (newValue).ToString();
                 }
                 catch
