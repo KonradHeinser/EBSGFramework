@@ -40,44 +40,41 @@ This framework contains all the C# that I made that can be utilized for broad pu
 This framework does not have any hard requirement on any DLC. However please keep in mind none of the gene stuff will work without Biotech, and the precept thought workers will usually require both Biotech and Ideology.
 
 [img]https://i.imgur.com/0gYfTPj.png[/img]
-  - Stats that alter deathrest, pregnancy, and blood recovery speeds.
-  - Create basic resource genes like Hemogen using just xml
-  - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden tags.
-  - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.
-  - Create thoughts that check for trees similar to the Trees Desired precept.
-  - Create mood curves based on how many people are in the colony.
-  - Create hediffs that damage and even completely remove specific parts.
-  - Create hive mind genes.
-  - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. [url=https://github.com/KonradHeinser/EBSGFramework/wiki]The wiki's list is a lot more extensive[/url].
+ - Stats that alter deathrest, pregnancy, and blood recovery speeds.
+ - Create basic resource genes like Hemogen using just xml
+ - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden options.
+ - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.
+ - Create thoughts that check for trees similar to the Trees Desired precept.
+ - Create mood curves based on how many people are in the colony.
+ - Create hediffs that damage and even completely remove specific parts.
+ - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. [url=https://github.com/KonradHeinser/EBSGFramework/wiki]The wiki's list is a lot more extensive[/url].
 
 [url=https://github.com/KonradHeinser/EBSGFramework/wiki/Updates]To read about past updates and the next major update (if I'm presently working on it), take a look at the updates page on the wiki.[/url]
 
-EBSG mods using this framework
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3015076392]Bleeding Genes[/url] : Only the blood recovery genes
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115290386]Environmental Preference Genes[/url] : Adds a bunch of genes that change how the pawn feels about the place they live
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3137774673]Expanded Dependency Genes[/url] : Gives stricter drug dependency options along with various food options
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115293263]Expanded Reproduction Genes[/url] : Alter the pregnancy speed and fertility curve of pawns
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115298539]Expanded Deathrest Genes[/url] : Alter how long a pawn needs to spend to complete a deathrest session
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3115303988]Health Genes[/url] : Alter biosculpting speed and give an extra challenge for pawns when you start with the body parts section
-  - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3137775020]Passion Genes[/url] : Change how much passion pawns have for certain skills
-
 [img]https://i.imgur.com/o3vWOw6.png[/img]
-- CE might take issue with the outgoing damage stuff. Awaiting large scale input from community.
+- CE has marked some of the mods that depend on this framework as compatible, so I assume most of this framework is compatible.
 - HAR may not be compatible with the fertility curve. Awaiting large scale input from community.
 - No other issues are known at the moment.
 
+If you encounter a bug, please make sure you force Steam to redownload this framework and verify file integrity to ensure Steam has not been skipping updates again. If the issue persists, feel free to make the report below, but if there are errors or warnings in your log, send the entire log rather than just that specific bit as those individual bits can often be missing a lot of required context.
 
-[url=https://steamcommunity.com/id/alite/myworkshopfiles/?appid=294100]Easy link to all of my Rimworld mods[/url]
+[img]https://i.imgur.com/TdjmzJr.png[/img]
+[url=https://steamcommunity.com/id/Sovereign484854/myworkshopfiles/]Sovereign[/url] has helped come up with several of the ideas in the mod, and, more importantly, has helped me with art stuff to compensate for my inability to do art stuff.
 
-If you're interested in downloading manually, casually looking at the code, or taking a look at its functions to use in your own mods, click the Github link. While I do encourage looking at the C# if you want an example on how to do something, you do NOT have permission to just copy my code into your own mod. If you want to use something directly from this, make this mod a dependency.
+[url=https://steamcommunity.com/profiles/76561199377833097/myworkshopfiles/]The preview and mod icon were made by Elseud[/url]
+
+SmartKar allowed me to take a bunch of stuff from the Athena Framework
+
+[url=https://steamcommunity.com/profiles/76561198159316632/myworkshopfiles/?appid=294100]Matsay[/url] helped create some of the comps in this framework
+
+If you're interested in downloading manually, casually looking at the code, or taking a look at its functions to use in your own mods, click the Github link. While I do encourage looking at the C# if you want an example on how to do something, you do NOT have permission to just copy my code into your own mod without attribution. If you want to use something directly from this, it's generally better to just make this mod a dependency. 
+
+In the event that I unexpectedly completely vanish for some reason, this and all my other mods use the [url=https://creativecommons.org/licenses/by-nc-sa/4.0/]CC BY-NC-SA 4.0 license[/url] as normal. Technically also counts while I'm not vanished, but that discussion pops up a lot less during those times
 
 [url=https://github.com/KonradHeinser/EBSGFramework/wiki][img]https://i.imgur.com/kTkpTOE.png[/img][/url]
 
 [url=https://ko-fi.com/alite56114][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
 
 [url=https://discord.gg/fYP8qkcNDh][img]https://i.imgur.com/0dG2g3t.png[/img][/url]
-
-[img]https://i.imgur.com/TdjmzJr.png[/img]
-[url=https://steamcommunity.com/id/Sovereign484854/myworkshopfiles/]Sovereign[/url] has helped come up with several of the ideas in the mod, and, more importantly, has helped me with art stuff to compensate for my inability to do art stuff.
     </description>
 </ModMetaData>
