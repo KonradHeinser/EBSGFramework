@@ -71,19 +71,26 @@ namespace EBSGFramework
 
         public static bool CheckSeason(this Pawn pawn, List<Season> seasons, bool defaultActive = false)
         {
-            if (seasons.NullOrEmpty())
+            if (seasons.NullOrEmpty() || pawn == null)
                 return true;
-            Season currentSeason = GenLocalDate.Season(pawn);
-            switch (currentSeason)
+            try
             {
-                case Season.Undefined:
-                    return defaultActive;
-                case Season.PermanentSummer:
-                    return seasons.Contains(Season.PermanentSummer) || seasons.Contains(Season.Summer);
-                case Season.PermanentWinter:
-                    return seasons.Contains(Season.PermanentWinter) || seasons.Contains(Season.Winter);
-                default:
-                    return seasons.Contains(currentSeason);
+                Season currentSeason = GenLocalDate.Season(pawn);
+                switch (currentSeason)
+                {
+                    case Season.Undefined:
+                        return defaultActive;
+                    case Season.PermanentSummer:
+                        return seasons.Contains(Season.PermanentSummer) || seasons.Contains(Season.Summer);
+                    case Season.PermanentWinter:
+                        return seasons.Contains(Season.PermanentWinter) || seasons.Contains(Season.Winter);
+                    default:
+                        return seasons.Contains(currentSeason);
+                }
+            }
+            catch
+            {
+                return defaultActive;
             }
         }
 
