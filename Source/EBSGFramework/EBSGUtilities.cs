@@ -743,8 +743,6 @@ namespace EBSGFramework
             foreach (HediffToGive hediff in hediffs)
             {
                 float severity = hediff.severity.RandomInRange;
-                if (severity <= 0)
-                    continue;
 
                 List<BodyPartDef> partChecks = new List<BodyPartDef>();
                 if (!hediff.bodyParts.NullOrEmpty())
@@ -835,13 +833,16 @@ namespace EBSGFramework
                 }
                 else if (replaceExisting)
                     p.health.RemoveHediff(foundHediffs[i]);
-                else
+                else if (severity > 0)
                 {
                     foundHediffs[i].Severity += severity;
                     if (!bodyParts.NullOrEmpty())
-                        bodyParts.Remove(foundHediffs[i].Part.def);
+                        bodyParts.Remove(foundHediffs[i].Part?.def);
                 }
             }
+
+            if (severity <= 0)
+                return;
 
             if (!partChecks.NullOrEmpty())
             {
