@@ -9,7 +9,9 @@ namespace EBSGFramework
 
         public HediffDef hediff;
 
-        public float severity = 1f;
+        public FloatRange severity = FloatRange.One;
+
+        public GiveSeverityCheck severityCondition = GiveSeverityCheck.None;
 
         public bool multiplySeverityByParentSeverity = false;
 

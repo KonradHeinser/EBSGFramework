@@ -31,7 +31,23 @@ namespace EBSGFramework
         public void DoHediffStuff(HediffDef hediffDef, HediffsAtSeverities hediffSet)
         {
 
-            float severityPerDay = hediffSet.severityPerDay * 0.003333334f;
+            float severityPerDay = hediffSet.severityPerDay.RandomInRange * 0.003333334f;
+            if (severityPerDay == 0)
+                return;
+
+            switch (hediffSet.severityCondition)
+            {
+                case GiveSeverityCheck.Positive:
+                    if (severityPerDay < 0)
+                        return;
+                    break;
+                case GiveSeverityCheck.Negative:
+                    if (severityPerDay > 0)
+                        return;
+                    break;
+                default: break;
+            }
+
             Hediff firstHediffOfDef = null;
             BodyPartRecord bodyPart = null;
             if (hediffSet.bodyPart != null) // If you need to target a specific body part, find it
@@ -62,8 +78,12 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    firstHediffOfDef = Pawn.health.AddHediff(hediffDef, bodyPart);
-                    firstHediffOfDef.Severity = hediffSet.initialSeverity; // Set the hediff severity
+                    var initialSeverity = hediffSet.initialSeverity.RandomInRange;
+                    if (initialSeverity > 0)
+                    {
+                        firstHediffOfDef = Pawn.health.AddHediff(hediffDef, bodyPart);
+                        firstHediffOfDef.Severity = initialSeverity; // Set the hediff severity
+                    }
                 }
             }
         }

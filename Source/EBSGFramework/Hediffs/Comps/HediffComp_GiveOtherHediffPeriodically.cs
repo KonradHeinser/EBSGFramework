@@ -12,9 +12,21 @@ namespace EBSGFramework
         {
             get
             {
-                float sc = Props.severity;
+                float sc = Props.severity.RandomInRange;
                 if (Props.multiplySeverityByParentSeverity)
                     sc *= parent.Severity;
+                switch (Props.severityCondition)
+                {
+                    case GiveSeverityCheck.Positive:
+                        if (sc < 0)
+                            return 0;
+                        break;
+                    case GiveSeverityCheck.Negative:
+                        if (sc > 0)
+                            return 0;
+                        break;
+                    default: break;
+                }
                 return sc;
             }
         }
@@ -27,6 +39,10 @@ namespace EBSGFramework
                 EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverities) &&
                 Rand.Chance(Props.chance))
             {
+                // If the pick was 0 or didn't meet the condition, no need to do anything else
+                var change = SeverityChange; 
+                if (change == 0)
+                    return;
                 Pawn other = null;
 
                 if (Props.linkingHediff != null)
@@ -48,12 +64,12 @@ namespace EBSGFramework
                         if (foundParts.NullOrEmpty() || !foundParts.ContainsKey(bodyPartDef))
                             foundParts.Add(bodyPartDef, 0);
 
-                        Pawn.AddHediffToPart(Pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], Props.hediff, SeverityChange, SeverityChange, Props.onlyIfNew, other);
+                        Pawn.AddHediffToPart(Pawn.RaceProps.body.GetPartsWithDef(bodyPartDef).ToArray()[foundParts[bodyPartDef]], Props.hediff, change, change, Props.onlyIfNew, other);
                         foundParts[bodyPartDef]++;
                     }
                 }
                 else
-                    Pawn.AddOrAppendHediffs(SeverityChange, Props.onlyIfNew ? 0 : SeverityChange, 
+                    Pawn.AddOrAppendHediffs(change, Props.onlyIfNew ? 0 : change, 
                         Props.hediff, null, other);
             }
         }

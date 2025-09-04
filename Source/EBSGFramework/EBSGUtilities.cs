@@ -188,6 +188,35 @@ namespace EBSGFramework
             return !matches.NullOrEmpty();
         }
 
+        public static bool SetHasNoneOfHediffsMissing(this HediffSet set, List<HediffDef> hediffs, out List<HediffDef> remaining, bool checkPriceImpact = false)
+        {
+            remaining = new List<HediffDef>(hediffs);
+
+            if (!set.hediffs.NullOrEmpty() && !hediffs.NullOrEmpty())
+                foreach (Hediff h in set.hediffs)
+                    if ((!checkPriceImpact || !h.def.priceImpact) && remaining.Contains(h.def))
+                        remaining.Remove(h.def);
+
+            return remaining.NullOrEmpty();
+        }
+
+        public static bool SetHasHediffsQuick(this HediffSet set, List<HediffDef> hediffs, out Hediff match, bool checkPriceImpact = false, bool emptyDefault = false)
+        {
+            match = null;
+            if (hediffs.NullOrEmpty())
+                return emptyDefault; // If the list is a forbidden list, this should remain false
+
+            if (!set.hediffs.NullOrEmpty())
+                foreach (Hediff h in set.hediffs)
+                    if ((!checkPriceImpact || !h.def.priceImpact) && hediffs.Contains(h.def))
+                    {
+                        match = h;
+                        break;
+                    }
+
+            return match != null;
+        }
+
         public static bool ConditionOrExclusiveIsActive(this GameConditionDef gameCondition, Map map)
         {
             if (map.GameConditionManager != null && !map.GameConditionManager.ActiveConditions.NullOrEmpty())
@@ -713,6 +742,10 @@ namespace EBSGFramework
 
             foreach (HediffToGive hediff in hediffs)
             {
+                float severity = hediff.severity.RandomInRange;
+                if (severity <= 0)
+                    continue;
+
                 List<BodyPartDef> partChecks = new List<BodyPartDef>();
                 if (!hediff.bodyParts.NullOrEmpty())
                     partChecks = new List<BodyPartDef>(hediff.bodyParts);
@@ -722,26 +755,26 @@ namespace EBSGFramework
                 if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && 
                     (!hediff.psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
-                    HandleHediffToGive(caster, target, hediff.hediffDef, hediff.severity,
+                    HandleHediffToGive(caster, target, hediff.hediffDef, severity,
                         hediff.replaceExisting, hediff.skipExisting, partChecks,
                         durationCaster);
 
                     if (!hediff.hediffDefs.NullOrEmpty())
                         foreach (HediffDef hd in hediff.hediffDefs)
-                            HandleHediffToGive(caster, target, hd, hediff.severity,
+                            HandleHediffToGive(caster, target, hd, severity,
                                 hediff.replaceExisting, hediff.skipExisting, partChecks,
                                 durationCaster);
                 }
                 if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf &&
                     (!hediff.psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
                 {
-                    HandleHediffToGive(target, caster, hediff.hediffDef, hediff.severity,
+                    HandleHediffToGive(target, caster, hediff.hediffDef, severity,
                         hediff.replaceExisting, hediff.skipExisting, partChecks,
                         durationTarget);
 
                     if (!hediff.hediffDefs.NullOrEmpty())
                         foreach (HediffDef hd in hediff.hediffDefs)
-                            HandleHediffToGive(target, caster, hd, hediff.severity, 
+                            HandleHediffToGive(target, caster, hd, severity, 
                                 hediff.replaceExisting, hediff.skipExisting, partChecks, 
                                 durationTarget);
                 }

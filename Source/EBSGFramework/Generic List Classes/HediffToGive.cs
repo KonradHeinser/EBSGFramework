@@ -23,7 +23,7 @@ namespace EBSGFramework
 
         public bool skipExisting;
 
-        public float severity = 1f;
+        public FloatRange severity = FloatRange.One;
 
         public bool psychic = false;
     }
