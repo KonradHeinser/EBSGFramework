@@ -30,24 +30,6 @@ namespace EBSGFramework
 
         public void DoHediffStuff(HediffDef hediffDef, HediffsAtSeverities hediffSet)
         {
-
-            float severityPerDay = hediffSet.severityPerDay.RandomInRange * 0.003333334f;
-            if (severityPerDay == 0)
-                return;
-
-            switch (hediffSet.severityCondition)
-            {
-                case GiveSeverityCheck.Positive:
-                    if (severityPerDay < 0)
-                        return;
-                    break;
-                case GiveSeverityCheck.Negative:
-                    if (severityPerDay > 0)
-                        return;
-                    break;
-                default: break;
-            }
-
             Hediff firstHediffOfDef = null;
             BodyPartRecord bodyPart = null;
             if (hediffSet.bodyPart != null) // If you need to target a specific body part, find it
@@ -68,7 +50,26 @@ namespace EBSGFramework
             }
             else firstHediffOfDef = Pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef); // Just get the first hediff
 
-            if (firstHediffOfDef != null) firstHediffOfDef.Severity += severityPerDay; // If the hediff exists, alter severity
+            if (firstHediffOfDef != null)
+            {
+                float severityPerDay = hediffSet.severityPerDay.RandomInRange * 0.003333334f;
+                if (severityPerDay == 0)
+                    return;
+
+                switch (hediffSet.severityCondition)
+                {
+                    case GiveSeverityCheck.Positive:
+                        if (severityPerDay < 0)
+                            return;
+                        break;
+                    case GiveSeverityCheck.Negative:
+                        if (severityPerDay > 0)
+                            return;
+                        break;
+                    default: break;
+                }
+                firstHediffOfDef.Severity += severityPerDay; // If the hediff exists, alter severity
+            }
             else
             {
                 if (hediffDef == HediffDefOf.MissingBodyPart)
