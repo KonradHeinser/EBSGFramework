@@ -673,13 +673,15 @@ namespace EBSGFramework
                 {
                     foreach (Hediff hediff in pawn.health.hediffSet.hediffs) // Go through all the hediffs to try to find the hediff on the specified part
                     {
-                        if (hediff.Part == bodyPart && hediff.def == hediffDef) firstHediffOfDef = hediff;
+                        if (hediff.Part == bodyPart && hediff.def == hediffDef) 
+                            firstHediffOfDef = hediff;
                         break;
                     }
                 }
             }
 
-            if (firstHediffOfDef != null && onlyNew) return null;
+            if (firstHediffOfDef != null && onlyNew) 
+                return null;
 
             if (firstHediffOfDef != null && !onlyNew)
             {
@@ -690,10 +692,9 @@ namespace EBSGFramework
                 else
                     firstHediffOfDef.Severity += severityAdded;
             }
-            else
+            else if (initialSeverity > 0)
             {
                 firstHediffOfDef = pawn.CreateComplexHediff(initialSeverity, hediffDef, other, bodyPart);
-                firstHediffOfDef.Severity = initialSeverity;
                 pawn.health.AddHediff(firstHediffOfDef);
             }
 
