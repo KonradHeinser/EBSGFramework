@@ -186,8 +186,8 @@ namespace EBSGFramework
                     postfix: new HarmonyMethod(patchType, nameof(KillThirstPostfix)));
                 harmony.Patch(AccessTools.PropertyGetter(typeof(Gene_Hemogen), nameof(Gene_Hemogen.InitialResourceMax)),
                     postfix: new HarmonyMethod(patchType, nameof(HemogenMaxPostFix)));
-                harmony.Patch(AccessTools.Method(typeof(Hediff_Pregnant), nameof(Hediff_Pregnant.TickInterval)),
-                    new HarmonyMethod(patchType, nameof(PregnantIntervalPrefix)));
+                harmony.Patch(AccessTools.PropertySetter(typeof(Hediff_Pregnant), nameof(Hediff_Pregnant.GestationProgress)),
+                    new HarmonyMethod(patchType, nameof(PregnancySpeedPrefix)));
                 harmony.Patch(AccessTools.Method(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant)),
                     postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
@@ -2119,9 +2119,9 @@ namespace EBSGFramework
             }
         }
 
-        public static void PregnantIntervalPrefix(ref int delta, ref Hediff_Pregnant __instance)
+        public static void PregnancySpeedPrefix(ref float value, Hediff_Pregnant __instance)
         {
-            delta = Mathf.CeilToInt(delta * __instance.pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed, StatRequirement.Always, 10000));
+            value *= __instance.pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed, StatRequirement.Always, 10000);
         }
 
         public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
