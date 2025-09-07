@@ -2121,7 +2121,8 @@ namespace EBSGFramework
 
         public static void PregnancySpeedPrefix(ref float value, Hediff_Pregnant __instance)
         {
-            value *= __instance.pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed, StatRequirement.Always, 10000);
+            if (__instance.pawn.RaceProps.Humanlike)
+                value += (value - __instance.Severity) * (__instance.pawn.StatOrOne(EBSGDefOf.EBSG_PawnGestationSpeed, StatRequirement.Always, 10000) - 1);
         }
 
         public static void PsyfocusFallPerDayPostFix(ref float __result, Pawn ___pawn)
