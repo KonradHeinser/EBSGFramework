@@ -3,8 +3,6 @@
     <StatDef Name="EBSG_MechanitorFactorStatBase" ParentName="EBSG_FactoringStat" Abstract="True">
         <category>Mechanitor</category>
         <displayPriorityInCategory>5000</displayPriorityInCategory>
-        <showOnMechanoids>false</showOnMechanoids>
-        <showOnAnimals>false</showOnAnimals>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorFactorStatBase">

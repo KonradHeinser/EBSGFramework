@@ -8,6 +8,8 @@
         <toStringStyle>PercentZero</toStringStyle>
         <scenarioRandomizable>true</scenarioRandomizable>
         <cacheable>true</cacheable>
+        <showOnAnimals>False</showOnAnimals>
+        <showOnMechanoids>False</showOnMechanoids>
     </StatDef>
 
     <StatDef Name="EBSG_FactoringStat" ParentName="EBSG_OffsetingStat" Abstract="True">
@@ -22,6 +24,7 @@
         <description>Alters how quickly pawns recover from bloodloss. At 0%, the pawn recovers blood at the normal rate, while at 100% the pawn recovers from bloodloss twice as fast as normal.</description>
         <minValue>-1</minValue>
         <displayPriorityInCategory>2202</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">

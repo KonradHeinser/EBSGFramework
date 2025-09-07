@@ -6,6 +6,8 @@
         <description>A multiplier on all outgoing damage.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5201</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <parts>
             <li Class="EBSGFramework.StatPart_OverseerStatOffset" MayRequire="Ludeon.Rimworld.Biotech">
                 <stat>EBSG_OutgoingDamageFactorOffsetMech</stat>
@@ -24,6 +26,8 @@
         <description>A multiplier on outgoing damage against humanlike targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5202</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowHumanlikes>True</allowHumanlikes>
@@ -37,6 +41,8 @@
         <description>A multiplier on outgoing damage against dryad targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5203</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowDryads>True</allowDryads>
@@ -50,6 +56,8 @@
         <description>A multiplier on outgoing damage against insect targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5204</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowInsects>True</allowInsects>
@@ -63,6 +71,8 @@
         <description>A multiplier on outgoing damage against animal targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5205</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowAnimals>True</allowAnimals>
@@ -76,6 +86,8 @@
         <description>A multiplier on outgoing damage against mechanoid targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5206</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowMechanoids>True</allowMechanoids>
@@ -89,6 +101,8 @@
         <description>A multiplier on outgoing damage against entity targets.</description>
         <category>PawnCombat</category>
         <displayPriorityInCategory>5207</displayPriorityInCategory>
+        <showOnAnimals>True</showOnAnimals>
+        <showOnMechanoids>True</showOnMechanoids>
         <modExtensions>
             <li Class="EBSGFramework.EBSGDamageExtension">
                 <allowEntities>True</allowEntities>
