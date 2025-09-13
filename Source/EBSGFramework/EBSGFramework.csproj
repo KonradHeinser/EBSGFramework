@@ -88,6 +88,8 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
+    <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_GiveResource.cs" />
+    <Compile Include="DynamicResourceGenes\CompProperties_Ability\CompProperties_AbilityGiveResource.cs" />
     <Compile Include="EBSGAI\Command_AbilityAutocastToggle.cs" />
     <Compile Include="EBSGAI\CompAbilityEffect_AutocastToggle.cs" />
     <Compile Include="EBSGAI\CompProperties_AbilityAutocastToggle.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Enums\StatEffect.cs" />
     <Compile Include="Enums\StatRequirement.cs" />
+    <Compile Include="Generic List Classes\StatEffects.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
     <Compile Include="Generic List Classes\XenoRange.cs" />
     <Compile Include="Genes\AgingXenotypeExtension.cs" />

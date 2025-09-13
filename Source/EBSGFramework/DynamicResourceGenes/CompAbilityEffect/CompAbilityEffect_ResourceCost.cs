@@ -1,21 +1,19 @@
-﻿using Verse;
-using RimWorld;
-using System.Collections.Generic;
+﻿using RimWorld;
+using Verse;
 
 namespace EBSGFramework
 {
     public class CompAbilityEffect_ResourceCost : CompAbilityEffect
     {
         public new CompProperties_AbilityResourceCost Props => (CompProperties_AbilityResourceCost)props;
-        public List<AbilityComp> comps;
 
-        private bool HasEnoughResource
+        protected bool HasEnoughResource
         {
             get
             {
                 ResourceGene gene_Resource = (ResourceGene)parent.pawn.genes.GetGene(Props.mainResourceGene);
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null) cost *= parent.pawn.StatOrOne(Props.costFactorStat);
                 if (gene_Resource == null || gene_Resource.Value < cost)
                 {
                     return false;
@@ -32,13 +30,12 @@ namespace EBSGFramework
         {
             base.Apply(target, dest);
             Pawn pawn = parent.pawn;
-            ResourceGene resourceGene;
-            if (Props.mainResourceGene == null) Log.Error("A casted ability is missing a designated mainResourceGene, meaning it can't alter the resource levels");
-            else
+            if (Props.mainResourceGene == null) 
+                Log.Error("A casted ability is missing a designated mainResourceGene, meaning it can't alter the resource levels");
+            else if (pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene resourceGene)
             {
-                resourceGene = (ResourceGene)pawn.genes.GetGene(Props.mainResourceGene);
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null) cost *= pawn.StatOrOne(Props.costFactorStat);
                 ResourceGene.OffsetResource(pawn, 0f - cost, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), storeLimitPassing: !Props.checkMaximum);
             }
         }
@@ -58,7 +55,7 @@ namespace EBSGFramework
             }
 
             float cost = Props.resourceCost;
-            if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+            if (Props.costFactorStat != null) cost *= parent.pawn.StatOrOne(Props.costFactorStat);
 
             if (gene_Resource.Value < cost)
             {
@@ -70,9 +67,9 @@ namespace EBSGFramework
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
             }
-            float num = TotalResourceCostOfQueuedAbilities();
+            float num = TotalResourceCostOfQueuedAbilities(parent.pawn, Props.mainResourceGene);
             float num2 = cost + num;
-            if (cost > float.Epsilon && num2 > gene_Resource.Value)
+            if (cost > 0 && num2 > gene_Resource.Value)
             {
                 reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
@@ -86,34 +83,34 @@ namespace EBSGFramework
             return HasEnoughResource;
         }
 
-        private float TotalResourceCostOfQueuedAbilities()
+        public static float TotalResourceCostOfQueuedAbilities(Pawn pawn, GeneDef gene)
         {
-            float num = ((!(parent.pawn.jobs?.curJob?.verbToUse is Verb_CastAbility verb_CastAbility)) ? 0f : ResourceCost(verb_CastAbility));
-            if (parent.pawn.jobs != null)
+            float num = (!(pawn.jobs?.curJob?.verbToUse is Verb_CastAbility verb_CastAbility)) ? 0f : ResourceCost(verb_CastAbility, pawn, gene);
+            if (pawn.jobs != null)
             {
-                for (int i = 0; i < parent.pawn.jobs.jobQueue.Count; i++)
+                for (int i = 0; i < pawn.jobs.jobQueue.Count; i++)
                 {
-                    if (parent.pawn.jobs.jobQueue[i].job.verbToUse is Verb_CastAbility verb_CastAbility2)
+                    if (pawn.jobs.jobQueue[i].job.verbToUse is Verb_CastAbility verb_CastAbility2)
                     {
-                        num += ResourceCost(verb_CastAbility2);
+                        num += ResourceCost(verb_CastAbility2, pawn, gene);
                     }
                 }
             }
             return num;
         }
 
-        public float ResourceCost(Verb_CastAbility verb_CastAbility2)
+        protected static float ResourceCost(Verb_CastAbility verb_CastAbility2, Pawn pawn, GeneDef gene)
         {
-            if (comps != null)
+            foreach (AbilityComp comp in verb_CastAbility2.ability?.comps)
             {
-                foreach (AbilityComp comp in verb_CastAbility2.ability?.comps)
+                if (comp is CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost)
                 {
-                    if (comp is CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost)
-                    {
-                        float cost = Props.resourceCost;
-                        if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
-                        return cost;
-                    }
+                    var p = compAbilityEffect_ResourceCost.Props;
+                    if (p.mainResourceGene != gene)
+                        continue;
+                    float cost = p.resourceCost;
+                    if (p.costFactorStat != null) cost *= pawn.StatOrOne(p.costFactorStat);
+                    return cost;
                 }
             }
             return 0f;

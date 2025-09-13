@@ -331,6 +331,7 @@
 
         <!--Dynamic Resource Genes-->
     <ResourceCost>{0} cost</ResourceCost>
+    <ResourceDrain>{0} drain</ResourceDrain>
     <ResourceGain>{0} generation</ResourceGain>
     <ResourceCostPerTile>{0} cost per tile</ResourceCostPerTile>
     <ResourceGainPerTile>{0} generation per tile</ResourceGainPerTile>
