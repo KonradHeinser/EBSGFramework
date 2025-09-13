@@ -15,9 +15,9 @@ namespace EBSGFramework
         protected bool HasEnoughResource(Pawn target, float? a = null)
         {
             if (!Props.checkLimits)
-                return parent.pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene;
+                return target.genes.GetGene(Props.mainResourceGene) is ResourceGene;
 
-            if (parent.pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene gene_Resource)
+            if (target.genes.GetGene(Props.mainResourceGene) is ResourceGene gene_Resource)
             {
                 float amount = a == null ? GetAmount(target) : a.Value;
                 if (gene_Resource.Value + amount < 0)
@@ -68,8 +68,15 @@ namespace EBSGFramework
                     return false;
                 }
 
+                if (amount < 0)
+                {
+                    if (throwMessages)
+                        Messages.Message("AbilityDisabledNoResource".Translate(target.Pawn, Props.mainResourceGene.resourceLabel), target.Pawn, MessageTypeDefOf.RejectInput, false);
+                    return false;
+                }
+
                 if (throwMessages)
-                    Messages.Message("AbilityDisabledNoResource".Translate(target.Pawn, Props.mainResourceGene.resourceLabel), target.Pawn, MessageTypeDefOf.RejectInput, false);
+                    Messages.Message("AbilityDisabledTooMuchResource".Translate(target.Pawn, Props.mainResourceGene.resourceLabel), target.Pawn, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 

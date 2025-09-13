@@ -343,5 +343,6 @@
     <ConsumeResourceBelow>Consume {0} below</ConsumeResourceBelow>
     <AbilityDisabledNoResourceGene>{0_labelShort} lacks the {1} gene.</AbilityDisabledNoResourceGene>
     <AbilityDisabledNoResource>{0_labelShort} does not have enough {1}.</AbilityDisabledNoResource>
+    <AbilityDisabledTooMuchResource>{0_labelShort} has too much {1}.</AbilityDisabledTooMuchResource>
     <DRG_Consuming>Consuming {0}</DRG_Consuming>
 </LanguageData>

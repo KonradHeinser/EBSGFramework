@@ -64,7 +64,7 @@ namespace EBSGFramework
             }
             if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max && cost < 0)
             {
-                reason = "AbilityDisabledNoResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
+                reason = "AbilityDisabledTooMuchResource".Translate(parent.pawn, gene_Resource.ResourceLabel);
                 return true;
             }
             float num = TotalResourceCostOfQueuedAbilities(parent.pawn, Props.mainResourceGene);
