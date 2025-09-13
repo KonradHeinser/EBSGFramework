@@ -24,8 +24,10 @@ namespace EBSGFramework
 
         public override IEnumerable<string> ExtraStatSummary()
         {
-            if (amount > 0) yield return (string)("ResourceGain".Translate(mainResourceGene.resourceLabel) + ": ") + Mathf.RoundToInt(amount * 100f);
-            else yield return (string)("ResourceDrain".Translate(mainResourceGene.resourceLabel) + ": ") + Mathf.RoundToInt(amount * -100f);
+            if (amount > 0) 
+                yield return (string)("ResourceGain".Translate(mainResourceGene.resourceLabel).CapitalizeFirst() + ": ") + Mathf.RoundToInt(amount * 100f);
+            else 
+                yield return (string)("ResourceDrain".Translate(mainResourceGene.resourceLabel).CapitalizeFirst() + ": ") + Mathf.RoundToInt(amount * -100f);
         }
 
     }
