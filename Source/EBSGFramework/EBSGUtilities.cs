@@ -94,6 +94,56 @@ namespace EBSGFramework
             }
         }
 
+        public static BodyTypeDef GetFixedBodyType(this Pawn pawn)
+        {
+            if (pawn.DevelopmentalStage == DevelopmentalStage.Adult && pawn.genes != null)
+                foreach (var gene in pawn.genes.GenesListForReading)
+                    if (gene.Active && gene.def.bodyType.HasValue)
+                        return gene.def.bodyType.Value.ToBodyType(pawn);
+            return null;
+        }
+
+        public static void ChangeGender(this Pawn pawn, Gender gender, BeardDef beard = null)
+        {
+            if (gender == pawn.gender) return;
+            pawn.gender = gender;
+            if (pawn.style != null)
+                if (!pawn.style.CanWantBeard)
+                    pawn.style.beardDef = BeardDefOf.NoBeard;
+                else if (beard != null)
+                    pawn.style.beardDef = beard;
+            if (pawn.GetFixedBodyType() == null && pawn.story?.bodyType != null)
+                    switch (pawn.gender)
+                    {
+                        case Gender.Female:
+                            if (pawn.story.bodyType == BodyTypeDefOf.Male)
+                            {
+                                pawn.story.bodyType = BodyTypeDefOf.Female;
+                                pawn.Drawer.renderer.SetAllGraphicsDirty();
+                            }
+                            break;
+                        case Gender.Male:
+                            if (pawn.story.bodyType == BodyTypeDefOf.Female)
+                            {
+                                pawn.story.bodyType = BodyTypeDefOf.Male;
+                                pawn.Drawer.renderer.SetAllGraphicsDirty();
+                            }
+                            pawn.RemovePregnancies();
+                            break;
+                    }
+        }
+
+        public static void CheckGender(this Pawn pawn, List<GenderByAge> genderByAges, BeardDef beard = null)
+        {
+            foreach (GenderByAge genderByAge in genderByAges)
+                if (genderByAge.range.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
+                {
+                    if (genderByAge.gender != Gender.None)
+                        pawn.ChangeGender(genderByAge.gender, beard);
+                    return;
+                }
+        }
+
         public static bool PawnHasApparelOnLayer(this Pawn pawn, ApparelLayerDef layer = null, List<ApparelLayerDef> layers = null, List<BodyPartGroupDef> groups = null, List<ThingDef> exceptions = null)
         {
             if (pawn.apparel?.WornApparel?.NullOrEmpty() != false) 

@@ -138,7 +138,7 @@ namespace EBSGFramework
             {
                 if (addedAbilities == null) 
                     addedAbilities = new List<AbilityDef>();
-                SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
+                SpawnAgeLimiter.GetGender(pawn, EBSGExtension);
                 SpawnAgeLimiter.LimitAge(pawn, EBSGExtension.expectedAges, EBSGExtension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
@@ -212,7 +212,7 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(2500) && EBSGExtension?.genderByAge.NullOrEmpty() == false && 
                 (EBSGExtension.genderByAge.Count > 1 || EBSGextension.genderByAge[0].range != GenderByAge.defaultRange))
-                SpawnAgeLimiter.GetGender(pawn, EBSGExtension, def);
+                SpawnAgeLimiter.GetGender(pawn, EBSGExtension);
         }
         
         public void CreateMax(float maximum = 1f, StatDef maxStat = null, StatDef maxFactorStat = null)

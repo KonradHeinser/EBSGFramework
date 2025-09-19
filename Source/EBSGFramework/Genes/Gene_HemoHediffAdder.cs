@@ -53,10 +53,9 @@ namespace EBSGFramework
             if (Extension != null)
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
+                SpawnAgeLimiter.GetGender(pawn, Extension);
                 SpawnAgeLimiter.LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && delayTicks >= 5) delayTicks = Extension.delayTicks;
-
-                Dictionary<BodyPartDef, int> foundParts = new Dictionary<BodyPartDef, int>();
 
                 if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
                     pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
@@ -69,7 +68,7 @@ namespace EBSGFramework
 
             if (pawn.IsHashIntervalTick(200))
             {
-                if (Extension != null && !Extension.geneAbilities.NullOrEmpty() && pawn.genes != null && pawn.genes.GenesListForReading.Count != cachedGeneCount)
+                if (Extension != null && !Extension.geneAbilities.NullOrEmpty() && pawn.genes.GenesListForReading.Count != cachedGeneCount)
                 {
                     if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                     addedAbilities = SpawnAgeLimiter.AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
@@ -118,6 +117,9 @@ namespace EBSGFramework
                                 }
                             else
                                 pawn.RemoveHediffsFromParts(null, hediffToParts);
+
+                    if (!Extension.genderByAge.NullOrEmpty() && (Extension.genderByAge.Count > 1 || Extension.genderByAge[0].range != GenderByAge.defaultRange))
+                        SpawnAgeLimiter.GetGender(pawn, Extension);
                 }
             }
 

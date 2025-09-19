@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         public float severity = 0.5f;
 
+        public int degree = 0; // Used for adding hediffs via traits
+
         public float chance = 1f;
 
         public FloatRange validAges = new FloatRange(0f, 9999f);

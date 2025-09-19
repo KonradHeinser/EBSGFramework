@@ -65,7 +65,7 @@ namespace EBSGFramework
             base.PostAdd();
             if (Extension != null)
             {
-                GetGender(pawn, Extension, def);
+                GetGender(pawn, Extension);
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
                 LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
@@ -188,7 +188,7 @@ namespace EBSGFramework
                         return;
                     }
                     if (!Extension.genderByAge.NullOrEmpty() && (Extension.genderByAge.Count > 1 || Extension.genderByAge[0].range != GenderByAge.defaultRange))
-                        GetGender(pawn, Extension, def);
+                        GetGender(pawn, Extension);
                     pawn.AddHediffToParts(Extension.hediffsToApplyAtAges, null, true);
                 }
             }
@@ -200,39 +200,10 @@ namespace EBSGFramework
                 pawn.RemoveHediffsFromParts(Extension.hediffsToApplyAtAges);
         }
 
-        public static void GetGender(Pawn pawn, EBSGExtension extension, GeneDef def)
+        public static void GetGender(Pawn pawn, EBSGExtension extension)
         {
             if (extension?.genderByAge.NullOrEmpty() == false)
-                foreach (GenderByAge genderByAge in extension.genderByAge)
-                    if (genderByAge.range.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
-                    { 
-                        if (genderByAge.gender != Gender.None)
-                        {
-                            if (genderByAge.gender == pawn.gender) return;
-                            pawn.gender = genderByAge.gender;
-                            if (!pawn.style.CanWantBeard)
-                                pawn.style.beardDef = BeardDefOf.NoBeard;
-                            switch (pawn.gender)
-                            {
-                                case Gender.Female:
-                                    if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Male)
-                                    {
-                                        pawn.story.bodyType = BodyTypeDefOf.Female;
-                                        pawn.Drawer.renderer.SetAllGraphicsDirty();
-                                    }
-                                    break;
-                                case Gender.Male:
-                                    if (def.bodyType == null && pawn.story?.bodyType == BodyTypeDefOf.Female)
-                                    {
-                                        pawn.story.bodyType = BodyTypeDefOf.Male;
-                                        pawn.Drawer.renderer.SetAllGraphicsDirty();
-                                    }
-                                    pawn.RemovePregnancies();
-                                    break;
-                            }
-                        }
-                        return;
-                    }
+                pawn.CheckGender(extension.genderByAge);
         }
 
         public static void LimitAge(Pawn pawn, FloatRange expectedAges, FloatRange ageRange, bool sameBioAndChrono = false, bool removeChronic = true)
