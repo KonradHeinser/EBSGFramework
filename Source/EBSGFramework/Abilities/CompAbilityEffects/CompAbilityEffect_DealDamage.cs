@@ -23,8 +23,6 @@ namespace EBSGFramework
                 {
                     if (!Props.bodyParts.NullOrEmpty())
                         part = target.Pawn.GetSemiRandomPartFromList(Props.bodyParts);
-                    else if (!Props.def.workerClass.GetType().SameOrSubclassOf(typeof(DamageWorker_AddInjury)))
-                        part = target.Pawn.health.hediffSet.GetRandomNotMissingPart(Props.def, BodyPartHeight.Middle, BodyPartDepth.Outside);
                 }
                 target.Thing?.TakeDamage(new DamageInfo(Props.def, Props.amount, Props.armorPenetration,
                     instigator: parent.pawn, hitPart: part, intendedTarget: target.Thing));
