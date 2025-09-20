@@ -283,9 +283,10 @@ namespace EBSGFramework
 
         public static BodyPartRecord GetSemiRandomPartFromList(this Pawn pawn, List<BodyPartDef> bodyParts)
         {
+            // Try to grab a random set of parts
             List<BodyPartRecord> parts = pawn.RaceProps.body.GetPartsWithDef(bodyParts.RandomElement());
 
-            if (parts.NullOrEmpty())
+            if (parts.NullOrEmpty()) // If the first random didn't work, shuffle the list and start going through it
             {
                 bodyParts.Shuffle();
                 foreach (BodyPartDef bodyPart in bodyParts)
@@ -294,8 +295,12 @@ namespace EBSGFramework
                     if (!parts.NullOrEmpty()) break;
                 }
             }
-
-            return parts[0];
+            if (parts.NullOrEmpty()) // If none of the parts could be found, give up
+                return null;
+            foreach (var part in parts) // Make sure you're returning a non-missing part
+                if (!pawn.health.hediffSet.PartIsMissing(part))
+                    return part;
+            return null;
         }
 
         public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creater = null)
