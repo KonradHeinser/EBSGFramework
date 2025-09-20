@@ -89,7 +89,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
-    <Compile Include="Abilities\CompProperties\CompProperties_DestroyCorpse.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyCorpse.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_GiveResource.cs" />
