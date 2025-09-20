@@ -105,7 +105,7 @@ namespace EBSGFramework
 
         public static void ChangeGender(this Pawn pawn, Gender gender, BeardDef beard = null)
         {
-            if (gender == pawn.gender) return;
+            if (gender == pawn.gender || gender == Gender.None) return;
             pawn.gender = gender;
             if (pawn.style != null)
                 if (!pawn.style.CanWantBeard)

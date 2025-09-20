@@ -39,7 +39,7 @@ namespace EBSGFramework
         public override void CompExposeData()
         {
             base.CompExposeData();
-            Scribe_Values.Look(ref original, "original", Pawn.gender);
+            Scribe_Values.Look(ref original, "original", Gender.None);
             Scribe_Defs.Look(ref originalBeard, "originalBeard");
         }
     }

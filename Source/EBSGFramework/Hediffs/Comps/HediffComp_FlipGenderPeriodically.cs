@@ -35,6 +35,13 @@ namespace EBSGFramework
             }
         }
 
+        public override void CompPostPostRemoved()
+        {
+            base.CompPostPostRemoved();
+            if (Props.revertPostRemove)
+                Pawn.ChangeGender(original);
+        }
+
         private void FlipGender()
         {
             Gender newGender = Gender.None;
@@ -55,7 +62,7 @@ namespace EBSGFramework
         {
             base.CompExposeData();
             Scribe_Values.Look(ref interval, "interval", 0);
-            Scribe_Values.Look(ref original, "original", Pawn.gender);
+            Scribe_Values.Look(ref original, "original", Gender.None);
             Scribe_Defs.Look(ref originalBeard, "originalBeard");
         }
     }
