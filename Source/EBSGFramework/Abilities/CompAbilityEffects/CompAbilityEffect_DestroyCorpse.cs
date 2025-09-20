@@ -12,7 +12,7 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
-            if (target.Thing?.Destroyed != false && target.Thing is Corpse corpse)
+            if (target.Thing?.Destroyed == false && target.Thing is Corpse corpse)
             {
                 IntVec3 position = corpse.PositionHeld;
                 Map map = corpse.MapHeld;
