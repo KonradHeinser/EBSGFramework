@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public float amount = -1f;
 
-        public float armorPenetration = 0f;
+        public float armorPenetration = -1f;
 
         public float chance = 1f;
 

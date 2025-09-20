@@ -14,7 +14,11 @@ namespace EBSGFramework
                 if (Props.damageAttachedPart && parent.Part != null) hitPart = parent.Part;
                 else if (!Props.bodyParts.NullOrEmpty()) hitPart = Pawn.GetSemiRandomPartFromList(Props.bodyParts);
 
-                Pawn.TakeDamage(new DamageInfo(Props.damage, Props.damageAmount, Props.armorPenetration, hitPart: hitPart, spawnFilth: Props.createFilth));
+                var amount = Props.damageAmount > 0 ? Props.damageAmount : Props.damage.defaultDamage;
+                var armorPenetration = Props.armorPenetration > 0 ? Props.armorPenetration : Props.damage.defaultArmorPenetration;
+
+                Pawn.TakeDamage(new DamageInfo(Props.damage, amount, armorPenetration, 
+                    hitPart: hitPart, spawnFilth: Props.createFilth));
             }
         }
     }

@@ -24,7 +24,11 @@ namespace EBSGFramework
                     if (!Props.bodyParts.NullOrEmpty())
                         part = target.Pawn.GetSemiRandomPartFromList(Props.bodyParts);
                 }
-                target.Thing?.TakeDamage(new DamageInfo(Props.def, Props.amount, Props.armorPenetration,
+
+                var amount = Props.amount > 0 ? Props.amount : Props.def.defaultDamage;
+                var armorPenetration = Props.armorPenetration > 0 ? Props.armorPenetration : Props.def.defaultArmorPenetration;
+
+                target.Thing?.TakeDamage(new DamageInfo(Props.def, amount, armorPenetration,
                     instigator: parent.pawn, hitPart: part, intendedTarget: target.Thing));
             }
         }
