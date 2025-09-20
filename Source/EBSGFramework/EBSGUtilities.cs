@@ -105,7 +105,7 @@ namespace EBSGFramework
 
         public static void ChangeGender(this Pawn pawn, Gender gender, BeardDef beard = null)
         {
-            if (gender == pawn.gender || gender == Gender.None) return;
+            if (gender == pawn.gender || gender == Gender.None || !pawn.RaceProps.hasGenders) return;
             pawn.gender = gender;
             if (pawn.style != null)
                 if (!pawn.style.CanWantBeard)
@@ -135,6 +135,7 @@ namespace EBSGFramework
 
         public static void CheckGender(this Pawn pawn, List<GenderByAge> genderByAges, BeardDef beard = null)
         {
+            if (!pawn.RaceProps.hasGenders) return;
             foreach (GenderByAge genderByAge in genderByAges)
                 if (genderByAge.range.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
                 {

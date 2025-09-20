@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -9,11 +10,13 @@ namespace EBSGFramework
 
         public float amount = -1f;
 
-        public float armorPenetration = -1f;
+        public float armorPenetration = 0f;
 
         public float chance = 1f;
 
         public StatEffects statEffects;
+
+        public List<BodyPartDef> bodyParts;
 
         public CompProperties_AbilityDealDamage() 
         {
