@@ -15,9 +15,11 @@ namespace EBSGFramework
             {
                 IntVec3 position = victim.PositionHeld;
                 Map map = victim.MapHeld;
+                float bodySizeMult = victim.BodySize;
+
                 if (Props.makeFilth && Props.bloodFilthToSpawnRange != IntRange.Zero)
                 {
-                    float bloodMutliplier = Props.multiplyBloodByBodySize ? victim.BodySize : 1f;
+                    float bloodMutliplier = Props.multiplyBloodByBodySize ? bodySizeMult : 1f;
 
                     int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMutliplier);
                     for (int i = 0; i < randomInRange; i++)
@@ -53,7 +55,7 @@ namespace EBSGFramework
                             stuff = victim.RaceProps.leatherDef;
                         else stuff = Props.thingToMake.defaultStuff;
                     Thing thing = ThingMaker.MakeThing(Props.thingToMake, stuff);
-                    thing.stackCount = Props.count > 0 ? Props.count : Mathf.CeilToInt(victim.BodySize * Props.bodySizeFactor);
+                    thing.stackCount = Props.count > 0 ? Props.count : Mathf.CeilToInt(bodySizeMult * Props.bodySizeFactor);
                     GenSpawn.Spawn(thing, position, map);
                 }
 
