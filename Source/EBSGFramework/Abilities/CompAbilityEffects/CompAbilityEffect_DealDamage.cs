@@ -16,8 +16,14 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
-            target.Thing?.TakeDamage(new DamageInfo(Props.def, Props.amount, Props.armorPenetration,
-                instigator: parent.pawn, intendedTarget: target.Thing));
+            if (Rand.Chance(GetChance(target)))
+                target.Thing?.TakeDamage(new DamageInfo(Props.def, Props.amount, Props.armorPenetration,
+                    instigator: parent.pawn, intendedTarget: target.Thing));
+        }
+
+        private float GetChance(LocalTargetInfo target)
+        {
+            return Math.Min(1, Props.chance * Props.statEffects?.FinalFactor(parent.pawn, target.Thing) ?? 1f);
         }
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
@@ -30,6 +36,13 @@ namespace EBSGFramework
             if (target.Thing == null)
                 return false;
             return base.Valid(target, throwMessages);
+        }
+
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            if ((Props.chance != 1f || Props.statEffects != null) && target.Thing != null)
+                return "EBSG_SuccessChance".Translate(Math.Round(GetChance(target) * 100, 3));
+            return null;
         }
     }
 }

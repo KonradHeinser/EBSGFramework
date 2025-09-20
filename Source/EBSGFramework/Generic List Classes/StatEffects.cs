@@ -21,7 +21,7 @@ namespace EBSGFramework
 
         public StatRequirement otherDivisorReq = StatRequirement.Higher;
 
-        public float FinalFactor(Pawn parent, Pawn other)
+        public float FinalFactor(Thing parent, Thing other)
         {
             var num = 1f;
 
