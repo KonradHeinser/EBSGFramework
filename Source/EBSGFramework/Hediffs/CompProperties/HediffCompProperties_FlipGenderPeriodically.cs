@@ -4,7 +4,7 @@ namespace EBSGFramework
 {
     public class HediffCompProperties_FlipGenderPeriodically : HediffCompProperties
     {
-        public IntRange interval;
+        public IntRange interval = new IntRange(600);
 
         public bool revertPostRemove = false;
 
