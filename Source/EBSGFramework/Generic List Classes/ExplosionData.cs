@@ -48,11 +48,11 @@ namespace EBSGFramework
                 Effecter e = effecter.Spawn();
                 if (effecterTicks != 0)
                 {
-                    caster.Map.effecterMaintainer.AddEffecterToMaintain(e, target.Cell, effecterTicks);
+                    map.effecterMaintainer.AddEffecterToMaintain(e, target.Cell, effecterTicks);
                 }
                 else
                 {
-                    e.Trigger(new TargetInfo(target.Cell, caster.Map), new TargetInfo(target.Cell, caster.Map));
+                    e.Trigger(new TargetInfo(target.Cell, map), new TargetInfo(target.Cell, map));
                     e.Cleanup();
                 }
             }
@@ -112,7 +112,7 @@ namespace EBSGFramework
             }
 
 
-            GenExplosion.DoExplosion(target.Cell, caster.Map, radius, damageDef, caster, damage,
+            GenExplosion.DoExplosion(target.Cell, map, radius, damageDef, caster, damage,
                 armorPenetration, explosionSound, null, null, null, postExplosionThing,
                 postExplosionThingChance, postExplosionSpawnThingCount, extraGasType,
                 gasRadiusOverride, postExplosionGasAmount, applyDamageToExplosionCellsNeighbors,
