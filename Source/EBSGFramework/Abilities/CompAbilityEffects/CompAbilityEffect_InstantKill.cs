@@ -13,17 +13,16 @@ namespace EBSGFramework
         {
             if (target.Thing != null && target.Thing is Pawn victim && !victim.Dead)
             {
-                IntVec3 initialPosition = victim.PositionHeld;
-
-                if (Props.makeFilth)
+                IntVec3 position = victim.PositionHeld;
+                Map map = victim.MapHeld;
+                if (Props.makeFilth && Props.bloodFilthToSpawnRange != IntRange.Zero)
                 {
-                    float bloodMutliplier = 1;
-                    if (Props.multiplyBloodByBodySize) bloodMutliplier = victim.BodySize;
+                    float bloodMutliplier = Props.multiplyBloodByBodySize ? victim.BodySize : 1f;
 
                     int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMutliplier);
                     for (int i = 0; i < randomInRange; i++)
                     {
-                        IntVec3 c = initialPosition;
+                        IntVec3 c = position;
                         if (randomInRange > 1)
                             c = c.RandomAdjacentCell8Way();
                         
@@ -36,14 +35,12 @@ namespace EBSGFramework
                                 radiusChecker *= 2f;
                             }
                         }
-                        if (c.InBounds(victim.MapHeld))
+                        if (c.InBounds(map))
                         {
-                            ThingDef bloodType = victim.RaceProps.BloodDef;
+                            ThingDef bloodType = Props.filthReplacement != null && Props.filthReplacement.thingClass == typeof(Filth) ?
+                                Props.filthReplacement : victim?.RaceProps.BloodDef ?? ThingDefOf.Filth_Blood;
 
-                            if (Props.filthReplacement != null && Props.filthReplacement.thingClass == typeof(Filth))
-                                bloodType = Props.filthReplacement;
-
-                            FilthMaker.TryMakeFilth(c, victim.MapHeld, bloodType, victim.LabelShort);
+                            FilthMaker.TryMakeFilth(c, map, bloodType, victim.LabelShort);
                         }
                     }
                 }
@@ -57,10 +54,10 @@ namespace EBSGFramework
                         else stuff = Props.thingToMake.defaultStuff;
                     Thing thing = ThingMaker.MakeThing(Props.thingToMake, stuff);
                     thing.stackCount = Props.count > 0 ? Props.count : Mathf.CeilToInt(victim.BodySize * Props.bodySizeFactor);
-                    GenSpawn.Spawn(thing, initialPosition, parent.pawn.MapHeld);
+                    GenSpawn.Spawn(thing, position, map);
                 }
 
-                Props.explosionSound?.PlayOneShot(new TargetInfo(initialPosition, victim.MapHeld));
+                Props.explosionSound?.PlayOneShot(new TargetInfo(position, map));
 
                 DamageDef damageToReport = Props.damageDefToReport ??
                     (ModsConfig.BiotechActive ? DamageDefOf.Vaporize : DamageDefOf.Burn);

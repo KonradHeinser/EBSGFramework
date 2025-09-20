@@ -76,6 +76,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DealDamage.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyCorpse.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_DestroyCorpse.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_GiveResource.cs" />

@@ -40,6 +40,22 @@ namespace EBSGFramework
             return null;
         }
 
+        public static float RemainingBlood(this Pawn pawn)
+        {
+            if (pawn.health?.CanBleed != true)
+                return 0f;
+            if (pawn.health?.hediffSet?.HasHediff(HediffDefOf.BloodLoss) != true)
+                return 1f;
+            return 1f - pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.BloodLoss).Severity;
+        }
+
+        public static float RemainingBlood(this Corpse corpse)
+        {
+            if (corpse.InnerPawn == null)
+                return 0f;
+            return corpse.InnerPawn.RemainingBlood();
+        }
+
         public static void GiveSimplePlayerMessage(string message, TargetInfo target, MessageTypeDef messageType)
         {
             if (message == null) return;
