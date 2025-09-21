@@ -113,6 +113,16 @@ namespace EBSGFramework
             threshPercents = new List<float> { 0.3f };
         }
 
+        public float FallMultiplier
+        {
+            get
+            {
+                if (Extension?.fallStat != null)
+                    return pawn.StatOrOne(Extension.fallStat);
+                return 1f;
+            }
+        }
+
         public override void NeedInterval()
         {
             if (!setThresholds && Extension != null)
@@ -122,7 +132,16 @@ namespace EBSGFramework
             }
 
             if (!IsFrozen)
-                CurLevel -= FallPerDay / 400f;
+            {
+                CurLevel -= FallPerDay / 400f * FallMultiplier;
+                if (Extension != null && Extension.hediffWhenEmpty != null)
+                {
+                    if (CurLevel <= 0)
+                        pawn.AddOrAppendHediffs(Extension.initialSeverity, Extension.risePerDayWhenEmpty / 400f, Extension.hediffWhenEmpty);
+                    else
+                        pawn.AddOrAppendHediffs(0, (Extension.fallPerDayWhenNotEmpty / 400f) * -1, Extension.hediffWhenEmpty);
+                }
+            }
         }
 
         public void Notify_KilledPawn(DamageInfo? dinfo, Pawn victim)

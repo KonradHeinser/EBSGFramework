@@ -43,8 +43,8 @@ namespace EBSGFramework
         {
             get
             {
-                if (Extension != null && Extension.fallStat != null)
-                    return pawn.GetStatValue(Extension.fallStat);
+                if (Extension?.fallStat != null)
+                    return pawn.StatOrOne(Extension.fallStat);
                 return 1f;
             }
         }
