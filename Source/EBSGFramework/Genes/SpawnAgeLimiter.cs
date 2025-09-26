@@ -67,7 +67,7 @@ namespace EBSGFramework
             {
                 GetGender(pawn, Extension);
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
-                LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
+                LimitAge(pawn, Extension.expectedAges, Extension.ageRange.Value, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
                 pawn.AddHediffToParts(Extension.hediffsToApplyAtAges);
             }

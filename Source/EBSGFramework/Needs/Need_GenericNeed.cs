@@ -38,8 +38,8 @@ namespace EBSGFramework
                 // return Extension?.ageRange ?? DefaultAgeRange;
                 if (Extension != null)
                 {
-                    if (Extension.ageRange != FloatRange.Zero)
-                        return Extension.ageRange;
+                    if (Extension.ageRange.HasValue)
+                        return Extension.ageRange.Value;
 
                     if (AgeCompatFlag)
                         return new FloatRange(Extension.minAgeForNeed, Extension.maxAgeForNeed);

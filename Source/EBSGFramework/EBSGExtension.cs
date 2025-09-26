@@ -28,7 +28,7 @@ namespace EBSGFramework
         public List<HediffToParts> hediffsToApply;
         public bool vanishingGene = false;
         public FloatRange expectedAges;
-        public FloatRange ageRange;
+        public FloatRange? ageRange = null;
         public bool sameBioAndChrono = false;
         public bool chronicAgeRemoval = true;
 
@@ -127,7 +127,6 @@ namespace EBSGFramework
         
         public float minAgeForNeed = 13f; // Only used for need classes like murderous, which wouldn't work very well on children
         public float maxAgeForNeed = 9999f;
-        public FloatRange ageRangeForNeed = FloatRange.Zero;
         public float increasePerKill = 1f;
         public float increasePerMeleeKill = 0f;
         public float increasePerRangedKill = 0f;

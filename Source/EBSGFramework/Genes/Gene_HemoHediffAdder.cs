@@ -54,7 +54,7 @@ namespace EBSGFramework
             {
                 if (addedAbilities == null) addedAbilities = new List<AbilityDef>();
                 SpawnAgeLimiter.GetGender(pawn, Extension);
-                SpawnAgeLimiter.LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
+                SpawnAgeLimiter.LimitAge(pawn, Extension.expectedAges, Extension.ageRange.Value, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty() && delayTicks >= 5) delayTicks = Extension.delayTicks;
 
                 if (!Extension.hediffsToApplyAtAges.NullOrEmpty())
