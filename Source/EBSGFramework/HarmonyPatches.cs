@@ -192,6 +192,8 @@ namespace EBSGFramework
                     postfix: new HarmonyMethod(patchType, nameof(PawnIdeoCanAcceptReimplantPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting)),
                      postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
+                harmony.Patch(AccessTools.Method(typeof(TraitSet), nameof(TraitSet.GainTrait)),
+                     postfix: new HarmonyMethod(patchType, nameof(GainTraitPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
                     postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
@@ -1951,6 +1953,19 @@ namespace EBSGFramework
                         __result = true;
                         return;
                     }
+        }
+
+        public static void GainTraitPostfix(TraitSet __instance, Trait trait)
+        {
+            Trait t = __instance.GetTrait(trait.def);
+
+            // Check to make sure the trait was added, wasn't supressed, and try to minimize the risk of duplicates messing things up
+            if (t != null && __instance.allTraits.Last() == t)
+            {
+                EBSGExtension extension = t.def.GetModExtension<EBSGExtension>();
+                if (extension?.hediffsToApply.NullOrEmpty() == false)
+                    t.pawn.AddHediffToParts(extension.hediffsToApply);
+            }
         }
 
         // Harmony patches for stats

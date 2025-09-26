@@ -536,6 +536,7 @@ namespace EBSGFramework
 
         public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
         {
+            if (pawn.health == null) return; // Unlikely, but possible
             if (hediffToParts != null)
             {
                 if (!pawn.WithinAges(hediffToParts.validAges))
