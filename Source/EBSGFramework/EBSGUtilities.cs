@@ -626,7 +626,7 @@ namespace EBSGFramework
             
             if (!hediffs.NullOrEmpty())
                 foreach (HediffToParts hediffPart in hediffs)
-                    if (hediffPart.removeOnRemove && hediffToParts.DegreeCheck(degree)) 
+                    if (hediffPart.removeOnRemove && hediffPart.DegreeCheck(degree)) 
                         pawn.RemoveHediffFromParts(hediffPart.hediff, hediffPart.bodyParts);
         }
 
