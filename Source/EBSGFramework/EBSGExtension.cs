@@ -9,6 +9,7 @@ namespace EBSGFramework
         public List<GeneDef> relatedGenes;
         public bool checkEvolutionsPostAdd = false;
         public List<GeneticEvolution> geneticEvolutions;
+        public HistoryEventDef propagateEvent;
         public int maxEvolutions = 1;
         public bool keepEvolvingGene = false;
         public bool recoverEvolutions = true;

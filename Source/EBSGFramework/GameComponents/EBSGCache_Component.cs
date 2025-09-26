@@ -62,6 +62,7 @@ namespace EBSGFramework
         public List<GeneDef> outgoingDamageStatGenes = new List<GeneDef>();
         public List<GeneDef> incomingDamageStatGenes = new List<GeneDef>();
         public List<GeneDef> downedMemoryGenes = new List<GeneDef>();
+        public Dictionary<GeneDef, HistoryEventDef> propagateEvents = new Dictionary<GeneDef, HistoryEventDef>();
 
         // Cached needs of interest
         public List<NeedDef> murderousNeeds = new List<NeedDef>();
@@ -380,6 +381,12 @@ namespace EBSGFramework
             incomingDamageStatGenes = new List<GeneDef>();
             downedMemoryGenes = new List<GeneDef>();
 
+            propagateEvents = new Dictionary<GeneDef, HistoryEventDef>();
+
+            if (!EBSGDefOf.EBSG_Recorder.geneEvents.NullOrEmpty())
+                foreach (var geneEvent in EBSGDefOf.EBSG_Recorder.geneEvents)
+                    propagateEvents[geneEvent.gene] = geneEvent.propagateEvent;
+
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
             {
                 if (gene.HasModExtension<FertilityByGenderAgeExtension>())
@@ -414,6 +421,9 @@ namespace EBSGFramework
                         extension.downedByHumanlikeMemory != null || extension.downedByEntityMemory != null || 
                         extension.downedByAnimalMemory != null)
                         downedMemoryGenes.Add(gene);
+
+                    if (extension.propagateEvent != null)
+                        propagateEvents[gene] = extension.propagateEvent;
                 }
 
                 if (gene.HasModExtension<EquipRestrictExtension>())

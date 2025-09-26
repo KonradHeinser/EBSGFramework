@@ -1933,18 +1933,13 @@ namespace EBSGFramework
 
         public static void PawnIdeoCanAcceptReimplantPostfix(ref bool __result, Pawn implanter, Pawn implantee)
         {
-            if (__result)
-            {
-                EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
-                if (recorder?.geneEvents.NullOrEmpty() == false)
-                    foreach (GeneEvent geneEvent in recorder.geneEvents)
-                        if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, implantee) &&
-                            implanter.genes.GenesListForReading.Any((Gene x) => x.def == geneEvent.gene))
-                        {
-                            __result = false;
-                            break;
-                        }
-            }
+            if (__result && Cache?.propagateEvents.NullOrEmpty() == false && implanter.genes != null)
+                foreach (var gene in implanter.genes.GenesListForReading)
+                    if (Cache.propagateEvents.ContainsKey(gene.def) && !IdeoUtility.DoerWillingToDo(Cache.propagateEvents[gene.def], implantee))
+                    {
+                        __result = false;
+                        return;
+                    }
         }
 
         public static void PawnIdeoDisallowsImplantingPostFix(ref bool __result, Pawn selPawn, ref Xenogerm __instance)
