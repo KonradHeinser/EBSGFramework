@@ -1944,18 +1944,13 @@ namespace EBSGFramework
 
         public static void PawnIdeoDisallowsImplantingPostFix(ref bool __result, Pawn selPawn, ref Xenogerm __instance)
         {
-            if (!__result)
-            {
-                EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
-                if (recorder?.geneEvents.NullOrEmpty() == false)
-                    foreach (GeneEvent geneEvent in recorder.geneEvents)
-                        if (geneEvent.propagateEvent != null && !IdeoUtility.DoerWillingToDo(geneEvent.propagateEvent, selPawn) &&
-                            __instance.GeneSet.GenesListForReading.Any((GeneDef x) => x == geneEvent.gene))
-                        {
-                            __result = true;
-                            break;
-                        }
-            }
+            if (!__result && Cache?.propagateEvents.NullOrEmpty() == false)
+                foreach (var gene in __instance.GeneSet.GenesListForReading)
+                    if (Cache.propagateEvents.ContainsKey(gene) && !IdeoUtility.DoerWillingToDo(Cache.propagateEvents[gene], selPawn))
+                    {
+                        __result = true;
+                        return;
+                    }
         }
 
         // Harmony patches for stats

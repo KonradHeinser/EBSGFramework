@@ -383,7 +383,7 @@ namespace EBSGFramework
 
             propagateEvents = new Dictionary<GeneDef, HistoryEventDef>();
 
-            if (!EBSGDefOf.EBSG_Recorder.geneEvents.NullOrEmpty())
+            if (EBSGDefOf.EBSG_Recorder?.geneEvents.NullOrEmpty() == false)
                 foreach (var geneEvent in EBSGDefOf.EBSG_Recorder.geneEvents)
                     propagateEvents[geneEvent.gene] = geneEvent.propagateEvent;
 
