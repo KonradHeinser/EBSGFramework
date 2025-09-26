@@ -1964,7 +1964,7 @@ namespace EBSGFramework
             {
                 EBSGExtension extension = t.def.GetModExtension<EBSGExtension>();
                 if (extension?.hediffsToApply.NullOrEmpty() == false)
-                    t.pawn.AddHediffToParts(extension.hediffsToApply);
+                    t.pawn.AddHediffToParts(extension.hediffsToApply, degree: t.Degree);
             }
         }
 

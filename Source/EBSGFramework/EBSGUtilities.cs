@@ -534,10 +534,10 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false)
+        public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false, int? degree = null)
         {
             if (pawn.health == null) return; // Unlikely, but possible
-            if (hediffToParts != null)
+            if (hediffToParts != null && hediffToParts.DegreeCheck(degree))
             {
                 if (!pawn.WithinAges(hediffToParts.validAges))
                 {
@@ -580,6 +580,8 @@ namespace EBSGFramework
             {
                 foreach (HediffToParts hediffParts in hediffs)
                 {
+                    if (!hediffParts.DegreeCheck(degree))
+                        continue;
                     if (!WithinAges(pawn, hediffParts.validAges))
                     {
                         if (removeWhenBeyondAges)

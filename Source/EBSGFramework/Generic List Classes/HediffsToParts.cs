@@ -13,7 +13,7 @@ namespace EBSGFramework
 
         public float severity = 0.5f;
 
-        public int degree = 0; // Used for adding hediffs via traits
+        public int? degree = null; // Used for adding hediffs via traits
 
         public float chance = 1f;
 
@@ -22,5 +22,16 @@ namespace EBSGFramework
         public bool removeOnRemove = true; // When false, things that remove all items in a HediffToParts list will ignore this item
 
         public List<ThingDef> consumedThings; // Only used for the Gene extension version
+
+        public bool DegreeCheck(int? traitDegree)
+        {
+            if (!degree.HasValue)
+                return true;
+
+            if (!traitDegree.HasValue)
+                return true;
+
+            return degree == traitDegree;
+        }
     }
 }
