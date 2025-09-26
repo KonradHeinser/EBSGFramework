@@ -25,13 +25,26 @@ namespace EBSGFramework
             }
         }
 
-        public List<float> ThresholdPercentages
+        protected virtual float FallPerDay => def.fallPerDay;
+
+        protected virtual FloatRange DefaultAgeRange => FloatRange.Zero;
+
+        protected virtual bool AgeCompatFlag => false; // To be removed once 1.7 rolls around and murderous need compat isn't needed
+
+        protected FloatRange ValidAgeRange
         {
             get
             {
-                if (Extension == null)
-                    return new List<float>() { 0.3f };
-                return Extension.thresholdPercentages;
+                // return Extension?.ageRange ?? DefaultAgeRange;
+                if (Extension != null)
+                {
+                    if (Extension.ageRange != FloatRange.Zero)
+                        return Extension.ageRange;
+
+                    if (AgeCompatFlag)
+                        return new FloatRange(Extension.minAgeForNeed, Extension.maxAgeForNeed);
+                }
+                return DefaultAgeRange;
             }
         }
 
@@ -49,12 +62,32 @@ namespace EBSGFramework
             }
         }
 
+        protected override bool IsFrozen
+        {
+            get
+            {
+                if (!ValidAgeRange.ValidValue(pawn.ageTracker.AgeBiologicalYears))
+                    return true;
+                return base.IsFrozen;
+            }
+        }
+
+        public override bool ShowOnNeedList 
+        {
+            get
+            {
+                if (!ValidAgeRange.ValidValue(pawn.ageTracker.AgeBiologicalYears))
+                    return false;
+                return base.ShowOnNeedList;
+            }
+        }
+
         public override void NeedInterval()
         {
             if (!IsFrozen)
             {
-                CurLevel -= def.fallPerDay / 400f * FallMultiplier;
-                if (Extension != null && Extension.hediffWhenEmpty != null)
+                CurLevel -= FallPerDay / 400f * FallMultiplier;
+                if (Extension?.hediffWhenEmpty != null)
                 {
                     if (CurLevel <= 0)
                         pawn.AddOrAppendHediffs(Extension.initialSeverity, Extension.risePerDayWhenEmpty / 400f, Extension.hediffWhenEmpty);
@@ -66,7 +99,7 @@ namespace EBSGFramework
 
         public override void DrawOnGUI(Rect rect, int maxThresholdMarkers = int.MaxValue, float customMargin = -1, bool drawArrows = true, bool doTooltip = true, Rect? rectForTooltip = null, bool drawLabel = true)
         {
-            threshPercents = ThresholdPercentages;
+            threshPercents = Extension?.thresholdPercentages ?? new List<float>() { 0.3f };
             base.DrawOnGUI(rect, maxThresholdMarkers, customMargin, drawArrows, doTooltip, rectForTooltip, drawLabel);
         }
     }

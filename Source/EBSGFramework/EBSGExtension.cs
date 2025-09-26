@@ -43,6 +43,7 @@ namespace EBSGFramework
         public int clotCheckInterval = 360; // Shouldn't be below 60, but I won't force it. This just determines how often it tries to heal, so a lower number means it's less likely that there will be a delay in clotting
         public FloatRange tendQuality = new FloatRange(0.2f, 0.7f);
 
+        public TargetingParameters targetParams = null;
         // Raceprop conditionals
         public bool allowHumanlikes = true;
         public bool allowDryads = true;
@@ -123,10 +124,11 @@ namespace EBSGFramework
         // For Needs
         public bool displayLowAlert = false;
         public List<float> thresholdPercentages = new List<float> { 0.3f };
-
+        
         public float fallPerDay = 0.0333f;
         public float minAgeForNeed = 13f; // Only used for need classes like murderous, which wouldn't work very well on children
         public float maxAgeForNeed = 9999f;
+        public FloatRange ageRangeForNeed = FloatRange.Zero;
         public float increasePerKill = 1f;
         public float increasePerMeleeKill = 0f;
         public float increasePerRangedKill = 0f;
