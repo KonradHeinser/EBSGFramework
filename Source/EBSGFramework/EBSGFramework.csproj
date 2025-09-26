@@ -79,6 +79,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyCorpse.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_HostileGiveHediff.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LaunchProjectileBurst.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
