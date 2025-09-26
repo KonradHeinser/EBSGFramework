@@ -125,7 +125,6 @@ namespace EBSGFramework
         public bool displayLowAlert = false;
         public List<float> thresholdPercentages = new List<float> { 0.3f };
         
-        public float fallPerDay = 0.0333f;
         public float minAgeForNeed = 13f; // Only used for need classes like murderous, which wouldn't work very well on children
         public float maxAgeForNeed = 9999f;
         public FloatRange ageRangeForNeed = FloatRange.Zero;

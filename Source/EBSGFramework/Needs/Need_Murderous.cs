@@ -4,8 +4,6 @@ namespace EBSGFramework
 {
     public class Need_Murderous : Need_GenericNeed
     {
-        protected override float FallPerDay => Extension?.fallPerDay ?? base.FallPerDay;
-
         protected override FloatRange DefaultAgeRange => new FloatRange(13);
 
         protected override bool AgeCompatFlag => true;
