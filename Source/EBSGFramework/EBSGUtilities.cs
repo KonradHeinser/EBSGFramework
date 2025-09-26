@@ -619,14 +619,14 @@ namespace EBSGFramework
             }
         }
 
-        public static void RemoveHediffsFromParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null)
+        public static void RemoveHediffsFromParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, int? degree = null)
         {
-            if (hediffToParts != null)
+            if (hediffToParts != null && hediffToParts.DegreeCheck(degree))
                 pawn.RemoveHediffFromParts(hediffToParts.hediff, hediffToParts.bodyParts);
             
             if (!hediffs.NullOrEmpty())
                 foreach (HediffToParts hediffPart in hediffs)
-                    if (hediffPart.removeOnRemove) 
+                    if (hediffPart.removeOnRemove && hediffToParts.DegreeCheck(degree)) 
                         pawn.RemoveHediffFromParts(hediffPart.hediff, hediffPart.bodyParts);
         }
 

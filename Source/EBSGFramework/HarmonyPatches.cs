@@ -194,6 +194,8 @@ namespace EBSGFramework
                      postfix: new HarmonyMethod(patchType, nameof(PawnIdeoDisallowsImplantingPostFix)));
                 harmony.Patch(AccessTools.Method(typeof(TraitSet), nameof(TraitSet.GainTrait)),
                      postfix: new HarmonyMethod(patchType, nameof(GainTraitPostfix)));
+                harmony.Patch(AccessTools.Method(typeof(TraitSet), nameof(TraitSet.RemoveTrait)),
+                     prefix: new HarmonyMethod(patchType, nameof(RemoveTraitPrefix)));
                 harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
                     postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
@@ -1958,13 +1960,24 @@ namespace EBSGFramework
         public static void GainTraitPostfix(TraitSet __instance, Trait trait)
         {
             Trait t = __instance.GetTrait(trait.def);
-
             // Check to make sure the trait was added, wasn't supressed, and try to minimize the risk of duplicates messing things up
             if (t != null && __instance.allTraits.Last() == t)
             {
                 EBSGExtension extension = t.def.GetModExtension<EBSGExtension>();
                 if (extension?.hediffsToApply.NullOrEmpty() == false)
                     t.pawn.AddHediffToParts(extension.hediffsToApply, degree: t.Degree);
+            }
+        }
+
+        public static void RemoveTraitPrefix(TraitSet __instance, Trait trait)
+        {
+            Trait t = __instance.GetTrait(trait.def);
+            // Check to make sure the pawn actually has the trait
+            if (t != null)
+            {
+                EBSGExtension extension = t.def.GetModExtension<EBSGExtension>();
+                if (extension?.hediffsToApply.NullOrEmpty() == false)
+                    t.pawn.RemoveHediffsFromParts(extension.hediffsToApply, degree: t.Degree);
             }
         }
 
