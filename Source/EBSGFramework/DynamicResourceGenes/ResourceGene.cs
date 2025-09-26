@@ -139,7 +139,7 @@ namespace EBSGFramework
                 if (addedAbilities == null) 
                     addedAbilities = new List<AbilityDef>();
                 SpawnAgeLimiter.GetGender(pawn, EBSGExtension);
-                SpawnAgeLimiter.LimitAge(pawn, EBSGExtension.expectedAges, EBSGExtension.ageRange.Value, EBSGextension.sameBioAndChrono);
+                SpawnAgeLimiter.LimitAge(pawn, EBSGExtension.expectedAges, EBSGExtension.ageRange, EBSGextension.sameBioAndChrono);
             }
         }
 

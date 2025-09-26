@@ -67,7 +67,7 @@ namespace EBSGFramework
             {
                 GetGender(pawn, Extension);
                 if (!Extension.geneAbilities.NullOrEmpty()) addedAbilities = AbilitiesWithCertainGenes(pawn, Extension.geneAbilities, addedAbilities);
-                LimitAge(pawn, Extension.expectedAges, Extension.ageRange.Value, Extension.sameBioAndChrono);
+                LimitAge(pawn, Extension.expectedAges, Extension.ageRange, Extension.sameBioAndChrono);
                 if (!Extension.mutationGeneSets.NullOrEmpty()) pawn.GainRandomGeneSet(Extension.inheritable, Extension.removeGenesFromOtherLists, Extension.mutationGeneSets);
                 pawn.AddHediffToParts(Extension.hediffsToApplyAtAges);
             }
@@ -206,21 +206,20 @@ namespace EBSGFramework
                 pawn.CheckGender(extension.genderByAge);
         }
 
-        public static void LimitAge(Pawn pawn, FloatRange expectedAges, FloatRange ageRange, bool sameBioAndChrono = false, bool removeChronic = true)
+        public static void LimitAge(Pawn pawn, FloatRange expectedAges, FloatRange? ageRange, bool sameBioAndChrono = false, bool removeChronic = true)
         {
-            if (ageRange.max > 0)
-            {
+            if (ageRange.HasValue && ageRange.Value.max > 0) 
+            { 
                 float currentBioAge = pawn.ageTracker.AgeBiologicalYearsFloat;
                 float currentChronoAge = pawn.ageTracker.AgeChronologicalYearsFloat;
                 if (!expectedAges.Includes(currentBioAge))
                 {
-                    currentBioAge = ageRange.RandomInRange;
+                    currentBioAge = ageRange.Value.RandomInRange;
                     pawn.ageTracker.AgeBiologicalTicks = (long)(currentBioAge * 3600000f);
                 }
                 if (sameBioAndChrono && currentBioAge != currentChronoAge)
-                {
                     pawn.ageTracker.AgeChronologicalTicks = (long)(currentBioAge * 3600000f);
-                }
+                
                 if (removeChronic) pawn.RemoveChronicHediffs();
             }
         }
