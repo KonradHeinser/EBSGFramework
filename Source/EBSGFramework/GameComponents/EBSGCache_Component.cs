@@ -401,8 +401,13 @@ namespace EBSGFramework
                     if (extension.hideInGeneTabWhenInactive)
                         hiddenWhenInactive.Add(gene);
 
-                    if (!extension.skillChanges.NullOrEmpty())
-                        skillChanging.Add(gene);
+                    if (!extension.skillChanges.NullOrEmpty() && gene.geneClass == typeof(Gene_SkillChanging))
+                        foreach (SkillChange change in extension.skillChanges)
+                            if (change.skillChange != IntRange.Zero)
+                            {
+                                skillChanging.Add(gene);
+                                break;
+                            }
 
                     if (extension.downedMemory != null || extension.downedByMechMemory != null || 
                         extension.downedByPawnMemory != null || extension.downedByInsectMemory != null ||
@@ -529,7 +534,7 @@ namespace EBSGFramework
                         explosiveAttackHediffs.Add(hediff);
                     else if (comp is HediffCompProperties_TemporarySkillChange skillChange)
                     {
-                        if (!skillChange.skillChanges.Where((arg) => arg.skillChange != new IntRange(0, 0)).EnumerableNullOrEmpty())
+                        if (!skillChange.skillChanges.Where((arg) => arg.skillChange != IntRange.Zero).EnumerableNullOrEmpty())
                             skillChangeHediffs.Add(hediff);
                     }
                     else if (comp is HediffCompProperties_Shield)

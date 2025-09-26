@@ -1285,28 +1285,38 @@ namespace EBSGFramework
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
         {
             matches = new List<Hediff>();
-            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
-            foreach (HediffDef hediff in hediffs)
-                if (bodyPart != null)
-                {
-                    if (HasHediff(pawn, hediff, bodyPart, out var match)) matches.Add(match);
-                }
-                else if (HasHediff(pawn, hediff, out var match)) matches.Add(match);
+            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
+                return false;
+
+            foreach (var hediff in pawn.health.hediffSet.hediffs)
+            {
+                if (!hediffs.Contains(hediff.def))
+                    continue;
+
+                if (bodyPart != null && hediff.Part != bodyPart)
+                    continue;
+
+                matches.Add(hediff);
+            }
             return !matches.NullOrEmpty();
         }
 
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out Hediff match, BodyPartRecord bodyPart = null)
         {
             match = null;
-            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
-            foreach (HediffDef hediff in hediffs)
-                if (bodyPart != null)
-                {
-                    if (HasHediff(pawn, hediff, bodyPart, out match))
-                        return true;
-                }
-                else if (HasHediff(pawn, hediff, out match))
-                    return true;
+            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
+                return false;
+
+            foreach (var hediff in pawn.health.hediffSet.hediffs)
+            {
+                if (!hediffs.Contains(hediff.def))
+                    continue;
+
+                if (bodyPart != null && hediff.Part != bodyPart)
+                    continue;
+
+                return true;
+            }
             return false;
         }
 
@@ -1540,6 +1550,18 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool GetSpecifiedGenesFromPawn(this Pawn pawn, List<GeneDef> genes, out List<Gene> matches)
+        {
+            matches = new List<Gene>();
+
+            if (!genes.NullOrEmpty() && pawn.genes?.GenesListForReading.NullOrEmpty() == false)
+                foreach (var g in pawn.genes.GenesListForReading)
+                    if (genes.Contains(g.def))
+                        matches.Add(g);
+
+            return !matches.NullOrEmpty();
+        }
+
         public static bool GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList, out List<GeneDef> matches)
         {
             matches = GetAllGenesOnListFromPawn(pawn, searchList);
@@ -1549,12 +1571,12 @@ namespace EBSGFramework
         public static List<GeneDef> GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList)
         {
             List<GeneDef> results = new List<GeneDef>();
-            
-            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false 
+
+            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false
                 && !searchList.NullOrEmpty())
-                foreach (GeneDef gene in searchList)
-                    if (pawn.QuickHasGene(gene))
-                        results.Add(gene);
+                foreach (var g in pawn.genes.GenesListForReading)
+                    if (searchList.Contains(g.def))
+                        results.Add(g.def);
 
             return results;
         }

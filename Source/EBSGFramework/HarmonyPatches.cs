@@ -1018,10 +1018,11 @@ namespace EBSGFramework
 
         public static void SkillAptitudePostfix(ref int __result, Pawn ___pawn, SkillDef ___def)
         {
-            if (Cache?.skillChanging.NullOrEmpty() == false && ___pawn.HasAnyOfRelatedGene(Cache.skillChanging))
-                foreach (Gene gene in ___pawn.genes.GenesListForReading)
-                    if (gene is Gene_SkillChanging skillGene && skillGene.changedSkills?.Contains(___def) == true)
-                        __result += skillGene.changedAmounts[skillGene.changedSkills.IndexOf(___def)];
+            if (Cache?.skillChanging.NullOrEmpty() == false && ___pawn.GetSpecifiedGenesFromPawn(Cache.skillChanging, out var genes))
+                foreach (Gene_SkillChanging g in genes.Cast<Gene_SkillChanging>())
+                    if (g.changedSkills?.Contains(___def) == true)
+                        __result += g.changedAmounts[g.changedSkills.IndexOf(___def)];
+
             if (Cache?.skillChangeHediffs.NullOrEmpty() == false && ___pawn.PawnHasAnyOfHediffs(Cache.skillChangeHediffs, out List<Hediff> matches))
                 foreach (Hediff hediff in matches)
                 {
