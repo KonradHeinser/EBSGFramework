@@ -25,5 +25,10 @@ namespace EBSGFramework
 
             GenDraw.DrawFieldEdges(EBSGUtilities.AffectedCells(parent.pawn, parent.pawn.Map, parent.pawn, radius).ToList(), Valid(target) ? Color.white : Color.red);
         }
+
+        public override bool AICanTargetNow(LocalTargetInfo target)
+        {
+            return target.Pawn?.TargetCurrentlyAimingAt == parent.pawn;
+        }
     }
 }

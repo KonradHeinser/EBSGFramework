@@ -16,5 +16,11 @@ namespace EBSGFramework
                 }
             }
         }
+
+        public override bool AICanTargetNow(LocalTargetInfo target)
+        {
+            // Only castable if it's a ranged ability or a nearby enemy is here (I assume that's what the fireburst check does)
+            return parent.def.targetRequired || target.Pawn?.TargetCurrentlyAimingAt == parent.pawn;
+        }
     }
 }
