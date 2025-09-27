@@ -1,9 +1,8 @@
-﻿using Verse;
-using RimWorld;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 using UnityEngine;
-using System;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -162,7 +161,7 @@ namespace EBSGFramework
 
         public override bool AICanTargetNow(LocalTargetInfo target)
         {
-            return HasEnoughResource;
+            return HasEnoughResource && target.Pawn?.TargetCurrentlyAimingAt == parent.pawn;
         }
 
         private float TotalResourceCostOfQueuedAbilities()

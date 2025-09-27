@@ -219,7 +219,7 @@ namespace EBSGFramework
             int removeCount = 0;
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() == false)
                 foreach (Hediff hediff in hediffs)
-                    if (pawn.HediffInHediffSet(hediff))
+                    if (hediff.pawn == pawn)
                     {
                         removeCount++;
                         pawn.health.RemoveHediff(hediff);
@@ -234,13 +234,7 @@ namespace EBSGFramework
 
         public static bool PawnHasAnyHediff(this Pawn pawn)
         {
-            return pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty();
-        }
-
-        private static bool HediffInHediffSet(this Pawn pawn, Hediff hediff)
-        {
-            if (pawn.health?.hediffSet == null || pawn.health.hediffSet.hediffs.NullOrEmpty()) return false;
-            return pawn.health.hediffSet.hediffs.Contains(hediff);
+            return pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false;
         }
 
         public static bool SetHasHediffs(this HediffSet set, List<HediffDef> hediffs, out List<Hediff> matches, bool checkPriceImpact = false)
@@ -288,11 +282,12 @@ namespace EBSGFramework
         {
             if (map.GameConditionManager != null && !map.GameConditionManager.ActiveConditions.NullOrEmpty())
             {
-                if (map.GameConditionManager.ConditionIsActive(gameCondition)) return true;
+                if (map.GameConditionManager.ConditionIsActive(gameCondition)) 
+                    return true;
+
                 foreach (GameCondition condition in map.GameConditionManager.ActiveConditions)
-                {
-                    if (!condition.def.CanCoexistWith(gameCondition) || !gameCondition.CanCoexistWith(condition.def)) return true;
-                }
+                    if (!condition.def.CanCoexistWith(gameCondition) || !gameCondition.CanCoexistWith(condition.def)) 
+                        return true;
             }
             return false;
         }
@@ -370,46 +365,19 @@ namespace EBSGFramework
             return thing;
         }
 
-        public static Hediff GetFirstHediffAttachedToPart(this Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null, BodyPartDef bodyPartDef = null)
+        public static Hediff GetFirstHediffAttachedToPart(this Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPartRecord = null)
         {
             if (hediffDef == null) return null;
-            Hediff hediff = null;
 
-            if (HasHediff(pawn, hediffDef))
+            if (bodyPartRecord == null)
             {
-                hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
-                if (bodyPartRecord != null)
-                {
-                    if (hediff.Part != bodyPartRecord)
-                    {
-                        hediff = null;
-                        foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                            if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part == bodyPartRecord)
-                            {
-                                hediff = hediffOnPawn;
-                                break;
-                            }
-                    }
-                }
-                else if (bodyPartDef != null)
-                {
-                    if (hediff.Part.def != bodyPartDef)
-                    {
-                        hediff = null;
-                        foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                            if (hediffOnPawn.def == hediffDef && hediffOnPawn.Part.def == bodyPartDef)
-                            {
-                                hediff = hediffOnPawn;
-                                break;
-                            }
-                    }
-                }
-                else // If there's no set body part, get the newest version of that hediff def as that's most likely to be the correct one
-                    foreach (Hediff hediffOnPawn in pawn.health.hediffSet.hediffs)
-                        if (hediffOnPawn.def == hediffDef && hediffOnPawn.ageTicks < hediff.ageTicks) 
-                            hediff = hediffOnPawn;
+                if (pawn.HasHediff(hediffDef, out var result))
+                    return result;
             }
-            return hediff;
+            else if (HasHediff(pawn, hediffDef, bodyPartRecord, out var recordHediff))
+                return recordHediff;
+
+            return null;
         }
 
         public static void RemoveDamage(this Pawn pawn, HediffDef hediffDef, BodyPartRecord bodyPart, float damageRemoved)
@@ -422,7 +390,6 @@ namespace EBSGFramework
                     float removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;
                     damageRemoved -= removalAmount;
                     hediff.Severity -= removalAmount;
-
                 }
                 else break;
             }
@@ -471,21 +438,14 @@ namespace EBSGFramework
 
         public static void RemoveHediffs(this Pawn pawn, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
-            if (pawn?.health?.hediffSet == null) return;
-            if (hediff != null)
-            {
-                Hediff hediffToRemove = pawn.health?.hediffSet?.GetFirstHediffOfDef(hediff);
-                if (hediffToRemove != null)
-                    pawn.health.RemoveHediff(hediffToRemove);
-            }
-
+            if (!pawn.PawnHasAnyHediff()) return;
+            if (hediff != null && pawn.HasHediff(hediff, out var remove))
+                pawn.health.RemoveHediff(remove);
+            
             if (!hediffs.NullOrEmpty())
                 foreach (HediffDef hediffDef in hediffs)
-                {
-                    Hediff hediffToRemove = pawn.health?.hediffSet?.GetFirstHediffOfDef(hediffDef);
-                    if (hediffToRemove != null)
+                    if (pawn.HasHediff(hediffDef, out var hediffToRemove))
                         pawn.health.RemoveHediff(hediffToRemove);
-                }
         }
 
         public static bool WithinAges(this Pawn pawn, float min, float max)
@@ -1267,17 +1227,38 @@ namespace EBSGFramework
 
         public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart)
         {
-            if (pawn?.health?.hediffSet == null || hediff == null) return false;
-            if (pawn.health.hediffSet.HasHediff(hediff, bodyPart)) return true;
-            return false;
+            if (pawn?.health?.hediffSet == null || hediff == null)
+                return false;
+            return pawn.health.hediffSet.HasHediff(hediff, bodyPart);
         }
 
         public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartRecord bodyPart, out Hediff result)
         {
             result = null;
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
+
+            if (bodyPart == null)
+                return pawn.HasHediff(hediff, out result);
+
             foreach (Hediff h in pawn.health.hediffSet.hediffs)
                 if (h.def == hediff && h.Part == bodyPart)
+                {
+                    result = h;
+                    break;
+                }
+            return result != null;
+        }
+
+        public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartDef bodyPart, out Hediff result)
+        {
+            result = null;
+            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+
+            if (bodyPart == null)
+                return pawn.HasHediff(hediff, out result);
+
+            foreach (Hediff h in pawn.health.hediffSet.hediffs)
+                if (h.def == hediff && h.Part.def == bodyPart)
                 {
                     result = h;
                     break;
