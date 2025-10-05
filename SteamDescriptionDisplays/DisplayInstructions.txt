@@ -1,0 +1,4 @@
+To add the image to your Steam description, add something like the following, making sure to replace Description.png with whatever image is desired
+
+[img]https://raw.githubusercontent.com/KonradHeinser/EBSGFramework/main/SteamDescriptionDisplays/Description.png[/img]
+
