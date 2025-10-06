@@ -98,6 +98,7 @@
     <Compile Include="EBSGAI\Command_AbilityAutocastToggle.cs" />
     <Compile Include="EBSGAI\CompAbilityEffect_AutocastToggle.cs" />
     <Compile Include="EBSGAI\CompProperties_AbilityAutocastToggle.cs" />
+    <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalAbilityCastLastTickOrNever.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalHasAbilityUsable.cs" />
     <Compile Include="EBSGAI\JobGivers\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalNearbyCover.cs" />
