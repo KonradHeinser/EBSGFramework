@@ -68,8 +68,8 @@ namespace EBSGFramework
 
                 if (ticksLeft <= 0)
                 {
-                    AssignLinkedFather();
-                    SpawnPawns(Props.developmentalStage);
+                    if (!SpawnPawns(Props.developmentalStage))
+                        return;
 
                     if (spawnLeft == 0 && Props.removeHediffOnFinalSpawn)
                         Pawn.health.RemoveHediff(parent);
@@ -123,11 +123,12 @@ namespace EBSGFramework
             if (hediff is HediffWithTarget targetHediff && targetHediff.target is Pawn parent) father = parent;
         }
 
-        public void SpawnPawns(DevelopmentalStage developmentalStage, bool allRemaining = false)
+        public bool SpawnPawns(DevelopmentalStage developmentalStage, bool allRemaining = false)
         {
             Map map = Pawn.MapHeld;
             Caravan caravan = Pawn.GetCaravan();
-            if (map == null && (caravan == null || faction != Pawn.Faction)) return;
+            if (map == null && faction != caravan?.Faction) return false;
+            AssignLinkedFather();
 
             int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
             List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
@@ -238,6 +239,7 @@ namespace EBSGFramework
 
                     if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, Pawn, intVec))
                         Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
+                    pawn.caller?.DoCall();
                 }
                 else
                 {
@@ -261,10 +263,8 @@ namespace EBSGFramework
                     birthLetter.Start();
                     Find.LetterStack.ReceiveLetter(birthLetter);
                 }
-
-                if (pawn.caller != null)
-                    pawn.caller.DoCall();
             }
+            return true;
         }
 
 
