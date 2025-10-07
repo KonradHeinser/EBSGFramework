@@ -132,6 +132,7 @@ namespace EBSGFramework
 
             int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
             List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+            IntVec3 initialPos = Pawn.PositionHeld;
 
             if (spawnLeft != -1)
             {
@@ -202,15 +203,15 @@ namespace EBSGFramework
                 {
                     IntVec3? intVec = null;
 
-                    if (Pawn.Position.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(Pawn.Position)))
+                    if (initialPos.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(initialPos)))
                     {
-                        intVec = Pawn.Position;
-                        alreadyUsedSpots.Add(Pawn.Position);
+                        intVec = initialPos;
+                        alreadyUsedSpots.Add(initialPos);
                     }
-                    else intVec = CellFinder.RandomClosewalkCellNear(Pawn.Position, map, 1, delegate (IntVec3 cell)
+                    else intVec = CellFinder.RandomClosewalkCellNear(initialPos, map, 1, delegate (IntVec3 cell)
                     {
                         if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
-                        if (cell != Pawn.Position)
+                        if (cell != initialPos)
                         {
                             Building building = map.edificeGrid[cell];
                             if (building == null)
@@ -243,9 +244,9 @@ namespace EBSGFramework
                 }
                 else
                 {
-                    if (!pawn.IsWorldPawn())
-                        pawn.DestroyOrPassToWorld();
                     caravan.AddPawn(pawn, true);
+                    if (!pawn.IsWorldPawn())
+                        Find.WorldPawns.PassToWorld(pawn);
                 }
 
                 if (Props.bornThought)
