@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool killHostOnRemoval = false;
 
+        public bool allowInCaravans = true;
+
         public FloatRange validSeverity = FloatRange.Zero;
 
         public int maxTotalSpawn = 1; // Setting to -1 makes it continue forever

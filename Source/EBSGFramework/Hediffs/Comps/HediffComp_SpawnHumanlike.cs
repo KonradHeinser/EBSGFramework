@@ -127,7 +127,7 @@ namespace EBSGFramework
         {
             Map map = Pawn.MapHeld;
             Caravan caravan = Pawn.GetCaravan();
-            if (map == null && faction != caravan?.Faction) return false;
+            if (map == null && (faction != caravan?.Faction || !Props.allowInCaravans)) return false;
             AssignLinkedFather();
 
             int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
