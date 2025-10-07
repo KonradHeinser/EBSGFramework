@@ -62,7 +62,8 @@ namespace EBSGFramework
             if (Props.linkedHediff != null && !Pawn.HasHediff(Props.linkedHediff)) return;
 
             if (Props.onInterval && (spawnLeft > 0 || spawnLeft == -1) &&
-                Props.validSeverity.ValidValue(parent.Severity))
+                Props.validSeverity.ValidValue(parent.Severity) &&
+                (Pawn.MapHeld != null || (Props.tickInCaravans && Pawn.GetCaravan() != null)))
             {
                 ticksLeft -= delta;
 

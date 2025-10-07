@@ -21,6 +21,8 @@ namespace EBSGFramework
 
         public bool allowInCaravans = true;
 
+        public bool tickInCaravans = true;
+
         public FloatRange validSeverity = FloatRange.Zero;
 
         public int maxTotalSpawn = 1; // Setting to -1 makes it continue forever
