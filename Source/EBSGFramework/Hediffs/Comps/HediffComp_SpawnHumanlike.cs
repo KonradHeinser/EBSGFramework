@@ -127,7 +127,7 @@ namespace EBSGFramework
         {
             Map map = Pawn.MapHeld;
             Caravan caravan = Pawn.GetCaravan();
-            if (map == null && caravan == null) return;
+            if (map == null && (caravan == null || faction != Pawn.Faction)) return;
 
             int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
             List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
@@ -239,7 +239,12 @@ namespace EBSGFramework
                     if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, Pawn, intVec))
                         Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
                 }
-                else caravan.AddPawn(pawn, true);
+                else
+                {
+                    if (!pawn.IsWorldPawn())
+                        pawn.DestroyOrPassToWorld();
+                    caravan.AddPawn(pawn, true);
+                }
 
                 if (Props.bornThought)
                 {
