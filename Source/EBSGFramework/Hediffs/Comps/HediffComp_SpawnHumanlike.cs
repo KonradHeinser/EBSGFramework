@@ -78,7 +78,10 @@ namespace EBSGFramework
                         Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f, -1f));
 
                     if (spawnLeft > 0)
-                        ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
+                        if (ticksLeft + delta > 0) // Checking if the spawn was delayed
+                            ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
+                        else // If it was, make sure the next spawn can't happen immediately after the previous one
+                            ticksLeft = Props.completionTicks.RandomInRange;
                 }
             }
         }
