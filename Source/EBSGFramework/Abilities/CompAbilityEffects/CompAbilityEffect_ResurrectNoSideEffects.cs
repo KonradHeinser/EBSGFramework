@@ -15,6 +15,9 @@ namespace EBSGFramework
                 t.TryToRevivePawn();
                 Messages.Message("MessagePawnResurrected".Translate(t), t, MessageTypeDefOf.PositiveEvent);
                 MoteMaker.MakeAttachedOverlay(t, ThingDefOf.Mote_ResurrectFlash, Vector3.zero);
+                if (MechanitorUtility.CanControlMech(parent.pawn, t) && parent.pawn.mechanitor.CanOverseeSubject(t))
+                    parent.pawn.relations.AddDirectRelation(PawnRelationDefOf.Overseer, t);
+
             }
         }
 
