@@ -2286,7 +2286,25 @@ namespace EBSGFramework
 
         // Resurrect utility with bug fix
 
-        public static void TryToRevivePawn(this Pawn pawn)
+        public static SimpleCurve DementiaChancePerRotDaysCurve = new SimpleCurve
+        {
+            new CurvePoint(0.1f, 0.02f),
+            new CurvePoint(5f, 0.8f)
+        };
+
+        public static SimpleCurve BlindnessChancePerRotDaysCurve = new SimpleCurve
+        {
+            new CurvePoint(0.1f, 0.02f),
+            new CurvePoint(5f, 0.8f)
+        };
+
+        public static SimpleCurve ResurrectionPsychosisChancePerRotDaysCurve = new SimpleCurve
+        {
+            new CurvePoint(0.1f, 0.02f),
+            new CurvePoint(5f, 0.8f)
+        };
+
+        public static void TryToRevivePawn(this Pawn pawn, bool sideEffects = false)
         {
             if (!pawn.Dead || pawn.Discarded) return; // If these events pass, just silently fail
 
@@ -2301,56 +2319,82 @@ namespace EBSGFramework
                 loc = corpse.Position;
                 map = corpse.Map;
                 corpse.InnerPawn = null;
-                if (!corpse.Destroyed) corpse.Destroy();
+                if (!corpse.Destroyed) 
+                    corpse.Destroy();
             }
             if (flag && pawn.IsWorldPawn())
-            {
                 Find.WorldPawns.RemovePawn(pawn);
-            }
+            
             pawn.ForceSetStateToUnspawned();
             PawnComponentsUtility.CreateInitialComponents(pawn);
             pawn.health.Notify_Resurrected();
+
+            if (sideEffects)
+            {
+                BodyPartRecord brain = pawn.health.hediffSet.GetBrain();
+                float x2 = ((corpse?.GetComp<CompRottable>() == null) ? 0f : (corpse.GetComp<CompRottable>().RotProgress / 60000f));
+                Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.ResurrectionSickness, pawn);
+                if (!pawn.health.WouldDieAfterAddingHediff(hediff))
+                    pawn.health.AddHediff(hediff);
+                
+                if (Rand.Chance(DementiaChancePerRotDaysCurve.Evaluate(x2)) && brain != null)
+                {
+                    Hediff hediff2 = HediffMaker.MakeHediff(HediffDefOf.Dementia, pawn, brain);
+                    if (!pawn.health.WouldDieAfterAddingHediff(hediff2))
+                        pawn.health.AddHediff(hediff2);
+                }
+
+                if (Rand.Chance(BlindnessChancePerRotDaysCurve.Evaluate(x2)))
+                {
+                    foreach (BodyPartRecord item in from x in pawn.health.hediffSet.GetNotMissingParts()
+                                                    where x.def == BodyPartDefOf.Eye
+                                                    select x)
+                    {
+                        if (!pawn.health.hediffSet.PartOrAnyAncestorHasDirectlyAddedParts(item))
+                        {
+                            Hediff hediff3 = HediffMaker.MakeHediff(HediffDefOf.Blindness, pawn, item);
+                            pawn.health.AddHediff(hediff3);
+                        }
+                    }
+                }
+                if (brain != null && Rand.Chance(ResurrectionPsychosisChancePerRotDaysCurve.Evaluate(x2)))
+                {
+                    Hediff hediff4 = HediffMaker.MakeHediff(HediffDefOf.ResurrectionPsychosis, pawn, brain);
+                    if (!pawn.health.WouldDieAfterAddingHediff(hediff4))
+                        pawn.health.AddHediff(hediff4);
+                }
+            }
+
             if (pawn.Faction != null && pawn.Faction.IsPlayer)
             {
-                if (pawn.workSettings != null)
-                {
-                    pawn.workSettings.EnableAndInitialize();
-                }
+                pawn.workSettings?.EnableAndInitialize();
                 Find.StoryWatcher.watcherPopAdaptation.Notify_PawnEvent(pawn, PopAdaptationEvent.GainedColonist);
             }
             if (pawn.RaceProps.IsMechanoid && MechRepairUtility.IsMissingWeapon(pawn))
-            {
                 MechRepairUtility.GenerateWeapon(pawn);
-            }
+            
             if (flag)
             {
                 GenSpawn.Spawn(pawn, loc, map);
                 if (pawn.Faction != null && pawn.Faction != Faction.OfPlayer && pawn.HostileTo(Faction.OfPlayer))
-                {
                     LordMaker.MakeNewLord(pawn.Faction, new LordJob_AssaultColony(pawn.Faction), pawn.Map, Gen.YieldSingle(pawn));
-                }
+                
                 if (pawn.apparel != null)
                 {
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;
                     for (int i = 0; i < wornApparel.Count; i++)
-                    {
                         wornApparel[i].Notify_PawnResurrected(pawn);
-                    }
                 }
             }
             PawnDiedOrDownedThoughtsUtility.RemoveDiedThoughts(pawn);
             if (pawn.royalty != null)
-            {
                 pawn.royalty.Notify_Resurrected();
-            }
 
             if (pawn.guest != null && pawn.guest.IsInteractionEnabled(PrisonerInteractionModeDefOf.Execution))
                 pawn.guest.SetNoInteraction();
 
             if (flag2 && pawn != null)
-            {
                 Find.Selector.Select(pawn, false, false);
-            }
         }
 
         // EBSGAI Utilities

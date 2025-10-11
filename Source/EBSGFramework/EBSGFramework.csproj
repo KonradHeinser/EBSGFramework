@@ -82,6 +82,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_HostileGiveHediff.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LaunchProjectileBurst.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ResurrectNoSideEffects.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeIdeology.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyCorpse.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityResurrectNoSideEffects.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_GiveResource.cs" />
