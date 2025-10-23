@@ -132,8 +132,6 @@ namespace EBSGFramework
             // Stat Harmony patches
             harmony.Patch(AccessTools.Method(typeof(HediffGiver_Bleeding), nameof(HediffGiver_Bleeding.OnIntervalPassed)),
                 postfix: new HarmonyMethod(patchType, nameof(BloodRecoveryPostfix)));
-            harmony.Patch(AccessTools.PropertyGetter(typeof(DamageInfo), nameof(DamageInfo.Amount)),
-                postfix: new HarmonyMethod(patchType, nameof(DamageAmountPostfix)));
             
             harmony.Patch(AccessTools.Method(typeof(SkillRecord), nameof(SkillRecord.Learn)),
                 prefix: new HarmonyMethod(patchType, nameof(SkillFallPrefix)));
@@ -243,7 +241,7 @@ namespace EBSGFramework
                     if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() ||
                         !requireOneOfXenotypeToEquip.NullOrEmpty() || !forbiddenXenotypesToEquip.NullOrEmpty())
                     {
-                        if (!requireOneOfXenotypeToEquip.NullOrEmpty() && !requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype) && flag)
+                        if (!requireOneOfXenotypeToEquip.NullOrEmpty() && !requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype))
                         {
                             cantReason = requireOneOfXenotypeToEquip.Count > 1
                                 ? (string)"EBSG_XenoRestrictedEquipment_AnyOne".Translate()
@@ -574,13 +572,12 @@ namespace EBSGFramework
                             // If either equipment limiters contain the item, the no layer check is needed because those act as exceptions
                             if (!equipRestrict.layerEquipExceptions.NullOrEmpty() && equipRestrict.layerEquipExceptions.Contains(ap.def)) continue;
 
-                            if (ap.def.apparel?.layers?.NullOrEmpty() == false)
-                                foreach (ApparelLayerDef layer in ap.def.apparel.layers)
-                                    if (equipRestrict.restrictedLayers.Contains(layer))
-                                    {
-                                        __result = -1000f;
-                                        return;
-                                    }
+                            if (ap.def.apparel?.layers?.NullOrEmpty() == false && 
+                                ap.def.apparel.layers.Any(layer => equipRestrict.restrictedLayers.Contains(layer)))
+                            {
+                                __result = -1000f;
+                                return;
+                            }
                         }
                     }
                 }
@@ -594,6 +591,9 @@ namespace EBSGFramework
                 bool flagApparel = __result.apparel?.WornApparel.NullOrEmpty() == false; // Need for apparel check
                 bool flagWeapon = __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false; // Need for weapon check
 
+                if (!flagWeapon && !flagApparel)
+                    return;
+                
                 if (__result.genes.Xenotype != null && __result.genes.Xenotype.HasModExtension<EquipRestrictExtension>())
                 {
                     EquipRestrictExtension equipRestrict = __result.genes.Xenotype.GetModExtension<EquipRestrictExtension>();
@@ -615,13 +615,10 @@ namespace EBSGFramework
                         else if ((!equipRestrict.limitedToApparels.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !__result.apparel.WornApparel.NullOrEmpty())
                         {
                             List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                            foreach (Apparel apparel in apparels)
-                                if (!CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def))
-                                    __result.apparel.Remove(apparel);
+                            foreach (var apparel in apparels.Where(apparel => !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                                __result.apparel.Remove(apparel);
                         }
                     }
-                    else
-                        flagApparel = false;
 
                     if (flagWeapon)
                     {
@@ -633,13 +630,10 @@ namespace EBSGFramework
                         else if ((!equipRestrict.limitedToWeapons.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !__result.equipment.AllEquipmentListForReading.NullOrEmpty())
                         {
                             List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                            foreach (ThingWithComps thing in equipment)
-                                if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
-                                    __result.equipment.DestroyEquipment(thing);
+                            foreach (var thing in equipment.Where(thing => !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
+                                __result.equipment.DestroyEquipment(thing);
                         }
                     }
-                    else
-                        flagWeapon = false;
 
                     if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
                     {
@@ -685,25 +679,21 @@ namespace EBSGFramework
                     }
                     if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
 
-                    foreach (GeneDef gene in __result.GetAllGenesOnListFromPawn(Cache.equipRestricting))
+                    foreach (var equipRestrict in __result.GetAllGenesOnListFromPawn(Cache.equipRestricting).Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
                     {
-                        EquipRestrictExtension equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
-
                         if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
                         {
                             if (flagApparel)
                             {
                                 List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (Apparel apparel in apparels)
-                                    if (equipRestrict.forbiddenEquipments.Contains(apparel.def))
-                                        __result.apparel.Remove(apparel);
+                                foreach (var apparel in apparels.Where(apparel => equipRestrict.forbiddenEquipments.Contains(apparel.def)))
+                                    __result.apparel.Remove(apparel);
                             }
                             if (flagWeapon)
                             {
                                 List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (ThingWithComps thing in equipment)
-                                    if (equipRestrict.forbiddenEquipments.Contains(thing.def))
-                                        __result.equipment.DestroyEquipment(thing);
+                                foreach (var thing in equipment.Where(thing => equipRestrict.forbiddenEquipments.Contains(thing.def)))
+                                    __result.equipment.DestroyEquipment(thing);
                             }
 
                             flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
@@ -711,22 +701,20 @@ namespace EBSGFramework
                         }
 
                         if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() || 
-                            !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                                            !equipRestrict.limitedToEquipments.NullOrEmpty()))
                         {
                             List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                            foreach (Apparel apparel in apparels)
-                                if (!CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def))
-                                    __result.apparel.Remove(apparel);
+                            foreach (var apparel in apparels.Where(apparel => !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                                __result.apparel.Remove(apparel);
                             flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
                         }
 
                         if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() || 
-                            !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                                           !equipRestrict.limitedToEquipments.NullOrEmpty()))
                         {
                             List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                            foreach (ThingWithComps thing in equipment)
-                                if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
-                                    __result.equipment.DestroyEquipment(thing);
+                            foreach (var thing in equipment.Where(thing => !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
+                                __result.equipment.DestroyEquipment(thing);
                             flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
                         }
 
@@ -734,56 +722,48 @@ namespace EBSGFramework
                     }
                 }
 
-                // If the pawn is generated before a game is loaded, the cache doesn't exist and we need to brute force search
+                // If the pawn is generated before a game is loaded, the cache doesn't exist, and we need to brute force search
                 if (Cache == null && __result.genes?.GenesListForReading.NullOrEmpty() == false)
-                    foreach (Gene gene in __result.genes.GenesListForReading)
+                    foreach (var equipRestrict in __result.genes.GenesListForReading.Select(gene => gene.def.GetModExtension<EquipRestrictExtension>()).Where(equipRestrict => equipRestrict != null))
                     {
-                        EquipRestrictExtension equipRestrict = gene.def.GetModExtension<EquipRestrictExtension>();
-                        if (equipRestrict != null)
+                        if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
                         {
-                            if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
-                            {
-                                if (flagApparel)
-                                {
-                                    List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                    foreach (Apparel apparel in apparels)
-                                        if (equipRestrict.forbiddenEquipments.Contains(apparel.def))
-                                            __result.apparel.Remove(apparel);
-                                }
-                                if (flagWeapon)
-                                {
-                                    List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                    foreach (ThingWithComps thing in equipment)
-                                        if (equipRestrict.forbiddenEquipments.Contains(thing.def))
-                                            __result.equipment.DestroyEquipment(thing);
-                                }
-
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
-                            }
-
-                            if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() ||
-                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagApparel)
                             {
                                 List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (Apparel apparel in apparels)
-                                    if (!CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def))
-                                        __result.apparel.Remove(apparel);
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                                foreach (var apparel in apparels.Where(apparel => equipRestrict.forbiddenEquipments.Contains(apparel.def)))
+                                    __result.apparel.Remove(apparel);
                             }
-
-                            if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() ||
-                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagWeapon)
                             {
                                 List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (ThingWithComps thing in equipment)
-                                    if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
-                                        __result.equipment.DestroyEquipment(thing);
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                                foreach (var thing in equipment.Where(thing => equipRestrict.forbiddenEquipments.Contains(thing.def)))
+                                    __result.equipment.DestroyEquipment(thing);
                             }
 
-                            if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
+                            flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                            flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
                         }
+
+                        if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() ||
+                                            !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                        {
+                            List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
+                            foreach (var apparel in apparels.Where(apparel => !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                                __result.apparel.Remove(apparel);
+                            flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                        }
+
+                        if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() ||
+                                           !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                        {
+                            List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
+                            foreach (var thing in equipment.Where(thing => !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
+                                __result.equipment.DestroyEquipment(thing);
+                            flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                        }
+
+                        if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
                     }
             }
         }
@@ -815,13 +795,12 @@ namespace EBSGFramework
                     return false;
                 }
                     */
-                if (!recorder.hiddenTemplates.NullOrEmpty())
-                    foreach (GeneTemplateDef template in recorder.hiddenTemplates)
-                        if (geneDef.defName.StartsWith(template.defName + "_", StringComparison.Ordinal))
-                        {
-                            __result = false;
-                            return false;
-                        }
+                if (!recorder.hiddenTemplates.NullOrEmpty() &&
+                    recorder.hiddenTemplates.Any(template => geneDef.defName.StartsWith(template.defName + "_", StringComparison.Ordinal)))
+                {
+                    __result = false;
+                    return false;
+                }
             }
             return true;
         }
@@ -860,9 +839,8 @@ namespace EBSGFramework
         // Things represents the temporary list, while equipment represents the universal one. thing is the item in question. False means it wasn't in either list
         private static bool CheckEquipLists(List<ThingDef> things, List<ThingDef> equipment, ThingDef thing)
         {
-            if (!things.NullOrEmpty() && things.Contains(thing)) return true;
-            if (!equipment.NullOrEmpty() && equipment.Contains(thing)) return true;
-            return false;
+            return !things.NullOrEmpty() && things.Contains(thing) ||
+                   !equipment.NullOrEmpty() && equipment.Contains(thing);
         }
 
         public static void SecondaryLovinChanceFactorPostFix(ref float __result, Pawn otherPawn, Pawn ___pawn)
@@ -876,20 +854,18 @@ namespace EBSGFramework
                     if (extension.carrierStat != null)
                         num *= otherPawn.StatOrOne(extension.carrierStat, extension.carrierReq);
 
-                    if (!extension.carrierStats.NullOrEmpty())
-                        foreach (StatDef stat in extension.carrierStats)
-                            num *= otherPawn.StatOrOne(stat, extension.carrierReq);
+                    if (!extension.carrierStats.NullOrEmpty()) 
+                        num = extension.carrierStats.Aggregate(num, (current, stat) => current * otherPawn.StatOrOne(stat, extension.carrierReq));
 
                     if (extension.otherStat != null)
                         num *= ___pawn.StatOrOne(extension.otherStat, extension.otherReq);
 
-                    if (!extension.otherStats.NullOrEmpty())
-                        foreach (StatDef stat in extension.otherStats)
-                            num *= ___pawn.StatOrOne(stat, extension.otherReq);
+                    if (!extension.otherStats.NullOrEmpty()) 
+                        num = extension.otherStats.Aggregate(num, (current, stat) => current * ___pawn.StatOrOne(stat, extension.otherReq));
 
                     __result = Mathf.Clamp01(__result * num);
                     if (__result == 0) return;
-            }
+                }
         }
 
         public static void RomanceFactorsPostFix(ref string __result, Pawn romancer, Pawn romanceTarget)
@@ -899,22 +875,19 @@ namespace EBSGFramework
             {
                 float num = 1f;
 
-                foreach (GeneDef gene in matches)
+                foreach (var extension in matches.Select(gene => gene.GetModExtension<GRCExtension>()))
                 {
-                    GRCExtension extension = gene.GetModExtension<GRCExtension>();
                     if (extension.carrierStat != null)
                         num *= romancer.StatOrOne(extension.carrierStat, extension.carrierReq);
                     
-                    if (!extension.carrierStats.NullOrEmpty())
-                        foreach (StatDef stat in extension.carrierStats)
-                            num *= romancer.StatOrOne(stat, extension.carrierReq);
+                    if (!extension.carrierStats.NullOrEmpty()) 
+                        num = extension.carrierStats.Aggregate(num, (current, stat) => current * romancer.StatOrOne(stat, extension.carrierReq));
 
                     if (extension.otherStat != null)
                         num *= romanceTarget.StatOrOne(extension.otherStat, extension.otherReq);
 
-                    if (!extension.otherStats.NullOrEmpty())
-                        foreach (StatDef stat in extension.otherStats)
-                            num *= romanceTarget.StatOrOne(stat, extension.otherReq);
+                    if (!extension.otherStats.NullOrEmpty()) 
+                        num = extension.otherStats.Aggregate(num, (current, stat) => current * romanceTarget.StatOrOne(stat, extension.otherReq));
                 }
 
                 StringBuilder stringBuilder = new StringBuilder(__result);
@@ -932,12 +905,11 @@ namespace EBSGFramework
                 bool positiveValue = __result > 0;
 
                 if (!extension.geneticMultipliers.NullOrEmpty())
-                    foreach (GeneticMultiplier geneticMultiplier in extension.geneticMultipliers)
-                        if (___pawn.HasRelatedGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !___pawn.PawnHasAnyOfGenes(out var gene, geneticMultiplier.nullifyingGenes))
-                        {
-                            __result *= geneticMultiplier.multiplier;
-                            ensureReverse |= geneticMultiplier.multiplier < 0;
-                        }
+                    foreach (var geneticMultiplier in extension.geneticMultipliers.Where(geneticMultiplier => ___pawn.HasRelatedGene(geneticMultiplier.gene) && geneticMultiplier.multiplier != 0 && !___pawn.PawnHasAnyOfGenes(out _, geneticMultiplier.nullifyingGenes)))
+                    {
+                        __result *= geneticMultiplier.multiplier;
+                        ensureReverse |= geneticMultiplier.multiplier < 0;
+                    }
 
                 if (ensureReverse && positiveValue == __result > 0) __result *= -1;
             }
@@ -953,23 +925,18 @@ namespace EBSGFramework
                 CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
                 compRegenerating.parent = compThing;
                 compThing.AllComps.Add(compRegenerating);
-                compRegenerating.Initialize(stuff.comps.First((CompProperties c) => c.GetType() == typeof(CompProperties_Regenerating)));
+                compRegenerating.Initialize(stuff.comps.First(c => c.GetType() == typeof(CompProperties_Regenerating)));
             }
         }
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
-            if (__result.EnumerableNullOrEmpty()) return;
-            List<ThingDef> invalidThings = new List<ThingDef>();
-            foreach (ThingDef th in __result.Where((ThingDef t) => !t.comps.NullOrEmpty()))
-                foreach (CompProperties comp in th.comps)
-                    if (comp is CompProperties_Indestructible)
-                    {
-                        invalidThings.Add(th);
-                        break;
-                    }
+            if (__result.EnumerableNullOrEmpty()) 
+                return;
+            List<ThingDef> invalidThings = __result.Where(t => !t.comps.NullOrEmpty()).Where(th => th.comps.OfType<CompProperties_Indestructible>().Any()).ToList();
+
             if (!invalidThings.NullOrEmpty())
-                __result = __result.Where((ThingDef t) => !invalidThings.Contains(t));
+                __result = __result.Where(t => !invalidThings.Contains(t));
         }
 
         public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref float __result)
@@ -992,20 +959,14 @@ namespace EBSGFramework
                     TerrainDef terrainDef = pawn.Map.terrainGrid.TerrainAt(c);
 
                     if (!terrainComp.terrainSets.NullOrEmpty() && terrainDef != null)
-                        foreach (TerrainLinker terrain in terrainComp.terrainSets)
+                        foreach (var terrain in terrainComp.terrainSets.Where(terrain => pawn.CheckGeneTrio(terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) &&
+                                     pawn.CheckHediffTrio(terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) &&
+                                     pawn.CheckPawnCapabilitiesTrio(terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) &&
+                                     pawn.AllNeedLevelsMet(terrain.pawnNeedLevels)).Where(terrain => terrain.newCost >= 0 && ((terrain.terrain != null && terrain.terrain == terrainDef) ||
+                                     (!terrain.terrains.NullOrEmpty() && terrain.terrains.Contains(terrainDef)))))
                         {
-                            // These check all 10 lists
-                            if (!pawn.CheckGeneTrio(terrain.pawnHasAnyOfGenes, terrain.pawnHasAllOfGenes, terrain.pawnHasNoneOfGenes) ||
-                                !pawn.CheckHediffTrio(terrain.pawnHasAnyOfHediffs, terrain.pawnHasAllOfHediffs, terrain.pawnHasNoneOfHediffs) ||
-                                !pawn.CheckPawnCapabilitiesTrio(terrain.pawnCapLimiters, terrain.pawnSkillLimiters, terrain.pawnStatLimiters) ||
-                                !pawn.AllNeedLevelsMet(terrain.pawnNeedLevels)) continue;
-
-                            if (terrain.newCost >= 0 && ((terrain.terrain != null && terrain.terrain == terrainDef) ||
-                                (!terrain.terrains.NullOrEmpty() && terrain.terrains.Contains(terrainDef))))
-                            {
-                                __result = num + terrain.newCost;
-                                return;
-                            }
+                            __result = num + terrain.newCost;
+                            return;
                         }
                     if (terrainComp.universalCostOverride >= 0) __result = num + terrainComp.universalCostOverride;
                 }
@@ -1044,10 +1005,8 @@ namespace EBSGFramework
             {
                 string path = null;
                 if (Cache?.desiccatedHeads.NullOrEmpty() == false && pawn.GetAllGenesOnListFromPawn(Cache.desiccatedHeads, out var matches))
-                    foreach (GeneDef gene in matches)
+                    foreach (var extension in matches.Select(gene => gene.GetModExtension<EBSGBodyExtension>()))
                     {
-                        EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
-
                         if ((pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child))
                         {
                             if (pawn.gender == Gender.Male && extension.desMaleChildHead != null)
@@ -1088,7 +1047,6 @@ namespace EBSGFramework
                 if (path != null)
                 {
                     __result = GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, Color.white);
-                    return;
                 }
             }
             else if (Cache?.ageBasedHeads.NullOrEmpty() == false && pawn.GetAllGenesOnListFromPawn(Cache.ageBasedHeads, out var matches))
@@ -1098,48 +1056,45 @@ namespace EBSGFramework
                     EBSGBodyExtension extension = gene.GetModExtension<EBSGBodyExtension>();
                     if (!extension.InAges(pawn)) continue; // Checks the age first because that involves the least amount of work
                     string path = null;
-                    foreach (AgeBodyLink link in extension.ageGraphics)
+                    foreach (var link in extension.ageGraphics.Where(link => link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat)))
                     {
-                        if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+                        if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
                         {
-                            if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
+                            if (pawn.gender == Gender.Male && link.maleChildHead != null)
+                                path = link.maleChildHead;
+                            else if (pawn.gender == Gender.Female && link.femaleChildHead != null)
+                                path = link.femaleChildHead;
+                            else if (link.childHead != null)
+                                path = link.childHead;
+                        }
+                        else
+                        {
+                            if (link.referenceGender)
                             {
-                                if (pawn.gender == Gender.Male && link.maleChildHead != null)
-                                    path = link.maleChildHead;
-                                else if (pawn.gender == Gender.Female && link.femaleChildHead != null)
-                                    path = link.femaleChildHead;
-                                else if (link.childHead != null)
-                                    path = link.childHead;
+                                if (pawn.gender == Gender.Male && link.maleHead != null)
+                                    path = link.maleHead;
+                                else if (pawn.gender == Gender.Female && link.femaleHead != null)
+                                    path = link.femaleHead;
+                                else if (link.head != null)
+                                    path = link.head;
                             }
                             else
                             {
-                                if (link.referenceGender)
-                                {
-                                    if (pawn.gender == Gender.Male && link.maleHead != null)
-                                        path = link.maleHead;
-                                    else if (pawn.gender == Gender.Female && link.femaleHead != null)
-                                        path = link.femaleHead;
-                                    else if (link.head != null)
-                                        path = link.head;
-                                }
-                                else
-                                {
-                                    if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.maleHead != null)
-                                        path = link.maleHead;
-                                    else if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.femaleHead != null)
-                                        path = link.femaleHead;
-                                    else if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fatHead != null)
-                                        path = link.fatHead;
-                                    else if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulkHead != null)
-                                        path = link.hulkHead;
-                                    else if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thinHead != null)
-                                        path = link.thinHead;
-                                    else if (link.head != null)
-                                        path = link.head;
-                                }
+                                if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.maleHead != null)
+                                    path = link.maleHead;
+                                else if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.femaleHead != null)
+                                    path = link.femaleHead;
+                                else if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fatHead != null)
+                                    path = link.fatHead;
+                                else if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulkHead != null)
+                                    path = link.hulkHead;
+                                else if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thinHead != null)
+                                    path = link.thinHead;
+                                else if (link.head != null)
+                                    path = link.head;
                             }
-                            break;
                         }
+                        break;
                     }
                     if (path != null)
                     {
@@ -1156,48 +1111,45 @@ namespace EBSGFramework
                         if (extension.InAges(pawn))
                         {
                             string path = null;
-                            foreach (AgeBodyLink link in extension.ageGraphics)
+                            foreach (var link in extension.ageGraphics.Where(link => link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat)))
                             {
-                                if (link.ageRange.Includes(pawn.ageTracker.AgeBiologicalYearsFloat))
+                                if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
                                 {
-                                    if (pawn.DevelopmentalStage == DevelopmentalStage.Baby || pawn.DevelopmentalStage == DevelopmentalStage.Child)
+                                    if (pawn.gender == Gender.Male && link.maleChildHead != null)
+                                        path = link.maleChildHead;
+                                    else if (pawn.gender == Gender.Female && link.femaleChildHead != null)
+                                        path = link.femaleChildHead;
+                                    else if (link.childHead != null)
+                                        path = link.childHead;
+                                }
+                                else
+                                {
+                                    if (link.referenceGender)
                                     {
-                                        if (pawn.gender == Gender.Male && link.maleChildHead != null)
-                                            path = link.maleChildHead;
-                                        else if (pawn.gender == Gender.Female && link.femaleChildHead != null)
-                                            path = link.femaleChildHead;
-                                        else if (link.childHead != null)
-                                            path = link.childHead;
+                                        if (pawn.gender == Gender.Male && link.maleHead != null)
+                                            path = link.maleHead;
+                                        else if (pawn.gender == Gender.Female && link.femaleHead != null)
+                                            path = link.femaleHead;
+                                        else if (link.head != null)
+                                            path = link.head;
                                     }
                                     else
                                     {
-                                        if (link.referenceGender)
-                                        {
-                                            if (pawn.gender == Gender.Male && link.maleHead != null)
-                                                path = link.maleHead;
-                                            else if (pawn.gender == Gender.Female && link.femaleHead != null)
-                                                path = link.femaleHead;
-                                            else if (link.head != null)
-                                                path = link.head;
-                                        }
-                                        else
-                                        {
-                                            if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.maleHead != null)
-                                                path = link.maleHead;
-                                            else if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.femaleHead != null)
-                                                path = link.femaleHead;
-                                            else if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fatHead != null)
-                                                path = link.fatHead;
-                                            else if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulkHead != null)
-                                                path = link.hulkHead;
-                                            else if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thinHead != null)
-                                                path = link.thinHead;
-                                            else if (link.head != null)
-                                                path = link.head;
-                                        }
+                                        if (pawn.story?.bodyType == BodyTypeDefOf.Male && link.maleHead != null)
+                                            path = link.maleHead;
+                                        else if (pawn.story?.bodyType == BodyTypeDefOf.Female && link.femaleHead != null)
+                                            path = link.femaleHead;
+                                        else if (pawn.story?.bodyType == BodyTypeDefOf.Fat && link.fatHead != null)
+                                            path = link.fatHead;
+                                        else if (pawn.story?.bodyType == BodyTypeDefOf.Hulk && link.hulkHead != null)
+                                            path = link.hulkHead;
+                                        else if (pawn.story?.bodyType == BodyTypeDefOf.Thin && link.thinHead != null)
+                                            path = link.thinHead;
+                                        else if (link.head != null)
+                                            path = link.head;
                                     }
-                                    break;
                                 }
+                                break;
                             }
                             if (path != null)
                             {
@@ -1541,10 +1493,8 @@ namespace EBSGFramework
         {
             if (!absorbed && Cache?.shieldHediffs.NullOrEmpty() == false &&
                 __instance is Pawn pawn && pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
-                foreach (var shield in shields)
+                foreach (var s in shields.Select(shield => shield.TryGetComp<HediffComp_Shield>()))
                 {
-                    HediffComp_Shield s = shield.TryGetComp<HediffComp_Shield>();
-
                     s.PostPreApplyDamage(ref dinfo, out absorbed);
                     if (absorbed) return;
                 }
@@ -1660,14 +1610,10 @@ namespace EBSGFramework
                 ___pawn.GetAllGenesOnListFromPawn(Cache?.downedMemoryGenes, out var matches))
             {
                 Pawn enemy = dinfo?.Instigator as Pawn;
-                
-                foreach (var item in matches)
+
+                foreach (var extension in matches.Select(item => item.GetModExtension<EBSGExtension>()).Where(extension => 
+                             extension.ignoredHediffsCausingDowning.NullOrEmpty() || !extension.ignoredHediffsCausingDowning.Contains(hediff.def)))
                 {
-                    EBSGExtension extension = item.GetModExtension<EBSGExtension>();
-
-                    if (!extension.ignoredHediffsCausingDowning.NullOrEmpty() && extension.ignoredHediffsCausingDowning.Contains(hediff.def))
-                        continue;
-
                     if (extension.downedMemory != null)
                         ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedMemory, enemy);
 
@@ -1703,63 +1649,6 @@ namespace EBSGFramework
                         }
                     }
                 }
-            }
-        }
-
-        public static void CalculateCapacityLevelPostfix(ref float __result, HediffSet diffSet, PawnCapacityDef capacity, List<PawnCapacityUtility.CapacityImpactor> impactors, bool forTradePrice = false)
-        {
-            // If the result is already at the min, its easier to just assume we'd stay at the min without forcing a recalculation of everything
-            if (__result > capacity.minValue && diffSet?.hediffs.NullOrEmpty() == false
-                && diffSet.SetHasHediffs(Cache?.capFactors, out var matches, forTradePrice))
-            {
-                float prev = __result; // Storing so we can see if we need to redo max check later
-                float num = __result;
-                bool flag = false; // Checking if we need to round the result later
-                foreach (var hediff in matches)
-                {
-                    var comp = hediff.TryGetComp<HediffComp_CapacityFactor>();
-                    float val = comp.GetFactor(capacity);
-
-                    // If the value is 1, it's generally due to the capacity being wrong, or the hediff being at the wrong severity
-                    if (val != 1) 
-                    {
-                        if (hediff.CapMods.NullOrEmpty() || hediff.CapMods.Where(arg => arg.capacity == capacity).EnumerableNullOrEmpty())
-                            impactors?.Add(new PawnCapacityUtility.CapacityImpactorHediff
-                            {
-                                hediff = hediff
-                            });
-                        num *= val;
-                        flag = true;
-
-                        // While going through all of them would technically be required for a full list of impactors, that's an uneeded performance cost if it's going to be the minimum anyway
-                        if (num <= capacity.minValue)
-                        {
-                            num = capacity.minValue;
-                            break;
-                        }
-                    }
-                }
-
-                if (num > prev)
-                {
-                    float max = 99999f;
-                    foreach (var hediff in diffSet.hediffs)
-                        if ((!forTradePrice || !hediff.def.priceImpact) && !hediff.CapMods.NullOrEmpty())
-                            foreach (var mod in hediff.CapMods)
-                                if (mod.capacity == capacity)
-                                    max = Math.Min(max, mod.EvaluateSetMax(diffSet.pawn));
-
-                    if (ModsConfig.BiotechActive && diffSet.pawn.genes != null)
-                        foreach (Gene gene in diffSet.pawn.genes.GenesListForReading)
-                            if (gene.Active && !gene.def.capMods.NullOrEmpty())
-                                foreach (var mod in gene.def.capMods)
-                                    if (mod.capacity == capacity)
-                                        max = Math.Min(max, mod.EvaluateSetMax(diffSet.pawn));
-
-                    num = Math.Min(num, max);
-                    num = Math.Max(num, capacity.minValue);
-                }
-                __result = GenMath.RoundedHundredth(num);
             }
         }
 
@@ -1849,7 +1738,7 @@ namespace EBSGFramework
                 if (___pawn.apparel?.WornApparel.NullOrEmpty() == false)
                 {
                     List<Apparel> equipment = new List<Apparel>(___pawn.apparel.WornApparel);
-                    foreach (ThingWithComps thing in equipment)
+                    foreach (Apparel thing in equipment)
                         thing.TryGetComp<CompAbilityLimitedCharges>()?.UsedAbility(__instance);
                 }
 
@@ -2050,25 +1939,17 @@ namespace EBSGFramework
                 bool num2 = !___pawn.Spawned || ___pawn.Position.UsesOutdoorTemperature(___pawn.Map);
                 RoofDef roofDef = (___pawn.Spawned ? ___pawn.Position.GetRoof(___pawn.Map) : null);
                 if (num2)
-                {
-                    num = ((roofDef == null) ? 8f : ((!roofDef.isThickRoof) ? 1f : (-0.4f)));
-                }
+                    num = (roofDef == null ? 8f : (!roofDef.isThickRoof ? 1f : -0.4f));
                 else if (roofDef == null)
-                {
                     num = 5f;
-                }
                 else if (!roofDef.isThickRoof)
-                {
                     num = -0.32f;
-                }
                 else
-                {
                     num = -0.45f;
-                }
-                if (___pawn.InBed() && num < 0f)
-                {
+                
+                if (___pawn.InBed() && num < 0f) 
                     num *= 0.2f;
-                }
+                
                 num *= 0.0025f;
                 float curLevel = __instance.CurLevel;
                 if (num < 0f)
@@ -2086,7 +1967,9 @@ namespace EBSGFramework
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
         {
-            if (__instance == null || ___def == null || __instance.CurLevel <= 0 || __instance.CurLevel >= 1) return; // If already at min/max, no need to do anything else
+            if (__instance == null || ___def == null || __instance.CurLevel <= 0 || __instance.CurLevel >= 1) 
+                return; // If already at min/max, no need to do anything else
+            
             if (___pawn?.NeedFrozen(___def) != false) return;
             float increase = ___def.seekerRisePerHour * 0.06f;
             float decrease = ___def.seekerFallPerHour * 0.06f;
@@ -2218,6 +2101,7 @@ namespace EBSGFramework
 
             if (dinfo.Instigator != null)
             {
+                dinfo.SetAmount(dinfo.Amount * dinfo.Instigator.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor));
                 DamageModifyingStatsExtension attackerModStats = dinfo.Instigator.def.GetModExtension<DamageModifyingStatsExtension>();
 
                 if (attackerModStats?.Outgoing == true)
@@ -2226,11 +2110,8 @@ namespace EBSGFramework
                 if (dinfo.Instigator is Pawn a)
                 {
                     if (Cache?.outgoingDamageStatGenes.NullOrEmpty() == false && a.GetAllGenesOnListFromPawn(Cache.outgoingDamageStatGenes, out var statGenes))
-                        foreach (GeneDef gene in statGenes)
-                        {
-                            DamageModifyingStatsExtension extension = gene.GetModExtension<DamageModifyingStatsExtension>();
+                        foreach (var extension in statGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>()))
                             dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, extension, __instance, a));
-                        }
 
                     DamageModifyingStatsExtension attackerKindModStats = a.kindDef.GetModExtension<DamageModifyingStatsExtension>();
 
@@ -2246,7 +2127,7 @@ namespace EBSGFramework
 
             if (Cache != null && dinfo.Amount > 0 && __instance is Pawn victim)
             {
-                if (dinfo.Instigator != null && dinfo.Instigator is Pawn attacker)
+                if (dinfo.Instigator is Pawn attacker)
                 {
                     if (victim.RaceProps.Humanlike)
                     {
@@ -2378,17 +2259,11 @@ namespace EBSGFramework
                 }
             }
 
-            if (__instance is Pawn t && t.stances?.curStance != null && t.stances.curStance is Stance_Warmup warmup && 
+            if (__instance is Pawn t && t.stances?.curStance is Stance_Warmup warmup && 
                 (t.CurJob?.ability?.CompOfType<CompAbilityEffect_InterruptOnDamaged>() != null ||
-                (warmup.verb?.verbTracker?.directOwner is Ability a && 
-                    a.CompOfType<CompAbilityEffect_InterruptOnDamaged>() != null)))
+                 (warmup.verb?.verbTracker?.directOwner is Ability a && 
+                  a.CompOfType<CompAbilityEffect_InterruptOnDamaged>() != null)))
                 warmup.Interrupt();
-        }
-
-        public static void DamageAmountPostfix(ref float __result, DamageInfo __instance)
-        {
-            if (__instance.Instigator != null && __instance.Instigator is Pawn pawn)
-                __result *= pawn.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor);
         }
 
         public static void HemogenMaxPostFix(Pawn ___pawn, ref float __result)
@@ -2405,7 +2280,7 @@ namespace EBSGFramework
 
         public static void PostAddGenePostfix(Pawn ___pawn)
         {
-            if (Cache != null) Cache.CachePawnWithGene(___pawn);
+            Cache?.CachePawnWithGene(___pawn);
         }
 
         public static void MakeRecipeProductsPostfix(ref IEnumerable<Thing> __result, RecipeDef recipeDef, Pawn worker, List<Thing> ingredients, Thing dominantIngredient,
@@ -2425,7 +2300,7 @@ namespace EBSGFramework
                     foreach (List<ThingDefCountClass> options in extension.thingCountList)
                     {
                         bool flag = false;
-                        ThingDefCountClass thingClass = null;
+                        ThingDefCountClass thingClass;
 
                         if (options.Count() == 1)
                         {
@@ -2437,7 +2312,7 @@ namespace EBSGFramework
                         }
                         else
                         {
-                            thingClass = options.RandomElementByWeight((arg) => (float)arg.chance);
+                            thingClass = options.RandomElementByWeight(arg => arg.chance ?? 0f);
                             flag = true;
                         }
 
@@ -2449,9 +2324,9 @@ namespace EBSGFramework
                                 newThing.SetColor(dominantIngredient.DrawColor, false);
 
                             CompIngredients compIngredients = newThing.TryGetComp<CompIngredients>();
-                            if (compIngredients != null)
-                                for (int l = 0; l < ingredients.Count; l++)
-                                    compIngredients.RegisterIngredient(ingredients[l].def);
+                            if (compIngredients != null && !ingredients.NullOrEmpty())
+                                foreach (var t in ingredients)
+                                    compIngredients.RegisterIngredient(t.def);
 
                             newThing.Notify_RecipeProduced(worker);
 
@@ -2474,8 +2349,7 @@ namespace EBSGFramework
                             }
 
                             CompArt compArt = newThing.TryGetComp<CompArt>();
-                            if (compArt != null)
-                                compArt.JustCreatedBy(worker);
+                            compArt?.JustCreatedBy(worker);
                             if (compQuality != null && (int)compQuality.Quality >= 4)
                                 TaleRecorder.RecordTale(TaleDefOf.CraftedArt, worker, newThing);
 
@@ -2487,7 +2361,7 @@ namespace EBSGFramework
                             else if (style != null)
                                 newThing.StyleDef = style;
                             else if (!newThing.def.randomStyle.NullOrEmpty() && Rand.Chance(newThing.def.randomStyleChance))
-                                newThing.SetStyleDef(newThing.def.randomStyle.RandomElementByWeight((ThingStyleChance x) => x.Chance).StyleDef);
+                                newThing.SetStyleDef(newThing.def.randomStyle.RandomElementByWeight(x => x.Chance).StyleDef);
 
                             newThing.overrideGraphicIndex = overrideGraphicIndex;
                             if (newThing.def.Minifiable)
@@ -2521,26 +2395,16 @@ namespace EBSGFramework
 
         public static void InitiateSlaveRebellionPostfix(ref float __result, Pawn pawn)
         {
-            if (__result != -1f && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false)
-            foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-            {
-                if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
-                {
-                    __result = -1f;
-                    break;
-                }
-            }
+            if (__result != -1f && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false &&
+                pawn.health.hediffSet.hediffs.Any(h => h.TryGetComp<HediffComp_PreventSlaveRebellion>() != null))
+                __result = -1f;
         }
 
         public static void ParticipateInSlaveRebellionPostfix(ref bool __result, Pawn pawn)
         {
-            if (__result && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false)
-                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-                    if (hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null)
-                    {
-                        __result = false;
-                        break;
-                    }
+            if (__result && pawn.health?.hediffSet?.hediffs?.NullOrEmpty() == false &&
+                pawn.health.hediffSet.hediffs.Any(hediff => hediff.TryGetComp<HediffComp_PreventSlaveRebellion>() != null))
+                __result = false;
         }
 
         public static void LaunchProjectileProjectilePostfix(ref ThingDef __result, ref Verb_LaunchProjectile __instance)
