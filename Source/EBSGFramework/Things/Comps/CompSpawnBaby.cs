@@ -53,6 +53,20 @@ namespace EBSGFramework
                 else if (parent.Faction != null) faction = parent.Faction;
         }
 
+        public override void ReceiveCompSignal(string signal)
+        {
+            base.ReceiveCompSignal(signal);
+            if (signal == "RuinedByTemperature")
+            {
+                if (parent.Faction?.IsPlayer == true)
+                    Messages.Message(parent.LabelShortCap + " : " + "RuinedByTemperature".Translate(), MessageTypeDefOf.NegativeEvent);
+                if (Props.deleteOnFinalSpawn)
+                    parent.Destroy();
+                else
+                    spawnLeft = 0;
+            }
+        }
+
         public override void CompTickInterval(int delta)
         {
             base.CompTickInterval(delta);
@@ -122,37 +136,40 @@ namespace EBSGFramework
                         Pawn pawn = PawnGenerator.GeneratePawn(request);
 
                         if (Props.staticXenotype == null && (mother != null || father != null))
-                            if (Props.xenotypeSource == XenoSource.Mother && mother != null)
+                            switch (Props.xenotypeSource)
                             {
-                                pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                                pawn.genes.iconDef = mother.genes.iconDef;
-                            }
-                            else if (Props.xenotypeSource == XenoSource.Father && father != null)
-                            {
-                                pawn.genes.xenotypeName = father.genes.xenotypeName;
-                                pawn.genes.iconDef = father.genes.iconDef;
-                            }
-                            else
-                            {
-                                if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
-                                {
+                                case XenoSource.Mother when mother != null:
                                     pawn.genes.xenotypeName = mother.genes.xenotypeName;
                                     pawn.genes.iconDef = mother.genes.iconDef;
-                                }
-                                if (TryGetInheritedXenotype(mother, father, out var xenotype))
+                                    break;
+                                case XenoSource.Father when father != null:
+                                    pawn.genes.xenotypeName = father.genes.xenotypeName;
+                                    pawn.genes.iconDef = father.genes.iconDef;
+                                    break;
+                                default:
                                 {
-                                    pawn.genes?.SetXenotypeDirect(xenotype);
-                                }
-                                else if (ShouldByHybrid(mother, father))
-                                {
-                                    pawn.genes.hybrid = true;
-                                    pawn.genes.xenotypeName = "Hybrid".Translate();
+                                    if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
+                                    {
+                                        pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                        pawn.genes.iconDef = mother.genes.iconDef;
+                                    }
+                                    if (TryGetInheritedXenotype(mother, father, out var xenotype))
+                                    {
+                                        pawn.genes?.SetXenotypeDirect(xenotype);
+                                    }
+                                    else if (ShouldByHybrid(mother, father))
+                                    {
+                                        pawn.genes.hybrid = true;
+                                        pawn.genes.xenotypeName = "Hybrid".Translate();
+                                    }
+
+                                    break;
                                 }
                             }
 
                         if (map != null)
                         {
-                            IntVec3? intVec = null;
+                            IntVec3? intVec;
 
                             if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
                                 intVec = parent.Position;
@@ -268,16 +285,13 @@ namespace EBSGFramework
         {
             bool flag = mother?.genes != null;
             bool flag2 = father?.genes != null;
-            if (flag && flag2 && mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable && mother.genes.Xenotype == father.genes.Xenotype)
+            if ((flag && flag2 && mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable && mother.genes.Xenotype == father.genes.Xenotype) 
+                || (flag && !flag2 && mother.genes.Xenotype.inheritable))
             {
                 xenotype = mother.genes.Xenotype;
                 return true;
             }
-            if (flag && !flag2 && mother.genes.Xenotype.inheritable)
-            {
-                xenotype = mother.genes.Xenotype;
-                return true;
-            }
+
             if (flag2 && !flag && father.genes.Xenotype.inheritable)
             {
                 xenotype = father.genes.Xenotype;
@@ -299,15 +313,12 @@ namespace EBSGFramework
                 if (mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable)
                     return true;
 
-                bool num = flag && (mother.genes.Xenotype.inheritable || mother.genes.hybrid);
-                bool flag3 = flag2 && (father.genes.Xenotype.inheritable || father.genes.hybrid);
+                bool num = mother.genes.Xenotype.inheritable || mother.genes.hybrid;
+                bool flag3 = father.genes.Xenotype.inheritable || father.genes.hybrid;
                 if (num || flag3)
                     return true;
             }
-            if ((flag && !flag2 && mother.genes.hybrid) || (flag2 && !flag && father.genes.hybrid))
-                return true;
-
-            return false;
+            return (flag && !flag2 && mother.genes.hybrid) || (flag2 && !flag && father.genes.hybrid);
         }
     }
 }

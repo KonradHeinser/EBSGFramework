@@ -21,7 +21,7 @@
         <hediffClass>Hediff_Injury</hediffClass>
         <labelNounPretty>{0} in the {1}</labelNounPretty>
         <labelNoun>a geneticly damaged part</labelNoun>
-        <description>Genetics have caused this part to not grow properly during gestation, causing it to be weakened.</description>
+        <description>The genetic code for this part was damaged, causing it to no longer function properly.</description>
         <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
         <comps>
             <li Class="HediffCompProperties_GetsPermanent">
