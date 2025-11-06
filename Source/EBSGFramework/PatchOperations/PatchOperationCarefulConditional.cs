@@ -1,6 +1,6 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using Verse;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {

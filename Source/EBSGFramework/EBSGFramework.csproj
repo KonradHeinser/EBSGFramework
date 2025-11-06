@@ -74,6 +74,7 @@
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalHasAbilityUsable.cs" />
     <Compile Include="EBSGAI\JobGivers\JobGiver_AICastHostileAbilityBetween.cs" />
     <Compile Include="EBSGAI\ConditionalNodes\ThinkNode_ConditionalNearbyCover.cs" />
+    <Compile Include="Enums\CheckType.cs" />
     <Compile Include="Enums\TerrainPollution.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ComaGene.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ReloadableAbilities.cs" />

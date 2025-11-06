@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using System.Collections.Generic;
+using Verse;
 using Verse.AI;
-using System.Collections.Generic;
 
 namespace EBSGFramework
 {

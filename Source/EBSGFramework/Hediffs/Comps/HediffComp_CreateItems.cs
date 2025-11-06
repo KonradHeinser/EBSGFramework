@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Verse;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
-using System.Collections.Generic;
 using RimWorld.Planet;
+using Verse;
 
 namespace EBSGFramework
 {

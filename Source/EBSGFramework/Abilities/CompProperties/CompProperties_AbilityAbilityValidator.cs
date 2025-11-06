@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Verse;
 using RimWorld;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -67,7 +67,11 @@ namespace EBSGFramework
         public bool checkRoofForRainSnowRate;
         public FloatRange rainRate = new FloatRange(0, 9999);
         public FloatRange snowRate = new FloatRange(0, 9999);
-
+        public List<PlanetLayerDef> casterLayers = new List<PlanetLayerDef>();
+        public CheckType casterLayerCheck = CheckType.Required;
+        public List<PlanetLayerDef> targetLayers = new List<PlanetLayerDef>();
+        public CheckType targetLayerCheck = CheckType.Required;
+        
         public List<WeatherDef> requireOneOfWeather;
         public List<WeatherDef> forbiddenWeather;
         public List<GameConditionDef> requireOneOfCondition;

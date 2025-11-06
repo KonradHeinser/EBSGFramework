@@ -46,8 +46,6 @@ namespace EBSGFramework
                 prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
                 postfix: new HarmonyMethod(patchType, nameof(TakeDamagePostfix)));
-            harmony.Patch(AccessTools.Method(typeof(ThingMaker), nameof(ThingMaker.MakeThing)),
-                postfix: new HarmonyMethod(patchType, nameof(MakeThingPostfix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(ThingFilter), nameof(ThingFilter.AllowedThingDefs)),
                 postfix: new HarmonyMethod(patchType, nameof(AllowedThingDefsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_PathFollower), "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) }),
@@ -112,8 +110,6 @@ namespace EBSGFramework
                 prefix: new HarmonyMethod(patchType, nameof(GeneratePawnRelationsPrefix)));
             harmony.Patch(AccessTools.Method(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts)),
                 postfix: new HarmonyMethod(patchType, nameof(MakeRecipeProductsPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
-                postfix: new HarmonyMethod(patchType, nameof(ThingSpawnSetupPostfix)));
 
             // Needs Harmony patches
             harmony.Patch(AccessTools.Method(typeof(Need_Seeker), nameof(Need_Seeker.NeedInterval)),
@@ -915,18 +911,6 @@ namespace EBSGFramework
             }
             // This is a universal mood factor, as opposed to the specialized ones above. Usually ends up returning 1
             if (__result != 0 && Cache != null) __result *= Cache.GetGeneMoodFactor(___pawn);
-        }
-
-        public static void MakeThingPostfix(ref ThingDef def, ref ThingDef stuff, ref Thing __result)
-        {
-            if (stuff?.comps.NullOrEmpty() == false && __result is ThingWithComps compThing && 
-                !(__result is Pawn) && stuff.HasComp(typeof(CompRegenerating)))
-            {
-                CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
-                compRegenerating.parent = compThing;
-                compThing.AllComps.Add(compRegenerating);
-                compRegenerating.Initialize(stuff.comps.First(c => c.GetType() == typeof(CompProperties_Regenerating)));
-            }
         }
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
@@ -2372,21 +2356,6 @@ namespace EBSGFramework
                     }
 
                     __result = newResult.AsEnumerable();
-                }
-            }
-        }
-
-        public static void ThingSpawnSetupPostfix(ref Thing __instance, bool respawningAfterLoad)
-        {
-            if (respawningAfterLoad && __instance.Stuff?.comps.NullOrEmpty() == false && __instance is ThingWithComps compThing)
-            {
-                CompProperties_Regenerating regen = __instance.Stuff.GetCompProperties<CompProperties_Regenerating>();
-                if (regen != null)
-                {
-                    CompRegenerating compRegenerating = (CompRegenerating)Activator.CreateInstance(typeof(CompRegenerating));
-                    compRegenerating.parent = compThing;
-                    compThing.AllComps.Add(compRegenerating);
-                    compRegenerating.Initialize(regen); 
                 }
             }
         }

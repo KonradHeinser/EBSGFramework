@@ -1,6 +1,6 @@
 ﻿using RimWorld;
-using Verse;
 using UnityEngine;
+using Verse;
 
 namespace EBSGFramework
 {

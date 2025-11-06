@@ -1,5 +1,5 @@
-﻿using Verse;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {

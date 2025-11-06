@@ -1,7 +1,7 @@
-﻿using Verse;
+﻿using System.Linq;
 using RimWorld;
-using System.Linq;
 using UnityEngine;
+using Verse;
 
 namespace EBSGFramework
 {

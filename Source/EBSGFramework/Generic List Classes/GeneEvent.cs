@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using System.Xml;
 using RimWorld;
-using System.Xml;
+using Verse;
 
 namespace EBSGFramework
 {

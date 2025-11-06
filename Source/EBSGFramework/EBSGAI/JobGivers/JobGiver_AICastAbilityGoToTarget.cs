@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.AI;
-using RimWorld;
 
 namespace EBSGFramework
 {

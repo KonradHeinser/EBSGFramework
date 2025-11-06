@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.Sound;
-using RimWorld;
 
 namespace EBSGFramework
 {

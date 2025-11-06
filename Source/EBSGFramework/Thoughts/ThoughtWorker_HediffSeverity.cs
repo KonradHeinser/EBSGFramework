@@ -1,5 +1,5 @@
-﻿using RimWorld;
-using System;
+﻿using System;
+using RimWorld;
 using Verse;
 
 namespace EBSGFramework

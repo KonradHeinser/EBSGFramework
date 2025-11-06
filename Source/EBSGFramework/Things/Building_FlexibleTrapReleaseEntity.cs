@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using RimWorld;
 using Verse;
-using Verse.Sound;
 using Verse.AI;
+using Verse.Sound;
 
 namespace EBSGFramework
 {

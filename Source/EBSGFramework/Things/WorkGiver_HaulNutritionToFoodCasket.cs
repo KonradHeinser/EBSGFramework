@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
-using RimWorld;
 
 namespace EBSGFramework
 {

@@ -1,8 +1,8 @@
-﻿using Verse;
-using Verse.AI;
-using System.Collections.Generic;
-using RimWorld;
+﻿using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
+using Verse;
+using Verse.AI;
 
 namespace EBSGFramework
 {

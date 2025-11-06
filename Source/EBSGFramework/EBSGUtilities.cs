@@ -1144,35 +1144,24 @@ namespace EBSGFramework
 
         public static void FadingHediffs(this Pawn pawn, float severityPerTick = 0, HediffDef hediff = null, List<HediffDef> hediffs = null)
         {
-            if (hediff != null)
-            {
-                if (HasHediff(pawn, hediff))
-                {
-                    pawn.health.hediffSet.GetFirstHediffOfDef(hediff).Severity -= severityPerTick;
-                }
-            }
+            if (hediff != null && HasHediff(pawn, hediff, out Hediff h))
+                h.Severity -= severityPerTick;
+            
             if (!hediffs.NullOrEmpty())
-            {
-                foreach (HediffDef hediffDef in hediffs)
-                {
-                    if (HasHediff(pawn, hediffDef))
-                    {
-                        pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef).Severity -= severityPerTick;
-                    }
-                }
-            }
+                foreach (var hediffDef in hediffs)
+                    if (HasHediff(pawn, hediffDef, out h))
+                        h.Severity -= severityPerTick; 
         }
 
         public static IntVec3 FindDestination(Map targetMap, bool targetCenter = false)
         {
-            IntVec3 target = IntVec3.Invalid;
+            IntVec3 target;
             if (targetCenter)
             {
                 target = targetMap.Center;
                 if (target.Standable(targetMap))
-                {
                     return target;
-                }
+                
                 target = CellFinder.StandableCellNear(target, targetMap, 50);
                 if (target.IsValid) return target;
             }
@@ -1183,16 +1172,13 @@ namespace EBSGFramework
 
             target = CellFinder.RandomEdgeCell(targetMap);
             target = CellFinder.StandableCellNear(target, targetMap, 30); // If the first time fails try a second time just to see if the first one was bad luck
-            if (target.IsValid) return target;
-
-            return IntVec3.Invalid;
+            return target.IsValid ? target : IntVec3.Invalid;
         }
 
         public static bool HasHediff(this Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
-            if (pawn.health.hediffSet.HasHediff(hediff)) return true;
-            return false;
+            return pawn.health.hediffSet.HasHediff(hediff);
         }
 
         public static bool HasHediff(this Pawn pawn, HediffDef hediff, out Hediff result)
@@ -1213,7 +1199,7 @@ namespace EBSGFramework
 
             // Test to see if there's an easy way out
             result = pawn.health.hediffSet.GetFirstHediffOfDef(hediff); 
-            if (result != null && result is HediffWithTarget targeter && targeter.target == other)
+            if (result is HediffWithTarget targeter && targeter.target == other)
                 return true;
 
             result = null;
@@ -1240,48 +1226,23 @@ namespace EBSGFramework
             if (bodyPart == null)
                 return pawn.HasHediff(hediff, out result);
 
-            foreach (Hediff h in pawn.health.hediffSet.hediffs)
-                if (h.def == hediff && h.Part == bodyPart)
-                {
-                    result = h;
-                    break;
-                }
-            return result != null;
-        }
-
-        public static bool HasHediff(this Pawn pawn, HediffDef hediff, BodyPartDef bodyPart, out Hediff result)
-        {
-            result = null;
-            if (pawn?.health?.hediffSet == null || hediff == null) return false;
-
-            if (bodyPart == null)
-                return pawn.HasHediff(hediff, out result);
-
-            foreach (Hediff h in pawn.health.hediffSet.hediffs)
-                if (h.def == hediff && h.Part.def == bodyPart)
-                {
-                    result = h;
-                    break;
-                }
-            return result != null;
+            foreach (var h in pawn.health.hediffSet.hediffs.Where(h => h.def == hediff && h.Part == bodyPart))
+            {
+                result = h;
+                return true;
+            }
+            return false;
         }
 
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
         {
-            matches = new List<Hediff>();
-            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
-                return false;
-
-            foreach (var hediff in pawn.health.hediffSet.hediffs)
+            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty())
             {
-                if (!hediffs.Contains(hediff.def))
-                    continue;
-
-                if (bodyPart != null && hediff.Part != bodyPart)
-                    continue;
-
-                matches.Add(hediff);
+                matches = new List<Hediff>();
+                return false;
             }
+
+            matches = pawn.health.hediffSet.hediffs.Where(hediff => hediffs.Contains(hediff.def) && (bodyPart == null || hediff.Part == bodyPart)).ToList();
             return !matches.NullOrEmpty();
         }
 
@@ -1291,14 +1252,9 @@ namespace EBSGFramework
             if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
                 return false;
 
-            foreach (var hediff in pawn.health.hediffSet.hediffs)
+            foreach (var hediff in pawn.health.hediffSet.hediffs.Where(hediff => hediffs.Contains(hediff.def) && (bodyPart == null || hediff.Part == bodyPart)))
             {
-                if (!hediffs.Contains(hediff.def))
-                    continue;
-
-                if (bodyPart != null && hediff.Part != bodyPart)
-                    continue;
-
+                match = hediff;
                 return true;
             }
             return false;

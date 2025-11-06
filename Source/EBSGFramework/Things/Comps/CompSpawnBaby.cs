@@ -1,7 +1,8 @@
-﻿using Verse;
-using RimWorld;
+﻿using System;
 using System.Collections.Generic;
+using RimWorld;
 using RimWorld.Planet;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -28,12 +29,18 @@ namespace EBSGFramework
                     genes = new List<GeneDef>();
                     if (Props.staticXenotype != null)
                         genes = Props.staticXenotype.genes;
-                    else if (Props.xenotypeSource == XenoSource.Father && father != null)
-                        genes = PregnancyUtility.GetInheritedGenes(father, null);
-                    else if (Props.xenotypeSource == XenoSource.Mother && mother != null)
-                        genes = PregnancyUtility.GetInheritedGenes(null, mother);
-                    else
-                        genes = PregnancyUtility.GetInheritedGenes(father, mother);
+                    else switch (Props.xenotypeSource)
+                    {
+                        case XenoSource.Father when father != null:
+                            genes = PregnancyUtility.GetInheritedGenes(father, null);
+                            break;
+                        case XenoSource.Mother when mother != null:
+                            genes = PregnancyUtility.GetInheritedGenes(null, mother);
+                            break;
+                        default:
+                            genes = PregnancyUtility.GetInheritedGenes(father, mother);
+                            break;
+                    }
                 }
 
                 return genes;
@@ -67,27 +74,27 @@ namespace EBSGFramework
             }
         }
 
+        public override bool AllowStackWith(Thing other)
+        {
+            return false;
+        }
+
         public override void CompTickInterval(int delta)
         {
             base.CompTickInterval(delta);
 
             if (spawnLeft > 0 || spawnLeft == -1)
             {
-                if (parent.HasComp<CompRefuelable>())
+                if (parent.GetComp<CompRefuelable>()?.HasFuel == false)
+                    return;
+
+                switch (parent)
                 {
-                    CompRefuelable fuel = parent.GetComp<CompRefuelable>();
-                    if (!fuel.HasFuel) return;
+                    // Ensures plants and pawns are grown before they start creating new pawns
+                    case Plant plant when plant.Growth < 1f:
+                    case Pawn c when !c.RaceProps.IsMechanoid:
+                        return;
                 }
-
-                // Ensures plants and pawns are grown before they start creating new pawns
-                bool flag = false;
-                if (parent is Plant plant && plant.Growth < 1f)
-                    flag |= plant.Growth < 1f;
-                else if (parent is Pawn carrier)
-                    if (!carrier.RaceProps.IsMechanoid)
-                        flag |= !carrier.ageTracker.Adult;
-
-                if (flag) return;
 
                 ticksLeft -= delta;
 
@@ -97,16 +104,6 @@ namespace EBSGFramework
                     Caravan caravan = null;
                     if (map == null && parent is Pawn carrier) caravan = carrier.GetCaravan();
                     if (map == null && caravan == null) return;
-
-                    int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
-                    List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
-
-                    if (spawnLeft != -1)
-                    {
-                        if (numberToSpawn > spawnLeft)
-                            numberToSpawn = spawnLeft;
-                        spawnLeft -= numberToSpawn;
-                    }
 
                     float fixedAge = 0f;
 
@@ -118,8 +115,25 @@ namespace EBSGFramework
                         case DevelopmentalStage.Child:
                             fixedAge = 8f;
                             break;
+                        case DevelopmentalStage.None:
+                            return;
+                        case DevelopmentalStage.Newborn:
+                        case DevelopmentalStage.Baby:
+                        default:
+                            break;
                     }
 
+                    int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
+                    List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+
+                    if (spawnLeft != -1)
+                    {
+                        if (numberToSpawn > spawnLeft)
+                            numberToSpawn = spawnLeft;
+                        spawnLeft -= numberToSpawn;
+                    }
+
+                    numberToSpawn *= parent.stackCount;
                     for (int i = 0; i < numberToSpawn; i++)
                     {
                         // If the faction is somehow null, the child will default to joining the player
@@ -229,14 +243,12 @@ namespace EBSGFramework
                             Find.LetterStack.ReceiveLetter(birthLetter);
                         }
 
-                        if (pawn.caller != null)
-                            pawn.caller.DoCall();
+                        pawn.caller?.DoCall();
                     }
 
                     if (spawnLeft == 0 && Props.deleteOnFinalSpawn)
                         parent.Destroy();
-
-                    if (spawnLeft > 0)
+                    else if (spawnLeft > 0)
                         ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
                 }
             }

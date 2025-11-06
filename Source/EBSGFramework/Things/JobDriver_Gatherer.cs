@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
-using System.Linq;
 
 namespace EBSGFramework
 {

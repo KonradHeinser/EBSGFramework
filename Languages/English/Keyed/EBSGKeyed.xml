@@ -108,9 +108,14 @@
     <EBSG_MapWeather>correct map weather</EBSG_MapWeather>
     <EBSG_InPollution>in pollution</EBSG_InPollution>
     <EBSG_NotInPollution>not in pollution</EBSG_NotInPollution>
-    <EBSG_CorrectLayer>in/on correct map layer</EBSG_CorrectLayer>
-    <EBSG_CorrectLayerOne>in/on {0}</EBSG_CorrectLayerOne>
-    <EBSG_CorrectLayerOneNo>not in/on {0}</EBSG_CorrectLayerOneNo>
+
+    <EBSG_SeasonOne>is {0}</EBSG_SeasonOne>
+    <EBSG_Season>valid season</EBSG_Season>
+    <EBSG_SeasonWrong>wrong season</EBSG_SeasonWrong>
+    <EBSG_DoY>valid day of the year</EBSG_DoY>
+    <EBSG_DoQ>valid day of the quadrum</EBSG_DoQ>
+    <EBSG_NoViableTarget>No viable target</EBSG_NoViableTarget>
+    <EBSG_InsufficientMaterial>Insufficient material</EBSG_InsufficientMaterial>
 
     <!--EBSG Recorder-->
     <EBSG_ThinkingPawnName> - thinking pawn's name: </EBSG_ThinkingPawnName>
@@ -162,13 +167,6 @@
     <EBSG_CustomizableThings>Customizable Things</EBSG_CustomizableThings>
     <EBSG_CustomizableThingsDescription>This mod makes it easier for other mods to make certain things customizable for users. Whenever another mod requests the EBSG Framework make one of those fields customizable, it will appear here.</EBSG_CustomizableThingsDescription>
     <EBSG_CustomizableAsexualHediffs>    Customizable Asexual Hediffs</EBSG_CustomizableAsexualHediffs>
-    <EBSG_SeasonOne>is {0}</EBSG_SeasonOne>
-    <EBSG_Season>valid season</EBSG_Season>
-    <EBSG_SeasonWrong>wrong season</EBSG_SeasonWrong>
-    <EBSG_DoY>valid day of the year</EBSG_DoY>
-    <EBSG_DoQ>valid day of the quadrum</EBSG_DoQ>
-    <EBSG_NoViableTarget>No viable target</EBSG_NoViableTarget>
-    <EBSG_InsufficientMaterial>Insufficient material</EBSG_InsufficientMaterial>
 
     <!--These settings are for all of the EBSG mods-->
     <EBSGAiO_ModName>Expanded Biotech Style Genes</EBSGAiO_ModName>
@@ -295,6 +293,9 @@
     <AbilityTargetNonPlayer>Target must not be in your faction</AbilityTargetNonPlayer>
     <AbilityTargetHostile>Target must be hostile</AbilityTargetHostile>
     <AbilityTargetFactionNone>Target cannot be in a faction</AbilityTargetFactionNone>
+
+    <LayerMustBe>Must be {1} {0}</LayerMustBe>
+    <LayerMustNotBe>Cannot be {1} {0}</LayerMustNotBe>
 
         <!--Ingestible Dependency Genes-->
     <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive.</EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->

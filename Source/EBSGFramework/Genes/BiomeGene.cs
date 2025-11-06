@@ -1,6 +1,6 @@
 ﻿using RimWorld;
-using Verse;
 using RimWorld.Planet;
+using Verse;
 
 namespace EBSGFramework
 {

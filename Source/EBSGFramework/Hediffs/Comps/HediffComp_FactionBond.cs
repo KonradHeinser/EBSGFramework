@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Verse;
 using RimWorld.Planet;
+using Verse;
 
 namespace EBSGFramework
 {

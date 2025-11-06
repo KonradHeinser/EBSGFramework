@@ -1,7 +1,7 @@
-﻿using Verse;
+﻿using System;
 using System.Collections.Generic;
 using RimWorld;
-using System;
+using Verse;
 using Verse.AI;
 
 namespace EBSGFramework

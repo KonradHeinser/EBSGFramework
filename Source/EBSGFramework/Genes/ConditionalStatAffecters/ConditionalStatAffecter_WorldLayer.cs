@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -17,11 +18,10 @@ namespace EBSGFramework
         private string GetLabel()
         {
             if (label != null) return label.TranslateOrFormat();
-            if (layers.Count == 1)
-                if (invert)
-                    return "EBSG_CorrectLayerOneNo".Translate(layers[0].LabelCap);
-                else
-                    return "EBSG_CorrectLayerOne".Translate(layers[0].LabelCap);
+            if (layers.Count == 1) 
+                return invert 
+                    ? "LayerMustNotBe".Translate(layers.First().label, layers.First().gerundLabel) 
+                    : "LayerMustBe".Translate(layers.First().label, layers.First().gerundLabel);
             return "EBSG_CorrectLayer".Translate();
         }
 
