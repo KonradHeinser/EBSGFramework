@@ -7,6 +7,10 @@ namespace EBSGFramework
     public class CompProperties_AbilityDealDamage : CompProperties_AbilityEffect
     {
         public DamageDef def;
+        
+        public BodyPartHeight? height;
+
+        public BodyPartDepth depth = BodyPartDepth.Undefined;
 
         public float amount = -1f;
 

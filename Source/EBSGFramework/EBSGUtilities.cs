@@ -1153,28 +1153,26 @@ namespace EBSGFramework
                         h.Severity -= severityPerTick; 
         }
 
-        public static IntVec3 FindDestination(Map targetMap, bool targetCenter = false)
+        public static IntVec3 FindDestination(this Map targetMap, bool targetCenter = false)
         {
             IntVec3 target;
-            if (targetCenter)
+            if (targetCenter) // If prioritizing center, start with seeing if it or a nearby cell is clear
             {
                 target = targetMap.Center;
                 if (target.Standable(targetMap))
                     return target;
-                
-                target = CellFinder.StandableCellNear(target, targetMap, 50);
-                if (target.IsValid) return target;
+                target = CellFinder.StandableCellNear(target, targetMap, 20);
+                if (target.IsValid)
+                    return target;
             }
+            
+            // Get a random edge cell and see if it's available 
             target = CellFinder.RandomEdgeCell(targetMap);
             if (target.Standable(targetMap)) return target;
-            target = CellFinder.StandableCellNear(target, targetMap, 30);
-            if (target.IsValid) return target;
-
-            target = CellFinder.RandomEdgeCell(targetMap);
-            target = CellFinder.StandableCellNear(target, targetMap, 30); // If the first time fails try a second time just to see if the first one was bad luck
-            return target.IsValid ? target : IntVec3.Invalid;
+            // Just find anything at this point, starting from that edge cell
+            return RCellFinder.TryFindRandomClearCellsNear(target, 1, targetMap, out var cells) ? cells.First() : IntVec3.Invalid;
         }
-
+        
         public static bool HasHediff(this Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
             if (pawn?.health?.hediffSet == null || hediff == null) return false;
@@ -1985,50 +1983,29 @@ namespace EBSGFramework
                 case StatRequirement.Always:
                     return value;
                 case StatRequirement.Lower:
-                    if (value < statDef.defaultBaseValue)
-                        return value;
-                    return 1;
+                    return value < statDef.defaultBaseValue ? value : 1;
                 case StatRequirement.Higher:
-                    if (value > statDef.defaultBaseValue)
-                        return value;
-                    return 1;
+                    return value > statDef.defaultBaseValue ? value : 1;
                 case StatRequirement.Pawn:
-                    if (thing is Pawn)
-                        return value;
-                    return 1f;
+                    return thing is Pawn ? value : 1f;
                 case StatRequirement.PawnLower:
-                    if (thing is Pawn && value < statDef.defaultBaseValue)
-                        return value;
-                    return 1f;
+                    return thing is Pawn && value < statDef.defaultBaseValue ? value : 1f;
                 case StatRequirement.PawnHigher:
-                    if (thing is Pawn && value > statDef.defaultBaseValue)
-                        return value;
-                    return 1f;
+                    return thing is Pawn && value > statDef.defaultBaseValue ? value : 1f;
                 case StatRequirement.NonPawn:
-                    if (thing is Pawn)
-                        return 1f;
-                    return value;
+                    return thing is Pawn ? 1f : value;
                 case StatRequirement.NonPawnLower:
-                    if (thing is Pawn || value >= statDef.defaultBaseValue)
-                        return 1f;
-                    return value;
+                    return thing is Pawn || value >= statDef.defaultBaseValue ? 1f : value;
                 case StatRequirement.NonPawnHigher:
-                    if (thing is Pawn || value <= statDef.defaultBaseValue)
-                        return 1f;
-                    return value;
+                    return thing is Pawn || value <= statDef.defaultBaseValue ? 1f : value;
                 case StatRequirement.Humanlike:
-                    if (thing is Pawn p && p.RaceProps.Humanlike)
-                        return value;
-                    return 1f;
+                    return thing is Pawn p && p.RaceProps.Humanlike ? value : 1f;
                 case StatRequirement.HumanlikeLower:
-                    if (thing is Pawn l && l.RaceProps.Humanlike && value < statDef.defaultBaseValue)
-                        return value;
-                    return 1f;
+                    return thing is Pawn l && l.RaceProps.Humanlike && value < statDef.defaultBaseValue ? value : 1f;
                 case StatRequirement.HumanlikeHigher:
-                    if (thing is Pawn h && h.RaceProps.Humanlike && value > statDef.defaultBaseValue)
-                        return value;
-                    return 1f;
+                    return thing is Pawn h && h.RaceProps.Humanlike && value > statDef.defaultBaseValue ? value : 1f;
             }
+
             return 1f;
         }
 

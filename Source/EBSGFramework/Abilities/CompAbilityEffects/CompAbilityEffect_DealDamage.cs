@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 using RimWorld;
 using Verse;
-using Verse.AI;
 
 namespace EBSGFramework
 {
@@ -19,17 +14,16 @@ namespace EBSGFramework
             if (Rand.Chance(GetChance(target)))
             {
                 BodyPartRecord part = null;
-                if (target.Pawn != null) 
-                {
-                    if (!Props.bodyParts.NullOrEmpty())
-                        part = target.Pawn.GetSemiRandomPartFromList(Props.bodyParts);
-                }
-
+                if (target.Pawn != null && !Props.bodyParts.NullOrEmpty()) 
+                    part = target.Pawn.GetSemiRandomPartFromList(Props.bodyParts);
                 var amount = Props.amount > 0 ? Props.amount : Props.def.defaultDamage;
                 var armorPenetration = Props.armorPenetration > 0 ? Props.armorPenetration : Props.def.defaultArmorPenetration;
 
-                target.Thing?.TakeDamage(new DamageInfo(Props.def, amount, armorPenetration,
-                    instigator: parent.pawn, hitPart: part, intendedTarget: target.Thing));
+                var dinfo = new DamageInfo(Props.def, amount, armorPenetration, instigator: parent.pawn, hitPart: part, intendedTarget: target.Thing);
+                if (part == null && Props.height.HasValue)
+                    dinfo.SetBodyRegion(Props.height.Value, Props.depth);
+                
+                target.Thing?.TakeDamage(dinfo);
             }
         }
 
@@ -45,9 +39,7 @@ namespace EBSGFramework
 
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
-            if (target.Thing == null)
-                return false;
-            return base.Valid(target, throwMessages);
+            return target.Thing != null && base.Valid(target, throwMessages);
         }
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)

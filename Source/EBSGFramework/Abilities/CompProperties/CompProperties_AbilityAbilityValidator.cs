@@ -71,6 +71,7 @@ namespace EBSGFramework
         public CheckType casterLayerCheck = CheckType.Required;
         public List<PlanetLayerDef> targetLayers = new List<PlanetLayerDef>();
         public CheckType targetLayerCheck = CheckType.Required;
+        public CheckType sameLayerCheck = CheckType.None;
         
         public List<WeatherDef> requireOneOfWeather;
         public List<WeatherDef> forbiddenWeather;

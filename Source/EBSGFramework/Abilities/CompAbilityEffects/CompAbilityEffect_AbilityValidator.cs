@@ -17,6 +17,7 @@ namespace EBSGFramework
         {
             if (Props.noMessage)
                 return null;
+            
             return !GlobalTargetLayer(target, out var targetLayerExplanation) ? targetLayerExplanation : null;
         }
 
@@ -30,7 +31,7 @@ namespace EBSGFramework
             if (!CheckCaster(!throwMessages))
                 return false;
 
-            if (!Props.targetLayers.NullOrEmpty() && !GlobalTargetLayer(target, out var targetLayerExplanation))
+            if (!GlobalTargetLayer(target, out var targetLayerExplanation))
             {
                 if (!throwMessages)
                     Messages.Message(BaseExplanation + targetLayerExplanation, Caster, MessageTypeDefOf.RejectInput, false);
@@ -43,26 +44,45 @@ namespace EBSGFramework
         public bool GlobalTargetLayer(GlobalTargetInfo target, out string targetLayerExplanation)
         {
             targetLayerExplanation = null;
-            if (Props.targetLayers.NullOrEmpty())
-                return true;
             
             var currentLayer = target.Tile.LayerDef;
             if (currentLayer == null)
                 return false;
 
-            if (!currentLayer.canFormCaravans && !target.HasWorldObject)
-                return false;
-            
-            if (Props.targetLayerCheck == CheckType.Required)
+            switch (Props.sameLayerCheck)
             {
-                if (!Props.targetLayers.Contains(currentLayer)) 
-                    targetLayerExplanation = Props.targetLayers.Count() > 1 
-                    ? "LayerMustNotBe".Translate(currentLayer.label, currentLayer.gerundLabel) 
-                    : "LayerMustBe".Translate(Props.targetLayers.First().label, Props.targetLayers.First().gerundLabel);
+                case CheckType.Forbidden:
+                    if (target.Tile.LayerDef == Caster.Tile.LayerDef)
+                    {
+                        targetLayerExplanation = "LayerMustNotBe".Translate(currentLayer.label, currentLayer.gerundLabel);
+                        return false;
+                    }
+                    break;
+                case CheckType.Required:
+                    if (target.Tile.LayerDef != Caster.Tile.LayerDef)
+                    {
+                        targetLayerExplanation = "LayerMustBe".Translate(Caster.Tile.LayerDef.label, Caster.Tile.LayerDef.gerundLabel);
+                        return false;
+                    }
+                    break;
+                case CheckType.None:
+                default:
+                    break;
             }
-            else if (Props.targetLayers.Contains(currentLayer))
-                targetLayerExplanation = "LayerMustNotBe".Translate(currentLayer.label, currentLayer.gerundLabel);
             
+            if (!Props.targetLayers.NullOrEmpty())
+            {
+                if (Props.targetLayerCheck == CheckType.Required)
+                {
+                    if (!Props.targetLayers.Contains(currentLayer))
+                        targetLayerExplanation = Props.targetLayers.Count() > 1
+                            ? "LayerMustNotBe".Translate(currentLayer.label, currentLayer.gerundLabel)
+                            : "LayerMustBe".Translate(Props.targetLayers.First().label, Props.targetLayers.First().gerundLabel);
+                }
+                else if (Props.targetLayers.Contains(currentLayer))
+                    targetLayerExplanation = "LayerMustNotBe".Translate(currentLayer.label, currentLayer.gerundLabel);
+            }
+
             return targetLayerExplanation == null;
         }
 
