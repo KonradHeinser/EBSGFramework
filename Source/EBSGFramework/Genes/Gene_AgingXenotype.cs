@@ -4,7 +4,7 @@ namespace EBSGFramework
 {
     public class Gene_AgingXenotype : HediffAdder
     {
-        private bool alreadyChanged = false;
+        private bool alreadyChanged;
 
         private AgingXenotypeExtension agingExtension;
         public AgingXenotypeExtension AgingExtension

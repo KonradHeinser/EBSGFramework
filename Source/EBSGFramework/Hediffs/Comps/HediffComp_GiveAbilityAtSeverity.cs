@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public List<AbilityDef> validAbilities = new List<AbilityDef>();
 
-        public float previousSeverity = 0f;
+        public float previousSeverity;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {

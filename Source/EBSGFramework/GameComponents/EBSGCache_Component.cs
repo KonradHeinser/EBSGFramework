@@ -72,27 +72,22 @@ namespace EBSGFramework
         public List<HediffDef> skillChangeHediffs = new List<HediffDef>();
         public List<HediffDef> shieldHediffs = new List<HediffDef>();
         public List<HediffDef> nameColorHediffs = new List<HediffDef>();
-        public List<HediffDef> capFactors = new List<HediffDef>();
 
-        private bool needNeedAlert = false;
-        private bool checkedNeedAlert = false;
+        private bool needNeedAlert;
+        private bool checkedNeedAlert;
 
-        private bool needComaAlert = false;
-        private bool checkedComaNeeds = false;
+        private bool needComaAlert;
+        private bool checkedComaNeeds;
 
-        private bool needRechargerJob = false;
-        private bool checkedRechargerJob = false;
+        private bool needRechargerJob;
+        private bool checkedRechargerJob;
 
         // Cached things of interest
-        public bool needEquippableAbilityPatches = false;
+        public bool needEquippableAbilityPatches;
         public List<ThingDef> shieldEquipment = new List<ThingDef>();
         public List<WeaponTraitDef> meleeWeaponTraits = new List<WeaponTraitDef>();
         public List<WeaponTraitDef> projectileOverrideTraits = new List<WeaponTraitDef>();
-
-        // Other
-
-        public List<Pawn> cachedHemogenicPawns = new List<Pawn>();
-
+        
         public bool ComaNeedsExist()
         {
             // Checks the def database to see if there are any needs that use displayLowAlert
@@ -176,8 +171,8 @@ namespace EBSGFramework
                         pawnNameColors.Remove(pawn);
                 } 
 
-                if (pawnNameColors.ContainsKey(pawn))
-                    result = pawnNameColors[pawn];
+                if (pawnNameColors.TryGetValue(pawn, out var color))
+                    result = color;
             }
             
             return result;
@@ -212,40 +207,24 @@ namespace EBSGFramework
                     }
                 }
 
-                if (geneCountAtLastCache.ContainsKey(pawn))
-                    geneCountAtLastCache[pawn] = pawn.genes.GenesListForReading.Count;
-                else
-                    geneCountAtLastCache.Add(pawn, pawn.genes.GenesListForReading.Count);
+                geneCountAtLastCache[pawn] = pawn.genes.GenesListForReading.Count;
 
-                if (cachedGeneMoodFactor.ContainsKey(pawn))
-                    cachedGeneMoodFactor[pawn] = num;
-                else
-                    cachedGeneMoodFactor.Add(pawn, num);
+                cachedGeneMoodFactor[pawn] = num;
             }
 
             return cachedGeneMoodFactor[pawn];
-        }
-
-        public void CachePawnWithGene(Pawn pawn)
-        {
-            if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return;
-            if (pawn.genes.GetFirstGeneOfType<Gene_Hemogen>() != null)
-                cachedHemogenicPawns.Add(pawn);
         }
 
         // Terrain cost cache
 
         public void RegisterTerrainPawn(Pawn pawn, Hediff hediff)
         {
-            if (!pawnTerrainComps.ContainsKey(pawn))
-                pawnTerrainComps.Add(pawn, hediff);
-            else
-                pawnTerrainComps[pawn] = hediff;
+            pawnTerrainComps[pawn] = hediff;
         }
 
         public void DeRegisterTerrainPawn(Pawn pawn)
         {
-            if (!pawnTerrainComps.NullOrEmpty() && pawnTerrainComps.ContainsKey(pawn))
+            if (!pawnTerrainComps.NullOrEmpty())
                 pawnTerrainComps.Remove(pawn);
         }
 
@@ -319,11 +298,7 @@ namespace EBSGFramework
         // Rather than saving them, they are just cached like this to minimize the risk of weird save fuckery caused by mod changes
         public void RebuildCaches()
         {
-            cachedHemogenicPawns = new List<Pawn>();
             pawnNameColors = new Dictionary<Pawn, Color>();
-
-            foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
-                CachePawnWithGene(pawn);
 
             CacheGenesOfInterest();
             CacheAbilitiesOfInterest();
@@ -533,7 +508,6 @@ namespace EBSGFramework
             skillChangeHediffs = new List<HediffDef>();
             shieldHediffs = new List<HediffDef>();
             nameColorHediffs = new List<HediffDef>();
-            capFactors = new List<HediffDef>();
 
             foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
             {
@@ -551,8 +525,6 @@ namespace EBSGFramework
                         shieldHediffs.Add(hediff);
                     else if (comp is HediffCompProperties_NameColor)
                         nameColorHediffs.Add(hediff);
-                    else if (comp is HediffCompProperties_CapacityFactor)
-                        capFactors.Add(hediff);
                 }
             }
         }
@@ -583,47 +555,6 @@ namespace EBSGFramework
                             projectileOverrideTraits.Add(trait);
                     }
                 }
-        }
-
-        // Post load
-
-        public override void GameComponentTick()
-        {
-            tick++;
-            if (tick % 60000 == 0)
-            {
-                if (!cachedHemogenicPawns.NullOrEmpty())
-                {
-                    List<Pawn> purgePawns = new List<Pawn>();
-                    foreach (Pawn pawn in cachedHemogenicPawns)
-                    {
-                        if (pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty() || pawn.genes.GetFirstGeneOfType<Gene_Hemogen>() == null)
-                            purgePawns.Add(pawn);
-                        else if (!pawn.Dead)
-                        {
-                            float baseAmount = 0f;
-                            Gene_Deathrest deathrest = pawn.genes.GetFirstGeneOfType<Gene_Deathrest>();
-                            if (deathrest != null && !deathrest.BoundBuildings.NullOrEmpty())
-                            {
-                                foreach (Thing thing in deathrest.BoundBuildings)
-                                    if (thing.HasComp<CompDeathrestBindable>())
-                                    {
-                                        CompDeathrestBindable bindable = thing.TryGetComp<CompDeathrestBindable>();
-                                        baseAmount += bindable.Props.hemogenLimitOffset;
-                                    }
-                            }
-                            Gene_Hemogen gene = pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
-                            var value = gene.Value;
-                            gene.ResetMax();
-                            gene.SetMax(gene.Max + baseAmount);
-                            gene.Value = value;
-                        }
-                    }
-                    if (!purgePawns.NullOrEmpty())
-                        foreach (Pawn pawn in purgePawns)
-                            cachedHemogenicPawns.Remove(pawn);
-                }
-            }
         }
     }
 }

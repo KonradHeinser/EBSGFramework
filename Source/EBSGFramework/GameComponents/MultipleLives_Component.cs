@@ -9,10 +9,10 @@ namespace EBSGFramework
 {
     public class MultipleLives_Component : GameComponent
     {
-        public bool loaded = false;
-        public bool newDead = false;
-        public bool instantRevive = false;
-        public int tick = 0;
+        public bool loaded;
+        public bool newDead;
+        public bool instantRevive;
+        public int tick;
         public static Dictionary<Pawn, HediffDef> deadPawnHediffs;
 
         public List<Corpse> deadPawns;
@@ -188,8 +188,7 @@ namespace EBSGFramework
             if (!pawn.Dead || pawn.Corpse == null) return; // Not sure how this would happen, but I ain't messin with Murphy that often
             if (!deadPawns.Contains(pawn.Corpse))
                 deadPawns.Add(pawn.Corpse);
-            if (deadPawnHediffs.ContainsKey(pawn))
-                deadPawnHediffs.Remove(pawn);
+            deadPawnHediffs.Remove(pawn);
 
             if (forbidden && !forbiddenCorpses.Contains(pawn.Corpse))
                 forbiddenCorpses.Add(pawn.Corpse);
@@ -205,7 +204,7 @@ namespace EBSGFramework
             {
                 if (deadPawns.Contains(pawn))
                     deadPawns.Remove(pawn);
-                if (pawn.InnerPawn != null && deadPawnHediffs.ContainsKey(pawn.InnerPawn))
+                if (pawn.InnerPawn != null)
                     deadPawnHediffs.Remove(pawn.InnerPawn);
                 if (forbiddenCorpses.Contains(pawn))
                     forbiddenCorpses.Remove(pawn);
@@ -214,13 +213,12 @@ namespace EBSGFramework
 
         public void ResurrectPawn(Corpse pawn)
         {
-            if (pawn == null || pawn.InnerPawn == null || !RecordPawnData(pawn.InnerPawn)) return;
+            if (pawn?.InnerPawn == null || !RecordPawnData(pawn.InnerPawn)) return;
             Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
 
             bool removeAllInjuries = false;
 
-            Map map = null;
-            IntVec3 position = IntVec3.Invalid;
+            IntVec3 position;
 
             HediffComp_MultipleLives multipleLivesComp = null;
 
@@ -242,7 +240,7 @@ namespace EBSGFramework
                 pawn.InnerPawn.RemoveAllOfHediffs(hediffs);
             }
 
-            if (pawn != null && pawn.InnerPawn.Dead && multipleLivesComp != null)
+            if (pawn.InnerPawn.Dead && multipleLivesComp != null)
             {
                 if (pawn.InnerPawn.Faction.IsPlayer)
                 {
@@ -257,6 +255,8 @@ namespace EBSGFramework
                         Find.LetterStack.ReceiveLetter(letter);
                     }
                 }
+
+                Map map;
                 if (pawn.MapHeld != null && pawn.Spawned)
                 {
                     map = pawn.MapHeld;
@@ -281,10 +281,7 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        int tile = -1;
                         Caravan caravan = null;
-
-                        tile = pawn.Tile;
 
                         // See if a caravan is holding onto the corpse. Starts by checking tile because it's probably faster than checking each container
                         List<Caravan> caravans = Find.World.worldObjects.Caravans.Where((Caravan c) => c.Tile == pawn.Tile && c.AllThings.Contains(pawn)).ToList();

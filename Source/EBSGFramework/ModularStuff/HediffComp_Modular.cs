@@ -12,7 +12,7 @@ namespace EBSGFramework
 
         public HediffStage cachedInput;
         public HediffStage cachedOutput;
-        public bool resetCache = false; //Set to true after changing modules to force a recache
+        public bool resetCache; //Set to true after changing modules to force a recache
         public bool ejectableModules = true;
         public Command_Action ejectAction;
         public static readonly Texture2D cachedEjectTex = ContentFinder<Texture2D>.Get("UI/Gizmos/EjectModule");

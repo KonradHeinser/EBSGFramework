@@ -6,9 +6,9 @@ namespace EBSGFramework
     {
         private HediffCompProperties_SeverityByGenes Props => (HediffCompProperties_SeverityByGenes)props;
 
-        private GeneDef lastGene = null;
+        private GeneDef lastGene;
 
-        private int lastCount = 0;
+        private int lastCount;
 
         protected override bool DoCheck()
         {

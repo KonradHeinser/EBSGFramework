@@ -5,14 +5,14 @@ namespace EBSGFramework
 {
     public class HiveMindGene : Gene
     {
-        public HiveMindExtension extension = null;
+        public HiveMindExtension extension;
         public List<GeneDef> hiveGenesPresent = new List<GeneDef>(); // Only goes through gene lists once per viable tick
         public List<HediffDef> hediffsWhenNoAllies = new List<HediffDef>(); // This list makes it so things don't need to iterate so much
         public List<HediffDef> allHediffs = new List<HediffDef>(); // This list was created for the basic wipe, but may have unexpected future use
         public List<HediffDef> addedHediffs = new List<HediffDef>();
         public Dictionary<string, int> hiveCounts = new Dictionary<string, int>();
         public Dictionary<string, int> previousCounts = new Dictionary<string, int>();
-        public bool stillAlone = false;
+        public bool stillAlone;
         public bool completeWipe = true;
 
         public override void PostAdd()

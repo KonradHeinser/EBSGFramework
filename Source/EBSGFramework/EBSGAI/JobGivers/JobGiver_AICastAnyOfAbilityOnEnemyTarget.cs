@@ -12,8 +12,8 @@ namespace EBSGFramework
         private int hashInterval = 10; // Alters the chances of the pawn actually trying to cast the ability. If this is set to 1, then the pawn will always attempt to use this, thus making it more difficult to use other abilties. Only recommended for abilities that should be constantly used, like attacks
         List<Ability> presentAbilities = new List<Ability>();
         static Random rnd = new Random();
-        Thing currentEnemy = null;
-        Ability chosenAbility = null;
+        Thing currentEnemy;
+        Ability chosenAbility;
 
         protected override Job TryGiveJob(Pawn pawn) // Change this to select its own target instead of using the pawn's current one
         {

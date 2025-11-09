@@ -17,13 +17,13 @@ namespace EBSGFramework
 
         public StatDef stat = null;
 
-        public SimpleCurve statCurve = null;
+        public SimpleCurve statCurve;
 
-        public bool multiplyFactorBySeverity = false;
+        public bool multiplyFactorBySeverity;
 
-        public SimpleCurve severityCurve = null;
+        public SimpleCurve severityCurve;
 
-        public SimpleCurve curve = null;
+        public SimpleCurve curve;
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {

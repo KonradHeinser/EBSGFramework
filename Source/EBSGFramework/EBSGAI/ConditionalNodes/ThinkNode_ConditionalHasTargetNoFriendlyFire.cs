@@ -10,7 +10,7 @@ namespace EBSGFramework
         private float minRadius = -1;
         private int minEnemies = 1;
         private AbilityDef ability = null;
-        private bool noTarget = false; // If you don't want to reference a specific ability for whatever reason, this can be used to signify the caster is the target
+        private bool noTarget; // If you don't want to reference a specific ability for whatever reason, this can be used to signify the caster is the target
         private bool avoidSelfHit = true; // For abilities like laser eyes that don't use traditional AoE's, this should be false. Burst types always treat this as false
         protected override bool Satisfied(Pawn pawn)
         {

@@ -8,7 +8,7 @@ namespace EBSGFramework
     {
         public int delayTicks = 5;
 
-        public int cachedGeneCount = 0;
+        public int cachedGeneCount;
 
         public List<AbilityDef> addedAbilities;
 

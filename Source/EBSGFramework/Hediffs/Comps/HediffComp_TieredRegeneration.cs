@@ -9,12 +9,12 @@ namespace EBSGFramework
         private HediffCompProperties_TieredRegeneration Props => (HediffCompProperties_TieredRegeneration)props;
         private int regrowTicksRemaining;
         private int healTicksRemaining;
-        private bool healInProgress = false;
-        private bool healWhileRegrowing = false;
-        private bool prioritizeHeal = false;
+        private bool healInProgress;
+        private bool healWhileRegrowing;
+        private bool prioritizeHeal;
 
         // Stats from the current set
-        private bool regrowthAllowed = false;
+        private bool regrowthAllowed;
         private bool healAllowed = true;
         private FloatRange tempSeverityRange = FloatRange.Zero;
         public int regrowthInterval;

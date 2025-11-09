@@ -70,7 +70,7 @@ namespace EBSGFramework
 
         public string postExplosionThingDef;
 
-        public float postExplosionThingChance = 0f;
+        public float postExplosionThingChance;
 
         public int postExplosionSpawnThingCount = 1;
 
@@ -78,7 +78,7 @@ namespace EBSGFramework
 
         public string preExplosionThingDef;
 
-        public float preExplosionThingChance = 0f;
+        public float preExplosionThingChance;
 
         public bool damageFalloff;
 
@@ -88,7 +88,7 @@ namespace EBSGFramework
 
         public string postExplosionThingWaterDef;
 
-        public float screenShakeFactor = 0;
+        public float screenShakeFactor;
 
         public int randomFireRadius = 25;
 
@@ -106,7 +106,7 @@ namespace EBSGFramework
 
         public string damageDef;
 
-        public GasType? extraGasType = null;
+        public GasType? extraGasType;
 
         public float? gasRadiusOverride = null;
 

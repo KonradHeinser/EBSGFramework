@@ -108,9 +108,9 @@
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_WorldLayer.cs" />
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
-    <Compile Include="Hediffs\CompProperties\HediffCompProperties_CapacityFactor.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_FlipGenderPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GenderByAge.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
@@ -120,9 +120,9 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
-    <Compile Include="Hediffs\Comps\HediffComp_CapacityFactor.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_FlipGenderPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GenderByAge.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />

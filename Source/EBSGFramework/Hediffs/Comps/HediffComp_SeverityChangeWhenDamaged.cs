@@ -6,7 +6,7 @@ namespace EBSGFramework
     {
         public HediffCompProperties_SeverityChangeWhenDamaged Props => (HediffCompProperties_SeverityChangeWhenDamaged)props;
 
-        public int cooldownTicks = 0;
+        public int cooldownTicks;
 
         public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {

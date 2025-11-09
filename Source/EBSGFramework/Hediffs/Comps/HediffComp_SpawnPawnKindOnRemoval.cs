@@ -8,7 +8,7 @@ namespace EBSGFramework
     {
         HediffCompProperties_SpawnPawnKindOnRemoval Props => (HediffCompProperties_SpawnPawnKindOnRemoval)props;
 
-        public Thing instigator = null;
+        public Thing instigator;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {

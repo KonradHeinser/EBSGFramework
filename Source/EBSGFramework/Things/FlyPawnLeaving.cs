@@ -15,7 +15,7 @@ namespace EBSGFramework
 
         private bool alreadyLeft;
 
-        private bool alreadyCheckedExtension = false;
+        private bool alreadyCheckedExtension;
 
         private EBSGExtension extension;
 

@@ -9,7 +9,7 @@ namespace EBSGFramework
         [Unsaved(false)]
         private ResourceGene cachedResourceGene;
 
-        DRGExtension DRGextension = null;
+        DRGExtension DRGextension;
 
         public DRGExtension DRGExtension
         {
@@ -24,7 +24,7 @@ namespace EBSGFramework
             }
         }
 
-        public bool extensionAlreadyChecked = false;
+        public bool extensionAlreadyChecked;
 
         public bool CanOffset
         {

@@ -6,7 +6,7 @@ namespace EBSGFramework
     {
         public new HediffCompProperties_ExplodeWhenDamaged Props => (HediffCompProperties_ExplodeWhenDamaged)props;
 
-        public int cooldownTicks = 0; // Not saved because this is just to avoid performance issues
+        public int cooldownTicks; // Not saved because this is just to avoid performance issues
 
         public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {

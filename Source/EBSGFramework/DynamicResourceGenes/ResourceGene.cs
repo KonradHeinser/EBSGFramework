@@ -11,9 +11,9 @@ namespace EBSGFramework
 
         public Gene_Resource Resource => this;
 
-        DRGExtension extension = null;
+        DRGExtension extension;
 
-        private EBSGExtension EBSGextension = null;
+        private EBSGExtension EBSGextension;
 
         private bool checkedEBSGExtension;
 
@@ -30,11 +30,11 @@ namespace EBSGFramework
             }
         }
 
-        public int cachedGeneCount = 0;
+        public int cachedGeneCount;
 
         public List<AbilityDef> addedAbilities;
 
-        public bool extensionAlreadyChecked = false;
+        public bool extensionAlreadyChecked;
 
         public Pawn Pawn => pawn;
 

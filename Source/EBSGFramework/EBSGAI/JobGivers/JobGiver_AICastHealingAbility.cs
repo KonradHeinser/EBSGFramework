@@ -12,7 +12,7 @@ namespace EBSGFramework
 
         private bool allTendable = true;
 
-        private Pawn targetPawn = null;
+        private Pawn targetPawn;
 
         protected override Job TryGiveJob(Pawn pawn)
         {

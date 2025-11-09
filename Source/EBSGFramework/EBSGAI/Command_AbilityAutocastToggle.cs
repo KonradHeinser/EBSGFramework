@@ -10,7 +10,7 @@ namespace EBSGFramework
     [StaticConstructorOnStartup]
     public class Command_AbilityAutocastToggle : Command
     {
-        CompAbilityEffect_AutocastToggle toggle = null;
+        CompAbilityEffect_AutocastToggle toggle;
 
         protected Ability ability;
 

@@ -7,11 +7,11 @@ namespace EBSGFramework
     {
         public HediffCompProperties_FlipGenderPeriodically Props => props as HediffCompProperties_FlipGenderPeriodically;
 
-        private int interval = 0;
+        private int interval;
 
         private Gender original;
 
-        private BeardDef originalBeard = null;
+        private BeardDef originalBeard;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {

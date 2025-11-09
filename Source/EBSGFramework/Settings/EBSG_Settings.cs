@@ -38,25 +38,25 @@ namespace EBSGFramework
         private static Vector2 scrollPosition = Vector2.zero;
 
         public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
-        public static bool hideInactiveSkinGenes = false;
-        public static bool hideInactiveHairGenes = false;
+        public static bool hideInactiveSkinGenes;
+        public static bool hideInactiveHairGenes;
         public static bool defaultToRecipeIcon = true;
 
-        public static bool noInnateMechlinkPrereq = false;
-        public static bool noInnateRemotePrereqs = false;
-        public static bool noInnatePsylinkPrereq = false;
+        public static bool noInnateMechlinkPrereq;
+        public static bool noInnateRemotePrereqs;
+        public static bool noInnatePsylinkPrereq;
         public static bool psychicInsulationBondOpinion = true;
         public static bool psychicInsulationBondMood = true;
 
         public static bool superclottingArchite = true;
 
-        public static bool architePsychicInfluencerBondTorn = false;
+        public static bool architePsychicInfluencerBondTorn;
 
         public static Dictionary<string, bool> thinkTreeSettings;
         public static List<string> thinkTreeSettingKeys;
         public static List<bool> thinkTreeSettingBools;
 
-        private static bool alreadyCheckThinkSettings = false;
+        private static bool alreadyCheckThinkSettings;
 
         private List<TabRecord> tabsList;
 
@@ -96,7 +96,7 @@ namespace EBSGFramework
             }
         }
 
-        private static bool alreadyBuiltFlexSettings = false;
+        private static bool alreadyBuiltFlexSettings;
         private static Dictionary<SettingCategoryDef, List<SettingDef>> flexibleSettings;
         private static SettingCategoryDef currentCategory;
         private static Dictionary<string, bool> flexibleBools;
@@ -244,8 +244,8 @@ namespace EBSGFramework
             return false;
         }
 
-        private static bool needThinkTree = false;
-        private static bool needTreeChecked = false;
+        private static bool needThinkTree;
+        private static bool needTreeChecked;
 
         public static bool NeedEBSGThinkTree()
         {
@@ -269,7 +269,7 @@ namespace EBSGFramework
         private Dictionary<string, List<ThinkBranchSetting>> treeSettings; // All the settings that need to show up in the menu. This doesn't mess with settings themselves
         private Dictionary<string, List<string>> treeLabelsAndDescs; // The key is the label, and this relies on the counts of this and treeSettings remaining the same
         private List<string> treeSettingIDs = new List<string>(); // Gives a list that can be iterated through
-        private bool builtTreeSettingMenuOptions = false;
+        private bool builtTreeSettingMenuOptions;
         private List<FloatMenuOption> thinkMenus;
         private string currentThinkMenu = "EBSGFramework";
 

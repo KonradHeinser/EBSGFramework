@@ -6,7 +6,7 @@ namespace EBSGFramework
     {
         public new HediffCompProperties_ExplodingAttacks Props => (HediffCompProperties_ExplodingAttacks)props;
 
-        public bool currentlyExploding = false;
+        public bool currentlyExploding;
         public int explosionCooldown = -1;
 
         public override void CompPostTickInterval(ref float severityAdjustment, int delta)

@@ -43,9 +43,9 @@ namespace EBSGFramework
 
         private bool checkedAges;
 
-        private bool hasDes = false;
+        private bool hasDes;
 
-        private bool checkedDes = false;
+        private bool checkedDes;
 
         public bool InAges(Pawn pawn)
         {

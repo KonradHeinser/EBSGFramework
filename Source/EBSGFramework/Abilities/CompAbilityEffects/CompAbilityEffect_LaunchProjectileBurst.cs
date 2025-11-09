@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public int ticksToShot = -1;
 
-        public int shotsLeft = 0;
+        public int shotsLeft;
 
         public LocalTargetInfo curTarget;
 

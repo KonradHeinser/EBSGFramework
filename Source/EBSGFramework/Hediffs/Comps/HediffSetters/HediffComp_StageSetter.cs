@@ -13,7 +13,7 @@ namespace EBSGFramework
 
         private Texture2D icon;
 
-        private bool? prereqs = null;
+        private bool? prereqs;
 
         private bool Prereqs
         {

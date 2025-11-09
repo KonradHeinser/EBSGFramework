@@ -192,8 +192,6 @@ namespace EBSGFramework
                      prefix: new HarmonyMethod(patchType, nameof(RemoveTraitPrefix)));
                 harmony.Patch(AccessTools.Method(typeof(StatPart_FertilityByGenderAge), "AgeFactor"),
                     postfix: new HarmonyMethod(patchType, nameof(FertilityByAgeAgeFactorPostfix)));
-                harmony.Patch(AccessTools.Method(typeof(Gene), nameof(Gene.PostAdd)),
-                    postfix: new HarmonyMethod(patchType, nameof(PostAddGenePostfix)));
                 harmony.Patch(AccessTools.PropertyGetter(typeof(Verb_LaunchProjectile), nameof(Verb_LaunchProjectile.Projectile)),
                     postfix: new HarmonyMethod(patchType, nameof(LaunchProjectileProjectilePostfix)));
                 harmony.Patch(AccessTools.Method(typeof(Verb_MeleeAttackDamage), "DamageInfosToApply"),
@@ -2260,11 +2258,6 @@ namespace EBSGFramework
         {
             if (xp < 0 && !direct)
                 xp *= ___pawn.StatOrOne(EBSGDefOf.EBSG_SkillLossRate);
-        }
-
-        public static void PostAddGenePostfix(Pawn ___pawn)
-        {
-            Cache?.CachePawnWithGene(___pawn);
         }
 
         public static void MakeRecipeProductsPostfix(ref IEnumerable<Thing> __result, RecipeDef recipeDef, Pawn worker, List<Thing> ingredients, Thing dominantIngredient,

@@ -13,7 +13,7 @@ namespace EBSGFramework
 
         private int remainingCharges;
 
-        private int cooldownLeft = 0;
+        private int cooldownLeft;
 
         private Ability ability;
 

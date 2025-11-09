@@ -438,7 +438,7 @@ namespace EBSGFramework
                 boundBuilding.TryGetComp<CompComaGeneBindable>().Notify_ComaEnded();
         }
 
-        private bool shownMissingNeedWarning = false;
+        private bool shownMissingNeedWarning;
 
         public override IEnumerable<Gizmo> GetGizmos()
         {

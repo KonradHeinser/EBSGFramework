@@ -8,7 +8,7 @@ namespace EBSGFramework
     {
         private bool safeJumpsOnly = true; // Only jumps at a target if they are within half range to avoid pawns jumping too far ahead of allies
         private bool onlyWhileWieldingMeleeWeapon = true;
-        Thing currentEnemy = null;
+        Thing currentEnemy;
 
         protected override Job TryGiveJob(Pawn pawn) // Change this to select its own target instead of using the pawn's current one
         {

@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         private Gender original;
 
-        private BeardDef originalBeard = null;
+        private BeardDef originalBeard;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {

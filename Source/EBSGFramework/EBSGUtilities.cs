@@ -985,7 +985,7 @@ namespace EBSGFramework
 
         public static void AddOrAppendHediff(this Pawn pawn, float initialSeverity = 1, float severityIncrease = 0, HediffDef hediff = null, Pawn other = null, FloatRange? finalRange = null)
         {
-            // Clamps the initial value immediately so the change is carried for all new hediffs. Generaaly only relevant in cases where the initial can be changed by other things
+            // Clamps the initial value immediately so the change is carried for all new hediffs. Generally only relevant in cases where the initial can be changed by other things
             if (finalRange != null && initialSeverity > 0 && !finalRange.Value.ValidValue(initialSeverity))
                 initialSeverity = Mathf.Clamp(initialSeverity, finalRange.Value.min, finalRange.Value.max);
 
@@ -1189,11 +1189,15 @@ namespace EBSGFramework
 
         public static bool HasHediff(this Pawn pawn, HediffDef hediff, Pawn other, out Hediff result)
         {
-            if (other == null)
+            result = null;
+            if (hediff == null)
+                return false;
+            
+            // Check if there's actually supposed to be an other pawn
+            if (other == null || !typeof(HediffWithTarget).IsAssignableFrom(hediff.hediffClass))
                 return pawn.HasHediff(hediff, out result);
 
-            result = null;
-            if (pawn?.health?.hediffSet == null || hediff == null) return false;
+            if (pawn?.health?.hediffSet == null) return false;
 
             // Test to see if there's an easy way out
             result = pawn.health.hediffSet.GetFirstHediffOfDef(hediff); 

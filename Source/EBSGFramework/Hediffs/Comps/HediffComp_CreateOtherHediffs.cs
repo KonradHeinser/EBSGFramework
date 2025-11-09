@@ -7,7 +7,7 @@ namespace EBSGFramework
     {
         private HediffCompProperties_CreateOtherHediffs Props => (HediffCompProperties_CreateOtherHediffs)props;
 
-        public bool removeHediff = false; // flag for removing hediff after removing a part to avoid killing the pawn in one hediff
+        public bool removeHediff; // flag for removing hediff after removing a part to avoid killing the pawn in one hediff
 
         public override void CompPostTick(ref float severityAdjustment)
         {

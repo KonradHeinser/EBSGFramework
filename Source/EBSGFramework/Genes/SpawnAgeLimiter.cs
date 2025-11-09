@@ -7,13 +7,13 @@ namespace EBSGFramework
     // Named as such because this was originally solely for spawn age limiting, it now serves as a universal base for various things
     public class SpawnAgeLimiter : Gene
     {
-        public int cachedGeneCount = 0;
+        public int cachedGeneCount;
 
         public int rerenderInterval = 500;
 
         public int lastChangeTick = -1;
 
-        public int stage = 0;
+        public int stage;
 
         public List<AbilityDef> addedAbilities;
 

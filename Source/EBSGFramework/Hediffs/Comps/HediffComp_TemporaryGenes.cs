@@ -9,9 +9,9 @@ namespace EBSGFramework
 
         public List<GeneDef> addedGenes;
 
-        private FloatRange? currentRange = null;
+        private FloatRange? currentRange;
 
-        private float prevSeverity = 0f;
+        private float prevSeverity;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {

@@ -8,7 +8,7 @@ namespace EBSGFramework
 {
     public class JobDriver_Gatherer : JobDriver
     {
-        private int progress = 0; // Ticks already spent
+        private int progress; // Ticks already spent
         private int progressNeeded = 1500; // Ticks required
         public Thing GathererCenter => TargetA.Thing;
         public IntVec3 GathererDestination => TargetB.Cell;

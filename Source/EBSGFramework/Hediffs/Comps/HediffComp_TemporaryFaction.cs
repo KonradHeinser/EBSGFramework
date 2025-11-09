@@ -9,15 +9,15 @@ namespace EBSGFramework
     {
         public HediffCompProperties_TemporaryFaction Props => (HediffCompProperties_TemporaryFaction)props;
 
-        private Faction oldFaction = null;
+        private Faction oldFaction;
 
-        private PawnKindDef oldKindDef = null;
+        private PawnKindDef oldKindDef;
 
         private HediffWithTarget ParentWithTarget => parent as HediffWithTarget;
 
         private Pawn ParentTarget => ParentWithTarget?.target as Pawn;
 
-        public Faction faction = null;
+        public Faction faction;
 
         public bool GetFaction(bool removing = false)
         {
