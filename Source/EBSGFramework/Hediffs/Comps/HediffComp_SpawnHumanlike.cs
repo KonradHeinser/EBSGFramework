@@ -140,9 +140,7 @@ namespace EBSGFramework
 
             if (spawnLeft != -1)
             {
-                if (allRemaining)
-                    numberToSpawn = spawnLeft;
-                else if (numberToSpawn > spawnLeft)
+                if (allRemaining || numberToSpawn > spawnLeft)
                     numberToSpawn = spawnLeft;
                 spawnLeft -= numberToSpawn;
             }

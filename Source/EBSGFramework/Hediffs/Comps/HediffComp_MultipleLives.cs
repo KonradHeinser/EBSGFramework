@@ -20,6 +20,16 @@ namespace EBSGFramework
 
         public float revivalProgress;
 
+        public override bool CompShouldRemove
+        {
+            get
+            {
+                if (livesLeft == 0 && Props.deleteOnFinalRevive)
+                    return true;
+                return base.CompShouldRemove;
+            }
+        }
+
         public override string CompTipStringExtra
         {
             get

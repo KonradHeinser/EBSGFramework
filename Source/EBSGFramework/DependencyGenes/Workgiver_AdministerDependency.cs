@@ -65,9 +65,8 @@ namespace EBSGFramework
             if (!p.NeedToSatisfyIDG(out var tmpDependencies))
                 return null;
 
-            foreach (var hediff in tmpDependencies)
+            foreach (var thing in tmpDependencies.Select(h => h.FindIngestibleFor(pawn)))
             {
-                Thing thing = hediff.FindIngestibleFor(pawn);
                 if (thing != null)
                 {
                     Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, thing, p);

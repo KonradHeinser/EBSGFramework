@@ -29,10 +29,7 @@ namespace EBSGFramework
             if (Cache?.idgGenes.NullOrEmpty() != false)
                 return 0f;
 
-            if (pawn.NeedToSatisfyIDG(out _))
-                return 9.25f;
-            
-            return 0f;
+            return pawn.NeedToSatisfyIDG(out _, true) ? 9.25f : 0f;
         }
 
         protected override Job TryGiveJob(Pawn pawn)
@@ -41,7 +38,7 @@ namespace EBSGFramework
             if (!pawn.NeedToSatisfyIDG(out var tmpDependencies))
                 return null;
 
-            tmpDependencies.SortBy((Hediff_Dependency x) => 0f - x.Severity);
+            tmpDependencies.SortBy(h => 0f - h.Severity);
             foreach (Hediff_Dependency hediff in tmpDependencies)
             {
                 Thing thing = hediff.FindIngestibleFor(pawn);

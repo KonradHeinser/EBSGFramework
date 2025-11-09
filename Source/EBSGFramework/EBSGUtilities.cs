@@ -1045,7 +1045,7 @@ namespace EBSGFramework
             stage.destroyPart = newStage.destroyPart;
         }
 
-        public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies)
+        public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies, bool quick = false)
         {
             dependencies = new List<Hediff_Dependency>();
             if (pawn.genes?.GenesListForReading.NullOrEmpty() != false)
@@ -1053,7 +1053,11 @@ namespace EBSGFramework
 
             foreach (Gene gene in pawn.genes.GenesListForReading)
                 if (gene is Gene_Dependency d && d.LinkedHediff?.ShouldSatisfy == true)
+                {
+                    if (quick)
+                        return true;
                     dependencies.Add(d.LinkedHediff);
+                }
 
             return !dependencies.NullOrEmpty();
         }
@@ -2319,13 +2323,12 @@ namespace EBSGFramework
                 if (pawn.apparel != null)
                 {
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;
-                    for (int i = 0; i < wornApparel.Count; i++)
-                        wornApparel[i].Notify_PawnResurrected(pawn);
+                    foreach (var t in wornApparel)
+                        t.Notify_PawnResurrected(pawn);
                 }
             }
             PawnDiedOrDownedThoughtsUtility.RemoveDiedThoughts(pawn);
-            if (pawn.royalty != null)
-                pawn.royalty.Notify_Resurrected();
+            pawn.royalty?.Notify_Resurrected();
 
             if (pawn.guest != null && pawn.guest.IsInteractionEnabled(PrisonerInteractionModeDefOf.Execution))
                 pawn.guest.SetNoInteraction();

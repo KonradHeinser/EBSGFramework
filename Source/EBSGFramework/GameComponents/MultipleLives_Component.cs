@@ -299,8 +299,7 @@ namespace EBSGFramework
                         else if (pawn.Faction.IsPlayer)
                         {
                             List<Pawn> pawns = new List<Pawn> { pawn.InnerPawn };
-                            if (multipleLivesComp != null)
-                                CaravanMaker.MakeCaravan(pawns, pawn.Faction, multipleLivesComp.deathTile, false); // Creates caravan on death tile if all else fails
+                            CaravanMaker.MakeCaravan(pawns, pawn.Faction, multipleLivesComp.deathTile, false); // Creates caravan on death tile if all else fails
                         }
                     }
                 }

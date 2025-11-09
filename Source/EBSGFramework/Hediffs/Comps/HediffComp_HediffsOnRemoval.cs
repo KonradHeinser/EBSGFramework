@@ -9,6 +9,7 @@ namespace EBSGFramework
 
         public override void CompPostPostRemoved()
         {
+            Log.Message("Ding");
             base.CompPostPostRemoved();
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
                 return;

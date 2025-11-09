@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -32,7 +33,7 @@ namespace EBSGFramework
                 return null;
 
             Pawn p = t as Pawn;
-            if (!p.Position.IsInPrisonCell(p.Map))
+            if (p?.Position.IsInPrisonCell(p.Map) != true)
                 return null;
             if (WardenFeedUtility.ShouldBeFed(p)) 
                 return null;
@@ -61,23 +62,22 @@ namespace EBSGFramework
         {
             if (p.carryTracker.CarriedThing != null && dependency.LinkedGene?.ValidIngest(p.carryTracker.CarriedThing) == true)
                 return true;
-            for (int i = 0; i < p.inventory.innerContainer.Count; i++)
+            foreach (var t in p.inventory.innerContainer)
             {
-                if (dependency.LinkedGene.ValidIngest(p.inventory.innerContainer[i]))
+                if (dependency.LinkedGene.ValidIngest(t))
                     return true;
             }
             Room room = p.GetRoom();
+            
             if (room != null)
             {
                 List<Region> regions = room.Regions;
-                for (int i = 0; i < regions.Count; i++)
-                {
-                    for (int j = 0; j < regions[i].ListerThings.AllThings.Count; j++)
-                    {
-                        if (dependency.LinkedGene.ValidIngest(regions[i].ListerThings.AllThings[j]))
-                            return true;
-                    }
-                }
+
+                if (dependency.Extension?.validThings?.Contains(ThingDefOf.MealNutrientPaste) == true &&
+                    regions.SelectMany(t => t.ListerThings.AllThings).Any(t => t is Building_NutrientPasteDispenser d && d.CanDispenseNow))
+                    return true;
+                    
+                return regions.SelectMany(t => t.ListerThings.AllThings).Any(t => dependency.LinkedGene.ValidIngest(t));
             }
             return false;
         }

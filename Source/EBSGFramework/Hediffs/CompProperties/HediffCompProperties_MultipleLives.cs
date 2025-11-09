@@ -20,6 +20,7 @@ namespace EBSGFramework
         public float revivalChance = 1f; // Chance that the pawn can begin reviving. If this doesn't come to pass, then infinite lives become 0, or an extra life is expended (until 0)
         public bool onlyOneChance = false; // If the revival fails, just die without expending additional lives
         public bool deleteOnFailedRevive = false; // Deletes corpse if the pawn fails to revive due to chance or lack of lives
+        public bool deleteOnFinalRevive = false;
         public SoundDef failSound; // If the delete is active, then things similar to the HediffCompProperties_DestroyOnDeath stuff become available
         public ThingDef thingSpawnOnFail;
         public List<ThingDef> thingsToSpawnOnFail;
