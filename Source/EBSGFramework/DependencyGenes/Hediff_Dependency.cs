@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -111,8 +112,9 @@ namespace EBSGFramework
                         {
                             if (compProps is HediffCompProperties_SeverityPerDay severityComp)
                             {
-                                if (severityComp.severityPerDay > 0) severityPerDay = severityComp.severityPerDay;
-                                else severityPerDay = severityComp.severityPerDayRange.Average;
+                                severityPerDay = severityComp.severityPerDay > 0 
+                                    ? severityComp.severityPerDay 
+                                    : severityComp.severityPerDayRange.Average;
                             }
                         }
                         if (severityPerDay > 0 && !def.stages.NullOrEmpty())
@@ -209,49 +211,52 @@ namespace EBSGFramework
         public Thing FindIngestibleFor(Pawn pawn)
         {
             ThingOwner<Thing> innerContainer = pawn.inventory.innerContainer;
-            for (int i = 0; i < innerContainer.Count; i++)
-            {
-                if (IngestibleValidator(pawn, innerContainer[i]))
-                {
-                    return innerContainer[i];
-                }
-            }
+            foreach (var t in innerContainer)
+                if (IngestibleValidator(pawn, t))
+                    return t;
 
-            if (pawn.IsColonist && pawn.Map?.mapPawns?.SpawnedColonyAnimals.NullOrEmpty() == false)
-                foreach (Pawn spawnedColonyAnimal in pawn.Map.mapPawns.SpawnedColonyAnimals)
+            if (pawn.IsColonist && pawn.MapHeld?.mapPawns?.SpawnedColonyAnimals.NullOrEmpty() == false)
+                foreach (Pawn spawnedColonyAnimal in pawn.MapHeld.mapPawns.SpawnedColonyAnimals)
                     foreach (Thing item in spawnedColonyAnimal.inventory.innerContainer)
                         if (IngestibleValidator(pawn, item) && !spawnedColonyAnimal.IsForbidden(pawn) && pawn.CanReach(spawnedColonyAnimal, PathEndMode.OnCell, Danger.Some))
                             return item;
 
             if (chemical != null)
             {
-                Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, (Thing x) => IngestibleValidator(pawn, x));
+                Thing thing = GenClosest.ClosestThingReachable(pawn.PositionHeld, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, x => IngestibleValidator(pawn, x));
                 if (thing != null)
                     return thing;
             }
             else
             {
-                Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, (Thing x) => IngestibleValidator(pawn, x));
+                Thing thing = GenClosest.ClosestThingReachable(pawn.PositionHeld, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, x => IngestibleValidator(pawn, x));
                 if (thing != null)
                     return thing;
             }
 
-            if (Extension != null)
+            if (Extension != null && pawn.MapHeld != null)
             {
                 if (!Extension.validThings.NullOrEmpty())
                 {
                     foreach (ThingDef thingDef in Extension.validThings)
                     {
-                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.PositionHeld, pawn.MapHeld, pawn.MapHeld.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => IngestibleValidator(pawn, t));
                         if (thing != null)
                             return thing;
+                        if (thingDef == ThingDefOf.MealNutrientPaste)
+                        {
+                            var dispenser = GenClosest.ClosestThingReachable(pawn.PositionHeld, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.FoodDispenser), PathEndMode.InteractionCell, TraverseParms.For(pawn), 9999f, t => t is Building_NutrientPasteDispenser d && d.CanDispenseNow);
+                            if (dispenser != null)
+                                return dispenser;
+                        }
+                        
                     }
                     if (Extension.checkIngredients)
                     {
-                        List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => LinkedGene.ValidIngest(t));
+                        List<Thing> things = pawn.MapHeld.listerThings.AllThings.FindAll(t => LinkedGene.ValidIngest(t));
                         if (!things.NullOrEmpty())
                         {
-                            Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                            Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.PositionHeld, pawn.MapHeld, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => IngestibleValidator(pawn, t));
                             if (thing != null)
                                 return thing;
                         }
@@ -259,10 +264,11 @@ namespace EBSGFramework
                 }
                 if (!Extension.validCategories.NullOrEmpty())
                 {
-                    List<Thing> things = pawn.Map.listerThings.AllThings.FindAll((Thing t) => t.IngestibleNow && !t.IsForbidden(pawn) && pawn.CanReserve(t) && CheckCategories(t));
+                    List<Thing> things = pawn.MapHeld?.listerThings.AllThings.FindAll(t => t.IngestibleNow && 
+                                                                    !t.IsForbidden(pawn) && pawn.CanReserve(t) && CheckCategories(t));
                     if (!things.NullOrEmpty())
                     {
-                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => IngestibleValidator(pawn, t));
+                        Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.PositionHeld, pawn.MapHeld, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => IngestibleValidator(pawn, t));
                         if (thing != null)
                             return thing;
                     }
@@ -274,9 +280,8 @@ namespace EBSGFramework
         private bool CheckCategories(Thing thing)
         {
             if (!thing.def.thingCategories.NullOrEmpty())
-                foreach (ThingCategoryDef thingCategory in thing.def.thingCategories)
-                    if (Extension.validCategories.Contains(thingCategory))
-                        return true;
+                if (Enumerable.Any(thing.def.thingCategories, thingCategory => Extension.validCategories.Contains(thingCategory)))
+                    return true;
 
             CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
 
@@ -289,11 +294,8 @@ namespace EBSGFramework
                     FoodUtility.GetFoodKind(thing) == FoodKind.NonMeat)
                     return true;
 
-                foreach (ThingDef ingredient in ingredients.ingredients)
-                    if (!ingredient.thingCategories.NullOrEmpty())
-                        foreach (ThingCategoryDef ingredientCategory in ingredient.thingCategories)
-                            if (Extension.validCategories.Contains(ingredientCategory))
-                                return true;
+                return ingredients.ingredients.Where(ingredient => !ingredient.thingCategories.NullOrEmpty()).SelectMany(ingredient => 
+                    ingredient.thingCategories).Any(ingredientCategory => Extension.validCategories.Contains(ingredientCategory));
             }
 
             return false;

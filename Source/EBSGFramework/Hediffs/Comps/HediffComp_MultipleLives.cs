@@ -63,8 +63,9 @@ namespace EBSGFramework
                                     foreach (HediffCompProperties compProps in parent.def.comps)
                                         if (compProps is HediffCompProperties_SeverityPerDay severityComp)
                                         {
-                                            if (severityComp.severityPerDay > 0) severityPerDay = severityComp.severityPerDay;
-                                            else severityPerDay = severityComp.severityPerDayRange.Average;
+                                            severityPerDay = severityComp.severityPerDay > 0 
+                                                ? severityComp.severityPerDay 
+                                                : severityComp.severityPerDayRange.Average;
                                             break;
                                         }
                                     if (severityPerDay > 0)
@@ -319,11 +320,11 @@ namespace EBSGFramework
         {
             base.CompExposeData();
             Scribe_Values.Look(ref livesLeft, "EBSG_livesLeft", Props.extraLives);
-            Scribe_Values.Look(ref progressPercentage, "EBSG_progressPercentage", 0);
-            Scribe_Values.Look(ref pawnReviving, "EBSG_pawnReviving", false);
-            Scribe_Values.Look(ref revivalProgress, "EBSG_revivalProgress", 0);
-            Scribe_Values.Look(ref hoursToRevive, "EBSG_hoursToRevive", 0);
-            Scribe_Values.Look(ref deathTile, "EBSG_deathTile", 0);
+            Scribe_Values.Look(ref progressPercentage, "EBSG_progressPercentage");
+            Scribe_Values.Look(ref pawnReviving, "EBSG_pawnReviving");
+            Scribe_Values.Look(ref revivalProgress, "EBSG_revivalProgress");
+            Scribe_Values.Look(ref hoursToRevive, "EBSG_hoursToRevive");
+            Scribe_Values.Look(ref deathTile, "EBSG_deathTile");
         }
     }
 }

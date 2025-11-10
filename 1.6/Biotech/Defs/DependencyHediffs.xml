@@ -93,7 +93,7 @@
     <HediffDef ParentName="EBSG_DependencyHediffBase">
         <defName>EBSG_GeneticFoodDependency</defName>
         <label>food dependency</label>
-        <description>This person has a genetically-induced biochemical dependency on a specific food/food group. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
+        <description>This person has a genetically-induced biochemical dependency on a specific food. Without regular consumption of the foods, their body cannot maintain itself in a healthy state and they will suffer degrading health and mood until they die.\n\nTakes effect after age: 13.</description>
         <comps>
             <li Class="HediffCompProperties_SeverityPerDay">
                 <severityPerDay>0.2</severityPerDay> <!--This is equivalent to the normal dependency genes. The thresholds are 5, 30, and 60 days-->
