@@ -19,9 +19,9 @@ namespace EBSGFramework
 
                 if (Props.makeFilth && Props.bloodFilthToSpawnRange != IntRange.Zero)
                 {
-                    float bloodMutliplier = Props.multiplyBloodByBodySize ? bodySizeMult : 1f;
+                    float bloodMultiplier = Props.multiplyBloodByBodySize ? bodySizeMult : 1f;
 
-                    int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMutliplier);
+                    int randomInRange = (int)(Props.bloodFilthToSpawnRange.RandomInRange * bloodMultiplier);
                     for (int i = 0; i < randomInRange; i++)
                     {
                         IntVec3 c = position;
@@ -63,10 +63,11 @@ namespace EBSGFramework
 
                 DamageDef damageToReport = Props.damageDefToReport ??
                     (ModsConfig.BiotechActive ? DamageDefOf.Vaporize : DamageDefOf.Burn);
-
-                victim.TakeDamage(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
-
-                if (Props.deleteCorpse) victim?.Corpse?.Destroy(DestroyMode.KillFinalize);
+                
+                if (Props.deleteCorpse)
+                    victim.VaporizePawn();
+                else
+                    victim.Kill(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
             }
         }
     }

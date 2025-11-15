@@ -1,6 +1,4 @@
-﻿using Verse;
-
-namespace EBSGFramework
+﻿namespace EBSGFramework
 {
     public class AdditionalFertilityByAge : HediffAdder
     {

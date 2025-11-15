@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Verse;
+﻿using Verse;
 
 // I made this because the VFE hediff adder makes the hediffs pop up again if any new gene is added through any other method, like a gene randomizing hediff as a wild example
 namespace EBSGFramework

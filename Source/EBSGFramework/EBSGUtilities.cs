@@ -690,12 +690,11 @@ namespace EBSGFramework
         {
             foreach (string phrase in dictionary1.Keys)
             {
-                if (!dictionary2.ContainsKey(phrase)) return false;
-                if (dictionary1[phrase] != dictionary2[phrase]) return false;
+                if (!dictionary2.TryGetValue(phrase, out var value)) return false;
+                if (dictionary1[phrase] != value) return false;
                 dictionary2.Remove(phrase);
             }
-            if (!dictionary2.NullOrEmpty()) return false;
-            return true;
+            return dictionary2.NullOrEmpty();
         }
 
         public static Hediff AddHediffToPart(this Pawn pawn, BodyPartRecord bodyPart, HediffDef hediffDef, float initialSeverity = 1, float severityAdded = 0, bool onlyNew = false, Pawn other = null)
@@ -718,14 +717,20 @@ namespace EBSGFramework
             if (firstHediffOfDef != null && onlyNew) 
                 return null;
 
-            if (firstHediffOfDef != null && !onlyNew)
+            if (firstHediffOfDef != null)
             {
-                if (firstHediffOfDef is Hediff_Psylink psylink)
-                    psylink.ChangeLevel(Mathf.CeilToInt(severityAdded), false);
-                else if (firstHediffOfDef is Hediff_Level level)
-                    level.ChangeLevel(Mathf.CeilToInt(severityAdded));
-                else
-                    firstHediffOfDef.Severity += severityAdded;
+                switch (firstHediffOfDef)
+                {
+                    case Hediff_Psylink psylink:
+                        psylink.ChangeLevel(Mathf.CeilToInt(severityAdded), false);
+                        break;
+                    case Hediff_Level level:
+                        level.ChangeLevel(Mathf.CeilToInt(severityAdded));
+                        break;
+                    default:
+                        firstHediffOfDef.Severity += severityAdded;
+                        break;
+                }
             }
             else if (initialSeverity > 0)
             {
@@ -736,18 +741,19 @@ namespace EBSGFramework
             return firstHediffOfDef;
         }
 
+        public static List<Hediff> GetHediffFromParts(this Pawn pawn, HediffToParts hediffToParts)
+        {
+            return pawn.GetHediffFromParts(hediffToParts.hediff, hediffToParts.bodyParts);
+        }
+        
         public static List<Hediff> GetHediffFromParts(this Pawn pawn, HediffDef hediff, List<BodyPartDef> bodyParts)
         {
             List<Hediff> hediffs = new List<Hediff>();
             if (hediff != null && pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false)
             {
-                
                 Dictionary<BodyPartDef, int> partCounts = new Dictionary<BodyPartDef, int>();
-                foreach (Hediff h in pawn.health.hediffSet.hediffs)
+                foreach (var h in pawn.health.hediffSet.hediffs.Where(h => hediff == h.def))
                 {
-                    if (hediff != h.def)
-                        continue;
-
                     if (!bodyParts.NullOrEmpty())
                     {
                         if (h.Part == null)
@@ -757,13 +763,11 @@ namespace EBSGFramework
                             continue;
 
                         if (partCounts.ContainsKey(h.Part.def) &&
-                            partCounts[h.Part.def] == bodyParts.Where(arg => arg == h.Part.def).Count())
+                            partCounts[h.Part.def] == bodyParts.Count(arg => arg == h.Part.def))
                             continue;
 
-                        if (partCounts.ContainsKey(h.Part.def))
+                        if (!partCounts.TryAdd(h.Part.def, 1))
                             partCounts[h.Part.def]++;
-                        else
-                            partCounts[h.Part.def] = 1;
                     }
                     hediffs.Add(h);
                 }
@@ -859,21 +863,21 @@ namespace EBSGFramework
             var bodyParts = new List<BodyPartDef>(partChecks);
             var foundHediffs = p.GetHediffFromParts(hd, bodyParts);
             bool flag = false;
-            for (int i = 0; i < foundHediffs.Count; i++)
+            foreach (var t in foundHediffs)
             {
                 if (skipExisting)
                 {
                     if (!bodyParts.NullOrEmpty())
-                        bodyParts.Remove(foundHediffs[i].Part.def);
+                        bodyParts.Remove(t.Part.def);
                     flag = true;
                 }
                 else if (replaceExisting)
-                    p.health.RemoveHediff(foundHediffs[i]);
+                    p.health.RemoveHediff(t);
                 else if (severity > 0)
                 {
-                    foundHediffs[i].Severity += severity;
+                    t.Severity += severity;
                     if (!bodyParts.NullOrEmpty())
-                        bodyParts.Remove(foundHediffs[i].Part?.def);
+                        bodyParts.Remove(t.Part?.def);
                 }
             }
 
@@ -1176,6 +1180,11 @@ namespace EBSGFramework
             // Just find anything at this point, starting from that edge cell
             return RCellFinder.TryFindRandomClearCellsNear(target, 1, targetMap, out var cells) ? cells.First() : IntVec3.Invalid;
         }
+
+        public static bool HasHediff(this Pawn pawn, HediffToParts hediff)
+        {
+            return !pawn.GetHediffFromParts(hediff).NullOrEmpty();
+        }
         
         public static bool HasHediff(this Pawn pawn, HediffDef hediff) // Only made this to make checking for null hediffSets require less work
         {
@@ -1355,11 +1364,7 @@ namespace EBSGFramework
         public static bool AllSkillLevelsMet(this Pawn pawn, List<List<SkillLevel>> skillLevels, bool includeAptitudes = true)
         {
             if (skillLevels.NullOrEmpty() || pawn.skills == null) return true;
-
-            foreach (var skillLevel in skillLevels)
-                if (AllSkillLevelsMet(pawn, skillLevel, includeAptitudes))
-                    return true;
-            return false;
+            return Enumerable.Any(skillLevels, skillLevel => AllSkillLevelsMet(pawn, skillLevel, includeAptitudes));
         }
 
         public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLevels, bool includeAptitudes = true)
@@ -1387,9 +1392,7 @@ namespace EBSGFramework
         public static bool Includes(this IntRange range, int val)
         {
             if (val >= range.min)
-            {
                 return val <= range.max;
-            }
             return false;
         }
 
@@ -1420,10 +1423,9 @@ namespace EBSGFramework
             foreach (NeedOffset needOffset in needOffsets)
             {
                 Need need;
-                if (needOffset.need == null && preventRepeats)
+                if (needOffset.need == null)
                 {
-                    if (preventRepeats) need = pawn.needs.AllNeeds.Where((Need n) => !alreadyPickedNeeds.Contains(n)).RandomElement();
-                    else need = pawn.needs.AllNeeds.RandomElement();
+                    need = preventRepeats ? pawn.needs.AllNeeds.Where(n => !alreadyPickedNeeds.Contains(n)).RandomElement() : pawn.needs.AllNeeds.RandomElement();
                 }
                 else need = pawn.needs.TryGetNeed(needOffset.need);
 
@@ -1746,13 +1748,12 @@ namespace EBSGFramework
                 bool isGermline = xenotype.inheritable;
                 List<Gene> genesListForReading = new List<Gene>(pawn.genes.GenesListForReading);
                 List<Gene> genesListToRemove = new List<Gene>();
-                for (int i = 0; i < xenotype.genes.Count; i++)
+                foreach (var t in xenotype.genes)
                 {
                     if (!genesListForReading.NullOrEmpty())
                     {
-                        foreach (Gene gene in genesListForReading)
-                            if (xenotype.genes[i].ConflictsWith(gene.def) || xenotype.genes[i].prerequisite?.ConflictsWith(gene.def) == true)
-                                genesListToRemove.Add(gene);
+                        genesListToRemove.AddRange(genesListForReading.Where(gene => 
+                            t.ConflictsWith(gene.def) || t.prerequisite?.ConflictsWith(gene.def) == true));
 
                         foreach (Gene gene in genesListToRemove)
                         {
@@ -1760,7 +1761,7 @@ namespace EBSGFramework
                             pawn.genes.RemoveGene(gene);
                         }
                     }
-                    pawn.genes.AddGene(xenotype.genes[i], !isGermline);
+                    pawn.genes.AddGene(t, !isGermline);
                 }
             }
 
@@ -1778,22 +1779,12 @@ namespace EBSGFramework
         {
             if (pawn.genes?.GenesListForReading.NullOrEmpty() != false) return;
             List<GeneDef> genesToAdd = new List<GeneDef>();
-            bool reverseInheritence = false;
-
-            List<GeneDef> remainingGenes = new List<GeneDef>();
-            foreach (Gene currentGene in pawn.genes.GenesListForReading) // Puts genes into a list that's easier to check
-            {
-                remainingGenes.Add(currentGene.def);
-            }
+            bool reverseInheritance = false;
 
             // Select a geneSet to be added
             if (!geneSets.NullOrEmpty())
             {
-                float totalWeight = 0;
-                foreach (RandomXenoGenes xenoGeneSet in geneSets)
-                {
-                    totalWeight += xenoGeneSet.weightOfGeneSet;
-                }
+                float totalWeight = geneSets.Sum(xenoGeneSet => xenoGeneSet.weightOfGeneSet);
 
                 double randomNumber = new System.Random().NextDouble() * totalWeight;
                 foreach (RandomXenoGenes xenoGeneSet in geneSets)
@@ -1801,32 +1792,22 @@ namespace EBSGFramework
                     if (randomNumber <= xenoGeneSet.weightOfGeneSet)
                     {
                         genesToAdd = xenoGeneSet.geneSet;
-                        reverseInheritence = xenoGeneSet.reverseInheritence;
+                        reverseInheritance = xenoGeneSet.reverseInheritence;
                         break;
                     }
                     randomNumber -= xenoGeneSet.weightOfGeneSet;
                 }
             }
 
-            if (reverseInheritence) inheritGenes = !inheritGenes;
+            if (reverseInheritance) inheritGenes = !inheritGenes;
 
-            if (removeGenesFromOtherLists && !geneSets.NullOrEmpty())
-            {
-                foreach (RandomXenoGenes xenoGeneSet in geneSets) // For each list
-                {
-                    RemoveGenesFromPawn(pawn, xenoGeneSet.geneSet);
-                }
-            }
-            else if (!geneSets.NullOrEmpty())
-            {
-                foreach (RandomXenoGenes xenoGeneSet in geneSets) // For each list
-                {
-                    if (xenoGeneSet.alwaysRemoveGenes)
-                    {
+            if (!geneSets.NullOrEmpty())
+                if (removeGenesFromOtherLists)
+                    foreach (RandomXenoGenes xenoGeneSet in geneSets) // For each list
                         RemoveGenesFromPawn(pawn, xenoGeneSet.geneSet);
-                    }
-                }
-            }
+                else
+                    foreach (var xenoGeneSet in geneSets.Where(xenoGeneSet => xenoGeneSet.alwaysRemoveGenes))
+                        RemoveGenesFromPawn(pawn, xenoGeneSet.geneSet);
 
             // Add and remove genes
             RemoveGenesFromPawn(pawn, alwaysRemovedGenes);
@@ -1850,21 +1831,16 @@ namespace EBSGFramework
             {
                 if (geneListB.NullOrEmpty()) return false;
                 if (geneListB.Contains(gene))
-                {
                     geneListB.Remove(gene);
-                }
                 else return false;
             }
-            if (!geneListB.NullOrEmpty()) return false;
-            return true;
+            return geneListB.NullOrEmpty();
         }
 
         public static bool AnyGeneDefSame(List<GeneDef> listA, List<GeneDef> listB)
         {
             if (listA.NullOrEmpty() || listB.NullOrEmpty()) return false;
-            foreach (GeneDef gene in listA)
-                if (listB.Contains(gene)) return true;
-            return false;
+            return Enumerable.Any(listA, listB.Contains);
         }
 
         public static bool CheckNearbyWater(this Pawn pawn, int maxNeededForTrue, out int waterCount, float maxDistance = 0)
@@ -1890,7 +1866,7 @@ namespace EBSGFramework
                 return false;
             }
 
-            List<IntVec3> waterTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= maxDistance && p.GetTerrain(map).IsWater).ToList();
+            List<IntVec3> waterTiles = map.AllCells.Where(p => p.DistanceTo(pos) <= maxDistance && p.GetTerrain(map).IsWater).ToList();
             waterCount = waterTiles.Count;
             return maxNeededForTrue <= waterCount;
         }
@@ -1929,9 +1905,7 @@ namespace EBSGFramework
                 missingTerrain = null;
                 return true;
             }
-
-            bool flag = false; // Checks for desired terrain
-
+            
             foreach (TerrainDistance terrain in terrains)
             {
                 if (terrain.count <= 0)
@@ -1942,14 +1916,14 @@ namespace EBSGFramework
                         missingTerrain = terrain.terrain;
                         continue;
                     }
-                    List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
+                    List<IntVec3> terrainTiles = map.AllCells.Where(p => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
                     if (terrainTiles.NullOrEmpty())
                         return true;
 
                     negativeTerrain = true;
                     missingTerrain = terrain.terrain;
                 }
-                else if (!flag)
+                else
                 {
                     // Checks the center tile first to try to avoid having to deal with all map tiles
                     if (terrain.count == 1 && pos.GetTerrain(map) == terrain.terrain)
@@ -1963,19 +1937,19 @@ namespace EBSGFramework
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-                        return true;
                     }
                     else
                     {
-                        List<IntVec3> terrainTiles = map.AllCells.Where((IntVec3 p) => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
+                        List<IntVec3> terrainTiles = map.AllCells.Where(p => p.DistanceTo(pos) <= terrain.maxDistance && p.GetTerrain(map) == terrain.terrain).ToList();
                         if (terrainTiles.NullOrEmpty() || terrainTiles.Count < terrain.count)
                         {
                             negativeTerrain = false;
                             missingTerrain = terrain.terrain;
                             continue;
                         }
-                        return true;
                     }
+
+                    return true;
                 }
             }
 
@@ -2023,31 +1997,25 @@ namespace EBSGFramework
             
             if (attacker != null)
             {
-                if (!extension.outgoingAttackerFactors.NullOrEmpty())
-                    foreach (StatDef stat in extension.outgoingAttackerFactors)
-                        damage *= attacker.StatOrOne(stat, extension.outAttackFactorReq);
-                
-                if (!extension.outgoingAttackerModifiers.NullOrEmpty())
-                    foreach (StatModifier stat in extension.outgoingAttackerModifiers)
-                        offset += attacker.StatOrOne(stat.stat) * stat.value;
-                
-                if (!extension.outgoingAttackerDivisors.NullOrEmpty())
-                    foreach (StatDef stat in extension.outgoingAttackerDivisors)
-                        damage /= attacker.StatOrOne(stat, extension.outAttackDivReq);
+                if (!extension.outgoingAttackerFactors.NullOrEmpty()) 
+                    damage = extension.outgoingAttackerFactors.Aggregate(damage, (current, stat) => current * attacker.StatOrOne(stat, extension.outAttackFactorReq));
+
+                if (!extension.outgoingAttackerModifiers.NullOrEmpty()) 
+                    offset += extension.outgoingAttackerModifiers.Sum(stat => attacker.StatOrOne(stat.stat) * stat.value);
+
+                if (!extension.outgoingAttackerDivisors.NullOrEmpty()) 
+                    damage = extension.outgoingAttackerDivisors.Aggregate(damage, (current, stat) => current / attacker.StatOrOne(stat, extension.outAttackDivReq));
             }
 
-            if (!extension.outgoingTargetFactors.NullOrEmpty())
-                foreach (StatDef stat in extension.outgoingTargetFactors)
-                    damage *= victim.StatOrOne(stat, extension.outTargetFactorReq);
+            if (!extension.outgoingTargetFactors.NullOrEmpty()) 
+                damage = extension.outgoingTargetFactors.Aggregate(damage, (current, stat) => current * victim.StatOrOne(stat, extension.outTargetFactorReq));
 
-            if (!extension.outgoingTargetModifiers.NullOrEmpty())
-                foreach (StatModifier stat in extension.outgoingTargetModifiers)
-                    offset += victim.StatOrOne(stat.stat) * stat.value;
+            if (!extension.outgoingTargetModifiers.NullOrEmpty()) 
+                offset += extension.outgoingTargetModifiers.Sum(stat => victim.StatOrOne(stat.stat) * stat.value);
 
-            if (!extension.outgoingTargetDivisors.NullOrEmpty())
-                foreach (StatDef stat in extension.outgoingTargetDivisors)
-                    damage /= victim.StatOrOne(stat, extension.outTargetDivReq);
-            
+            if (!extension.outgoingTargetDivisors.NullOrEmpty()) 
+                damage = extension.outgoingTargetDivisors.Aggregate(damage, (current, stat) => current / victim.StatOrOne(stat, extension.outTargetDivReq));
+
             damage += offset;
             
             if (extension.maxOutRemaining != -1f && damage > extension.maxOutRemaining)
@@ -2168,6 +2136,226 @@ namespace EBSGFramework
             return false;
         }
 
+        public static void SpawnHumanlikes(int numberToSpawn, IntVec3 initialPos, Map map, DevelopmentalStage developmentalStage, Pawn father, Pawn mother,
+            Faction faction, List<GeneDef> genes, PawnKindDef staticPawnKind, XenotypeDef staticXenotype, XenoSource xenotypeSource, ThingDef filthOnCompletion,
+            IntRange filthPerSpawn, bool sendLetters, string letterKey, string letterTextPawnDescription, string letterLabelNote, 
+            bool bornThought, ThoughtDef motherBabyBornThought, ThoughtDef fatherBabyBornThought, bool noGear, string xenoLabel = null, 
+            PawnRelationDef motherRelation = null, PawnRelationDef fatherRelation = null)
+        {
+            float fixedAge;
+
+            switch (developmentalStage)
+            {
+                case DevelopmentalStage.Adult:
+                    fixedAge = 18f;
+                    break;
+                case DevelopmentalStage.Child:
+                    fixedAge = 8f;
+                    break;
+                case DevelopmentalStage.None:
+                case DevelopmentalStage.Newborn:
+                case DevelopmentalStage.Baby:
+                default:
+                    fixedAge = 0f;
+                    break;
+            }
+            
+            // If the faction is somehow null, the child will default to joining the player
+            PawnGenerationRequest request = new PawnGenerationRequest(staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
+                faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, fixedBiologicalAge: fixedAge,
+                fixedChronologicalAge: fixedAge, forcedXenotype: staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage, forceNoGear:noGear)
+            {
+                DontGivePreArrivalPathway = true
+            };
+            
+            if (staticXenotype == null)
+                request.ForcedEndogenes = genes;
+
+            List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+            for (int i = 0; i < numberToSpawn; i++)
+            {
+                Pawn pawn = PawnGenerator.GeneratePawn(request);
+
+                if (xenoLabel != null)
+                {
+                    switch (xenotypeSource)
+                    {
+                        case XenoSource.Mother when mother != null:
+                            pawn.genes.iconDef = mother.genes.iconDef;
+                            break;
+                        case XenoSource.Father when father != null:
+                            pawn.genes.iconDef = father.genes.iconDef;
+                            break;
+                        default:
+                        {
+                            if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
+                                pawn.genes.iconDef = mother.genes.iconDef;
+
+                            if (TryGetInheritedXenotype(mother, father, out var xenotype))
+                                pawn.genes?.SetXenotypeDirect(xenotype);
+                            else if (ShouldByHybrid(mother, father))
+                                pawn.genes.hybrid = true;
+
+                            break;
+                        }
+                    }
+                    pawn.genes.xenotypeName = xenoLabel;
+                }
+                else if (staticXenotype == null && (mother != null || father != null))
+                    switch (xenotypeSource)
+                    {
+                        case XenoSource.Mother when mother != null:
+                            pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                            pawn.genes.iconDef = mother.genes.iconDef;
+                            break;
+                        case XenoSource.Father when father != null:
+                            pawn.genes.xenotypeName = father.genes.xenotypeName;
+                            pawn.genes.iconDef = father.genes.iconDef;
+                            break;
+                        default:
+                        {
+                            if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
+                            {
+                                pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                pawn.genes.iconDef = mother.genes.iconDef;
+                            }
+                            
+                            if (TryGetInheritedXenotype(mother, father, out var xenotype))
+                                pawn.genes?.SetXenotypeDirect(xenotype);
+                            else if (ShouldByHybrid(mother, father))
+                            {
+                                pawn.genes.hybrid = true;
+                                pawn.genes.xenotypeName = "Hybrid".Translate();
+                            }
+
+                            break;
+                        }
+                    }
+
+                if (map != null)
+                {
+                    IntVec3? intVec;
+
+                    if (initialPos.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(initialPos)))
+                    {
+                        intVec = initialPos;
+                        alreadyUsedSpots.Add(initialPos);
+                    }
+                    else intVec = CellFinder.RandomClosewalkCellNear(initialPos, map, 1, delegate (IntVec3 cell)
+                    {
+                        if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
+                        if (cell != initialPos)
+                        {
+                            Building building = map.edificeGrid[cell];
+                            if (building == null)
+                            {
+                                alreadyUsedSpots.Add(cell);
+                                return true;
+                            }
+
+                            if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
+                            return building.def?.IsBed != true;
+                        }
+                        return false;
+                    });
+                    if (filthOnCompletion != null) 
+                        FilthMaker.TryMakeFilth(intVec.Value, map, filthOnCompletion, filthPerSpawn.RandomInRange);
+
+                    if (pawn.RaceProps.IsFlesh)
+                    {
+                        if (mother != null && motherRelation != null)
+                            pawn.relations.AddDirectRelation(motherRelation, mother);
+                        if (father != null && fatherRelation != null)
+                            pawn.relations.AddDirectRelation(fatherRelation, father);
+                    }
+/*
+                    if (pawn.playerSettings != null && origin?.playerSettings != null)
+                        pawn.playerSettings.AreaRestrictionInPawnCurrentMap = origin.playerSettings.AreaRestrictionInPawnCurrentMap;
+*/
+                    if (GenSpawn.Spawn(pawn, intVec.Value, map) == null)
+                        Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
+                    pawn.caller?.DoCall();
+                }
+                else
+                {
+                    Caravan caravan = mother.GetCaravan();
+                    caravan.AddPawn(pawn, true);
+                    if (!pawn.IsWorldPawn())
+                        Find.WorldPawns.PassToWorld(pawn);
+                }
+                
+                if (bornThought)
+                {
+                    if (mother?.Faction == faction)
+                        mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(motherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
+                    father?.needs?.mood?.thoughts?.memories?.TryGainMemory(fatherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
+                }
+
+                if (sendLetters && faction.IsPlayer)
+                {
+                    pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
+                    ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, letterLabelNote.TranslateOrFormat()),
+                        letterKey.Translate(father.Label, letterTextPawnDescription.TranslateOrFormat()), LetterDefOf.BabyBirth, pawn);
+                    birthLetter.Start();
+                    Find.LetterStack.ReceiveLetter(birthLetter);
+                }
+            }
+        }
+
+        public static void VaporizePawn(this Pawn pawn, DamageInfo? dinfo = null)
+        {
+            bool flag = PawnUtility.ShouldSendNotificationAbout(pawn);
+            var caravan = pawn.GetCaravan();
+            var map = pawn.MapHeld;
+            pawn.Destroy();
+            if (!pawn.Dead)
+                pawn.health.SetDead();
+
+            if (pawn?.Faction.IsPlayer == true)
+                BillUtility.Notify_ColonistUnavailable(pawn);
+            if (pawn.IsColonist)
+                Find.StoryWatcher.statsRecord.Notify_ColonistKilled();
+            pawn.royalty?.Notify_PawnKilled();
+            
+            if (flag)
+                pawn.health.NotifyPlayerOfKilled(dinfo, null, caravan);
+
+            Find.QuestManager.Notify_PawnKilled(pawn, dinfo);
+            Find.FactionManager.Notify_PawnKilled(pawn);
+            Find.IdeoManager.Notify_PawnKilled(pawn);
+            if (pawn.IsMutant)
+            {
+                pawn.mutant.Notify_Died(null, dinfo);
+                if (pawn.mutant.Def.clearMutantStatusOnDeath)
+                    if (pawn.mutant.HasTurned)
+                        pawn.mutant.Revert(true);
+                    else
+                        pawn.mutant = null;
+            }
+
+            pawn.duplicate?.Notify_PawnKilled();
+            PawnComponentsUtility.RemoveComponentsOnKilled(pawn);
+            if (ModsConfig.BiotechActive && MechanitorUtility.IsMechanitor(pawn))
+                Find.History.Notify_MechanitorDied();
+            if (ModsConfig.AnomalyActive && pawn.kindDef == PawnKindDefOf.Revenant)
+                RevenantUtility.OnRevenantDeath(pawn, map);
+            pawn.health.hediffSet.DirtyCache();
+            pawn.Notify_DisabledWorkTypesChanged();
+            Find.BossgroupManager.Notify_PawnKilled(pawn);
+            try
+            {
+                //pawn.Ideo?.Notify_MemberDied(pawn); // Theoretically not needed because the lack of a corpse is the only thing that matters
+                pawn.Ideo.Notify_MemberCorpseDestroyed(pawn);
+                pawn.Ideo?.Notify_MemberLost(pawn, map);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error while notifying ideo of pawn death: " + ex);
+            }
+            if (pawn.IsCreepJoiner)
+                pawn.creepjoiner.Notify_CreepJoinerKilled();
+        }
+
         public static List<IntVec3> GetCone(LocalTargetInfo target, Pawn pawn, float minDistance, float maxDistance, float minAngle, float maxAngle)
         {
             var affectedCells = new List<IntVec3>();
@@ -2180,27 +2368,26 @@ namespace EBSGFramework
 
             float distanceToTarget = (targetPos - startPosition).magnitude;
 
-            float percentOfMaxDistnace = distanceToTarget / maxDistance;
+            float percentOfMaxDistance = distanceToTarget / maxDistance;
 
-            float angleAtDistance = Mathf.Lerp(maxAngle, minAngle, percentOfMaxDistnace);
+            float angleAtDistance = Mathf.Lerp(maxAngle, minAngle, percentOfMaxDistance);
 
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(pawn.Position, distanceToTarget, true))
             {
                 Vector3 cellPos = cell.ToVector3Shifted();
                 Vector3 direction = (cellPos - startPosition).normalized;
-                float currentDistance = (targetPos - startPosition).magnitude;
                 float angle = Vector3.Angle(direction, targetPos - startPosition);
 
                 if (angle <= angleAtDistance / 2f &&
                     GenSight.LineOfSight(startPosition.ToIntVec3(), cell, pawn.Map, true) &&
                     !cell.Equals(pawn.Position)) // Check if it's not the cell the pawn is standing on
-                {
                     affectedCells.Add(cell);
-                }
             }
             return affectedCells;
         }
 
+        // UI Stuff
+        
         public static void TextFieldNumericLabeled<T>(this Listing_Standard standard, string label, TextAnchor anchor, ref T val, ref string buffer, float min = 0f, float max = 1E+09f, string tooltip = null, float labelPct = 0.75f) where T : struct
         {
             Rect rect = standard.GetRect(Text.LineHeight);
@@ -2346,34 +2533,18 @@ namespace EBSGFramework
             if (pawn.stances.curStance is Stance_Busy stance_Busy && stance_Busy.verb?.CurrentTarget.Thing != null)
             {
                 Thing thing = stance_Busy.verb.CurrentTarget.Thing;
-                if (thing.Position.DistanceTo(pawn.Position) > searchRadius)
-                {
-                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
-                    return null;
-                }
-                if ((LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) || (onlyHostiles && !thing.HostileTo(pawn)))
-                {
-                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
-                    return null;
-                }
-                if (ability?.Valid(thing) == false)
-                {
-                    if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
-                    return null;
-                }
+                if (thing.Position.DistanceTo(pawn.Position) > searchRadius || 
+                    (LoSRequired && !GenSight.LineOfSight(pawn.Position, thing.Position, pawn.Map)) || 
+                    (onlyHostiles && !thing.HostileTo(pawn)) || ability?.Valid(thing) == false)
+                    return autoSearch ? AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability) : null;
+
                 if (thing is Pawn otherPawn)
                 {
                     if (otherPawn == pawn) return null;
-                    if (!allowDowned && (otherPawn.Downed || otherPawn.Dead))
-                    {
-                        if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
-                        return null;
-                    }
+                    if (!allowDowned && otherPawn.DeadOrDowned)
+                        return autoSearch ? AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability) : null;
                     if (onlyInFaction)
-                    {
-                        if (otherPawn.Faction == pawn.Faction) return thing;
-                        return null;
-                    }
+                        return otherPawn.Faction == pawn.Faction ? thing : null;
                 }
 
                 return thing;
@@ -2394,27 +2565,22 @@ namespace EBSGFramework
                     return thing;
                 }
             }
-            if (autoSearch) return AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability);
-
-            return null;
+            return autoSearch ? AutoSearchTarget(pawn, onlyHostiles, onlyInFaction, searchRadius, LoSRequired, ability) : null;
         }
 
         public static Pawn AutoSearchTarget(this Pawn pawn, bool onlyHostiles = true, bool onlyInFaction = false, float searchRadius = 50, bool LoSRequired = false, Ability ability = null)
         {
 
-            List<Pawn> pawns = new List<Pawn>(pawn.Map.mapPawns.AllPawnsSpawned);
-            pawns.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
+            var pawns = new List<Pawn>(pawn.Map.mapPawns.AllPawnsSpawned).Where(p => p != pawn && !p.DeadOrDowned && !p.IsPrisoner && ability?.Valid(p) != false).ToList();
+            pawns.SortBy(c => c.Position.DistanceToSquared(pawn.Position));
             foreach (Pawn otherPawn in pawns)
             {
                 if (otherPawn.Position.DistanceTo(pawn.Position) > searchRadius) break;
-                if (otherPawn == pawn) continue;
                 if (LoSRequired && !GenSight.LineOfSight(pawn.Position, otherPawn.Position, pawn.Map)) continue;
-                if (otherPawn.DeadOrDowned || otherPawn.IsPrisonerOfColony ||
-                    otherPawn.IsSlaveOfColony) continue;
-                if (ability?.Valid(otherPawn) == false) continue;
-                if (onlyHostiles && otherPawn.HostileTo(pawn)) return otherPawn;
-                if (onlyInFaction && otherPawn.Faction == pawn.Faction) return otherPawn;
-                if (!onlyHostiles && !onlyInFaction) return otherPawn;
+                if (onlyHostiles && otherPawn.HostileTo(pawn) || 
+                    onlyInFaction && otherPawn.Faction == pawn.Faction || 
+                    !onlyHostiles && !onlyInFaction) 
+                    return otherPawn;
             }
             
             return null;
@@ -2427,28 +2593,21 @@ namespace EBSGFramework
             if (target.Thing != null)
                 if (!ability.verb.targetParams.CanTarget(target.Thing)) return false;
             if (!ability.comps.NullOrEmpty())
-                foreach (CompAbilityEffect abilityEffect in ability.comps)
+                foreach (var abilityEffect in ability.comps.Cast<CompAbilityEffect>())
                 {
                     if (!abilityEffect.Valid(target)) return false;
-                    if (target.Thing != null && target.Thing is Pawn pawn)
+                    if (target.Thing is Pawn pawn)
                     {
-                        if (abilityEffect is CompAbilityEffect_GiveHediff giveComp &&
-                            ((giveComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
-                            giveComp.Props.durationMultiplier != null && pawn.StatOrOne(giveComp.Props.durationMultiplier) <= 0))
+                        if (abilityEffect.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0)
                             return false;
-                        if (abilityEffect is CompAbilityEffect_GiveMultipleHediffs giveMultiComp &&
-                            ((giveMultiComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
-                            giveMultiComp.Props.durationMultiplier != null && pawn.StatOrOne(giveMultiComp.Props.durationMultiplier) <= 0))
+
+                        if (abilityEffect is CompAbilityEffect_WithDuration duration && duration.GetDurationSeconds(pawn) <= 0)
                             return false;
-                        if (abilityEffect is CompAbilityEffect_BloodDrain bloodComp &&
-                            ((bloodComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
-                            (bloodComp.Props.replacementHediff != null && pawn.HasHediff(bloodComp.Props.replacementHediff))))
+
+                        if (abilityEffect is CompAbilityEffect_BloodDrain blood && pawn.HasHediff(blood.Props.replacementHediff))
                             return false;
-                        if (abilityEffect is CompAbilityEffect_Stun stunComp &&
-                            ((stunComp.Props.psychic && pawn.StatOrOne(StatDefOf.PsychicSensitivity) <= 0) ||
-                            (stunComp.Props.durationMultiplier != null && pawn.StatOrOne(stunComp.Props.durationMultiplier) <= 0) ||
-                            (ability.lastCastTick >= 0 && ability.def.EffectDuration() > 0 &&
-                            Find.TickManager.TicksGame - ability.lastCastTick < ability.def.EffectDuration())))
+
+                        if (abilityEffect is CompAbilityEffect_Stun && pawn.stances.stunner.Stunned)
                             return false;
                     }
                 }
@@ -2491,8 +2650,56 @@ namespace EBSGFramework
 
         public static bool AutoAttackingColonist(this Pawn pawn)
         {
-            if (pawn.playerSettings != null && pawn.playerSettings.UsesConfigurableHostilityResponse && pawn.playerSettings.hostilityResponse == HostilityResponseMode.Attack) return true;
-            return false;
+            return pawn.playerSettings != null && pawn.playerSettings.UsesConfigurableHostilityResponse && pawn.playerSettings.hostilityResponse == HostilityResponseMode.Attack;
+        }
+        
+        // Private methods from the pregnancy utility
+
+        private static List<string> tmpLastNames = new List<string>(2);
+
+        public static string RandomLastName(Pawn geneticMother, Pawn father)
+        {
+            tmpLastNames.Clear();
+            if (geneticMother != null)
+                tmpLastNames.Add(PawnNamingUtility.GetLastName(geneticMother));
+
+            if (father != null)
+                tmpLastNames.Add(PawnNamingUtility.GetLastName(father));
+
+            return tmpLastNames.Count == 0 ? null : tmpLastNames.RandomElement();
+        }
+
+        public static bool TryGetInheritedXenotype(Pawn mother, Pawn father, out XenotypeDef xenotype)
+        {
+            xenotype = null;
+            if (mother?.genes?.Xenotype?.inheritable == true)
+            {
+                if (father?.genes == null || mother?.genes?.Xenotype == father?.genes?.Xenotype)
+                    xenotype = mother?.genes?.Xenotype;
+            }
+            else if (mother?.genes == null && father?.genes?.Xenotype?.inheritable == true)
+                xenotype = father.genes.Xenotype;
+            return xenotype != null;
+        }
+
+        public static bool ShouldByHybrid(Pawn mother, Pawn father)
+        {
+            bool flag = mother?.genes != null;
+            bool flag2 = father?.genes != null;
+            if (flag && flag2)
+            {
+                if (mother.genes.hybrid && father.genes.hybrid)
+                    return true;
+
+                if (mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable)
+                    return true;
+
+                bool num = mother.genes.Xenotype.inheritable || mother.genes.hybrid;
+                bool flag3 = father.genes.Xenotype.inheritable || father.genes.hybrid;
+                if (num || flag3)
+                    return true;
+            }
+            return (flag && !flag2 && mother.genes.hybrid) || (flag2 && !flag && father.genes.hybrid);
         }
     }
 }

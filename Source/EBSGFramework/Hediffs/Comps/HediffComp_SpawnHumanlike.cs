@@ -134,8 +134,7 @@ namespace EBSGFramework
             if (map == null && (faction != caravan?.Faction || !Props.allowInCaravans)) return false;
             AssignLinkedFather();
 
-            int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
-            List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+            int numberToSpawn = Props.spawnPerCompletion.RandomInRange; 
             IntVec3 initialPos = Pawn.PositionHeld;
 
             if (spawnLeft != -1)
@@ -156,117 +155,14 @@ namespace EBSGFramework
                     fixedAge = 8f;
                     break;
             }
+            
+            EBSGUtilities.SpawnHumanlikes(numberToSpawn, initialPos, Pawn.MapHeld, Props.developmentalStage, father, mother, faction, Genes, 
+                Props.staticPawnKind, Props.staticXenotype, Props.xenotypeSource, Props.filthOnCompletion,  Props.filthPerSpawn, 
+                Props.sendLetters, "EBSG_CompSpawnPawnHediffText", Props.letterTextPawnDescription, Props.letterLabelNote,
+                Props.bornThought, Props.motherBabyBornThought, Props.fatherBabyBornThought, Props.noGear, null, 
+                Props.relations == InitialRelation.Both || Props.relations == InitialRelation.Mother ? Props.motherRelation ?? PawnRelationDefOf.Parent : null,
+                Props.relations == InitialRelation.Both || Props.relations == InitialRelation.Father ? Props.fatherRelation ?? PawnRelationDefOf.Parent : null);
 
-            for (int i = 0; i < numberToSpawn; i++)
-            {
-                // If the faction is somehow null, the child will default to joining the player
-                PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
-                    faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, fixedBiologicalAge: fixedAge,
-                    fixedChronologicalAge: fixedAge, forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage)
-                {
-                    DontGivePreArrivalPathway = true
-                };
-
-                if (Props.staticXenotype == null)
-                    request.ForcedEndogenes = Genes;
-
-                Pawn pawn = PawnGenerator.GeneratePawn(request);
-
-                if (Props.staticXenotype == null && (mother != null || father != null))
-                    if (Props.xenotypeSource == XenoSource.Mother && mother != null)
-                    {
-                        pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                        pawn.genes.iconDef = mother.genes.iconDef;
-                    }
-                    else if (Props.xenotypeSource == XenoSource.Father && father != null)
-                    {
-                        pawn.genes.xenotypeName = father.genes.xenotypeName;
-                        pawn.genes.iconDef = father.genes.iconDef;
-                    }
-                    else
-                    {
-                        if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
-                        {
-                            pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                            pawn.genes.iconDef = mother.genes.iconDef;
-                        }
-                        if (TryGetInheritedXenotype(mother, father, out var xenotype))
-                        {
-                            pawn.genes?.SetXenotypeDirect(xenotype);
-                        }
-                        else if (ShouldByHybrid(mother, father))
-                        {
-                            pawn.genes.hybrid = true;
-                            pawn.genes.xenotypeName = "Hybrid".Translate();
-                        }
-                    }
-
-                if (map != null)
-                {
-                    IntVec3? intVec = null;
-
-                    if (initialPos.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(initialPos)))
-                    {
-                        intVec = initialPos;
-                        alreadyUsedSpots.Add(initialPos);
-                    }
-                    else intVec = CellFinder.RandomClosewalkCellNear(initialPos, map, 1, delegate (IntVec3 cell)
-                    {
-                        if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
-                        if (cell != initialPos)
-                        {
-                            Building building = map.edificeGrid[cell];
-                            if (building == null)
-                            {
-                                alreadyUsedSpots.Add(cell);
-                                return true;
-                            }
-
-                            if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
-                            return building.def?.IsBed != true;
-                        }
-                        return false;
-                    });
-                    if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
-
-                    if (pawn.RaceProps.IsFlesh)
-                    {
-                        if (mother != null)
-                            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-                        if (father != null)
-                            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
-                    }
-
-                    if (pawn.playerSettings != null && mother?.playerSettings != null)
-                        pawn.playerSettings.AreaRestrictionInPawnCurrentMap = mother.playerSettings.AreaRestrictionInPawnCurrentMap;
-
-                    if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, Pawn, intVec))
-                        Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
-                    pawn.caller?.DoCall();
-                }
-                else
-                {
-                    caravan.AddPawn(pawn, true);
-                    if (!pawn.IsWorldPawn())
-                        Find.WorldPawns.PassToWorld(pawn);
-                }
-
-                if (Props.bornThought)
-                {
-                    if (mother?.Faction == faction)
-                        mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
-                    father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
-                }
-
-                if (Props.sendLetters && faction == Faction.OfPlayer)
-                {
-                    pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
-                    ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, Props.letterLabelNote.TranslateOrFormat()),
-                        "EBSG_CompSpawnPawnHediffText".Translate(Pawn.Label, Props.letterTextPawnDescription.TranslateOrFormat()), LetterDefOf.BabyBirth, pawn);
-                    birthLetter.Start();
-                    Find.LetterStack.ReceiveLetter(birthLetter);
-                }
-            }
             return true;
         }
 
@@ -279,71 +175,6 @@ namespace EBSGFramework
             Scribe_References.Look(ref faction, "faction");
             Scribe_Values.Look(ref ticksLeft, "ticksLeft", 250);
             Scribe_Values.Look(ref spawnLeft, "spawnLeft", 1);
-        }
-
-        // Private methods from the pregnancy utility
-
-        private static List<string> tmpLastNames = new List<string>(2);
-
-        public static string RandomLastName(Pawn geneticMother, Pawn father)
-        {
-            tmpLastNames.Clear();
-            if (geneticMother != null)
-                tmpLastNames.Add(PawnNamingUtility.GetLastName(geneticMother));
-
-            if (father != null)
-                tmpLastNames.Add(PawnNamingUtility.GetLastName(father));
-
-            if (tmpLastNames.Count == 0)
-                return null;
-
-            return tmpLastNames.RandomElement();
-        }
-
-        public static bool TryGetInheritedXenotype(Pawn mother, Pawn father, out XenotypeDef xenotype)
-        {
-            bool flag = mother?.genes != null;
-            bool flag2 = father?.genes != null;
-            if (flag && flag2 && mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable && mother.genes.Xenotype == father.genes.Xenotype)
-            {
-                xenotype = mother.genes.Xenotype;
-                return true;
-            }
-            if (flag && !flag2 && mother.genes.Xenotype.inheritable)
-            {
-                xenotype = mother.genes.Xenotype;
-                return true;
-            }
-            if (flag2 && !flag && father.genes.Xenotype.inheritable)
-            {
-                xenotype = father.genes.Xenotype;
-                return true;
-            }
-            xenotype = null;
-            return false;
-        }
-
-        public static bool ShouldByHybrid(Pawn mother, Pawn father)
-        {
-            bool flag = mother?.genes != null;
-            bool flag2 = father?.genes != null;
-            if (flag && flag2)
-            {
-                if (mother.genes.hybrid && father.genes.hybrid)
-                    return true;
-
-                if (mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable)
-                    return true;
-
-                bool num = flag && (mother.genes.Xenotype.inheritable || mother.genes.hybrid);
-                bool flag3 = flag2 && (father.genes.Xenotype.inheritable || father.genes.hybrid);
-                if (num || flag3)
-                    return true;
-            }
-            if ((flag && !flag2 && mother.genes.hybrid) || (flag2 && !flag && father.genes.hybrid))
-                return true;
-
-            return false;
         }
     }
 }

@@ -46,6 +46,13 @@
 </Defs>
 
 <!-- 
+EBSG_TestAbilityBase
+EBSG_TestSelfCastBase
+EBSG_TestGeneBase
+EBSG_TestHediffBase
+-->
+
+<!-- 
         <modExtensions>
             <li Class="EBSGFramework.EBSGExtension">
             </li>

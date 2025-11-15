@@ -1,5 +1,4 @@
-﻿using System;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -66,13 +65,7 @@ namespace EBSGFramework
                         return false;
                     }
                 }
-                if (pawn.IsWildMan() && !pawn.IsPrisonerOfColony && !pawn.Downed)
-                {
-                    if (throwMessages)
-                        Messages.Message("MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);
-                    return false;
-                }
-                if (pawn.InMentalState)
+                if (pawn.IsWildMan() && !pawn.IsPrisonerOfColony && !pawn.Downed || pawn.InMentalState)
                 {
                     if (throwMessages)
                         Messages.Message("MessageCantUseOnResistingPerson".Translate(parent.def.Named("ABILITY")), pawn, MessageTypeDefOf.RejectInput, historical: false);

@@ -37,9 +37,9 @@ namespace EBSGFramework
 
         public bool sendLetters = false;
 
-        public string letterLabelNote = "born";
+        public string letterLabelNote = "EBSG_Born";
 
-        public string letterTextPawnDescription = "became a healthy baby!";
+        public string letterTextPawnDescription = "EBSG_BecameAHealthyBaby";
 
         public PawnKindDef staticPawnKind;
 
@@ -64,6 +64,14 @@ namespace EBSGFramework
         public DevelopmentalStage developmentalStage = DevelopmentalStage.Adult;
 
         public DevelopmentalStage devStageForRemovalOrDeath = DevelopmentalStage.Child;
+        
+        public InitialRelation relations = InitialRelation.Both;
+
+        public PawnRelationDef motherRelation;
+        
+        public PawnRelationDef fatherRelation;
+
+        public bool noGear = false;
 
         public HediffCompProperties_SpawnHumanlike()
         {
