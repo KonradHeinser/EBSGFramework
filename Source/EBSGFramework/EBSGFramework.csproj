@@ -42,6 +42,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Compile Include="Abilities\Building_LaunchAbilityPod.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeFaction.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
@@ -67,6 +68,10 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityResurrectNoSideEffects.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpawnHumanlike.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityToggleHediff.cs" />
+    <Compile Include="Abilities\FlyingPawn.cs" />
+    <Compile Include="Abilities\FlyPawnArriving.cs" />
+    <Compile Include="Abilities\FlyPawnLanding.cs" />
+    <Compile Include="Abilities\FlyPawnLeaving.cs" />
     <Compile Include="DependencyGenes\Workgiver_AdministerDependency.cs" />
     <Compile Include="DependencyGenes\WorkGiver_Warden_DeliverDependency.cs" />
     <Compile Include="DynamicResourceGenes\CompAbilityEffect\CompAbilityEffect_GiveResource.cs" />
@@ -498,9 +503,6 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StunNonCaster.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityStopMentalNoPsychic.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_StopMentalNoPsychic.cs" />
-    <Compile Include="Things\FlyPawnLeaving.cs" />
-    <Compile Include="Things\FlyPawnArriving.cs" />
-    <Compile Include="Things\FlyingPawn.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGFur.cs" />
     <Compile Include="Genes\EBSGBodyExtension.cs" />
     <Compile Include="Generic List Classes\AgeBodyLink.cs" />

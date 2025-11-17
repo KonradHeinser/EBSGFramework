@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <WorldObjectDef Name="EBSG_PawnFlying">
+        <defName>EBSG_PawnFlying</defName>
+        <label>flying pawn</label>
+        <description>Pawn in flight.</description>
+        <worldObjectClass>EBSGFramework.FlyingPawn</worldObjectClass>
+        <useDynamicDrawer>True</useDynamicDrawer>
+        <allowCaravanIncidentsWhichGenerateMap>False</allowCaravanIncidentsWhichGenerateMap>
+    </WorldObjectDef>
+
+    <ThingDef ParentName="SkyfallerBase" Name="EBSG_PawnLeaving">
+        <defName>EBSG_PawnLeaving</defName>
+        <label>flying pawn</label>
+        <thingClass>EBSGFramework.FlyPawnLeaving</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>0.1</drawSize>
+        </graphicData>
+        <skyfaller>
+            <movementType>Decelerate</movementType>
+            <rotateGraphicTowardsDirection>True</rotateGraphicTowardsDirection>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(1, 1)</shadowSize>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-10</anticipationSoundTicks>
+            <ticksToImpactRange><min>-40</min><max>-15</max></ticksToImpactRange>
+        </skyfaller>
+    </ThingDef>
+
+    <ThingDef ParentName="BuildingBase" Name="EBSG_FlightPod">
+        <defName>EBSG_FlightPod</defName>
+        <label>flying pawn</label>
+        <description>A pawn capable of moving themselves to various places in the world.</description>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>0.1</drawSize>
+        </graphicData>
+        <size>(1,1)</size>
+        <thingClass>EBSGFramework.Building_LaunchAbilityPod</thingClass>
+        <rotatable>false</rotatable>
+        <tickerType>Normal</tickerType>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <castEdgeShadows>false</castEdgeShadows>
+        <dropPodFaller>EBSG_PawnArriving</dropPodFaller>
+        <dropPodActive>EBSG_PawnLanding</dropPodActive>
+        <statBases>
+            <MaxHitPoints>250</MaxHitPoints>
+        </statBases>
+        <comps>
+            <li Class="CompProperties_Transporter">
+                <restEffectiveness>0</restEffectiveness>
+                <canChangeAssignedThingsAfterStarting>true</canChangeAssignedThingsAfterStarting>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="DropPodIncoming" Name="EBSG_PawnArriving">
+        <defName>EBSG_PawnArriving</defName>
+        <label>flying pawn</label>
+        <thingClass>EBSGFramework.FlyPawnArriving</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>10</drawSize>
+        </graphicData>
+    </ThingDef>
+
+    <ThingDef ParentName="ActiveDropPod" Name="EBSG_PawnLanding">
+        <defName>EBSG_PawnLanding</defName>
+        <label>pawn landing</label>
+        <thingClass>EBSGFramework.FlyPawnLanding</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/SparkFlash</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutFlying</shaderType>
+            <drawSize>0.1</drawSize>
+        </graphicData>
+        <soundOpen />
+    </ThingDef>
+</Defs>

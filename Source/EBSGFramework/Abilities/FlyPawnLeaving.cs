@@ -11,49 +11,21 @@ namespace EBSGFramework
         public Pawn pawn;
         public override Graphic Graphic => pawn?.Graphic ?? base.Graphic;
 
-        private Effecter effecter;
-
         private bool alreadyLeft;
-
-        private bool alreadyCheckedExtension;
-
-        private EBSGExtension extension;
-
-        public EBSGExtension Extension
-        {
-            get
-            {
-                if (extension == null && !alreadyCheckedExtension)
-                {
-                    extension = def.GetModExtension<EBSGExtension>();
-                    alreadyCheckedExtension = true;
-                }
-                return extension;
-            }
-        }
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
-            if (def.skyfaller.xPositionCurve != null) drawLoc.x += def.skyfaller.xPositionCurve.Evaluate(TimeInAnimation);
-            if (def.skyfaller.zPositionCurve != null) drawLoc.z += def.skyfaller.zPositionCurve.Evaluate(TimeInAnimation);
-            pawn.Drawer.renderer.RenderPawnAt(drawLoc, pawn.Rotation);
-            DrawDropSpotShadow();
-        }
-
-        protected override void Tick()
-        {
-            base.Tick();
-
-            if (Extension?.effecter != null)
+            if (pawn?.Drawer?.renderer != null)
             {
-                if (effecter == null)
-                {
-                    effecter = Extension.effecter.Spawn();
-                    effecter.Trigger(this, TargetInfo.Invalid);
-                }
-                else
-                    effecter.EffectTick(this, TargetInfo.Invalid);
+                if (def.skyfaller.xPositionCurve != null)
+                    drawLoc.x += def.skyfaller.xPositionCurve.Evaluate(TimeInAnimation);
+                if (def.skyfaller.zPositionCurve != null) 
+                    drawLoc.z += def.skyfaller.zPositionCurve.Evaluate(TimeInAnimation);
+                pawn.Drawer.renderer.RenderPawnAt(drawLoc, pawn.Rotation);
+                DrawDropSpotShadow();
             }
+            else
+                base.DrawAt(drawLoc, flip);
         }
 
         protected override void LeaveMap()
@@ -64,9 +36,9 @@ namespace EBSGFramework
                 {
                     foreach (Thing item in Contents.innerContainer)
                     {
-                        if (item is Pawn pawn)
+                        if (item is Pawn p)
                         {
-                            pawn.ExitMap(false, Rot4.Invalid);
+                            p.ExitMap(false, Rot4.Invalid);
                         }
                     }
                     Contents.innerContainer.ClearAndDestroyContentsOrPassToWorld(DestroyMode.QuestLogic);
@@ -111,6 +83,6 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_References.Look(ref pawn, "pawn");
-        }
+        } 
     }
 }

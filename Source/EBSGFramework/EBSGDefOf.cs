@@ -27,7 +27,9 @@ namespace EBSGFramework
         public static JobDef EBSG_EnterSleepCasket;
         public static JobDef EBSG_ReloadAbility;
 
+        public static ThingDef EBSG_FlightPod;
         public static ThingDef EBSG_PawnLeaving;
+        public static ThingDef EBSG_PawnLanding;
         public static WorldObjectDef EBSG_PawnFlying;
 
         public static EBSGRecorder EBSG_Recorder;
@@ -42,8 +44,6 @@ namespace EBSGFramework
         public static StatDef EBSG_DeathrestFallRate;
         [MayRequireBiotech]
         public static StatDef EBSG_KillThirstRate;
-        [MayRequireBiotech]
-        public static NeedDef KillThirst;
 
         public static StatDef EBSG_ComfortRiseRate;
         public static StatDef EBSG_ComfortFallRate;

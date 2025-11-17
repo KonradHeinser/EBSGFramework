@@ -86,14 +86,6 @@ namespace EBSGFramework
             return base.GizmoDisabled(out reason);
         }
 
-        private void Refund()
-        {
-            // Somewhat mitigates the effects of impossible miscasts
-            if (parent.UsesCharges)
-                parent.RemainingCharges += 1;
-            else
-                parent.ResetCooldown();
-        }
         
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
@@ -106,7 +98,7 @@ namespace EBSGFramework
                     other = t;
                 else
                 {
-                    Refund();
+                    parent.Refund();
                     return; // This should be impossible, but weirder things have happened
                 }
             }
@@ -123,7 +115,7 @@ namespace EBSGFramework
                         numberToSpawn = Mathf.FloorToInt(c.InnerPawn.BodySize * Props.bodySizeFactor);
                         break;
                     default:
-                        Refund();
+                        parent.Refund();
                         return;
                 }
             

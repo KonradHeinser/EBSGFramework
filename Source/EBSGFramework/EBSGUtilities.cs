@@ -1956,7 +1956,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static float StatOrOne(this Thing thing, StatDef statDef = null, StatRequirement statReq = StatRequirement.Always, int cacheDuration = 600)
+        public static float StatOrOne(this Thing thing, StatDef statDef, StatRequirement statReq = StatRequirement.Always, int cacheDuration = 600)
         {
             if (statDef == null) return 1;
             var value = thing.GetStatValue(statDef, true, cacheDuration);
@@ -2300,6 +2300,33 @@ namespace EBSGFramework
                     Find.LetterStack.ReceiveLetter(birthLetter);
                 }
             }
+        }
+
+        public static void Refund(this Ability ability)
+        {
+            // Somewhat mitigates the effects of impossible miscasts
+            if (ability.UsesCharges)
+                ability.RemainingCharges += 1;
+            else
+                ability.ResetCooldown();
+
+            Pawn caster = ability.pawn;
+            
+            foreach (var comp in ability.comps)
+                switch (comp)
+                {
+                    case CompAbilityEffect_HemogenCost hemogenCost:
+                        GeneUtility.OffsetHemogen(caster, hemogenCost.Props.hemogenCost);
+                        break;
+                    case CompAbilityEffect_ResourceCost resourceCost:
+                        if (caster.genes?.GetGene(resourceCost.Props.mainResourceGene) is ResourceGene resourceGene)
+                        {
+                            float cost = resourceCost.Props.resourceCost;
+                            if (resourceCost.Props.costFactorStat != null) cost *= caster.StatOrOne(resourceCost.Props.costFactorStat);
+                            ResourceGene.OffsetResource(caster, 0f - cost, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), storeLimitPassing: !resourceCost.Props.checkMaximum);
+                        }
+                        break;
+                }
         }
 
         public static void VaporizePawn(this Pawn pawn, DamageInfo? dinfo = null)

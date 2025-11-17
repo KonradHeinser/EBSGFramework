@@ -21,6 +21,7 @@
     <EBSG_NoIdeologyPossible>Target cannot have an ideology.</EBSG_NoIdeologyPossible>
     <AbilityGoToAlly>Go to random ally</AbilityGoToAlly>
     <AbilityJoinCaravan>Join caravan</AbilityJoinCaravan>
+    <EBSG_SelectArrivalAction>Select arrival action</EBSG_SelectArrivalAction>
 
     <EBSG_CompSpawnPawn>{0} {1}</EBSG_CompSpawnPawn>
     <EBSG_CompSpawnPawnText>A child has finished developing in {0} and became a healthy baby!</EBSG_CompSpawnPawnText>

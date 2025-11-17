@@ -86,6 +86,10 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(PawnNameColorOfPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), "MakeDowned"),
                 postfix: new HarmonyMethod(patchType, nameof(MakeDownedPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(TransportersArrivalActionUtility), "AnyNonDownedColonist"),
+                postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
+            harmony.Patch(AccessTools.Method(typeof(TransportersArrivalActionUtility), "AnyPotentialCaravanOwner"),
+                postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
             /*
             harmony.Patch(AccessTools.Method(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateCapacityLevel)),
                 postfix: new HarmonyMethod(patchType, nameof(CalculateCapacityLevelPostfix)));
@@ -1634,6 +1638,12 @@ namespace EBSGFramework
             }
         }
 
+        public static void AnyNonDownedColonistPostfix(ref bool __result, IEnumerable<IThingHolder> pods)
+        {
+            if (!__result && pods.Count() == 1 && pods.First() is CompTransporter transporter && transporter.parent is Building_LaunchAbilityPod)
+                __result = true;
+        }
+        
         public static void ProjectileImpactPrefix(Projectile __instance)
         {
             ProjectileComp_ImpactEffect impactEffect = __instance.TryGetComp<ProjectileComp_ImpactEffect>();

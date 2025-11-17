@@ -11,18 +11,12 @@ namespace EBSGFramework
         {
             get
             {
-                ResourceGene gene_Resource = (ResourceGene)parent.pawn.genes.GetGene(Props.mainResourceGene);
+                ResourceGene gene_Resource = parent?.pawn?.genes?.GetGene(Props.mainResourceGene) as ResourceGene;
+                if (gene_Resource == null)
+                    return false;
                 float cost = Props.resourceCost;
                 if (Props.costFactorStat != null) cost *= parent.pawn.StatOrOne(Props.costFactorStat);
-                if (gene_Resource == null || gene_Resource.Value < cost)
-                {
-                    return false;
-                }
-                if (Props.checkMaximum && gene_Resource.Value + cost > gene_Resource.Max && cost < 0)
-                {
-                    return false;
-                }
-                return true;
+                return !(gene_Resource.Value < cost) && (!Props.checkMaximum || !(gene_Resource.Value + cost > gene_Resource.Max) || !(cost < 0));
             }
         }
 
@@ -32,7 +26,7 @@ namespace EBSGFramework
             Pawn pawn = parent.pawn;
             if (Props.mainResourceGene == null) 
                 Log.Error("A casted ability is missing a designated mainResourceGene, meaning it can't alter the resource levels");
-            else if (pawn.genes.GetGene(Props.mainResourceGene) is ResourceGene resourceGene)
+            else if (pawn.genes?.GetGene(Props.mainResourceGene) is ResourceGene resourceGene)
             {
                 float cost = Props.resourceCost;
                 if (Props.costFactorStat != null) cost *= pawn.StatOrOne(Props.costFactorStat);

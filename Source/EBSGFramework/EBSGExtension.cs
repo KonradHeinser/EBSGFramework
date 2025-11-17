@@ -23,8 +23,6 @@ namespace EBSGFramework
         public List<GenderByAge> genderByAge;
         public List<HediffToParts> hediffsToGivePostConsumption;
 
-        public EffecterDef effecter;
-
         public HediffDef alternativePregnancyHediff;
         public List<HediffToParts> hediffsToApply;
         public bool vanishingGene = false;
