@@ -83,6 +83,6 @@
             <shaderType>CutoutFlying</shaderType>
             <drawSize>0.1</drawSize>
         </graphicData>
-        <soundOpen />
+        <soundOpen Inherit="False" />
     </ThingDef>
 </Defs>
