@@ -116,24 +116,22 @@ namespace EBSGFramework
 
         public Color GetColor()
         {
-            if (def.HasModExtension<DRGExtension>()) 
-                return def.GetModExtension<DRGExtension>().barColor;
-            return new ColorInt(138, 3, 3).ToColor;
+            return def.HasModExtension<DRGExtension>() ? def.GetModExtension<DRGExtension>().barColor : new ColorInt(138, 3, 3).ToColor;
         }
 
         public Color GetHighlightColor()
         {
-            if (def.HasModExtension<DRGExtension>()) 
-                return def.GetModExtension<DRGExtension>().barHighlightColor;
-            return new ColorInt(145, 42, 42).ToColor;
+            return def.HasModExtension<DRGExtension>() ? def.GetModExtension<DRGExtension>().barHighlightColor : new ColorInt(145, 42, 42).ToColor;
         }
 
         public override void PostAdd()
         {
             base.PostAdd();
-            if (extension == null) InitializeExtension();
+            if (extension == null) 
+                InitializeExtension();
             Reset();
             HediffAdder.HediffAdding(pawn, this);
+            resourcePacksAllowed = extension?.resourcePacks.NullOrEmpty() == false;
             if (EBSGExtension != null)
             {
                 if (addedAbilities == null) 
@@ -158,8 +156,8 @@ namespace EBSGFramework
             {
                 tmpDrainGenes.Clear();
                 List<Gene> genesListForReading = pawn.genes.GenesListForReading;
-                for (int i = 0; i < genesListForReading.Count; i++)
-                    if (genesListForReading[i] is IGeneResourceDrain geneResourceDrain && genesListForReading[i].def.HasModExtension<DRGExtension>() && genesListForReading[i].def.GetModExtension<DRGExtension>().mainResourceGene == def)
+                foreach (var t in genesListForReading)
+                    if (t is IGeneResourceDrain geneResourceDrain && t.def.HasModExtension<DRGExtension>() && t.def.GetModExtension<DRGExtension>().mainResourceGene == def)
                         tmpDrainGenes.Add(geneResourceDrain);
 
                 return tmpDrainGenes;
@@ -168,17 +166,28 @@ namespace EBSGFramework
 
         public override void Notify_IngestedThing(Thing thing, int numTaken)
         {
-            if (extension == null || !extension.checkIngestion) return;
-            IngestibleProperties ingestible = thing.def.ingestible;
-            if (ingestible == null) return;
-            if (thing.def.IsEgg) OffsetResource(pawn, extension.eggIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-            if (thing.def.IsDrug) OffsetResource(pawn, extension.drugIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-            if (thing.def.IsCorpse) OffsetResource(pawn, extension.corpseIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-            if (thing.def.IsMeat)
+            if (extension == null) return;
+            if (thing.def.IsEgg && extension.eggIngestionEffect != 0f) 
+                OffsetResource(pawn, extension.eggIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+            if (thing.def.IsDrug && extension.drugIngestionEffect != 0f)
+                OffsetResource(pawn, extension.drugIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+            if (thing is Corpse corpse && extension.corpseIngestionEffect != 0f)
+                if (corpse.InnerPawn?.RaceProps.Humanlike == true)
+                {
+                    if (extension.humanlikeCorpseIngestionEffect != 0f)
+                        OffsetResource(pawn, extension.humanlikeCorpseIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                }
+                else if (extension.corpseIngestionEffect != 0f)
+                    OffsetResource(pawn, extension.corpseIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+            
+            if (thing.def.IsMeat && thing.def.ingestible != null)
             {
-                if (ingestible.sourceDef?.race?.Humanlike == true)
-                    OffsetResource(pawn, extension.humanlikeIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
-                else
+                if (thing.def.ingestible.sourceDef?.race?.Humanlike == true)
+                {
+                    if (extension.humanlikeIngestionEffect != 0f)
+                        OffsetResource(pawn, extension.humanlikeIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                }
+                else if (extension.genericMeatIngestionEffect != 0f)
                     OffsetResource(pawn, extension.genericMeatIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
             }
         }
@@ -217,9 +226,7 @@ namespace EBSGFramework
         
         public void CreateMax(float maximum = 1f, StatDef maxStat = null, StatDef maxFactorStat = null)
         {
-            float newMax;
-            if (maxStat != null) newMax = pawn.GetStatValue(maxStat);
-            else newMax = maximum;
+            var newMax = maxStat != null ? pawn.GetStatValue(maxStat) : maximum;
             if (maxFactorStat != null) newMax *= pawn.GetStatValue(maxFactorStat);
             SetMax(newMax);
         }
@@ -236,14 +243,11 @@ namespace EBSGFramework
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            foreach (Gizmo gizmo in base.GetGizmos())
-            {
-                yield return gizmo;
-            }
+            foreach (var g in base.GetGizmos())
+                yield return g;
+            
             foreach (Gizmo resourceDrainGizmo in GeneResourceDrainUtility.GetResourceDrainGizmos(this))
-            {
                 yield return resourceDrainGizmo;
-            }
         }
 
         public void InitializeExtension()
@@ -252,7 +256,6 @@ namespace EBSGFramework
             extensionAlreadyChecked = true;
             if (extension != null)
             {
-                resourcePacksAllowed = extension.resourcePacksAllowed;
                 if (extension.maximum != 1f || extension.maxStat != null || extension.maxFactorStat != null) CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
             }
             else Log.Error(def + "is missing the DRGExtension modex");
@@ -269,41 +272,38 @@ namespace EBSGFramework
             if (dailyValue) offset /= 60000f;
             if (checkPassiveStat && extension.passiveFactorStat != null)
                 offset *= pawn.GetStatValue(extension.passiveFactorStat);
-            if (resourceGene != null)
+            if (resourceGene.overchargeLeft > 0)
             {
-                if (resourceGene.overchargeLeft > 0)
+                resourceGene.overchargeLeft += offset;
+                if (resourceGene.overchargeLeft < 0)
                 {
-                    resourceGene.overchargeLeft += offset;
-                    if (resourceGene.overchargeLeft < 0)
-                    {
-                        resourceGene.Value += resourceGene.overchargeLeft;
-                        resourceGene.overchargeLeft = 0;
-                    }
+                    resourceGene.Value += resourceGene.overchargeLeft;
+                    resourceGene.overchargeLeft = 0;
                 }
-                else if (resourceGene.underchargeLeft > 0)
-                {
-                    resourceGene.underchargeLeft += offset;
-                    if (resourceGene.underchargeLeft < 0)
-                    {
-                        resourceGene.Value += resourceGene.underchargeLeft * -1; // Need the value to rise by whatever remains
-                        resourceGene.underchargeLeft = 0;
-                    }
-                }
-                else
-                {
-                    if (storeLimitPassing)
-                        if (resourceGene.Value + offset > resourceGene.Max)
-                            resourceGene.overchargeLeft += resourceGene.Value + offset - resourceGene.Max;
-                        else if (resourceGene.Value + offset < 0)
-                            resourceGene.underchargeLeft += resourceGene.Value + offset * -1;
-                    resourceGene.Value += offset;
-                }
-
-                if (resourceGene.Value <= 0f && extension.cravingHediff != null && !pawn.health.hediffSet.HasHediff(extension.cravingHediff))
-                    pawn.health.AddHediff(extension.cravingHediff);
-                if (resourceGene.Value >= resourceGene.max && extension.overchargeHediff != null && !pawn.health.hediffSet.HasHediff(extension.overchargeHediff))
-                    pawn.health.AddHediff(extension.overchargeHediff);
             }
+            else if (resourceGene.underchargeLeft > 0)
+            {
+                resourceGene.underchargeLeft += offset;
+                if (resourceGene.underchargeLeft < 0)
+                {
+                    resourceGene.Value += resourceGene.underchargeLeft * -1; // Need the value to rise by whatever remains
+                    resourceGene.underchargeLeft = 0;
+                }
+            }
+            else
+            {
+                if (storeLimitPassing)
+                    if (resourceGene.Value + offset > resourceGene.Max)
+                        resourceGene.overchargeLeft += resourceGene.Value + offset - resourceGene.Max;
+                    else if (resourceGene.Value + offset < 0)
+                        resourceGene.underchargeLeft += resourceGene.Value + offset * -1;
+                resourceGene.Value += offset;
+            }
+
+            if (resourceGene.Value <= 0f && extension.cravingHediff != null && !pawn.health.hediffSet.HasHediff(extension.cravingHediff))
+                pawn.health.AddHediff(extension.cravingHediff);
+            if (resourceGene.Value >= resourceGene.max && extension.overchargeHediff != null && !pawn.health.hediffSet.HasHediff(extension.overchargeHediff))
+                pawn.health.AddHediff(extension.overchargeHediff);
         }
 
         public override void ExposeData()

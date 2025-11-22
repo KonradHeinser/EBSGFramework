@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,32 +10,129 @@ namespace EBSGFramework
     [StaticConstructorOnStartup]
     public class GeneGizmo_ResourceGene : GeneGizmo_Resource
     {
-        private static readonly Texture2D ResourceCostTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.116f, 0.129f, 0.190f));
+        protected Texture2D barTex;
 
-        private List<Pair<IGeneResourceDrain, float>> tmpDrainGenes = new List<Pair<IGeneResourceDrain, float>>();
+        protected Texture2D barHighlightTex;
+        
+        protected static readonly Texture2D ResourceCostTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.116f, 0.129f, 0.190f));
 
-        public GeneGizmo_ResourceGene(Gene_Resource gene, List<IGeneResourceDrain> drainGenes, Color barColor, Color barhighlightColor)
-            : base(gene, drainGenes, barColor, barhighlightColor)
+        protected List<Pair<IGeneResourceDrain, float>> tmpDrainGenes = new List<Pair<IGeneResourceDrain, float>>();
+        
+        protected static readonly Texture2D BarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.34f, 0.42f, 0.43f));
+
+        protected static readonly Texture2D BarHighlightTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.43f, 0.54f, 0.55f));
+
+        protected static readonly Texture2D EmptyBarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.03f, 0.035f, 0.05f));
+
+        protected Texture2D iconTex;
+        
+        protected ThingDef iconThing;
+        
+        public GeneGizmo_ResourceGene(Gene_Resource gene, List<IGeneResourceDrain> drainGenes, Color barColor, Color barHighlightColor)
+            : base(gene, drainGenes, barColor, barHighlightColor)
         {
         }
+        
+        protected DRGExtension Extension => gene?.def?.GetModExtension<DRGExtension>();
 
-        private static bool draggingBar;
+        protected override bool IsDraggable
+        {
+            get
+            {
+                if (Extension != null && (Extension.addTargetBar || !Extension.resourcePacks.NullOrEmpty()))
+                    return base.IsDraggable;
+                return false;
+            }
+        }
+
+        protected static bool draggingBar;
 
         protected override bool DraggingBar { get => draggingBar; set => draggingBar = value; }
+        
+        protected bool initialized;
+        
+        protected void Initialize()
+        {
+            if (!initialized)
+            {
+                initialized = true;
+                barTex = BarColor == default ? BarTex : SolidColorMaterials.NewSolidColorTexture(BarColor);
+                barHighlightTex = BarHighlightColor == default ? BarHighlightTex : SolidColorMaterials.NewSolidColorTexture(BarHighlightColor);
+                InitializeIcon();
+            }
+        }
+
+        protected void InitializeIcon()
+        {
+            if (Extension != null)
+            {
+                if (Extension.iconPath != null)
+                    iconTex = ContentFinder<Texture2D>.Get(Extension.iconPath);
+                else if (Extension.iconThing != null)
+                    iconThing = Extension.iconThing;
+                else if (!Extension.resourcePacks.NullOrEmpty())
+                    iconThing = Extension.resourcePacks.First();
+            }
+
+        }
 
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
         {
-            GizmoResult result = base.GizmoOnGUI(topLeft, maxWidth, parms);
+            var result = new GizmoResult(GizmoState.Clear);
+
+            if (!IsDraggable)
+            {
+                if (!initialized)
+                    Initialize();
+
+                Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), 75f);
+                Rect rect2 = rect.ContractedBy(8f);
+                Widgets.DrawWindowBackground(rect);
+                bool mouseOverElement = false;
+                Text.Font = GameFont.Small;
+                Rect headerRect = rect2;
+                headerRect.height = Text.LineHeight;
+                DrawHeader(headerRect, ref mouseOverElement);
+                barRect = rect2;
+                barRect.yMin = headerRect.yMax + 8f;
+                Widgets.FillableBar(barRect, ValuePercent, Mouse.IsOver(barRect) ? barHighlightTex : barTex, EmptyBarTex, doBorder: true);
+                foreach (float barThreshold in GetBarThresholds())
+                {
+                    GUI.DrawTexture(new Rect
+                    {
+                        x = barRect.x + 3f + (barRect.width - 8f) * barThreshold,
+                        y = barRect.y + barRect.height - 9f,
+                        width = 2f,
+                        height = 6f
+                    }, (ValuePercent < barThreshold) ? BaseContent.GreyTex : BaseContent.BlackTex);
+                }
+
+                Text.Anchor = TextAnchor.MiddleCenter;
+                Widgets.Label(barRect, BarLabel);
+                Text.Anchor = TextAnchor.UpperLeft;
+                if (Mouse.IsOver(rect) && !mouseOverElement)
+                {
+                    Widgets.DrawHighlight(rect);
+                    TooltipHandler.TipRegion(rect, GetTooltip, Gen.HashCombineInt(GetHashCode(), 8573612));
+                }
+
+                if (!HighlightTag.NullOrEmpty())
+                    UIHighlighter.HighlightOpportunity(rect, HighlightTag);
+            }
+            else
+            {
+                result = base.GizmoOnGUI(topLeft, maxWidth, parms);
+                if (iconThing == null && !iconTex)
+                    InitializeIcon();
+            }
+            
+        
             float num = Mathf.Repeat(Time.time, 0.85f);
             float num2 = 1f;
             if (num < 0.1f)
-            {
                 num2 = num / 0.1f;
-            }
             else if (num >= 0.25f)
-            {
                 num2 = 1f - (num - 0.25f) / 0.6f;
-            }
 
             if (MapGizmoUtility.LastMouseOverGizmo is Command_Ability command_Ability && gene.Max != 0f)
             {
@@ -43,23 +141,24 @@ namespace EBSGFramework
                     bool flag = true;
                     float cost = 0;
 
-                    if (effectComp is CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost && compAbilityEffect_ResourceCost.Props.mainResourceGene == gene.def && compAbilityEffect_ResourceCost.Props.resourceCost > float.Epsilon)
+                    switch (effectComp)
                     {
-                        cost = compAbilityEffect_ResourceCost.Props.resourceCost;
+                        case CompAbilityEffect_ResourceCost compAbilityEffect_ResourceCost when compAbilityEffect_ResourceCost.Props.mainResourceGene == gene.def && compAbilityEffect_ResourceCost.Props.resourceCost > float.Epsilon:
+                            cost = compAbilityEffect_ResourceCost.Props.resourceCost;
+                            break;
+                        case CompAbilityEffect_ResourceToBattery compAbilityEffect_Battery when compAbilityEffect_Battery.Props.mainResourceGene == gene.def && compAbilityEffect_Battery.MaxCost > 0:
+                            cost = compAbilityEffect_Battery.MaxCost;
+                            break;
+                        case CompAbilityEffect_EnergyBlast compAbilityEffect_Blast when compAbilityEffect_Blast.Props.mainResourceGene == gene.def && compAbilityEffect_Blast.CurrentCost > 0:
+                            cost = compAbilityEffect_Blast.CurrentCost;
+                            break;
+                        case CompAbilityEffect_EnergyBurst compAbilityEffect_Burst when compAbilityEffect_Burst.Props.mainResourceGene == gene.def && compAbilityEffect_Burst.CurrentCost > 0:
+                            cost = compAbilityEffect_Burst.CurrentCost;
+                            break;
+                        default:
+                            flag = false;
+                            break;
                     }
-                    else if (effectComp is CompAbilityEffect_ResourceToBattery compAbilityEffect_Battery && compAbilityEffect_Battery.Props.mainResourceGene == gene.def && compAbilityEffect_Battery.MaxCost > 0)
-                    {
-                        cost = compAbilityEffect_Battery.MaxCost;
-                    }
-                    else if (effectComp is CompAbilityEffect_EnergyBlast compAbilityEffect_Blast && compAbilityEffect_Blast.Props.mainResourceGene == gene.def && compAbilityEffect_Blast.CurrentCost > 0)
-                    {
-                        cost = compAbilityEffect_Blast.CurrentCost;
-                    }
-                    else if (effectComp is CompAbilityEffect_EnergyBurst compAbilityEffect_Burst && compAbilityEffect_Burst.Props.mainResourceGene == gene.def && compAbilityEffect_Burst.CurrentCost > 0)
-                    {
-                        cost = compAbilityEffect_Burst.CurrentCost;
-                    }
-                    else flag = false;
 
                     if (flag)
                     {
@@ -76,43 +175,47 @@ namespace EBSGFramework
                     }
                 }
             }
+
             return result;
         }
 
         protected override void DrawHeader(Rect headerRect, ref bool mouseOverElement)
         {
+            base.DrawHeader(headerRect, ref mouseOverElement);
             ResourceGene resourceGene;
             if ((gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony) && (resourceGene = gene as ResourceGene) != null)
             {
                 headerRect.xMax -= 24f;
                 Rect rect = new Rect(headerRect.xMax, headerRect.y, 24f, 24f);
-                if (resourceGene.def.HasModExtension<DRGExtension>() && !resourceGene.def.GetModExtension<DRGExtension>().resourcePacks.NullOrEmpty())
+                var extension = resourceGene.def.GetModExtension<DRGExtension>();
+                if (iconTex || iconThing != null)
                 {
-                    if (resourceGene.def.GetModExtension<DRGExtension>().iconThing != null) Widgets.DefIcon(rect, resourceGene.def.GetModExtension<DRGExtension>().iconThing);
-                    else Widgets.DefIcon(rect, ThingDefOf.HemogenPack);
-                    GUI.DrawTexture(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f), resourceGene.resourcePacksAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex);
-                    if (Widgets.ButtonInvisible(rect))
+                    if (iconTex)
+                        GUI.DrawTexture(rect, iconTex);
+                    else
+                        Widgets.DefIcon(rect, iconThing);
+                    if (extension?.resourcePacks.NullOrEmpty() == false)
                     {
-                        resourceGene.resourcePacksAllowed = !resourceGene.resourcePacksAllowed;
-                        if (resourceGene.resourcePacksAllowed)
+                        GUI.DrawTexture(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f), resourceGene.resourcePacksAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex);
+                        if (Widgets.ButtonInvisible(rect))
                         {
-                            SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                            resourceGene.resourcePacksAllowed = !resourceGene.resourcePacksAllowed;
+                            if (resourceGene.resourcePacksAllowed)
+                                SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                            else
+                                SoundDefOf.Tick_Low.PlayOneShotOnCamera();
                         }
-                        else
+                        if (Mouse.IsOver(rect))
                         {
-                            SoundDefOf.Tick_Low.PlayOneShotOnCamera();
+                            Widgets.DrawHighlight(rect);
+                            string onOff = (resourceGene.resourcePacksAllowed ? "On" : "Off").Translate().ToString().UncapitalizeFirst();
+                            TooltipHandler.TipRegion(rect, () => "AutoTakeResourceDesc".Translate(resourceGene.ResourceLabel.Named("RESOURCE"), gene.pawn.Named("PAWN"), resourceGene.PostProcessValue(resourceGene.targetValue).Named("MIN"), onOff.Named("ONOFF")).Resolve(), 828267373);
+                            mouseOverElement = true;
                         }
                     }
-                    if (Mouse.IsOver(rect))
-                    {
-                        Widgets.DrawHighlight(rect);
-                        string onOff = (resourceGene.resourcePacksAllowed ? "On" : "Off").Translate().ToString().UncapitalizeFirst();
-                        TooltipHandler.TipRegion(rect, () => "AutoTakeResourceDesc".Translate(resourceGene.ResourceLabel.Named("RESOURCE"), gene.pawn.Named("PAWN"), resourceGene.PostProcessValue(resourceGene.targetValue).Named("MIN"), onOff.Named("ONOFF")).Resolve(), 828267373);
-                        mouseOverElement = true;
-                    }
+
                 }
             }
-            base.DrawHeader(headerRect, ref mouseOverElement);
         }
 
         protected override string GetTooltip()
