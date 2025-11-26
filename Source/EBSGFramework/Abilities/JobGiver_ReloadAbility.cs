@@ -37,16 +37,16 @@ namespace EBSGFramework
                 foreach (Ability ability in abilities)
                 {
                     var reloadComp = ability.CompOfType<CompAbilityEffect_Reloadable>();
-                    if (reloadComp.Props.disableAutoSearch || reloadComp.Props.ammoDef == null) continue;
+                    if (reloadComp?.Props.ammoDef == null || reloadComp.Props.disableAutoSearch) continue;
                     if (reloadComp.ChargesNeeded > 0)
                     {
-                        List<Thing> validAmmo = RefuelWorkGiverUtility.FindEnoughReservableThings(pawn, pawn.Position,
+                        List<Thing> validAmmo = RefuelWorkGiverUtility.FindEnoughReservableThings(pawn, pawn.PositionHeld,
                             new IntRange(reloadComp.Props.ammoPerCharge, reloadComp.ChargesNeeded * reloadComp.Props.ammoPerCharge),
                             (obj) => obj.def == reloadComp.Props.ammoDef && obj.stackCount >= reloadComp.Props.ammoPerCharge);
 
                         if (!validAmmo.NullOrEmpty())
                         {
-                            validAmmo.SortBy((arg) => arg.Position.DistanceTo(pawn.Position));
+                            validAmmo.SortBy((arg) => arg.Position.DistanceTo(pawn.PositionHeld));
                             Thing thing = validAmmo[0];
                             Job job = JobMaker.MakeJob(EBSGDefOf.EBSG_ReloadAbility, thing);
                             job.count = Mathf.Min(thing.stackCount, reloadComp.ChargesNeeded * reloadComp.Props.ammoPerCharge);
