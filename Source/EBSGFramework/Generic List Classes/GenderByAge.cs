@@ -16,10 +16,7 @@ namespace EBSGFramework
         public GenderByAge(Gender gender, FloatRange range)
         {
             this.gender = gender;
-            if (range == null)
-                this.range = defaultRange;
-            else
-                this.range = range;
+            this.range = range;
         }
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)

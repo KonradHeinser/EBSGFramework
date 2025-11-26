@@ -1309,6 +1309,15 @@ namespace EBSGFramework
             return false;
         }
 
+        public static float PawnHediffRangeNum(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
+        {
+            if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return 0;
+
+            return (from hediff in pawn.health.hediffSet.hediffs 
+                from h in hediffs.Where(h => h.hediff == hediff.def) 
+                select h.range.RandomInRange).FirstOrDefault();
+        }
+
         public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffDef> hediffs, BodyPartRecord bodyPart = null)
         {
             if (hediffs.NullOrEmpty()) return true;

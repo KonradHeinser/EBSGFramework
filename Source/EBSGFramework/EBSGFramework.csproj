@@ -130,6 +130,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
+    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_FlipGenderPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GenderByAge.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SetterBase.cs" />
+    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGender.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_StageSetter.cs" />
     <Compile Include="Hediffs\Stance_StageSetting.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="Hediffs\AbilitiesAtSeverities.cs" />
     <Compile Include="Hediffs\HediffsAtSeverities.cs" />
     <Compile Include="RenderNodes\PawnRenderNode_EBSGAttachmentBody.cs" />
+    <Compile Include="RitualOutcomeComp_HasHediff.cs" />
     <Compile Include="Settings\PatchOperationFlexibleSetting.cs" />
     <Compile Include="Settings\SettingCategoryDef.cs" />
     <Compile Include="Settings\SettingDef.cs" />

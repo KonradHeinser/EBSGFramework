@@ -30,12 +30,20 @@ namespace EBSGFramework
             if (xmlRoot.Name != "li")
                 DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "capacity", xmlRoot.Name);
 
-            if (num == 0)
-                range = defaultRange;
-            else if (num == 1)
-                LoadFromSingleNode(xmlRoot.FirstChild);
-            else if (num > 1)
-                LoadMultipleNodes(xmlRoot);
+            switch (num)
+            {
+                case 0:
+                    range = defaultRange;
+                    break;
+                case 1:
+                    LoadFromSingleNode(xmlRoot.FirstChild);
+                    break;
+                default:
+                {
+                    LoadMultipleNodes(xmlRoot);
+                    break;
+                }
+            }
         }
 
         private void LoadFromSingleNode(XmlNode node)

@@ -29,14 +29,14 @@ namespace EBSGFramework
             }
         }
 
-        protected virtual bool DoCheck()
+        protected virtual bool DoCheck() // Overrides the normal ticks check. Should only use lighter checks
         {
             return false;
         }
 
         protected virtual void SetSeverity()
         {
-
+            // Take effect on the hediff severity and set a new ticksToNextCheck
         }
     }
 }
