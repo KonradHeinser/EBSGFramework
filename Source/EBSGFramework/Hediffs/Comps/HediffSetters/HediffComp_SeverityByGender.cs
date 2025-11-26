@@ -15,13 +15,17 @@ namespace EBSGFramework
 
         protected override void SetSeverity()
         {
+            ticksToNextCheck = 60000;
+            
             foreach (var effect in Props.genders)
                 if (Pawn.gender == effect.gender)
                 {
                     oldGender = Pawn.gender;
                     parent.Severity = effect.range.RandomInRange;
+                    return;
                 }
-            ticksToNextCheck = 60000;
+
+            parent.Severity = Props.defaultSeverity;
         }
     }
 }

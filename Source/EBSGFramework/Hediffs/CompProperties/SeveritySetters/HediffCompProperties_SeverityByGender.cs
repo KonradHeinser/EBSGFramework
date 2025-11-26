@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public List<GenderByAge> genders = new List<GenderByAge>();
 
+        public float defaultSeverity;
+        
         public HediffCompProperties_SeverityByGender()
         {
             compClass = typeof(HediffComp_SeverityByGender);
