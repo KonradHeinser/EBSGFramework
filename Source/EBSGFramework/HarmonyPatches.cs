@@ -917,12 +917,7 @@ namespace EBSGFramework
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
-            if (__result.EnumerableNullOrEmpty()) 
-                return;
-            List<ThingDef> invalidThings = __result.Where(t => !t.comps.NullOrEmpty()).Where(th => th.comps.OfType<CompProperties_Indestructible>().Any()).ToList();
-
-            if (!invalidThings.NullOrEmpty())
-                __result = __result.Where(t => !invalidThings.Contains(t));
+            __result = __result.Where(def => def.GetCompProperties<CompProperties_Indestructible>() == null);
         }
 
         public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref float __result)
