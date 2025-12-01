@@ -25,7 +25,7 @@ namespace EBSGFramework
                 SkillRecord skill;
                 if (skillChange.skill == null)
                 {
-                    IEnumerable<SkillRecord> validSkills = Pawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
+                    IEnumerable<SkillRecord> validSkills = Pawn.skills.skills.Where(s => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
                     if (validSkills.EnumerableNullOrEmpty()) continue;
                     skill = validSkills.RandomElement();
                 }

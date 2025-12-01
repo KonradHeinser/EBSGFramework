@@ -64,7 +64,7 @@ namespace EBSGFramework
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Toil consume = Toils_DRGConsume.ConsumeConsumable(pawn, pawn, TargetIndex.A, TargetIndex.B).FailOn((Toil x) => !ConsumableSource.Spawned && (pawn.carryTracker == null || pawn.carryTracker.CarriedThing != ConsumableSource)).FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+            Toil consume = Toils_DRGConsume.ConsumeConsumable(pawn, pawn, TargetIndex.A, TargetIndex.B).FailOn(x => !ConsumableSource.Spawned && (pawn.carryTracker == null || pawn.carryTracker.CarriedThing != ConsumableSource)).FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
             foreach (Toil item in PrepareToIngestToils(consume))
                 yield return item;
             yield return consume;
@@ -119,7 +119,7 @@ namespace EBSGFramework
             {
                 if (pawn.inventory.innerContainer.TotalStackCountOfDef(ConsumableSource.def) < job.takeExtraIngestibles)
                 {
-                    Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(ConsumableSource.def), PathEndMode.Touch, TraverseParms.For(pawn), 30f, (Thing x) => pawn.CanReserve(x, 10, 1) && !x.IsForbidden(pawn) && x.IsSociallyProper(pawn));
+                    Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(ConsumableSource.def), PathEndMode.Touch, TraverseParms.For(pawn), 30f, x => pawn.CanReserve(x, 10, 1) && !x.IsForbidden(pawn) && x.IsSociallyProper(pawn));
                     if (thing != null)
                     {
                         job.SetTarget(TargetIndex.C, thing);

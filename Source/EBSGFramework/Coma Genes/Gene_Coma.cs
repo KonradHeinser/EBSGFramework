@@ -559,7 +559,7 @@ namespace EBSGFramework
             Scribe_Collections.Look(ref boundBuildings, "boundBuildings", LookMode.Reference);
             Scribe_Collections.Look(ref temporaryHediffs, "temporaryHediffs", LookMode.Def);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
-                boundBuildings.RemoveAll((Thing x) => x == null);
+                boundBuildings.RemoveAll(x => x == null);
         }
     }
 }

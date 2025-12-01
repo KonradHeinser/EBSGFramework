@@ -17,7 +17,7 @@ namespace EBSGFramework
 
             // Get all a list of all pawns, and a list of all allied pawns
             List<Pawn> list = parent.pawn.Map.mapPawns.AllPawns;
-            list.SortBy((Pawn c) => c.Position.DistanceToSquared(Pawn.Position));
+            list.SortBy(c => c.Position.DistanceToSquared(Pawn.Position));
             List<Pawn> allies = Pawn.Map.mapPawns.SpawnedPawnsInFaction(Pawn.Faction);
 
             if (!Props.hideMoteWhenNotDrafted || Pawn.Drafted)

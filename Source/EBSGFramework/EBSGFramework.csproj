@@ -577,7 +577,6 @@
     <None Include="obj\Debug\EBSGFramework.pdb" />
     <None Include="obj\Debug\EBSGFramework.csproj.FileListAbsolute.txt" />
     <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
-    <None Include="Things\PlaceWorker_WallTombs_InsideWallBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4566" />

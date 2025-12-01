@@ -25,9 +25,9 @@ namespace EBSGFramework
 
         public static Building_PawnNeedCharger ClosestViableCharger(Pawn pawn)
         {
-            List<Thing> buildings = pawn.Map.spawnedThings.ToList().Where((Thing t) => t.def.thingClass == typeof(Building_PawnNeedCharger)).ToList();
+            var buildings = pawn.Map.spawnedThings.Where(t => t.def.thingClass == typeof(Building_PawnNeedCharger));
 
-            if (buildings.NullOrEmpty())
+            if (buildings.EnumerableNullOrEmpty())
                 return null;
 
             List<string> alreadyCheckedBuildingDefs = new List<string>();

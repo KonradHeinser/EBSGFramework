@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -19,23 +18,25 @@ namespace EBSGFramework
             if (Props.rangeStat != null && Pawn.StatOrOne(Props.rangeStat) > 0)
                 range = Pawn.StatOrOne(Props.rangeStat);
 
-            List<Pawn> list = Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => CheckPawn(p, range)).ToList();
-            parent.Severity = list.Count;
+            var pawns = Pawn.Map.mapPawns.AllPawns.Where(p => CheckPawn(p, range));
+            parent.Severity = pawns.Count();
 
             ticksToNextCheck = 60;
         }
 
         public bool CheckPawn(Pawn p, float range)
         {
-            if (p.Dead) 
+            if (p.Dead)
                 return false;
 
-            if (!p.RaceProps.Humanlike && Props.onlyHumanlikes) 
+            if (!p.RaceProps.Humanlike && Props.onlyHumanlikes)
                 return false;
 
             if (p == Pawn)
-                if (!Props.includeSelf) 
+            {
+                if (!Props.includeSelf)
                     return false;
+            }
             else
             {
                 if (Props.onlySameFaction && p.Faction != Pawn.Faction) 
@@ -46,10 +47,7 @@ namespace EBSGFramework
                         return false;
             }
 
-            if (p.Position.DistanceTo(Pawn.Position) > range) 
-                return false;
-
-            return true;
+            return p.Position.DistanceTo(Pawn.Position) < range;
         }
     }
 }

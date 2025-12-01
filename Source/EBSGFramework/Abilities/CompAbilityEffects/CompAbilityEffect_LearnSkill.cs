@@ -25,7 +25,7 @@ namespace EBSGFramework
                 {
                     SkillRecord skill = null;
                     if (skillXP.skill != null) skill = targetPawn.skills.GetSkill(skillXP.skill);
-                    else skill = targetPawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
+                    else skill = targetPawn.skills.skills.Where(s => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
                     if (skill != null && !skill.TotallyDisabled)
                     {
                         targetSkills.Add(skill);
@@ -38,7 +38,7 @@ namespace EBSGFramework
                 {
                     SkillRecord skill = null;
                     if (skillXP.skill != null) skill = caster.skills.GetSkill(skillXP.skill);
-                    else skill = caster.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
+                    else skill = caster.skills.skills.Where(s => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
                     if (skill != null && !skill.TotallyDisabled)
                     {
                         casterSkills.Add(skill);
@@ -54,7 +54,7 @@ namespace EBSGFramework
                     {
                         SkillRecord skill = null;
                         if (skillXP.skill != null) skill = caster.skills.GetSkill(skillXP.skill);
-                        else skill = caster.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
+                        else skill = caster.skills.skills.Where(s => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !casterSkills.Contains(s))).RandomElement();
                         if (skill != null && !skill.TotallyDisabled)
                         {
                             casterSkills.Add(skill);
@@ -65,7 +65,7 @@ namespace EBSGFramework
                     {
                         SkillRecord skill = null;
                         if (skillXP.skill != null) skill = targetPawn.skills.GetSkill(skillXP.skill);
-                        else skill = targetPawn.skills.skills.Where((SkillRecord s) => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
+                        else skill = targetPawn.skills.skills.Where(s => !s.TotallyDisabled && (!Props.preventRepeatsForRandoms || !targetSkills.Contains(s))).RandomElement();
                         if (skill != null && !skill.TotallyDisabled)
                         {
                             targetSkills.Add(skill);

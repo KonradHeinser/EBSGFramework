@@ -61,7 +61,7 @@ namespace EBSGFramework
                                         break;
                                     }
                         }
-                        else if (!(thing.ingestible?.outcomeDoers?.FirstOrDefault((IngestionOutcomeDoer x) => x is IngestionOutcomeDoer_OffsetResource ix && (ix).mainResourceGene == resource.def) is IngestionOutcomeDoer_OffsetResource ingestionOutcomeDoer_OffsetResource))
+                        else if (!(thing.ingestible?.outcomeDoers?.FirstOrDefault(x => x is IngestionOutcomeDoer_OffsetResource ix && (ix).mainResourceGene == resource.def) is IngestionOutcomeDoer_OffsetResource ingestionOutcomeDoer_OffsetResource))
                             cachedResourcePackResourceGain = 0f;
                         else
                             cachedResourcePackResourceGain = ingestionOutcomeDoer_OffsetResource.offset;
@@ -161,7 +161,7 @@ namespace EBSGFramework
                     if (pawn.inventory.innerContainer[i].def == thingDef)
                         return pawn.inventory.innerContainer[i];
 
-                Thing returnThing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn));
+                Thing returnThing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => pawn.CanReserve(t) && !t.IsForbidden(pawn));
                 if (returnThing != null) return returnThing;
             }
             return null;
@@ -181,7 +181,7 @@ namespace EBSGFramework
 
         private Pawn GetPrisoner(Pawn pawn)
         {
-            return (Pawn)GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.mapPawns.PrisonersOfColonySpawned, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => t is Pawn prisoner && CanFeedOnPrisoner(pawn, prisoner).Accepted);
+            return (Pawn)GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.mapPawns.PrisonersOfColonySpawned, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => t is Pawn prisoner && CanFeedOnPrisoner(pawn, prisoner).Accepted);
         }
     }
 }

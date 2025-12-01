@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -36,11 +35,11 @@ namespace EBSGFramework
 
         protected override LocalTargetInfo GetTarget(Pawn caster, Ability ability)
         {
-            List<Pawn> allies = caster.Map.mapPawns.SpawnedPawnsInFaction(caster.Faction);
+            var allies = caster.Map.mapPawns.SpawnedPawnsInFaction(caster.Faction).Where(a => caster != a && ability.CanApplyOn(new LocalTargetInfo(a)));
 
-            if (!allies.NullOrEmpty())
+            if (!allies.EnumerableNullOrEmpty())
             {
-                allies.SortBy((Pawn p) => p.Position.DistanceToSquared(caster.Position));
+                allies = allies.OrderBy(p => p.Position.DistanceToSquared(caster.Position));
                 foreach (Pawn ally in allies) // Prioritizes bleeding pawns
                 {
                     if (ally == caster || !ability.CanApplyOn(new LocalTargetInfo(ally))) continue;
@@ -51,17 +50,12 @@ namespace EBSGFramework
                     }
                 }
                 if (allTendable) // If there's no notable bleeding but allowed to heal all wounds, look for any tendable pawn
-                {
                     foreach (Pawn ally in allies) // Start with injuries as those are most likely to cause immediate issues
-                    {
-                        if (ally == caster || !ability.CanApplyOn(new LocalTargetInfo(ally))) continue;
-                        if (!ally.health.hediffSet.GetHediffsTendable().Where((Hediff h) => h.BleedRate > 0).ToList().NullOrEmpty())
+                        if (!ally.health.hediffSet.GetHediffsTendable().Where(h => h.BleedRate > 0).ToList().NullOrEmpty())
                         {
                             targetPawn = ally;
                             return new LocalTargetInfo(ally);
                         }
-                    }
-                }
             }
             return LocalTargetInfo.Invalid;
         }

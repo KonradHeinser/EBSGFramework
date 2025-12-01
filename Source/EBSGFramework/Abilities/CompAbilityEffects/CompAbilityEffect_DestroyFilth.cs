@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -18,9 +17,9 @@ namespace EBSGFramework
             if (!target.Cell.IsValid)
                 return false;
 
-            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).ToList() : target.Cell.GetThingList(parent.pawn.Map);
+            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true) : target.Cell.GetThingList(parent.pawn.Map);
 
-            if (stuff.NullOrEmpty())
+            if (stuff.EnumerableNullOrEmpty())
                 return false;
 
             foreach (var thing in stuff) // Checks if there's a valid filth available
@@ -38,9 +37,9 @@ namespace EBSGFramework
             if (!target.Cell.IsValid)
                 return;
 
-            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true).ToList() : target.Cell.GetThingList(parent.pawn.Map);
+            var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true) : target.Cell.GetThingList(parent.pawn.Map);
 
-            if (!stuff.NullOrEmpty())
+            if (!stuff.EnumerableNullOrEmpty())
                 foreach (var thing in stuff)
                     if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
                     {

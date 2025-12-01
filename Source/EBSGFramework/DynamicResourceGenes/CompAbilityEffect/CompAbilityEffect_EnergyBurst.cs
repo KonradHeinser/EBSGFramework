@@ -98,7 +98,7 @@ namespace EBSGFramework
                             ignoreList.Add(caster);
                         break;
                     case ExclusionLevel.Allies:
-                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where((Pawn p) => p.Faction != null && p.Faction == faction))
+                        foreach (Pawn pawn in caster.Map.mapPawns.AllPawnsSpawned.Where(p => p.Faction != null && p.Faction == faction))
                             ignoreList.Add(pawn);
                         break;
                     case ExclusionLevel.NonHostiles:

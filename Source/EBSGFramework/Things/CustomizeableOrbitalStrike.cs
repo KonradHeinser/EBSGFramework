@@ -228,9 +228,9 @@ namespace EBSGFramework
         private bool Intercepted(IntVec3 targetCell)
         {
             if (!targetCell.IsValid || Map == null) return true;
-            List<Thing> list = Map.listerThings.ThingsInGroup(ThingRequestGroup.ProjectileInterceptor).Where((Thing t) => t.HasComp<CompProjectileInterceptor>()).ToList();
+            var list = Map.listerThings.ThingsInGroup(ThingRequestGroup.ProjectileInterceptor).Where(t => t.HasComp<CompProjectileInterceptor>());
 
-            if (!list.NullOrEmpty())
+            if (!list.EnumerableNullOrEmpty())
                 foreach (Thing thing in list)
                 {
                     CompProjectileInterceptor comp = thing.TryGetComp<CompProjectileInterceptor>();
@@ -246,7 +246,7 @@ namespace EBSGFramework
         {
             nextExplosionCell = (from x in GenRadial.RadialCellsAround(Position, impactAreaRadius, true)
                                  where x.InBounds(Map)
-                                 select x).RandomElementByWeight((IntVec3 x) => DistanceChanceFactor.Evaluate(x.DistanceTo(Position) / impactAreaRadius));
+                                 select x).RandomElementByWeight(x => DistanceChanceFactor.Evaluate(x.DistanceTo(Position) / impactAreaRadius));
         }
 
         public override void ExposeData()

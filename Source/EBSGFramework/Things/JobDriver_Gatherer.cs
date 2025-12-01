@@ -89,7 +89,7 @@ namespace EBSGFramework
             {
                 initAction = () =>
                 {
-                    GatherOption option = comp.ViableOptions.RandomElementByWeight((GatherOption o) => o.weight);
+                    GatherOption option = comp.ViableOptions.RandomElementByWeight(o => o.weight);
 
                     if (option.thing != null)
                     {
@@ -115,13 +115,13 @@ namespace EBSGFramework
         private void SetNextDestination()
         {
             CompGathererSpot comp = GathererCenter.TryGetComp<CompGathererSpot>();
-            List<IntVec3> wanderTiles = Map.AllCells.Where((IntVec3 p) => p.DistanceTo(GathererCenter.Position) <= comp.Props.gatherRadius && !p.Impassable(Map)).ToList();
+            var wanderTiles = Map.AllCells.Where(p => p.DistanceTo(GathererCenter.Position) <= comp.Props.gatherRadius && !p.Impassable(Map));
 
-            if (!wanderTiles.NullOrEmpty())
-                if (comp.Props.focusWanderInWater && !wanderTiles.Where((IntVec3 p) => p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // Tries to find water if instructed to do so in the comp
-                    job.SetTarget(TargetIndex.B, wanderTiles.Where((IntVec3 p) => p.GetTerrain(Map).IsWater).RandomElement());
-                else if (!wanderTiles.Where((IntVec3 p) => !p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // This is used if it can't find water, or if not supposed to focus on water
-                    job.SetTarget(TargetIndex.B, wanderTiles.Where((IntVec3 p) => !p.GetTerrain(Map).IsWater).RandomElement());
+            if (!wanderTiles.EnumerableNullOrEmpty())
+                if (comp.Props.focusWanderInWater && !wanderTiles.Where(p => p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // Tries to find water if instructed to do so in the comp
+                    job.SetTarget(TargetIndex.B, wanderTiles.Where(p => p.GetTerrain(Map).IsWater).RandomElement());
+                else if (!wanderTiles.Where(p => !p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // This is used if it can't find water, or if not supposed to focus on water
+                    job.SetTarget(TargetIndex.B, wanderTiles.Where(p => !p.GetTerrain(Map).IsWater).RandomElement());
                 else // This is used if not supposed to focus on water, but no non-water tiles can be found
                     job.SetTarget(TargetIndex.B, wanderTiles.RandomElement());
             else

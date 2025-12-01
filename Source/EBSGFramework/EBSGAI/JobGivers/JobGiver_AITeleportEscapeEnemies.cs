@@ -41,7 +41,7 @@ namespace EBSGFramework
                                      where !a.ThreatDisabled(pawn)
                                      select a.Thing);
             Ability jump = pawn.abilities?.GetAbility(ability);
-            relocatePosition = CellFinderLoose.GetFallbackDest(pawn, tmpHostileSpots, maxDistance, 5f, 5f, 20, (IntVec3 c) => teleportComp.Valid(c, false));
+            relocatePosition = CellFinderLoose.GetFallbackDest(pawn, tmpHostileSpots, maxDistance, 5f, 5f, 20, c => teleportComp.Valid(c, false));
             tmpHostileSpots.Clear();
             return relocatePosition.IsValid;
         }

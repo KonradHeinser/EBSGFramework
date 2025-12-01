@@ -213,7 +213,7 @@ namespace EBSGFramework
 
         private ITargetingSource GetBetterTargetingSource(LocalTargetInfo t)
         {
-            groupedCasts.SortBy((Command_AbilityAutocastToggle c) => c.ability.pawn.Position.DistanceToSquared(t.Cell));
+            groupedCasts.SortBy(c => c.ability.pawn.Position.DistanceToSquared(t.Cell));
             for (int i = 0; i < groupedCasts.Count; i++)
             {
                 if (groupedCasts[i].ability.CanQueueCast && groupedCasts[i].ability.verb.ValidateTarget(t, showMessages: false))

@@ -18,7 +18,7 @@ namespace EBSGFramework
             Caravan caravan = parent.pawn.GetCaravan();
             Map targetMap = GetMap(target);
 
-            List<Pawn> list = PawnsToSkip(target).ToList();
+            var list = PawnsToSkip(target).ToList();
             if (parent.pawn.Spawned)
             {
                 if (Props.effecterUsed != null)

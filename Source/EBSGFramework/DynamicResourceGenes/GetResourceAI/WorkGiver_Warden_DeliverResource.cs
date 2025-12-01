@@ -54,7 +54,7 @@ namespace EBSGFramework
                 if (extension.resourcePacks.NullOrEmpty() || ResourcePackAlreadyAvailableFor(prisoner, extension.resourcePacks)) return null; // Check if there's already a resouce pack
                 foreach (ThingDef thingDef in extension.resourcePacks)
                 {
-                    Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
+                    Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, pack => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
                     if (thing == null) continue; // If the individual item doesn't exist, try the next one
                     if (thing.HasComp<Comp_DRGConsumable>())
                     {

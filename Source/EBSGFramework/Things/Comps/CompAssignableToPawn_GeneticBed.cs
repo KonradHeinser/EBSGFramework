@@ -67,7 +67,7 @@ namespace EBSGFramework
 
         protected override void PostPostExposeData()
         {
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && ModsConfig.BiotechActive && assignedPawns.RemoveAll((Pawn x) => x.ownership.AssignedDeathrestCasket != parent) > 0)
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && ModsConfig.BiotechActive && assignedPawns.RemoveAll(x => x.ownership.AssignedDeathrestCasket != parent) > 0)
             {
                 Log.Warning(parent.ToStringSafe() + " had pawns assigned that don't have it as an assigned bed. Removing.");
             }

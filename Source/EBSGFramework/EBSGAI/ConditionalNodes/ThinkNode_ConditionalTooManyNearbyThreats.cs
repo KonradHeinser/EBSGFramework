@@ -16,7 +16,7 @@ namespace EBSGFramework
             Map map = pawn.Map;
             if (!GenHostility.AnyHostileActiveThreatTo(map, pawn.Faction, false, false)) return false;
             List<Pawn> list = pawn.Map.mapPawns.AllPawns;
-            list.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
+            list.SortBy(c => c.Position.DistanceToSquared(pawn.Position));
             int count = 0;
             foreach (Pawn p in list)
             {

@@ -21,12 +21,12 @@ namespace EBSGFramework
                     count = 1;
             }
             else if (Pawn.Map != null)
-                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawns.Where((Pawn p) => p.Faction != null && p.Faction == Pawn.Faction).ToList());
+                count = CheckGeneCount(Pawn.Map.mapPawns.AllPawns.Where(p => p.Faction != null && p.Faction == Pawn.Faction));
             else
             {
                 Caravan caravan = Pawn.GetCaravan();
                 if (caravan != null)
-                    count = CheckGeneCount(caravan.PawnsListForReading.Where((Pawn p) => p.Faction != null && p.Faction == Pawn.Faction).ToList());
+                    count = CheckGeneCount(caravan.PawnsListForReading.Where(p => p.Faction != null && p.Faction == Pawn.Faction));
                 else if (Pawn.CheckPawnGenes(Props.gene, Props.genes, Props.mustHaveAllGenes))
                     count = 1;
             }
@@ -39,17 +39,9 @@ namespace EBSGFramework
             ticksToNextCheck = 2500;
         }
 
-        public int CheckGeneCount(List<Pawn> pawns)
+        public int CheckGeneCount(IEnumerable<Pawn> pawns)
         {
-            if (pawns.NullOrEmpty()) return 0;
-
-            int count = 0;
-
-            foreach (Pawn pawn in pawns)
-                if (pawn.CheckPawnGenes(Props.gene, Props.genes, Props.mustHaveAllGenes))
-                    count++;
-
-            return count;
+            return pawns.EnumerableNullOrEmpty() ? 0 : pawns.Count(pawn => pawn.CheckPawnGenes(Props.gene, Props.genes, Props.mustHaveAllGenes));
         }
     }
 }

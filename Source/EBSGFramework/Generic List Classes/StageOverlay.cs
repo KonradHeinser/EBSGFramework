@@ -108,28 +108,19 @@ namespace EBSGFramework
             if (mentalBreakExplanation != null)
                 stage.mentalBreakExplanation = mentalBreakExplanation;
 
-            if (!allowedMentalBreakIntensities.NullOrEmpty())
-                if (!stage.allowedMentalBreakIntensities.NullOrEmpty())
-                    stage.allowedMentalBreakIntensities = stage.allowedMentalBreakIntensities.Union(allowedMentalBreakIntensities).ToList();
-                else
-                    stage.allowedMentalBreakIntensities = allowedMentalBreakIntensities;
+            if (!allowedMentalBreakIntensities.NullOrEmpty()) 
+                stage.allowedMentalBreakIntensities = !stage.allowedMentalBreakIntensities.NullOrEmpty() ? stage.allowedMentalBreakIntensities.Union(allowedMentalBreakIntensities).ToList() : allowedMentalBreakIntensities;
 
-            if (!makeImmuneTo.NullOrEmpty())
-                if (stage.makeImmuneTo.NullOrEmpty())
-                    stage.makeImmuneTo = stage.makeImmuneTo.Union(makeImmuneTo).ToList();
-                else
-                    stage.makeImmuneTo = makeImmuneTo;
+            if (!makeImmuneTo.NullOrEmpty()) 
+                stage.makeImmuneTo = stage.makeImmuneTo.NullOrEmpty() ? stage.makeImmuneTo.Union(makeImmuneTo).ToList() : makeImmuneTo;
 
             if (!capMods.NullOrEmpty())
                 if (!stage.capMods.NullOrEmpty())
                 {
                     List<PawnCapacityModifier> unusedCapMods = new List<PawnCapacityModifier>(capMods);
                     foreach (PawnCapacityModifier ourCap in capMods)
-                        foreach (PawnCapacityModifier stageCap in stage.capMods)
+                        foreach (var stageCap in stage.capMods.Where(stageCap => ourCap.capacity == stageCap.capacity))
                         {
-                            if (ourCap.capacity != stageCap.capacity)
-                                continue;
-
                             unusedCapMods.Remove(ourCap);
                             stageCap.offset += ourCap.offset;
                             stageCap.setMax = Math.Min(stageCap.setMax, ourCap.setMax);
@@ -142,17 +133,11 @@ namespace EBSGFramework
                 else
                     stage.capMods = capMods;
 
-            if (hediffGivers != null)
-                if (stage.hediffGivers != null)
-                    stage.hediffGivers = stage.hediffGivers.Union(hediffGivers).ToList();
-                else
-                    stage.hediffGivers = hediffGivers;
+            if (hediffGivers != null) 
+                stage.hediffGivers = stage.hediffGivers != null ? stage.hediffGivers.Union(hediffGivers).ToList() : hediffGivers;
 
-            if (!mentalStateGivers.NullOrEmpty())
-                if (stage.mentalStateGivers != null)
-                    stage.mentalStateGivers = stage.mentalStateGivers.Union(mentalStateGivers).ToList();
-                else
-                    stage.mentalStateGivers = mentalStateGivers;
+            if (!mentalStateGivers.NullOrEmpty()) 
+                stage.mentalStateGivers = stage.mentalStateGivers != null ? stage.mentalStateGivers.Union(mentalStateGivers).ToList() : mentalStateGivers;
 
             if (!statOffsetFactors.NullOrEmpty())
                 if (!stage.statOffsets.NullOrEmpty())
@@ -176,11 +161,8 @@ namespace EBSGFramework
                 if (!stage.statOffsets.NullOrEmpty())
                 {
                     foreach (StatModifier ourMod in statOffsets)
-                        foreach (StatModifier stageMod in stage.statOffsets)
+                        foreach (var stageMod in stage.statOffsets.Where(stageMod => ourMod.stat == stageMod.stat))
                         {
-                            if (ourMod.stat != stageMod.stat)
-                                continue;
-
                             unusedStatOffsets.Remove(ourMod);
                             stageMod.value += ourMod.value;
                             break;
@@ -197,11 +179,8 @@ namespace EBSGFramework
                 if (!stage.statFactors.NullOrEmpty())
                 {
                     foreach (StatModifier ourMod in statFactors)
-                        foreach (StatModifier stageMod in stage.statFactors)
+                        foreach (var stageMod in stage.statFactors.Where(stageMod => ourMod.stat == stageMod.stat))
                         {
-                            if (ourMod.stat != stageMod.stat)
-                                continue;
-
                             stageMod.value *= ourMod.value;
                             break;
                         }
@@ -215,11 +194,8 @@ namespace EBSGFramework
                 if (!stage.statFactors.NullOrEmpty())
                 { 
                     foreach (StatModifier ourMod in statFactorOffsets)
-                        foreach (StatModifier stageMod in stage.statFactors)
+                        foreach (var stageMod in stage.statFactors.Where(stageMod => ourMod.stat == stageMod.stat))
                         {
-                            if (ourMod.stat != stageMod.stat)
-                                continue;
-
                             unusedStatFactorOffsets.Remove(ourMod);
                             stageMod.value += ourMod.value;
                             break;

@@ -59,7 +59,7 @@ namespace EBSGFramework
             pawn.mindState.resurrectTarget = null;
             Ability castingAbility = pawn.abilities.GetAbility(this.ability);
             List<Thing> list = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse);
-            list.SortBy((Thing c) => c.Position.DistanceToSquared(pawn.Position));
+            list.SortBy(c => c.Position.DistanceToSquared(pawn.Position));
             HashSet<Corpse> hashSet = ReservedCorpsesForResurrection(pawn.Map, pawn.Faction);
             for (int i = 0; i < list.Count; i++)
             {

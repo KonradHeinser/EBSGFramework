@@ -18,7 +18,7 @@ namespace EBSGFramework
             base.Apply(target, dest);
             Map map = parent.pawn.Map;
             List<Thing> list = new List<Thing>();
-            list.AddRange(AffectedCells(target, map).SelectMany((IntVec3 c) => from t in c.GetThingList(map)
+            list.AddRange(AffectedCells(target, map).SelectMany(c => from t in c.GetThingList(map)
                                                                                where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
                                                                                select t));
             foreach (Thing item in list)
@@ -124,7 +124,7 @@ namespace EBSGFramework
             if (!base.Valid(target, throwMessages)) return false;
 
             Map map = parent.pawn.Map;
-            if (AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.Filled(map)))
+            if (AffectedCells(target, parent.pawn.Map).Any(c => c.Filled(map)))
             {
                 if (throwMessages)
                 {
@@ -132,7 +132,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => !c.Standable(map)))
+            if (AffectedCells(target, parent.pawn.Map).Any(c => !c.Standable(map)))
             {
                 if (throwMessages)
                 {
@@ -140,7 +140,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.pollutedForbidden && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.IsPolluted(map)))
+            if (Props.pollutedForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.IsPolluted(map)))
             {
                 if (throwMessages)
                 {
@@ -148,7 +148,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.pollutedRequired && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => !c.IsPolluted(parent.pawn.Map)))
+            if (Props.pollutedRequired && AffectedCells(target, parent.pawn.Map).Any(c => !c.IsPolluted(parent.pawn.Map)))
             {
                 if (throwMessages)
                 {
@@ -156,7 +156,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.waterForbidden && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.GetTerrain(parent.pawn.Map).IsWater))
+            if (Props.waterForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.GetTerrain(parent.pawn.Map).IsWater))
             {
                 if (throwMessages)
                 {
@@ -164,7 +164,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.waterRequired && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => !c.GetTerrain(parent.pawn.Map).IsWater))
+            if (Props.waterRequired && AffectedCells(target, parent.pawn.Map).Any(c => !c.GetTerrain(parent.pawn.Map).IsWater))
             {
                 if (throwMessages)
                 {
@@ -172,7 +172,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.Roofed(parent.pawn.Map)))
+            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.Roofed(parent.pawn.Map)))
             {
                 if (throwMessages)
                 {
@@ -180,7 +180,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => !c.Roofed(parent.pawn.Map)))
+            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => !c.Roofed(parent.pawn.Map)))
             {
                 if (throwMessages)
                 {
@@ -188,7 +188,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.GetPlant(parent.pawn.Map) != null))
+            if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.GetPlant(parent.pawn.Map) != null))
             {
                 if (throwMessages)
                 {
@@ -196,7 +196,7 @@ namespace EBSGFramework
                 }
                 return false;
             }
-            if (Props.noPlants && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.GetPlant(parent.pawn.Map) != null))
+            if (Props.noPlants && AffectedCells(target, parent.pawn.Map).Any(c => c.GetPlant(parent.pawn.Map) != null))
             {
                 if (throwMessages)
                 {
@@ -207,7 +207,7 @@ namespace EBSGFramework
             if (Props.noPushing)
             {
                 List<Thing> list = new List<Thing>();
-                list.AddRange(AffectedCells(target, map).SelectMany((IntVec3 c) => from t in c.GetThingList(map)
+                list.AddRange(AffectedCells(target, map).SelectMany(c => from t in c.GetThingList(map)
                                                                                    where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
                                                                                    select t));
                 if (!list.NullOrEmpty())
@@ -219,7 +219,7 @@ namespace EBSGFramework
                     return false;
                 }
             }
-            if (Props.noBuildings && AffectedCells(target, parent.pawn.Map).Any((IntVec3 c) => c.GetFirstBuilding(map) != null))
+            if (Props.noBuildings && AffectedCells(target, parent.pawn.Map).Any(c => c.GetFirstBuilding(map) != null))
             {
                 if (throwMessages)
                 {

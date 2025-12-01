@@ -250,7 +250,7 @@ namespace EBSGFramework
         public static Building_SleepCasket FindCryptosleepCasketFor(Pawn p, Pawn traveler, bool ignoreOtherReservations = false)
         {
             if (cachedCaskets == null)
-                cachedCaskets = DefDatabase<ThingDef>.AllDefs.Where((ThingDef def) => typeof(Building_SleepCasket).IsAssignableFrom(def.thingClass)).ToList();
+                cachedCaskets = DefDatabase<ThingDef>.AllDefs.Where(def => typeof(Building_SleepCasket).IsAssignableFrom(def.thingClass)).ToList();
 
             foreach (ThingDef cachedCasket in cachedCaskets)
             {

@@ -16,7 +16,7 @@ namespace EBSGFramework
             if (!pawn.Spawned || pawn.Faction == null) return false;
             Map map = pawn.Map;
             List<Pawn> list = pawn.Map.mapPawns.AllHumanlikeSpawned;
-            list.SortBy((Pawn c) => c.Position.DistanceToSquared(pawn.Position));
+            list.SortBy(c => c.Position.DistanceToSquared(pawn.Position));
             int count = 0;
             foreach (Pawn p in list)
             {

@@ -47,7 +47,7 @@ namespace EBSGFramework
             if (avoidSelfHit && !noTarget && target.Position.DistanceTo(pawn.Position) <= safetyRange) return false; // If the caster is too close, don't need to check anything else
 
             List<Pawn> list = pawn.Map.mapPawns.AllPawns;
-            list.SortBy((Pawn c) => c.Position.DistanceToSquared(target.Position));
+            list.SortBy(c => c.Position.DistanceToSquared(target.Position));
             int targets = 0;
             foreach (Pawn p in list)
             {

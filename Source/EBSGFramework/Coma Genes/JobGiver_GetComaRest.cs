@@ -93,7 +93,7 @@ namespace EBSGFramework
             for (int i = 0; i < 2; i++)
             {
                 int radius = ((i == 0) ? 4 : 12);
-                if (CellFinder.TryRandomClosewalkCellNear(position, map, radius, out var result, (IntVec3 x) => !x.IsForbidden(pawn) && !x.GetTerrain(map).avoidWander))
+                if (CellFinder.TryRandomClosewalkCellNear(position, map, radius, out var result, x => !x.IsForbidden(pawn) && !x.GetTerrain(map).avoidWander))
                     return result;
             }
             return CellFinder.RandomClosewalkCellNearNotForbidden(pawn, 4);
