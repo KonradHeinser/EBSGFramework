@@ -917,9 +917,8 @@ namespace EBSGFramework
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
-            if (__result.EnumerableNullOrEmpty()) 
-                return;
-            __result = __result.Where(def => def.GetCompProperties<CompProperties_Indestructible>() == null);
+            if (!__result.EnumerableNullOrEmpty()) 
+                __result = __result.Where(def => def.GetCompProperties<CompProperties_Indestructible>() == null);
         }
 
         public static void CostToMoveIntoCellPostfix(Pawn pawn, IntVec3 c, ref float __result)
