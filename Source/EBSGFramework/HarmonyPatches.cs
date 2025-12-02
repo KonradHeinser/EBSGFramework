@@ -917,6 +917,8 @@ namespace EBSGFramework
 
         public static void AllowedThingDefsPostfix(ref IEnumerable<ThingDef> __result)
         {
+            if (__result.EnumerableNullOrEmpty()) 
+                return;
             __result = __result.Where(def => def.GetCompProperties<CompProperties_Indestructible>() == null);
         }
 
