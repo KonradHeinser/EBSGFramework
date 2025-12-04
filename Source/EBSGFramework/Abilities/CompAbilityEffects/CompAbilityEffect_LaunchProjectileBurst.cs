@@ -32,6 +32,31 @@ namespace EBSGFramework
             Scribe_TargetInfo.Look(ref curTarget, false, "curTarget");
         }
 
+        public override void CompTick()
+        {
+            base.CompTick();
+            
+            if (shotsLeft == 0)
+                return;
+
+            if (curTarget == null || !curTarget.IsValid || (curTarget.HasThing && (!curTarget.Thing.Spawned || curTarget.Thing.Destroyed)))
+            {
+                shotsLeft = 0;
+                curTarget = null;
+                return;
+            }
+
+            if (ticksToShot > 0)
+            {
+                ticksToShot--;
+                return;
+            }
+
+            ticksToShot += Props.ticksBetweenShots;
+            LaunchProjectile(curTarget);
+        }
+
+        /*
         public override void CompTickInterval(int delta)
         {
             base.CompTickInterval(delta);
@@ -55,7 +80,7 @@ namespace EBSGFramework
             ticksToShot += Props.ticksBetweenShots;
             LaunchProjectile(curTarget);
         }
-
+*/
         public virtual void LaunchProjectile(LocalTargetInfo target)
         {
             shotsLeft--;
