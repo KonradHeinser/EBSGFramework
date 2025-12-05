@@ -26,7 +26,7 @@ namespace EBSGFramework
                     if (hediffComp_Disappears != null)
                     {
                         float num = parent.def.EffectDuration(parent.pawn);
-                        num *= pawn.GetStatValue(StatDefOf.PsychicSensitivity);
+                        num *= pawn.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60);
                         hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                     }
                 }

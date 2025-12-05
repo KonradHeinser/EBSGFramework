@@ -26,17 +26,21 @@ namespace EBSGFramework
         public Effecter attachedEffecter;
         private static readonly Material BubbleMat = MaterialPool.MatFrom("Other/ShieldBubble", ShaderDatabase.Transparent);
 
-        public float MaxEnergy => parent.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
-        public float EnergyRechargeRate => parent.GetStatValue(StatDefOf.EnergyShieldRechargeRate) / 60f;
+        public float MaxEnergy => parent.StatOrOne(StatDefOf.EnergyShieldEnergyMax, StatRequirement.Always, 60);
+        public float EnergyRechargeRate => parent.StatOrOne(StatDefOf.EnergyShieldRechargeRate, StatRequirement.Always, 60) / 60f;
 
         private Pawn PawnOwner
         {
             get
             {
-                if (parent is Apparel apparel)
-                    return apparel.Wearer;
-                if (parent is Pawn p)
-                    return p;
+                switch (parent)
+                {
+                    case Apparel apparel:
+                        return apparel.Wearer;
+                    case Pawn p:
+                        return p;
+                }
+
                 if (parent.ParentHolder is Pawn_EquipmentTracker tracker)
                     return tracker.pawn;
                 return null;
@@ -48,18 +52,15 @@ namespace EBSGFramework
             get
             {
                 if (parent is Pawn p && (p.IsCharging() || p.IsSelfShutdown()))
-                {
                     return ShieldState.Disabled;
-                }
+                
                 CompCanBeDormant comp = parent.GetComp<CompCanBeDormant>();
                 if (comp != null && !comp.Awake)
-                {
                     return ShieldState.Disabled;
-                }
+                
                 if (ticksToReset <= 0)
-                {
                     return ShieldState.Active;
-                }
+                
                 return ShieldState.Resetting;
             }
         }

@@ -109,8 +109,8 @@ namespace EBSGFramework
         private float GetLossPerDay()
         {
             if (extension == null) InitializeExtension();
-            if (extension.passiveFactorStat != null) 
-                return def.resourceLossPerDay * pawn.GetStatValue(extension.passiveFactorStat);
+            if (extension?.passiveFactorStat != null) 
+                return def.resourceLossPerDay * pawn.StatOrOne(extension.passiveFactorStat);
             return def.resourceLossPerDay;
         }
 
@@ -168,27 +168,27 @@ namespace EBSGFramework
         {
             if (extension == null) return;
             if (thing.def.IsEgg && extension.eggIngestionEffect != 0f) 
-                OffsetResource(pawn, extension.eggIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                OffsetResource(pawn, extension.eggIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
             if (thing.def.IsDrug && extension.drugIngestionEffect != 0f)
-                OffsetResource(pawn, extension.drugIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                OffsetResource(pawn, extension.drugIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
             if (thing is Corpse corpse && extension.corpseIngestionEffect != 0f)
                 if (corpse.InnerPawn?.RaceProps.Humanlike == true)
                 {
                     if (extension.humanlikeCorpseIngestionEffect != 0f)
-                        OffsetResource(pawn, extension.humanlikeCorpseIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                        OffsetResource(pawn, extension.humanlikeCorpseIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
                 }
                 else if (extension.corpseIngestionEffect != 0f)
-                    OffsetResource(pawn, extension.corpseIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                    OffsetResource(pawn, extension.corpseIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
             
             if (thing.def.IsMeat && thing.def.ingestible != null)
             {
                 if (thing.def.ingestible.sourceDef?.race?.Humanlike == true)
                 {
                     if (extension.humanlikeIngestionEffect != 0f)
-                        OffsetResource(pawn, extension.humanlikeIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                        OffsetResource(pawn, extension.humanlikeIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
                 }
                 else if (extension.genericMeatIngestionEffect != 0f)
-                    OffsetResource(pawn, extension.genericMeatIngestionEffect * thing.GetStatValue(StatDefOf.Nutrition) * numTaken, this, extension);
+                    OffsetResource(pawn, extension.genericMeatIngestionEffect * thing.StatOrOne(StatDefOf.Nutrition) * numTaken, this, extension);
             }
         }
 
@@ -226,8 +226,9 @@ namespace EBSGFramework
         
         public void CreateMax(float maximum = 1f, StatDef maxStat = null, StatDef maxFactorStat = null)
         {
-            var newMax = maxStat != null ? pawn.GetStatValue(maxStat) : maximum;
-            if (maxFactorStat != null) newMax *= pawn.GetStatValue(maxFactorStat);
+            var newMax = maxStat != null ? pawn.StatOrOne(maxStat) : maximum;
+            if (maxFactorStat != null) 
+                newMax *= pawn.StatOrOne(maxFactorStat);
             SetMax(newMax);
         }
 
@@ -258,7 +259,7 @@ namespace EBSGFramework
             {
                 if (extension.maximum != 1f || extension.maxStat != null || extension.maxFactorStat != null) CreateMax(extension.maximum, extension.maxStat, extension.maxFactorStat);
             }
-            else Log.Error(def + "is missing the DRGExtension modex");
+            else Log.Error(def + "is missing the DRGExtension mod ex");
         }
 
         public static void OffsetResource(Pawn pawn, float offset, ResourceGene resourceGene, DRGExtension extension = null, bool applyGainStat = false, bool dailyValue = false, bool checkPassiveStat = false, bool storeLimitPassing = false)
@@ -267,11 +268,11 @@ namespace EBSGFramework
             if (extension == null)
                 extension = resourceGene.def.GetModExtension<DRGExtension>();
             if (offset > 0f && applyGainStat && extension.gainStat != null)
-                offset *= pawn.GetStatValue(extension.gainStat);
+                offset *= pawn.StatOrOne(extension.gainStat);
 
             if (dailyValue) offset /= 60000f;
             if (checkPassiveStat && extension.passiveFactorStat != null)
-                offset *= pawn.GetStatValue(extension.passiveFactorStat);
+                offset *= pawn.StatOrOne(extension.passiveFactorStat);
             if (resourceGene.overchargeLeft > 0)
             {
                 resourceGene.overchargeLeft += offset;

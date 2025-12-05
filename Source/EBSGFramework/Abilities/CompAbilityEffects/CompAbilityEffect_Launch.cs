@@ -210,7 +210,7 @@ namespace EBSGFramework
             {
                 if (Props.noMapTravelWhenTooMuchMass)
                 {
-                    float maxMass = parent.pawn.GetStatValue(StatDefOf.CarryingCapacity);
+                    float maxMass = parent.pawn.StatOrOne(StatDefOf.CarryingCapacity, StatRequirement.Always, 60);
                     foreach (var pawn in caravan.PawnsListForReading.Where(pawn => pawn != parent.pawn)) // Pawns are usually heaviest
                     {
                         maxMass -= pawn.StatOrOne(StatDefOf.Mass);
@@ -233,7 +233,7 @@ namespace EBSGFramework
 
             int distance = Props.maxDistance;
             if (Props.distanceFactorStat != null)
-                distance = Mathf.FloorToInt(distance * parent.pawn.GetStatValue(Props.distanceFactorStat));
+                distance = Mathf.FloorToInt(distance * parent.pawn.StatOrOne(Props.distanceFactorStat, StatRequirement.Always, 60));
             distance = Mathf.RoundToInt((float)distance / (float)layer.Def.rangeDistanceFactor);
 
             GenDraw.DrawWorldRadiusRing(layerTile, distance, CompPilotConsole.GetFuelRadiusMat(layerTile));

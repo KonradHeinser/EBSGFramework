@@ -59,9 +59,9 @@ namespace EBSGFramework
         {
             Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.FoodSourceNotPlantOrTree), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator);
             if (thing == null)
-                return default(ThingCount);
+                return default;
 
-            int b = Mathf.CeilToInt(casket.NutritionNeeded / thing.GetStatValue(StatDefOf.Nutrition));
+            int b = Mathf.CeilToInt(casket.NutritionNeeded / thing.StatOrOne(StatDefOf.Nutrition));
             return new ThingCount(thing, Mathf.Min(thing.stackCount, b));
             bool Validator(Thing x)
             {
@@ -71,10 +71,7 @@ namespace EBSGFramework
                 if (!casket.CanAcceptNutrition(x))
                     return false;
 
-                if (x.def.GetStatValueAbstract(StatDefOf.Nutrition) > casket.NutritionNeeded)
-                    return false;
-
-                return true;
+                return !(x.def.GetStatValueAbstract(StatDefOf.Nutrition) > casket.NutritionNeeded);
             }
         }
     }

@@ -38,9 +38,9 @@ namespace EBSGFramework
             var partHealth = Pawn.health.hediffSet.GetPartHealth(bodyPart);
 
             if (Props.minHealthRemaining > 0 && amount >= partHealth)
-                amount = partHealth - Props.minHealthRemaining; /// Pawn.GetStatValue(StatDefOf.IncomingDamageFactor);
+                amount = partHealth - Props.minHealthRemaining;
 
-            var result = Pawn.TakeDamage(new DamageInfo(Props.damage, amount, 100, hitPart: bodyPart, spawnFilth: Props.createFilth));
+            Pawn.TakeDamage(new DamageInfo(Props.damage, amount, 100, hitPart: bodyPart, spawnFilth: Props.createFilth));
         }
     }
 }

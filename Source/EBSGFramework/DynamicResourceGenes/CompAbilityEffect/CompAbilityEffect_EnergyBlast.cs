@@ -19,7 +19,8 @@ namespace EBSGFramework
                 if (ResourceGene == null) return 0;
                 if (Props.radiusFactorStat != null)
                 {
-                    if (parent.pawn.GetStatValue(Props.radiusFactorStat) > 0) return parent.pawn.GetStatValue(Props.radiusFactorStat) * ConvertedEnergy;
+                    if (parent.pawn.StatOrOne(Props.radiusFactorStat, StatRequirement.Always, 60) > 0) 
+                        return parent.pawn.StatOrOne(Props.radiusFactorStat, StatRequirement.Always, 60) * ConvertedEnergy;
                     return 0;
                 }
                 return Props.radiusFactor * ConvertedEnergy;
@@ -48,7 +49,8 @@ namespace EBSGFramework
             {
                 if (ResourceGene == null) return 0;
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null)
+                    cost *= parent.pawn.StatOrOne(Props.costFactorStat, StatRequirement.Always, 60);
                 float dynamicCost = (ResourceGene.Value - cost) * Props.convertPercentage + Props.convertedResource;
 
                 return cost + dynamicCost;
@@ -61,7 +63,8 @@ namespace EBSGFramework
             {
                 if (ResourceGene == null) return 0;
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null) 
+                    cost *= parent.pawn.StatOrOne(Props.costFactorStat, StatRequirement.Always, 60);
 
                 return ((ResourceGene.Value - cost) * Props.convertPercentage + Props.convertedResource) * 100;
             }
@@ -182,7 +185,7 @@ namespace EBSGFramework
 
         public float ResourceCost(Verb_CastAbility verb_CastAbility2)
         {
-            if (comps != null)
+            if (comps != null && verb_CastAbility2.ability?.comps != null)
             {
                 foreach (AbilityComp comp in verb_CastAbility2.ability?.comps)
                 {

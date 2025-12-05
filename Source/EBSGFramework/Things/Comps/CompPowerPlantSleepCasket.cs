@@ -31,10 +31,10 @@ namespace EBSGFramework
                     {
                         if (!CasketPower.statFactors.NullOrEmpty())
                             foreach (StatDef stat in CasketPower.statFactors)
-                                cachedPowerOutput *= pawn.GetStatValue(stat);
+                                cachedPowerOutput *= pawn.StatOrOne(stat);
                         if (!CasketPower.statDivisors.NullOrEmpty())
                             foreach (StatDef stat in CasketPower.statDivisors)
-                                cachedPowerOutput /= pawn.GetStatValue(stat);
+                                cachedPowerOutput /= pawn.StatOrOne(stat);
                         pawnInside = true;
                     }
                 if (!pawnInside) cachedPowerOutput = 0;

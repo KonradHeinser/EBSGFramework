@@ -88,15 +88,15 @@ namespace EBSGFramework
         private float GetLossPerDay()
         {
             if (def.GetModExtension<DRGExtension>() == null) return def.resourceLossPerDay;
-            if (def.GetModExtension<DRGExtension>().passiveFactorStat != null) return def.resourceLossPerDay * pawn.GetStatValue(def.GetModExtension<DRGExtension>().passiveFactorStat);
+            if (def.GetModExtension<DRGExtension>().passiveFactorStat != null) 
+                return def.resourceLossPerDay * pawn.StatOrOne(def.GetModExtension<DRGExtension>().passiveFactorStat);
             return def.resourceLossPerDay;
         }
 
         public override void TickInterval(int delta)
         {
             base.TickInterval(delta);
-            if (Resource != null)
-                if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1 * delta, cachedResourceGene, DRGExtension, false, true, true);
+            if (Resource != null) ResourceGene.OffsetResource(pawn, ResourceLossPerDay * -1 * delta, cachedResourceGene, DRGExtension, false, true, true);
         }
 
         public override IEnumerable<Gizmo> GetGizmos()

@@ -19,7 +19,8 @@ namespace EBSGFramework
         public override void DrawEffectPreview(LocalTargetInfo target)
         {
             float radius = Props.explosion.radius; 
-            if (Props.explosion.statRadius != null && parent.pawn.StatOrOne(Props.explosion.statRadius) >= 0) radius = parent.pawn.GetStatValue(Props.explosion.statRadius);
+            if (Props.explosion.statRadius != null && parent.pawn.StatOrOne(Props.explosion.statRadius, StatRequirement.Always, 60) >= 0) 
+                radius = parent.pawn.StatOrOne(Props.explosion.statRadius, StatRequirement.Always, 60);
 
             GenDraw.DrawFieldEdges(EBSGUtilities.AffectedCells(target, parent.pawn.Map, parent.pawn, radius).ToList(), Valid(target) ? Color.white : Color.red);
         }

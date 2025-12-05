@@ -45,7 +45,8 @@ namespace EBSGFramework
             get
             {
                 float gain = Props.conversionEfficiency * MaxCost * 100;
-                if (Props.efficiencyFactorStat != null) gain *= parent.pawn.GetStatValue(Props.efficiencyFactorStat);
+                if (Props.efficiencyFactorStat != null) 
+                    gain *= parent.pawn.StatOrOne(Props.efficiencyFactorStat, StatRequirement.Always, 60);
                 return gain;
             }
         }
@@ -69,7 +70,8 @@ namespace EBSGFramework
                         float offset = missingEnergy / Props.conversionEfficiency;
                         offset /= 100;
                         offset /= battery.Props.efficiency;
-                        if (Props.efficiencyFactorStat != null) offset /= parent.pawn.GetStatValue(Props.efficiencyFactorStat);
+                        if (Props.efficiencyFactorStat != null) 
+                            offset /= parent.pawn.StatOrOne(Props.efficiencyFactorStat, StatRequirement.Always, 60);
                         ResourceGene.OffsetResource(parent.pawn, 0 - offset, ResourceGene);
                     }
                 }

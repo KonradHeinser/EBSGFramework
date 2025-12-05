@@ -17,7 +17,7 @@ namespace EBSGFramework
                 float num = 1f;
                 if (Props.durationMultiplier != null)
                 {
-                    num = pawn.GetStatValue(Props.durationMultiplier);
+                    num = pawn.StatOrOne(Props.durationMultiplier, StatRequirement.Always, 60);
                 }
                 job.expiryInterval = (parent.def.GetStatValueAbstract(StatDefOf.Ability_Duration, parent.pawn) * num).SecondsToTicks();
                 job.mote = MoteMaker.MakeThoughtBubble(pawn, parent.def.iconPath, true);

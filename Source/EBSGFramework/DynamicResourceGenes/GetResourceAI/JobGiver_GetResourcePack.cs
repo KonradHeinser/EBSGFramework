@@ -57,7 +57,7 @@ namespace EBSGFramework
                                 foreach (GeneLinker geneLinker in comp.resourceOffsets)
                                     if (geneLinker.mainResourceGene == resource.def)
                                     {
-                                        cachedResourcePackResourceGain = geneLinker.amount * (resource.statFactor != null ? pawn.GetStatValue(resource.statFactor) : 1f);
+                                        cachedResourcePackResourceGain = geneLinker.amount * (resource.statFactor != null ? pawn.StatOrOne(resource.statFactor) : 1f);
                                         break;
                                     }
                         }

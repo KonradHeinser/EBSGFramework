@@ -47,25 +47,9 @@ namespace EBSGFramework
             }
         }
 
-        public float RiseMultiplier
-        {
-            get
-            {
-                if (ComaGene != null && ComaGene.ComaExtension?.riseStat != null)
-                    return pawn.GetStatValue(ComaGene.ComaExtension.riseStat);
-                return 1f;
-            }
-        }
+        public float RiseMultiplier => ComaGene?.ComaExtension?.riseStat != null ? pawn.StatOrOne(ComaGene.ComaExtension.riseStat) : 1f;
 
-        public new float FallMultiplier
-        {
-            get
-            {
-                if (ComaGene?.ComaExtension.fallStat != null)
-                    return pawn.GetStatValue(ComaGene.ComaExtension.fallStat);
-                return 1f;
-            }
-        }
+        public new float FallMultiplier => ComaGene?.ComaExtension.fallStat != null ? pawn.StatOrOne(ComaGene.ComaExtension.fallStat) : 1f;
 
         [Unsaved(false)]
         private Gene_Coma cachedComaGene;

@@ -10,7 +10,6 @@ namespace EBSGFramework
         public List<GeneEvent> geneEvents;
         public List<GeneDef> hiddenGenes;
         public List<GeneTemplateDef> hiddenTemplates;
-        public List<GeneCategoryDef> hiddenGeneCategories;
         public List<ThinkTreeSetting> thinkTreeSettings;
         public List<PawnKindDef> pawnKindsWithoutIntialRelationships;
     }

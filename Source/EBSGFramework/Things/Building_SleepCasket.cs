@@ -23,13 +23,7 @@ namespace EBSGFramework
         {
             get
             {
-                float num = storedNutrition;
-                for (int i = 0; i < innerContainer.Count; i++)
-                {
-                    Thing thing = innerContainer[i];
-                    num += (float)thing.stackCount * thing.GetStatValue(StatDefOf.Nutrition);
-                }
-                return num;
+                return storedNutrition + innerContainer.Sum(thing => (float)thing.stackCount * thing.StatOrOne(StatDefOf.Nutrition));
             }
         }
 
@@ -294,7 +288,7 @@ namespace EBSGFramework
             {
                 if (!(innerContainer[i] is Pawn))
                 {
-                    float statValue = innerContainer[i].GetStatValue(StatDefOf.Nutrition);
+                    float statValue = innerContainer[i].StatOrOne(StatDefOf.Nutrition);
                     if (statValue > 0f)
                     {
                         storedNutrition += statValue;

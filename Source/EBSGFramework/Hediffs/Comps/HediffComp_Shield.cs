@@ -25,8 +25,8 @@ namespace EBSGFramework
         public Effecter attachedEffecter;
         private static readonly Material BubbleMat = MaterialPool.MatFrom("Other/ShieldBubble", ShaderDatabase.Transparent);
 
-        public float MaxEnergy => Mathf.Max((Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldEnergyMax) : Props.maxEnergy) * (Props.multiplyMaxBySeverity ? parent.Severity : 1f), 0.01f);
-        public float EnergyRechargeRate => (Props.usePawnMaxAndRecharge ? Pawn.GetStatValue(StatDefOf.EnergyShieldRechargeRate) : Props.energyRechargeRate) * (Props.multiplyRechargeBySeverity ? parent.Severity : 1f) / 60f;
+        public float MaxEnergy => Mathf.Max((Props.usePawnMaxAndRecharge ? Pawn.StatOrOne(StatDefOf.EnergyShieldEnergyMax, StatRequirement.Always, 60) : Props.maxEnergy) * (Props.multiplyMaxBySeverity ? parent.Severity : 1f), 0.01f);
+        public float EnergyRechargeRate => (Props.usePawnMaxAndRecharge ? Pawn.StatOrOne(StatDefOf.EnergyShieldRechargeRate, StatRequirement.Always, 60) : Props.energyRechargeRate) * (Props.multiplyRechargeBySeverity ? parent.Severity : 1f) / 60f;
 
         public ShieldState ShieldState
         {

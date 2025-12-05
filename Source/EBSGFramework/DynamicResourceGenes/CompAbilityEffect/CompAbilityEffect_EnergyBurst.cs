@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -19,7 +20,8 @@ namespace EBSGFramework
                 if (ResourceGene == null) return 0;
                 if (Props.radiusFactorStat != null)
                 {
-                    if (parent.pawn.GetStatValue(Props.radiusFactorStat) > 0) return parent.pawn.GetStatValue(Props.radiusFactorStat) * ConvertedEnergy;
+                    if (parent.pawn.StatOrOne(Props.radiusFactorStat, StatRequirement.Always, 60) > 0) 
+                        return parent.pawn.StatOrOne(Props.radiusFactorStat, StatRequirement.Always, 60) * ConvertedEnergy;
                     return 0;
                 }
                 return Props.radiusFactor * ConvertedEnergy;
@@ -48,7 +50,8 @@ namespace EBSGFramework
             {
                 if (ResourceGene == null) return 0;
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null)
+                    cost *= parent.pawn.StatOrOne(Props.costFactorStat, StatRequirement.Always, 60);
                 float dynamicCost = (ResourceGene.Value - cost) * Props.convertPercentage + Props.convertedResource;
 
                 return cost + dynamicCost;
@@ -61,35 +64,25 @@ namespace EBSGFramework
             {
                 if (ResourceGene == null) return 0;
                 float cost = Props.resourceCost;
-                if (Props.costFactorStat != null) cost *= parent.pawn.GetStatValue(Props.costFactorStat);
+                if (Props.costFactorStat != null) 
+                    cost *= parent.pawn.StatOrOne(Props.costFactorStat, StatRequirement.Always, 60);
 
                 return ((ResourceGene.Value - cost) * Props.convertPercentage + Props.convertedResource) * 100;
             }
         }
 
-        private bool HasEnoughResource
-        {
-            get
-            {
-                if (ResourceGene == null || ResourceGene.Value < CurrentCost || ResourceGene.Value <= 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
+        private bool HasEnoughResource => ResourceGene != null && !(ResourceGene.Value < CurrentCost) && !(ResourceGene.Value <= 0);
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
             Pawn caster = parent.pawn;
-            if (Props.mainResourceGene == null) Log.Error(parent.def + " is missing a designated mainResourceGene, meaning it can't alter the resource levels");
+            if (Props.mainResourceGene == null) 
+                Log.Error(parent.def + " is missing a designated mainResourceGene, meaning it can't alter the resource levels");
             else
             {
                 List<Thing> ignoreList = new List<Thing>();
-                Faction faction;
-                if (caster.Dead) faction = caster.Corpse.Faction;
-                else faction = caster.Faction;
+                var faction = caster.Dead ? caster.Corpse.Faction : caster.Faction;
 
                 switch (Props.exclusions)
                 {
@@ -113,6 +106,9 @@ namespace EBSGFramework
                                 if (!pawn.Faction.HostileTo(faction))
                                     ignoreList.Add(pawn);
                             }
+                        break;
+                    case ExclusionLevel.None:
+                    default:
                         break;
                 }
 

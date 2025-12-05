@@ -182,7 +182,8 @@ namespace EBSGFramework
 
         public float GetGeneMoodFactor(Pawn pawn)
         {
-            if (moodMultiplyingGenes.NullOrEmpty() || pawn.genes == null || pawn.genes.GenesListForReading.NullOrEmpty()) return 1f;
+            if (moodMultiplyingGenes.NullOrEmpty() || pawn.genes?.GenesListForReading.NullOrEmpty() != false) 
+                return 1f;
 
             // Regularly tries to do a recheck on the off-chance that genes have changed without changing count
             if (geneCountAtLastCache.NullOrEmpty() || !geneCountAtLastCache.ContainsKey(pawn) || pawn.genes.GenesListForReading.Count != geneCountAtLastCache[pawn]

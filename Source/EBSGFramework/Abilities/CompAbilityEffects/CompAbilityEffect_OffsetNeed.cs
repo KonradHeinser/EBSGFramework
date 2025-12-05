@@ -9,10 +9,11 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (target.IsValid && target.HasThing && target.Thing is Pawn pawn && (!Props.psychic || pawn.GetStatValue(StatDefOf.PsychicSensitivity) > 0) && pawn.needs != null)
+            if (target.IsValid && target.HasThing && target.Thing is Pawn pawn && pawn.needs != null &&
+                (!Props.psychic || pawn.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60) > 0))
                 pawn.HandleNeedOffsets(Props.needOffsets, Props.preventRepeats);
 
-            if (parent.pawn?.needs == null || (Props.psychic && parent.pawn.GetStatValue(StatDefOf.PsychicSensitivity) <= 0)) return;
+            if (parent.pawn?.needs == null || (Props.psychic && parent.pawn.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60) <= 0)) return;
             parent.pawn.HandleNeedOffsets(Props.casterNeedOffsets, Props.preventRepeats);
         }
     }

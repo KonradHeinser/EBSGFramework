@@ -29,14 +29,14 @@ namespace EBSGFramework
 
             if (!list.NullOrEmpty())
             {
-                float range = Props.rangeStat != null ? Pawn.GetStatValue(Props.rangeStat) : Props.range;
+                float range = Props.rangeStat != null ? Pawn.StatOrOne(Props.rangeStat, StatRequirement.Always, 60) : Props.range;
                 foreach (Pawn item in list)
                 {
                     if (allies.Contains(item) || (item.Faction != null && item.Faction.AllyOrNeutralTo(Pawn.Faction))) continue; // If it's an ally/non-enemy
                     if (item.Dead || item.health == null || (Props.targetingParameters != null && !Props.targetingParameters.CanTarget(item))) continue;
 
                     if (item.Position.DistanceTo(Pawn.Position) > range) break;
-                    if (Props.psychic && item.GetStatValue(StatDefOf.PsychicSensitivity) == 0) continue;
+                    if (Props.psychic && item.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60) == 0) continue;
 
                     Hediff hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
                     if (hediff == null)
