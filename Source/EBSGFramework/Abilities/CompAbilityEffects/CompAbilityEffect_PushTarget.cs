@@ -90,7 +90,7 @@ namespace EBSGFramework
             AcceptanceReport report = CanMoveTarget(target);
             if (!report.Accepted)
                 return CanMoveTarget(target).Reason;
-            if (Props.successChance != null && target.Thing != null)
+            if (Props.successChance?.hideChance == false && target.Thing != null)
                 return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
             return null;
         }

@@ -10,7 +10,7 @@ namespace EBSGFramework
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
-            if (Props.successChance != null && target.Thing != null)
+            if (Props.successChance?.hideChance == false && target.Thing != null)
                 return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
 
             return null;
@@ -33,7 +33,7 @@ namespace EBSGFramework
                 {
                     targetPawn.health.RemoveHediff(firstHediffOfDef);
                 }
-                Hediff targetHediff = EBSGUtilities.CreateComplexHediff(targetPawn, Props.hediffOnTarget.initialSeverity, Props.hediffOnTarget, caster, Props.targetHediffOnBrain ? targetPawn.health.hediffSet.GetBrain() : null);
+                Hediff targetHediff = targetPawn.CreateComplexHediff(Props.hediffOnTarget.initialSeverity, Props.hediffOnTarget, caster, Props.targetHediffOnBrain ? targetPawn.health.hediffSet.GetBrain() : null);
                 
                 HediffComp_Disappears hediffComp_Disappears = targetHediff.TryGetComp<HediffComp_Disappears>();
                 if (hediffComp_Disappears != null)
@@ -57,7 +57,7 @@ namespace EBSGFramework
                 {
                     caster.health.RemoveHediff(firstHediffOfDef);
                 }
-                Hediff casterHediff = EBSGUtilities.CreateComplexHediff(caster, Props.hediffOnCaster.initialSeverity, Props.hediffOnCaster, targetPawn, Props.casterHediffOnBrain ? caster.health.hediffSet.GetBrain() : null);
+                Hediff casterHediff = caster.CreateComplexHediff(Props.hediffOnCaster.initialSeverity, Props.hediffOnCaster, targetPawn, Props.casterHediffOnBrain ? caster.health.hediffSet.GetBrain() : null);
                 
                 HediffComp_Disappears hediffComp_Disappears = casterHediff.TryGetComp<HediffComp_Disappears>();
                 if (hediffComp_Disappears != null)

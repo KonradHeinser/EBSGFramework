@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using UnityEngine;
+using System;
 using Verse;
 using Verse.Sound;
 
@@ -11,8 +12,11 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (target.Thing != null && target.Thing is Pawn victim && !victim.Dead)
+            if (target.Thing is Pawn victim && !victim.Dead)
             {
+                if (Props.successChance?.Success(parent.pawn, victim == parent.pawn ? null : victim) == false)
+                    return;
+                
                 IntVec3 position = victim.PositionHeld;
                 Map map = victim.MapHeld;
                 float bodySizeMult = victim.BodySize;
@@ -50,10 +54,9 @@ namespace EBSGFramework
                 if (Props.thingToMake != null)
                 {
                     ThingDef stuff = Props.stuff;
-                    if (stuff == null && !Props.thingToMake.stuffCategories.NullOrEmpty())
-                        if (Props.thingToMake.stuffCategories.Contains(StuffCategoryDefOf.Leathery))
-                            stuff = victim.RaceProps.leatherDef;
-                        else stuff = Props.thingToMake.defaultStuff;
+                    if (stuff == null && !Props.thingToMake.stuffCategories.NullOrEmpty()) 
+                        stuff = Props.thingToMake.stuffCategories.Contains(StuffCategoryDefOf.Leathery) 
+                            ? victim.RaceProps.leatherDef : Props.thingToMake.defaultStuff;
                     Thing thing = ThingMaker.MakeThing(Props.thingToMake, stuff);
                     thing.stackCount = Props.count > 0 ? Props.count : Mathf.CeilToInt(bodySizeMult * Props.bodySizeFactor);
                     GenSpawn.Spawn(thing, position, map);
@@ -69,6 +72,14 @@ namespace EBSGFramework
                 else
                     victim.Kill(new DamageInfo(damageToReport, 99999f, 999f, -1f, parent.pawn, victim.health.hediffSet.GetBrain()));
             }
+        }
+        
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            if (Props.successChance?.hideChance == false && target.Thing != null)
+                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
+
+            return null;
         }
     }
 }

@@ -27,6 +27,8 @@ namespace EBSGFramework
 
         public ThingDef stuff;
 
+        public SuccessChance successChance;
+
         public CompProperties_InstantKill()
         {
             compClass = typeof(CompAbilityEffect_InstantKill);

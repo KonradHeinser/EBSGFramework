@@ -69,7 +69,7 @@ namespace EBSGFramework
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
-            if (Props.successChance != null && target.Pawn != null)
+            if (Props.successChance?.hideChance == false && target.Pawn != null)
                 return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
             return null;
         }

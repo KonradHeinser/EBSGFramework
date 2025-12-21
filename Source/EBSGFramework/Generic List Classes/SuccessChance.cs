@@ -19,6 +19,8 @@ namespace EBSGFramework
         public string successMessage = null;
 
         public string failureMessage = null;
+        
+        public bool hideChance = false;
 
         public float Chance(Pawn caster, Thing target)
         {
