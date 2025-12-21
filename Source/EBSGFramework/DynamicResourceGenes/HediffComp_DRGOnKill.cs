@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System.Collections.Generic;
+using Verse;
 
 namespace EBSGFramework
 {
@@ -13,9 +14,7 @@ namespace EBSGFramework
             if (!Props.resourceOffsets.NullOrEmpty())
                 foreach (GeneLinker linker in Props.resourceOffsets)
                 {
-                    if (!Pawn.HasRelatedGene(linker.mainResourceGene)) continue;
-
-                    if (Pawn.genes.GetGene(linker.mainResourceGene) is ResourceGene resource)
+                    if (Pawn.genes?.GetGene(linker.mainResourceGene) is ResourceGene resource)
                     {
                         if (!linker.validSeverity.ValidValue(parent.Severity) || (linker.maxDistance > 0 && Pawn.Position.DistanceTo(victim.Position) > linker.maxDistance)) continue;
 

@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public List<FloatRange> severities;
 
+        public List<HediffToParts> addedHediffsOnRemove;
+
         public HediffCompProperties_RemoveAtSeverities()
         {
             compClass = typeof(HediffComp_RemoveAtSeverities);

@@ -6,12 +6,14 @@ namespace EBSGFramework
     {
         public HediffCompProperties_RemoveAtSeverities Props => (HediffCompProperties_RemoveAtSeverities)props;
 
-        public override bool CompShouldRemove
+        public override bool CompShouldRemove => EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity, Props.severities);
+
+        public override void CompPostPostRemoved()
         {
-            get
-            {
-                return EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity, Props.severities);
-            }
+            base.CompPostPostRemoved();
+            
+            if (!Props.addedHediffsOnRemove.NullOrEmpty() && EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.severity, Props.severities))
+                Pawn.AddHediffToParts(Props.addedHediffsOnRemove);
         }
     }
 }
