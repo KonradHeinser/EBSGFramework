@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public HediffDef hediffToApply;
 
+        public SuccessChance successChance;
+
         public CompProperties_LoveTheCaster()
         {
             compClass = typeof(CompAbilityEffect_LoveTheCaster);

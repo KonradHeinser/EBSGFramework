@@ -75,12 +75,12 @@ namespace EBSGFramework
             if (!Rand.Chance(Chance(caster, target)))
             {
                 if (failureMessage != null && caster.Faction.IsPlayer)
-                    Messages.Message(failureMessage.TranslateOrFormat(), MessageTypeDefOf.NegativeEvent);
+                    Messages.Message(failureMessage.TranslateOrFormat(caster.LabelShortCap, target.LabelShortCap), MessageTypeDefOf.NegativeEvent);
                 return false;
             }
 
             if (successMessage != null && caster.Faction.IsPlayer)
-                Messages.Message(successMessage.TranslateOrFormat(), MessageTypeDefOf.NeutralEvent);
+                Messages.Message(successMessage.TranslateOrFormat(caster.LabelShortCap, target.LabelShortCap), MessageTypeDefOf.NeutralEvent);
             return true;
         }
     }

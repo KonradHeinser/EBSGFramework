@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System;
 using Verse;
 
 namespace EBSGFramework
@@ -10,25 +11,27 @@ namespace EBSGFramework
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
-            if (target.Pawn != null && target.Pawn != parent.pawn && target.Pawn.ageTracker.AgeBiologicalYearsFloat > 16f && parent.pawn.ageTracker.AgeBiologicalYearsFloat > 16f)
+            
+            if (target.Pawn != parent.pawn && (target.Pawn?.ageTracker?.AgeBiologicalYearsFloat ?? 0f) > 16f && parent.pawn.ageTracker.AgeBiologicalYearsFloat > 16f)
             {
                 Pawn pawn = target.Pawn;
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediffToApply);
+                
+                if (Props.successChance?.Success(parent.pawn, pawn) == false)
+                    return;
+                
+                Hediff firstHediffOfDef = pawn?.health?.hediffSet?.GetFirstHediffOfDef(Props.hediffToApply);
                 if (firstHediffOfDef != null)
-                {
                     pawn.health.RemoveHediff(firstHediffOfDef);
-                }
+                
                 Hediff_LoveTheCaster hediff_LoveTheCaster = (Hediff_LoveTheCaster)HediffMaker.MakeHediff(Props.hediffToApply, pawn, pawn.health.hediffSet.GetBrain());
                 hediff_LoveTheCaster.target = parent.pawn;
-                if (Props.psychic)
+                HediffComp_Disappears hediffComp_Disappears = hediff_LoveTheCaster.TryGetComp<HediffComp_Disappears>();
+                if (hediffComp_Disappears != null)
                 {
-                    HediffComp_Disappears hediffComp_Disappears = hediff_LoveTheCaster.TryGetComp<HediffComp_Disappears>();
-                    if (hediffComp_Disappears != null)
-                    {
-                        float num = parent.def.EffectDuration(parent.pawn);
+                    float num = parent.def.EffectDuration(parent.pawn);
+                    if (Props.psychic)
                         num *= pawn.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60);
-                        hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
-                    }
+                    hediffComp_Disappears.ticksToDisappear = num.SecondsToTicks();
                 }
                 pawn.health.AddHediff(hediff_LoveTheCaster);
             }
@@ -57,6 +60,15 @@ namespace EBSGFramework
                 return false;
             }
             return base.Valid(target, throwMessages);
+        }
+        
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            if (Props.successChance?.hideChance == false && (target.Pawn?.ageTracker?.AgeBiologicalYearsFloat ?? 0f) > 16f
+                && parent.pawn.ageTracker.AgeBiologicalYearsFloat > 16f)
+                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
+
+            return null;
         }
     }
 }
