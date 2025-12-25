@@ -777,7 +777,10 @@ namespace EBSGFramework
 
         public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false, EndOn endOn = EndOn.End)
         {
-            bool casterIsPsychic = caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0;
+            if (hediffs.NullOrEmpty())
+                return;
+            
+            bool casterIsPsychic = (caster?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
             bool targetIsPsychic = (target?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
             bool checkCaster = caster != null && (!psychic || casterIsPsychic);
             bool checkTarget = target != null && (!psychic || targetIsPsychic);

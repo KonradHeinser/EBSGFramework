@@ -11,7 +11,7 @@ namespace EBSGFramework
             base.CompPostPostRemoved();
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
                 return;
-            Props.hediffsToGive?.GiveHediffs(null, Pawn, endOn: Props.endOn);
+            Props.hediffsToGive?.GiveHediffs(parent is HediffWithTarget target ? target.target as Pawn : null, Pawn, endOn: Props.endOn);
         }
     }
 }
