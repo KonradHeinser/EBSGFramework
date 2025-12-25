@@ -12,7 +12,7 @@ namespace EBSGFramework
             base.Apply(target, dest);
             Pawn t = target.Pawn;
             Props.hediffsToGive?.GiveHediffs(parent.pawn, t, GetDurationSeconds(parent.pawn).SecondsToTicks(),
-                t != null ? GetDurationSeconds(target.Pawn).SecondsToTicks() : -1, Props.psychic);
+                t != null ? GetDurationSeconds(target.Pawn).SecondsToTicks() : -1, Props.psychic, Props.endOn);
         }
     }
 }

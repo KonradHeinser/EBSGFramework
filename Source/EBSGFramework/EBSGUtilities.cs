@@ -775,47 +775,72 @@ namespace EBSGFramework
             return hediffs;
         }
 
-        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false)
+        public static void GiveHediffs(this List<HediffToGive> hediffs, Pawn caster, Pawn target = null, int durationCaster = -1, int durationTarget = -1, bool psychic = false, EndOn endOn = EndOn.End)
         {
-            bool checkCaster = caster != null && (!psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0);
-            bool checkTarget = target != null && (!psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0);
+            bool casterIsPsychic = caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0;
+            bool targetIsPsychic = target.StatOrOne(StatDefOf.PsychicSensitivity) > 0;
+            bool checkCaster = caster != null && (!psychic || casterIsPsychic);
+            bool checkTarget = target != null && (!psychic || targetIsPsychic);
 
             foreach (HediffToGive hediff in hediffs)
             {
+                if (!Rand.Chance(hediff.chance))
+                    if (endOn == EndOn.Fail || endOn == EndOn.FailIgnorePsychic)
+                        break;
+                    else
+                        continue;
                 float severity = hediff.severity.RandomInRange;
-
+                bool flag = false; // Make sure the hediff doesn't fail due to psychic deafness
                 List<BodyPartDef> partChecks = new List<BodyPartDef>();
                 if (!hediff.bodyParts.NullOrEmpty())
                     partChecks = new List<BodyPartDef>(hediff.bodyParts);
                 else if (hediff.onlyBrain)
                     partChecks.Add(caster.health.hediffSet.GetBrain().def);
 
-                if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && 
-                    (!hediff.psychic || caster.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
+                if (checkCaster && (hediff.applyToSelf || hediff.onlyApplyToSelf) && (!hediff.psychic || casterIsPsychic))
                 {
                     HandleHediffToGive(caster, target, hediff.hediffDef, severity,
-                        hediff.replaceExisting, hediff.skipExisting, partChecks,
-                        durationCaster);
+                        hediff.replaceExisting, hediff.skipExisting, partChecks, durationCaster);
 
                     if (!hediff.hediffDefs.NullOrEmpty())
                         foreach (HediffDef hd in hediff.hediffDefs)
-                            HandleHediffToGive(caster, target, hd, severity,
-                                hediff.replaceExisting, hediff.skipExisting, partChecks,
-                                durationCaster);
+                            HandleHediffToGive(caster, target, hd, severity, hediff.replaceExisting, hediff.skipExisting, 
+                                partChecks, durationCaster);
+                    flag = true;
                 }
-                if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf &&
-                    (!hediff.psychic || target.StatOrOne(StatDefOf.PsychicSensitivity) > 0))
+                if (checkTarget && hediff.applyToTarget && !hediff.onlyApplyToSelf && (!hediff.psychic || targetIsPsychic))
                 {
                     HandleHediffToGive(target, caster, hediff.hediffDef, severity,
-                        hediff.replaceExisting, hediff.skipExisting, partChecks,
-                        durationTarget);
+                        hediff.replaceExisting, hediff.skipExisting, partChecks, durationTarget);
 
                     if (!hediff.hediffDefs.NullOrEmpty())
                         foreach (HediffDef hd in hediff.hediffDefs)
-                            HandleHediffToGive(target, caster, hd, severity, 
-                                hediff.replaceExisting, hediff.skipExisting, partChecks, 
-                                durationTarget);
+                            HandleHediffToGive(target, caster, hd, severity, hediff.replaceExisting, hediff.skipExisting, 
+                                partChecks, durationTarget);
+                    flag = true;
                 }
+
+                bool flag2 = false;
+                switch (endOn)
+                {
+                    case EndOn.Fail:
+                        if (!flag)
+                            flag2 = true;
+                        break;
+                    case EndOn.Success:
+                        if (flag)
+                            flag2 = true;
+                        break;
+                    case EndOn.FailIgnorePsychic:
+                    case EndOn.End:
+                    default:
+                        break;
+                }
+
+                if (flag2)
+                    break;
+                if ((flag && endOn == EndOn.Success) || (!flag && endOn == EndOn.Fail))
+                    break;
             }
         }
 
@@ -849,9 +874,7 @@ namespace EBSGFramework
                     foundTraits.Add(trait);
 
                 if (!traits.NullOrEmpty())
-                    foreach (var t in comp.TraitsListForReading)
-                        if (traits.Contains(t))
-                            foundTraits.Add(t);
+                    foundTraits.AddRange(comp.TraitsListForReading.Where(traits.Contains));
             }
 
             return foundTraits;

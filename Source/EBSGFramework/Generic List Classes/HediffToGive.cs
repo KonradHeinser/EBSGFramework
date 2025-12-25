@@ -26,5 +26,7 @@ namespace EBSGFramework
         public FloatRange severity = FloatRange.One;
 
         public bool psychic = false;
+
+        public float chance = 1f;
     }
 }

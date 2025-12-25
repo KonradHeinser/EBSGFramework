@@ -8,6 +8,8 @@ namespace EBSGFramework
         public List<HediffToGive> hediffsToGive;
 
         public FloatRange validSeverity = FloatRange.Zero;
+        
+        public EndOn endOn = EndOn.End;
 
         public HediffCompProperties_HediffsOnRemoval()
         {

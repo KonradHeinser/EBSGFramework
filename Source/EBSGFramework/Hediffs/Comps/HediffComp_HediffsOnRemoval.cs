@@ -8,11 +8,10 @@ namespace EBSGFramework
 
         public override void CompPostPostRemoved()
         {
-            Log.Message("Ding");
             base.CompPostPostRemoved();
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
                 return;
-            Props.hediffsToGive?.GiveHediffs(null, Pawn);
+            Props.hediffsToGive?.GiveHediffs(null, Pawn, endOn: Props.endOn);
         }
     }
 }
