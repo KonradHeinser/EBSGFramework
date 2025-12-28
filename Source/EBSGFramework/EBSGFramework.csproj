@@ -135,6 +135,7 @@
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNeedLevel.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
+    <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosionBase.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_FlipGenderPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GenderByAge.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveHediffToKiller.cs" />

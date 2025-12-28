@@ -2017,13 +2017,13 @@ namespace EBSGFramework
                 foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
                 {
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null && dinfo.Def == explodingComp.Props.explosion.damageDef && explodingComp.currentlyExploding) return true;
+                    if (explodingComp != null && explodingComp.CurrentlyExploding) return true;
 
                     HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                    if (rangedExplodingComp != null && dinfo.Def == rangedExplodingComp.Props.explosion.damageDef && rangedExplodingComp.currentlyExploding) return true;
+                    if (rangedExplodingComp != null && rangedExplodingComp.CurrentlyExploding) return true;
 
                     HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                    if (meleeExplodingComp != null && dinfo.Def == meleeExplodingComp.Props.explosion.damageDef && meleeExplodingComp.currentlyExploding) return true;
+                    if (meleeExplodingComp != null && meleeExplodingComp.CurrentlyExploding) return true;
                 }
             return false;
         }
@@ -2157,11 +2157,8 @@ namespace EBSGFramework
                 }
 
                 if (!Cache.incomingDamageStatGenes.NullOrEmpty() && victim.GetAllGenesOnListFromPawn(Cache.incomingDamageStatGenes, out var incStatGenes))
-                    foreach (GeneDef gene in incStatGenes)
-                    {
-                        DamageModifyingStatsExtension extension = gene.GetModExtension<DamageModifyingStatsExtension>();
+                    foreach (var extension in incStatGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>()))
                         dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, extension, victim, dinfo.Instigator));
-                    }
 
                 DamageModifyingStatsExtension victimKindModStats = victim.kindDef.GetModExtension<DamageModifyingStatsExtension>();
 
@@ -2172,7 +2169,7 @@ namespace EBSGFramework
 
         public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
         {
-            if (Cache?.explosiveAttackHediffs.NullOrEmpty() == false && __instance.MapHeld != null && dinfo.Instigator != null && dinfo.Instigator is Pawn pawn
+            if (Cache?.explosiveAttackHediffs.NullOrEmpty() == false && __instance.MapHeld != null && dinfo.Instigator is Pawn pawn
                 && !pawn.Dead && HasSpecialExplosion(pawn) && !DoingSpecialExplosion(pawn, dinfo, __instance)
                 && pawn.GetCurrentTarget(false) == __instance && !pawn.CastingAbility())
             {
@@ -2180,9 +2177,9 @@ namespace EBSGFramework
                 {
                     if (hediff.def.comps.NullOrEmpty()) continue;
                     HediffComp_ExplodingAttacks explodingComp = hediff.TryGetComp<HediffComp_ExplodingAttacks>();
-                    if (explodingComp != null && !explodingComp.currentlyExploding && explodingComp.Props.validSeverities.ValidValue(hediff.Severity))
+                    if (explodingComp != null && !explodingComp.CurrentlyExploding && explodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                     {
-                        explodingComp.currentlyExploding = true;
+                        explodingComp.StartCooldown();
                         explodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                     }
                     if (dinfo.Def == null) continue; // Special catch
@@ -2190,18 +2187,18 @@ namespace EBSGFramework
                     if (dinfo.Def.isRanged)
                     {
                         HediffComp_ExplodingRangedAttacks rangedExplodingComp = hediff.TryGetComp<HediffComp_ExplodingRangedAttacks>();
-                        if (rangedExplodingComp != null && !rangedExplodingComp.currentlyExploding && rangedExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
+                        if (rangedExplodingComp != null && !rangedExplodingComp.CurrentlyExploding && rangedExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                         {
-                            rangedExplodingComp.currentlyExploding = true;
+                            rangedExplodingComp.StartCooldown();
                             rangedExplodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                         }
                     }
                     else if (!dinfo.Def.isExplosive)
                     {
                         HediffComp_ExplodingMeleeAttacks meleeExplodingComp = hediff.TryGetComp<HediffComp_ExplodingMeleeAttacks>();
-                        if (meleeExplodingComp != null && !meleeExplodingComp.currentlyExploding && meleeExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
+                        if (meleeExplodingComp != null && !meleeExplodingComp.CurrentlyExploding && meleeExplodingComp.Props.validSeverities.ValidValue(hediff.Severity))
                         {
-                            meleeExplodingComp.currentlyExploding = true;
+                            meleeExplodingComp.StartCooldown();
                             meleeExplodingComp.Props.explosion.DoExplosion(pawn, __instance.PositionHeld, __instance.MapHeld, hediff.Severity);
                         }
                     }

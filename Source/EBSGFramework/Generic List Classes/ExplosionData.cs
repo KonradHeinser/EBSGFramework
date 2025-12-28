@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -60,10 +61,7 @@ namespace EBSGFramework
             int damage = damageAmount;
             if (damageStat != null)
             {
-                if (caster.StatOrOne(damageStat) > 0)
-                    damage = Mathf.CeilToInt(caster.StatOrOne(damageStat));
-                else
-                    damage = 0;
+                damage = caster.StatOrOne(damageStat) > 0 ? Mathf.CeilToInt(caster.StatOrOne(damageStat)) : 0;
             }
             if (multiplyDamageBySeverity)
                 damage = Mathf.CeilToInt(damage * severity);
@@ -79,8 +77,7 @@ namespace EBSGFramework
             if (multiplyRadiusBySeverity)
                 r *= severity;
 
-            Faction faction;
-            faction = caster?.Faction;
+            var faction = caster?.Faction;
             
             switch (exclusions)
             {
@@ -109,6 +106,9 @@ namespace EBSGFramework
                                 ignoreList.Add(pawn);
                         }
                     break;
+                case ExclusionLevel.None:
+                default:
+                    break;
             }
 
 
@@ -118,7 +118,7 @@ namespace EBSGFramework
                 gasRadiusOverride, postExplosionGasAmount, applyDamageToExplosionCellsNeighbors,
                 preExplosionThing, preExplosionThingChance, preExplosionSpawnThingCount,
                 chanceToStartFire, damageFalloff, null, ignoreList, null, true, 1f, excludeRadius,
-                true, postExplosionThingWater, screenShakeFactor);
+                damageDef.soundExplosion != null, postExplosionThingWater, screenShakeFactor);
         }
     }
 }
