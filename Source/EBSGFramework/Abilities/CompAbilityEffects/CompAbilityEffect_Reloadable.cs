@@ -43,7 +43,7 @@ namespace EBSGFramework
 
             if (RemainingCharges <= 0)
             {
-                reason = Props.noChargesRemaining.TranslateOrFormat(Props.ammoDef.label, parent.def.label);
+                reason = Props.noChargesRemaining.TranslateOrFormat(Props.ammoDef?.label, parent.def.label);
                 return true;
             }
 
