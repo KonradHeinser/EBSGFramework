@@ -1030,6 +1030,8 @@ namespace EBSGFramework
 
         public static void CopyStageValues(this HediffStage stage, HediffStage newStage)
         {
+            if (newStage == new HediffStage())
+                return;
             stage.minSeverity = newStage.minSeverity;
             stage.label = newStage.label;
             stage.overrideLabel = newStage.overrideLabel;
@@ -1047,7 +1049,6 @@ namespace EBSGFramework
             stage.forgetMemoryThoughtMtbDays = newStage.forgetMemoryThoughtMtbDays;
             stage.pctConditionalThoughtsNullified = newStage.pctConditionalThoughtsNullified;
             stage.opinionOfOthersFactor = newStage.opinionOfOthersFactor;
-            stage.fertilityFactor = newStage.fertilityFactor;
             stage.hungerRateFactor = newStage.hungerRateFactor;
             stage.hungerRateFactorOffset = newStage.hungerRateFactorOffset;
             stage.restFallFactor = newStage.restFallFactor;
@@ -1056,13 +1057,13 @@ namespace EBSGFramework
             stage.foodPoisoningChanceFactor = newStage.foodPoisoningChanceFactor;
             stage.mentalBreakMtbDays = newStage.mentalBreakMtbDays;
             stage.mentalBreakExplanation = newStage.mentalBreakExplanation;
-            stage.allowedMentalBreakIntensities = newStage.allowedMentalBreakIntensities;
-            stage.makeImmuneTo = newStage.makeImmuneTo;
-            stage.capMods = newStage.capMods;
-            stage.hediffGivers = newStage.hediffGivers;
-            stage.mentalStateGivers = newStage.mentalStateGivers;
-            stage.statOffsets = newStage.statOffsets;
-            stage.statFactors = newStage.statFactors;
+            stage.allowedMentalBreakIntensities = newStage.allowedMentalBreakIntensities.NullOrEmpty() ? new List<MentalBreakIntensity>() : new List<MentalBreakIntensity>(newStage.allowedMentalBreakIntensities);
+            stage.makeImmuneTo = newStage.makeImmuneTo.NullOrEmpty() ? null : new List<HediffDef>(newStage.makeImmuneTo);
+            stage.capMods = newStage.capMods.NullOrEmpty() ? new List<PawnCapacityModifier>() : new List<PawnCapacityModifier>(newStage.capMods);
+            stage.hediffGivers = newStage.hediffGivers.NullOrEmpty() ? new List<HediffGiver>() : new List<HediffGiver>(newStage.hediffGivers);
+            stage.mentalStateGivers = newStage.mentalStateGivers.NullOrEmpty() ? new List<MentalStateGiver>() : new List<MentalStateGiver>(newStage.mentalStateGivers);
+            stage.statOffsets = newStage.statOffsets.NullOrEmpty() ? new List<StatModifier>() : new List<StatModifier>(newStage.statOffsets);
+            stage.statFactors = newStage.statFactors.NullOrEmpty() ? new List<StatModifier>() : new List<StatModifier>(newStage.statFactors);
             stage.multiplyStatChangesBySeverity = newStage.multiplyStatChangesBySeverity;
             stage.statOffsetEffectMultiplier = newStage.statOffsetEffectMultiplier;
             stage.statFactorEffectMultiplier = newStage.statFactorEffectMultiplier;
@@ -1073,6 +1074,30 @@ namespace EBSGFramework
             stage.partEfficiencyOffset = newStage.partEfficiencyOffset;
             stage.partIgnoreMissingHP = newStage.partIgnoreMissingHP;
             stage.destroyPart = newStage.destroyPart;
+        }
+
+        // Copy old modifiers to ensure changing one won't cause weird issues down the line
+        public static StatModifier Copy(this StatModifier modifier, float offset = 0f, float factor = 1f)
+        {
+            return new StatModifier()
+            {
+                stat = modifier.stat,
+                value = modifier.value * factor + offset
+            };
+        }
+
+        public static PawnCapacityModifier Copy(this PawnCapacityModifier modifier)
+        {
+            return new PawnCapacityModifier()
+            {
+                capacity = modifier.capacity,
+                offset = modifier.offset,
+                postFactor = modifier.postFactor,
+                setMax = modifier.setMax,
+                setMaxCurveEvaluateStat = modifier.setMaxCurveEvaluateStat,
+                setMaxCurveOverride = modifier.setMaxCurveOverride,
+                statFactorMod = modifier.statFactorMod
+            };
         }
 
         public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies, bool quick = false)

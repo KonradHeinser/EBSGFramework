@@ -5,6 +5,7 @@ namespace EBSGFramework
     public class Hediff_Modular : HediffWithComps
     {
         HediffComp_Modular cachedComp;
+        
         public override HediffStage CurStage
         {
             get
@@ -12,7 +13,7 @@ namespace EBSGFramework
                 HediffStage stage = base.CurStage ?? new HediffStage();
 
                 if (cachedComp == null && !comps.NullOrEmpty())
-                    foreach (HediffComp c in comps)
+                    foreach (var c in comps)
                         if (c is HediffComp_Modular comp)
                         {
                             cachedComp = comp;

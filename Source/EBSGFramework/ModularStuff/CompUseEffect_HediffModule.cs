@@ -145,15 +145,14 @@ namespace EBSGFramework
             if (Props.stageOverlays.NullOrEmpty())
                 return stage;
 
-            if (Props.stageOverlays.Count == 1)
-                return Props.stageOverlays[0].ModifyHediffStage(stage);
-
-            return Props.stageOverlays[stageIndex].ModifyHediffStage(stage);
+            return Props.stageOverlays.Count == 1 ? 
+                Props.stageOverlays[0].ModifyHediffStage(stage) : 
+                Props.stageOverlays[stageIndex].ModifyHediffStage(stage);
         }
 
         public override void DoEffect(Pawn user)
         {
-            if (OwnerComp == null || OwnerComp.parent == null || OwnerComp.Pawn == null)
+            if (OwnerComp?.parent == null || OwnerComp.Pawn == null)
             {
                 ownerComp = null;
                 ownerHediff = null;

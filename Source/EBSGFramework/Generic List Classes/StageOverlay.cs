@@ -24,7 +24,6 @@ namespace EBSGFramework
         public float? forgetMemoryThoughtMtbDays;
         public float pctConditionalThoughtsNullified = 0f;
         public float opinionOfOthersFactor = 1f;
-        public float fertilityFactor = 1f;
         public float hungerRateFactor = 1f;
         public float hungerRateFactorOffset = 0f;
         public float restFallFactor = 1f;
@@ -94,7 +93,6 @@ namespace EBSGFramework
             
             stage.pctConditionalThoughtsNullified += pctConditionalThoughtsNullified;
             stage.opinionOfOthersFactor *= opinionOfOthersFactor;
-            stage.fertilityFactor *= fertilityFactor;
             stage.hungerRateFactor *= hungerRateFactor;
             stage.hungerRateFactorOffset += hungerRateFactorOffset;
             stage.restFallFactor *= restFallFactor;
@@ -112,7 +110,9 @@ namespace EBSGFramework
                 stage.allowedMentalBreakIntensities = !stage.allowedMentalBreakIntensities.NullOrEmpty() ? stage.allowedMentalBreakIntensities.Union(allowedMentalBreakIntensities).ToList() : allowedMentalBreakIntensities;
 
             if (!makeImmuneTo.NullOrEmpty()) 
-                stage.makeImmuneTo = stage.makeImmuneTo.NullOrEmpty() ? stage.makeImmuneTo.Union(makeImmuneTo).ToList() : makeImmuneTo;
+                stage.makeImmuneTo = stage.makeImmuneTo.NullOrEmpty() ? 
+                    stage.makeImmuneTo.Union(makeImmuneTo).ToList() : 
+                    new List<HediffDef>(makeImmuneTo);
 
             if (!capMods.NullOrEmpty())
                 if (!stage.capMods.NullOrEmpty())
@@ -128,10 +128,15 @@ namespace EBSGFramework
                         }
 
                     if (!unusedCapMods.NullOrEmpty())
-                        stage.capMods.AddRange(unusedCapMods);
+                        foreach (PawnCapacityModifier ourCap in unusedCapMods)
+                            stage.capMods.Add(ourCap.Copy()); // Have to make copies because if multiple of the same stage overlay are used weird issues can occur
                 }
                 else
-                    stage.capMods = capMods;
+                {
+                    stage.capMods = new List<PawnCapacityModifier>();
+                    foreach (PawnCapacityModifier ourCap in capMods)
+                        stage.capMods.Add(ourCap.Copy());
+                }
 
             if (hediffGivers != null) 
                 stage.hediffGivers = stage.hediffGivers != null ? stage.hediffGivers.Union(hediffGivers).ToList() : hediffGivers;
@@ -141,19 +146,9 @@ namespace EBSGFramework
 
             if (!statOffsetFactors.NullOrEmpty())
                 if (!stage.statOffsets.NullOrEmpty())
-                {
                     foreach (StatModifier ourMod in statOffsetFactors)
-                        foreach (StatModifier stageMod in stage.statOffsets)
-                        {
-                            if (ourMod.stat != stageMod.stat)
-                                continue;
-
+                        foreach (var stageMod in stage.statOffsets.Where(stageMod => ourMod.stat == stageMod.stat))
                             stageMod.value *= ourMod.value;
-                            break;
-                        }
-                }
-                else
-                    stage.statOffsets = statOffsetFactors;
 
             if (!statOffsets.NullOrEmpty())
             { 
@@ -163,16 +158,22 @@ namespace EBSGFramework
                     foreach (StatModifier ourMod in statOffsets)
                         foreach (var stageMod in stage.statOffsets.Where(stageMod => ourMod.stat == stageMod.stat))
                         {
+                            var old = stageMod.value;
                             unusedStatOffsets.Remove(ourMod);
                             stageMod.value += ourMod.value;
                             break;
                         }
 
                     if (!unusedStatOffsets.NullOrEmpty())
-                        stage.statOffsets.AddRange(unusedStatOffsets);
+                        foreach (StatModifier ourMod in unusedStatOffsets)
+                            stage.statOffsets.Add(ourMod.Copy());
                 }
                 else
-                    stage.statOffsets = statOffsets;
+                {
+                    stage.statOffsets = new List<StatModifier>();
+                    foreach  (StatModifier ourMod in statOffsets)
+                        stage.statOffsets.Add(ourMod.Copy());
+                }
             }
 
             if (!statFactors.NullOrEmpty())
@@ -185,14 +186,12 @@ namespace EBSGFramework
                             break;
                         }
                 }
-                else
-                    stage.statFactors = statFactors;
 
             if (!statFactorOffsets.NullOrEmpty())
             {
                 List<StatModifier> unusedStatFactorOffsets = new List<StatModifier>(statFactorOffsets);
                 if (!stage.statFactors.NullOrEmpty())
-                { 
+                {
                     foreach (StatModifier ourMod in statFactorOffsets)
                         foreach (var stageMod in stage.statFactors.Where(stageMod => ourMod.stat == stageMod.stat))
                         {
@@ -202,10 +201,15 @@ namespace EBSGFramework
                         }
 
                     if (!unusedStatFactorOffsets.NullOrEmpty())
-                        stage.statFactors.AddRange(unusedStatFactorOffsets);
+                        foreach (StatModifier ourMod in unusedStatFactorOffsets)
+                            stage.statFactors.Add(ourMod.Copy(1f)); // Add 1 to each new one so an offset of 0.3 creates 1.3 instead of 0.3 when new
                 }
                 else
-                    stage.statFactors = statFactors;
+                {
+                    stage.statFactors = new List<StatModifier>();
+                    foreach (StatModifier ourMod in statFactorOffsets)
+                        stage.statFactors.Add(ourMod.Copy(1f));
+                }
             }
 
             if (multiplyStatChangesBySeverity != null)

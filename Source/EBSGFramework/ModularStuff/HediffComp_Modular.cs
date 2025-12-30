@@ -48,7 +48,8 @@ namespace EBSGFramework
                                 }
                             }
 
-                            if (moduleComp.Props.excludeIDs.Intersect(comp.Props.excludeIDs).Count() > 0)
+                            if (!moduleComp.Props.excludeIDs.NullOrEmpty() && !comp.Props.excludeIDs.NullOrEmpty() &&
+                                !moduleComp.Props.excludeIDs.Intersect(comp.Props.excludeIDs).EnumerableNullOrEmpty())
                             {
                                 invalid = true;
                                 break;
@@ -97,7 +98,7 @@ namespace EBSGFramework
         {
             if (stage == cachedInput && !resetCache)
                 return cachedOutput;
-            
+            Log.Message("Processing");
             cachedInput = stage;
             resetCache = false;
 
@@ -112,8 +113,7 @@ namespace EBSGFramework
             
             if (moduleHolder.Count > 0)
                 foreach (ThingWithComps module in moduleHolder)
-                    cachedOutput = module.TryGetComp<CompUseEffect_HediffModule>().
-                        ModifyStage(parent.CurStageIndex, cachedOutput);
+                    cachedOutput = module.TryGetComp<CompUseEffect_HediffModule>().ModifyStage(parent.CurStageIndex, cachedOutput);
             return cachedOutput;
         }
 
