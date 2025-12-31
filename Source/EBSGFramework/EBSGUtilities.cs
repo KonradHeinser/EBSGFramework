@@ -1116,6 +1116,26 @@ namespace EBSGFramework
 
             return !dependencies.NullOrEmpty();
         }
+
+        public static bool CheckXenotype(this Pawn pawn, out bool missing, List<XenotypeDef> oneOf = null, List<XenotypeDef> noneOf = null)
+        {
+            return CheckXenotype(pawn.genes, out missing, oneOf, noneOf);
+        }
+
+        public static bool CheckXenotype(this Pawn_GeneTracker tracker, out bool missing, List<XenotypeDef> oneOf = null, List<XenotypeDef> noneOf = null)
+        {
+            // missing is used to allow the thing calling to function to differentiate what list failed. If true, oneOf is the failure point
+            // If the function returns true, then there is no reason to reference missing on the other side. 
+            missing = true;
+            if (tracker?.Xenotype == null)
+                return oneOf.NullOrEmpty();
+
+            if (!oneOf.NullOrEmpty() && !oneOf.Contains(tracker.Xenotype))
+                return false;
+            
+            missing = false;
+            return noneOf.NullOrEmpty() || !noneOf.Contains(tracker.Xenotype);
+        }
         
         public static bool CheckGeneTrio(this Pawn pawn, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
         {
@@ -1123,9 +1143,17 @@ namespace EBSGFramework
 
             if (!oneOfGenes.NullOrEmpty() && !PawnHasAnyOfGenes(pawn, out _, oneOfGenes)) return false;
             if (!allOfGenes.NullOrEmpty() && !PawnHasAllOfGenes(pawn, allOfGenes)) return false;
-            if (!noneOfGenes.NullOrEmpty() && PawnHasAnyOfGenes(pawn, out _, noneOfGenes)) return false;
+            return noneOfGenes.NullOrEmpty() || !PawnHasAnyOfGenes(pawn, out _, noneOfGenes);
+        }
 
-            return true;
+        public static bool CheckGeneTrio(this Pawn_GeneTracker tracker, List<GeneDef> oneOfGenes = null, List<GeneDef> allOfGenes = null, List<GeneDef> noneOfGenes = null)
+        {
+            if (tracker?.GenesListForReading.NullOrEmpty() != false)
+                return oneOfGenes.NullOrEmpty() && allOfGenes.NullOrEmpty();
+            
+            if (!oneOfGenes.NullOrEmpty() && !TrackerHasAnyOfGenes(tracker, out _, oneOfGenes)) return false;
+            if (!allOfGenes.NullOrEmpty() && !TrackerHasAllOfGenes(tracker, allOfGenes)) return false;
+            return noneOfGenes.NullOrEmpty() || !TrackerHasAnyOfGenes(tracker, out _, noneOfGenes);
         }
 
         public static bool CheckHediffTrio(this Pawn pawn, List<HediffDef> oneOfHediffs = null, List<HediffDef> allOfHediffs = null, List<HediffDef> noneOfHediffs = null, BodyPartRecord bodyPart = null)
@@ -1232,6 +1260,24 @@ namespace EBSGFramework
             return RCellFinder.TryFindRandomClearCellsNear(target, 1, targetMap, out var cells) ? cells.First() : IntVec3.Invalid;
         }
 
+        public static bool SetHasAllOfHediff(this HediffSet hediffSet, List<HediffDef> hediffs)
+        {
+            if (hediffs.NullOrEmpty())
+                return true;
+            
+            return hediffSet?.hediffs.NullOrEmpty() == false && hediffSet.hediffs.All(h => hediffs.Contains(h.def));
+        }
+        
+        public static bool SetHasAnyOfHediff(this HediffSet hediffSet, List<HediffDef> hediffs, out Hediff first)
+        {
+            first = null;
+            if (hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
+                return false;
+
+            first = hediffSet.hediffs.FirstOrDefault(h => hediffs.Contains(h.def));
+            return first != null;
+        }
+        
         public static bool HasHediff(this Pawn pawn, HediffToParts hediff)
         {
             return !pawn.GetHediffFromParts(hediff).NullOrEmpty();
@@ -1526,34 +1572,34 @@ namespace EBSGFramework
 
         public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
-            firstMatch = null;
-            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return false;
-            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false) return false;
+            return TrackerHasAnyOfGenes(pawn.genes, out firstMatch, geneDefs, genes);
+        }
 
+        public static bool TrackerHasAnyOfGenes(this Pawn_GeneTracker tracker, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        {
+            firstMatch = null;
+            if (tracker?.GenesListForReading.NullOrEmpty() != false || (geneDefs.NullOrEmpty() && genes.NullOrEmpty()))
+                return false;
+
+            var check = tracker.GenesListForReading.Where(g => g.Active && !g.Overridden);
+            if (check.EnumerableNullOrEmpty())
+                return false;
+            
             if (!geneDefs.NullOrEmpty())
-            {
-                foreach (Gene gene in pawn.genes.GenesListForReading)
-                {
-                    if (!gene.Active || gene.Overridden) continue;
+                foreach (var gene in check)
                     if (geneDefs.Contains(gene.def))
                     {
                         firstMatch = gene.def;
                         return true;
                     }
-                }
-            }
+            
             if (!genes.NullOrEmpty())
-            {
-                foreach (Gene gene in pawn.genes.GenesListForReading)
-                {
-                    if (!gene.Active || gene.Overridden) continue;
+                foreach (var gene in check)
                     if (genes.Contains(gene))
                     {
                         firstMatch = gene.def;
                         return true;
                     }
-                }
-            }
 
             return false;
         }
@@ -1580,11 +1626,8 @@ namespace EBSGFramework
         {
             List<GeneDef> results = new List<GeneDef>();
 
-            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false
-                && !searchList.NullOrEmpty())
-                foreach (var g in pawn.genes.GenesListForReading)
-                    if (searchList.Contains(g.def))
-                        results.Add(g.def);
+            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false && !searchList.NullOrEmpty()) 
+                results.AddRange(from g in pawn.genes.GenesListForReading where searchList.Contains(g.def) select g.def);
 
             return results;
         }
@@ -1603,32 +1646,24 @@ namespace EBSGFramework
 
         public static bool PawnHasAllOfGenes(this Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
-            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
-            if (pawn.genes == null) return false;
+            return TrackerHasAllOfGenes(pawn.genes, geneDefs, genes);
+        }
 
-            if (!geneDefs.NullOrEmpty())
-            {
-                foreach (GeneDef gene in geneDefs)
-                {
-                    if (!HasRelatedGene(pawn, gene)) return false;
-                }
-            }
-            if (!genes.NullOrEmpty())
-            {
-                foreach (Gene gene in genes)
-                {
-                    if (!HasRelatedGene(pawn, gene.def)) return false;
-                }
-            }
-
-            return true;
+        public static bool TrackerHasAllOfGenes(this Pawn_GeneTracker tracker, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        {
+            if (tracker?.GenesListForReading.NullOrEmpty() != false) 
+                return false;
+            
+            return (geneDefs.NullOrEmpty() || geneDefs.All(tracker.HasActiveGene)) && (genes.NullOrEmpty() || genes.All(tracker.GenesListForReading.Contains));
         }
 
         public static bool PawnHasAllOfGenes(this Pawn pawn, out GeneDef failOn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
         {
             failOn = null;
-            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty()) return true;
-            if (pawn.genes == null) return false;
+            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty())
+                return true;
+            if (pawn.genes == null) 
+                return false;
 
             if (!geneDefs.NullOrEmpty())
                 foreach (GeneDef gene in geneDefs)
@@ -2093,32 +2128,24 @@ namespace EBSGFramework
 
             if (attacker != null)
             {
-                if (!extension.incomingAttackerFactors.NullOrEmpty())
-                    foreach (StatDef stat in extension.incomingAttackerFactors)
-                        damage *= attacker.StatOrOne(stat, extension.inAttackFactorReq);
+                if (!extension.incomingAttackerFactors.NullOrEmpty()) 
+                    damage = extension.incomingAttackerFactors.Aggregate(damage, (current, stat) => current * attacker.StatOrOne(stat, extension.inAttackFactorReq));
 
-                if (!extension.incomingAttackerModifiers.NullOrEmpty())
-                    foreach (StatModifier stat in extension.incomingAttackerModifiers)
-                        offset += attacker.StatOrOne(stat.stat) * stat.value;
+                if (!extension.incomingAttackerModifiers.NullOrEmpty()) 
+                    offset += extension.incomingAttackerModifiers.Sum(stat => attacker.StatOrOne(stat.stat) * stat.value);
 
-                if (!extension.incomingAttackerDivisors.NullOrEmpty())
-                    foreach (StatDef stat in extension.incomingAttackerDivisors)
-                        damage /= attacker.StatOrOne(stat, extension.inAttackDivReq);
+                if (!extension.incomingAttackerDivisors.NullOrEmpty()) 
+                    damage = extension.incomingAttackerDivisors.Aggregate(damage, (current, stat) => current / attacker.StatOrOne(stat, extension.inAttackDivReq));
             }
 
-            if (!extension.incomingTargetFactors.NullOrEmpty())
-                foreach (StatDef stat in extension.incomingTargetFactors)
-                    damage *= victim.StatOrOne(stat, extension.inTargetFactorReq);
+            if (!extension.incomingTargetFactors.NullOrEmpty()) 
+                damage = extension.incomingTargetFactors.Aggregate(damage, (current, stat) => current * victim.StatOrOne(stat, extension.inTargetFactorReq));
 
-            if (!extension.incomingTargetModifiers.NullOrEmpty())
-                foreach (StatModifier stat in extension.incomingTargetModifiers)
-                    offset += victim.StatOrOne(stat.stat) * stat.value;
+            if (!extension.incomingTargetModifiers.NullOrEmpty()) 
+                offset += extension.incomingTargetModifiers.Sum(stat => victim.StatOrOne(stat.stat) * stat.value);
 
-            if (!extension.incomingTargetDivisors.NullOrEmpty())
-                foreach (StatDef stat in extension.incomingTargetDivisors)
-                {
-                    damage /= Mathf.Max(victim.StatOrOne(stat, extension.inTargetDivReq), 0.0001f);
-                }
+            if (!extension.incomingTargetDivisors.NullOrEmpty()) 
+                damage = extension.incomingTargetDivisors.Aggregate(damage, (current, stat) => current / Mathf.Max(victim.StatOrOne(stat, extension.inTargetDivReq), 0.0001f));
 
             damage += offset;
 
@@ -2135,15 +2162,11 @@ namespace EBSGFramework
         {
             if (pawn.health.hediffSet != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
             {
-                List<Hediff> hediffsToRemove = new List<Hediff>();
-                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-                {
-                    if (hediff.def.chronic) hediffsToRemove.Add(hediff);
-                }
+                List<Hediff> hediffsToRemove = pawn.health.hediffSet.hediffs.Where(hediff => hediff.def.chronic).ToList();
+                
                 if (!hediffsToRemove.NullOrEmpty())
-                {
-                    foreach (Hediff hediff in hediffsToRemove) pawn.health.RemoveHediff(hediff);
-                }
+                    foreach (Hediff hediff in hediffsToRemove) 
+                        pawn.health.RemoveHediff(hediff);
             }
         }
 
@@ -2165,11 +2188,7 @@ namespace EBSGFramework
             if (!ModsConfig.BiotechActive || relatedGenes.NullOrEmpty() || pawn.genes == null) 
                 return false;
 
-            foreach (GeneDef gene in relatedGenes)
-                if (pawn.genes.HasActiveGene(gene)) 
-                    return true;
-
-            return false;
+            return relatedGenes.Any(pawn.genes.HasActiveGene);
         }
 
         public static bool CheckPawnGenes(this Pawn pawn, GeneDef gene, List<GeneDef> genes, bool mustHaveAll = false)
@@ -2180,18 +2199,8 @@ namespace EBSGFramework
             if (pawn.genes.HasActiveGene(gene))
                 return true;
 
-            if (!genes.NullOrEmpty())
-                if (mustHaveAll)
-                {
-                    foreach (GeneDef g in genes)
-                        if (!pawn.genes.HasActiveGene(g))
-                            return false;
-                    return true;
-                }
-                else
-                    foreach (GeneDef g in genes)
-                        if (pawn.genes.HasActiveGene(g))
-                            return true;
+            if (!genes.NullOrEmpty()) 
+                return mustHaveAll ? genes.All(g => pawn.genes.HasActiveGene(g)) : Enumerable.Any(genes, pawn.genes.HasActiveGene);
 
             return false;
         }

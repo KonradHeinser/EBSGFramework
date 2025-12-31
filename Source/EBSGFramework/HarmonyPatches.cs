@@ -224,6 +224,10 @@ namespace EBSGFramework
             bool flag = true;
             if (extension != null)
             {       // Attempt to get the various limiting lists
+                if (!extension.CanEquip(pawn))
+                {
+                    
+                }
                 List<GeneDef> requiredGenesToEquip = extension.requiredGenesToEquip.ListFullCopyOrNull();
                 List<GeneDef> requireOneOfGenesToEquip = extension.requireOneOfGenesToEquip.ListFullCopyOrNull();
                 List<GeneDef> forbiddenGenesToEquip = extension.forbiddenGenesToEquip.ListFullCopyOrNull();
@@ -505,23 +509,10 @@ namespace EBSGFramework
 
             EquipRestrictExtension equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
 
-            if (equipRestrict != null)
+            if (equipRestrict?.CanEquip(pawn) == false)
             {
-                if (pawn.genes?.Xenotype != null)
-                {
-                    if (!equipRestrict.requireOneOfXenotypeToEquip.NullOrEmpty() && !equipRestrict.requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype) 
-                        || !equipRestrict.forbiddenXenotypesToEquip.NullOrEmpty() && equipRestrict.forbiddenXenotypesToEquip.Contains(pawn.genes.Xenotype))
-                    {
-                        __result = -1000f;
-                        return;
-                    }
-                }
-                if (!pawn.CheckGeneTrio(equipRestrict.requireOneOfGenesToEquip, equipRestrict.requiredGenesToEquip, equipRestrict.forbiddenGenesToEquip) 
-                    || !pawn.CheckHediffTrio(equipRestrict.requireOneOfHediffsToEquip, equipRestrict.requiredHediffsToEquip, equipRestrict.forbiddenHediffsToEquip))
-                {
-                    __result = -1000f;
-                    return;
-                }
+                __result = -1000f;
+                return;
             }
 
             if (Cache?.NeedEquipRestrictGeneCheck() == true)
@@ -535,33 +526,12 @@ namespace EBSGFramework
                 List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
 
                 if (!genes.NullOrEmpty())
-                {
-                    foreach (GeneDef gene in genes)
-                    {
-                        equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
-
-                        if (!equipRestrict.limitedToEquipments.NullOrEmpty() && !equipRestrict.limitedToEquipments.Contains(ap.def) 
-                            || !equipRestrict.limitedToApparels.NullOrEmpty() && !equipRestrict.limitedToApparels.Contains(ap.def) || !equipRestrict.forbiddenEquipments.NullOrEmpty() && equipRestrict.forbiddenEquipments.Contains(ap.def))
+                    foreach (var extension in genes.Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
+                        if (!extension.CanEquipApparel(ap))
                         {
                             __result = -1000f;
                             return;
                         }
-
-                        if (!equipRestrict.restrictedLayers.NullOrEmpty())
-                        {
-                            // If either equipment limiters contain the item, the no layer check is needed because those act as exceptions
-                            if (!equipRestrict.layerEquipExceptions.NullOrEmpty() && equipRestrict.layerEquipExceptions.Contains(ap.def)) 
-                                continue;
-
-                            if (ap.def.apparel?.layers?.NullOrEmpty() == false && 
-                                ap.def.apparel.layers.Any(layer => equipRestrict.restrictedLayers.Contains(layer)))
-                            {
-                                __result = -1000f;
-                                return;
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -592,12 +562,10 @@ namespace EBSGFramework
                             __result.apparel.DestroyAll();
                             flagApparel = false;
                         }
-
-                        else if ((!equipRestrict.limitedToApparels.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !__result.apparel.WornApparel.NullOrEmpty())
+                        else if (equipRestrict.NeedApparelCheck)
                         {
                             List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                            foreach (var apparel in apparels.Where(apparel => 
-                                         !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                            foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
                                 __result.apparel.Remove(apparel);
                         }
                     }
@@ -609,52 +577,35 @@ namespace EBSGFramework
                             __result.equipment.DestroyAllEquipment();
                             flagWeapon = false;
                         }
-                        else if ((!equipRestrict.limitedToWeapons.NullOrEmpty() || !equipRestrict.limitedToEquipments.NullOrEmpty()) && !__result.equipment.AllEquipmentListForReading.NullOrEmpty())
+                        else if (equipRestrict.NeedWeaponCheck)
                         {
                             List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                            foreach (var thing in equipment.Where(thing => 
-                                         !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
-                                __result.equipment.DestroyEquipment(thing);
-                        }
-                    }
-
-                    if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
-                    {
-                        if (flagApparel)
-                        {
-                            List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                            foreach (var apparel in apparels.Where(apparel => equipRestrict.forbiddenEquipments.Contains(apparel.def)))
-                                __result.apparel.Remove(apparel);
-                        }
-                        if (flagWeapon)
-                        {
-                            List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                            foreach (var thing in equipment.Where(thing => equipRestrict.forbiddenEquipments.Contains(thing.def)))
+                            foreach (var thing in equipment.Where(w => !equipRestrict.CanEquipWeapon(w)))
                                 __result.equipment.DestroyEquipment(thing);
                         }
                     }
                 }
 
-                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
-                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
+                flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
 
                 if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
                 
                 if (__result.genes?.GenesListForReading.NullOrEmpty() == false)
                     if (Cache?.NeedEquipRestrictGeneCheck() == true)
                     {
-                        if (!Cache.noEquipment.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noEquipment))
+                        if (__result.HasAnyOfRelatedGene(Cache.noEquipment))
                         {
                             if (flagWeapon) __result.equipment.DestroyAllEquipment();
                             if (flagApparel) __result.apparel.DestroyAll();
                             return;
                         }
-                        if (!Cache.noApparel.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noApparel))
+                        if (flagApparel && __result.HasAnyOfRelatedGene(Cache.noApparel))
                         {
                             __result.apparel.DestroyAll();
                             flagApparel = false;
                         }
-                        if (!Cache.noWeapon.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noWeapon))
+                        if (flagWeapon && __result.HasAnyOfRelatedGene(Cache.noWeapon))
                         {
                             __result.equipment.DestroyAllEquipment();
                             flagWeapon = false;
@@ -663,43 +614,20 @@ namespace EBSGFramework
 
                         foreach (var equipRestrict in __result.GetAllGenesOnListFromPawn(Cache.equipRestricting).Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
                         {
-                            if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
-                            {
-                                if (flagApparel)
-                                {
-                                    List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                    foreach (var apparel in apparels.Where(apparel => equipRestrict.forbiddenEquipments.Contains(apparel.def)))
-                                        __result.apparel.Remove(apparel);
-                                }
-                                if (flagWeapon)
-                                {
-                                    List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                    foreach (var thing in equipment.Where(thing => equipRestrict.forbiddenEquipments.Contains(thing.def)))
-                                        __result.equipment.DestroyEquipment(thing);
-                                }
-
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
-                            }
-
-                            if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() || 
-                                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagApparel)
                             {
                                 List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (var apparel in apparels.Where(apparel => 
-                                             !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                                foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
                                     __result.apparel.Remove(apparel);
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                                flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
                             }
 
-                            if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() || 
-                                               !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagWeapon)
                             {
                                 List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (var thing in equipment.Where(thing => 
-                                             !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
-                                    __result.equipment.DestroyEquipment(thing);
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                                foreach (var weapon in equipment.Where(thing => equipRestrict.CanEquipWeapon(thing)))
+                                    __result.equipment.DestroyEquipment(weapon);
+                                flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
                             }
 
                             if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
@@ -707,45 +635,22 @@ namespace EBSGFramework
                     }
                     // If the pawn is generated before a game is loaded, the cache doesn't exist, and we need to brute force search
                     else if (Cache == null)
-                        foreach (var equipRestrict in __result.genes.GenesListForReading.Select(gene => gene.def.GetModExtension<EquipRestrictExtension>()).Where(equipRestrict => equipRestrict != null))
+                        foreach (var equipRestrict in __result.genes.GenesListForReading.Select(gene => gene.def.GetModExtension<EquipRestrictExtension>()).Where(e => e != null))
                         {
-                            if (!equipRestrict.forbiddenEquipments.NullOrEmpty())
-                            {
-                                if (flagApparel)
-                                {
-                                    List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                    foreach (var apparel in apparels.Where(apparel => equipRestrict.forbiddenEquipments.Contains(apparel.def)))
-                                        __result.apparel.Remove(apparel);
-                                }
-                                if (flagWeapon)
-                                {
-                                    List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                    foreach (var thing in equipment.Where(thing => equipRestrict.forbiddenEquipments.Contains(thing.def)))
-                                        __result.equipment.DestroyEquipment(thing);
-                                }
-
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
-                            }
-
-                            if (flagApparel && (!equipRestrict.limitedToApparels.NullOrEmpty() ||
-                                                !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagApparel)
                             {
                                 List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (var apparel in apparels.Where(apparel => 
-                                             !CheckEquipLists(equipRestrict.limitedToApparels, equipRestrict.limitedToEquipments, apparel.def)))
+                                foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
                                     __result.apparel.Remove(apparel);
-                                flagApparel &= !__result.apparel.WornApparel.NullOrEmpty();
+                                flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
                             }
 
-                            if (flagWeapon && (!equipRestrict.limitedToWeapons.NullOrEmpty() ||
-                                               !equipRestrict.limitedToEquipments.NullOrEmpty()))
+                            if (flagWeapon)
                             {
                                 List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (var thing in equipment.Where(thing => 
-                                             !CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def)))
-                                    __result.equipment.DestroyEquipment(thing);
-                                flagWeapon &= !__result.equipment.AllEquipmentListForReading.NullOrEmpty();
+                                foreach (var weapon in equipment.Where(thing => equipRestrict.CanEquipWeapon(thing)))
+                                    __result.equipment.DestroyEquipment(weapon);
+                                flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
                             }
 
                             if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
