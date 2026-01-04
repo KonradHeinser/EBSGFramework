@@ -848,7 +848,7 @@ namespace EBSGFramework
                             return false;
                         }
                     }
-                    if (!Props.targetHasAllOfGenes.NullOrEmpty() && !targetPawn.PawnHasAllOfGenes(Props.targetHasAllOfGenes))
+                    if (!Props.targetHasAllOfGenes.NullOrEmpty() && !targetPawn.PawnHasAllOfGenes(geneDefs: Props.targetHasAllOfGenes))
                     {
                         explanation = Props.targetHasAllOfGenes.Count == 1 && Props.targetHasAnyOfGenes.NullOrEmpty()
                             ? "AbilityNoTargetGeneOne".Translate(Props.targetHasAllOfGenes[0].label)

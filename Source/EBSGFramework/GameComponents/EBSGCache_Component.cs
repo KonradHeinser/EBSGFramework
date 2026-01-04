@@ -48,6 +48,34 @@ namespace EBSGFramework
         public List<GeneDef> noEquipment = new List<GeneDef>();
         public List<GeneDef> noApparel = new List<GeneDef>();
         public List<GeneDef> noWeapon = new List<GeneDef>();
+
+        public RestrictType GloballyRestrictedEquipment(Pawn pawn, Thing thing, out string source)
+        {
+            if (!noEquipment.NullOrEmpty())
+                if (pawn.PawnHasAnyOfGenes(out var gene, noEquipment))
+                {
+                    source = gene.LabelCap;
+                    return RestrictType.All;
+                }
+            
+            if (thing.def.IsWeapon && !noWeapon.NullOrEmpty())
+                if (pawn.PawnHasAnyOfGenes(out var gene, noWeapon))
+                {
+                    source = gene.LabelCap;
+                    return RestrictType.Weapon;
+                }
+            
+            if (thing.def.IsApparel && !noApparel.NullOrEmpty())
+                if (pawn.PawnHasAnyOfGenes(out var gene, noApparel))
+                {
+                    source = gene.LabelCap;
+                    return RestrictType.Apparel;
+                }
+            
+            source = null;
+            return RestrictType.None;
+        }
+        
         public List<GeneDef> equipRestricting = new List<GeneDef>();
 
         public List<GeneDef> idgGenes = new List<GeneDef>();
@@ -147,12 +175,7 @@ namespace EBSGFramework
 
             return needRechargerJob;
         }
-
-        public bool NeedEquipRestrictGeneCheck()
-        {
-            return !(noEquipment.NullOrEmpty() && noWeapon.NullOrEmpty() && noApparel.NullOrEmpty() && equipRestricting.NullOrEmpty());
-        }
-
+        
         // Name Color Caching
 
         public Dictionary<Pawn, Color> pawnNameColors = new Dictionary<Pawn, Color>();

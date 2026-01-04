@@ -4,6 +4,7 @@ using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
@@ -1570,15 +1571,16 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
-        public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        // HasAnyOfGene will return false when both lists are empty
+        public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null)
         {
-            return TrackerHasAnyOfGenes(pawn.genes, out firstMatch, geneDefs, genes);
+            return TrackerHasAnyOfGenes(pawn.genes, out firstMatch, geneDefs);
         }
 
-        public static bool TrackerHasAnyOfGenes(this Pawn_GeneTracker tracker, out GeneDef firstMatch, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool TrackerHasAnyOfGenes(this Pawn_GeneTracker tracker, out GeneDef firstMatch, List<GeneDef> geneDefs = null)
         {
             firstMatch = null;
-            if (tracker?.GenesListForReading.NullOrEmpty() != false || (geneDefs.NullOrEmpty() && genes.NullOrEmpty()))
+            if (tracker?.GenesListForReading.NullOrEmpty() != false || geneDefs.NullOrEmpty())
                 return false;
 
             var check = tracker.GenesListForReading.Where(g => g.Active && !g.Overridden);
@@ -1593,14 +1595,6 @@ namespace EBSGFramework
                         return true;
                     }
             
-            if (!genes.NullOrEmpty())
-                foreach (var gene in check)
-                    if (genes.Contains(gene))
-                    {
-                        firstMatch = gene.def;
-                        return true;
-                    }
-
             return false;
         }
 
@@ -1644,23 +1638,24 @@ namespace EBSGFramework
             return results;
         }
 
-        public static bool PawnHasAllOfGenes(this Pawn pawn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        // Returns true when both lists are empty
+        public static bool PawnHasAllOfGenes(this Pawn pawn, List<GeneDef> geneDefs = null)
         {
-            return TrackerHasAllOfGenes(pawn.genes, geneDefs, genes);
+            return TrackerHasAllOfGenes(pawn.genes, geneDefs);
         }
 
-        public static bool TrackerHasAllOfGenes(this Pawn_GeneTracker tracker, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool TrackerHasAllOfGenes(this Pawn_GeneTracker tracker, List<GeneDef> geneDefs = null)
         {
             if (tracker?.GenesListForReading.NullOrEmpty() != false) 
                 return false;
             
-            return (geneDefs.NullOrEmpty() || geneDefs.All(tracker.HasActiveGene)) && (genes.NullOrEmpty() || genes.All(tracker.GenesListForReading.Contains));
+            return geneDefs.NullOrEmpty() || geneDefs.All(tracker.HasActiveGene);
         }
 
-        public static bool PawnHasAllOfGenes(this Pawn pawn, out GeneDef failOn, List<GeneDef> geneDefs = null, List<Gene> genes = null)
+        public static bool PawnHasAllOfGenes(this Pawn pawn, out GeneDef failOn, List<GeneDef> geneDefs = null)
         {
             failOn = null;
-            if (geneDefs.NullOrEmpty() && genes.NullOrEmpty())
+            if (geneDefs.NullOrEmpty())
                 return true;
             if (pawn.genes == null) 
                 return false;
@@ -1673,15 +1668,37 @@ namespace EBSGFramework
                         return false;
                     }
 
-            if (!genes.NullOrEmpty())
-                foreach (Gene gene in genes)
-                    if (!HasRelatedGene(pawn, gene.def))
-                    {
-                        failOn = gene.def;
-                        return false;
-                    }
-
             return true;
+        }
+
+        public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitDef> traitDefs = null, List<GeneticTraitData> traits = null)
+        {
+            return TrackerHasAnyOfTraits(pawn.story, out first, traitDefs, traits);
+        }
+
+        public static bool TrackerHasAnyOfTraits(this Pawn_StoryTracker tracker, out Trait first, List<TraitDef> traitDefs = null, List<GeneticTraitData> traits = null)
+        {
+            first = null;
+            if (tracker?.traits?.allTraits.NullOrEmpty() != false || (traits.NullOrEmpty() && traitDefs.NullOrEmpty()))
+                return false;
+            
+            if (!traitDefs.NullOrEmpty())
+                foreach (var t in traitDefs)
+                {
+                    first = tracker.traits.GetTrait(t);
+                    if (first != null)
+                        return true;
+                }
+            
+            if (!traits.NullOrEmpty())
+                foreach (var t in traits)
+                {
+                    first = tracker.traits.GetTrait(t.def, t.degree);
+                    if (first != null)
+                        return true;
+                }
+
+            return false;
         }
 
         public static bool NeedFrozen(this Pawn pawn, NeedDef def)

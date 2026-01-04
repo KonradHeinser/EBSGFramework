@@ -20,7 +20,7 @@ namespace EBSGFramework
             float newSeverity = baseSeverity * pawn.StatOrOne(baseSeverityStatFactor);
 
             foreach (GeneEffect geneEffect in geneEffects)
-                if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
+                if (pawn.HasRelatedGene(geneEffect.gene) && pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && pawn.PawnHasAllOfGenes(geneDefs: geneEffect.allOfGene))
                     newSeverity += geneEffect.effect * pawn.StatOrOne(geneEffect.statFactor) * pawn.StatOrOne(geneEffectStatFactor);
 
             hediff.Severity += newSeverity * pawn.StatOrOne(globalStatFactor) * 0.003334f;

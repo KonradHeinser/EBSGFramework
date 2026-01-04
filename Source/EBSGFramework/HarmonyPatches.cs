@@ -220,302 +220,139 @@ namespace EBSGFramework
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)
         {
             if (!__result) return;
-            EquipRestrictExtension extension = thing.def.GetModExtension<EquipRestrictExtension>();
+            var extension = thing.def.GetModExtension<EquipRestrictExtension>();
             bool flag = true;
             if (extension != null)
-            {       // Attempt to get the various limiting lists
-                if (!extension.CanEquip(pawn))
+            {
+                // Check if the thing stops the pawn from equipping, and update the reason if so
+                if (!extension.CanEquip(pawn, out string r))
                 {
-                    
-                }
-                List<GeneDef> requiredGenesToEquip = extension.requiredGenesToEquip.ListFullCopyOrNull();
-                List<GeneDef> requireOneOfGenesToEquip = extension.requireOneOfGenesToEquip.ListFullCopyOrNull();
-                List<GeneDef> forbiddenGenesToEquip = extension.forbiddenGenesToEquip.ListFullCopyOrNull();
-                List<XenotypeDef> requireOneOfXenotypeToEquip = extension.requireOneOfXenotypeToEquip.ListFullCopyOrNull();
-                List<XenotypeDef> forbiddenXenotypesToEquip = extension.forbiddenXenotypesToEquip.ListFullCopyOrNull();
-                
-                // Gene Check
-                if (pawn.genes?.GenesListForReading.NullOrEmpty() == false)
-                {
-                    Pawn_GeneTracker currentGenes = pawn.genes;
-                    if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !forbiddenGenesToEquip.NullOrEmpty() ||
-                        !requireOneOfXenotypeToEquip.NullOrEmpty() || !forbiddenXenotypesToEquip.NullOrEmpty())
-                    {
-                        if (!requireOneOfXenotypeToEquip.NullOrEmpty() && !requireOneOfXenotypeToEquip.Contains(pawn.genes.Xenotype))
-                        {
-                            cantReason = requireOneOfXenotypeToEquip.Count > 1
-                                ? (string)"EBSG_XenoRestrictedEquipment_AnyOne".Translate()
-                                : (string)"EBSG_XenoRestrictedEquipment_One".Translate(extension.requireOneOfXenotypeToEquip[0].LabelCap);
-                            flag = false;
-                        }
-                        if (!forbiddenXenotypesToEquip.NullOrEmpty() && forbiddenXenotypesToEquip.Contains(pawn.genes.Xenotype) && flag)
-                        {
-                            cantReason = "EBSG_XenoRestrictedEquipment_None".Translate(pawn.genes.Xenotype.LabelCap);
-                            flag = false;
-                        }
-                        if (!forbiddenGenesToEquip.NullOrEmpty() && flag)
-                        {
-                            if (pawn.PawnHasAnyOfGenes(out var g, forbiddenGenesToEquip))
-                            {
-                                cantReason = "EBSG_GeneRestrictedEquipment_None".Translate(g.LabelCap);
-                                flag = false;
-                            }
-                        }
-                        if (!requiredGenesToEquip.NullOrEmpty() && flag)
-                        {
-                            foreach (Gene gene in currentGenes.GenesListForReading)
-                                if (requiredGenesToEquip.Contains(gene.def)) requiredGenesToEquip.Remove(gene.def);
-                            if (!requiredGenesToEquip.NullOrEmpty())
-                            {
-                                cantReason = requiredGenesToEquip.Count > 1
-                                    ? (string)"EBSG_GeneRestrictedEquipment_All".Translate()
-                                    : (string)"EBSG_GeneRestrictedEquipment_One".Translate(extension.requiredGenesToEquip[0].LabelCap);
-                                flag = false;
-                            }
-                        }
-                        if (!requireOneOfGenesToEquip.NullOrEmpty() && flag)
-                        {
-                            flag = pawn.HasAnyOfRelatedGene(requireOneOfGenesToEquip);
-                            if (!flag)
-                                cantReason = requireOneOfGenesToEquip.Count > 1
-                                    ? (string)"EBSG_GeneRestrictedEquipment_AnyOne".Translate()
-                                    : (string)"EBSG_GeneRestrictedEquipment_One".Translate(requireOneOfGenesToEquip[0].LabelCap);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!requiredGenesToEquip.NullOrEmpty() || !requireOneOfGenesToEquip.NullOrEmpty() || !requireOneOfXenotypeToEquip.NullOrEmpty())
-                    {
-                        cantReason = "EBSG_GenesNotFound".Translate();
-                        flag = false;
-                    }
-                }
-
-                // Hediff Check
-                
-                if (flag)
-                {
-                    List<HediffDef> requiredHediffsToEquip = extension.requiredHediffsToEquip.ListFullCopyOrNull();
-                    List<HediffDef> requireOneOfHediffsToEquip = extension.requireOneOfHediffsToEquip.ListFullCopyOrNull();
-                    List<HediffDef> forbiddenHediffsToEquip = extension.forbiddenHediffsToEquip.ListFullCopyOrNull();
-                    if (!requiredHediffsToEquip.NullOrEmpty() || !requireOneOfHediffsToEquip.NullOrEmpty() || !forbiddenHediffsToEquip.NullOrEmpty())
-                    {
-                        HediffSet hediffSet = pawn.health?.hediffSet;
-                        if (hediffSet?.hediffs?.NullOrEmpty() == false)
-                        {
-                            if (hediffSet.SetHasHediffsQuick(forbiddenHediffsToEquip, out var hediffDef))
-                            {
-                                cantReason = "EBSG_HediffRestrictedEquipment_None".Translate(hediffDef.LabelCap);
-                                flag = false;
-                            }
-
-                            if (flag && !hediffSet.SetHasHediffsQuick(requireOneOfHediffsToEquip, out _, false, true))
-                            {
-                                cantReason = requireOneOfHediffsToEquip.Count > 1
-                                    ? (string)"EBSG_HediffRestrictedEquipment_AnyOne".Translate()
-                                    : (string)"EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0].LabelCap);
-                                flag = false;
-                            }
-
-                            if (flag && !requiredHediffsToEquip.NullOrEmpty())
-                            {
-                                flag = hediffSet.SetHasNoneOfHediffsMissing(requiredHediffsToEquip, out requiredHediffsToEquip);
-                                if (!flag)
-                                    cantReason = requiredHediffsToEquip.Count > 1
-                                        ? (string)"EBSG_HediffRestrictedEquipment_All".Translate()
-                                        : (string)"EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0].LabelCap);
-                            }
-                        }
-                        else if (!requiredHediffsToEquip.NullOrEmpty())
-                        {
-                            cantReason = extension.requiredHediffsToEquip.Count > 1
-                                ? (string)"EBSG_HediffRestrictedEquipment_All".Translate()
-                                : (string)"EBSG_HediffRestrictedEquipment_One".Translate(requiredHediffsToEquip[0].LabelCap);
-                            flag = false;
-                        }
-                        else if (!requireOneOfHediffsToEquip.NullOrEmpty())
-                        {
-                            cantReason = requireOneOfHediffsToEquip.Count > 1
-                                ? (string)"EBSG_HediffRestrictedEquipment_AnyOne".Translate()
-                                : (string)"EBSG_HediffRestrictedEquipment_One".Translate(requireOneOfHediffsToEquip[0].LabelCap);
-                            flag = false;
-                        }
-                    }
+                    cantReason = r;
+                    __result = false;
+                    return;
                 }
             }
-            if (flag && pawn.genes?.GenesListForReading.NullOrEmpty() == false)
+            if (pawn.genes?.GenesListForReading.NullOrEmpty() == false)
             {
                 XenotypeDef xenotype = pawn.genes.Xenotype;
-                if (xenotype != null && xenotype.HasModExtension<EquipRestrictExtension>())
+                if (xenotype?.HasModExtension<EquipRestrictExtension>() == true)
                 {
                     extension = xenotype.GetModExtension<EquipRestrictExtension>();
-                    if (extension.noEquipment)
+                    if (thing.def.IsWeapon)
                     {
-                        cantReason = "EBSG_NoEquipment".Translate(xenotype.LabelCap);
-                        flag = false;
-                    }
-                    else if (!extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
-                    {
-                        cantReason = "EBSG_ForbiddenList".Translate(xenotype.LabelCap);
-                        flag = false;
-                    }
-                    else if (!extension.limitedToEquipments.NullOrEmpty() && !extension.limitedToEquipments.Contains(thing.def))
-                    {
-                        cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
-                        flag = false;
-                    }
-                    else if (thing.def.IsWeapon)
-                    {
-                        if (extension.noWeapons)
+                        if (!extension.CanEquipWeapon(thing as ThingWithComps, out string r, xenotype.LabelCap))
                         {
-                            cantReason = "EBSG_NoWeapon".Translate(xenotype.LabelCap);
-                            flag = false;
+                            cantReason = r;
+                            __result = false;
+                            return;
                         }
-                        else if (extension.onlyMelee && !thing.def.IsMeleeWeapon)
+                    }
+                    else if (thing is Apparel apparel)
+                    {
+                        if (!extension.CanEquipApparel(apparel, out string r, xenotype.LabelCap))
                         {
-                            cantReason = "EBSG_OnlyMelee".Translate(xenotype.LabelCap);
-                            flag = false;
-                        }
-                        else if (extension.onlyRanged && thing.def.IsRangedWeapon)
-                        {
-                            cantReason = "EBSG_OnlyRanged".Translate(xenotype.LabelCap);
-                            flag = false;
-                        }
-                        else if (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
-                        {
-                            cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
-                            flag = false;
+                            cantReason = r;
+                            __result = false;
+                            return;
                         }
                     }
                     else
                     {
-                        if (extension.noApparel)
+                        if (!extension.CanEquipEquipment(thing, out string r, xenotype.LabelCap))
                         {
-                            cantReason = "EBSG_NoApparel".Translate(xenotype.LabelCap);
-                            flag = false;
-                        }
-                        else if (!extension.limitedToApparels.NullOrEmpty() && !extension.limitedToApparels.Contains(thing.def))
-                        {
-                            cantReason = "EBSG_LimitedList".Translate(xenotype.LabelCap);
-                            flag = false;
-                        }
-                        else if (!extension.restrictedLayers.NullOrEmpty())
-                        {
-                            if ((extension.layerEquipExceptions.NullOrEmpty() || !extension.layerEquipExceptions.Contains(thing.def)) && thing.def.apparel?.layers != null)
-                                foreach (ApparelLayerDef layer in thing.def.apparel.layers)
-                                    if (extension.restrictedLayers.Contains(layer))
-                                    {
-                                        cantReason = "EBSG_RestrictedLayer".Translate(xenotype.LabelCap, layer.LabelCap);
-                                        flag = false;
-                                        break;
-                                    }
+                            cantReason = r;
+                            __result = false;
+                            return;
                         }
                     }
                 }
-
-                if (flag && Cache?.NeedEquipRestrictGeneCheck() == true)
+                
+                var restricted = Cache.GloballyRestrictedEquipment(pawn, thing, out var source);
+                switch (restricted)
                 {
-                    if (!Cache.noEquipment.NullOrEmpty())
-                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noEquipment))
+                    case RestrictType.All:
+                        cantReason = "EBSG_NoEquipment".Translate(source);
+                        __result = false;
+                        return;
+                    case RestrictType.Apparel:
+                        cantReason = "EBSG_NoApparel".Translate(source);
+                        __result = false;
+                        return;
+                    case RestrictType.Weapon:
+                        cantReason = "EBSG_NoWeapon".Translate(source);
+                        __result = false;
+                        return;
+                    case RestrictType.None:
+                    default:
+                        break;
+                }
+                
+                if (Cache?.equipRestricting.NullOrEmpty() == false)
+                {
+                    List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
+                    if (!genes.NullOrEmpty())
+                        foreach (GeneDef gene in genes)
                         {
-                            cantReason = "EBSG_NoEquipment".Translate(gene.LabelCap);
-                            flag = false;
-                        }
-                    if (flag && thing.def.IsWeapon && !Cache.noWeapon.NullOrEmpty())
-                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noWeapon))
-                        {
-                            cantReason = "EBSG_NoWeapon".Translate(gene.LabelCap);
-                            flag = false;
-                        }
-                    if (flag && thing.def.IsApparel && !Cache.noApparel.NullOrEmpty())
-                        if (pawn.PawnHasAnyOfGenes(out var gene, Cache.noApparel))
-                        {
-                            cantReason = "EBSG_NoApparel".Translate(gene.LabelCap);
-                            flag = false;
-                        }
-                    if (flag && !Cache.equipRestricting.NullOrEmpty())
-                    {
-                        List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
-                        if (!genes.NullOrEmpty())
-                            foreach (GeneDef gene in genes)
+                            extension = gene.GetModExtension<EquipRestrictExtension>();
+
+                            if (thing.def.IsWeapon)
                             {
-                                extension = gene.GetModExtension<EquipRestrictExtension>();
-
-                                if (!extension.limitedToEquipments.NullOrEmpty() && !extension.limitedToEquipments.Contains(thing.def))
+                                if (!extension.CanEquipWeapon(thing as ThingWithComps, out string r, gene.LabelCap))
                                 {
-                                    cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
-                                    flag = false;
+                                    cantReason = r;
+                                    __result = false;
+                                    return;
                                 }
-                                else if (!extension.forbiddenEquipments.NullOrEmpty() && extension.forbiddenEquipments.Contains(thing.def))
-                                {
-                                    cantReason = "EBSG_ForbiddenList".Translate(gene.LabelCap);
-                                    flag = false;
-                                }
-                                else if (thing.def.IsWeapon)
-                                {
-                                    if (extension.onlyMelee && !thing.def.IsMeleeWeapon)
-                                    {
-                                        cantReason = "EBSG_OnlyMelee".Translate(gene.LabelCap);
-                                        flag = false;
-                                    }
-                                    else if (extension.onlyRanged && !thing.def.IsRangedWeapon)
-                                    {
-                                        cantReason = "EBSG_OnlyRanged".Translate(gene.LabelCap);
-                                        flag = false;
-                                    }
-                                    else if (!extension.limitedToWeapons.NullOrEmpty() && !extension.limitedToWeapons.Contains(thing.def))
-                                    {
-                                        cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
-                                        flag = false;
-                                    }
-                                }
-                                else
-                                {
-                                    if (!extension.limitedToApparels.NullOrEmpty() && !extension.limitedToApparels.Contains(thing.def))
-                                    {
-                                        cantReason = "EBSG_LimitedList".Translate(gene.LabelCap);
-                                        flag = false;
-                                    }
-
-                                    if (!extension.restrictedLayers.NullOrEmpty())
-                                    {
-                                        // If either equipment limiters contain the item, the no layer check is needed because those act as exceptions
-                                        if (!extension.layerEquipExceptions.NullOrEmpty() && extension.layerEquipExceptions.Contains(thing.def)) continue;
-
-                                        if (thing.def.apparel?.layers?.NullOrEmpty() == false)
-                                            foreach (ApparelLayerDef layer in thing.def.apparel.layers)
-                                                if (extension.restrictedLayers.Contains(layer))
-                                                {
-                                                    cantReason = "EBSG_RestrictedLayer".Translate(gene.LabelCap, layer.LabelCap);
-                                                    flag = false;
-                                                    break;
-                                                }
-                                    }
-                                }
-
-                                if (!flag) break;
                             }
-                    }
+                            else if (thing is Apparel apparel)
+                            {
+                                if (!extension.CanEquipApparel(apparel, out string r, gene.LabelCap))
+                                {
+                                    cantReason = r;
+                                    __result = false;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (!extension.CanEquipEquipment(thing, out string r, gene.LabelCap))
+                                {
+                                    cantReason = r;
+                                    __result = false;
+                                    return;
+                                }
+                            }
+                        }
                 }
             }
-            __result = flag;
         }
-
 
         public static void ApparelScoreGainPostFix(Pawn pawn, Apparel ap, ref float __result)
         {
             if (__result == -1000f) return;
 
-            EquipRestrictExtension equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
+            var equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
 
-            if (equipRestrict?.CanEquip(pawn) == false)
+            if (equipRestrict?.CanEquip(pawn, out _) == false)
             {
                 __result = -1000f;
                 return;
             }
 
-            if (Cache?.NeedEquipRestrictGeneCheck() == true)
+            var restricted = Cache.GloballyRestrictedEquipment(pawn, ap, out _);
+            switch (restricted)
+            {
+                case RestrictType.All:
+                case RestrictType.Apparel:
+                    __result = -1000f;
+                    return;
+                case RestrictType.Weapon:
+                case RestrictType.None:
+                default:
+                    break;
+            }
+
+            if (Cache?.equipRestricting.NullOrEmpty() == false)
             {
                 if (pawn.HasAnyOfRelatedGene(Cache.noEquipment) || pawn.HasAnyOfRelatedGene(Cache.noApparel))
                 {
@@ -527,7 +364,7 @@ namespace EBSGFramework
 
                 if (!genes.NullOrEmpty())
                     foreach (var extension in genes.Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
-                        if (!extension.CanEquipApparel(ap))
+                        if (!extension.CanEquipApparel(ap, out _))
                         {
                             __result = -1000f;
                             return;
@@ -547,8 +384,8 @@ namespace EBSGFramework
                 
                 if (__result.genes.Xenotype != null && __result.genes.Xenotype.HasModExtension<EquipRestrictExtension>())
                 {
-                    EquipRestrictExtension equipRestrict = __result.genes.Xenotype.GetModExtension<EquipRestrictExtension>();
-                    if (equipRestrict.noEquipment)
+                    var extension = __result.genes.Xenotype.GetModExtension<EquipRestrictExtension>();
+                    if (extension.noEquipment)
                     {
                         __result.equipment?.DestroyAllEquipment();
                         __result.apparel?.DestroyAll();
@@ -557,30 +394,30 @@ namespace EBSGFramework
 
                     if (flagApparel)
                     {
-                        if (equipRestrict.noApparel)
+                        if (extension.noApparel)
                         {
                             __result.apparel.DestroyAll();
                             flagApparel = false;
                         }
-                        else if (equipRestrict.NeedApparelCheck)
+                        else if (extension.NeedApparelCheck)
                         {
                             List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                            foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
+                            foreach (var apparel in apparels.Where(a => !extension.CanEquipApparel(a, out _)))
                                 __result.apparel.Remove(apparel);
                         }
                     }
 
                     if (flagWeapon)
                     {
-                        if (equipRestrict.noWeapons)
+                        if (extension.noWeapons)
                         {
                             __result.equipment.DestroyAllEquipment();
                             flagWeapon = false;
                         }
-                        else if (equipRestrict.NeedWeaponCheck)
+                        else if (extension.NeedWeaponCheck)
                         {
                             List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                            foreach (var thing in equipment.Where(w => !equipRestrict.CanEquipWeapon(w)))
+                            foreach (var thing in equipment.Where(w => !extension.CanEquipWeapon(w, out _)))
                                 __result.equipment.DestroyEquipment(thing);
                         }
                     }
@@ -590,57 +427,64 @@ namespace EBSGFramework
                 flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
 
                 if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
-                
-                if (__result.genes?.GenesListForReading.NullOrEmpty() == false)
-                    if (Cache?.NeedEquipRestrictGeneCheck() == true)
+
+                if (__result?.genes?.GenesListForReading.NullOrEmpty() == false)
+                {
+                    if (Cache != null)
                     {
-                        if (__result.HasAnyOfRelatedGene(Cache.noEquipment))
+                        if (!Cache.noEquipment.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noEquipment))
                         {
                             if (flagWeapon) __result.equipment.DestroyAllEquipment();
                             if (flagApparel) __result.apparel.DestroyAll();
                             return;
                         }
-                        if (flagApparel && __result.HasAnyOfRelatedGene(Cache.noApparel))
+
+                        if (!Cache.noApparel.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noApparel))
                         {
                             __result.apparel.DestroyAll();
+                            if (!flagWeapon) // If the pawn spawns without equipment
+                                return;
                             flagApparel = false;
                         }
-                        if (flagWeapon && __result.HasAnyOfRelatedGene(Cache.noWeapon))
+
+                        if (!Cache.noWeapon.NullOrEmpty() && __result.HasAnyOfRelatedGene(Cache.noWeapon))
                         {
                             __result.equipment.DestroyAllEquipment();
+                            if (!flagApparel) // If apparel was cleared by something else
+                                return;
                             flagWeapon = false;
                         }
-                        if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
 
-                        foreach (var equipRestrict in __result.GetAllGenesOnListFromPawn(Cache.equipRestricting).Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
-                        {
-                            if (flagApparel)
+                        if (!Cache.equipRestricting.NullOrEmpty())
+                            foreach (var extension in __result.GetAllGenesOnListFromPawn(Cache.equipRestricting).Select(gene => gene.GetModExtension<EquipRestrictExtension>()))
                             {
-                                List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
-                                    __result.apparel.Remove(apparel);
-                                flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
-                            }
+                                if (flagApparel)
+                                {
+                                    List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
+                                    foreach (var apparel in apparels.Where(a => !extension.CanEquipApparel(a, out _)))
+                                        __result.apparel.Remove(apparel);
+                                    flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
+                                }
 
-                            if (flagWeapon)
-                            {
-                                List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (var weapon in equipment.Where(thing => equipRestrict.CanEquipWeapon(thing)))
-                                    __result.equipment.DestroyEquipment(weapon);
-                                flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
-                            }
+                                if (flagWeapon)
+                                {
+                                    List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
+                                    foreach (var weapon in equipment.Where(thing => extension.CanEquipWeapon(thing, out _)))
+                                        __result.equipment.DestroyEquipment(weapon);
+                                    flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
+                                }
 
-                            if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
-                        }
+                                if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
+                            }
                     }
                     // If the pawn is generated before a game is loaded, the cache doesn't exist, and we need to brute force search
-                    else if (Cache == null)
-                        foreach (var equipRestrict in __result.genes.GenesListForReading.Select(gene => gene.def.GetModExtension<EquipRestrictExtension>()).Where(e => e != null))
+                    else
+                        foreach (var extension in __result.genes.GenesListForReading.Select(gene => gene.def.GetModExtension<EquipRestrictExtension>()).Where(e => e != null))
                         {
                             if (flagApparel)
                             {
                                 List<Apparel> apparels = new List<Apparel>(__result.apparel.WornApparel);
-                                foreach (var apparel in apparels.Where(a => !equipRestrict.CanEquipApparel(a)))
+                                foreach (var apparel in apparels.Where(a => !extension.CanEquipApparel(a, out _)))
                                     __result.apparel.Remove(apparel);
                                 flagApparel &= __result.apparel?.WornApparel.NullOrEmpty() == false;
                             }
@@ -648,13 +492,14 @@ namespace EBSGFramework
                             if (flagWeapon)
                             {
                                 List<ThingWithComps> equipment = new List<ThingWithComps>(__result.equipment.AllEquipmentListForReading);
-                                foreach (var weapon in equipment.Where(thing => equipRestrict.CanEquipWeapon(thing)))
+                                foreach (var weapon in equipment.Where(thing => extension.CanEquipWeapon(thing, out _)))
                                     __result.equipment.DestroyEquipment(weapon);
                                 flagWeapon &= __result.equipment?.AllEquipmentListForReading.NullOrEmpty() == false;
                             }
 
                             if (!flagApparel && !flagWeapon) return; // If both weapons and apparel have been cleared, everything should be gone already
                         }
+                }
             }
         }
 

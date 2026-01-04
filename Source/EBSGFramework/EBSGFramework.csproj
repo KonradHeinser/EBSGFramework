@@ -87,6 +87,7 @@
     <Compile Include="Enums\DeathType.cs" />
     <Compile Include="Enums\EndOn.cs" />
     <Compile Include="Enums\InitialRelation.cs" />
+    <Compile Include="Enums\RestrictType.cs" />
     <Compile Include="Enums\TerrainPollution.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ComaGene.cs" />
     <Compile Include="FloatMenuProviders\FloatMenuOptionProvider_ReloadableAbilities.cs" />
