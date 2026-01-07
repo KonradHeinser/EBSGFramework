@@ -98,7 +98,7 @@ namespace EBSGFramework
         {
             if (stage == cachedInput && !resetCache)
                 return cachedOutput;
-            Log.Message("Processing");
+            
             cachedInput = stage;
             resetCache = false;
 
