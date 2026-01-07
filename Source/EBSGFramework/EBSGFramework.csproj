@@ -112,6 +112,7 @@
     <Compile Include="Enums\StatRequirement.cs" />
     <Compile Include="Generic List Classes\StatEffects.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
+    <Compile Include="Generic List Classes\TraitDegree.cs" />
     <Compile Include="Generic List Classes\XenoRange.cs" />
     <Compile Include="Genes\AgingXenotypeExtension.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfQuadrum.cs" />

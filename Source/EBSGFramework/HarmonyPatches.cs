@@ -225,7 +225,7 @@ namespace EBSGFramework
             if (extension != null)
             {
                 // Check if the thing stops the pawn from equipping, and update the reason if so
-                if (!extension.CanEquip(pawn, out string r))
+                if (!extension.CanEquip(pawn, out string r, pawn.gender))
                 {
                     cantReason = r;
                     __result = false;
@@ -333,7 +333,7 @@ namespace EBSGFramework
 
             var equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
 
-            if (equipRestrict?.CanEquip(pawn, out _) == false)
+            if (equipRestrict?.CanEquip(pawn, out _, pawn.gender) == false)
             {
                 __result = -1000f;
                 return;

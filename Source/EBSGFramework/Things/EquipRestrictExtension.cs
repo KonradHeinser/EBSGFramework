@@ -16,9 +16,9 @@ namespace EBSGFramework
         public List<HediffDef> requiredHediffsToEquip = new List<HediffDef>(); // Require all of these on the pawn
         public List<HediffDef> requireOneOfHediffsToEquip = new List<HediffDef>(); // Require any one of these on the pawn
         public List<HediffDef> forbiddenHediffsToEquip = new List<HediffDef>(); // Require none of these are on the pawn
-        public List<GeneticTraitData> requireOneOfTraitsToEquip = new List<GeneticTraitData>();
-        public List<GeneticTraitData> requiredTraitsToEquip = new List<GeneticTraitData>();
-        public List<GeneticTraitData> forbiddenTraitsToEquip = new List<GeneticTraitData>();
+        public List<TraitDegree> requireOneOfTraitsToEquip = new List<TraitDegree>();
+        public List<TraitDegree> requiredTraitsToEquip = new List<TraitDegree>();
+        public List<TraitDegree> forbiddenTraitsToEquip = new List<TraitDegree>();
         
         // Attached to genes and xenotypes
         public List<ThingDef> limitedToEquipments = new List<ThingDef>(); // If this is not empty, then the xenotype/carriers of the gene will ONLY be able to equip these things
@@ -77,7 +77,7 @@ namespace EBSGFramework
                 reason = "EBSG_GeneRestrictedEquipment_None".Translate(firstForbid.LabelCap);
                 return false;
             }
-
+            
             reason = null;
             return true;
         }
@@ -96,7 +96,7 @@ namespace EBSGFramework
                         ? (string)"EBSG_HediffRestrictedEquipment_All".Translate()
                         : (string)"EBSG_Missing".Translate(requiredHediffsToEquip.First().LabelCap);
                 
-                return reason != null;
+                return reason == null;
             }
             
             if (!requireOneOfHediffsToEquip.NullOrEmpty() && !hediffSet.SetHasAnyOfHediff(requireOneOfHediffsToEquip, out _))
@@ -120,12 +120,12 @@ namespace EBSGFramework
                 reason = "EBSG_HediffRestrictedEquipment_None".Translate(firstForbid.LabelCap);
                 return false;
             }
-
+            
             reason = null;
             return true;
         }
 
-        public bool CanEquipTraitCheck(Pawn_StoryTracker tracker, out string reason)
+        public bool CanEquipTraitCheck(Pawn_StoryTracker tracker, out string reason, Gender gender)
         {
             if (tracker?.traits?.allTraits.NullOrEmpty() != false)
             {
@@ -133,11 +133,11 @@ namespace EBSGFramework
                 if (!requireOneOfTraitsToEquip.NullOrEmpty())
                     reason = requireOneOfTraitsToEquip.Count > 1
                         ? (string)"EBSG_TraitRestrictedEquipment_AnyOne".Translate()
-                        : (string)"EBSG_Missing".Translate(requireOneOfTraitsToEquip.First().def.LabelCap);
+                        : (string)"EBSG_Missing".Translate(requireOneOfTraitsToEquip.First().def.DataAtDegree(requireOneOfTraitsToEquip.First().degree).GetLabelCapFor(gender));
                 else if (!requiredTraitsToEquip.NullOrEmpty())
                     reason = requiredTraitsToEquip.Count > 1
                         ? (string)"EBSG_TraitRestrictedEquipment_All".Translate()
-                        : (string)"EBSG_Missing".Translate(requiredTraitsToEquip.First().def.LabelCap);
+                        : (string)"EBSG_Missing".Translate(requiredTraitsToEquip.First().def.DataAtDegree(requiredTraitsToEquip.First().degree).GetLabelCapFor(gender));
                 
                 return reason != null;
             }
@@ -146,7 +146,7 @@ namespace EBSGFramework
             {
                 reason = requireOneOfTraitsToEquip.Count > 1
                     ? (string)"EBSG_TraitRestrictedEquipment_AnyOne".Translate()
-                    : (string)"EBSG_Missing".Translate(requireOneOfTraitsToEquip.First().def.LabelCap);
+                    : (string)"EBSG_Missing".Translate(requireOneOfTraitsToEquip.First().def.DataAtDegree(requireOneOfTraitsToEquip.First().degree).GetLabelCapFor(gender));
                 return false;
             }
             
@@ -154,7 +154,7 @@ namespace EBSGFramework
             {
                 reason = requiredTraitsToEquip.Count > 1
                     ? (string)"EBSG_TraitRestrictedEquipment_All".Translate()
-                    : (string)"EBSG_Missing".Translate(requiredTraitsToEquip.First().def.LabelCap);
+                    : (string)"EBSG_Missing".Translate(requiredTraitsToEquip.First().def.DataAtDegree(requiredTraitsToEquip.First().degree).GetLabelCapFor(gender));
                 return false;
             }
 
@@ -168,14 +168,12 @@ namespace EBSGFramework
             return true;
         }
 
-        public bool CanEquip(Pawn pawn, out string reason)
+        public bool CanEquip(Pawn pawn, out string reason, Gender gender)
         {
-            if (!CanEquipTraitCheck(pawn.story, out reason))
+            if (!CanEquipTraitCheck(pawn.story, out reason, gender))
                 return false;
-            
             if (!CanEquipGeneCheck(pawn.genes, out reason))
                 return false;
-
             if (!CanEquipHediffCheck(pawn.health?.hediffSet, out reason))
                 return false;
             
@@ -216,7 +214,7 @@ namespace EBSGFramework
         {
             if (noWeapons)
             {
-                reason = "EBSG_NoWeapons".Translate(source);
+                reason = "EBSG_NoWeapon".Translate(source);
                 return false;
             }
 

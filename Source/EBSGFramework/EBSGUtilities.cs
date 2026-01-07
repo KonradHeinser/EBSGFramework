@@ -1266,7 +1266,7 @@ namespace EBSGFramework
             if (hediffs.NullOrEmpty())
                 return true;
             
-            return hediffSet?.hediffs.NullOrEmpty() == false && hediffSet.hediffs.All(h => hediffs.Contains(h.def));
+            return hediffSet?.hediffs.NullOrEmpty() == false && hediffs.All(h => hediffSet.HasHediff(h));
         }
         
         public static bool SetHasAnyOfHediff(this HediffSet hediffSet, List<HediffDef> hediffs, out Hediff first)
@@ -1671,12 +1671,12 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitDef> traitDefs = null, List<GeneticTraitData> traits = null)
+        public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
         {
             return TrackerHasAnyOfTraits(pawn.story, out first, traitDefs, traits);
         }
 
-        public static bool TrackerHasAnyOfTraits(this Pawn_StoryTracker tracker, out Trait first, List<TraitDef> traitDefs = null, List<GeneticTraitData> traits = null)
+        public static bool TrackerHasAnyOfTraits(this Pawn_StoryTracker tracker, out Trait first, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
         {
             first = null;
             if (tracker?.traits?.allTraits.NullOrEmpty() != false || (traits.NullOrEmpty() && traitDefs.NullOrEmpty()))
