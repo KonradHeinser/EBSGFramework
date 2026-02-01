@@ -1053,6 +1053,30 @@ namespace EBSGFramework
                         return false;
                     }
                 }
+
+                if (!Props.targetMentalStates.NullOrEmpty())
+                {
+                    switch (Props.targetMentalStateCheck)
+                    {
+                        case CheckType.Required:
+                            if (pawn.mindState?.mentalStateHandler == null || !pawn.InMentalState || !Props.targetMentalStates.Contains(pawn.MentalStateDef))
+                            {
+                                explanation = "AbilityTargetMentalState".Translate();
+                                return false;
+                            }
+                            break;
+                        case CheckType.Forbidden:
+                            if (pawn.mindState?.mentalStateHandler != null && pawn.InMentalState && Props.targetMentalStates.Contains(pawn.MentalStateDef))
+                            {
+                                explanation = "AbilityTargetMentalStateForbidden".Translate(pawn.MentalStateDef.LabelCap);
+                                return false;
+                            }
+                            break;
+                        case CheckType.None:
+                        default:
+                            break;
+                    }
+                }
             }
             else
             {

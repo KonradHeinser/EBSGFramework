@@ -219,7 +219,7 @@ namespace EBSGFramework
 
         public static void CanEquipPostfix(ref bool __result, Thing thing, Pawn pawn, ref string cantReason)
         {
-            if (!__result) return;
+            if (!__result || thing == null || pawn == null) return;
             var extension = thing.def.GetModExtension<EquipRestrictExtension>();
             bool flag = true;
             if (extension != null)
@@ -235,9 +235,9 @@ namespace EBSGFramework
             if (pawn.genes?.GenesListForReading.NullOrEmpty() == false)
             {
                 XenotypeDef xenotype = pawn.genes.Xenotype;
-                if (xenotype?.HasModExtension<EquipRestrictExtension>() == true)
+                extension = xenotype?.GetModExtension<EquipRestrictExtension>();
+                if (extension != null)
                 {
-                    extension = xenotype.GetModExtension<EquipRestrictExtension>();
                     if (thing.def.IsWeapon)
                     {
                         if (!extension.CanEquipWeapon(thing as ThingWithComps, out string r, xenotype.LabelCap))
@@ -266,63 +266,66 @@ namespace EBSGFramework
                         }
                     }
                 }
-                
-                var restricted = Cache.GloballyRestrictedEquipment(pawn, thing, out var source);
-                switch (restricted)
-                {
-                    case RestrictType.All:
-                        cantReason = "EBSG_NoEquipment".Translate(source);
-                        __result = false;
-                        return;
-                    case RestrictType.Apparel:
-                        cantReason = "EBSG_NoApparel".Translate(source);
-                        __result = false;
-                        return;
-                    case RestrictType.Weapon:
-                        cantReason = "EBSG_NoWeapon".Translate(source);
-                        __result = false;
-                        return;
-                    case RestrictType.None:
-                    default:
-                        break;
-                }
-                
-                if (Cache?.equipRestricting.NullOrEmpty() == false)
-                {
-                    List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
-                    if (!genes.NullOrEmpty())
-                        foreach (GeneDef gene in genes)
-                        {
-                            extension = gene.GetModExtension<EquipRestrictExtension>();
 
-                            if (thing.def.IsWeapon)
+                if (Cache != null)
+                {
+                    var restricted = Cache.GloballyRestrictedEquipment(pawn, thing, out var source);
+                    switch (restricted)
+                    {
+                        case RestrictType.All:
+                            cantReason = "EBSG_NoEquipment".Translate(source);
+                            __result = false;
+                            return;
+                        case RestrictType.Apparel:
+                            cantReason = "EBSG_NoApparel".Translate(source);
+                            __result = false;
+                            return;
+                        case RestrictType.Weapon:
+                            cantReason = "EBSG_NoWeapon".Translate(source);
+                            __result = false;
+                            return;
+                        case RestrictType.None:
+                        default:
+                            break;
+                    }
+
+                    if (!Cache.equipRestricting.NullOrEmpty())
+                    {
+                        List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
+                        if (!genes.NullOrEmpty())
+                            foreach (GeneDef gene in genes)
                             {
-                                if (!extension.CanEquipWeapon(thing as ThingWithComps, out string r, gene.LabelCap))
+                                extension = gene.GetModExtension<EquipRestrictExtension>();
+
+                                if (thing.def.IsWeapon)
                                 {
-                                    cantReason = r;
-                                    __result = false;
-                                    return;
+                                    if (!extension.CanEquipWeapon(thing as ThingWithComps, out string r, gene.LabelCap))
+                                    {
+                                        cantReason = r;
+                                        __result = false;
+                                        return;
+                                    }
+                                }
+                                else if (thing is Apparel apparel)
+                                {
+                                    if (!extension.CanEquipApparel(apparel, out string r, gene.LabelCap))
+                                    {
+                                        cantReason = r;
+                                        __result = false;
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    if (!extension.CanEquipEquipment(thing, out string r, gene.LabelCap))
+                                    {
+                                        cantReason = r;
+                                        __result = false;
+                                        return;
+                                    }
                                 }
                             }
-                            else if (thing is Apparel apparel)
-                            {
-                                if (!extension.CanEquipApparel(apparel, out string r, gene.LabelCap))
-                                {
-                                    cantReason = r;
-                                    __result = false;
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                if (!extension.CanEquipEquipment(thing, out string r, gene.LabelCap))
-                                {
-                                    cantReason = r;
-                                    __result = false;
-                                    return;
-                                }
-                            }
-                        }
+                    }
                 }
             }
         }
@@ -1778,7 +1781,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static void TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)
+        public static void TakeDamagePrefix(ref DamageInfo dinfo, Thing __instance)
         {
             if (__instance is Corpse corpse && corpse.InnerPawn != null && corpse.PawnHasAnyHediff())
             {

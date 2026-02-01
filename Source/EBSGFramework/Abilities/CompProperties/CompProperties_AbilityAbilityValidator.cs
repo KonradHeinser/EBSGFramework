@@ -34,6 +34,8 @@ namespace EBSGFramework
         public TargetGroup targetGroup = TargetGroup.None;
         public List<FactionDef> validTargetFactions;
         public List<FactionDef> forbiddenTargetFactions;
+        public List<MentalStateDef> targetMentalStates = new List<MentalStateDef>();
+        public CheckType targetMentalStateCheck = CheckType.Required;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;

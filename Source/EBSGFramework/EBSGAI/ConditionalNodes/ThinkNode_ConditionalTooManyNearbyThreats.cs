@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -14,14 +15,14 @@ namespace EBSGFramework
             // Faction check is needed due to how any active hostile threat is coded
             if (!pawn.Spawned || pawn.Faction == null) return false;
             Map map = pawn.Map;
-            if (!GenHostility.AnyHostileActiveThreatTo(map, pawn.Faction, false, false)) return false;
-            List<Pawn> list = pawn.Map.mapPawns.AllPawns;
+            if (!GenHostility.AnyHostileActiveThreatTo(map, pawn.Faction)) return false;
+            var list = pawn.Map.mapPawns.AllPawns.Where(p => !p.DeadOrDowned).ToList();
             list.SortBy(c => c.Position.DistanceToSquared(pawn.Position));
             int count = 0;
             foreach (Pawn p in list)
             {
                 if (p.Position.DistanceTo(pawn.Position) > dangerRadius) break;
-                if (p.Downed || p.Dead || !p.HostileTo(pawn)) continue;
+                if (!p.HostileTo(pawn)) continue;
                 CompCanBeDormant comp = p.GetComp<CompCanBeDormant>();
                 if (comp != null && !comp.Awake) continue;
                 count++;
