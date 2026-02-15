@@ -51,27 +51,30 @@ namespace EBSGFramework
 
         public RestrictType GloballyRestrictedEquipment(Pawn pawn, Thing thing, out string source)
         {
-            if (!noEquipment.NullOrEmpty())
-                if (pawn.PawnHasAnyOfGenes(out var gene, noEquipment))
-                {
-                    source = gene.LabelCap;
-                    return RestrictType.All;
-                }
+            if (!pawn.HasAnyGenes())
+            {
+                source = null;
+                return RestrictType.None;
+            }
             
-            if (thing.def.IsWeapon && !noWeapon.NullOrEmpty())
-                if (pawn.PawnHasAnyOfGenes(out var gene, noWeapon))
-                {
-                    source = gene.LabelCap;
-                    return RestrictType.Weapon;
-                }
-            
-            if (thing.def.IsApparel && !noApparel.NullOrEmpty())
-                if (pawn.PawnHasAnyOfGenes(out var gene, noApparel))
-                {
-                    source = gene.LabelCap;
-                    return RestrictType.Apparel;
-                }
-            
+            if (!noEquipment.NullOrEmpty() && pawn.PawnHasAnyOfGenes(out var eGene, noEquipment))
+            {
+                source = eGene.LabelCap;
+                return RestrictType.All;
+            }
+
+            if (thing.def.IsWeapon && !noWeapon.NullOrEmpty() && pawn.PawnHasAnyOfGenes(out var wGene, noWeapon))
+            {
+                source = wGene.LabelCap;
+                return RestrictType.Weapon;
+            }
+
+            if (thing.def.IsApparel && !noApparel.NullOrEmpty() && pawn.PawnHasAnyOfGenes(out var aGene, noApparel))
+            {
+                source = aGene.LabelCap;
+                return RestrictType.Apparel;
+            }
+
             source = null;
             return RestrictType.None;
         }
@@ -205,7 +208,7 @@ namespace EBSGFramework
 
         public float GetGeneMoodFactor(Pawn pawn)
         {
-            if (moodMultiplyingGenes.NullOrEmpty() || pawn.genes?.GenesListForReading.NullOrEmpty() != false) 
+            if (moodMultiplyingGenes.NullOrEmpty() || pawn.HasAnyGenes()) 
                 return 1f;
 
             // Regularly tries to do a recheck on the off-chance that genes have changed without changing count

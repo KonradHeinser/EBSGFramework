@@ -1104,7 +1104,7 @@ namespace EBSGFramework
         public static bool NeedToSatisfyIDG(this Pawn pawn, out List<Hediff_Dependency> dependencies, bool quick = false)
         {
             dependencies = new List<Hediff_Dependency>();
-            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false)
+            if (!pawn.HasAnyGenes())
                 return false;
 
             foreach (Gene gene in pawn.genes.GenesListForReading)
@@ -1571,6 +1571,12 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
+        // If they don't have a gene tracker or the genes list is empty, returns false
+        public static bool HasAnyGenes(this Pawn pawn)
+        {
+            return pawn.genes?.GenesListForReading.NullOrEmpty() == false;
+        }
+        
         // HasAnyOfGene will return false when both lists are empty
         public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null)
         {
@@ -1889,7 +1895,7 @@ namespace EBSGFramework
         public static void GainRandomGeneSet(this Pawn pawn, bool inheritGenes, bool removeGenesFromOtherLists,
                 List<RandomXenoGenes> geneSets = null, List<GeneDef> alwaysAddedGenes = null, List<GeneDef> alwaysRemovedGenes = null, bool showMessage = true)
         {
-            if (pawn.genes?.GenesListForReading.NullOrEmpty() != false) return;
+            if (!pawn.HasAnyGenes()) return;
             List<GeneDef> genesToAdd = new List<GeneDef>();
             bool reverseInheritance = false;
 

@@ -332,7 +332,7 @@ namespace EBSGFramework
 
         public static void ApparelScoreGainPostFix(Pawn pawn, Apparel ap, ref float __result)
         {
-            if (__result == -1000f) return;
+            if (__result == -1000f || pawn == null || ap == null) return;
 
             var equipRestrict = ap.def.GetModExtension<EquipRestrictExtension>();
 
@@ -341,6 +341,9 @@ namespace EBSGFramework
                 __result = -1000f;
                 return;
             }
+
+            if (Cache == null)
+                return;
 
             var restricted = Cache.GloballyRestrictedEquipment(pawn, ap, out _);
             switch (restricted)
@@ -355,14 +358,8 @@ namespace EBSGFramework
                     break;
             }
 
-            if (Cache?.equipRestricting.NullOrEmpty() == false)
+            if (pawn.HasAnyGenes() && !Cache.equipRestricting.NullOrEmpty())
             {
-                if (pawn.HasAnyOfRelatedGene(Cache.noEquipment) || pawn.HasAnyOfRelatedGene(Cache.noApparel))
-                {
-                    __result = -1000f;
-                    return;
-                }
-
                 List<GeneDef> genes = pawn.GetAllGenesOnListFromPawn(Cache.equipRestricting);
 
                 if (!genes.NullOrEmpty())
