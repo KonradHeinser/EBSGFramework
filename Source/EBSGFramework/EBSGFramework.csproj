@@ -110,6 +110,7 @@
     <Compile Include="Generic List Classes\StageOverlay.cs" />
     <Compile Include="Enums\StatEffect.cs" />
     <Compile Include="Enums\StatRequirement.cs" />
+    <Compile Include="Generic List Classes\StatCompare.cs" />
     <Compile Include="Generic List Classes\StatEffects.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
     <Compile Include="Generic List Classes\TraitDegree.cs" />

@@ -23,21 +23,19 @@ namespace EBSGFramework
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
-            if (Cache != null)
-                cache.RegisterTerrainPawn(Pawn, parent);
+            Cache?.RegisterTerrainPawn(Pawn, parent);
         }
 
         public override void CompPostPostRemoved()
         {
-            if (Cache != null)
-                cache.DeRegisterTerrainPawn(Pawn);
+            Cache?.DeRegisterTerrainPawn(Pawn);
         }
 
         public override void CompExposeData()
         {
             base.CompExposeData();
             if (Scribe.mode == LoadSaveMode.LoadingVars)
-                cache.RegisterTerrainPawn(Pawn, parent);
+                Cache?.RegisterTerrainPawn(Pawn, parent);
         }
     }
 }

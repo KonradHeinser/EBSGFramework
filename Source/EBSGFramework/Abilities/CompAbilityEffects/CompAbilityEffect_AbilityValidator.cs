@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -183,6 +184,8 @@ namespace EBSGFramework
             return casterLayerExplanation == null;
         }
 
+        
+        
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
             if (!base.Valid(target, throwMessages)) return false;
@@ -736,6 +739,9 @@ namespace EBSGFramework
                             return false;
                         }
                         break;
+                    case RoofCheck.NoCheck:
+                    default:
+                        break;
                 }
             }
 
@@ -1032,6 +1038,9 @@ namespace EBSGFramework
                                 explanation = "AbilityTargetFactionNone".Translate();
                                 return false;
                             }
+                            break;
+                        case TargetGroup.None:
+                        default:
                             break;
                     }
                 }

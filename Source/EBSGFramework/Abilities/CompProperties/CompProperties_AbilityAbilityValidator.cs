@@ -49,7 +49,8 @@ namespace EBSGFramework
         public List<NeedLevel> casterNeedLevels;
         public List<FactionDef> validCasterFactions;
         public List<FactionDef> forbiddenCasterFactions;
-
+        public List<StatCompare> statContest;
+        
         // % Light
         public FloatRange targetLightLevel = FloatRange.ZeroToOne;
         public bool invertTargetLight = false;
