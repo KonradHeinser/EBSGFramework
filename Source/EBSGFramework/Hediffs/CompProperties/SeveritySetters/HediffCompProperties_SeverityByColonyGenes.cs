@@ -17,5 +17,13 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_SeverityByColonyGenes);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (string error in base.ConfigErrors(parentDef))
+                yield return error;
+            if (gene == null && genes.NullOrEmpty())
+                yield return "No gene or genes are not set";
+        }
     }
 }
