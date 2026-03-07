@@ -70,7 +70,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(ButcherProductsPostfix)));
             harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnAt"),
                 postfix: new HarmonyMethod(patchType, nameof(RenderPawnAtPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Thing), "PreApplyDamage"),
+            harmony.Patch(AccessTools.Method(typeof(ThingWithComps), "PreApplyDamage"),
                 postfix: new HarmonyMethod(patchType, nameof(PreApplyDamagePostfix)));
             harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
