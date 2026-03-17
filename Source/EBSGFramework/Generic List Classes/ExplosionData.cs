@@ -82,7 +82,7 @@ namespace EBSGFramework
             switch (exclusions)
             {
                 case ExclusionLevel.Self:
-                    if (caster != null && (!caster.Destroyed || (caster is Pawn p && !p.Dead)))
+                    if (caster != null && !caster.Destroyed && (!(caster is Pawn p) || !p.Dead))
                         ignoreList.Add(caster);
                     break;
                 case ExclusionLevel.Allies:
