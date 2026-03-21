@@ -5,7 +5,7 @@ namespace EBSGFramework
 {
     public class HediffCompProperties_SeverityChangeWhenDamaged : HediffCompProperties
     {
-        public int cooldownTicks = 0;
+        public int cooldownTicks = 10;
 
         public FloatRange validSeverity = FloatRange.Zero;
 
