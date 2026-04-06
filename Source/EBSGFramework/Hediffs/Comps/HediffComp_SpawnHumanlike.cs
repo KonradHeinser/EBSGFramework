@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -76,9 +77,9 @@ namespace EBSGFramework
                         Pawn.health.RemoveHediff(parent);
 
                     if (spawnLeft == 0 && Props.killHostOnFinalSpawn)
-                        Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f, -1f));
+                        Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f));
 
-                    if (spawnLeft > 0)
+                    if (spawnLeft != 0)
                         if (ticksLeft + delta > 0) // Checking if the spawn was delayed
                             ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
                         else // If it was, make sure the next spawn can't happen immediately after the previous one
@@ -134,26 +135,21 @@ namespace EBSGFramework
             if (map == null && (faction != caravan?.Faction || !Props.allowInCaravans)) return false;
             AssignLinkedFather();
 
-            int numberToSpawn = Props.spawnPerCompletion.RandomInRange; 
+            int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
             IntVec3 initialPos = Pawn.PositionHeld;
 
+            if (Props.successChance?.Success(mother, father) == false)
+            {
+                if (Props.removeSpawnLeftOnFail && spawnLeft != -1)
+                    spawnLeft = Math.Min(spawnLeft - numberToSpawn, 0);
+                return true;
+            }
+            
             if (spawnLeft != -1)
             {
                 if (allRemaining || numberToSpawn > spawnLeft)
                     numberToSpawn = spawnLeft;
                 spawnLeft -= numberToSpawn;
-            }
-
-            float fixedAge = 0f;
-
-            switch (developmentalStage)
-            {
-                case DevelopmentalStage.Adult:
-                    fixedAge = 18f;
-                    break;
-                case DevelopmentalStage.Child:
-                    fixedAge = 8f;
-                    break;
             }
             
             EBSGUtilities.SpawnHumanlikes(numberToSpawn, initialPos, Pawn.MapHeld, Props.developmentalStage, father, mother, faction, Genes, 

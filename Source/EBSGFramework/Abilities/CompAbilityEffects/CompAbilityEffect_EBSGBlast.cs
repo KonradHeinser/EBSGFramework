@@ -13,6 +13,9 @@ namespace EBSGFramework
         {
             base.Apply(target, dest);
 
+            if (Props.successChance?.Success(parent.pawn, target.Thing) == false)
+                return;
+                
             Props.explosion.DoExplosion(parent.pawn, target, parent.pawn.MapHeld);
         }
 

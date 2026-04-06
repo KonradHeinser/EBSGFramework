@@ -1790,131 +1790,128 @@ namespace EBSGFramework
                 }
             }
 
+            if (__instance is Mineable)
+                return;
+
+            var amount = dinfo.Amount;
+
             if (dinfo.Weapon != null)
             {
                 DamageModifyingStatsExtension weaponModStats = dinfo.Weapon.GetModExtension<DamageModifyingStatsExtension>();
 
                 if (weaponModStats?.Outgoing == true)
-                    dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, weaponModStats, __instance, dinfo.Instigator));
+                    amount = EBSGUtilities.OutStatModifiedDamage(amount, weaponModStats, __instance, dinfo.Instigator);
             }
 
             if (dinfo.Instigator != null)
             {
-                dinfo.SetAmount(dinfo.Amount * dinfo.Instigator.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor));
+                amount *= dinfo.Instigator.StatOrOne(EBSGDefOf.EBSG_OutgoingDamageFactor);
                 DamageModifyingStatsExtension attackerModStats = dinfo.Instigator.def.GetModExtension<DamageModifyingStatsExtension>();
 
                 if (attackerModStats?.Outgoing == true)
-                    dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, attackerModStats, __instance, dinfo.Instigator));
+                    amount = EBSGUtilities.OutStatModifiedDamage(amount, attackerModStats, __instance, dinfo.Instigator);
 
                 if (dinfo.Instigator is Pawn a)
                 {
-                    if (Cache?.outgoingDamageStatGenes.NullOrEmpty() == false && a.GetAllGenesOnListFromPawn(Cache.outgoingDamageStatGenes, out var statGenes))
-                        foreach (var extension in statGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>()))
-                            dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, extension, __instance, a));
+                    if (Cache?.outgoingDamageStatGenes.NullOrEmpty() == false && a.GetAllGenesOnListFromPawn(Cache.outgoingDamageStatGenes, out var statGenes)) 
+                        amount = statGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>())
+                            .Aggregate(amount, (current, extension) => EBSGUtilities.OutStatModifiedDamage(current, extension, __instance, a));
 
                     DamageModifyingStatsExtension attackerKindModStats = a.kindDef.GetModExtension<DamageModifyingStatsExtension>();
 
                     if (attackerKindModStats?.Outgoing == true)
-                        dinfo.SetAmount(EBSGUtilities.OutStatModifiedDamage(dinfo.Amount, attackerKindModStats, __instance, a));
+                        amount = EBSGUtilities.OutStatModifiedDamage(amount, attackerKindModStats, __instance, a);
                 }
             }
 
             DamageModifyingStatsExtension victimModStats = __instance.def.GetModExtension<DamageModifyingStatsExtension>();
 
             if (victimModStats?.Incoming == true)
-                dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, victimModStats, __instance, dinfo.Instigator));
+                amount = EBSGUtilities.IncStatModifiedDamage(amount, victimModStats, __instance, dinfo.Instigator);
 
             if (Cache != null && dinfo.Amount > 0 && __instance is Pawn victim)
             {
-                if (dinfo.Instigator is Pawn attacker)
+                var instigator = dinfo.Instigator;
+                if (instigator is Pawn attacker)
                 {
                     if (victim.RaceProps.Humanlike)
                     {
-                        if (!Cache.humanoidSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.humanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                        if (!Cache.humanoidSlayingStats.NullOrEmpty()) 
+                            amount = Cache.humanoidSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Animal)
                     {
                         if (!Cache.animalSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.animalSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                            amount = Cache.animalSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.IsMechanoid)
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.mechanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                            amount = Cache.mechanoidSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Insect)
                     {
                         if (!Cache.insectSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.insectSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                            amount = Cache.insectSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                     else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
                     {
                         if (!Cache.entitySlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.entitySlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                            amount = Cache.entitySlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                     else if (victim.RaceProps.Dryad)
                     {
                         if (!Cache.dryadSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.dryadSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * attacker.StatOrOne(stat));
+                            amount = Cache.dryadSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
                 }
 
                 if (dinfo.Weapon != null)
                 {
+                    var weapon = dinfo.Weapon;
                     if (victim.RaceProps.Humanlike)
                     {
                         if (!Cache.humanoidSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.humanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.humanoidSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                     else if (victim.RaceProps.Animal)
                     {
                         if (!Cache.animalSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.animalSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.animalSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                     else if (victim.RaceProps.IsMechanoid)
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.mechanoidSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.mechanoidSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                     else if (victim.RaceProps.Insect)
                     {
                         if (!Cache.insectSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.insectSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.insectSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                     else if (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity)
                     {
                         if (!Cache.entitySlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.entitySlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.entitySlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                     else if (victim.RaceProps.Dryad)
                     {
                         if (!Cache.dryadSlayingStats.NullOrEmpty())
-                            foreach (StatDef stat in Cache.dryadSlayingStats)
-                                dinfo.SetAmount(dinfo.Amount * dinfo.Weapon.statBases.GetStatValueFromList(stat, 1));
+                            amount = Cache.dryadSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
                 }
 
-                if (!Cache.incomingDamageStatGenes.NullOrEmpty() && victim.GetAllGenesOnListFromPawn(Cache.incomingDamageStatGenes, out var incStatGenes))
-                    foreach (var extension in incStatGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>()))
-                        dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, extension, victim, dinfo.Instigator));
+                if (!Cache.incomingDamageStatGenes.NullOrEmpty() && victim.GetAllGenesOnListFromPawn(Cache.incomingDamageStatGenes, out var incStatGenes)) 
+                    amount = incStatGenes.Select(gene => gene.GetModExtension<DamageModifyingStatsExtension>())
+                        .Aggregate(amount, (current, extension) => EBSGUtilities.IncStatModifiedDamage(current, extension, victim, instigator));
 
                 DamageModifyingStatsExtension victimKindModStats = victim.kindDef.GetModExtension<DamageModifyingStatsExtension>();
 
                 if (victimKindModStats?.Incoming == true)
-                    dinfo.SetAmount(EBSGUtilities.IncStatModifiedDamage(dinfo.Amount, victimKindModStats, victim, dinfo.Instigator));
+                    amount = EBSGUtilities.IncStatModifiedDamage(amount, victimKindModStats, victim, instigator);
             }
+            
+            dinfo.SetAmount(amount);
         }
 
         public static void TakeDamagePostfix(ref DamageInfo dinfo, Thing __instance, DamageWorker.DamageResult __result)

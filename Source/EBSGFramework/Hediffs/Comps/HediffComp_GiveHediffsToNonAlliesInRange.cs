@@ -10,11 +10,19 @@ namespace EBSGFramework
         private Mote mote;
         public HediffCompProperties_GiveHediffsToNonAlliesInRange Props => (HediffCompProperties_GiveHediffsToNonAlliesInRange)props;
 
-        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+        public override void CompPostTick(ref float severityAdjustment)
         {
             if (!Pawn.Awake() || Pawn.health == null || Pawn.health.InPainShock || !Pawn.Spawned || (Props.onlyWhileDrafted && !Pawn.Drafted && Pawn.IsPlayerControlled))
                 return;
 
+            if (Props.interval != null)
+            {
+                if (!Pawn.IsHashIntervalTick(Props.interval.Value)) // Allow for periodic intervals instead
+                    return;
+            }
+            else if (!Pawn.IsHashIntervalTick(5)) // Avoid spamming
+                return;
+            
             // Get all a list of all pawns, and a list of all allied pawns
             List<Pawn> list = parent.pawn.Map.mapPawns.AllPawns;
             list.SortBy(c => c.Position.DistanceToSquared(Pawn.Position));
@@ -37,7 +45,9 @@ namespace EBSGFramework
 
                     if (item.Position.DistanceTo(Pawn.Position) > range) break;
                     if (Props.psychic && item.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60) == 0) continue;
-
+                    if (Props.interval != null && Props.successChance?.Success(parent.pawn, item) == false)
+                        continue;
+                    
                     Hediff hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
                     if (hediff == null)
                     {
@@ -54,7 +64,7 @@ namespace EBSGFramework
                     if (hediffComp_Disappears == null)
                         Log.Error("HediffComp_GiveHediffsToNonAlliesInRange has a hediff in props which does not have a HediffComp_Disappears");
                     else
-                        hediffComp_Disappears.ticksToDisappear = 30;
+                        hediffComp_Disappears.ticksToDisappear = Props.duration;
                 }
             }
         }

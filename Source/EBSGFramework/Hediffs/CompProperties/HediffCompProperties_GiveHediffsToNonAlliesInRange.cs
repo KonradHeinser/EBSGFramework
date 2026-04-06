@@ -14,6 +14,9 @@ namespace EBSGFramework
         public bool psychic = true;
         public float initialSeverity = 1f;
         public bool onlyWhileDrafted = true;
+        public int? interval;
+        public int duration = 10;
+        public SuccessChance successChance;
 
         public HediffCompProperties_GiveHediffsToNonAlliesInRange()
         {

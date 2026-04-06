@@ -2228,6 +2228,23 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool ValidDamage(this DamageDef damage, List<DamageDef> damageDefs, CheckType checkType = CheckType.Required)
+        {
+            if (damageDefs.NullOrEmpty())
+                return true;
+
+            switch (checkType)
+            {
+                case CheckType.Required:
+                    return damageDefs.Contains(damage);
+                case CheckType.Forbidden:
+                    return !damageDefs.Contains(damage);
+                case CheckType.None:
+                default:
+                    return true;
+            }
+        }
+
         public static void SpawnHumanlikes(int numberToSpawn, IntVec3 initialPos, Map map, DevelopmentalStage developmentalStage, Pawn father, Pawn mother,
             Faction faction, List<GeneDef> genes, PawnKindDef staticPawnKind, XenotypeDef staticXenotype, XenoSource xenotypeSource, ThingDef filthOnCompletion,
             IntRange filthPerSpawn, bool sendLetters, string letterKey, string letterTextPawnDescription, string letterLabelNote, 

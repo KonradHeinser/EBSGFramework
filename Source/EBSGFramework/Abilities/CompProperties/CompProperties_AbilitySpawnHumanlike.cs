@@ -53,7 +53,7 @@ namespace EBSGFramework
         public PawnRelationDef fatherRelation;
         
         public bool noGear = true;
-
+        
         public CompProperties_AbilitySpawnHumanlike()
         {
             compClass = typeof(CompAbilityEffect_SpawnHumanlike);

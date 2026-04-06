@@ -73,6 +73,10 @@ namespace EBSGFramework
 
         public bool noGear = false;
 
+        public SuccessChance successChance;
+
+        public bool removeSpawnLeftOnFail;
+
         public HediffCompProperties_SpawnHumanlike()
         {
             compClass = typeof(HediffComp_SpawnHumanlike);

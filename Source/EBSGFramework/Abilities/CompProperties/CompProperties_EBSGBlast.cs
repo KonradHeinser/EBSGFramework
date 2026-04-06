@@ -5,6 +5,8 @@ namespace EBSGFramework
     public class CompProperties_EBSGBlast : CompProperties_AbilityEffect
     {
         public ExplosionData explosion = new ExplosionData();
+        
+        public SuccessChance successChance;
 
         public CompProperties_EBSGBlast()
         {
