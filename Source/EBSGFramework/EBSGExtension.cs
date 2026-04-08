@@ -170,6 +170,10 @@ namespace EBSGFramework
         public FloatRange chronoAge = FloatRange.Zero;
         public MentalStateDef mentalState;
 
+        public string ejectLabel;
+        public string ejectDescription;
+        public string ejectIcon;
+
         // Recipe Stuff
         public List<List<ThingDefCountClass>> thingCountList;
         public bool staticQuality = false; // Only need set to true if there are products that have quality. Will set for all of them at once.

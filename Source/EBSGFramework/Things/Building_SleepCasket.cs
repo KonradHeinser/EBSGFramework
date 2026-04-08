@@ -179,39 +179,37 @@ namespace EBSGFramework
             {
                 yield return gizmo;
             }
-            if (Faction == Faction.OfPlayer && innerContainer.Count != 0 && def.building.isPlayerEjectable)
-            {
-                Command_Action command_Action = new Command_Action
+            if (innerContainer.Count != 0 && def.building.isPlayerEjectable)
+                if (Faction == Faction.OfPlayer || innerContainer.First().Faction == Faction.OfPlayer)
                 {
-                    action = EjectContents,
-                    defaultLabel = "CommandPodEject".Translate(),
-                    defaultDesc = "EBSG_CommandSleepCasketEjectDesc".Translate()
-                };
-                if (!PawnInside)
-                    command_Action.Disable("CommandPodEjectFailEmpty".Translate());
+                    Command_Action command_Action = new Command_Action
+                    {
+                        action = EjectContents,
+                        defaultLabel = Extension?.ejectLabel?.TranslateOrFormat() ?? "CommandPodEject".Translate(),
+                        defaultDesc = Extension?.ejectDescription?.TranslateOrFormat() ?? "EBSG_CommandSleepCasketEjectDesc".Translate()
+                    };
+                    if (!PawnInside)
+                        command_Action.Disable("CommandPodEjectFailEmpty".Translate());
 
-                command_Action.hotKey = KeyBindingDefOf.Misc8;
-                command_Action.icon = ContentFinder<Texture2D>.Get("UI/Commands/PodEject");
-                yield return command_Action;
-            }
+                    command_Action.hotKey = KeyBindingDefOf.Misc8;
+                    command_Action.icon = ContentFinder<Texture2D>.Get(Extension?.ejectIcon ?? "UI/Commands/PodEject");
+                    yield return command_Action;
+                }
             if (DebugSettings.ShowDevGizmos)
             {
-                yield return new Command_Action
+                if (def.building.defaultStorageSettings != null)
                 {
-                    defaultLabel = "DEV: Fill nutrition",
-                    action = delegate
+                    yield return new Command_Action
                     {
-                        storedNutrition = MaxStorage;
-                    }
-                };
-                yield return new Command_Action
-                {
-                    defaultLabel = "DEV: Empty nutrition",
-                    action = delegate
+                        defaultLabel = "DEV: Fill nutrition",
+                        action = delegate { storedNutrition = MaxStorage; }
+                    };
+                    yield return new Command_Action
                     {
-                        storedNutrition = 0f;
-                    }
-                };
+                        defaultLabel = "DEV: Empty nutrition",
+                        action = delegate { storedNutrition = 0f; }
+                    };
+                }
             }
         }
 
