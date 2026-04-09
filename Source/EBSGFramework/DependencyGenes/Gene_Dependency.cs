@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -111,7 +112,8 @@ namespace EBSGFramework
                         return true;
                 }
             }
-            else
+
+            if (IDGExtension != null)
             {
                 CompIngredients ingredients = thing.TryGetComp<CompIngredients>();
                 if (!IDGExtension.validThings.NullOrEmpty())
@@ -119,17 +121,19 @@ namespace EBSGFramework
                     {
                         if (thing.def == thingDef)
                             return true;
-                        if (IDGExtension.checkIngredients && 
-                            !ingredients?.ingredients.NullOrEmpty() == false && 
+                        if (IDGExtension.checkIngredients &&
+                            ingredients?.ingredients.NullOrEmpty() == false &&
                             ingredients.ingredients.Contains(thingDef))
                             return true;
                     }
+
                 if (!IDGExtension.validCategories.NullOrEmpty())
                 {
                     if (!thing.def.thingCategories.NullOrEmpty())
                         foreach (ThingCategoryDef thingCategory in IDGExtension.validCategories)
                             if (thing.def.thingCategories.Contains(thingCategory))
                                 return true;
+                    
                     if (IDGExtension.checkIngredients)
                     {
                         if (IDGExtension.validCategories.Contains(ThingCategoryDefOf.MeatRaw) &&
@@ -140,11 +144,9 @@ namespace EBSGFramework
                             return true;
 
                         if (ingredients?.ingredients.NullOrEmpty() == false)
-                            foreach (ThingDef ingredient in ingredients.ingredients)
-                                if (!ingredient.thingCategories.NullOrEmpty())
-                                    foreach (ThingCategoryDef thingCategory in IDGExtension.validCategories)
-                                        if (ingredient.thingCategories.Contains(thingCategory))
-                                            return true;
+                            foreach (ThingDef ingredient in ingredients.ingredients.Where(i => !i.thingCategories.NullOrEmpty()))
+                                if (IDGExtension.validCategories.Any(thingCategory => ingredient.thingCategories.Contains(thingCategory)))
+                                    return true;
                     }
                 }
             }
