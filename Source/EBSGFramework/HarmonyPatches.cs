@@ -1630,58 +1630,41 @@ namespace EBSGFramework
 
         public static void SeekerNeedMultiplier(NeedDef ___def, Need __instance, Pawn ___pawn)
         {
-            if (__instance == null || ___def == null || __instance.CurLevel <= 0 || __instance.CurLevel >= 1) 
+            if (__instance == null || ___def == null || __instance.CurLevelPercentage <= 0 || __instance.CurLevelPercentage >= 1 || ___pawn?.NeedFrozen(___def) != false) 
                 return; // If already at min/max, no need to do anything else
             
-            if (___pawn?.NeedFrozen(___def) != false) return;
             float increase = ___def.seekerRisePerHour * 0.06f;
-            float decrease = ___def.seekerFallPerHour * 0.06f;
-            float curInstantLevel;
+            float decrease = ___def.seekerFallPerHour * -0.06f;
+            float curInstantLevel = __instance.CurInstantLevel;
+            bool increasing = curInstantLevel > __instance.CurLevel;
+            float change = 0f;
             switch (___def.ToString())
             {
                 case "Beauty":
                     if (___pawn.needs?.beauty == null) return;
-                    curInstantLevel = ___pawn.needs.beauty.CurInstantLevel;
-                    if (curInstantLevel > ___pawn.needs.beauty.CurLevel)
-                    {
-                        ___pawn.needs.beauty.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyRiseRate) - 1);
-                        ___pawn.needs.beauty.CurLevel = Mathf.Min(___pawn.needs.beauty.CurLevel, curInstantLevel);
-                    }
-                    if (curInstantLevel < ___pawn.needs.beauty.CurLevel)
-                    {
-                        ___pawn.needs.beauty.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyFallRate) - 1);
-                        ___pawn.needs.beauty.CurLevel = Mathf.Max(___pawn.needs.beauty.CurLevel, curInstantLevel);
-                    }
+                    if (increasing)
+                        change = increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyRiseRate) - 1);
+                    else
+                         change = decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_BeautyFallRate) - 1);
                     break;
                 case "Comfort":
                     if (___pawn.needs?.comfort == null) return;
-                    curInstantLevel = ___pawn.needs.comfort.CurInstantLevel;
-                    if (curInstantLevel > ___pawn.needs.comfort.CurLevel)
-                    {
-                        ___pawn.needs.comfort.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortRiseRate) - 1);
-                        ___pawn.needs.comfort.CurLevel = Mathf.Min(___pawn.needs.comfort.CurLevel, curInstantLevel);
-                    }
-                    if (curInstantLevel < ___pawn.needs.comfort.CurLevel)
-                    {
-                        ___pawn.needs.comfort.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortFallRate) - 1);
-                        ___pawn.needs.comfort.CurLevel = Mathf.Max(___pawn.needs.comfort.CurLevel, curInstantLevel);
-                    }
+                    if (increasing)
+                        change = increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortRiseRate) - 1);
+                    else
+                        change = decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_ComfortFallRate) - 1);
                     break;
                 case "Mood":
                     if (___pawn.needs?.mood == null) return;
-                    curInstantLevel = ___pawn.needs.mood.CurInstantLevel;
-                    if (curInstantLevel > ___pawn.needs.mood.CurLevel)
-                    {
-                        ___pawn.needs.mood.CurLevel += increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodRiseRate) - 1);
-                        ___pawn.needs.mood.CurLevel = Mathf.Min(___pawn.needs.mood.CurLevel, curInstantLevel);
-                    }
-                    if (curInstantLevel < ___pawn.needs.mood.CurLevel)
-                    {
-                        ___pawn.needs.mood.CurLevel -= decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodFallRate) - 1);
-                        ___pawn.needs.mood.CurLevel = Mathf.Max(___pawn.needs.mood.CurLevel, curInstantLevel);
-                    }
+                    if (increasing)
+                        change = increase * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodRiseRate) - 1);
+                    else
+                        change = decrease * (___pawn.StatOrOne(EBSGDefOf.EBSG_MoodFallRate) - 1);
                     break;
             }
+            
+            __instance.CurLevel += change;
+            __instance.CurLevel = increasing ? Mathf.Min(__instance.CurLevel, curInstantLevel) : Mathf.Max(__instance.CurLevel, curInstantLevel);
         }
 
         public static void PregnancySpeedPrefix(ref float value, Hediff_Pregnant __instance)
