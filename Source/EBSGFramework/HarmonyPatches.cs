@@ -1606,61 +1606,25 @@ namespace EBSGFramework
             amount *= ___pawn.StatOrOne(EBSGDefOf.EBSG_JoyRiseRate);
         }
 
-        public static void IndoorsIntervalPostfix(Need __instance, Pawn ___pawn)
+        public static void IndoorsIntervalPostfix(Need __instance, Pawn ___pawn, ref float ___lastEffectiveDelta)
         {
-            if (__instance.CurLevel != 1 && __instance.CurLevel != 0 && !___pawn.Suspended && ___pawn.Awake() && (___pawn.SpawnedOrAnyParentSpawned || ___pawn.IsCaravanMember() || PawnUtility.IsTravelingInTransportPodWorldObject(___pawn)))
+            if (!___pawn.Dead && ___pawn.needs.PrefersIndoors && !___pawn.NeedFrozen(__instance.def))
             {
-                float num;
-                bool flag = !___pawn.Spawned || ___pawn.Position.UsesOutdoorTemperature(___pawn.Map);
-                RoofDef roofDef = (___pawn.Spawned ? ___pawn.Position.GetRoof(___pawn.Map) : null);
-                float curLevel = __instance.CurLevel;
-                num = (((roofDef == null || !roofDef.isThickRoof) && curLevel >= 0.5f) ? (-0.5f) : ((!flag) ? ((roofDef == null) ? 0f : (roofDef.isThickRoof ? 2f : 1f)) : ((roofDef == null) ? (-0.25f) : ((!roofDef.isThickRoof) ? (-0.25f) : 0f))));
-                num *= 0.0025f;
-
-                if (num < 0f)
-                {
-                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsFallRate) - 1;
-                    __instance.CurLevel += num;
-                }
-                else
-                {
-                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsRiseRate) - 1;
-                    __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
-                }
+                float stat = ___lastEffectiveDelta > 0 ? ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsRiseRate) : ___pawn.StatOrOne(EBSGDefOf.EBSG_IndoorsFallRate);
+                float change = ___lastEffectiveDelta * stat - ___lastEffectiveDelta;
+                __instance.CurLevel += change;
+                ___lastEffectiveDelta += change;
             }
         }
 
-        public static void OutdoorsIntervalPostfix(Need __instance, Pawn ___pawn)
+        public static void OutdoorsIntervalPostfix(Need __instance, Pawn ___pawn, ref float ___lastEffectiveDelta)
         {
-            if (__instance.CurLevel != 1 && __instance.CurLevel != 0 && !___pawn.Suspended && ___pawn.Awake() && (___pawn.SpawnedOrAnyParentSpawned || ___pawn.IsCaravanMember() || PawnUtility.IsTravelingInTransportPodWorldObject(___pawn)))
+            if (!___pawn.Dead && ___pawn.needs.PrefersOutdoors && !___pawn.NeedFrozen(__instance.def))
             {
-                float num;
-                bool num2 = !___pawn.Spawned || ___pawn.Position.UsesOutdoorTemperature(___pawn.Map);
-                RoofDef roofDef = (___pawn.Spawned ? ___pawn.Position.GetRoof(___pawn.Map) : null);
-                if (num2)
-                    num = (roofDef == null ? 8f : (!roofDef.isThickRoof ? 1f : -0.4f));
-                else if (roofDef == null)
-                    num = 5f;
-                else if (!roofDef.isThickRoof)
-                    num = -0.32f;
-                else
-                    num = -0.45f;
-                
-                if (___pawn.InBed() && num < 0f) 
-                    num *= 0.2f;
-                
-                num *= 0.0025f;
-                float curLevel = __instance.CurLevel;
-                if (num < 0f)
-                {
-                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsFallRate) - 1;
-                    __instance.CurLevel += num;
-                }
-                else
-                {
-                    num *= ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsRiseRate) - 1;
-                    __instance.CurLevel = Mathf.Min(curLevel + num, 1f);
-                }
+                float stat = ___lastEffectiveDelta > 0 ? ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsRiseRate) : ___pawn.StatOrOne(EBSGDefOf.EBSG_OutdoorsFallRate);
+                float change = ___lastEffectiveDelta * stat - ___lastEffectiveDelta;
+                __instance.CurLevel += change;
+                ___lastEffectiveDelta += change;
             }
         }
 
