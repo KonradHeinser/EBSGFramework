@@ -12,13 +12,17 @@ namespace EBSGFramework
 
         public int deathTile;
 
-        public float progressPercentage;
+        private float progressPercentage;
 
         public bool pawnReviving;
 
         public float hoursToRevive;
 
         public float revivalProgress;
+        
+        private MultipleLives_Component multipleLives;
+        
+        public MultipleLives_Component MultipleLives => multipleLives ?? (multipleLives = Current.Game.GetComponent<MultipleLives_Component>());
 
         public override bool CompShouldRemove
         {
@@ -173,29 +177,27 @@ namespace EBSGFramework
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (Pawn.IsHashIntervalTick(200))
+            if (!Pawn.IsHashIntervalTick(200)) return;
+            if (!Props.useSeverityNotDays)
             {
-                if (!Props.useSeverityNotDays)
+                if (livesLeft > Props.extraLives) livesLeft = Props.extraLives;
+                else if (livesLeft < Props.extraLives && Props.daysToRecoverLife > 0)
                 {
-                    if (livesLeft > Props.extraLives) livesLeft = Props.extraLives;
-                    else if (livesLeft < Props.extraLives && Props.daysToRecoverLife > 0)
+                    float recoverySpeed = 1 / Props.daysToRecoverLife * 0.003333334f; // For example, a 20 day recover speed creates a progress of 0.000166667% each viable iteration, which happens 300 times per day
+                    progressPercentage += recoverySpeed;
+                    if (progressPercentage >= 1)
                     {
-                        float recoverySpeed = 1 / Props.daysToRecoverLife * 0.003333334f; // For example, a 20 day recover speed creates a progress of 0.000166667% each viable iteration, which happens 300 times per day
-                        progressPercentage += recoverySpeed;
-                        if (progressPercentage >= 1)
-                        {
-                            progressPercentage -= 1;
-                            livesLeft++;
-                        }
+                        progressPercentage -= 1;
+                        livesLeft++;
                     }
                 }
-                else
-                {
-                    float maxSeverity = parent.def.maxSeverity - 0.001f; // only used for the severityNotDays
-                    float severityPerLife = maxSeverity / Props.extraLives;
-                    float severity = parent.Severity;
-                    livesLeft = (int)Math.Floor(severity / severityPerLife);
-                }
+            }
+            else
+            {
+                float maxSeverity = parent.def.maxSeverity - 0.001f; // only used for the severityNotDays
+                float severityPerLife = maxSeverity / Props.extraLives;
+                float severity = parent.Severity;
+                livesLeft = (int)Math.Floor(severity / severityPerLife);
             }
         }
 
@@ -203,6 +205,9 @@ namespace EBSGFramework
         {
             if (Props.needBrainToRevive && Pawn.health.hediffSet.GetBrain() == null) return;
 
+            if (MultipleLives?.loaded != true) return;
+            if (MultipleLives.deadPawns.Contains(Pawn.Corpse)) return; // Already being revived
+            
             if (!Rand.Chance(Props.revivalChance))
             {
                 if (Props.extraLives == -666 || Props.onlyOneChance)
@@ -270,20 +275,15 @@ namespace EBSGFramework
                 }
             }
 
-            MultipleLives_Component multipleLives = Current.Game.GetComponent<MultipleLives_Component>();
+            
             if (Props.hoursToRevive <= -1) hoursToRevive = -1;
             else if (Props.hoursToRevive > 0) hoursToRevive = Props.hoursToRevive;
             else hoursToRevive = Props.randomHoursToRevive.RandomInRange;
 
-            if (multipleLives != null && multipleLives.loaded)
-            {
-                pawnReviving = true;
-                if (hoursToRevive <= -1) revivalProgress = 1;
-                multipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1, Props.indestructibleWhileResurrecting && Props.alwaysForbiddenWhileResurrecting);
-                OnReviveStart();
-            }
-            else
-                Log.Error("The multiple lives game component failed to load. Please let the EBSG Framework dev know something went wrong!");
+            pawnReviving = true;
+            if (hoursToRevive <= -1) revivalProgress = 1;
+            MultipleLives.AddPawnToLists(Pawn, parent.def, revivalProgress >= 1, Props.indestructibleWhileResurrecting && Props.alwaysForbiddenWhileResurrecting);
+            OnReviveStart();
         }
 
         private void OnReviveStart()

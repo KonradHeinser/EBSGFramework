@@ -15,9 +15,9 @@ namespace EBSGFramework
 
         public int stage;
 
-        public List<AbilityDef> addedAbilities;
+        private List<AbilityDef> addedAbilities;
 
-        public EBSGExtension cachedExtension;
+        private EBSGExtension cachedExtension;
 
         public EBSGExtension Extension
         {
@@ -198,6 +198,8 @@ namespace EBSGFramework
         {
             if (Extension != null && !Extension.hediffsToApplyAtAges.NullOrEmpty())
                 pawn.RemoveHediffsFromParts(Extension.hediffsToApplyAtAges);
+            
+            pawn.RemovePawnAbilities(addedAbilities);
         }
 
         public static void GetGender(Pawn pawn, EBSGExtension extension)

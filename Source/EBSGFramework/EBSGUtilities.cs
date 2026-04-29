@@ -1820,26 +1820,19 @@ namespace EBSGFramework
         {
             List<AbilityDef> removedAbilities = new List<AbilityDef>();
 
-            if (ability != null)
+            if (ability != null && pawn.abilities.GetAbility(ability) != null)
             {
-                if (pawn.abilities.GetAbility(ability) != null)
-                {
-                    pawn.abilities.RemoveAbility(ability);
-                    removedAbilities.Add(ability);
-                }
+                pawn.abilities.RemoveAbility(ability);
+                removedAbilities.Add(ability);
             }
 
             if (!abilities.NullOrEmpty())
-            {
-                foreach (AbilityDef abilityDef in abilities)
-                {
+                foreach (var abilityDef in abilities)
                     if (pawn.abilities.GetAbility(abilityDef) != null)
                     {
                         pawn.abilities.RemoveAbility(abilityDef);
                         removedAbilities.Add(abilityDef);
                     }
-                }
-            }
 
             return removedAbilities;
         }

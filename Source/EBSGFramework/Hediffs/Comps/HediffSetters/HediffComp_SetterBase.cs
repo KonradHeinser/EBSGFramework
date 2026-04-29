@@ -25,13 +25,13 @@ namespace EBSGFramework
         {
             base.CompPostTickInterval(ref severityAdjustment, delta);
 
-            if (!MustBeSpawned || Pawn.Spawned)
-            {
-                if (ticksToNextCheck <= 0 || DoCheck())
-                    SetSeverity();
-                else
-                    ticksToNextCheck -= delta;
-            }
+            if (MustBeSpawned && !Pawn.Spawned) 
+                return;
+            
+            if (ticksToNextCheck <= 0 || DoCheck())
+                SetSeverity();
+            else
+                ticksToNextCheck -= delta;
         }
 
         // Overrides the normal ticks check. Should only use lighter checks like comparing the size of a list to the previous count (See severity by genes for example)

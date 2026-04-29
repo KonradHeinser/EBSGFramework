@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool disableGizmoIfCasterInvalid = true;
 
+        public bool hideGizmo = false;
+
         public CompProperties_RemoveItemFromInventory()
         {
             compClass = typeof(CompAbilityEffect_RemoveItemFromInventory);

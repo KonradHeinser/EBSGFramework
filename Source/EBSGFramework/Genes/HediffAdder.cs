@@ -22,7 +22,7 @@ namespace EBSGFramework
 
         public static void HediffAdding(Pawn pawn, Gene gene)
         {
-            EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+            var extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.hediffsToApply.NullOrEmpty())
             {
                 pawn.AddHediffToParts(extension.hediffsToApply);
@@ -32,7 +32,7 @@ namespace EBSGFramework
 
         public static void HediffRemoving(Pawn pawn, Gene gene)
         {
-            EBSGExtension extension = gene.def.GetModExtension<EBSGExtension>();
+            var extension = gene.def.GetModExtension<EBSGExtension>();
             if (extension != null && !extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
                 pawn.RemoveHediffsFromParts(extension.hediffsToApply);
         }

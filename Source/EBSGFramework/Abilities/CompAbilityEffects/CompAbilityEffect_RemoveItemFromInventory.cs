@@ -24,16 +24,18 @@ namespace EBSGFramework
 
         public override bool GizmoDisabled(out string reason)
         {
-            if (Props.disableGizmoIfCasterInvalid)
-                if (!Props.casterBestEffort && Props.casterThing != null)
-                    if (parent.pawn.inventory == null || !parent.pawn.inventory.innerContainer.Contains(Props.casterThing, Props.casterCount))
-                    {
-                        reason = "AbilityCasterInventory".Translate();
-                        return true;
-                    }
+            if (Props.disableGizmoIfCasterInvalid && !Props.casterBestEffort && Props.casterThing != null && 
+                parent.pawn.inventory?.innerContainer?.Contains(Props.casterThing, Props.casterCount) != true)
+            {
+                reason = "AbilityCasterInventory".Translate();
+                return true;
+            }
+
             reason = null;
             return false;
         }
+
+        public override bool ShouldHideGizmo => Props.hideGizmo && GizmoDisabled(out _);
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {

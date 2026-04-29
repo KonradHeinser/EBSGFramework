@@ -20,8 +20,9 @@ namespace EBSGFramework
         {
             float newSeverity = Props.baseSeverity * Pawn.StatOrOne(Props.baseSeverityStatFactor);
 
-            foreach (GeneEffect geneEffect in Props.geneEffects)
-                if (Pawn.HasRelatedGene(geneEffect.gene) && Pawn.PawnHasAnyOfGenes(out var anyOfGene, geneEffect.anyOfGene) && Pawn.PawnHasAllOfGenes(geneDefs: geneEffect.allOfGene))
+            foreach (var geneEffect in Props.geneEffects)
+                if ((geneEffect.gene == null || Pawn.HasRelatedGene(geneEffect.gene)) &&
+                    (geneEffect.anyOfGene.NullOrEmpty() || Pawn.PawnHasAnyOfGenes(out _, geneEffect.anyOfGene)) && Pawn.PawnHasAllOfGenes(geneEffect.allOfGene))
                     newSeverity += geneEffect.effect * Pawn.StatOrOne(geneEffect.statFactor) * Pawn.StatOrOne(Props.geneEffectStatFactor);
 
             parent.Severity = newSeverity * Pawn.StatOrOne(Props.globalStatFactor);
