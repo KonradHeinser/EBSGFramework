@@ -25,7 +25,7 @@ namespace EBSGFramework
                     if (meleeThreat.GetInvisibilityComp() != null && !IsHunting(pawn, meleeThreat) && !IsDueling(pawn, meleeThreat)) return true;
                 }
                 // If any enemies are nearby, get out of there
-                if (PawnUtility.EnemiesAreNearby(pawn, 9, true, 20, 1)) return true;
+                if (PawnUtility.EnemiesAreNearby(pawn, 9, true, 20)) return true;
             }
 
             return false;

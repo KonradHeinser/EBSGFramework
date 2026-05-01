@@ -25,8 +25,7 @@ namespace EBSGFramework
             {
                 pawn.ownership.ClaimDeathrestCasket(building_Bed);
                 building_Bed.NotifyRoomAssignedPawnsChanged();
-                if (comaGeneBindable != null)
-                    comaGeneBindable.BindTo(pawn);
+                comaGeneBindable?.BindTo(pawn);
                 return;
             }
             base.TryAssignPawn(pawn);

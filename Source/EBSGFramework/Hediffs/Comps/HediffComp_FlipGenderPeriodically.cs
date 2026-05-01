@@ -61,8 +61,8 @@ namespace EBSGFramework
         public override void CompExposeData()
         {
             base.CompExposeData();
-            Scribe_Values.Look(ref interval, "interval", 0);
-            Scribe_Values.Look(ref original, "original", Gender.None);
+            Scribe_Values.Look(ref interval, "interval");
+            Scribe_Values.Look(ref original, "original");
             Scribe_Defs.Look(ref originalBeard, "originalBeard");
         }
     }

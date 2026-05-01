@@ -20,7 +20,7 @@ namespace EBSGFramework
             toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
             toil.WithProgressBarToilDelay(TargetIndex.A);
             yield return toil;
-            Toil enter = ToilMaker.MakeToil("MakeNewToils");
+            Toil enter = ToilMaker.MakeToil();
             enter.initAction = delegate
             {
                 Pawn actor = enter.actor;

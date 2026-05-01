@@ -6,7 +6,7 @@ namespace EBSGFramework
 {
     public class ResourceDrainGene : HediffAdder, IGeneResourceDrain
     {
-        [Unsaved(false)]
+        [Unsaved()]
         private ResourceGene cachedResourceGene;
 
         DRGExtension DRGextension;

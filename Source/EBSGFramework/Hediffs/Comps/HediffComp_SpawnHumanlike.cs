@@ -110,7 +110,7 @@ namespace EBSGFramework
                     SpawnPawns(Props.devStageForRemovalOrDeath, Props.spawnRemainingOnRemovalOrDeath);
 
                 if (Props.killHostOnRemoval)
-                    Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f, -1f));
+                    Pawn.Kill(new DamageInfo(DamageDefOf.Cut, 99999f, 999f));
             }
 
             if (Props.miscarriageThought && spawnLeft > 0)

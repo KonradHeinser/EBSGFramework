@@ -246,7 +246,7 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref lastChangeTick, "lastChangeTick", -1);
-            Scribe_Values.Look(ref stage, "stage", 0);
+            Scribe_Values.Look(ref stage, "stage");
             Scribe_Collections.Look(ref addedAbilities, "EBSG_AddedAbilities");
 
             if (Scribe.mode == LoadSaveMode.LoadingVars)

@@ -57,10 +57,10 @@ namespace EBSGFramework
 
         private bool notifiedWakeOK;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Need_ComaGene cachedComaNeed;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private List<CompComaGeneBindable> cachedBoundComps;
 
         public const float PresencePercentRequiredToApply = 0.75f;
@@ -552,10 +552,10 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref comaRestCapacity, "comaRestCapacity", 1);
-            Scribe_Values.Look(ref adjustedComaTicks, "adjustedComaTicks", 0f);
-            Scribe_Values.Look(ref comaRestTicks, "comaRestTicks", 0);
-            Scribe_Values.Look(ref autoWake, "autoWake", false);
-            Scribe_Values.Look(ref notifiedWakeOK, "notifiedWakeOK", false);
+            Scribe_Values.Look(ref adjustedComaTicks, "adjustedComaTicks");
+            Scribe_Values.Look(ref comaRestTicks, "comaRestTicks");
+            Scribe_Values.Look(ref autoWake, "autoWake");
+            Scribe_Values.Look(ref notifiedWakeOK, "notifiedWakeOK");
             Scribe_Collections.Look(ref boundBuildings, "boundBuildings", LookMode.Reference);
             Scribe_Collections.Look(ref temporaryHediffs, "temporaryHediffs", LookMode.Def);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

@@ -12,9 +12,5 @@ namespace EBSGFramework
             : base(ticks, focusTarg, verb)
         {
         }
-        public override void StanceDraw()
-        {
-            return;
-        }
     }
 }

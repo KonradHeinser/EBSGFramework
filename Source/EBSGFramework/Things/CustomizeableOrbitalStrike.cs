@@ -47,7 +47,7 @@ namespace EBSGFramework
 
             public void ExposeData()
             {
-                Scribe_Values.Look(ref lifeTime, "lifeTime", 0);
+                Scribe_Values.Look(ref lifeTime, "lifeTime");
                 Scribe_Values.Look(ref targetCell, "targetCell");
             }
         }
@@ -253,12 +253,12 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref impactAreaRadius, "impactAreaRadius", 15f);
-            Scribe_Values.Look(ref explosionsRemaining, "explosionsRemaining", 0);
+            Scribe_Values.Look(ref explosionsRemaining, "explosionsRemaining");
             Scribe_Values.Look(ref explosionRadiusRange, "explosionRadiusRange", new FloatRange(6f, 8f));
             Scribe_Values.Look(ref randomFireRadius, "randomFireRadius", 25);
             Scribe_Values.Look(ref bombIntervalTicks, "bombIntervalTicks", 18);
-            Scribe_Values.Look(ref warmupTicks, "warmupTicks", 0);
-            Scribe_Values.Look(ref ticksToNextEffect, "ticksToNextEffect", 0);
+            Scribe_Values.Look(ref warmupTicks, "warmupTicks");
+            Scribe_Values.Look(ref ticksToNextEffect, "ticksToNextEffect");
             Scribe_Values.Look(ref projectileTexPath, "projectileTexPath", "Things/Projectile/Bullet_Big");
             Scribe_Values.Look(ref projectileColor, "projectileColor", Color.white);
             Scribe_Collections.Look(ref projectiles, "projectiles", LookMode.Deep);
@@ -266,19 +266,19 @@ namespace EBSGFramework
             Scribe_Values.Look(ref damageAmount, "damageAmount", -1);
             Scribe_Values.Look(ref nextExplosionCell, "nextExplosionCell");
             Scribe_Values.Look(ref fireChance, "fireChance", 1f);
-            Scribe_Values.Look(ref extraGasType, "extraGasType", null);
+            Scribe_Values.Look(ref extraGasType, "extraGasType");
             Scribe_Values.Look(ref damageDef, "damageDef", "Bomb");
             Scribe_Values.Look(ref armorPenetration, "armorPenetration", -1f);
-            Scribe_Values.Look(ref explosionSoundDef, "explosionSoundDef", null);
-            Scribe_Values.Look(ref postExplosionThingDef, "postExplosionThingDef", null);
-            Scribe_Values.Look(ref postExplosionThingChance, "postExplosionThingChance", 0f);
+            Scribe_Values.Look(ref explosionSoundDef, "explosionSoundDef");
+            Scribe_Values.Look(ref postExplosionThingDef, "postExplosionThingDef");
+            Scribe_Values.Look(ref postExplosionThingChance, "postExplosionThingChance");
             Scribe_Values.Look(ref postExplosionSpawnThingCount, "postExplosionSpawnThingCount", 1);
-            Scribe_Values.Look(ref preExplosionThingDef, "preExplosionThingDef", null);
-            Scribe_Values.Look(ref preExplosionThingChance, "preExplosionThingChance", 0f);
+            Scribe_Values.Look(ref preExplosionThingDef, "preExplosionThingDef");
+            Scribe_Values.Look(ref preExplosionThingChance, "preExplosionThingChance");
             Scribe_Values.Look(ref preExplosionSpawnThingCount, "preExplosionSpawnThingCount", 1);
-            Scribe_Values.Look(ref damageFalloff, "damageFalloff", false);
-            Scribe_Values.Look(ref postExplosionThingWaterDef, "postExplosionThingWaterDef", null);
-            Scribe_Values.Look(ref screenShakeFactor, "screenShakeFactor", 0f);
+            Scribe_Values.Look(ref damageFalloff, "damageFalloff");
+            Scribe_Values.Look(ref postExplosionThingWaterDef, "postExplosionThingWaterDef");
+            Scribe_Values.Look(ref screenShakeFactor, "screenShakeFactor");
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

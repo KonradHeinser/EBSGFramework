@@ -300,7 +300,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref storedNutrition, "storedNutrition", 0f);
+            Scribe_Values.Look(ref storedNutrition, "storedNutrition");
             Scribe_Deep.Look(ref allowedNutritionSettings, "allowedNutritionSettings", this);
             if (allowedNutritionSettings == null)
             {

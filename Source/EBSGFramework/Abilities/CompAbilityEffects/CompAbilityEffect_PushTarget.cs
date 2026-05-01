@@ -55,7 +55,7 @@ namespace EBSGFramework
 
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            return Valid(target, true) && base.CanApplyOn(target, dest);
+            return Valid(target) && base.CanApplyOn(target, dest);
         }
 
         public override bool Valid(LocalTargetInfo target, bool showMessages = true)

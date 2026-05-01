@@ -88,11 +88,8 @@ namespace EBSGFramework
                     if (pawn == null || pawn.DestroyedOrNull() || !RecordPawnData(pawn.InnerPawn) || !pawn.PawnHasAnyHediff()) continue;
 
                     Hediff hediff = pawn.InnerPawn.health.hediffSet.GetFirstHediffOfDef(deadPawnHediffs[pawn.InnerPawn]);
-                    if (hediff != null)
-                    {
-                        HediffComp_MultipleLives multipleLivesComp = hediff.TryGetComp<HediffComp_MultipleLives>();
-                        if (multipleLivesComp != null && multipleLivesComp.revivalProgress >= 1) ResurrectPawn(pawn);
-                    }
+                    HediffComp_MultipleLives multipleLivesComp = hediff?.TryGetComp<HediffComp_MultipleLives>();
+                    if (multipleLivesComp != null && multipleLivesComp.revivalProgress >= 1) ResurrectPawn(pawn);
                 }
             }
             if (tick % 200 == 0 && !deadPawns.NullOrEmpty())

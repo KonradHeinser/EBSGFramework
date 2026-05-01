@@ -40,7 +40,7 @@ namespace EBSGFramework
 
         public StatDef statFactor => extension?.gainStat;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private List<IGeneResourceDrain> tmpDrainGenes = new List<IGeneResourceDrain>();
 
         public float AmountMissing => Max - Value;
@@ -311,8 +311,8 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_Values.Look(ref resourcePacksAllowed, "resourcePacksAllowed", true);
-            Scribe_Values.Look(ref overchargeLeft, "overchargeLeft", 0f);
-            Scribe_Values.Look(ref underchargeLeft, "underchargeLeft", 0f);
+            Scribe_Values.Look(ref overchargeLeft, "overchargeLeft");
+            Scribe_Values.Look(ref underchargeLeft, "underchargeLeft");
             Scribe_Collections.Look(ref addedAbilities, "EBSG_DRGAddedAbilities");
         }
     }

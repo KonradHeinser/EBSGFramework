@@ -11,5 +11,13 @@ namespace EBSGFramework
         {
             compClass = typeof(HediffComp_HediffWhileInSeverityRange);
         }
+
+        public override IEnumerable<string> ConfigErrors(HediffDef parentDef)
+        {
+            foreach (var error in base.ConfigErrors(parentDef))
+                yield return error;
+            if (hediffsAtSeverities.NullOrEmpty())
+                yield return "HediffsAtSeverities must have at least one item";
+        }
     }
 }

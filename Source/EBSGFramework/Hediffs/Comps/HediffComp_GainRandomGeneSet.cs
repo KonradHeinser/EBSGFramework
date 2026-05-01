@@ -49,7 +49,7 @@ namespace EBSGFramework
         {
             base.CompExposeData();
             Scribe_Values.Look(ref delayTicks, "EBSG_GeneSetDelayTicks", 10);
-            Scribe_Values.Look(ref alreadyGiven, "alreadyGiven", false);
+            Scribe_Values.Look(ref alreadyGiven, "alreadyGiven");
         }
     }
 }

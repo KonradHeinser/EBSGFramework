@@ -73,7 +73,7 @@ namespace EBSGFramework
 
         public void Install(HediffComp_Modular holder)
         {
-            Props.installSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn, MaintenanceType.None));
+            Props.installSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn));
 
             GenerateComps(holder);
 
@@ -94,7 +94,7 @@ namespace EBSGFramework
             if (Props.requiredCapacity < 0 && RemainingCapacityInCurrentSlot + Props.requiredCapacity < 0)
                 return false;
 
-            Props.ejectSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn, MaintenanceType.None));
+            Props.ejectSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn));
 
             if (!linkedComps.NullOrEmpty())
                 foreach (HediffComp comp in linkedComps)

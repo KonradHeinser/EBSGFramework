@@ -8,7 +8,6 @@ namespace EBSGFramework
         protected override bool Satisfied(Pawn pawn)
         {
             Thing enemy = pawn.GetCurrentTarget(autoSearch: true);
-            if (enemy == null) return false;
             if (enemy is Pawn target)
                 return target.RaceProps.IsMechanoid;
 

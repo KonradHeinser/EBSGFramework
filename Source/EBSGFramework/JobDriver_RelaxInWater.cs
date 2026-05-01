@@ -22,7 +22,7 @@ namespace EBSGFramework
             };
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.defaultDuration = job.def.joyDuration;
-            toil.FailOn(() => EBSGUtilities.BadWeather(pawn.Map));
+            toil.FailOn(() => pawn?.Map?.BadWeather() != false);
             yield return toil;
         }
 

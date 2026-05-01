@@ -61,15 +61,12 @@ namespace EBSGFramework
                 pawn.genes.RemoveGene(this);
             }
 
-            if (def.chemical != null)
+            if (def.chemical?.addictionHediff != null)
             {
-                if (def.chemical.addictionHediff != null)
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(def.chemical.addictionHediff);
+                if (firstHediffOfDef != null)
                 {
-                    Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(def.chemical.addictionHediff);
-                    if (firstHediffOfDef != null)
-                    {
-                        pawn.health.RemoveHediff(firstHediffOfDef);
-                    }
+                    pawn.health.RemoveHediff(firstHediffOfDef);
                 }
             }
             AddDependencyHediff();
@@ -173,7 +170,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref lastIngestedTick, "lastIngestedTick", 0);
+            Scribe_Values.Look(ref lastIngestedTick, "lastIngestedTick");
         }
     }
 }

@@ -244,8 +244,6 @@ namespace EBSGFramework
                     yield return gizmo;
                 }
             }
-
-            yield break;
         }
 
         public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
@@ -341,7 +339,7 @@ namespace EBSGFramework
 
         private void Absorb(DamageInfo dinfo)
         {
-            Props.absorbSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
+            Props.absorbSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map));
             impactAngleVect = Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle);
             Vector3 offsetVector = PawnOwner.DrawPos + impactAngleVect.RotatedBy(180f) * 0.5f;
             float damagePower = Mathf.Min(10f, 2f + dinfo.Amount / 10f);
@@ -357,7 +355,7 @@ namespace EBSGFramework
         {
             energy = 0;
             ticksToReset = Props.resetDelay;
-            Props.shatterSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map, false));
+            Props.shatterSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.Map));
             if (Props.shieldBreakEffecter != null)
             {
                 float scale = Props.minDrawSize + (Props.maxDrawSize - Props.minDrawSize) * energy / MaxEnergy;
@@ -383,7 +381,7 @@ namespace EBSGFramework
         {
             if (PawnOwner?.Spawned == true)
             {
-                Props.resetSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.MapHeld, false));
+                Props.resetSound?.PlayOneShot(new TargetInfo(PawnOwner.Position, PawnOwner.MapHeld));
                 FleckMaker.ThrowLightningGlow(PawnOwner.DrawPos, PawnOwner.MapHeld, 3f);
             }
 

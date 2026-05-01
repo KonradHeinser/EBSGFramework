@@ -73,7 +73,7 @@ namespace EBSGFramework
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref tick, "tick", null);
+            Scribe_Values.Look(ref tick, "tick");
         }
     }
 }

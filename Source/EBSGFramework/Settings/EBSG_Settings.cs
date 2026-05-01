@@ -315,15 +315,15 @@ namespace EBSGFramework
             base.ExposeData();
             
             Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
-            Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes", false);
-            Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes", false);
-            Scribe_Values.Look(ref noInnateMechlinkPrereq, "noInnateMechlinkPrereq", false);
-            Scribe_Values.Look(ref noInnateRemotePrereqs, "noInnateRemotePrereqs", false);
-            Scribe_Values.Look(ref noInnatePsylinkPrereq, "noInnatePsylinkPrereq", false);
+            Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes");
+            Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes");
+            Scribe_Values.Look(ref noInnateMechlinkPrereq, "noInnateMechlinkPrereq");
+            Scribe_Values.Look(ref noInnateRemotePrereqs, "noInnateRemotePrereqs");
+            Scribe_Values.Look(ref noInnatePsylinkPrereq, "noInnatePsylinkPrereq");
             Scribe_Values.Look(ref psychicInsulationBondOpinion, "psychicInsulationBondOpinion", true);
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
-            Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn", false);
+            Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn");
             Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
 
             if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();

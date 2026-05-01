@@ -29,9 +29,8 @@ namespace EBSGFramework
             if (!(p.genes.GetGene(def.GetModExtension<ComaExtension>().relatedGene) is Gene_Coma comaGene) || comaGene.ComaNeed.Comatose) return ThoughtState.Inactive;
 
             Thing boundBed = comaGene.BoundBed;
-            if (boundBed == null) return ThoughtState.Inactive;
 
-            Room room = boundBed.GetRoom();
+            Room room = boundBed?.GetRoom();
             if (room == null) return ThoughtState.Inactive;
             int stage;
             // If they are not wild or it is supposed to be outside, set the stage to 0

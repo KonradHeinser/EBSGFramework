@@ -291,8 +291,7 @@ namespace EBSGFramework
         {
             if (WasteProducer == null) return;
             WasteProducer.ProduceWaste(WasteProducedPerChargingCycle);
-            if (Extension?.wasteProducedEffecter != null)
-                Extension.wasteProducedEffecter.Spawn(base.Position, base.Map).Cleanup();
+            Extension?.wasteProducedEffecter?.Spawn(base.Position, base.Map).Cleanup();
         }
 
         public void StopCharging()
@@ -322,8 +321,8 @@ namespace EBSGFramework
         {
             base.ExposeData();
             Scribe_References.Look(ref currentPawn, "currentPawn");
-            Scribe_Values.Look(ref wasteProduced, "wasteProduced", 0f);
-            Scribe_Values.Look(ref wireExtensionTicks, "wireExtensionTicks", 0);
+            Scribe_Values.Look(ref wasteProduced, "wasteProduced");
+            Scribe_Values.Look(ref wireExtensionTicks, "wireExtensionTicks");
         }
     }
 }

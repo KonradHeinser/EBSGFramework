@@ -103,7 +103,7 @@ namespace EBSGFramework
                         }
                     }
 
-                    if (comp.Props.gatheringFinishedSound != null) comp.Props.gatheringFinishedSound.PlayOneShot(pawn);
+                    comp.Props.gatheringFinishedSound?.PlayOneShot(pawn);
 
                     ReadyForNextToil();
                 }
@@ -131,7 +131,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref progress, "progress", 0);
+            Scribe_Values.Look(ref progress, "progress");
             Scribe_Values.Look(ref progressNeeded, "progressNeeded", 1500);
         }
 

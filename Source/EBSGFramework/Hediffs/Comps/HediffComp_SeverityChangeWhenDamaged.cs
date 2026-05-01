@@ -32,7 +32,7 @@ namespace EBSGFramework
         public override void CompExposeData()
         {
             base.CompExposeData();
-            Scribe_Values.Look(ref cooldownTicks, "EBSG_cooldownTicksChangeWhenHit", 0);
+            Scribe_Values.Look(ref cooldownTicks, "EBSG_cooldownTicksChangeWhenHit");
         }
     }
 }

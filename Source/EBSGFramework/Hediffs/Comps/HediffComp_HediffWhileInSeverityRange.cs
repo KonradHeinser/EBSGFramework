@@ -12,26 +12,21 @@ namespace EBSGFramework
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             base.CompPostPostAdd(dinfo);
-            if (Props.hediffsAtSeverities.NullOrEmpty())
-            {
-                Log.Error(Def + " doesn't have a set hediffsAtSeverities in HediffCompProperties_HediffWhileInSeverityRange. Removing hediff to avoid more errors.");
-                Pawn.health.RemoveHediff(parent);
-            }
             CheckHediffs();
         }
 
-        public override void CompPostTick(ref float severityAdjustment)
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(200)) 
+            if (Pawn.IsHashIntervalTick(200,delta)) 
                 CheckHediffs();
         }
 
-        public void CheckHediffs()
+        protected void CheckHediffs()
         {
             if (addedHediffs == null) addedHediffs = new List<HediffDef>();
-            foreach (HediffSeverityLevel severityLevel in Props.hediffsAtSeverities)
+            foreach (var severityLevel in Props.hediffsAtSeverities)
             {
                 if (severityLevel.range.ValidValue(parent.Severity))
                 {
@@ -41,13 +36,10 @@ namespace EBSGFramework
                         addedHediffs.Add(severityLevel.hediff);
                     }
                 }
-                else
+                else if (addedHediffs.Contains(severityLevel.hediff))
                 {
-                    if (addedHediffs.Contains(severityLevel.hediff))
-                    {
-                        Pawn.RemoveHediffs(severityLevel.hediff);
-                        addedHediffs.Remove(severityLevel.hediff);
-                    }
+                    Pawn.RemoveHediffs(severityLevel.hediff);
+                    addedHediffs.Remove(severityLevel.hediff);
                 }
             }
         }

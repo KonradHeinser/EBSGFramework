@@ -100,8 +100,7 @@ namespace EBSGFramework
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            if (Holder != null)
-                Holder.abilities.RemoveAbility(Props.abilityDef);
+            Holder?.abilities.RemoveAbility(Props.abilityDef);
             AbilityForReading = null;
         }
 
@@ -114,7 +113,7 @@ namespace EBSGFramework
         {
             base.PostExposeData();
             Scribe_Values.Look(ref remainingCharges, "remainingCharges", MaxCharges);
-            Scribe_Values.Look(ref cooldownLeft, "cooldownLeft", 0);
+            Scribe_Values.Look(ref cooldownLeft, "cooldownLeft");
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()

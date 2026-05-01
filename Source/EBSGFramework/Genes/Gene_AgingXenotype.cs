@@ -51,7 +51,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref alreadyChanged, "alreadyChanged", false);
+            Scribe_Values.Look(ref alreadyChanged, "alreadyChanged");
         }
     }
 }

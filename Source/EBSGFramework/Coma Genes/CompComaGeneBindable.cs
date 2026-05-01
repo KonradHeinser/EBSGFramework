@@ -21,7 +21,7 @@ namespace EBSGFramework
 
         public int presenceTicks;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Material cachedHoseMat;
 
         private Material HoseMat
@@ -34,16 +34,16 @@ namespace EBSGFramework
             }
         }
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Sustainer sustainer;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private CompPowerTrader cachedPowerComp;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private CompRefuelable cachedRefuelableComp;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Gene_Coma cachedComaGene;
 
         public Pawn BoundPawn => boundPawn;
@@ -296,7 +296,7 @@ namespace EBSGFramework
         public override void PostExposeData()
         {
             Scribe_References.Look(ref boundPawn, "boundPawn");
-            Scribe_Values.Look(ref presenceTicks, "presenceTicks", 0);
+            Scribe_Values.Look(ref presenceTicks, "presenceTicks");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EBSGFramework
 
         public override bool PlayerInterruptable => !OnLastToil;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Gene_Coma cachedComaGene;
 
         private Gene_Coma ComaGene
@@ -99,7 +99,7 @@ namespace EBSGFramework
                 yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
             }
 
-            Toil toil2 = Toils_LayDown.LayDown(TargetIndex.A, hasBed, false, true, true, PawnPosture.LayingOnGroundNormal, false);
+            Toil toil2 = Toils_LayDown.LayDown(TargetIndex.A, hasBed, false);
             toil2.initAction = (Action)Delegate.Combine(toil2.initAction, (Action)delegate
             {
                 if (pawn.Drafted)

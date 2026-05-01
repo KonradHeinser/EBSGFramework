@@ -20,7 +20,7 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref consumingFromInventory, "consumingFromInventory", false);
+            Scribe_Values.Look(ref consumingFromInventory, "consumingFromInventory");
         }
 
         public override string GetReport()

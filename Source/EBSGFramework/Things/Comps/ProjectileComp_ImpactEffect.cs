@@ -14,14 +14,14 @@ namespace EBSGFramework
             if (Projectile == null) return;
 
             if (Props.fleck != null)
-                FleckMaker.Static(Projectile.DrawPos, parent.Map, Props.fleck, 1f);
+                FleckMaker.Static(Projectile.DrawPos, parent.Map, Props.fleck);
 
             if (Props.mote != null)
-                MoteMaker.MakeStaticMote(parent.DrawPos, parent.Map, Props.mote, 1f);
+                MoteMaker.MakeStaticMote(parent.DrawPos, parent.Map, Props.mote);
 
             if (Props.effecter != null)
             {
-                Effecter effecter = Props.effecter.Spawn(parent.Position, parent.Map, 1f);
+                Effecter effecter = Props.effecter.Spawn(parent.Position, parent.Map);
                 effecter.offset = parent.DrawPos - parent.Position.ToVector3();
                 effecter.Cleanup();
             }

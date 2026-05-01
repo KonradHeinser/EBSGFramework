@@ -51,7 +51,7 @@ namespace EBSGFramework
 
         public new float FallMultiplier => ComaGene?.ComaExtension.fallStat != null ? pawn.StatOrOne(ComaGene.ComaExtension.fallStat) : 1f;
 
-        [Unsaved(false)]
+        [Unsaved()]
         private Gene_Coma cachedComaGene;
 
         public Gene_Coma ComaGene
@@ -83,7 +83,6 @@ namespace EBSGFramework
                     pawn.AddOrAppendHediffs(hediff: ComaGene.ComaExtension.exhaustionHediff);
                 }
             }
-            return;
         }
 
         public override string GetTipString()

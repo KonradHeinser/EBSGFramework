@@ -70,7 +70,7 @@ namespace EBSGFramework
 
             if (!pawn.CanReserve(parent, 1, -1, null, Props.ignoreOtherReservations))
             {
-                Pawn reservedPawn = pawn.Map.reservationManager.FirstRespectedReserver(parent, pawn, null) ?? pawn.Map.physicalInteractionReservationManager.FirstReserverOf(parent);
+                Pawn reservedPawn = pawn.Map.reservationManager.FirstRespectedReserver(parent, pawn) ?? pawn.Map.physicalInteractionReservationManager.FirstReserverOf(parent);
                 string newLabel = label;
 
                 if (reservedPawn != null)
@@ -88,18 +88,17 @@ namespace EBSGFramework
 
             if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
             {
-                yield return new FloatMenuOption(label + " (" + "Incapable".Translate().CapitalizeFirst() + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null, true, 0);
+                yield return new FloatMenuOption(label + " (" + "Incapable".Translate().CapitalizeFirst() + ")", null);
                 yield break;
             }
 
             if (Props.userMustHaveHediff != null && !pawn.HasHediff(Props.userMustHaveHediff))
             {
-                yield return new FloatMenuOption(label + " (" + "MustHaveHediff".Translate(Props.userMustHaveHediff) + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null, true, 0);
+                yield return new FloatMenuOption(label + " (" + "MustHaveHediff".Translate(Props.userMustHaveHediff) + ")", null);
                 yield break;
             }
 
             CompUseEffect_HediffModule parentComp = parent.TryGetComp<CompUseEffect_HediffModule>();
-            List<HediffComp_Modular> workingModulars = new List<HediffComp_Modular>();
             bool foundSlots = false;
 
             if (pawn.health?.hediffSet?.hediffs.NullOrEmpty() == false)
@@ -117,26 +116,25 @@ namespace EBSGFramework
                                     {
                                         HediffComp_Modular duplicateComp = comp;
 
-                                        Action action = delegate ()
-                                        {
-                                            if (pawn.CanReserveAndReach(parent, PathEndMode.Touch, Danger.Deadly, 1, -1, null, Props.ignoreOtherReservations))
-                                                StartModuleJob(pawn, duplicateComp, parentComp, slot, Props.ignoreOtherReservations);
-                                        };
-
                                         string labeled = "EBSG_InstallIn".Translate(parent.Label, hediff.Label, 
                                             hediff.Part?.Label != null ? $"{hediff.Part.Label}, {slot.slotName.TranslateOrFormat()}" : slot.slotName.TranslateOrFormat());
                                         foundSlots = true;
 
-                                        FloatMenuOption floatMenuOption = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(labeled, action, Icon, IconColor, Props.floatMenuOptionPriority), pawn, parent);
+                                        FloatMenuOption floatMenuOption = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(labeled, Action, Icon, IconColor, Props.floatMenuOptionPriority), pawn, parent);
                                         yield return floatMenuOption;
+                                        continue;
+
+                                        void Action()
+                                        {
+                                            if (pawn.CanReserveAndReach(parent, PathEndMode.Touch, Danger.Deadly, 1, -1, null, Props.ignoreOtherReservations)) 
+                                                StartModuleJob(pawn, duplicateComp, parentComp, slot, Props.ignoreOtherReservations);
+                                        }
                                     }
                             }
                     }
             }
             if (!foundSlots)
                 yield return new FloatMenuOption("EBSG_NoSlots".Translate(), null);
-
-            yield break;
         }
 
         public virtual void StartModuleJob(Pawn pawn, HediffComp_Modular modular, CompUseEffect_HediffModule parentComp, ModuleSlot slot, bool forced = false)
