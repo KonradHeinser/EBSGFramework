@@ -912,14 +912,12 @@ namespace EBSGFramework
                 return;
 
             var newHediffs = new List<Hediff>(p.CreateHediffOnParts(hd, severity, o, bodyParts, replaceExisting));
-
             if (!newHediffs.NullOrEmpty() && duration != -1)
                 foreach (var h in newHediffs)
                 {
                     var hediffComp_Disappears = h.TryGetComp<HediffComp_Disappears>();
                     if (hediffComp_Disappears != null)
                         hediffComp_Disappears.ticksToDisappear = duration;
-                    p.health.AddHediff(h);
                 }
         }
 
