@@ -25,10 +25,7 @@ namespace EBSGFramework
                     MakeAbility();
                 return ability;
             }
-            set
-            {
-                ability = value;
-            }
+            set => ability = value;
         }
 
         public void MakeAbility()

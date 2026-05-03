@@ -24,22 +24,20 @@ namespace EBSGFramework
                     Props.reloadSound.PlayOneShot(new TargetInfo(parent.pawn.Position, parent.pawn.Map));
 
                 remainingCharges = value;
+                if (remainingCharges <= 0 && Props.removeOnceEmpty)
+                    parent.pawn.abilities.RemoveAbility(parent.def);
             }
         }
 
-        public int ChargesNeeded
-        {
-            get
-            {
-                return Props.maxCharges - RemainingCharges;
-            }
-        }
-
+        public int ChargesNeeded => Props.maxCharges - RemainingCharges;
+        
+        public override bool CanCast => RemainingCharges > 0;
+        
         public override bool GizmoDisabled(out string reason)
         {
             reason = null;
             if (base.GizmoDisabled(out reason))
-                return base.GizmoDisabled(out reason);
+                return true;
 
             if (RemainingCharges <= 0)
             {
@@ -52,21 +50,18 @@ namespace EBSGFramework
 
         public override string ExtraTooltipPart()
         {
-            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges.ToString();
+            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges;
         }
 
         public override string CompInspectStringExtra()
         {
-            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges.ToString();
+            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges;
         }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
             RemainingCharges--;
-
-            if (Props.removeOnceEmpty && RemainingCharges <= 0)
-                parent.pawn.abilities.RemoveAbility(parent.def);
         }
 
         public override void PostExposeData()
