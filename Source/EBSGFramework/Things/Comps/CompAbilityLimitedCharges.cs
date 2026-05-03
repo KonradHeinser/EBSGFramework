@@ -12,7 +12,7 @@ namespace EBSGFramework
         private Pawn Holder => (parent?.ParentHolder as Pawn_EquipmentTracker)?.pawn ?? (parent?.ParentHolder as Pawn_ApparelTracker)?.pawn;
 
         private int remainingCharges;
-
+        
         private int cooldownLeft;
 
         private Ability ability;
@@ -56,14 +56,8 @@ namespace EBSGFramework
 
         public int RemainingCharges
         {
-            get
-            {
-                return remainingCharges;
-            }
-            set
-            {
-                remainingCharges = value;
-            }
+            get => remainingCharges;
+            set => remainingCharges = value;
         }
 
         public override void Initialize(CompProperties props)
@@ -159,7 +153,7 @@ namespace EBSGFramework
                     else
                         thing = ThingMaker.MakeThing(Props.spawnOnFinalUse);
 
-                    if (thing.TryGetQuality(out var newQuality) && parent.TryGetQuality(out var oldQuality))
+                    if (thing.TryGetQuality(out _) && parent.TryGetQuality(out var oldQuality))
                         thing.TryGetComp<CompQuality>().SetQuality(oldQuality, null); // No art stuff to avoid potential issues
 
                     thing.stackCount = Props.spawnCount;
@@ -173,9 +167,8 @@ namespace EBSGFramework
                                 parent.Destroy();
                             return;
                         }
-                        if (thing is Apparel)
+                        if (thing is Apparel apparel) 
                         {
-                            Apparel apparel = thing as Apparel;
                             if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
                             {
                                 Apparel oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);

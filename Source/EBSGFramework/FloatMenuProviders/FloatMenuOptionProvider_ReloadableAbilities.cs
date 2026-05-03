@@ -56,18 +56,17 @@ namespace EBSGFramework
                         string baseExplanation = "EBSG_Recharge".Translate(ability.def.LabelCap);
                         if (!pawn.CanReach(clickedThing, PathEndMode.OnCell, Danger.Deadly))
                             return new FloatMenuOption(baseExplanation + ": " + "NoPath".Translate().CapitalizeFirst(), null);
-                        else if (clickedThing.stackCount < reloadable.Props.ammoPerCharge)
+                        if (clickedThing.stackCount < reloadable.Props.ammoPerCharge)
                             return new FloatMenuOption(baseExplanation + ": " + "ReloadNotEnough".Translate().CapitalizeFirst(), null);
-                        else if (reloadable.ChargesNeeded <= 0)
+                        if (reloadable.ChargesNeeded <= 0)
                             return new FloatMenuOption(baseExplanation + ": " + "ReloadFull".Translate(), null);
-                        else
-                            return new FloatMenuOption(baseExplanation, delegate
-                            {
-                                Job job = JobMaker.MakeJob(EBSGDefOf.EBSG_ReloadAbility, clickedThing);
-                                job.count = Mathf.Min(clickedThing.stackCount, reloadable.ChargesNeeded * reloadable.Props.ammoPerCharge);
-                                job.ability = ability;
-                                pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
-                            });
+                        return new FloatMenuOption(baseExplanation, delegate
+                        {
+                            Job job = JobMaker.MakeJob(EBSGDefOf.EBSG_ReloadAbility, clickedThing);
+                            job.count = Mathf.Min(clickedThing.stackCount, reloadable.ChargesNeeded * reloadable.Props.ammoPerCharge);
+                            job.ability = ability;
+                            pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+                        });
                     }
                 }
 
