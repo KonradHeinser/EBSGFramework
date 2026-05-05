@@ -160,25 +160,30 @@ namespace EBSGFramework
 
                     if (Holder.Map != null) // This check avoids any errors/warnings about not being able to drop equipment. If they aren't on a map, it's just added to the inventory
                     {
-                        if (thing is ThingWithComps compy && thing.def.equipmentType == EquipmentType.Primary && (Holder.equipment.Primary == null || (Holder.equipment.Primary == parent && Props.destroyAfterLast)))
+                        switch (thing)
                         {
-                            Holder.equipment.AddEquipment(compy);
-                            if (Props.destroyAfterLast)
-                                parent.Destroy();
-                            return;
-                        }
-                        if (thing is Apparel apparel) 
-                        {
-                            if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
+                            case ThingWithComps compy when thing.def.equipmentType == EquipmentType.Primary && (Holder.equipment.Primary == null || (Holder.equipment.Primary == parent && Props.destroyAfterLast)):
                             {
-                                Apparel oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);
-                                if (oldApparel == null || (oldApparel == parent && Props.destroyAfterLast))
+                                Holder.equipment.AddEquipment(compy);
+                                if (Props.destroyAfterLast)
+                                    parent.Destroy();
+                                return;
+                            }
+                            case Apparel apparel:
+                            {
+                                if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
                                 {
-                                    Holder.apparel.Wear(apparel);
-                                    if (Props.destroyAfterLast)
-                                        parent.Destroy();
-                                    return;
+                                    Apparel oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);
+                                    if (oldApparel == null || (oldApparel == parent && Props.destroyAfterLast))
+                                    {
+                                        Holder.apparel.Wear(apparel);
+                                        if (Props.destroyAfterLast)
+                                            parent.Destroy();
+                                        return;
+                                    }
                                 }
+
+                                break;
                             }
                         }
                     }
