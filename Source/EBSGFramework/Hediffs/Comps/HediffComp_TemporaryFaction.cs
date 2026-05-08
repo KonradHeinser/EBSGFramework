@@ -42,13 +42,11 @@ namespace EBSGFramework
             oldFaction = Pawn.Faction;
             oldKindDef = Pawn.kindDef;
 
-            if (GetFaction() && faction != Pawn.Faction)
-            {
-                Pawn.SetFaction(faction, ParentTarget);
-                Pawn.GetLord()?.RemovePawn(Pawn);
-                Lord lord = ParentTarget.GetLord();
-                lord?.AddPawn(Pawn);
-            }
+            if (!GetFaction() || faction == Pawn.Faction) return;
+            Pawn.SetFaction(faction, ParentTarget);
+            Pawn.GetLord()?.RemovePawn(Pawn);
+            Lord lord = ParentTarget.GetLord();
+            lord?.AddPawn(Pawn);
         }
 
         public override void CompPostTickInterval(ref float severityAdjustment, int delta)

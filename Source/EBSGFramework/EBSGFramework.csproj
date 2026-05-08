@@ -130,6 +130,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveHediffsOnRemoval.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveOnFactionChange.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveWhenDamaged.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerDayByStat.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_SeverityPerIntervalByTerrain.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNeedLevel.cs" />
+    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityWhenDowned.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosionBase.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_FlipGenderPeriodically.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveHediffsOnRemoval.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_RemoveOnFactionChange.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveWhenDamaged.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityPerDayByStat.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_SeverityPerIntervalByTerrain.cs" />
@@ -157,6 +160,7 @@
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SetterBase.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGender.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByNeedLevel.cs" />
+    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityWhenDowned.cs" />
     <Compile Include="Hediffs\Stance_StageSetting.cs" />
     <Compile Include="ModularStuff\HediffCompProperties_Modular.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventSlaveRebellion.cs" />
