@@ -9,7 +9,7 @@ namespace EBSGFramework
 
         private bool adding; // Flag for knowing if the faction needs to be recorded
 
-        public override bool CompShouldRemove => faction != Pawn.Faction;
+        public override bool CompShouldRemove => !adding && faction != Pawn.Faction;
 
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
