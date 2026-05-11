@@ -10,15 +10,12 @@ namespace EBSGFramework
 
         private int lastCount;
 
-        protected override bool DoCheck()
-        {
-            return lastCount != Pawn.genes.GenesListForReading.Count ||
-                Pawn.genes.GenesListForReading.GetLast().def != lastGene;
-        }
+        protected override bool DoCheck() => lastCount != Pawn.genes.GenesListForReading.Count ||
+                                             Pawn.genes.GenesListForReading.GetLast().def != lastGene;
 
         protected override void SetSeverity()
         {
-            float newSeverity = Props.baseSeverity * Pawn.StatOrOne(Props.baseSeverityStatFactor);
+            var newSeverity = Props.baseSeverity * Pawn.StatOrOne(Props.baseSeverityStatFactor);
 
             foreach (var geneEffect in Props.geneEffects)
                 if ((geneEffect.gene == null || Pawn.HasRelatedGene(geneEffect.gene)) &&

@@ -138,6 +138,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
+    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByMap.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNeedLevel.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityWhenDowned.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SetterBase.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGender.cs" />
+    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByMap.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByNeedLevel.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityWhenDowned.cs" />
     <Compile Include="Hediffs\Stance_StageSetting.cs" />

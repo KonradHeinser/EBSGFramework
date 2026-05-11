@@ -16,7 +16,7 @@ namespace EBSGFramework
             base.CompPostPostAdd(dinfo);
             adding = true;
         }
-
+        
         public override void CompPostTickInterval(ref float severityAdjustment, int delta)
         {
             base.CompPostTickInterval(ref severityAdjustment, delta);

@@ -35,10 +35,7 @@ namespace EBSGFramework
         }
 
         // Overrides the normal ticks check. Should only use lighter checks like comparing the size of a list to the previous count (See severity by genes for example)
-        protected virtual bool DoCheck() 
-        {
-            return false;
-        }
+        protected virtual bool DoCheck() => false;
 
         protected virtual void SetSeverity()
         {
