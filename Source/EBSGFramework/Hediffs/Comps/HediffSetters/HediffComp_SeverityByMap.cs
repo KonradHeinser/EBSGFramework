@@ -6,7 +6,7 @@ namespace EBSGFramework
 
         private bool prevMapCheck;
 
-        protected override bool DoCheck() => prevMapCheck != (Pawn.MapHeld != null) || base.DoCheck();
+        protected override bool DoCheck() => prevMapCheck != (Pawn.MapHeld != null);
 
         protected override void SetSeverity()
         {
