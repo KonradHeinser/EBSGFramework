@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -30,9 +31,9 @@ namespace EBSGFramework
         public ThingDef postExplosionThingWater = null;
         public float screenShakeFactor = 0;
         public ExclusionLevel exclusions = ExclusionLevel.Self;
+        public bool excludeNonPawnsAndNonBuildings = false;
         public EffecterDef effecter;
         public int effecterTicks = 0;
-        
 
         // Hediff stuff
         public bool multiplyRadiusBySeverity = false;
@@ -109,7 +110,9 @@ namespace EBSGFramework
                 default:
                     break;
             }
-
+            
+            if (excludeNonPawnsAndNonBuildings)
+                ignoreList.AddRange(map.spawnedThings.Where(t => t.PositionHeld.DistanceTo(target.Cell) <= r && !(t is Pawn) && !(t is Building)));
 
             GenExplosion.DoExplosion(target.Cell, map, radius, damageDef, caster, damage,
                 armorPenetration, explosionSound, null, null, null, postExplosionThing,
