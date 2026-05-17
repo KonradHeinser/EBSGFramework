@@ -102,6 +102,7 @@
     <Compile Include="Generic List Classes\GiveSeverityCheck.cs" />
     <Compile Include="Generic List Classes\HediffWithRange.cs" />
     <Compile Include="Generic List Classes\ModuleSlot.cs" />
+    <Compile Include="Generic List Classes\NeedOffsetThreshold.cs" />
     <Compile Include="Generic List Classes\Prerequisites.cs" />
     <Compile Include="Generic List Classes\RandomProjectilePackage.cs" />
     <Compile Include="Enums\RoofCheck.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_NeedOffsetPerHour.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveOnFactionChange.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveWhenDamaged.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_NeedOffsetPerHour.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveOnFactionChange.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveWhenDamaged.cs" />

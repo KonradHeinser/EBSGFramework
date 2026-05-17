@@ -1512,7 +1512,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void HandleNeedOffsets(this Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false, int delta = 1)
+        public static void HandleNeedOffsets(this Pawn pawn, List<NeedOffset> needOffsets, bool preventRepeats = true, int hashInterval = 200, bool hourlyRate = false, bool dailyRate = false, int delta = 1, float factor = 1)
         {
             if (needOffsets.NullOrEmpty() || pawn.needs == null || pawn.needs.AllNeeds.NullOrEmpty()) return;
             var alreadyPickedNeeds = new List<Need>();
@@ -1528,11 +1528,11 @@ namespace EBSGFramework
                 if (need != null)
                 {
                     alreadyPickedNeeds.Add(need);
-                    float offset = needOffset.offset;
+                    var offset = needOffset.offset;
                     if (needOffset.offsetFactorStat != null) offset *= pawn.StatOrOne(needOffset.offsetFactorStat);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
-                    need.CurLevel += offset * delta;
+                    need.CurLevel += offset * delta * factor;
                 }
             }
         }
