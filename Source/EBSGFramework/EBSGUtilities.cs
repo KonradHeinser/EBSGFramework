@@ -492,9 +492,9 @@ namespace EBSGFramework
             return true;
         }
 
-        public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false, int? degree = null)
+        public static void AddHediffToParts(this Pawn pawn, List<HediffToParts> hediffs = null, HediffToParts hediffToParts = null, bool removeWhenBeyondAges = false, int? degree = null, bool refresh = false)
         {
-            if (pawn.health == null) return; // Unlikely, but possible
+            if (pawn.health == null || (hediffs.NullOrEmpty() && hediffToParts == null)) return; // Unlikely, but possible
             if (hediffToParts != null && hediffToParts.DegreeCheck(degree))
             {
                 if (!pawn.WithinAges(hediffToParts.validAges))
@@ -521,13 +521,13 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        if (pawn.HasHediff(hediffToParts.hediff))
+                        if (pawn.HasHediff(hediffToParts.hediff, out var h))
                         {
                             if (!hediffToParts.onlyIfNew)
-                            {
-                                var hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffToParts.hediff);
-                                hediff.Severity += hediffToParts.severity;
-                            }
+                                if (refresh)
+                                    h.Severity = hediffToParts.severity;
+                                else
+                                    h.Severity += hediffToParts.severity;
                         }
                         else
                             pawn.AddOrAppendHediffs(hediffToParts.severity, 0, hediffToParts.hediff);
@@ -562,16 +562,17 @@ namespace EBSGFramework
                     }
                     else
                     {
-                        if (pawn.HasHediff(hediffParts.hediff))
+                        if (pawn.HasHediff(hediffParts.hediff, out var h))
                         {
-                            if (hediffParts.onlyIfNew) continue;
-                            var hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffParts.hediff);
-                            hediff.Severity += hediffParts.severity;
+                            if (hediffParts.onlyIfNew) 
+                                continue;
+                            if (refresh)
+                                h.Severity = hediffParts.severity;
+                            else
+                                h.Severity += hediffParts.severity;
                         }
                         else
-                        {
                             pawn.AddOrAppendHediffs(hediffParts.severity, 0, hediffParts.hediff);
-                        }
                     }
                 }
             }
