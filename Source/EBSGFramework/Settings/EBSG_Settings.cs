@@ -35,10 +35,10 @@ namespace EBSGFramework
     {
         private static Vector2 scrollPosition = Vector2.zero;
 
-        public static bool ageLimitedAgeless = ModsConfig.BiotechActive;
+        public static bool ageLimitedAgeless;
         public static bool hideInactiveSkinGenes;
         public static bool hideInactiveHairGenes;
-        public static bool defaultToRecipeIcon = true;
+        public static bool defaultToRecipeIcon;
 
         public static bool noInnateMechlinkPrereq;
         public static bool noInnateRemotePrereqs;
@@ -314,7 +314,7 @@ namespace EBSGFramework
         {
             base.ExposeData();
             
-            Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless", ModsConfig.BiotechActive);
+            Scribe_Values.Look(ref ageLimitedAgeless, "ageLimitedAgeless");
             Scribe_Values.Look(ref hideInactiveSkinGenes, "hideInactiveSkinGenes");
             Scribe_Values.Look(ref hideInactiveHairGenes, "hideInactiveHairGenes");
             Scribe_Values.Look(ref noInnateMechlinkPrereq, "noInnateMechlinkPrereq");
@@ -324,7 +324,7 @@ namespace EBSGFramework
             Scribe_Values.Look(ref psychicInsulationBondMood, "psychicInsulationBondMood", true);
             Scribe_Values.Look(ref superclottingArchite, "superclottingArchite", true);
             Scribe_Values.Look(ref architePsychicInfluencerBondTorn, "architePsychicInfluencerBondTorn");
-            Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon", true);
+            Scribe_Values.Look(ref defaultToRecipeIcon, "defaultToRecipeIcon");
 
             if (thinkTreeSettings == null) thinkTreeSettings = new Dictionary<string, bool>();
             Scribe_Collections.Look(ref thinkTreeSettings, "EBSG_ThinkTreeSettings", LookMode.Value, LookMode.Value);
