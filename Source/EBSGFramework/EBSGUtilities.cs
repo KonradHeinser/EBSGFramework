@@ -123,6 +123,11 @@ namespace EBSGFramework
         {
             if (gender == pawn.gender || gender == Gender.None || !pawn.RaceProps.hasGenders) return;
             pawn.gender = gender;
+            if (pawn.Name is NameTriple name)
+            {
+                var newName = PawnBioAndNameGenerator.GeneratePawnName(pawn, NameStyle.Full, name.Last, true, pawn.genes.Xenotype);
+                pawn.Name = newName;
+            }
             if (pawn.style != null)
                 if (!pawn.style.CanWantBeard)
                     pawn.style.beardDef = BeardDefOf.NoBeard;
