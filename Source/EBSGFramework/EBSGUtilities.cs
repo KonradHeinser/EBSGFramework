@@ -123,8 +123,6 @@ namespace EBSGFramework
         {
             if (gender == pawn.gender || gender == Gender.None || !pawn.RaceProps.hasGenders) return;
             pawn.gender = gender;
-            pawn.Name = PawnBioAndNameGenerator.GeneratePawnName(pawn, NameStyle.Full, (pawn.Name as NameTriple)?.Last, true,
-                pawn.genes.Xenotype);
             if (pawn.style != null)
                 if (!pawn.style.CanWantBeard)
                     pawn.style.beardDef = BeardDefOf.NoBeard;
@@ -149,6 +147,9 @@ namespace EBSGFramework
                             pawn.RemovePregnancies();
                             break;
                     }
+
+            if (PawnBioAndNameGenerator.GeneratePawnName(pawn, NameStyle.Full, null, false, pawn.genes.Xenotype) is NameTriple newName)
+                pawn.Name = new NameTriple(newName.First, newName.Nick, (pawn.Name as NameTriple)?.Last);
         }
 
         public static void CheckGender(this Pawn pawn, List<GenderByAge> genderByAges, BeardDef beard = null)

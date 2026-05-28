@@ -369,7 +369,7 @@ namespace EBSGFramework
                         }
             }
         }
-
+        
         public static void TryGenerateNewPawnInternalPostfix(ref Pawn __result)
         {
             if (__result?.genes != null)
@@ -501,10 +501,34 @@ namespace EBSGFramework
             }
         }
 
+        private static bool checkedGenderGenes;
+
+        private static List<GeneDef> genderGenes = new List<GeneDef>();
+
+        public static List<GeneDef> GenderGenes
+        {
+            get
+            {
+                if (!checkedGenderGenes)
+                {
+                    genderGenes = new List<GeneDef>(DefDatabase<GeneDef>.AllDefsListForReading.Where(g => 
+                        g.GetModExtension<EBSGExtension>()?.genderByAge?.NullOrEmpty() == false));
+                    checkedGenderGenes = true;
+                }
+                
+                return genderGenes;
+            }
+        }
+
         public static bool GeneratePawnRelationsPrefix(Pawn pawn)
         {
-            EBSGRecorder recorder = EBSGDefOf.EBSG_Recorder;
-            return recorder?.pawnKindsWithoutIntialRelationships.NullOrEmpty() != false || !recorder.pawnKindsWithoutIntialRelationships.Contains(pawn.kindDef);
+            if (EBSGDefOf.EBSG_Recorder.pawnKindsWithoutIntialRelationships?.Contains(pawn.kindDef) == true)
+                return true;
+
+            if (pawn.HasAnyOfRelatedGene(GenderGenes))
+                return true;
+
+            return false;
         }
 
         public static bool DrawGenePrefix(GeneDef geneDef, ref bool __result)
