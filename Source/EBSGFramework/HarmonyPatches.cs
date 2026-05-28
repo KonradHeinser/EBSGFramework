@@ -23,11 +23,9 @@ namespace EBSGFramework
             get
             {
                 if (cache == null)
-                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+                    cache = Current.Game?.GetComponent<EBSGCache_Component>();
 
-                if (cache != null && cache.loaded)
-                    return cache;
-                return null;
+                return cache?.loaded == true ? cache : null;
             }
         }
 
@@ -639,7 +637,7 @@ namespace EBSGFramework
             {
                 // If impassable due to a thing, it's probably a wall
                 
-                if (pawn.Map != null && Cache != null && Cache.GetPawnTerrainComp(pawn, out HediffCompProperties_TerrainCostOverride terrainComp))
+                if (Cache != null && Cache.GetPawnTerrainComp(pawn, out HediffCompProperties_TerrainCostOverride terrainComp))
                 {
                     // Universal Checks
                     if (!pawn.CheckGeneTrio(terrainComp.pawnHasAnyOfGenes, terrainComp.pawnHasAllOfGenes, terrainComp.pawnHasNoneOfGenes) ||
