@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
-using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -19,20 +15,33 @@ namespace EBSGFramework
 
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
-            if (!target.TargetIsPawn(out var pawn)) 
+            var pawn = Props.onlySelf ? parent.pawn : target.Pawn;
+
+            if (pawn?.story?.traits == null)
                 return false;
             
-            if (pawn.story?.traits == null)
-                return false;
+            string baseExplanation = "CannotUseAbility".Translate(parent.def.label) + ": ";
 
             if (Props.haveNoneOfAddedTraits && pawn.PawnHasAnyOfTraits(out _, null, Props.addedTraits))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + "EBSG_TraitRestrictedEquipment_AnyOne".Translate(), pawn, MessageTypeDefOf.RejectInput);
                 return false;
-
+            }
+            
             if (Props.haveAllOfRemovedTraits && !pawn.PawnHasAllOfTraits(null, Props.removedTraits))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + "EBSG_TraitRestrictedEquipment_All".Translate(), pawn, MessageTypeDefOf.RejectInput);
                 return false;
-
+            }
+            
             if (Props.haveAnyOfRemovedTraits && !pawn.PawnHasAnyOfTraits(out _, null, Props.removedTraits))
+            {
+                if (throwMessages)
+                    Messages.Message(baseExplanation + "EBSG_TraitRestrictedEquipment_AnyOne".Translate(), pawn, MessageTypeDefOf.RejectInput);
                 return false;
+            }
             
             return base.Valid(target, throwMessages);
         }
