@@ -190,12 +190,9 @@ namespace EBSGFramework
 
         public override IEnumerable<Gizmo> CompGetGizmos()
         {
-            if (!base.CompGetGizmos().EnumerableNullOrEmpty())
-                foreach (Gizmo gizmo in base.CompGetGizmos())
-                {
-                    yield return gizmo;
-                }
-            
+            foreach (var g in base.CompGetGizmos())
+                yield return g;
+        
             if (Props.displayGizmo && Pawn.Spawned && // If the pawn isn't spawned, the shield shouldn't be doing anything and definitely shouldn't display
                 Pawn.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == Pawn)
             {

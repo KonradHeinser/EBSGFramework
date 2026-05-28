@@ -53,46 +53,49 @@ namespace EBSGFramework
             
             var objects = Find.WorldObjects.ObjectsAt(destination);
 
-            if (!objects.EnumerableNullOrEmpty())
-                foreach (var obj in objects)
-                {
-                    if (ModsConfig.OdysseyActive && Props.checkJammer && obj.RequiresSignalJammerToReach)
-                        continue;
-                    if (obj is Settlement settlement && !settlement.HasMap)
-                        foreach (FloatMenuOption option in TransportersArrivalAction_AttackSettlement.GetFloatMenuOptions(action, Pod, settlement))
+            foreach (var obj in objects)
+            {
+                if (ModsConfig.OdysseyActive && Props.checkJammer && obj.RequiresSignalJammerToReach)
+                    continue;
+                if (obj is Settlement settlement && !settlement.HasMap)
+                    foreach (FloatMenuOption option in TransportersArrivalAction_AttackSettlement.GetFloatMenuOptions(
+                                 action, Pod, settlement))
+                    {
+                        DiaOption settlementOption = new DiaOption(option.Label);
+                        if (!settlement.Faction.HostileTo(Faction.OfPlayer))
                         {
-                            DiaOption settlementOption = new DiaOption(option.Label);
-                            if (!settlement.Faction.HostileTo(Faction.OfPlayer))
-                            {
-                                DiaNode confirmAttack = new DiaNode("ConfirmAttackFriendlyFaction".Translate(settlement.LabelCap, settlement.Faction));
-                                DiaOption confirm = new DiaOption("Confirm".Translate())
-                                {
-                                    action = option.action,
-                                    resolveTree = true
-                                };
-                                confirmAttack.options.Add(confirm);
-                                DiaOption abortMission = new DiaOption("GoBack".Translate()) { link = root };
-                                confirmAttack.options.Add(abortMission);
-                                settlementOption.link = confirmAttack;
-                            }
-                            else
-                            {
-                                settlementOption.action = option.action;
-                                settlementOption.resolveTree = true;
-                            }
-                            root.options.Add(settlementOption);
-                        }
-                    else
-                        foreach (FloatMenuOption option in obj.GetTransportersFloatMenuOptions(Pod, action))
-                        {
-                            DiaOption transporterOption = new DiaOption(option.Label)
+                            DiaNode confirmAttack =
+                                new DiaNode("ConfirmAttackFriendlyFaction".Translate(settlement.LabelCap,
+                                    settlement.Faction));
+                            DiaOption confirm = new DiaOption("Confirm".Translate())
                             {
                                 action = option.action,
                                 resolveTree = true
                             };
-                            root.options.Add(transporterOption);
+                            confirmAttack.options.Add(confirm);
+                            DiaOption abortMission = new DiaOption("GoBack".Translate()) { link = root };
+                            confirmAttack.options.Add(abortMission);
+                            settlementOption.link = confirmAttack;
                         }
-                }
+                        else
+                        {
+                            settlementOption.action = option.action;
+                            settlementOption.resolveTree = true;
+                        }
+
+                        root.options.Add(settlementOption);
+                    }
+                else
+                    foreach (FloatMenuOption option in obj.GetTransportersFloatMenuOptions(Pod, action))
+                    {
+                        DiaOption transporterOption = new DiaOption(option.Label)
+                        {
+                            action = option.action,
+                            resolveTree = true
+                        };
+                        root.options.Add(transporterOption);
+                    }
+            }
 
             DiaOption cancel = new DiaOption("Cancel".Translate())
             {

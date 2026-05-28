@@ -226,23 +226,15 @@ namespace EBSGFramework
 
         public override IEnumerable<Gizmo> CompGetWornGizmosExtra()
         {
-            if (!base.CompGetWornGizmosExtra().EnumerableNullOrEmpty())
-                foreach (Gizmo gizmo in base.CompGetWornGizmosExtra())
-                {
-                    yield return gizmo;
-                }
+            foreach (var g in base.CompGetWornGizmosExtra())
+                yield return g;
 
-            if (Props.displayGizmo)
+            if (Props.displayGizmo && PawnOwner.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == PawnOwner)
             {
-                if (PawnOwner.Faction?.IsPlayer == true && Find.Selector.SingleSelectedThing == PawnOwner)
-                {
-                    if (gizmo == null)
-                    {
-                        gizmo = new Gizmo_ShieldStatus(this);
-                    }
+                if (gizmo == null)
+                    gizmo = new Gizmo_ShieldStatus(this);
 
-                    yield return gizmo;
-                }
+                yield return gizmo;
             }
         }
 

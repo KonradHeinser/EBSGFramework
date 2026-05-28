@@ -27,14 +27,9 @@ namespace EBSGFramework
 
                     foreach (SkillChange skillChange in Extension.skillChanges)
                     {
-                        SkillRecord skill;
-                        if (skillChange.skill == null)
-                        {
-                            IEnumerable<SkillRecord> validSkills = pawn.skills.skills.Where(s => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
-                            if (validSkills.EnumerableNullOrEmpty()) continue;
-                            skill = validSkills.RandomElement();
-                        }
-                        else skill = pawn.skills.GetSkill(skillChange.skill);
+                        var skill = skillChange.skill == null ? 
+                            pawn.skills.skills.Where(s => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange)).RandomElementWithFallback() : 
+                            pawn.skills.GetSkill(skillChange.skill);
                         if (skill == null) continue;
 
                         changedAmounts.Add(skillChange.skillChange.RandomInRange);

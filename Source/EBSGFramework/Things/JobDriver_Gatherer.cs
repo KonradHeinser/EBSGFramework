@@ -115,15 +115,15 @@ namespace EBSGFramework
         private void SetNextDestination()
         {
             CompGathererSpot comp = GathererCenter.TryGetComp<CompGathererSpot>();
-            var wanderTiles = Map.AllCells.Where(p => p.DistanceTo(GathererCenter.Position) <= comp.Props.gatherRadius && !p.Impassable(Map));
+            var wanderTiles = Map.AllCells.Where(p => p.DistanceTo(GathererCenter.Position) <= comp.Props.gatherRadius && !p.Impassable(Map)).ToList();
 
-            if (!wanderTiles.EnumerableNullOrEmpty())
-                if (comp.Props.focusWanderInWater && !wanderTiles.Where(p => p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // Tries to find water if instructed to do so in the comp
-                    job.SetTarget(TargetIndex.B, wanderTiles.Where(p => p.GetTerrain(Map).IsWater).RandomElement());
-                else if (!wanderTiles.Where(p => !p.GetTerrain(Map).IsWater).EnumerableNullOrEmpty()) // This is used if it can't find water, or if not supposed to focus on water
-                    job.SetTarget(TargetIndex.B, wanderTiles.Where(p => !p.GetTerrain(Map).IsWater).RandomElement());
-                else // This is used if not supposed to focus on water, but no non-water tiles can be found
-                    job.SetTarget(TargetIndex.B, wanderTiles.RandomElement());
+            if (!wanderTiles.NullOrEmpty())
+                if (comp.Props.focusWanderInWater && wanderTiles.Where(t => t.GetTerrain(Map).IsWater).TryRandomElement(out var waterSpot))
+                    job.SetTarget(TargetIndex.B, waterSpot);
+                else if (wanderTiles.Where(t => !t.GetTerrain(Map).IsWater).TryRandomElement(out var drySpot))
+                    job.SetTarget(TargetIndex.B, drySpot);
+                else
+                    job.SetTarget(TargetIndex.A, wanderTiles.RandomElement());
             else
                 job.SetTarget(TargetIndex.B, GathererCenter.Position);
         }

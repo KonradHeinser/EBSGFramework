@@ -54,48 +54,58 @@ namespace EBSGFramework
                 return false;
             }
 
-            float severity = parent.Severity;
-            List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+            var severity = parent.Severity;
+            var alreadyUsedSpots = new List<IntVec3>();
 
-            foreach (List<ThingCreationItem> optionList in list)
-                if (!optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity).EnumerableNullOrEmpty())
+            foreach (var optionList in list)
+            {
+                var newList = optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity);
+                var option = newList.RandomElementByWeightWithFallback((arg) => arg.weight);
+                if (option == null)
+                    continue;
+                var thing = EBSGUtilities.CreateThingCreationItem(option, parent.pawn);
+                if (thing == null) continue;
+                if (map != null)
                 {
-                    ThingCreationItem option = optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity).RandomElementByWeight((arg) => arg.weight);
-                    Thing thing = EBSGUtilities.CreateThingCreationItem(option, parent.pawn);
-                    if (thing == null) continue;
-                    if (map != null)
+                    IntVec3 intVec;
+                    if (parent.pawn.Position.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() ||
+                                                               !alreadyUsedSpots.Contains(parent.pawn.Position)))
                     {
-                        IntVec3 intVec;
-                        if (parent.pawn.Position.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.pawn.Position)))
-                        {
-                            intVec = parent.pawn.Position;
-                            alreadyUsedSpots.Add(parent.pawn.Position);
-                        }
-                        else intVec = CellFinder.RandomClosewalkCellNear(parent.pawn.Position, map, 1, delegate (IntVec3 cell)
-                        {
-                            if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
-                            if (cell != parent.pawn.Position)
+                        intVec = parent.pawn.Position;
+                        alreadyUsedSpots.Add(parent.pawn.Position);
+                    }
+                    else
+                        intVec = CellFinder.RandomClosewalkCellNear(parent.pawn.Position, map, 1,
+                            delegate(IntVec3 cell)
                             {
-                                Building building = map.edificeGrid[cell];
-                                if (building == null)
+                                if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell))
+                                    return false;
+                                if (cell != parent.pawn.Position)
                                 {
-                                    alreadyUsedSpots.Add(cell);
-                                    return true;
+                                    Building building = map.edificeGrid[cell];
+                                    if (building == null)
+                                    {
+                                        alreadyUsedSpots.Add(cell);
+                                        return true;
+                                    }
+
+                                    if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
+                                    return building.def?.IsBed != true;
                                 }
 
-                                if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
-                                return building.def?.IsBed != true;
-                            }
-                            return false;
-                        });
-                        GenPlace.TryPlaceThing(thing, intVec, map, ThingPlaceMode.Near);
-                    }
-                    else if (thing.def.Minifiable || (!thing.def.IsPlant && !typeof(Building).IsAssignableFrom(thing.def.thingClass)))
-                    {
-                        if (thing.def.Minifiable) caravan.AddPawnOrItem(thing.MakeMinified(), false);
-                        else caravan.AddPawnOrItem(thing, true);
-                    }
+                                return false;
+                            });
+
+                    GenPlace.TryPlaceThing(thing, intVec, map, ThingPlaceMode.Near);
                 }
+                else if (thing.def.Minifiable ||
+                         (!thing.def.IsPlant && !typeof(Building).IsAssignableFrom(thing.def.thingClass)))
+                {
+                    if (thing.def.Minifiable) caravan.AddPawnOrItem(thing.MakeMinified(), false);
+                    else caravan.AddPawnOrItem(thing, true);
+                }
+            }
+
             return true;
         }
 

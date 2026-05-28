@@ -12,23 +12,21 @@ namespace EBSGFramework
         protected override LocalTargetInfo GetTarget(Pawn caster, Ability ability)
         {
             potentialTargets.Clear();
-            IEnumerable<Thing> hostiles = from x in caster.Map.attackTargetsCache.GetPotentialTargetsFor(caster)
-                                          select x.Thing;
-            if (hostiles.EnumerableNullOrEmpty())
-            {
+            var hostiles = (from x in caster.Map.attackTargetsCache.GetPotentialTargetsFor(caster)
+                                          select x.Thing).ToList();
+            if (hostiles.NullOrEmpty())
                 return LocalTargetInfo.Invalid;
-            }
 
             // Get verbs
-            VerbProperties verb = ability.verb.verbProps;
-            TargetingParameters validTargets = verb.targetParams;
+            var verb = ability.verb.verbProps;
+            var validTargets = verb.targetParams;
 
             // Get range
-            float MaxDistanceFromCaster = ability.verb.EffectiveRange;
+            var MaxDistanceFromCaster = ability.verb.EffectiveRange;
             if (ability.def.verbProperties.warmupTime > 1) MaxDistanceFromCaster *= (1 / ability.def.verbProperties.warmupTime) * 0.8f; // Trying to avoid chance of target wandering out of range mid-cast
 
             // Create curve based on range
-            SimpleCurve DistanceSquaredToTargetSelectionWeightCurve = new SimpleCurve
+            var DistanceSquaredToTargetSelectionWeightCurve = new SimpleCurve
             {
                 new CurvePoint(MaxDistanceFromCaster * 0.16f, 1f),
                 new CurvePoint(MaxDistanceFromCaster * 0.65f, 0.1f),
@@ -36,21 +34,12 @@ namespace EBSGFramework
             };
 
             // Get Comp
-            CompAbilityEffect_GiveMentalState mentalComp = null;
-            MentalStateDef mentalState = null;
-            foreach (AbilityComp comp in ability.comps)
-            {
-                if (comp is CompAbilityEffect_GiveMentalState compAbilityEffect_Mental)
-                {
-                    mentalComp = compAbilityEffect_Mental;
-                    mentalState = compAbilityEffect_Mental.Props.stateDef;
-                    break;
-                }
-            }
+            var mentalComp = ability.comps.FirstOrDefault(c => c is CompAbilityEffect_GiveMentalState) as CompAbilityEffect_GiveMentalState;
+            var mentalState = mentalComp?.Props.stateDef;
 
             if (mentalComp == null) return LocalTargetInfo.Invalid;
 
-            foreach (Pawn item in caster.Map.mapPawns.AllPawnsSpawned)
+            foreach (var item in caster.Map.mapPawns.AllPawnsSpawned)
             {
                 // Check if it's even a valid target
                 if (!item.Position.InHorDistOf(caster.Position, MaxDistanceFromCaster) || !mentalComp.Valid(new LocalTargetInfo(item)) || !ability.CanApplyOn(new LocalTargetInfo(item))) continue;
@@ -60,18 +49,10 @@ namespace EBSGFramework
             }
             if (potentialTargets.TryRandomElementByWeight(delegate (Pawn x)
             {
-                float num = MaxDistanceFromCaster;
-                foreach (Thing item2 in hostiles)
-                {
-                    if (item2.Spawned)
-                    {
-                        float num2 = item2.Position.DistanceTo(x.Position);
-                        if (num2 < num)
-                        {
-                            num = num2;
-                        }
-                    }
-                }
+                var num = MaxDistanceFromCaster;
+                foreach (var num2 in hostiles.Where(i => i.Spawned).Select(i => i.Position.DistanceTo(x.Position)))
+                    if (num2 < num)
+                        num = num2;
                 return DistanceSquaredToTargetSelectionWeightCurve.Evaluate(num);
             }, out var result))
             {

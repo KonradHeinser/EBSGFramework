@@ -253,7 +253,7 @@ namespace EBSGFramework
             Map map = GetMap(target.Value);
             // Make sure that the map that will be generated is less likely to kill off animals (i.e. space)
             if (map == null)
-                return target?.Tile.Tile.PrimaryBiome.AllWildAnimals.EnumerableNullOrEmpty() == false;
+                return target?.Tile.Tile?.PrimaryBiome?.AllWildAnimals.EnumerableNullOrEmpty() == false;
 
             // Make sure the map in question either is the player's, or won't off animals randomly
             return map.IsPlayerHome || !map.Biome.AllWildAnimals.EnumerableNullOrEmpty();

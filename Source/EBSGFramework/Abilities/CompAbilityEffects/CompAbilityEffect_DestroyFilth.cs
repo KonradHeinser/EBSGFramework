@@ -18,13 +18,10 @@ namespace EBSGFramework
                 return false;
 
             var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true) : target.Cell.GetThingList(parent.pawn.Map);
-
-            if (stuff.EnumerableNullOrEmpty())
-                return false;
-
-            foreach (var thing in stuff) // Checks if there's a valid filth available
-                if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
-                    return base.Valid(target, throwMessages);
+            if (stuff != null)
+                foreach (var thing in stuff) // Checks if there's a valid filth available
+                    if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
+                        return base.Valid(target, throwMessages);
 
             if (throwMessages)
                 Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoViableTarget".Translate(), parent.pawn, MessageTypeDefOf.RejectInput, false);
@@ -39,19 +36,21 @@ namespace EBSGFramework
 
             var stuff = parent.def.EffectRadius > 0 ? GenRadial.RadialDistinctThingsAround(target.Cell, parent.pawn.Map, parent.def.EffectRadius, true) : target.Cell.GetThingList(parent.pawn.Map);
 
-            if (!stuff.EnumerableNullOrEmpty())
-                foreach (var thing in stuff)
-                    if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
+            if (stuff == null)
+                return;
+            
+            foreach (var thing in stuff)
+                if (thing is Filth filth && Props.amount.ValidValue(filth.thickness) && ValidThing(filth))
+                {
+                    if (Props.amount.max >= filth.thickness)
+                        filth.Destroy();
+                    else
                     {
-                        if (Props.amount.max >= filth.thickness)
-                            filth.Destroy();
-                        else
-                        {
-                            filth.thickness -= Props.amount.max;
-                            if (filth.Spawned)
-                                filth.Map.mapDrawer.MapMeshDirty(filth.Position, MapMeshFlagDefOf.Things);
-                        }
+                        filth.thickness -= Props.amount.max;
+                        if (filth.Spawned)
+                            filth.Map.mapDrawer.MapMeshDirty(filth.Position, MapMeshFlagDefOf.Things);
                     }
+                }
         }
 
         private bool ValidThing(Thing thing)

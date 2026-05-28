@@ -35,7 +35,7 @@ namespace EBSGFramework
                     if (moduleHolder.Count > 0)
                         foreach (ThingWithComps thing in moduleHolder)
                         {
-                            CompUseEffect_HediffModule moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
+                            var moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
 
                             if (moduleComp.usedSlot == slot.slotID)
                             {

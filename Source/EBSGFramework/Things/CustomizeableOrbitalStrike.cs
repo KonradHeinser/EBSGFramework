@@ -230,14 +230,13 @@ namespace EBSGFramework
             if (!targetCell.IsValid || Map == null) return true;
             var list = Map.listerThings.ThingsInGroup(ThingRequestGroup.ProjectileInterceptor).Where(t => t.HasComp<CompProjectileInterceptor>());
 
-            if (!list.EnumerableNullOrEmpty())
-                foreach (Thing thing in list)
-                {
-                    CompProjectileInterceptor comp = thing.TryGetComp<CompProjectileInterceptor>();
-                    if (comp != null && comp.Active && comp.Props.interceptAirProjectiles && targetCell.InHorDistOf(thing.Position, comp.Props.radius) &&
-                        (comp.Props.interceptNonHostileProjectiles || instigator.HostileTo(thing)))
-                        return true;
-                }
+            foreach (var thing in list)
+            {
+                var comp = thing.TryGetComp<CompProjectileInterceptor>();
+                if (comp != null && comp.Active && comp.Props.interceptAirProjectiles && targetCell.InHorDistOf(thing.Position, comp.Props.radius) &&
+                    (comp.Props.interceptNonHostileProjectiles || instigator.HostileTo(thing)))
+                    return true;
+            }
 
             return false;
         }

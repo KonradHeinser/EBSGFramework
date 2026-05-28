@@ -27,9 +27,6 @@ namespace EBSGFramework
         {
             var buildings = pawn.Map.spawnedThings.Where(t => t.def.thingClass == typeof(Building_PawnNeedCharger));
 
-            if (buildings.EnumerableNullOrEmpty())
-                return null;
-
             List<string> alreadyCheckedBuildingDefs = new List<string>();
 
             foreach (Thing thing in buildings)

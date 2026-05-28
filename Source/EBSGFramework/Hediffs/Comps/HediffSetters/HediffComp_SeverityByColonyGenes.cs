@@ -39,9 +39,9 @@ namespace EBSGFramework
             ticksToNextCheck = 2500;
         }
 
-        public int CheckGeneCount(IEnumerable<Pawn> pawns)
+        private int CheckGeneCount(IEnumerable<Pawn> pawns)
         {
-            return pawns.EnumerableNullOrEmpty() ? 0 : pawns.Count(pawn => pawn.CheckPawnGenes(Props.gene, Props.genes, Props.mustHaveAllGenes));
+            return pawns.Count(pawn => pawn.CheckPawnGenes(Props.gene, Props.genes, Props.mustHaveAllGenes));
         }
     }
 }

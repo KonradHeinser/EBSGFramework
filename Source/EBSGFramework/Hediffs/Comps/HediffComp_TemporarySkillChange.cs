@@ -22,14 +22,9 @@ namespace EBSGFramework
 
             foreach (SkillChange skillChange in Props.skillChanges)
             {
-                SkillRecord skill;
-                if (skillChange.skill == null)
-                {
-                    IEnumerable<SkillRecord> validSkills = Pawn.skills.skills.Where(s => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange));
-                    if (validSkills.EnumerableNullOrEmpty()) continue;
-                    skill = validSkills.RandomElement();
-                }
-                else skill = Pawn.skills.GetSkill(skillChange.skill);
+                var skill = skillChange.skill == null ? 
+                    Pawn.skills.skills.Where(s => !s.TotallyDisabled && !changedSkills.Contains(s.def) && !Redundant(s, skillChange)).RandomElementWithFallback() : 
+                    Pawn.skills.GetSkill(skillChange.skill);
                 if (skill == null) continue;
 
                 int changeAmount = skillChange.skillChange.RandomInRange;

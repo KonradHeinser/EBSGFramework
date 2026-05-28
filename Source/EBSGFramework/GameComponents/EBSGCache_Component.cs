@@ -118,6 +118,7 @@ namespace EBSGFramework
         public List<ThingDef> shieldEquipment = new List<ThingDef>();
         public List<WeaponTraitDef> meleeWeaponTraits = new List<WeaponTraitDef>();
         public List<WeaponTraitDef> projectileOverrideTraits = new List<WeaponTraitDef>();
+        public List<ThingDef> indestructibleThings = new List<ThingDef>();
         
         public bool ComaNeedsExist()
         {
@@ -536,10 +537,10 @@ namespace EBSGFramework
             shieldHediffs = new List<HediffDef>();
             nameColorHediffs = new List<HediffDef>();
 
-            foreach (HediffDef hediff in DefDatabase<HediffDef>.AllDefs)
+            foreach (var hediff in DefDatabase<HediffDef>.AllDefs)
             {
                 if (hediff.comps.NullOrEmpty()) continue;
-                foreach (HediffCompProperties comp in hediff.comps)
+                foreach (var comp in hediff.comps)
                 {
                     if (comp is HediffCompProperties_ExplodingAttacks || comp is HediffCompProperties_ExplodingRangedAttacks || comp is HediffCompProperties_ExplodingMeleeAttacks)
                         explosiveAttackHediffs.Add(hediff);
@@ -561,13 +562,17 @@ namespace EBSGFramework
             shieldEquipment = new List<ThingDef>();
             meleeWeaponTraits = new List<WeaponTraitDef>();
             projectileOverrideTraits = new List<WeaponTraitDef>();
+            indestructibleThings = new List<ThingDef>();
 
-            foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs)
+            foreach (var thing in DefDatabase<ThingDef>.AllDefs)
             {
                 needEquippableAbilityPatches |= thing.HasComp<CompAbilityLimitedCharges>();
                 
                 if (thing.HasComp<CompShieldEquipment>())
                     shieldEquipment.Add(thing);
+                
+                if (thing.HasComp<CompIndestructible>())
+                    indestructibleThings.Add(thing);
             }
 
             if (ModsConfig.RoyaltyActive || ModsConfig.OdysseyActive)

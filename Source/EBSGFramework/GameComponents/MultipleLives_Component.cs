@@ -276,14 +276,13 @@ namespace EBSGFramework
 
                         // See if a caravan is holding onto the corpse. Starts by checking tile because it's probably faster than checking each container
                         var caravans = Find.World.worldObjects.Caravans.Where(c => c.Tile == pawn.Tile && c.AllThings.Contains(pawn));
-                        if (!caravans.EnumerableNullOrEmpty())
-                            caravan = caravans.First();
+                        if (!caravans.TryRandomElement(out var car))
+                            caravan = car;
                         else
                         {
                             // If no caravan was found that way, see if there happens to be any caravan on the tile in the pawn's faction
                             caravans = Find.World.worldObjects.Caravans.Where(c => c.Tile == pawn.Tile && c.Faction == pawn.Faction);
-                            if (!caravans.EnumerableNullOrEmpty())
-                                caravan = caravans.First();
+                            caravan = caravans.FirstOrDefault();
                         }
                         pawn.InnerPawn.TryToRevivePawn();
                         if (caravan != null) caravan.AddPawn(pawn.InnerPawn, false);

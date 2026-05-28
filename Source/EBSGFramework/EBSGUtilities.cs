@@ -1393,10 +1393,7 @@ namespace EBSGFramework
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
         {
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
-            foreach (var hediff in hediffs)
-                if (!pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty())
-                    return true;
-            return false;
+            return hediffs.Any(hediff => !pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty());
         }
 
         public static float PawnHediffRangeNum(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)

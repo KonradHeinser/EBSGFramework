@@ -35,28 +35,22 @@ namespace EBSGFramework
 
         protected override LocalTargetInfo GetTarget(Pawn caster, Ability ability)
         {
-            var allies = caster.Map.mapPawns.SpawnedPawnsInFaction(caster.Faction).Where(a => caster != a && ability.CanApplyOn(new LocalTargetInfo(a)));
+            var allies = caster.Map.mapPawns.SpawnedPawnsInFaction(caster.Faction).Where(a => caster != a && ability.CanApplyOn(new LocalTargetInfo(a))).ToList();
 
-            if (!allies.EnumerableNullOrEmpty())
-            {
-                allies = allies.OrderBy(p => p.Position.DistanceToSquared(caster.Position));
-                foreach (Pawn ally in allies) // Prioritizes bleeding pawns
+            allies.SortBy(p => p.Position.DistanceToSquared(caster.Position));
+            foreach (var ally in allies) // Prioritizes bleeding pawns
+                if (ally.health.hediffSet.BleedRateTotal > bleedThreshold)
                 {
-                    if (ally == caster || !ability.CanApplyOn(new LocalTargetInfo(ally))) continue;
-                    if (ally.health.hediffSet.BleedRateTotal > bleedThreshold && ability.CanApplyOn(new LocalTargetInfo(ally)))
+                    targetPawn = ally;
+                    return new LocalTargetInfo(ally);
+                }
+            if (allTendable) // If there's no notable bleeding but allowed to heal all wounds, look for any tendable pawn
+                foreach (var ally in allies) // Start with injuries as those are most likely to cause immediate issues
+                    if (!ally.health.hediffSet.GetHediffsTendable().Where(h => h.BleedRate > 0).ToList().NullOrEmpty())
                     {
                         targetPawn = ally;
                         return new LocalTargetInfo(ally);
                     }
-                }
-                if (allTendable) // If there's no notable bleeding but allowed to heal all wounds, look for any tendable pawn
-                    foreach (Pawn ally in allies) // Start with injuries as those are most likely to cause immediate issues
-                        if (!ally.health.hediffSet.GetHediffsTendable().Where(h => h.BleedRate > 0).ToList().NullOrEmpty())
-                        {
-                            targetPawn = ally;
-                            return new LocalTargetInfo(ally);
-                        }
-            }
             return LocalTargetInfo.Invalid;
         }
 
