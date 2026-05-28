@@ -523,12 +523,12 @@ namespace EBSGFramework
         public static bool GeneratePawnRelationsPrefix(Pawn pawn)
         {
             if (EBSGDefOf.EBSG_Recorder.pawnKindsWithoutIntialRelationships?.Contains(pawn.kindDef) == true)
-                return true;
+                return false;
 
             if (pawn.HasAnyOfRelatedGene(GenderGenes))
-                return true;
+                return false;
 
-            return false;
+            return true;
         }
 
         public static bool DrawGenePrefix(GeneDef geneDef, ref bool __result)
