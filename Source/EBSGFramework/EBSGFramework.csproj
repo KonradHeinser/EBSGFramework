@@ -45,6 +45,7 @@
     <Compile Include="Abilities\Building_LaunchAbilityPod.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeFaction.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeTraits.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DealDamage.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyCorpse.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ToggleHediff.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeIdeology.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeTraits.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDealDamage.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyFilth.cs" />

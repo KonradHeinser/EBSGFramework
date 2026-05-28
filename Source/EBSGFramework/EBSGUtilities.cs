@@ -1666,9 +1666,69 @@ namespace EBSGFramework
             return true;
         }
 
+        public static int RemoveTraits(this Pawn pawn, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
+        {
+            var count = 0;
+            
+            if (!traitDefs.NullOrEmpty())
+                foreach (var t in traitDefs.Select(t => pawn.story.traits.GetTrait(t)).Where(t => t != null))
+                {
+                    count++;
+                    pawn.story.traits.RemoveTrait(t);
+                }
+
+            if (!traits.NullOrEmpty())
+                foreach (var t in traits.Select(t => pawn.story.traits.GetTrait(t.def, t.degree)).Where(t => t != null))
+                {
+                    count++;
+                    pawn.story.traits.RemoveTrait(t);
+                }
+            
+            return count;
+        }
+
+        public static List<Trait> AddTraits(this Pawn pawn, List<TraitDef> traitDefs = null,
+            List<TraitDegree> traits = null)
+        {
+            var results = new List<Trait>();
+            
+            if (!traitDefs.NullOrEmpty())
+                foreach (var trait in traitDefs.Where(t => !pawn.story.traits.HasTrait(t)))
+                {
+                    var newTrait = new Trait(trait, trait.degreeDatas[0].degree, true);
+                    results.Add(newTrait);
+                    pawn.story.traits.GainTrait(newTrait);
+                }
+
+            if (!traits.NullOrEmpty())
+                foreach (var trait in traits.Where(t => !pawn.story.traits.HasTrait(t.def, t.degree)))
+                {
+                    var newTrait = new Trait(trait.def, trait.degree, true);
+                    results.Add(newTrait);
+                    pawn.story.traits.GainTrait(newTrait);
+                }
+            
+            return results;
+        }
+        
+        public static bool PawnHasAllOfTraits(this Pawn pawn, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
+        {
+            if (pawn.story?.traits?.allTraits.NullOrEmpty() != false)
+                return false;
+
+            if (traitDefs?.All(t => pawn.story.traits.HasTrait(t)) == false)
+                return false;
+
+            if (traits?.All(t => pawn.story.traits.HasTrait(t.def, t.degree)) == false)
+                return false;
+                
+            return true;
+        }
+        
         public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
         {
-            return pawn.story.TrackerHasAnyOfTraits(out first, traitDefs, traits);
+            first = null;
+            return pawn.story?.TrackerHasAnyOfTraits(out first, traitDefs, traits) == true;
         }
 
         public static bool TrackerHasAnyOfTraits(this Pawn_StoryTracker tracker, out Trait first, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
