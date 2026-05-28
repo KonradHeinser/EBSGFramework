@@ -48,6 +48,9 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            if (Props.successChance?.Success(parent.pawn, target.Pawn) == false)
+                return;
+            
             if (!Props.onlySelf && target.TargetIsPawn(out var pawn))
             {
                 pawn.RemoveTraits(null, Props.removedTraits);
