@@ -8,7 +8,7 @@ namespace EBSGFramework
         public FactionDef staticFaction;
 
         public bool useStatic = false;
-
+        
         public bool temporary = true;
 
         public HediffCompProperties_TemporaryFaction()
