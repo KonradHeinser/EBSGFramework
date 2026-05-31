@@ -112,7 +112,7 @@ namespace EBSGFramework
             }
             
             if (excludeNonPawnsAndNonBuildings)
-                ignoreList.AddRange(map.spawnedThings.Where(t => t.PositionHeld.DistanceTo(target.Cell) <= r && !(t is Pawn) && !(t is Building)));
+                ignoreList.AddRange(map.spawnedThings.Where(t => !(t is Pawn) && !(t is Building) && t.PositionHeld.DistanceTo(target.Cell) <= r));
 
             GenExplosion.DoExplosion(target.Cell, map, radius, damageDef, caster, damage,
                 armorPenetration, explosionSound, null, null, null, postExplosionThing,
