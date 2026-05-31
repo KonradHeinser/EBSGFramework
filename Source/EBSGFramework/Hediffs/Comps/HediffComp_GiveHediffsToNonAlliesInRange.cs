@@ -48,19 +48,14 @@ namespace EBSGFramework
                     if (Props.interval != null && Props.successChance?.Success(parent.pawn, item) == false)
                         continue;
                     
-                    Hediff hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
+                    var hediff = item.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
                     if (hediff == null)
                     {
-                        hediff = item.health.AddHediff(Props.hediff, item.health.hediffSet.GetBrain());
-                        hediff.Severity = Props.initialSeverity;
-                        HediffComp_Link hediffComp_Link = hediff.TryGetComp<HediffComp_Link>();
-                        if (hediffComp_Link != null)
-                        {
-                            hediffComp_Link.drawConnection = true;
-                            hediffComp_Link.other = parent.pawn;
-                        }
+                        hediff = item.CreateComplexHediff(Props.initialSeverity, Props.hediff, Pawn,
+                            item.health.hediffSet.GetBrain());
+                        item.health.AddHediff(hediff);
                     }
-                    HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
+                    var hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
                     if (hediffComp_Disappears == null)
                         Log.Error("HediffComp_GiveHediffsToNonAlliesInRange has a hediff in props which does not have a HediffComp_Disappears");
                     else
