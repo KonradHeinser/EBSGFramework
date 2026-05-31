@@ -21,14 +21,10 @@ namespace EBSGFramework
             get
             {
                 if (ownerComp != null)
-                {
                     return ownerComp;
-                }
 
                 if (ownerHediff == null)
-                {
                     return null;
-                }
 
                 ownerComp = ownerHediff.TryGetComp<HediffComp_Modular>();
 
@@ -43,7 +39,7 @@ namespace EBSGFramework
                 if (OwnerComp?.Props.slots.NullOrEmpty() != false)
                     return null;
 
-                foreach (ModuleSlot slot in OwnerComp.Props.slots)
+                foreach (var slot in OwnerComp.Props.slots)
                     if (slot.slotID == usedSlot)
                         return slot;
 
@@ -55,13 +51,13 @@ namespace EBSGFramework
         {
             get
             {
-                ModuleSlot slot = GetSlot;
-                float num = slot?.capacity ?? 0;
+                var slot = GetSlot;
+                var num = slot?.capacity ?? 0;
 
                 if (num > 0)
-                    foreach (ThingWithComps thing in OwnerComp.moduleHolder)
+                    foreach (var thing in OwnerComp.moduleHolder)
                     {
-                        CompUseEffect_HediffModule moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
+                        var moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
 
                         if (moduleComp.usedSlot == slot.slotID)
                             num -= moduleComp.Props.requiredCapacity;
@@ -73,14 +69,15 @@ namespace EBSGFramework
 
         public void Install(HediffComp_Modular holder)
         {
-            Props.installSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn));
+            if (holder.Pawn.Spawned) // Handling pawns generating with these hediffs
+                Props.installSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn));
 
             GenerateComps(holder);
 
             if (!Props.hediffs.NullOrEmpty())
-                foreach (HediffDef hediffDef in Props.hediffs)
+                foreach (var hediffDef in Props.hediffs)
                 {
-                    Hediff hediff = holder.Pawn.CreateComplexHediff(hediffDef.initialSeverity, hediffDef, null, holder.parent.Part);
+                    var hediff = holder.Pawn.CreateComplexHediff(hediffDef.initialSeverity, hediffDef, null, holder.parent.Part);
                     holder.Pawn.health.AddHediff(hediff, holder.parent.Part);
                     linkedHediffs.Add(hediff);
                 }
@@ -97,7 +94,7 @@ namespace EBSGFramework
             Props.ejectSound?.PlayOneShot(SoundInfo.InMap(holder.Pawn));
 
             if (!linkedComps.NullOrEmpty())
-                foreach (HediffComp comp in linkedComps)
+                foreach (var comp in linkedComps)
                     holder.parent.comps.Remove(comp);
 
             holder.Pawn.RemoveAllOfHediffs(linkedHediffs);
@@ -120,24 +117,24 @@ namespace EBSGFramework
 
         public void GenerateComps(HediffComp_Modular holder)
         {
-            if (!Props.comps.NullOrEmpty())
-                foreach (HediffCompProperties comp in Props.comps)
+            if (Props.comps.NullOrEmpty()) return;
+            foreach (var comp in Props.comps)
+            {
+                HediffComp hediffComp = null;
+                try
                 {
-                    HediffComp hediffComp = null;
-                    try
-                    {
-                        hediffComp = (HediffComp)Activator.CreateInstance(comp.compClass);
-                        hediffComp.props = comp;
-                        hediffComp.parent = holder.parent;
-                        holder.parent.comps.Add(hediffComp);
-                        linkedComps.Add(hediffComp);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error("Modular HediffComp could not instantiate or initialize a HediffComp: " + ex);
-                        holder.parent.comps.Remove(hediffComp);
-                    }
+                    hediffComp = (HediffComp)Activator.CreateInstance(comp.compClass);
+                    hediffComp.props = comp;
+                    hediffComp.parent = holder.parent;
+                    holder.parent.comps.Add(hediffComp);
+                    linkedComps.Add(hediffComp);
                 }
+                catch (Exception ex)
+                {
+                    Log.Error("Modular HediffComp could not instantiate or initialize a HediffComp: " + ex);
+                    holder.parent.comps.Remove(hediffComp);
+                }
+            }
         }
 
         public HediffStage ModifyStage(int stageIndex, HediffStage stage)
@@ -164,14 +161,14 @@ namespace EBSGFramework
 
         public override AcceptanceReport CanBeUsedBy(Pawn p)
         {
-            AcceptanceReport result = base.CanBeUsedBy(p);
+            var result = base.CanBeUsedBy(p);
             if (!result.Accepted)
                 return result;
 
             if (p.health?.hediffSet?.hediffs.NullOrEmpty() == false)
-                foreach (Hediff hediff in p.health.hediffSet.hediffs)
+                foreach (var hediff in p.health.hediffSet.hediffs)
                     if (hediff is HediffWithComps hediffWithComps)
-                        foreach (HediffComp comp in hediffWithComps.comps)
+                        foreach (var comp in hediffWithComps.comps)
                             if (comp is HediffComp_Modular compModular)
                             {
                                 if (Props.prerequisites?.ValidPawn(p, hediff.Part) == false)

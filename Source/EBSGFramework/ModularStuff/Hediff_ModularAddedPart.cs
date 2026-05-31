@@ -9,15 +9,10 @@ namespace EBSGFramework
         {
             get
             {
-                HediffStage stage = base.CurStage ?? new HediffStage();
+                var stage = base.CurStage ?? new HediffStage();
 
                 if (cachedComp == null && !comps.NullOrEmpty())
-                    foreach (HediffComp c in comps)
-                        if (c is HediffComp_Modular comp)
-                        {
-                            cachedComp = comp;
-                            break;
-                        }
+                    cachedComp = comps.FirstOrDefault(c => c is HediffComp_Modular) as HediffComp_Modular;
 
                 return cachedComp?.GetStage(stage) ?? base.CurStage;
             }

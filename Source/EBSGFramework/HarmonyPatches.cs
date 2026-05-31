@@ -88,15 +88,16 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
             harmony.Patch(AccessTools.Method(typeof(TransportersArrivalActionUtility), "AnyPotentialCaravanOwner"),
                 postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
-            /*
-            harmony.Patch(AccessTools.Method(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateCapacityLevel)),
-                postfix: new HarmonyMethod(patchType, nameof(CalculateCapacityLevelPostfix)));
-            */
+
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 prefix: new HarmonyMethod(patchType, nameof(ProjectileImpactPrefix)));
             harmony.Patch(AccessTools.PropertyGetter(typeof(CompTurretGun), "CanShoot"),
                 postfix: new HarmonyMethod(patchType, nameof(TurretCanShootPostfix)));
+            
+            // Stuff For Athena Stuff not from Athena
+            harmony.Patch(AccessTools.Method(typeof(PawnTechHediffsGenerator), "InstallPart"),
+                postfix: new HarmonyMethod(patchType, nameof(InstallInitialPartPostfix)));
             
             // Coma Gene stuff
             harmony.Patch(AccessTools.PropertyGetter(typeof(Need_Food), "IsFrozen"),
@@ -1197,7 +1198,7 @@ namespace EBSGFramework
 
         public static void RenderPawnAtPostfix(Vector3 drawLoc, Pawn ___pawn)
         {
-            if (!___pawn.DeadOrDowned && Cache?.shieldHediffs.NullOrEmpty() == false && 
+            if (Cache?.shieldHediffs.NullOrEmpty() == false && !___pawn.DeadOrDowned && 
                 ___pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                     if (shield.TryGetComp<HediffComp_Shield>()?.Draw(drawLoc) == true)
@@ -1385,10 +1386,31 @@ namespace EBSGFramework
                 __result = !t.PositionHeld.Roofed(t.MapHeld);
         }
 
+        public static void InstallInitialPartPostfix(Pawn pawn, ThingDef partDef)
+        {
+            var modular = partDef.GetCompProperties<CompProperties_UseEffectHediffModule>();
+            if (modular == null) return;
+            foreach (var holder in pawn.health.hediffSet.hediffs.Select(h => h.TryGetComp<HediffComp_Modular>()))
+            {
+                if (holder == null) continue;
+                var slots = holder.GetOpenSlots(modular);
+                if (slots.NullOrEmpty()) continue;
+                
+                // Need to make the thing so it can be stored as if it were used naturally
+                var thing = ThingMaker.MakeThing(partDef) as ThingWithComps;
+                var comp = thing.GetComp<CompUseEffect_HediffModule>();
+                comp.ownerHediff = holder.parent;
+                comp.usedSlot = slots.First().slotID;
+                holder.InstallModule(thing);
+                return;
+            }
+            // If we have reached this point, then we have a modular hediff with no holder available
+            Log.Warning($"Tried to add {partDef.defName} to {pawn.LabelShort}, but could not find a place to attach it to. Please double-check that the module is being added after the main hediff.");
+        }
+
         public static bool ClaimBedIfNonMedicalPrefix(ref bool __result, Building_Bed newBed, Pawn ___pawn)
         {
-            CompComaGeneBindable compComaRestBindable = newBed.TryGetComp<CompComaGeneBindable>();
-            if (compComaRestBindable != null)
+            if (newBed.TryGetComp<CompComaGeneBindable>(out _))
             {
                 __result = ___pawn.ownership.ClaimDeathrestCasket(newBed);
                 return false;

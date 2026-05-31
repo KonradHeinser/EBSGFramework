@@ -21,19 +21,24 @@ namespace EBSGFramework
 
         public List<ModuleSlot> GetOpenSlots(CompUseEffect_HediffModule comp)
         {
-            List<ModuleSlot> validSlots = new List<ModuleSlot>();
+            return GetOpenSlots(comp.Props);
+        }
+        
+        public List<ModuleSlot> GetOpenSlots(CompProperties_UseEffectHediffModule comp)
+        {
+            var validSlots = new List<ModuleSlot>();
 
             if (!Props.slots.NullOrEmpty())
-                foreach (ModuleSlot slot in Props.slots)
+                foreach (var slot in Props.slots)
                 {
-                    if (!comp.Props.slotIDs.Contains(slot.slotID))
+                    if (!comp.slotIDs.Contains(slot.slotID))
                         continue;
                     
                     float spaceTaken = 0;
-                    bool invalid = false;
+                    var invalid = false;
 
                     if (moduleHolder.Count > 0)
-                        foreach (ThingWithComps thing in moduleHolder)
+                        foreach (var thing in moduleHolder)
                         {
                             var moduleComp = thing.TryGetComp<CompUseEffect_HediffModule>();
 
@@ -41,15 +46,15 @@ namespace EBSGFramework
                             {
                                 spaceTaken += moduleComp.Props.requiredCapacity;
 
-                                if (spaceTaken + comp.Props.requiredCapacity > slot.capacity && slot.capacity != -1)
+                                if (spaceTaken + comp.requiredCapacity > slot.capacity && slot.capacity != -1)
                                 {
                                     invalid = true;
                                     break;
                                 }
                             }
 
-                            if (!moduleComp.Props.excludeIDs.NullOrEmpty() && !comp.Props.excludeIDs.NullOrEmpty() &&
-                                !moduleComp.Props.excludeIDs.Intersect(comp.Props.excludeIDs).EnumerableNullOrEmpty())
+                            if (!moduleComp.Props.excludeIDs.NullOrEmpty() && !comp.excludeIDs.NullOrEmpty() &&
+                                !moduleComp.Props.excludeIDs.Intersect(comp.excludeIDs).EnumerableNullOrEmpty())
                             {
                                 invalid = true;
                                 break;
@@ -63,17 +68,17 @@ namespace EBSGFramework
 
         public void InstallModule(ThingWithComps thing)
         {
-            CompUseEffect_HediffModule comp = thing.TryGetComp<CompUseEffect_HediffModule>();
+            var comp = thing.TryGetComp<CompUseEffect_HediffModule>();
             comp.Install(this);
             thing.DeSpawnOrDeselect();
             moduleHolder.TryAdd(thing, false);
             resetCache = true;
             RecacheGizmo();
         }
-
+        
         public void RemoveModule(ThingWithComps thing, bool forced = false)
         {
-            CompUseEffect_HediffModule comp = thing.TryGetComp<CompUseEffect_HediffModule>();
+            var comp = thing.TryGetComp<CompUseEffect_HediffModule>();
 
             if (comp?.Remove(this) != true)
             {
@@ -112,7 +117,7 @@ namespace EBSGFramework
             cachedOutput.CopyStageValues(stage);
             
             if (moduleHolder.Count > 0)
-                foreach (ThingWithComps module in moduleHolder)
+                foreach (var module in moduleHolder)
                     cachedOutput = module.TryGetComp<CompUseEffect_HediffModule>().ModifyStage(parent.CurStageIndex, cachedOutput);
             return cachedOutput;
         }
@@ -126,9 +131,9 @@ namespace EBSGFramework
                 if (moduleHolder == null)
                     moduleHolder = new ThingOwner<ThingWithComps>();
                 else if (moduleHolder.Count > 0)
-                    foreach (ThingWithComps thing in moduleHolder)
+                    foreach (var thing in moduleHolder)
                     {
-                        CompUseEffect_HediffModule comp = thing.TryGetComp<CompUseEffect_HediffModule>();
+                        var comp = thing.TryGetComp<CompUseEffect_HediffModule>();
                         comp?.GenerateComps(this);
                     }
         }
@@ -142,27 +147,33 @@ namespace EBSGFramework
                     RemoveModule(moduleHolder[0], true);
         }
 
-        public void RecacheGizmo()
+        private void RecacheGizmo()
         {
-            List<FloatMenuOption> options = new List<FloatMenuOption>();
-            ejectableModules = true;
-            int validOptions = 0;
+            if (!Pawn.Spawned) // Avoids world gen issues
+                return;
 
+            var options = new List<FloatMenuOption>();
+            ejectableModules = true;
+            var validOptions = 0;
+            
             if (moduleHolder.Count > 0)
-                foreach (ThingWithComps module in moduleHolder)
+                foreach (var module in moduleHolder)
                 {
-                    CompUseEffect_HediffModule comp = module.TryGetComp<CompUseEffect_HediffModule>();
+                    var comp = module.TryGetComp<CompUseEffect_HediffModule>();
 
                     if (!comp.Props.ejectable)
                     {
                         options.Add(new FloatMenuOption($"{"EBSG_CannotEject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrFormat()})", null));
                         continue;
                     }
-
+                    Log.Message("D");
+                    if (comp.GetSlot == null)
+                        Log.Message("Ding");
                     options.Add(new FloatMenuOption($"{"EBSG_Eject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrFormat()})", delegate () { RemoveModule(module); }));
+                    Log.Message("E");
                     validOptions += 1;
                 }
-
+            Log.Message("Z");
             if (options.Count == 0 || validOptions == 0)
             {
                 options.Add(new FloatMenuOption("No ejectable modules", null));
