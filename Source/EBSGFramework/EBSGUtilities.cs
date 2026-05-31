@@ -1348,22 +1348,19 @@ namespace EBSGFramework
                 return false;
             }
 
-            matches = pawn.health.hediffSet.hediffs.Where(hediff => hediffs.Contains(hediff.def) && (bodyPart == null || hediff.Part == bodyPart)).ToList();
+            matches = pawn.health.hediffSet.hediffs.FindAll(h => hediffs.Contains(h.def) && (bodyPart == null || h.Part == bodyPart));
             return !matches.NullOrEmpty();
         }
 
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffDef> hediffs, out Hediff match, BodyPartRecord bodyPart = null)
         {
             match = null;
-            if (pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false || hediffs.NullOrEmpty()) 
+            if (hediffs.NullOrEmpty() || pawn.health?.hediffSet?.hediffs?.NullOrEmpty() != false) 
                 return false;
 
-            foreach (var hediff in pawn.health.hediffSet.hediffs.Where(hediff => hediffs.Contains(hediff.def) && (bodyPart == null || hediff.Part == bodyPart)))
-            {
-                match = hediff;
-                return true;
-            }
-            return false;
+            match = pawn.health.hediffSet.hediffs.FirstOrDefault(h =>
+                hediffs.Contains(h.def) && (bodyPart == null || h.Part == bodyPart));
+            return match != null;
         }
 
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, out List<Hediff> matches, BodyPartRecord bodyPart = null)
