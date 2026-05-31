@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -24,9 +25,9 @@ namespace EBSGFramework
                 return;
             
             // Get all a list of all pawns, and a list of all allied pawns
-            List<Pawn> list = parent.pawn.Map.mapPawns.AllPawns;
+            var list = new List<Pawn>(parent.pawn.Map.mapPawns.AllPawnsSpawned);
             list.SortBy(c => c.Position.DistanceToSquared(Pawn.Position));
-            List<Pawn> allies = Pawn.Map.mapPawns.SpawnedPawnsInFaction(Pawn.Faction);
+            var allies = Pawn.Map.mapPawns.SpawnedPawnsInFaction(Pawn.Faction);
 
             if (!Props.hideMoteWhenNotDrafted || Pawn.Drafted)
             {
@@ -38,13 +39,12 @@ namespace EBSGFramework
             if (!list.NullOrEmpty())
             {
                 float range = Props.rangeStat != null ? Pawn.StatOrOne(Props.rangeStat, StatRequirement.Always, 60) : Props.range;
-                foreach (Pawn item in list)
+                foreach (var item in list.Where(p => p.health != null && !p.Dead &&
+                                                     !allies.Contains(p) && (p.Faction == null || !p.Faction.AllyOrNeutralTo(Pawn.Faction))))
                 {
-                    if (allies.Contains(item) || (item.Faction != null && item.Faction.AllyOrNeutralTo(Pawn.Faction))) continue; // If it's an ally/non-enemy
-                    if (item.Dead || item.health == null || (Props.targetingParameters != null && !Props.targetingParameters.CanTarget(item))) continue;
-
-                    if (item.Position.DistanceTo(Pawn.Position) > range) break;
+                    if (Props.targetingParameters != null && !Props.targetingParameters.CanTarget(item)) continue;
                     if (Props.psychic && item.StatOrOne(StatDefOf.PsychicSensitivity, StatRequirement.Always, 60) == 0) continue;
+                    if (item.Position.DistanceTo(Pawn.Position) > range) break;
                     if (Props.interval != null && Props.successChance?.Success(parent.pawn, item) == false)
                         continue;
                     

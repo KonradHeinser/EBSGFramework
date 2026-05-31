@@ -957,7 +957,7 @@ namespace EBSGFramework
             return hediffs;
         }
 
-        public static Hediff CreateComplexHediff(this Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null)
+        public static Hediff CreateComplexHediff(this Pawn pawn, float severity, HediffDef hediff, Pawn other = null, BodyPartRecord bodyPart = null, bool otherFaction = false)
         {
             if (pawn?.health == null || hediff == null) return null;
 
@@ -969,24 +969,20 @@ namespace EBSGFramework
                 if (newHediff is HediffWithTarget targetHediff)
                     targetHediff.target = other;
 
-                var hediffComp_Link = newHediff.TryGetComp<HediffComp_Link>();
-                if (hediffComp_Link != null)
+                if (newHediff.TryGetComp<HediffComp_Link>(out var hediffComp_Link))
                 {
                     hediffComp_Link.other = other;
                     hediffComp_Link.drawConnection = other != pawn;
                 }
 
-                var hediffComp_SpawnPawnKindOnRemoval = newHediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>();
-                if (hediffComp_SpawnPawnKindOnRemoval != null)
+                if (newHediff.TryGetComp<HediffComp_SpawnPawnKindOnRemoval>(out var hediffComp_SpawnPawnKindOnRemoval))
                     hediffComp_SpawnPawnKindOnRemoval.instigator = other;
             }
 
-            var hediffComp_SpawnBaby = newHediff.TryGetComp<HediffComp_SpawnHumanlike>();
-            if (hediffComp_SpawnBaby != null)
+            if (newHediff.TryGetComp<HediffComp_SpawnHumanlike>(out var hediffComp_SpawnBaby))
             {
-                hediffComp_SpawnBaby.faction = pawn.Faction;
-                if (other != null)
-                    hediffComp_SpawnBaby.father = other;
+                hediffComp_SpawnBaby.faction = (otherFaction && other != null) ? other.Faction : pawn.Faction;
+                hediffComp_SpawnBaby.father = other;
                 hediffComp_SpawnBaby.mother = pawn;
             }
 
