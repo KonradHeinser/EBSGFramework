@@ -166,14 +166,10 @@ namespace EBSGFramework
                         options.Add(new FloatMenuOption($"{"EBSG_CannotEject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrFormat()})", null));
                         continue;
                     }
-                    Log.Message("D");
-                    if (comp.GetSlot == null)
-                        Log.Message("Ding");
                     options.Add(new FloatMenuOption($"{"EBSG_Eject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrFormat()})", delegate () { RemoveModule(module); }));
-                    Log.Message("E");
                     validOptions += 1;
                 }
-            Log.Message("Z");
+
             if (options.Count == 0 || validOptions == 0)
             {
                 options.Add(new FloatMenuOption("No ejectable modules", null));
