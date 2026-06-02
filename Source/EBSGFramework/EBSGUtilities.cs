@@ -1387,7 +1387,7 @@ namespace EBSGFramework
         public static bool PawnHasAnyOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
         {
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() != false || hediffs.NullOrEmpty()) return false;
-            return hediffs.Any(hediff => !pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty());
+            return hediffs.FirstOrDefault(h => !pawn.health.hediffSet.hediffs.Where((a) => a.def == h.hediff && (bodyPart == null || a.Part == bodyPart) && h.range.ValidValue(a.Severity)).EnumerableNullOrEmpty()) != null;
         }
 
         public static float PawnHediffRangeNum(this Pawn pawn, List<HediffWithRange> hediffs, BodyPartRecord bodyPart = null)
@@ -1417,6 +1417,19 @@ namespace EBSGFramework
             foreach (var hediff in hediffs)
                 if (pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty())
                     return false;
+            return true;
+        }
+        
+        public static bool PawnHasAllOfHediffs(this Pawn pawn, List<HediffWithRange> hediffs, out HediffDef missing, BodyPartRecord bodyPart = null)
+        {
+            missing = null;
+            if (hediffs.NullOrEmpty()) return true;
+            foreach (var hediff in hediffs)
+                if (pawn.health.hediffSet.hediffs.Where((arg) => arg.def == hediff.hediff && (bodyPart == null || arg.Part == bodyPart) && hediff.range.ValidValue(arg.Severity)).EnumerableNullOrEmpty())
+                {
+                    missing = hediff.hediff;
+                    return false;
+                }
             return true;
         }
 
