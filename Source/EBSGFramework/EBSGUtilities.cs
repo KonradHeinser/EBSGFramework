@@ -33,7 +33,7 @@ namespace EBSGFramework
 
         public static Thought_Memory GetFirstMemoryOfDefWhereOtherPawnIs(this MemoryThoughtHandler memory, ThoughtDef thought, Pawn otherPawn)
         {
-            for (int i = 0; i > memory.Memories.Count; i++)
+            for (var i = 0; i > memory.Memories.Count; i++)
                 if (memory.Memories[i].def ==  thought && memory.Memories[i].otherPawn == otherPawn)
                     return memory.Memories[i];
             
@@ -219,7 +219,7 @@ namespace EBSGFramework
         public static int RemoveAllOfHediffs(this Pawn pawn, List<Hediff> hediffs)
         {
             if (hediffs.NullOrEmpty()) return 0;
-            int removeCount = 0;
+            var removeCount = 0;
             if (pawn?.health?.hediffSet?.hediffs.NullOrEmpty() == false)
                 foreach (var hediff in hediffs)
                     if (hediff.pawn == pawn)
@@ -390,7 +390,7 @@ namespace EBSGFramework
                 var hediff = pawn.GetFirstHediffAttachedToPart(hediffDef, bodyPart);
                 if (hediff != null)
                 {
-                    float removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;
+                    var removalAmount = (hediff.Severity > damageRemoved) ? damageRemoved : hediff.Severity;
                     damageRemoved -= removalAmount;
                     hediff.Severity -= removalAmount;
                 }
@@ -689,7 +689,7 @@ namespace EBSGFramework
 
         public static bool EqualCountingDictionaries(Dictionary<string, int> dictionary1, Dictionary<string, int> dictionary2)
         {
-            foreach (string phrase in dictionary1.Keys)
+            foreach (var phrase in dictionary1.Keys)
             {
                 if (!dictionary2.TryGetValue(phrase, out var value)) return false;
                 if (dictionary1[phrase] != value) return false;
@@ -781,10 +781,10 @@ namespace EBSGFramework
             if (hediffs.NullOrEmpty())
                 return;
             
-            bool casterIsPsychic = (caster?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
-            bool targetIsPsychic = (target?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
-            bool checkCaster = caster != null && (!psychic || casterIsPsychic);
-            bool checkTarget = target != null && (!psychic || targetIsPsychic);
+            var casterIsPsychic = (caster?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
+            var targetIsPsychic = (target?.StatOrOne(StatDefOf.PsychicSensitivity) ?? 0) > 0;
+            var checkCaster = caster != null && (!psychic || casterIsPsychic);
+            var checkTarget = target != null && (!psychic || targetIsPsychic);
 
             foreach (var hediff in hediffs)
             {
@@ -793,8 +793,8 @@ namespace EBSGFramework
                         break;
                     else
                         continue;
-                float severity = hediff.severity.RandomInRange;
-                bool flag = false;
+                var severity = hediff.severity.RandomInRange;
+                var flag = false;
                 var partChecks = new List<BodyPartDef>();
                 if (!hediff.bodyParts.NullOrEmpty())
                     partChecks = new List<BodyPartDef>(hediff.bodyParts);
@@ -824,7 +824,7 @@ namespace EBSGFramework
                     flag = true;
                 }
 
-                bool flag2 = false;
+                var flag2 = false;
                 switch (endOn)
                 {
                     case EndOn.Fail:
@@ -885,7 +885,7 @@ namespace EBSGFramework
             if (hd == null) return;
             var bodyParts = new List<BodyPartDef>(partChecks);
             var foundHediffs = p.GetHediffFromParts(hd, bodyParts);
-            bool flag = false;
+            var flag = false;
             foreach (var t in foundHediffs)
             {
                 if (skipExisting)
@@ -1185,7 +1185,7 @@ namespace EBSGFramework
                         }
                         continue;
                     }
-                    float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                    var capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
                     if (!capCheck.range.ValidValue(capValue))
                         return false;
                 }
@@ -1211,7 +1211,7 @@ namespace EBSGFramework
             {
                 foreach (var statCheck in statChecks)
                 {
-                    float statValue = pawn.StatOrOne(statCheck.stat);
+                    var statValue = pawn.StatOrOne(statCheck.stat);
                     if (!statCheck.range.ValidValue(statValue))
                         return false;
                 }
@@ -1457,7 +1457,7 @@ namespace EBSGFramework
                     continue;
                 }
 
-                float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                var capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
                 if (!capCheck.range.ValidValue(capValue))
                     return false;
             }
@@ -1552,7 +1552,7 @@ namespace EBSGFramework
             {
                 if (pawn.HasRelatedGene(geneEffect.gene) && pawn.genes.GetGene(geneEffect.gene) is ResourceGene resourceGene)
                 {
-                    float offset = geneEffect.offset;
+                    var offset = geneEffect.offset;
                     if (geneEffect.statFactor != null) offset *= pawn.StatOrOne(geneEffect.statFactor);
                     if (hourlyRate) offset *= hashInterval / 2500f;
                     else if (dailyRate) offset *= hashInterval / 60000f;
@@ -1763,6 +1763,29 @@ namespace EBSGFramework
             return false;
         }
 
+        public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitRequirement> traits = null)
+        {
+            first = null;
+            return pawn.story?.TrackerHasAnyOfTraits(out first, traits) == true;
+        }
+
+        public static bool TrackerHasAnyOfTraits(this Pawn_StoryTracker tracker, out Trait first, List<TraitRequirement> traits = null)
+        {
+            first = null;
+            if (tracker?.traits?.allTraits.NullOrEmpty() != false || traits.NullOrEmpty())
+                return false;
+            
+            if (!traits.NullOrEmpty())
+                foreach (var t in traits)
+                {
+                    first = t.degree.HasValue ? tracker.traits.GetTrait(t.def, t.degree.Value) : tracker.traits.GetTrait(t.def);
+                    if (first != null)
+                        return true;
+                }
+
+            return false;
+        }
+        
         public static bool NeedFrozen(this Pawn pawn, NeedDef def)
         {
             if (pawn.Suspended)
@@ -1912,7 +1935,7 @@ namespace EBSGFramework
             else
             {
                 pawn.genes.SetXenotypeDirect(xenotype);
-                bool isGermline = xenotype.inheritable;
+                var isGermline = xenotype.inheritable;
                 var genesListForReading = new List<Gene>(pawn.genes.GenesListForReading);
                 var genesListToRemove = new List<Gene>();
                 foreach (var t in xenotype.genes)
@@ -1946,14 +1969,14 @@ namespace EBSGFramework
         {
             if (!pawn.HasAnyGenes()) return;
             var genesToAdd = new List<GeneDef>();
-            bool reverseInheritance = false;
+            var reverseInheritance = false;
 
             // Select a geneSet to be added
             if (!geneSets.NullOrEmpty())
             {
-                float totalWeight = geneSets.Sum(xenoGeneSet => xenoGeneSet.weightOfGeneSet);
+                var totalWeight = geneSets.Sum(xenoGeneSet => xenoGeneSet.weightOfGeneSet);
 
-                double randomNumber = new System.Random().NextDouble() * totalWeight;
+                var randomNumber = new System.Random().NextDouble() * totalWeight;
                 foreach (var xenoGeneSet in geneSets)
                 {
                     if (randomNumber <= xenoGeneSet.weightOfGeneSet)
@@ -2330,7 +2353,7 @@ namespace EBSGFramework
                 request.ForcedEndogenes = genes;
 
             var alreadyUsedSpots = new List<IntVec3>();
-            for (int i = 0; i < numberToSpawn; i++)
+            for (var i = 0; i < numberToSpawn; i++)
             {
                 var pawn = PawnGenerator.GeneratePawn(request);
 
@@ -2479,7 +2502,7 @@ namespace EBSGFramework
                     case CompAbilityEffect_ResourceCost resourceCost:
                         if (caster.genes?.GetGene(resourceCost.Props.mainResourceGene) is ResourceGene resourceGene)
                         {
-                            float cost = resourceCost.Props.resourceCost;
+                            var cost = resourceCost.Props.resourceCost;
                             if (resourceCost.Props.costFactorStat != null) cost *= caster.StatOrOne(resourceCost.Props.costFactorStat);
                             ResourceGene.OffsetResource(caster, 0f - cost, resourceGene, resourceGene.def.GetModExtension<DRGExtension>(), storeLimitPassing: !resourceCost.Props.checkMaximum);
                         }
@@ -2489,7 +2512,7 @@ namespace EBSGFramework
 
         public static void VaporizePawn(this Pawn pawn, DamageInfo? dinfo = null)
         {
-            bool flag = PawnUtility.ShouldSendNotificationAbout(pawn);
+            var flag = PawnUtility.ShouldSendNotificationAbout(pawn);
             var caravan = pawn.GetCaravan();
             var map = pawn.MapHeld;
             pawn.Destroy();
@@ -2551,17 +2574,17 @@ namespace EBSGFramework
             if ((targetPos - startPosition).magnitude < minDistance)
                 targetPos = startPosition + (targetPos - startPosition).normalized * minDistance;
 
-            float distanceToTarget = (targetPos - startPosition).magnitude;
+            var distanceToTarget = (targetPos - startPosition).magnitude;
 
-            float percentOfMaxDistance = distanceToTarget / maxDistance;
+            var percentOfMaxDistance = distanceToTarget / maxDistance;
 
-            float angleAtDistance = Mathf.Lerp(maxAngle, minAngle, percentOfMaxDistance);
+            var angleAtDistance = Mathf.Lerp(maxAngle, minAngle, percentOfMaxDistance);
 
             foreach (var cell in GenRadial.RadialCellsAround(pawn.Position, distanceToTarget, true))
             {
                 var cellPos = cell.ToVector3Shifted();
                 var direction = (cellPos - startPosition).normalized;
-                float angle = Vector3.Angle(direction, targetPos - startPosition);
+                var angle = Vector3.Angle(direction, targetPos - startPosition);
 
                 if (angle <= angleAtDistance / 2f &&
                     GenSight.LineOfSight(startPosition.ToIntVec3(), cell, pawn.Map, true) &&
@@ -2622,10 +2645,10 @@ namespace EBSGFramework
             if (!pawn.Dead || pawn.Discarded) return; // If these events pass, just silently fail
 
             var corpse = pawn.Corpse;
-            bool flag = false;
+            var flag = false;
             var loc = IntVec3.Invalid;
             Map map = null;
-            bool flag2 = Find.Selector.IsSelected(corpse);
+            var flag2 = Find.Selector.IsSelected(corpse);
             if (corpse != null)
             {
                 flag = corpse.Spawned;
@@ -2645,7 +2668,7 @@ namespace EBSGFramework
             if (sideEffects)
             {
                 var brain = pawn.health.hediffSet.GetBrain();
-                float x2 = ((corpse?.GetComp<CompRottable>() == null) ? 0f : (corpse.GetComp<CompRottable>().RotProgress / 60000f));
+                var x2 = ((corpse?.GetComp<CompRottable>() == null) ? 0f : (corpse.GetComp<CompRottable>().RotProgress / 60000f));
                 var hediff = HediffMaker.MakeHediff(HediffDefOf.ResurrectionSickness, pawn);
                 if (!pawn.health.WouldDieAfterAddingHediff(hediff))
                     pawn.health.AddHediff(hediff);
@@ -2869,8 +2892,8 @@ namespace EBSGFramework
 
         public static bool ShouldByHybrid(Pawn mother, Pawn father)
         {
-            bool flag = mother?.genes != null;
-            bool flag2 = father?.genes != null;
+            var flag = mother?.genes != null;
+            var flag2 = father?.genes != null;
             if (flag && flag2)
             {
                 if (mother.genes.hybrid && father.genes.hybrid)
@@ -2879,8 +2902,8 @@ namespace EBSGFramework
                 if (mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable)
                     return true;
 
-                bool num = mother.genes.Xenotype.inheritable || mother.genes.hybrid;
-                bool flag3 = father.genes.Xenotype.inheritable || father.genes.hybrid;
+                var num = mother.genes.Xenotype.inheritable || mother.genes.hybrid;
+                var flag3 = father.genes.Xenotype.inheritable || father.genes.hybrid;
                 if (num || flag3)
                     return true;
             }

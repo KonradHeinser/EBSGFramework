@@ -446,7 +446,7 @@ namespace EBSGFramework
             contentRect.y = 0;
 
             if (tabInt == 3 && currentCategory != null)
-                contentRect.height = Mathf.Max(flexibleSettings[currentCategory].Count * 30f, contentRect.height);
+                contentRect.height = flexibleSettings[currentCategory].Count * 29f + 100f;
 
             Widgets.BeginScrollView(frameRect, ref scrollPosition, contentRect);
             optionsMenu.Begin(contentRect.AtZero());

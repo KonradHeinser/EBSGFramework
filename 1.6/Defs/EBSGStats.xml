@@ -6,6 +6,7 @@
         <hideAtValue>0</hideAtValue>
         <minValue>-999999</minValue>
         <toStringStyle>PercentZero</toStringStyle>
+        <showIfUndefined>false</showIfUndefined>
         <scenarioRandomizable>true</scenarioRandomizable>
         <cacheable>true</cacheable>
         <showOnAnimals>False</showOnAnimals>
