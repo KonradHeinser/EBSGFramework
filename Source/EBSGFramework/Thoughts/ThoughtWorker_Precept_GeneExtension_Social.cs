@@ -10,8 +10,8 @@ namespace EBSGFramework
             if (!ModsConfig.BiotechActive || !ModsConfig.IdeologyActive)
                 return ThoughtState.Inactive;
 
-            EBSGThoughtExtension thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
-            if (!thoughtExtension?.relatedGenes.NullOrEmpty() == false)
+            var thoughtExtension = def.GetModExtension<EBSGThoughtExtension>();
+            if (thoughtExtension?.relatedGenes.NullOrEmpty() == false)
                 return thoughtExtension.checkNotPresent != otherPawn.HasAnyOfRelatedGene(thoughtExtension.relatedGenes);
 
             return ThoughtState.Inactive;

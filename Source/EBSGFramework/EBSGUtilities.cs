@@ -33,11 +33,8 @@ namespace EBSGFramework
 
         public static Thought_Memory GetFirstMemoryOfDefWhereOtherPawnIs(this MemoryThoughtHandler memory, ThoughtDef thought, Pawn otherPawn)
         {
-            for (var i = 0; i > memory.Memories.Count; i++)
-                if (memory.Memories[i].def ==  thought && memory.Memories[i].otherPawn == otherPawn)
-                    return memory.Memories[i];
-            
-            return null;
+            if (memory?.Memories.NullOrEmpty() != false || thought == null || otherPawn == null) return null;
+            return memory.Memories.FirstOrFallback(m => m.def == thought && m.otherPawn == otherPawn);
         }
 
         public static float RemainingBlood(this Pawn pawn)
