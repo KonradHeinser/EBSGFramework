@@ -81,16 +81,16 @@ namespace EBSGFramework
                         switch (action)
                         {
                             case FlexAction.Replace:
-                                i.InnerText = (num + offset * factor).ToString();
+                                i.InnerText = ((num + offset) * factor).ToString();
                                 break;
                             case FlexAction.Multiply:
-                                i.InnerText = (float.Parse(i.InnerText) * (num + offset * factor)).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) * ((num + offset) * factor)).ToString();
                                 break;
                             case FlexAction.Divide:
-                                i.InnerText = (float.Parse(i.InnerText) / (num + offset * factor)).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) / ((num + offset) * factor)).ToString();
                                 break;
                             case FlexAction.Offset:
-                                i.InnerText = (float.Parse(i.InnerText) + (num + offset * factor )).ToString();
+                                i.InnerText = (float.Parse(i.InnerText) + (num + offset) * factor).ToString();
                                 break;
                         }
                     }
