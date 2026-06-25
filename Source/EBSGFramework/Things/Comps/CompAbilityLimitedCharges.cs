@@ -2,14 +2,25 @@
 using RimWorld;
 using RimWorld.Utility;
 using Verse;
+using Verse.Noise;
 
 namespace EBSGFramework
 {
     public class CompAbilityLimitedCharges : ThingComp, ICompWithCharges
     {
-        CompProperties_AbilityLimitedCharges Props => (CompProperties_AbilityLimitedCharges)props;
+        private CompProperties_AbilityLimitedCharges Props => (CompProperties_AbilityLimitedCharges)props;
 
         private Pawn Holder => (parent?.ParentHolder as Pawn_EquipmentTracker)?.pawn ?? (parent?.ParentHolder as Pawn_ApparelTracker)?.pawn;
+
+        private int ammoMax = 0;
+
+        private int? remainingAmmo;
+
+        public int? RemainingAmmo
+        {
+            get => remainingAmmo;
+            set => remainingAmmo = value;
+        }
 
         private int remainingCharges;
         
@@ -30,20 +41,40 @@ namespace EBSGFramework
 
         public void MakeAbility()
         {
-            if (Holder == null) return;
+            if (Holder == null || ability != null) return;
 
-            Ability oldAbility = Holder.abilities.GetAbility(Props.abilityDef);
-            if (oldAbility != null && oldAbility.RemainingCharges == RemainingCharges)
+            var oldAbility = Holder.abilities.abilities.FirstOrDefault(a => a.def == Props.abilityDef);
+            if (oldAbility != null)
             {
                 ability = oldAbility;
+                var r = ability.CompOfType<CompAbilityEffect_Reloadable>();
+                if (r != null)
+                {
+                    r.linkedThing = parent; // Make sure the link wasn't forgotten/not added properly
+                    RemainingAmmo = r.RemainingCharges; // Make sure both values are synced
+                    ammoMax = r.Props.maxCharges;
+                }
                 return;
             }
 
             ability = AbilityUtility.MakeAbility(Props.abilityDef, Holder);
-            ability.maxCharges = Props.maxCharges;
+            var reload = ability.CompOfType<CompAbilityEffect_Reloadable>();
+            if (reload != null)
+            {
+                reload.linkedThing = parent;
+                if (RemainingAmmo != null)
+                    reload.RemainingCharges = RemainingAmmo.Value;
+                else 
+                    RemainingAmmo = reload.RemainingCharges;
+                ammoMax = reload.Props.maxCharges;
+            }
+            // If is only 1 charge and it replenishes, then that's just mundane ability stuff that doesn't need recorded. This is mostly for cases where ammo is being used
+            if (!ability.HasCooldown || MaxCharges > 1) 
+                ability.maxCharges = MaxCharges;
             ability.RemainingCharges = RemainingCharges;
             ability.pawn = Holder;
             ability.verb.caster = Holder;
+            
             if (cooldownLeft != 0 && Props.saveCooldown)
                 ability.StartCooldown(cooldownLeft);
             Holder.abilities.abilities.Add(ability);
@@ -52,7 +83,25 @@ namespace EBSGFramework
 
         public int MaxCharges => Props.maxCharges;
 
-        public string LabelRemaining => $"{RemainingCharges} / {MaxCharges}";
+        public string LabelRemaining
+        {
+            get
+            {
+                if (Props.showAmmo)
+                {
+                    if (ammoMax == 0)
+                    {
+                        var reload = Props.abilityDef.comps.FirstOrDefault(a => a is CompProperties_AbilityReloadable) as CompProperties_AbilityReloadable;
+                        ammoMax = reload?.maxCharges ?? -1;
+                    }
+
+                    if (ammoMax == -1) return "0 / 0";
+                    return RemainingAmmo == null ? $"{ammoMax} / {ammoMax}" : $"{RemainingAmmo.Value} / {ammoMax}";
+                }
+
+                return $"{RemainingCharges} / {MaxCharges}";
+            }
+        }
 
         public int RemainingCharges
         {
@@ -60,14 +109,12 @@ namespace EBSGFramework
             set => remainingCharges = value;
         }
 
-        public override void Initialize(CompProperties props)
+        public override void Initialize(CompProperties p)
         {
-            base.Initialize(props);
-            if (Holder != null)
-            {
-                AbilityForReading.pawn = Holder;
-                AbilityForReading.verb.caster = Holder;
-            }
+            base.Initialize(p);
+            if (Holder == null) return;
+            AbilityForReading.pawn = Holder;
+            AbilityForReading.verb.caster = Holder;
         }
 
         public override void PostPostMake()
@@ -95,104 +142,116 @@ namespace EBSGFramework
             AbilityForReading = null;
         }
 
+        public override void CompTickInterval(int delta)
+        {
+            base.CompTickInterval(delta);
+            if (ability != null) // Makes sure remaining charges and what the ability has recorded for charge count are the same
+            {
+                RemainingCharges = ability.RemainingCharges;
+                cooldownLeft = ability.CooldownTicksRemaining;
+            }
+        }
+
         public override string CompInspectStringExtra()
         {
-            return "ChargesRemaining".Translate(Props.ChargeNounArgument) + ": " + LabelRemaining;
+            if (Props.hideCharges) return null;
+            return "Stat_Thing_ReloadChargesRemaining_Name".Translate(Props.ChargeNounArgument) + ": " + LabelRemaining;
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref remainingCharges, "remainingCharges", MaxCharges);
+            Scribe_Values.Look(ref remainingAmmo, "remainingAmmo");
             Scribe_Values.Look(ref cooldownLeft, "cooldownLeft");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                MakeAbility();
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
-            IEnumerable<StatDrawEntry> enumerable = base.SpecialDisplayStats();
+            
+            var enumerable = base.SpecialDisplayStats();
             if (enumerable != null)
-                foreach (StatDrawEntry item in enumerable)
+                foreach (var item in enumerable)
                     yield return item;
-
+            if (Props.hideCharges) yield break;
             yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "Stat_Thing_ReloadChargesRemaining_Name".Translate(Props.ChargeNounArgument), LabelRemaining, "Stat_Thing_ReloadChargesRemaining_Desc".Translate(Props.ChargeNounArgument), 5440);
         }
 
-        public void UsedAbility(Ability ability)
+        public void UsedAbility(Ability a)
         {
-            if (ability != AbilityForReading) return;
+            if (a != AbilityForReading) return;
             remainingCharges--;
+            remainingAmmo--;
+            cooldownLeft = a.CooldownTicksRemaining;
 
-            if (RemainingCharges == 0)
+            if (RemainingCharges != 0) return;
+            if (Holder.Map != null)// Map null check just in case the ability is usable on the world map
             {
-                if (Holder.Map != null)// Map null check just in case the ability is usable on the world map
+                if (Props.effecterOnFinalUse != null)
                 {
-                    if (Props.effecterOnFinalUse != null)
+                    var effecter = Props.effecterOnFinalUse.Spawn();
+                    if (Props.effecterTicks != 0)
                     {
-                        Effecter effecter = Props.effecterOnFinalUse.Spawn();
-                        if (Props.effecterTicks != 0)
-                        {
-                            Holder.Map.effecterMaintainer.AddEffecterToMaintain(effecter, Holder.Position, Props.effecterTicks);
-                        }
-                        else
-                        {
-                            effecter.Trigger(new TargetInfo(Holder.Position, Holder.Map), new TargetInfo(Holder.Position, Holder.Map));
-                            effecter.Cleanup();
-                        }
+                        Holder.Map.effecterMaintainer.AddEffecterToMaintain(effecter, Holder.Position, Props.effecterTicks);
                     }
-
-                    if (Props.filthOnFinalUse != null)
-                        FilthMaker.TryMakeFilth(Holder.Position, Holder.Map, Props.filthOnFinalUse, Props.filthCount);
-                }
-
-                if (Props.spawnOnFinalUse != null)
-                {
-                    Thing thing = null;
-
-                    if (Props.spawnOnFinalUse.MadeFromStuff)
-                        thing = ThingMaker.MakeThing(Props.spawnOnFinalUse, Props.spawnStuffing ?? parent.Stuff);
                     else
-                        thing = ThingMaker.MakeThing(Props.spawnOnFinalUse);
-
-                    if (thing.TryGetQuality(out _) && parent.TryGetQuality(out var oldQuality))
-                        thing.TryGetComp<CompQuality>().SetQuality(oldQuality, null); // No art stuff to avoid potential issues
-
-                    thing.stackCount = Props.spawnCount;
-
-                    if (Holder.Map != null) // This check avoids any errors/warnings about not being able to drop equipment. If they aren't on a map, it's just added to the inventory
                     {
-                        switch (thing)
-                        {
-                            case ThingWithComps compy when thing.def.equipmentType == EquipmentType.Primary && (Holder.equipment.Primary == null || (Holder.equipment.Primary == parent && Props.destroyAfterLast)):
-                            {
-                                Holder.equipment.AddEquipment(compy);
-                                if (Props.destroyAfterLast)
-                                    parent.Destroy();
-                                return;
-                            }
-                            case Apparel apparel:
-                            {
-                                if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
-                                {
-                                    Apparel oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);
-                                    if (oldApparel == null || (oldApparel == parent && Props.destroyAfterLast))
-                                    {
-                                        Holder.apparel.Wear(apparel);
-                                        if (Props.destroyAfterLast)
-                                            parent.Destroy();
-                                        return;
-                                    }
-                                }
+                        effecter.Trigger(new TargetInfo(Holder.Position, Holder.Map), new TargetInfo(Holder.Position, Holder.Map));
+                        effecter.Cleanup();
+                    }
+                }
 
-                                break;
+                if (Props.filthOnFinalUse != null)
+                    FilthMaker.TryMakeFilth(Holder.Position, Holder.Map, Props.filthOnFinalUse, Props.filthCount);
+            }
+
+            if (Props.spawnOnFinalUse != null)
+            {
+                var thing = Props.spawnOnFinalUse.MadeFromStuff ? 
+                    ThingMaker.MakeThing(Props.spawnOnFinalUse, Props.spawnStuffing ?? parent.Stuff) : 
+                    ThingMaker.MakeThing(Props.spawnOnFinalUse);
+
+                if (thing.TryGetQuality(out _) && parent.TryGetQuality(out var oldQuality))
+                    thing.TryGetComp<CompQuality>().SetQuality(oldQuality, null); // No art stuff to avoid potential issues
+
+                thing.stackCount = Props.spawnCount;
+
+                if (Holder.Map != null) // This check avoids any errors/warnings about not being able to drop equipment. If they aren't on a map, it's just added to the inventory
+                {
+                    switch (thing)
+                    {
+                        case ThingWithComps compy when thing.def.equipmentType == EquipmentType.Primary && (Holder.equipment.Primary == null || (Holder.equipment.Primary == parent && Props.destroyAfterLast)):
+                        {
+                            Holder.equipment.AddEquipment(compy);
+                            if (Props.destroyAfterLast)
+                                parent.Destroy();
+                            return;
+                        }
+                        case Apparel apparel:
+                        {
+                            if (ApparelUtility.HasPartsToWear(Holder, apparel.def) && apparel.PawnCanWear(Holder))
+                            {
+                                var oldApparel = ApparelUtility.GetApparelReplacedByNewApparel(Holder, apparel);
+                                if (oldApparel == null || (oldApparel == parent && Props.destroyAfterLast))
+                                {
+                                    Holder.apparel.Wear(apparel);
+                                    if (Props.destroyAfterLast)
+                                        parent.Destroy();
+                                    return;
+                                }
                             }
+
+                            break;
                         }
                     }
-
-                    Holder.inventory.TryAddAndUnforbid(thing);
                 }
-                if (Props.destroyAfterLast)
-                    parent.Destroy();
+
+                Holder.inventory.TryAddAndUnforbid(thing);
             }
+            if (Props.destroyAfterLast)
+                parent.Destroy();
         }
 
         public bool CanBeUsed(out string reason)

@@ -28,6 +28,10 @@ namespace EBSGFramework
 
         public int filthCount = 1;
 
+        public bool hideCharges = false; // Intended for things that use ammo mostly, and mostly to avoid confusion
+
+        public bool showAmmo = false;
+        
         [MustTranslate]
         public string chargeNoun = "charge";
 

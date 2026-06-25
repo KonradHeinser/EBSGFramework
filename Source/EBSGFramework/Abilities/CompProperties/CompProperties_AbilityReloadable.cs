@@ -18,7 +18,7 @@ namespace EBSGFramework
         public bool disableAutoSearch;
 
         public bool removeOnceEmpty = false;
-
+        
         public string noChargesRemaining = "AbilityNoCharges";
 
         public string remainingCharges = "ChargesRemaining";

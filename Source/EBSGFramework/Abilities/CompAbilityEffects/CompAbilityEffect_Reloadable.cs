@@ -8,6 +8,8 @@ namespace EBSGFramework
     {
         public new CompProperties_AbilityReloadable Props => (CompProperties_AbilityReloadable)props;
 
+        public Thing linkedThing;
+
         private int? remainingCharges;
 
         public int RemainingCharges
@@ -22,7 +24,8 @@ namespace EBSGFramework
             {
                 if (value > remainingCharges && Props.reloadSound != null)
                     Props.reloadSound.PlayOneShot(new TargetInfo(parent.pawn.Position, parent.pawn.Map));
-
+                if (linkedThing.TryGetComp<CompAbilityLimitedCharges>(out var charges))
+                    charges.RemainingAmmo++; // Add a charge back to the item
                 remainingCharges = value;
                 if (remainingCharges <= 0 && Props.removeOnceEmpty)
                     parent.pawn.abilities.RemoveAbility(parent.def);
@@ -68,6 +71,7 @@ namespace EBSGFramework
         {
             base.PostExposeData();
             Scribe_Values.Look(ref remainingCharges, "remainingCharges", Props.maxCharges);
+            Scribe_References.Look(ref linkedThing, "linkedThing");
         }
     }
 }
