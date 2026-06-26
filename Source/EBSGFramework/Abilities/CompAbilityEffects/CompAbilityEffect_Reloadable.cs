@@ -51,6 +51,8 @@ namespace EBSGFramework
             return false;
         }
 
+        public override bool ShouldHideGizmo => Props.hideWhenEmpty && RemainingCharges <= 0;
+
         public override string ExtraTooltipPart()
         {
             return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges;

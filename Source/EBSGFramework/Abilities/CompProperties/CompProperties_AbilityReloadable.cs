@@ -19,6 +19,8 @@ namespace EBSGFramework
 
         public bool removeOnceEmpty = false;
         
+        public bool hideWhenEmpty = false;
+        
         public string noChargesRemaining = "AbilityNoCharges";
 
         public string remainingCharges = "ChargesRemaining";
