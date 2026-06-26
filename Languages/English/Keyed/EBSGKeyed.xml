@@ -239,6 +239,9 @@
     <AbilityTargetFaction>Target not in the right faction</AbilityTargetFaction>
     <AbilityTargetFactionOne>Target not a part of the {0} faction</AbilityTargetFactionOne>
     <AbilityTargetNoFaction>Target cannot be in the {0} faction</AbilityTargetNoFaction>
+    <AbilityNoTargetTraitOne>Target must have the trait {0}</AbilityNoTargetTraitOne>
+    <AbilityNoTargetTrait>Target is missing a required trait</AbilityNoTargetTrait>
+    <AbilityTargetTraitOne>Target has the {0} trait</AbilityTargetTraitOne>
 
     <AbilityNoCasterHediffOne>Caster must have the hediff {0}</AbilityNoCasterHediffOne>
     <AbilityNoCasterHediff>Caster is missing a required hediff</AbilityNoCasterHediff>
@@ -247,6 +250,10 @@
     <AbilityCasterFaction>Caster not in the right faction</AbilityCasterFaction>
     <AbilityCasterFactionOne>Caster not a part of the {0} faction</AbilityCasterFactionOne>
     <AbilityCasterNoFaction>Caster cannot be in the {0} faction</AbilityCasterNoFaction>
+    <AbilityNoCasterTraitOne>Caster must have the trait {0}</AbilityNoCasterTraitOne>
+    <AbilityNoCasterTrait>Caster is missing a required trait</AbilityNoCasterTrait>
+    <AbilityCasterTraitOne>Caster has the {0} trait</AbilityCasterTraitOne>
+
 
     <AbilityGameNoConditionOne>This map is not currently experiencing a(n) {0}</AbilityGameNoConditionOne>
     <AbilityGameNoCondition>The map must be experiencing certain conditions</AbilityGameNoCondition>

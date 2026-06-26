@@ -22,6 +22,11 @@ namespace EBSGFramework
         public List<HediffDef> targetHasAnyOfHediffs;
         public List<HediffDef> targetHasAllOfHediffs;
         public List<HediffDef> targetHasNoneOfHediffs;
+        
+        // Target Traits
+        public List<TraitDegree> targetHasAnyOfTraits;
+        public List<TraitDegree> targetHasAllOfTraits;
+        public List<TraitDegree> targetHasNoneOfTraits;
 
         // Target Pawn Checks
         public List<CapCheck> targetCapLimiters;
@@ -41,6 +46,11 @@ namespace EBSGFramework
         public List<HediffDef> casterHasAnyOfHediffs;
         public List<HediffDef> casterHasAllOfHediffs;
         public List<HediffDef> casterHasNoneOfHediffs;
+
+        // Caster Traits
+        public List<TraitDegree> casterHasAnyOfTraits;
+        public List<TraitDegree> casterHasAllOfTraits;
+        public List<TraitDegree> casterHasNoneOfTraits;
 
         // Caster Pawn Checks
         public List<CapCheck> casterCapLimiters;

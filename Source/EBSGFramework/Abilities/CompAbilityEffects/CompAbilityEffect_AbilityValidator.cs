@@ -93,32 +93,38 @@ namespace EBSGFramework
 
         private bool CheckCaster(bool throwMessages = false)
         {
-            if (!CheckCasterLight(out string casterLightExplanation))
+            if (!CheckCasterLight(out var casterLightExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + casterLightExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckCasterRoof(out string casterRoofExplanation))
+            if (!CheckCasterRoof(out var casterRoofExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + casterRoofExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckCasterHediffs(out string casterHediffExplanation))
+            if (!CheckCasterHediffs(out var casterHediffExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + casterHediffExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckCasterPawn(out string casterExplanation))
+            if (!CheckCasterTraits(out var casterTraitExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(BaseExplanation + casterTraitExplanation, Caster, MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            if (!CheckCasterPawn(out var casterExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + casterExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
-            if (!CheckCasterLayer(out string casterLayerExplanation))
+            if (!CheckCasterLayer(out var casterLayerExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + casterLayerExplanation, Caster, MessageTypeDefOf.RejectInput, false);
@@ -126,31 +132,31 @@ namespace EBSGFramework
             }
 
             // Caster map checks
-            if (!CheckRain(out string rainExplanation))
+            if (!CheckRain(out var rainExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + rainExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckSnow(out string snowExplanation))
+            if (!CheckSnow(out var snowExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + snowExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckCondition(out string conditionExplanation))
+            if (!CheckCondition(out var conditionExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + conditionExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckWeather(out string weatherExplanation))
+            if (!CheckWeather(out var weatherExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + weatherExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckHour(out string hourExplanation))
+            if (!CheckHour(out var hourExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + hourExplanation, Caster, MessageTypeDefOf.RejectInput, false);
@@ -193,31 +199,37 @@ namespace EBSGFramework
                 return false;
             
             // Target checks
-            if (!CheckTargetLight(target, out string targetLightExplanation))
+            if (!CheckTargetLight(target, out var targetLightExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetLightExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckTargetRoof(target, out string targetRoofExplanation))
+            if (!CheckTargetRoof(target, out var targetRoofExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetRoofExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckTargetHediffs(target, out string targetHediffExplanation))
+            if (!CheckTargetHediffs(target, out var targetHediffExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetHediffExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckTargetGenes(target, out string targetGeneExplanation))
+            if (!CheckTargetGenes(target, out var targetGeneExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetGeneExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-            if (!CheckTargetPawn(target, out string targetExplanation))
+            if (!CheckTargetTraits(target, out var targetTraitExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(BaseExplanation + targetTraitExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            if (!CheckTargetPawn(target, out var targetExplanation))
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
@@ -231,53 +243,59 @@ namespace EBSGFramework
         {
             if (Props.disableGizmo)
             {
-                if (!CheckRain(out string rainExplanation))
+                if (!CheckRain(out var rainExplanation))
                 {
                     reason = rainExplanation;
                     return true;
                 }
-                if (!CheckSnow(out string snowExplanation))
+                if (!CheckSnow(out var snowExplanation))
                 {
                     reason = snowExplanation;
                     return true;
                 }
-                if (!CheckCasterLight(out string casterLightExplanation))
+                if (!CheckCasterLight(out var casterLightExplanation))
                 {
                     reason = casterLightExplanation;
                     return true;
                 }
-                if (!CheckCasterRoof(out string casterRoofExplanation))
+                if (!CheckCasterRoof(out var casterRoofExplanation))
                 {
                     reason = casterRoofExplanation;
                     return true;
                 }
-                if (!CheckCasterHediffs(out string casterHediffExplanation))
+                if (!CheckCasterHediffs(out var casterHediffExplanation))
                 {
                     reason = casterHediffExplanation;
                     return true;
                 }
-                if (!CheckCondition(out string conditionExplanation))
+
+                if (!CheckCasterTraits(out var casterTraitExplanation))
+                {
+                    reason = casterTraitExplanation;
+                    return true;
+                }
+                if (!CheckCondition(out var conditionExplanation))
                 {
                     reason = conditionExplanation;
                     return true;
                 }
-                if (!CheckWeather(out string weatherExplanation))
+                if (!CheckWeather(out var weatherExplanation))
                 {
                     reason = weatherExplanation;
                     return true;
                 }
-                if (!CheckHour(out string hourExplanation))
+                if (!CheckHour(out var hourExplanation))
                 {
                     reason = hourExplanation;
                     return true;
                 }
-                if (!CheckCasterPawn(out string casterExplanation))
+                if (!CheckCasterPawn(out var casterExplanation))
                 {
                     reason = casterExplanation;
                     return true;
                 }
 
-                if (!CheckCasterLayer(out string casterLayerExplanation))
+                if (!CheckCasterLayer(out var casterLayerExplanation))
                 {
                     reason = casterLayerExplanation;
                     return true;
@@ -291,7 +309,7 @@ namespace EBSGFramework
 
         public bool CheckRain(out string explanation)
         {
-            Map map = Caster.MapHeld;
+            var map = Caster.MapHeld;
             if (map != null)
             {
                 var rainRate = map.weatherManager.RainRate;
@@ -317,7 +335,7 @@ namespace EBSGFramework
 
         public bool CheckSnow(out string explanation)
         {
-            Map map = Caster.MapHeld;
+            var map = Caster.MapHeld;
             if (map != null)
             {
                 var snowRate = map.weatherManager.SnowRate;
@@ -356,7 +374,7 @@ namespace EBSGFramework
             }
             else
             {
-                float light = Caster.MapHeld.glowGrid.GroundGlowAt(Caster.PositionHeld);
+                var light = Caster.MapHeld.glowGrid.GroundGlowAt(Caster.PositionHeld);
                 if (Props.casterLightLevel.Includes(light) == Props.invertCasterLight)
                 {
                     var translate = Props.invertCasterLight ? "AbilityCasterLightLevelInvert" : "AbilityCasterLightLevel";
@@ -374,7 +392,7 @@ namespace EBSGFramework
 
             if (Props.casterRoof != RoofCheck.NoCheck && Caster.Spawned)
             {
-                RoofDef roof = Caster.Position.GetRoof(Caster.Map);
+                var roof = Caster.Position.GetRoof(Caster.Map);
                 switch (Props.casterRoof)
                 {
                     case RoofCheck.AnyRoof:
@@ -446,11 +464,56 @@ namespace EBSGFramework
                         : "AbilityNoCasterHediff".Translate();
                     return false;
                 }
-                if (Caster.PawnHasAnyOfHediffs(Props.casterHasNoneOfHediffs))
+                if (Caster.PawnHasAnyOfHediffs(Props.casterHasNoneOfHediffs, out Hediff first))
                 {
-                    explanation = Props.casterHasNoneOfHediffs.Count == 1 
-                        ? "AbilityCasterHediffOne".Translate(Props.casterHasNoneOfHediffs[0].label) 
-                        : "AbilityCasterHediff".Translate();
+                    explanation = "AbilityCasterHediffOne".Translate(first.LabelCap);
+                    return false;
+                }
+            }
+
+            explanation = null;
+            return true;
+        }
+        
+        public bool CheckCasterTraits(out string explanation)
+        {
+            if (Caster.story?.traits?.allTraits.NullOrEmpty() != false)
+            {
+                if (!Props.casterHasAllOfTraits.NullOrEmpty())
+                {
+                    explanation = Props.casterHasAnyOfTraits.Count == 1 
+                        ? "AbilityNoCasterTraitOne".Translate(Props.casterHasAllOfTraits[0].def.DataAtDegree(Props.casterHasAllOfTraits[0].degree).GetLabelCapFor(Caster)) 
+                        : "AbilityNoCasterTrait".Translate();
+                    return false;
+                }
+
+                if (!Props.casterHasAnyOfTraits.NullOrEmpty())
+                {
+                    explanation = Props.casterHasAnyOfTraits.Count == 1 
+                        ? "AbilityNoCasterTraitOne".Translate(Props.casterHasAnyOfTraits[0].def.DataAtDegree(Props.casterHasAnyOfTraits[0].degree).GetLabelCapFor(Caster)) 
+                        : "AbilityNoCasterTrait".Translate();
+                    return false;
+                }
+            }
+            else
+            {
+                if (!Caster.PawnHasAllOfTraits(null, Props.casterHasAllOfTraits))
+                {
+                    explanation = Props.casterHasAnyOfTraits.Count == 1 
+                        ? "AbilityNoCasterTraitOne".Translate(Props.casterHasAllOfTraits[0].def.DataAtDegree(Props.casterHasAllOfTraits[0].degree).GetLabelCapFor(Caster)) 
+                        : "AbilityNoCasterTrait".Translate();
+                    return false;
+                }
+                if (!Props.casterHasAnyOfTraits.NullOrEmpty() && !Caster.PawnHasAnyOfTraits(out _, null, Props.casterHasAnyOfTraits))
+                {
+                    explanation = Props.casterHasAnyOfTraits.Count == 1 
+                        ? "AbilityNoCasterTraitOne".Translate(Props.casterHasAnyOfTraits[0].def.DataAtDegree(Props.casterHasAnyOfTraits[0].degree).GetLabelCapFor(Caster)) 
+                        : "AbilityNoCasterTrait".Translate();
+                    return false;
+                }
+                if (Caster.PawnHasAnyOfTraits(out var first, null, Props.casterHasNoneOfTraits))
+                {
+                    explanation = "AbilityCasterTraitOne".Translate(first.Label);
                     return false;
                 }
             }
@@ -459,12 +522,13 @@ namespace EBSGFramework
             return true;
         }
 
+
         public bool CheckCasterPawn(out string explanation)
         {
-            Pawn pawn = Caster;
+            var pawn = Caster;
             if (!Props.casterCapLimiters.NullOrEmpty())
             {
-                foreach (CapCheck capCheck in Props.casterCapLimiters)
+                foreach (var capCheck in Props.casterCapLimiters)
                 {
                     if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                     {
@@ -475,7 +539,7 @@ namespace EBSGFramework
                         }
                         continue;
                     }
-                    float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                    var capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
                     if (capValue < capCheck.range.min)
                     {
                         explanation = "AbilityCasterLowCheck".Translate(capCheck.capacity.LabelCap);
@@ -490,9 +554,9 @@ namespace EBSGFramework
             }
             if (!Props.casterStatLimiters.NullOrEmpty())
             {
-                foreach (StatCheck statCheck in Props.casterStatLimiters)
+                foreach (var statCheck in Props.casterStatLimiters)
                 {
-                    float statValue = pawn.StatOrOne(statCheck.stat);
+                    var statValue = pawn.StatOrOne(statCheck.stat);
                     if (statValue < statCheck.range.min)
                     {
                         explanation = "AbilityCasterLowCheck".Translate(statCheck.stat.LabelCap);
@@ -507,9 +571,9 @@ namespace EBSGFramework
             }
             if (!Props.casterSkillLimiters.NullOrEmpty())
             {
-                foreach (SkillLevel skillLevel in Props.casterSkillLimiters)
+                foreach (var skillLevel in Props.casterSkillLimiters)
                 {
-                    SkillRecord skill = pawn.skills?.GetSkill(skillLevel.skill);
+                    var skill = pawn.skills?.GetSkill(skillLevel.skill);
                     if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                     {
                         if (skillLevel.range.min > 0)
@@ -579,8 +643,8 @@ namespace EBSGFramework
             {
                 if (!Props.requireOneOfCondition.NullOrEmpty())
                 {
-                    bool flag = true;
-                    foreach (GameConditionDef conditionDef in Props.requireOneOfCondition)
+                    var flag = true;
+                    foreach (var conditionDef in Props.requireOneOfCondition)
                     {
                         if (conditionDef.ConditionOrExclusiveIsActive(Caster.MapHeld))
                         {
@@ -625,7 +689,7 @@ namespace EBSGFramework
             }
             else
             {
-                WeatherDef currentWeather = Caster.MapHeld.weatherManager.curWeather;
+                var currentWeather = Caster.MapHeld.weatherManager.curWeather;
                 if (!Props.requireOneOfWeather.NullOrEmpty() && !Props.requireOneOfWeather.Contains(currentWeather))
                 {
                     explanation = Props.requireOneOfWeather.Count == 1 
@@ -646,11 +710,11 @@ namespace EBSGFramework
 
         public bool CheckHour(out string explanation)
         {
-            float time = GenLocalDate.DayPercent(Caster);
+            var time = GenLocalDate.DayPercent(Caster);
             if (Props.progressThroughDay.Includes(time) == Props.invertTime)
             {
-                int minHour = GenDate.HourOfDay((long)(Props.progressThroughDay.min * 60000), Find.WorldGrid.LongLatOf(Caster.Tile).x);
-                int maxHour = GenDate.HourOfDay((long)((Props.progressThroughDay.max + 0.1f) * 60000), Find.WorldGrid.LongLatOf(Caster.Tile).x);
+                var minHour = GenDate.HourOfDay((long)(Props.progressThroughDay.min * 60000), Find.WorldGrid.LongLatOf(Caster.Tile).x);
+                var maxHour = GenDate.HourOfDay((long)((Props.progressThroughDay.max + 0.1f) * 60000), Find.WorldGrid.LongLatOf(Caster.Tile).x);
                 
                 explanation = !Props.invertTime 
                     ? "AbilityTime".Translate(minHour.ToString(), maxHour.ToString(), Caster) 
@@ -667,13 +731,12 @@ namespace EBSGFramework
             explanation = null;
             return true;
         }
-
-
+        
         // Target specific
         public bool CheckTargetLight(LocalTargetInfo target, out string explanation)
         {
             explanation = null;
-            Map map = target.Thing?.MapHeld ?? Caster.MapHeld;
+            var map = target.Thing?.MapHeld ?? Caster.MapHeld;
             if (!target.Cell.InBounds(map))
                 return false;
 
@@ -687,7 +750,7 @@ namespace EBSGFramework
             }
             else
             {
-                float light = map.glowGrid.GroundGlowAt(target.Cell);
+                var light = map.glowGrid.GroundGlowAt(target.Cell);
                 if (Props.targetLightLevel.Includes(light) == Props.invertTargetLight)
                 {
                     var translate = Props.invertTargetLight ? "AbilityTargetLightLevelInvert" : "AbilityTargetLightLevel";
@@ -702,12 +765,12 @@ namespace EBSGFramework
         {
             explanation = null;
             if (Caster.MapHeld == null) return true;
-            IntVec3 pos = target.Cell;
-            Map map = Caster.MapHeld;
+            var pos = target.Cell;
+            var map = Caster.MapHeld;
 
             if (Props.targetRoof != RoofCheck.NoCheck)
             {
-                RoofDef roof = pos.GetRoof(map);
+                var roof = pos.GetRoof(map);
                 switch (Props.targetRoof)
                 {
                     case RoofCheck.AnyRoof:
@@ -749,7 +812,7 @@ namespace EBSGFramework
 
         public bool CheckTargetHediffs(LocalTargetInfo target, out string explanation)
         {
-            if (target.TargetIsPawn(out Pawn targetPawn))
+            if (target.TargetIsPawn(out var targetPawn))
             {
                 if (targetPawn.health == null || targetPawn.health.hediffSet.hediffs.NullOrEmpty())
                 {
@@ -817,7 +880,7 @@ namespace EBSGFramework
 
         public bool CheckTargetGenes(LocalTargetInfo target, out string explanation)
         {
-            if (target.TargetIsPawn(out Pawn targetPawn))
+            if (target.TargetIsPawn(out var targetPawn))
             {
                 if (targetPawn.genes == null || targetPawn.genes.GenesListForReading.NullOrEmpty())
                 {
@@ -897,14 +960,66 @@ namespace EBSGFramework
             explanation = null;
             return true;
         }
+        
+        public bool CheckTargetTraits(LocalTargetInfo target, out string explanation)
+        {
+            if (target.TargetIsPawn(out var targetPawn))
+            {
+                if (targetPawn.story?.traits?.allTraits.NullOrEmpty() != false)
+                {
+                    if (!Props.targetHasAllOfTraits.NullOrEmpty())
+                    {
+                        explanation = Props.targetHasAnyOfTraits.Count == 1
+                            ? "AbilityNoTargetTraitOne".Translate(Props.targetHasAllOfTraits[0].def.DataAtDegree(Props.targetHasAllOfTraits[0].degree).GetLabelCapFor(targetPawn))
+                            : "AbilityNoTargetTrait".Translate();
+                        return false;
+                    }
+
+                    if (!Props.targetHasAnyOfTraits.NullOrEmpty())
+                    {
+                        explanation = Props.targetHasAnyOfTraits.Count == 1
+                            ? "AbilityNoTargetTraitOne".Translate(Props.targetHasAnyOfTraits[0].def.DataAtDegree(Props.targetHasAnyOfTraits[0].degree).GetLabelCapFor(targetPawn))
+                            : "AbilityNoTargetTrait".Translate();
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!targetPawn.PawnHasAllOfTraits(null, Props.targetHasAllOfTraits))
+                    {
+                        explanation = Props.targetHasAnyOfTraits.Count == 1
+                            ? "AbilityNoTargetTraitOne".Translate(Props.targetHasAllOfTraits[0].def.DataAtDegree(Props.targetHasAllOfTraits[0].degree).GetLabelCapFor(targetPawn))
+                            : "AbilityNoTargetTrait".Translate();
+                        return false;
+                    }
+
+                    if (!Props.targetHasAnyOfTraits.NullOrEmpty() && !targetPawn.PawnHasAnyOfTraits(out _, null, Props.targetHasAnyOfTraits))
+                    {
+                        explanation = Props.targetHasAnyOfTraits.Count == 1
+                            ? "AbilityNoTargetTraitOne".Translate(Props.targetHasAnyOfTraits[0].def.DataAtDegree(Props.targetHasAnyOfTraits[0].degree).GetLabelCapFor(targetPawn))
+                            : "AbilityNoTargetTrait".Translate();
+                        return false;
+                    }
+
+                    if (targetPawn.PawnHasAnyOfTraits(out var first, null, Props.targetHasNoneOfTraits))
+                    {
+                        explanation = "AbilityTargetTraitOne".Translate(first.Label);
+                        return false;
+                    }
+                }
+            }
+
+            explanation = null;
+            return true;
+        }
 
         public bool CheckTargetPawn(LocalTargetInfo target, out string explanation)
         {
-            if (target.TargetIsPawn(out Pawn pawn))
+            if (target.TargetIsPawn(out var pawn))
             {
                 if (!Props.targetCapLimiters.NullOrEmpty())
                 {
-                    foreach (CapCheck capCheck in Props.targetCapLimiters)
+                    foreach (var capCheck in Props.targetCapLimiters)
                     {
                         if (!pawn.health.capacities.CapableOf(capCheck.capacity))
                         {
@@ -915,7 +1030,7 @@ namespace EBSGFramework
                             }
                             continue;
                         }
-                        float capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
+                        var capValue = pawn.health.capacities.GetLevel(capCheck.capacity);
                         if (capValue < capCheck.range.min)
                         {
                             explanation = "AbilityTargetLowCheck".Translate(capCheck.capacity.LabelCap);
@@ -930,9 +1045,9 @@ namespace EBSGFramework
                 }
                 if (!Props.targetStatLimiters.NullOrEmpty())
                 {
-                    foreach (StatCheck statCheck in Props.targetStatLimiters)
+                    foreach (var statCheck in Props.targetStatLimiters)
                     {
-                        float statValue = pawn.StatOrOne(statCheck.stat);
+                        var statValue = pawn.StatOrOne(statCheck.stat);
                         if (statValue < statCheck.range.min)
                         {
                             explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
@@ -947,9 +1062,9 @@ namespace EBSGFramework
                 }
                 if (!Props.targetSkillLimiters.NullOrEmpty())
                 {
-                    foreach (SkillLevel skillLevel in Props.targetSkillLimiters)
+                    foreach (var skillLevel in Props.targetSkillLimiters)
                     {
-                        SkillRecord skill = pawn.skills?.GetSkill(skillLevel.skill);
+                        var skill = pawn.skills?.GetSkill(skillLevel.skill);
                         if (skill == null || skill.TotallyDisabled || skill.PermanentlyDisabled)
                         {
                             if (skillLevel.range.min > 0)
@@ -1090,7 +1205,7 @@ namespace EBSGFramework
             {
                 if (!Props.targetCapLimiters.NullOrEmpty())
                 {
-                    foreach (CapCheck capCheck in Props.targetCapLimiters)
+                    foreach (var capCheck in Props.targetCapLimiters)
                     {
                         if (capCheck.range.min > 0)
                         {
@@ -1101,7 +1216,7 @@ namespace EBSGFramework
                 }
                 if (!Props.targetSkillLimiters.NullOrEmpty())
                 {
-                    foreach (SkillLevel skillLevel in Props.targetSkillLimiters)
+                    foreach (var skillLevel in Props.targetSkillLimiters)
                     {
                         if (skillLevel.range.min > 0)
                         {
@@ -1112,8 +1227,8 @@ namespace EBSGFramework
                 }
                 if (!Props.targetStatLimiters.NullOrEmpty())
                 {
-                    Thing thing = target.Thing;
-                    foreach (StatCheck statCheck in Props.targetStatLimiters)
+                    var thing = target.Thing;
+                    foreach (var statCheck in Props.targetStatLimiters)
                     {
                         if (thing == null)
                         {
@@ -1125,7 +1240,7 @@ namespace EBSGFramework
                         }
                         else
                         {
-                            float statValue = thing.StatOrOne(statCheck.stat);
+                            var statValue = thing.StatOrOne(statCheck.stat);
                             if (statValue < statCheck.range.min)
                             {
                                 explanation = "AbilityTargetLowCheck".Translate(statCheck.stat.LabelCap);
@@ -1141,7 +1256,7 @@ namespace EBSGFramework
                 }
                 if (!Props.targetNeedLevels.NullOrEmpty())
                 {
-                    foreach (NeedLevel needLevel in Props.targetNeedLevels)
+                    foreach (var needLevel in Props.targetNeedLevels)
                         if (needLevel.range.min > 0)
                         {
                             explanation = "AbilityTargetMustBePawn".Translate();
