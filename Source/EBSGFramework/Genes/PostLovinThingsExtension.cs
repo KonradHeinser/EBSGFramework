@@ -43,5 +43,27 @@ namespace EBSGFramework
         public List<BodyPartDef> partnerBodyParts;
 
         public float partnerDamageChance = 1f;
+
+        public bool Disabled(Pawn pawn, Pawn other)
+        {
+            if (gender != Gender.None && pawn.gender != gender) 
+                return true;
+
+            return DisabledByOther(other);
+        }
+        
+        public bool DisabledByOther(Pawn other)
+        {
+            if (partnerGender != Gender.None && other.gender != partnerGender)
+                return true;
+            
+            if (!other.HasAnyGenes())
+                return false;
+            
+            if (!partnerHasNoneOf.NullOrEmpty() && other.HasAnyOfRelatedGene(partnerHasNoneOf))
+                return true;
+
+            return !partnerRequiresOneOf.NullOrEmpty() && !other.HasAnyOfRelatedGene(partnerRequiresOneOf);
+        }
     }
 }

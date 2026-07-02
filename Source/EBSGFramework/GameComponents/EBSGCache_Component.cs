@@ -125,7 +125,7 @@ namespace EBSGFramework
             // Checks the def database to see if there are any needs that use displayLowAlert
             if (!checkedComaNeeds)
             {
-                foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
+                foreach (var need in DefDatabase<NeedDef>.AllDefsListForReading)
                     if (need.needClass == typeof(Need_ComaGene))
                     {
                         needComaAlert = true;
@@ -142,11 +142,11 @@ namespace EBSGFramework
             // Checks the def database to see if there are any needs that use displayLowAlert
             if (!checkedNeedAlert)
             {
-                foreach (NeedDef need in DefDatabase<NeedDef>.AllDefsListForReading)
+                foreach (var need in DefDatabase<NeedDef>.AllDefsListForReading)
                 {
                     if (need.HasModExtension<EBSGExtension>())
                     {
-                        EBSGExtension extension = need.GetModExtension<EBSGExtension>();
+                        var extension = need.GetModExtension<EBSGExtension>();
                         if (extension.displayLowAlert)
                         {
                             needNeedAlert = true;
@@ -165,7 +165,7 @@ namespace EBSGFramework
         {
             if (!checkedRechargerJob)
             {
-                foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefsListForReading)
+                foreach (var thing in DefDatabase<ThingDef>.AllDefsListForReading)
                 {
                     if (thing.thingClass == typeof(Building_PawnNeedCharger))
                     {
@@ -216,13 +216,13 @@ namespace EBSGFramework
             if (geneCountAtLastCache.NullOrEmpty() || !geneCountAtLastCache.ContainsKey(pawn) || pawn.genes.GenesListForReading.Count != geneCountAtLastCache[pawn]
                     || pawn.IsHashIntervalTick(60000) || cachedGeneMoodFactor.NullOrEmpty() || !cachedGeneMoodFactor.ContainsKey(pawn))
             {
-                float num = 1f;
+                var num = 1f;
 
-                foreach (GeneDef gene in moodMultiplyingGenes)
+                foreach (var gene in moodMultiplyingGenes)
                 {
                     if (pawn.HasRelatedGene(gene))
                     {
-                        EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
+                        var extension = gene.GetModExtension<EBSGExtension>();
                         if (extension != null)
                         {
                             if (extension.universalMoodFactor == 0)
@@ -260,7 +260,7 @@ namespace EBSGFramework
         {
             // Only the first one applies to the pawn
 
-            bool flag = true;
+            var flag = true;
 
             if (pawnTerrainComps.NullOrEmpty() || !pawnTerrainComps.ContainsKey(pawn) || !pawn.HasHediff(pawnTerrainComps[pawn].def) || pawnTerrainComps[pawn].TryGetComp<HediffComp_TerrainCostOverride>() == null)
             {
@@ -269,7 +269,7 @@ namespace EBSGFramework
 
                 if (pawn.health != null && !pawn.health.hediffSet.hediffs.NullOrEmpty())
                 {
-                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                    foreach (var hediff in pawn.health.hediffSet.hediffs)
                         if (hediff.TryGetComp<HediffComp_TerrainCostOverride>() != null)
                         {
                             RegisterTerrainPawn(pawn, hediff);
@@ -341,10 +341,10 @@ namespace EBSGFramework
             reloadableAbilities = new List<AbilityDef>();
             abilityFuel = new List<ThingDef>();
 
-            foreach (AbilityDef ability in DefDatabase<AbilityDef>.AllDefs)
+            foreach (var ability in DefDatabase<AbilityDef>.AllDefs)
             {
                 if (!ability.comps.NullOrEmpty())
-                    foreach (AbilityCompProperties prop in ability.comps)
+                    foreach (var prop in ability.comps)
                         if (prop is CompProperties_AbilityReloadable reloadable)
                         {
                             reloadableAbilities.Add(ability);
@@ -390,7 +390,7 @@ namespace EBSGFramework
                 foreach (var geneEvent in EBSGDefOf.EBSG_Recorder.geneEvents)
                     propagateEvents[geneEvent.gene] = geneEvent.propagateEvent;
 
-            foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefs)
+            foreach (var gene in DefDatabase<GeneDef>.AllDefs)
             {
                 if (gene.HasModExtension<FertilityByGenderAgeExtension>())
                     fertilityChangingGenes.Add(gene);
@@ -403,7 +403,7 @@ namespace EBSGFramework
 
                 if (gene.HasModExtension<EBSGExtension>())
                 {
-                    EBSGExtension extension = gene.GetModExtension<EBSGExtension>();
+                    var extension = gene.GetModExtension<EBSGExtension>();
 
                     if (extension.universalMoodFactor != 1)
                         moodMultiplyingGenes.Add(gene);
@@ -412,7 +412,7 @@ namespace EBSGFramework
                         hiddenWhenInactive.Add(gene);
 
                     if (!extension.skillChanges.NullOrEmpty() && gene.geneClass == typeof(Gene_SkillChanging))
-                        foreach (SkillChange change in extension.skillChanges)
+                        foreach (var change in extension.skillChanges)
                             if (change.skillChange != IntRange.Zero)
                             {
                                 skillChanging.Add(gene);
@@ -431,7 +431,7 @@ namespace EBSGFramework
 
                 if (gene.HasModExtension<EquipRestrictExtension>())
                 {
-                    EquipRestrictExtension equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
+                    var equipRestrict = gene.GetModExtension<EquipRestrictExtension>();
 
                     if (equipRestrict.noEquipment || (equipRestrict.noWeapons && equipRestrict.noApparel))
                         noEquipment.Add(gene);
@@ -443,7 +443,7 @@ namespace EBSGFramework
                         equipRestricting.Add(gene);
                 }
 
-                EBSGBodyExtension bodyExtension = gene.GetModExtension<EBSGBodyExtension>();
+                var bodyExtension = gene.GetModExtension<EBSGBodyExtension>();
                 if (bodyExtension != null)
                 {
                     if (bodyExtension.desHead != null || bodyExtension.desChildHead != null)
@@ -464,7 +464,7 @@ namespace EBSGFramework
                 if (gene.HasModExtension<PregnancyReplacerExtension>())
                     pregnancyReplacingGenes.Add(gene);
 
-                PostLovinThingsExtension lovinExtension = gene.GetModExtension<PostLovinThingsExtension>();
+                var lovinExtension = gene.GetModExtension<PostLovinThingsExtension>();
                 if (lovinExtension != null)
                 {
                     lovinAddinGenes.Add(gene);
@@ -472,7 +472,7 @@ namespace EBSGFramework
                         partnerLovinMemoryReplacer.Add(gene);
                 }
 
-                ButcherProductExtension butcher = gene.GetModExtension<ButcherProductExtension>();
+                var butcher = gene.GetModExtension<ButcherProductExtension>();
                 if (butcher != null)
                 {
                     butcherProductGenes.Add(gene);
@@ -480,7 +480,7 @@ namespace EBSGFramework
                         leatherProductGenes.Add(gene);
                 }
 
-                DamageModifyingStatsExtension damageStats = gene.GetModExtension<DamageModifyingStatsExtension>();
+                var damageStats = gene.GetModExtension<DamageModifyingStatsExtension>();
                 if (damageStats != null)
                 {
                     if (damageStats.Outgoing)
@@ -502,11 +502,11 @@ namespace EBSGFramework
             // bleedingSlayingStats = new List<StatDef>();
             // nonBleedingSlayingStats = new List<StatDef>();
 
-            foreach (StatDef stat in DefDatabase<StatDef>.AllDefs)
+            foreach (var stat in DefDatabase<StatDef>.AllDefs)
             {
                 if (stat.HasModExtension<EBSGDamageExtension>())
                 {
-                    EBSGDamageExtension extension = stat.GetModExtension<EBSGDamageExtension>();
+                    var extension = stat.GetModExtension<EBSGDamageExtension>();
                     if (extension.allowHumanlikes) humanoidSlayingStats.Add(stat);
                     if (extension.allowDryads) dryadSlayingStats.Add(stat);
                     if (extension.allowInsects) insectSlayingStats.Add(stat);
@@ -523,7 +523,7 @@ namespace EBSGFramework
         {
             murderousNeeds = new List<NeedDef>();
 
-            foreach (NeedDef need in DefDatabase<NeedDef>.AllDefs)
+            foreach (var need in DefDatabase<NeedDef>.AllDefs)
             {
                 if (need.needClass == typeof(Need_Murderous))
                     murderousNeeds.Add(need);
@@ -576,9 +576,9 @@ namespace EBSGFramework
             }
 
             if (ModsConfig.RoyaltyActive || ModsConfig.OdysseyActive)
-                foreach (WeaponTraitDef trait in DefDatabase<WeaponTraitDef>.AllDefs)
+                foreach (var trait in DefDatabase<WeaponTraitDef>.AllDefs)
                 {
-                    WeaponTraitExtension extension = trait.GetModExtension<WeaponTraitExtension>();
+                    var extension = trait.GetModExtension<WeaponTraitExtension>();
                     if (extension != null)
                     {
                         if (!extension.extraMeleeDamages.NullOrEmpty() || extension.meleeDamageDefOverride != null)

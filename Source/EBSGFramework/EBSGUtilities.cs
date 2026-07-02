@@ -1564,10 +1564,10 @@ namespace EBSGFramework
             return map.weatherManager.curWeather.favorability == Favorability.Bad || map.weatherManager.curWeather.favorability == Favorability.VeryBad;
         }
 
-        // If they don't have a gene tracker or the genes list is empty, returns false
+        // If Biotech is not enabled, they don't have a gene tracker, or the genes list is empty, returns false
         public static bool HasAnyGenes(this Pawn pawn)
         {
-            return pawn.genes?.GenesListForReading.NullOrEmpty() == false;
+            return ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false;
         }
         
         // HasAnyOfGene will return false when both lists are empty
@@ -1618,10 +1618,10 @@ namespace EBSGFramework
         public static List<GeneDef> GetAllGenesOnListFromPawn(this Pawn pawn, List<GeneDef> searchList)
         {
             var results = new List<GeneDef>();
-
-            if (ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false && !searchList.NullOrEmpty()) 
-                results.AddRange(from g in pawn.genes.GenesListForReading where searchList.Contains(g.def) select g.def);
-
+            if (!pawn.HasAnyGenes()) return results;
+            if (!searchList.NullOrEmpty()) 
+                results.AddRange(pawn.genes.GenesListForReading.Where(g => searchList.Contains(g.def)).Select(g => g.def));
+            
             return results;
         }
 
