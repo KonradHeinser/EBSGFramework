@@ -37,10 +37,10 @@ namespace EBSGFramework
             {
                 if (lifeTime > 0)
                 {
-                    Vector3 pos = targetCell.ToVector3() + Vector3.forward * Mathf.Lerp(60, 0f, 1f - (float)lifeTime / 60f);
+                    var pos = targetCell.ToVector3() + Vector3.forward * Mathf.Lerp(60, 0f, 1f - (float)lifeTime / 60f);
                     pos.z += 1.25f;
                     pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
-                    Matrix4x4 matrix = Matrix4x4.TRS(pos, Quaternion.Euler(0f, 180f, 0f), new Vector3(2.5f, 1f, 2.5f));
+                    var matrix = Matrix4x4.TRS(pos, Quaternion.Euler(0f, 180f, 0f), new Vector3(2.5f, 1f, 2.5f));
                     Graphics.DrawMesh(MeshPool.plane10, matrix, material, 0);
                 }
             }
@@ -124,29 +124,17 @@ namespace EBSGFramework
 
         public const int EffectiveAreaRadius = 23;
 
-        private const int StartRandomFireEveryTicks = 20;
-
-        private const int EffectDuration = 60;
-
         public static readonly SimpleCurve DistanceChanceFactor = new SimpleCurve
     {
         new CurvePoint(0f, 1f),
-        new CurvePoint(1f, 0.1f)
+        new CurvePoint(1f, 0.001f)
     };
-
-        public override void SpawnSetup(Map map, bool respawningAfterReload)
-        {
-            base.SpawnSetup(map, respawningAfterReload);
-            if (!respawningAfterReload)
-            {
-                GetNextExplosionCell();
-            }
-        }
 
         public override void StartStrike()
         {
             duration = bombIntervalTicks * (explosionCount + 5); // To ensure the last few have a chance to land
             explosionsRemaining = explosionCount;
+            GetNextExplosionCell();
             base.StartStrike();
         }
 
@@ -163,8 +151,8 @@ namespace EBSGFramework
                 if (warmupTicks <= 0)
                     StartStrike();
             }
-            
-            EffectTick(delta);
+            else
+                EffectTick(delta);
         }
 
         private void EffectTick(int delta)
@@ -184,10 +172,10 @@ namespace EBSGFramework
                 GetNextExplosionCell();
             }
 
-            List<OrbitalProjectile> spentProjectiles = new List<OrbitalProjectile>();
+            var spentProjectiles = new List<OrbitalProjectile>();
 
             if (!projectiles.NullOrEmpty())
-                foreach (OrbitalProjectile orbital in projectiles)
+                foreach (var orbital in projectiles)
                 {
                     orbital.Tick(delta);
                     if (orbital.LifeTime <= 0)
@@ -198,7 +186,7 @@ namespace EBSGFramework
                 }
 
             if (!spentProjectiles.NullOrEmpty())
-                foreach (OrbitalProjectile orbital in spentProjectiles)
+                foreach (var orbital in spentProjectiles)
                     projectiles.Remove(orbital);
         }
 
@@ -220,9 +208,9 @@ namespace EBSGFramework
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
             base.DrawAt(drawLoc, flip);
-            if (!projectiles.NullOrEmpty())
-                foreach (OrbitalProjectile orbital in projectiles)
-                    orbital.Draw(MaterialPool.MatFrom(projectileTexPath, ShaderDatabase.Transparent, projectileColor));
+            if (projectiles.NullOrEmpty()) return;
+            foreach (var orbital in projectiles)
+                orbital.Draw(MaterialPool.MatFrom(projectileTexPath, ShaderDatabase.Transparent, projectileColor));
         }
 
         private bool Intercepted(IntVec3 targetCell)
@@ -244,8 +232,8 @@ namespace EBSGFramework
         private void GetNextExplosionCell()
         {
             nextExplosionCell = (from x in GenRadial.RadialCellsAround(Position, impactAreaRadius, true)
-                                 where x.InBounds(Map)
-                                 select x).RandomElementByWeight(x => DistanceChanceFactor.Evaluate(x.DistanceTo(Position) / impactAreaRadius));
+                                 where x.InBounds(Map) select x)
+                                .RandomElementByWeight(x => DistanceChanceFactor.Evaluate(x.DistanceTo(Position) / impactAreaRadius));
         }
 
         public override void ExposeData()
@@ -287,10 +275,7 @@ namespace EBSGFramework
                     projectiles = new List<OrbitalProjectile>();
             }
 
-            if (DefDatabase<DamageDef>.GetNamedSilentFail(damageDef) != null)
-                damage = DefDatabase<DamageDef>.GetNamed(damageDef);
-            else
-                damage = DamageDefOf.Bomb;
+            damage = DefDatabase<DamageDef>.GetNamedSilentFail(damageDef) ?? DamageDefOf.Bomb;
 
             if (explosionSoundDef != null && DefDatabase<SoundDef>.GetNamedSilentFail(explosionSoundDef) != null)
                 explosionSound = DefDatabase<SoundDef>.GetNamed(explosionSoundDef);
