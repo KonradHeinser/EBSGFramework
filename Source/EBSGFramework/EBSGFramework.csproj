@@ -134,6 +134,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NeedOffsetPerHour.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemovedBy.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveOnDamageTaken.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_RemoveOnFactionChange.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NeedOffsetPerHour.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_RemovedBy.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveHediffsOnRemoval.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveOnDamageTaken.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_RemoveOnFactionChange.cs" />
@@ -205,10 +207,12 @@
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterGenes.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotype.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotypeByHediffSeverity.cs" />
+    <Compile Include="Things\CompProperties\CompProperties_UseEffectReplaceImplant.cs" />
     <Compile Include="Things\Comps\CompShieldEquipment.cs" />
     <Compile Include="Things\Comps\CompUseEffect_AlterGenes.cs" />
     <Compile Include="Things\Comps\CompUseEffect_AlterXenotype.cs" />
     <Compile Include="Things\Comps\CompUseEffect_AlterXenotypeByHediffSeverity.cs" />
+    <Compile Include="Things\Comps\CompUseEffect_ReplaceImplant.cs" />
     <Compile Include="Things\ForceStartingHediffsExtension.cs" />
     <Compile Include="Things\Gizmo_ShieldStatus.cs" />
     <Compile Include="Things\IngestionOutcomeDoers\IngestionOutcomeDoer_AddOrAppendHediff.cs" />

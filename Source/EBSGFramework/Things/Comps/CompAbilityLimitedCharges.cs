@@ -2,7 +2,6 @@
 using RimWorld;
 using RimWorld.Utility;
 using Verse;
-using Verse.Noise;
 
 namespace EBSGFramework
 {
