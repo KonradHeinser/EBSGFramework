@@ -8,7 +8,7 @@ using Verse.Sound;
 namespace EBSGFramework
 {
     [StaticConstructorOnStartup]
-    public class CustomizeableOrbitalStrike : OrbitalStrike
+    public class CustomizeableOrbitalStrike : ThingWithComps
     {
         public class OrbitalProjectile : IExposable
         {
@@ -123,25 +123,57 @@ namespace EBSGFramework
         private List<OrbitalProjectile> projectiles = new List<OrbitalProjectile>();
 
         public const int EffectiveAreaRadius = 23;
-
+        
         public static readonly SimpleCurve DistanceChanceFactor = new SimpleCurve
     {
         new CurvePoint(0f, 1f),
         new CurvePoint(1f, 0.001f)
     };
+        
+        public int duration;
 
-        public override void StartStrike()
+        public Thing instigator;
+
+        public ThingDef weaponDef;
+        
+        private int startTick;
+        
+        protected int TicksPassed => Find.TickManager.TicksGame - startTick;
+
+        protected int TicksLeft => duration - TicksPassed;
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            duration = bombIntervalTicks * (explosionCount + 5); // To ensure the last few have a chance to land
+            base.SpawnSetup(map, respawningAfterLoad);
+            if (!respawningAfterLoad)
+                GetComp<CompOrbitalBeam>().StartAnimation(warmupTicks + Mathf.Max(bombIntervalTicks * (explosionCount + 5), 120), 10, new FloatRange(-12f, 12f).RandomInRange);
+        }
+
+        public void StartStrike()
+        {
+            duration = Mathf.Max(bombIntervalTicks * (explosionCount + 5), 120); // To ensure the last few have a chance to land
             explosionsRemaining = explosionCount;
             GetNextExplosionCell();
-            base.StartStrike();
+            if (!Spawned)
+            {
+                Log.Error("Called StartStrike() on unspawned thing.");
+                return;
+            }
+            startTick = Find.TickManager.TicksGame;
+            GetComp<CompAffectsSky>()?.StartFadeInHoldFadeOut(30, duration - 30 - 15, 15);
+        }
+
+        protected override void Tick()
+        {
+            base.Tick();
+            if (warmupTicks > 0) return;
+            if (TicksPassed >= duration)
+                Destroy();
         }
 
         protected override void TickInterval(int delta)
         {
             base.TickInterval(delta);
-
             if (Destroyed || !Spawned)
                 return;
 
@@ -207,7 +239,7 @@ namespace EBSGFramework
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
-            base.DrawAt(drawLoc, flip);
+            Comps_PostDraw();
             if (projectiles.NullOrEmpty()) return;
             foreach (var orbital in projectiles)
                 orbital.Draw(MaterialPool.MatFrom(projectileTexPath, ShaderDatabase.Transparent, projectileColor));
@@ -239,6 +271,11 @@ namespace EBSGFramework
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_References.Look(ref instigator, "instigator");
+            Scribe_Defs.Look(ref weaponDef, "weaponDef");
+            Scribe_Values.Look(ref duration, "duration");
+            Scribe_Values.Look(ref startTick, "startTick");
+            
             Scribe_Values.Look(ref impactAreaRadius, "impactAreaRadius", 15f);
             Scribe_Values.Look(ref explosionsRemaining, "explosionsRemaining");
             Scribe_Values.Look(ref explosionRadiusRange, "explosionRadiusRange", new FloatRange(6f, 8f));
