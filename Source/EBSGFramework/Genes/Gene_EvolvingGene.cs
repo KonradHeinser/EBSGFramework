@@ -64,7 +64,7 @@ namespace EBSGFramework
                 if (!pawn.AllSkillLevelsMet(evo.skillRequirements, false))
                     continue;
 
-                if (!pawn.AllSkillLevelsMet(evo.complexSkillRequirements, false))
+                if (!pawn.AllSkillLevelsInListMet(evo.complexSkillRequirements, false))
                     continue;
 
                 if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))

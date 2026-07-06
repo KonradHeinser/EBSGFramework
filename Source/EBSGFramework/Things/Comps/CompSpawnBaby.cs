@@ -91,7 +91,7 @@ namespace EBSGFramework
                 {
                     // Ensures plants and pawns are grown before they start creating new pawns
                     case Plant plant when plant.Growth < 1f:
-                    case Pawn c when !c.RaceProps.IsMechanoid:
+                    case Pawn c when !c.IsMechanical():
                         return;
                 }
 

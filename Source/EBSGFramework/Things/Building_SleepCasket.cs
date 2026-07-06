@@ -227,7 +227,7 @@ namespace EBSGFramework
                             pawn.filth.GainFilth(Extension.filth);
                         if (pawn.RaceProps.IsFlesh && Extension.endHediff != null)
                             pawn.AddHediffToParts(null, Extension.endHediff);
-                        else if (pawn.RaceProps.IsMechanoid && Extension.mechEndHediff != null)
+                        else if (pawn.IsMechanical() && Extension.mechEndHediff != null)
                             pawn.AddHediffToParts(null, Extension.mechEndHediff);
                     }
 

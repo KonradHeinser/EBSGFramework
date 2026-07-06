@@ -30,7 +30,7 @@ namespace EBSGFramework
             {
                 if (Props.allowAnimals) AddHediffs(victim);
             }
-            else if (victim.RaceProps.IsMechanoid)
+            else if (victim.IsMechanical())
             {
                 if (Props.allowMechanoids) AddHediffs(victim, false);
             }

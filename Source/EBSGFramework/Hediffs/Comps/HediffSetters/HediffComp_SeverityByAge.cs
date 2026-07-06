@@ -12,7 +12,8 @@ namespace EBSGFramework
             float severity = Pawn.ageTracker.AgeBiologicalYearsFloat;
 
             if (Pawn.RaceProps.Humanlike && Props.divideByLifespanFactor) severity /= Pawn.StatOrOne(StatDefOf.LifespanFactor);
-            if (Props.accountForLifeExpectancyDifference && (!Pawn.RaceProps.IsMechanoid || Props.includeMechanoidLifeExpectancy)) severity *= 80 / Pawn.RaceProps.lifeExpectancy;
+            if (Props.accountForLifeExpectancyDifference && (!Pawn.IsMechanical() || Props.includeMechanoidLifeExpectancy)) 
+                severity *= 80 / Pawn.RaceProps.lifeExpectancy;
             severity *= Props.additionalFactor;
 
             parent.Severity = (float)Math.Round(severity, 2);

@@ -49,7 +49,7 @@ namespace EBSGFramework
             if (!pawn.AllSkillLevelsMet(skillRequirements, includeAptitudes)) 
                 return false;
 
-            if (!pawn.AllSkillLevelsMet(complexSkillRequirements, includeAptitudes)) 
+            if (!pawn.AllSkillLevelsInListMet(complexSkillRequirements, includeAptitudes)) 
                 return false;
 
             return true;

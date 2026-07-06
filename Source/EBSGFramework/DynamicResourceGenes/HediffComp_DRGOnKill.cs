@@ -19,7 +19,7 @@ namespace EBSGFramework
 
                         if ((victim.RaceProps.Humanlike && !linker.allowHumanoids) || (victim.RaceProps.Animal && !linker.allowAnimals) ||
                             (victim.RaceProps.Dryad && !linker.allowDryads) || (victim.RaceProps.Insect && !linker.allowInsects) ||
-                            (victim.RaceProps.Insect && !linker.allowAnimals) || (victim.RaceProps.IsMechanoid && !linker.allowMechanoids) ||
+                            (victim.RaceProps.Insect && !linker.allowAnimals) || ((victim.IsMechanical()) && !linker.allowMechanoids) ||
                             (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity && !linker.allowEntities)) continue;
 
                         ResourceGene.OffsetResource(Pawn, linker.amount, resource, null, linker.usesGainStat);

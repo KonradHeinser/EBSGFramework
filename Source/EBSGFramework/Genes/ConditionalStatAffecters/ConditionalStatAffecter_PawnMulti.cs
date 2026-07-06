@@ -40,7 +40,7 @@ namespace EBSGFramework
             {
                 if (!pawn.CapacityConditionsMet(capLimiters)) return false;
                 if (!pawn.AllNeedLevelsMet(needLevels)) return false;
-                if (!pawn.AllSkillLevelsMet(skillLimiters)) return false;
+                if (!pawn.AllSkillLimitsMet(skillLimiters)) return false;
                 if (!pawn.CheckHediffTrio(anyOfHediffs, allOfHediffs, noneOfHediffs)) return false;
                 if (!pawn.CheckGeneTrio(anyOfGenes, allOfGenes, noneOfGenes)) return false;
 

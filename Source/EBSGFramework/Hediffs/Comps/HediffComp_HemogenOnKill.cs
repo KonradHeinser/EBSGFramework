@@ -20,7 +20,7 @@ namespace EBSGFramework
                 (victim.RaceProps.Insect && !Props.allowAnimals) || (ModsConfig.AnomalyActive && victim.RaceProps.IsAnomalyEntity && !Props.allowEntities))
                 return;
 
-            Gene_Hemogen hemogen = Pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
+            var hemogen = Pawn.genes.GetFirstGeneOfType<Gene_Hemogen>();
             if (hemogen == null) return;
 
             if (Props.staticHemogenGain != 0f)
@@ -32,8 +32,8 @@ namespace EBSGFramework
                 if (victim.health == null) return;
 
                 // maxGain represents the maximum amount the pawn has a reason to store, while maxToTake represents the hard cap caused by the properties or the maxGain. maxToTake is the bloodloss added
-                float maxGain = (hemogen.Max - hemogen.Value) / Props.hemogenEfficiency;
-                float maxToTake = Props.maxGainableHemogen / Props.hemogenEfficiency / BodySizeFactor(victim);
+                var maxGain = (hemogen.Max - hemogen.Value) / Props.hemogenEfficiency;
+                var maxToTake = Props.maxGainableHemogen / Props.hemogenEfficiency / BodySizeFactor(victim);
                 if (maxToTake > 1) maxToTake = 1; // Can never take more than 100% of the victim's blood for obvious reasons
 
                 if (maxToTake > maxGain) maxToTake = maxGain;
@@ -41,14 +41,14 @@ namespace EBSGFramework
 
                 if (!victim.HasHediff(HediffDefOf.BloodLoss))
                 {
-                    Hediff bloodloss = HediffMaker.MakeHediff(HediffDefOf.BloodLoss, victim);
+                    var bloodloss = HediffMaker.MakeHediff(HediffDefOf.BloodLoss, victim);
                     bloodloss.Severity = maxToTake;
                     victim.health.AddHediff(bloodloss);
                     hemogen.Value += maxToTake * Props.hemogenEfficiency * BodySizeFactor(victim);
                 }
                 else
                 {
-                    victim.health.hediffSet.TryGetHediff(HediffDefOf.BloodLoss, out Hediff bloodloss);
+                    victim.health.hediffSet.TryGetHediff(HediffDefOf.BloodLoss, out var bloodloss);
                     if (bloodloss.Severity == 1) return;
 
                     // If maxToTake is trying to take more blood than there is, set the severity to 1 and use the old difference as the hemogen increase base

@@ -22,12 +22,12 @@ namespace EBSGFramework
             base.CompPostPostRemoved();
             if (!EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverity))
                 return;
-            Thing source = instigator ?? Pawn;
-            Pawn sourcePawn = source as Pawn;
+            var source = instigator ?? Pawn;
+            var sourcePawn = source as Pawn;
 
-            Map map = Pawn.MapHeld;
+            var map = Pawn.MapHeld;
             if (map == null) return; // Ensures there is a map to target, and that the pawn is spawned or inside something
-            IntVec3 pos = Pawn.PositionHeld;
+            var pos = Pawn.PositionHeld;
 
             switch (Props.activation)
             {
@@ -39,24 +39,22 @@ namespace EBSGFramework
                     if (Pawn.Dead)
                         return;
                     break;
+                case RemovedHediffEffectTrigger.Always:
+                default:
+                    break;
             }
             
-            PawnGenerationRequest request = new PawnGenerationRequest(Props.pawnKind, 
+            var request = new PawnGenerationRequest(Props.pawnKind, 
                     Props.inCreatorFaction ? source.Faction : (Find.FactionManager.FirstFactionOfDef(Props.staticFaction) ?? Find.FactionManager.FirstFactionOfDef(Props.pawnKind.defaultFactionDef)), 
                     forceGenerateNewPawn: true, developmentalStages: Props.stage);
 
-            Lord lord = null;
-            if (instigator != null)
-                if (sourcePawn != null)
-                    lord = sourcePawn.GetLord();
-            else
-                lord = Pawn.GetLord();
+            var lord = sourcePawn != null ? sourcePawn.GetLord() : Pawn.GetLord();
 
-            int numToSpawn = Props.count.RandomInRange;
+            var numToSpawn = Props.count.RandomInRange;
 
-            for (int i = 0; i < numToSpawn; i++)
+            for (var i = 0; i < numToSpawn; i++)
             {
-                Pawn pawn = PawnGenerator.GeneratePawn(request);
+                var pawn = PawnGenerator.GeneratePawn(request);
 
                 if (Props.hediffOnPawns != null)
                     pawn.AddOrAppendHediffs(Props.severity, Props.severity, Props.hediffOnPawns, null, sourcePawn);
@@ -76,7 +74,7 @@ namespace EBSGFramework
 
                 if (Props.spawnEffecter != null)
                 {
-                    Effecter effecter = new Effecter(Props.spawnEffecter);
+                    var effecter = new Effecter(Props.spawnEffecter);
                     effecter.Trigger(Props.attachEffecterToPawn ? pawn : new TargetInfo(pos, map), TargetInfo.Invalid);
                     effecter.Cleanup();
                 }
@@ -84,7 +82,7 @@ namespace EBSGFramework
 
             if (Props.effecter != null)
             {
-                Effecter effecter = new Effecter(Props.effecter);
+                var effecter = new Effecter(Props.effecter);
                 effecter.Trigger(Pawn.Dead ? new TargetInfo(pos, map) : Pawn, TargetInfo.Invalid);
                 effecter.Cleanup();
             }

@@ -37,6 +37,12 @@ namespace EBSGFramework
             return memory.Memories.FirstOrFallback(m => m.def == thought && m.otherPawn == otherPawn);
         }
 
+        public static bool IsMechanical(this Pawn pawn)
+        {
+            if (pawn?.RaceProps == null) return false;
+            return pawn.RaceProps.IsMechanoid || pawn.RaceProps.IsDrone;
+        }
+
         public static float RemainingBlood(this Pawn pawn)
         {
             if (pawn.health?.CanBleed != true)
@@ -1461,7 +1467,7 @@ namespace EBSGFramework
             return true;
         }
 
-        public static bool AllSkillLevelsMet(this Pawn pawn, List<List<SkillLevel>> skillLevels, bool includeAptitudes = true)
+        public static bool AllSkillLevelsInListMet(this Pawn pawn, List<List<SkillLevel>> skillLevels, bool includeAptitudes = true)
         {
             if (skillLevels.NullOrEmpty() || pawn.skills == null) return true;
             return skillLevels.Any(skillLevel => pawn.AllSkillLevelsMet(skillLevel, includeAptitudes));
@@ -1496,7 +1502,7 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool AllSkillLevelsMet(this Pawn pawn, List<SkillLevel> skillLimiters)
+        public static bool AllSkillLimitsMet(this Pawn pawn, List<SkillLevel> skillLimiters)
         {
             if (skillLimiters.NullOrEmpty() || pawn.skills == null) return true;
 

@@ -1356,7 +1356,7 @@ namespace EBSGFramework
                             if (extension.downedByAnimalMemory != null)
                                 ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByAnimalMemory, enemy);
                         }
-                        else if (enemy.RaceProps.IsMechanoid)
+                        else if (enemy.IsMechanical())
                         {
                             if (extension.downedByMechMemory != null)
                                 ___pawn.needs.mood.thoughts.memories.TryGainMemory(extension.downedByMechMemory, enemy);
@@ -1833,7 +1833,7 @@ namespace EBSGFramework
                         if (!Cache.animalSlayingStats.NullOrEmpty())
                             amount = Cache.animalSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
                     }
-                    else if (victim.RaceProps.IsMechanoid)
+                    else if (victim.IsMechanical())
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
                             amount = Cache.mechanoidSlayingStats.Aggregate(amount, (current, stat) => current * attacker.StatOrOne(stat));
@@ -1868,7 +1868,7 @@ namespace EBSGFramework
                         if (!Cache.animalSlayingStats.NullOrEmpty())
                             amount = Cache.animalSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));
                     }
-                    else if (victim.RaceProps.IsMechanoid)
+                    else if (victim.IsMechanical())
                     {
                         if (!Cache.mechanoidSlayingStats.NullOrEmpty())
                             amount = Cache.mechanoidSlayingStats.Aggregate(amount, (current, stat) => current * weapon.statBases.GetStatValueFromList(stat, 1));

@@ -26,7 +26,7 @@ namespace EBSGFramework
             else if (Extension != null)
                 if ((!Extension.allowHumanlikes && victim.RaceProps.Humanlike) || (!Extension.allowDryads && victim.RaceProps.Dryad) ||
                     (!Extension.allowInsects && victim.RaceProps.Insect) || (!Extension.allowAnimals && victim.RaceProps.Animal) ||
-                    (!Extension.allowMechanoids && victim.RaceProps.IsMechanoid) ||
+                    (!Extension.allowMechanoids && victim.IsMechanical()) ||
                     (ModsConfig.AnomalyActive && !Extension.allowEntities && victim.RaceProps.IsAnomalyEntity)) return;
 
             CurLevel += Extension?.increasePerKill ?? 1f;

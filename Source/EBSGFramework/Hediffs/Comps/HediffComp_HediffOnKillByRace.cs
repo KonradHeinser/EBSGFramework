@@ -31,7 +31,7 @@ namespace EBSGFramework
                 if (Props.animal != null) 
                     parent.pawn.AddOrAppendHediffs(severity, addedSeverity, Props.animal);
             }
-            else if (victim.RaceProps.IsMechanoid)
+            else if (victim.IsMechanical())
             {
                 if (Props.mechanoid != null) 
                     parent.pawn.AddOrAppendHediffs(severity, addedSeverity, Props.mechanoid);
