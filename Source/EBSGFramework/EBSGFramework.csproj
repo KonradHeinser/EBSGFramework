@@ -130,6 +130,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GenderByAge.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffOnKillByRace.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_HediffsWhileDrafted.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_NameColor.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_GenderByAge.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_HediffOnKillByRace.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_HediffsWhileDrafted.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_InvisibleAtStage.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_NameColor.cs" />
