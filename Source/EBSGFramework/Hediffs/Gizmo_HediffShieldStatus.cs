@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -10,6 +11,23 @@ namespace EBSGFramework
 
         public static readonly Texture2D FullShieldBarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.24f));
         public static readonly Texture2D EmptyShieldBarTex = SolidColorMaterials.NewSolidColorTexture(Color.clear);
+
+        private static readonly Dictionary<Color, Texture2D> customBarTexCache = new Dictionary<Color, Texture2D>();
+
+        private Texture2D FillTex
+        {
+            get
+            {
+                if (!shieldComp.Props.barColor.HasValue) return FullShieldBarTex;
+                Color color = shieldComp.Props.barColor.Value;
+                if (!customBarTexCache.TryGetValue(color, out Texture2D tex))
+                {
+                    tex = SolidColorMaterials.NewSolidColorTexture(color);
+                    customBarTexCache[color] = tex;
+                }
+                return tex;
+            }
+        }
 
         public Gizmo_HediffShieldStatus(HediffComp_Shield comp)
         {
@@ -35,7 +53,7 @@ namespace EBSGFramework
             Rect barRect = drawRect;
             barRect.yMin = drawRect.y + drawRect.height / 2f;
             float num = shieldComp.energy / Mathf.Max(1f, shieldComp.MaxEnergy);
-            Widgets.FillableBar(barRect, num, FullShieldBarTex, EmptyShieldBarTex, false);
+            Widgets.FillableBar(barRect, num, FillTex, EmptyShieldBarTex, false);
             Text.Font = GameFont.Small;
             Widgets.Label(barRect, (shieldComp.energy * 100f).ToString("F0") + " / " + (shieldComp.MaxEnergy * 100f).ToString("F0"));
             Text.Anchor = TextAnchor.UpperLeft;
