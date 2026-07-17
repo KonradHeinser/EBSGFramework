@@ -88,6 +88,7 @@
     <Compile Include="Enums\CheckType.cs" />
     <Compile Include="Enums\DeathType.cs" />
     <Compile Include="Enums\EndOn.cs" />
+    <Compile Include="Enums\EquippedCheck.cs" />
     <Compile Include="Enums\InitialRelation.cs" />
     <Compile Include="Enums\RestrictType.cs" />
     <Compile Include="Enums\TerrainPollution.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Enums\StatRequirement.cs" />
     <Compile Include="Generic List Classes\StatCompare.cs" />
     <Compile Include="Generic List Classes\StatEffects.cs" />
+    <Compile Include="Generic List Classes\StringLink.cs" />
     <Compile Include="Generic List Classes\SuccessChance.cs" />
     <Compile Include="Generic List Classes\TraitDegree.cs" />
     <Compile Include="Generic List Classes\XenoRange.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
+    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByEquipped.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByMap.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByNeedLevel.cs" />
@@ -172,6 +175,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SetterBase.cs" />
+    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByEquipped.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGender.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByMap.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByNeedLevel.cs" />
