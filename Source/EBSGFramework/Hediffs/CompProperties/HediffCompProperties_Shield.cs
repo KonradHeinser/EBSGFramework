@@ -59,6 +59,8 @@ namespace EBSGFramework
         public bool displayGizmo = true;
         public string gizmoTitle;
         public string gizmoTip;
+        // Custom fill colour for the charge gizmo's bar
+        public Color? barColor;
 
         // Shield scale based on amount of energy left
         public float minDrawSize = 1.2f;
