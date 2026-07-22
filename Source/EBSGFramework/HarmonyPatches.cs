@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
+using NAudio.MediaFoundation;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -70,7 +71,7 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(RenderPawnAtPostfix)));
             harmony.Patch(AccessTools.Method(typeof(ThingWithComps), "PreApplyDamage"),
                 postfix: new HarmonyMethod(patchType, nameof(PreApplyDamagePostfix)));
-            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTargetFrom"),
+            harmony.Patch(AccessTools.Method(typeof(Verb), "CanHitTarget"),
                 postfix: new HarmonyMethod(patchType, nameof(CanHitTargetFromPostfix)));
             harmony.Patch(AccessTools.Constructor(typeof(Stance_Warmup), new[] {typeof(int), typeof(LocalTargetInfo), typeof(Verb)}),
                 postfix: new HarmonyMethod(patchType, nameof(StanceWarmupPostfix)));
@@ -1214,17 +1215,17 @@ namespace EBSGFramework
                 }
         }
 
-        public static void CanHitTargetFromPostfix(IntVec3 root, ref bool __result, Thing ___caster, Verb __instance)
+        public static void CanHitTargetFromPostfix(ref bool __result, Verb __instance)
         {
             if (!__result) return;
 
             if (__instance.EquipmentSource?.def.HasModExtension<TurretRoofBlocked>() == true)
             {
-                __result = !root.Roofed(__instance.Caster.MapHeld);
+                __result = !__instance.Caster.PositionHeld.Roofed(__instance.Caster.MapHeld);
                 return;
             }
 
-            if (Cache?.shieldHediffs.NullOrEmpty() == false && ___caster is Pawn pawn &&
+            if (Cache?.shieldHediffs.NullOrEmpty() == false && __instance.Caster is Pawn pawn &&
                 pawn.PawnHasAnyOfHediffs(Cache.shieldHediffs, out List<Hediff> shields))
                 foreach (var shield in shields)
                     if (shield.TryGetComp<HediffComp_Shield>()?.CompAllowVerbCast(__instance) == false)
