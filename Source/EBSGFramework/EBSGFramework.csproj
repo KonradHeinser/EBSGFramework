@@ -121,8 +121,11 @@
     <Compile Include="Generic List Classes\TraitDegree.cs" />
     <Compile Include="Generic List Classes\XenoRange.cs" />
     <Compile Include="Genes\AgingXenotypeExtension.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Apparel.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfQuadrum.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_DayOfYear.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Hediffs.cs" />
+    <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_OtherGenes.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_Season.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_TimeMulti.cs" />
     <Compile Include="Genes\ConditionalStatAffecters\ConditionalStatAffecter_WorldLayer.cs" />
