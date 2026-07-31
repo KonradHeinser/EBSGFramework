@@ -21,7 +21,7 @@ namespace EBSGFramework
         {
             base.SetSeverity();
 
-            var flag = false; // 
+            var flag = false; // Set to true if any valid item is found. If it's false at the end, the comp uses Props.severity instead
             var total = 0f;
             
             switch (Props.check)
@@ -45,15 +45,16 @@ namespace EBSGFramework
                     if (apparelCount != 0)
                     {
                         var apparel = Pawn.apparel.WornApparel;
-                        var tLinks = Props.apparel.FindAll(l => apparel.FirstOrDefault(t => t.def == l.thing) != null);
-                        if (!tLinks.NullOrEmpty())
+                        var tLinks = Props.apparel?.FindAll(l => apparel.FirstOrDefault(t => t.def == l.thing) != null);
+                        if (tLinks?.Any() == true)
                         {
                             flag = true;
                             total += tLinks.Sum(l => l.amount);
                         }
 
-                        var sLinks = Props.apparelTags.FindAll(l => apparel.FirstOrDefault(t => t.def.apparel?.tags?.Contains(l.text) == true) != null);
-                        if (!sLinks.NullOrEmpty())
+                        var sLinks = Props.apparelTags?.FindAll(l => apparel.FirstOrDefault(t => 
+                            t.def.apparel?.tags?.Contains(l.text) == true || t.def.apparel?.defaultOutfitTags?.Contains(l.text) == true) != null);
+                        if (sLinks?.Any() == true)
                         {
                             flag = true;
                             total += sLinks.Sum(l => l.num);
@@ -89,7 +90,7 @@ namespace EBSGFramework
                 return true;
             }
 
-            var sLink = Props.equipmentTags.FirstOrDefault(e => weapon.weaponTags?.Contains(e.text) == true);
+            var sLink = Props.equipmentTags?.FirstOrDefault(e => weapon.weaponTags?.Contains(e.text) == true);
             if (sLink != null)
             {
                 amount = sLink.num;
@@ -113,14 +114,15 @@ namespace EBSGFramework
 
             var apparel = Pawn.apparel.WornApparel;
             
-            var tLink = Props.apparel.FirstOrDefault(l => apparel.FirstOrDefault(t => t.def == l.thing) != null);
+            var tLink = Props.apparel?.FirstOrDefault(l => apparel.FirstOrDefault(t => t.def == l.thing) != null);
             if (tLink != null)
             {
                 amount = tLink.amount;
                 return true;
             }
 
-            var sLink = Props.apparelTags.FirstOrDefault(l => apparel.FirstOrDefault(t => t.def.apparel?.tags?.Contains(l.text) == true) != null);
+            var sLink = Props.apparelTags?.FirstOrDefault(l => apparel.FirstOrDefault(t => 
+                t.def.apparel?.tags?.Contains(l.text) == true || t.def.apparel?.defaultOutfitTags?.Contains(l.text) == true) != null);
             if (sLink != null)
             {
                 amount = sLink.num;
