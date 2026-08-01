@@ -51,6 +51,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyCorpse.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_HostileGiveHediff.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_LaunchProjectileBurst.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDealDamage.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyFilth.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyCorpse.cs" />
