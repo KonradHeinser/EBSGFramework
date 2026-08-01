@@ -1,5 +1,4 @@
-﻿using System;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -7,14 +6,6 @@ namespace EBSGFramework
     public class CompAbilityEffect_CreateLinkedHediff : CompAbilityEffect
     {
         public new CompProperties_CreateLinkedHediff Props => (CompProperties_CreateLinkedHediff)props;
-
-        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
-        {
-            if (Props.successChance?.hideChance == false && target.Thing != null)
-                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
-
-            return null;
-        }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
@@ -72,6 +63,11 @@ namespace EBSGFramework
                 }
                 caster.health.AddHediff(casterHediff);
             }
+        }
+        
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            return target.Pawn?.health != null ? Props.successChance?.ExtraLabelMouseAttachment(parent.pawn, target) : null;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using RimWorld;
 using Verse;
 
@@ -16,10 +15,7 @@ namespace EBSGFramework
         
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
-            if (Success.successChance?.hideChance == false && target.Thing != null)
-                return "EBSG_SuccessChance".Translate(Math.Round(Success.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
-
-            return null;
+            return target.Pawn?.mindState != null ? Success.successChance?.ExtraLabelMouseAttachment(parent.pawn, target) : null;
         }
     }
 }

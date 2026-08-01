@@ -75,24 +75,15 @@ namespace EBSGFramework
 
         private AcceptanceReport CanMoveTarget(LocalTargetInfo target)
         {
-            if (target.Thing is Pawn pawn)
-            {
-                if (pawn.BodySize > Props.maxBodySize)
-                {
-                    return "CannotSkipTargetTooLarge".Translate();
-                }
-            }
+            if (target.Thing is Pawn pawn && pawn.BodySize > Props.maxBodySize) 
+                return "CannotSkipTargetTooLarge".Translate();
             return true;
         }
 
         public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
         {
             AcceptanceReport report = CanMoveTarget(target);
-            if (!report.Accepted)
-                return CanMoveTarget(target).Reason;
-            if (Props.successChance?.hideChance == false && target.Thing != null)
-                return "EBSG_SuccessChance".Translate(Math.Round(Props.successChance.Chance(parent.pawn, target.Thing == parent.pawn ? null : target.Thing) * 100, 3));
-            return null;
+            return !report.Accepted ? report.Reason : Props.successChance?.ExtraLabelMouseAttachment(parent.pawn, target);
         }
     }
 }

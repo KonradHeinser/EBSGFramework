@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -21,6 +22,14 @@ namespace EBSGFramework
         public string failureMessage = null;
         
         public bool hideChance = false;
+
+        public string ExtraLabelMouseAttachment(Pawn caster, LocalTargetInfo target)
+        {
+            if (hideChance || !target.HasThing)
+                return null;
+            
+            return "EBSG_SuccessChance".Translate(Math.Round(Chance(caster, target.Thing == caster ? null : target.Thing) * 100, 3));
+        }
 
         public float Chance(Pawn caster, Thing target)
         {
