@@ -26,6 +26,7 @@
         <minValue>-1</minValue>
         <displayPriorityInCategory>2202</displayPriorityInCategory>
         <showOnAnimals>True</showOnAnimals>
+        <category>PawnHealth</category>
     </StatDef>
 
     <StatDef ParentName="EBSG_FactoringStat">
