@@ -320,6 +320,20 @@ namespace EBSGFramework
             return null;
         }
 
+        public static Faction FindFirstFactionFromList(this List<FactionDef> factions)
+        {
+            if (factions.NullOrEmpty()) return null;
+
+            foreach (var faction in factions)
+            {
+                var f = Find.FactionManager.FirstFactionOfDef(faction);
+                if (f != null)
+                    return f;
+            }
+            
+            return null;
+        }
+
         public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null)
         {
             if (item == null) return null;
