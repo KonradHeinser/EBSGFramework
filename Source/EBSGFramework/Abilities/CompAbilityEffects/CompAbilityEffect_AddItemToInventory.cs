@@ -1,4 +1,6 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 using Verse;
 using Verse.Sound;
 
@@ -10,18 +12,23 @@ namespace EBSGFramework
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (Props.targetThing != null && target.TargetIsPawn(out Pawn targetPawn))
-                AddItemToInventory(targetPawn, Props.targetThing, Props.targetStuffing, Props.targetCount);
+            if ((Props.targetThing != null || Props.targetCategory != null) && target.TargetIsPawn(out Pawn targetPawn) && targetPawn.inventory != null)
+            {
+                var generate = Props.targetThing ?? Props.targetCategory?.DescendantThingDefs.Except(Props.excludeTargetCategory).RandomElement();
+                AddItemToInventory(targetPawn, generate, Props.targetStuffing, Props.targetCount);
+            }
 
-            if (Props.casterThing != null && parent.pawn.inventory != null)
-                AddItemToInventory(parent.pawn, Props.casterThing, Props.casterStuffing, Props.casterCount);
+            if ((Props.casterThing != null || Props.casterCategory != null) && parent.pawn.inventory != null)
+            {
+                var generate = Props.casterThing ?? Props.casterCategory.DescendantThingDefs.Except(Props.excludeCasterCategory).RandomElement();
+                AddItemToInventory(parent.pawn, generate, Props.casterStuffing, Props.casterCount);
+            }
         }
 
         private void AddItemToInventory(Pawn pawn, ThingDef thing, ThingDef stuff, int count)
         {
-            if (pawn.inventory == null)
-                return;
-            Thing item = ThingMaker.MakeThing(thing, stuff);
+            if (thing == null) return;
+            Thing item = ThingMaker.MakeThing(thing, thing.MadeFromStuff ? stuff : null);
             item.stackCount = count;
 
             if (Props.tryEquip && item is ThingWithComps compThing)

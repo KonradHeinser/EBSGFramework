@@ -320,52 +320,54 @@ namespace EBSGFramework
             return null;
         }
 
-        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creater = null)
+        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null)
         {
+            if (item == null) return null;
             if (!Rand.Chance(item.chance) || (item.requireLink && item.linkingHediff != null &&
-                !creater.HasHediff(item.linkingHediff))) return null;
-
-            var thing = ThingMaker.MakeThing(item.thing, item.stuff);
-            thing.stackCount = Math.Min(item.count, item.thing.stackLimit);
+                !creator.HasHediff(item.linkingHediff))) return null;
+            var generate = item.Thing;
+            if (generate == null) return null;
+            var thing = ThingMaker.MakeThing(generate, generate.MadeFromStuff ? item.stuff : null);
+            thing.stackCount = Math.Min(item.count, generate.stackLimit);
             var compQuality = thing.TryGetComp<CompQuality>();
             if (compQuality != null)
             {
                 compQuality.SetQuality(item.quality, ArtGenerationContext.Colony);
 
-                if (creater != null)
-                    QualityUtility.SendCraftNotification(thing, creater);
+                if (creator != null)
+                    QualityUtility.SendCraftNotification(thing, creator);
             }
 
-            if (thing.TryGetComp<CompSpawnBaby>() != null && creater != null)
+            if (thing.TryGetComp<CompSpawnBaby>() != null && creator != null)
             {
                 var babyComp = thing.TryGetComp<CompSpawnBaby>();
                 Pawn mother = null;
                 Pawn father = null;
 
-                if (item.linkingHediff != null && creater.HasHediff(item.linkingHediff))
+                if (item.linkingHediff != null && creator.HasHediff(item.linkingHediff))
                 {
-                    creater.health.hediffSet.TryGetHediff(item.linkingHediff, out var hediff);
+                    creator.health.hediffSet.TryGetHediff(item.linkingHediff, out var hediff);
                     if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
                         if (partner.gender == Gender.Male)
                         {
-                            mother = creater;
+                            mother = creator;
                             father = partner;
                         }
                         else
                         {
                             mother = partner;
-                            father = creater;
+                            father = creator;
                         }
                 }
                 else
                 {
-                    if (creater.gender == Gender.Male) father = creater;
-                    else mother = creater;
+                    if (creator.gender == Gender.Male) father = creator;
+                    else mother = creator;
                 }
 
                 babyComp.mother = mother;
                 babyComp.father = father;
-                babyComp.faction = creater.Faction;
+                babyComp.faction = creator.Faction;
             }
 
             return thing;

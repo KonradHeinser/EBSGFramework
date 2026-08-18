@@ -59,11 +59,8 @@ namespace EBSGFramework
 
             foreach (var optionList in list)
             {
-                var newList = optionList.Where((arg) => arg.minSeverity < severity && arg.maxSeverity > severity);
-                var option = newList.RandomElementByWeightWithFallback((arg) => arg.weight);
-                if (option == null)
-                    continue;
-                var thing = EBSGUtilities.CreateThingCreationItem(option, parent.pawn);
+                var newList = optionList.Where(arg => arg.minSeverity < severity && arg.maxSeverity > severity);
+                var thing = EBSGUtilities.CreateThingCreationItem(newList.RandomElementByWeightWithFallback(arg => arg.weight), parent.pawn);
                 if (thing == null) continue;
                 if (map != null)
                 {

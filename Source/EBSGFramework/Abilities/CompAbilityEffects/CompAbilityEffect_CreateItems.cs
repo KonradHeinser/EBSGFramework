@@ -18,13 +18,13 @@ namespace EBSGFramework
             base.Apply(target, dest);
             Map map = parent.pawn.Map;
             List<Thing> list = new List<Thing>();
+            
             list.AddRange(AffectedCells(target, map).SelectMany(c => from t in c.GetThingList(map)
-                                                                               where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
-                                                                               select t));
+                                       where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
+                                       select t));
             foreach (Thing item in list)
-            {
                 item.DeSpawn();
-            }
+            
             foreach (IntVec3 item2 in AffectedCells(target, map))
             {
                 if (partList[item2].thing == null) continue;
@@ -109,11 +109,8 @@ namespace EBSGFramework
                     if ((patternPart.thing != null && patternPart.count > 0) || patternPart.reservedForLargeThing)
                     {
                         IntVec3 intVec = target.Cell + new IntVec3(patternPart.relativeLocation.x, 0, patternPart.relativeLocation.z);
-                        if ((!patternPart.skipIfBlocked || (!intVec.Filled(parent.pawn.Map) && intVec.Standable(parent.pawn.Map))) && !partList.ContainsKey(intVec))
-                        {
-                            partList.Add(intVec, patternPart);
+                        if ((!patternPart.skipIfBlocked || (!intVec.Filled(parent.pawn.Map) && intVec.Standable(parent.pawn.Map))) && partList.TryAdd(intVec, patternPart))
                             yield return intVec;
-                        }
                     }
                 }
             }
@@ -126,105 +123,81 @@ namespace EBSGFramework
             Map map = parent.pawn.Map;
             if (AffectedCells(target, parent.pawn.Map).Any(c => c.Filled(map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityOccupiedCells".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (AffectedCells(target, parent.pawn.Map).Any(c => !c.Standable(map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityUnwalkable".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.pollutedForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.IsPolluted(map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityPollution".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.pollutedRequired && AffectedCells(target, parent.pawn.Map).Any(c => !c.IsPolluted(parent.pawn.Map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityNoPollution".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.waterForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.GetTerrain(parent.pawn.Map).IsWater))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityWater".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.waterRequired && AffectedCells(target, parent.pawn.Map).Any(c => !c.GetTerrain(parent.pawn.Map).IsWater))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityNoWater".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.Roofed(parent.pawn.Map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityRoofed".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => !c.Roofed(parent.pawn.Map)))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityNoRoof".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.roofForbidden && AffectedCells(target, parent.pawn.Map).Any(c => c.GetPlant(parent.pawn.Map) != null))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityNoRoof".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.noPlants && AffectedCells(target, parent.pawn.Map).Any(c => c.GetPlant(parent.pawn.Map) != null))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityPlant".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             if (Props.noPushing)
             {
                 List<Thing> list = new List<Thing>();
                 list.AddRange(AffectedCells(target, map).SelectMany(c => from t in c.GetThingList(map)
-                                                                                   where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
-                                                                                   select t));
+                                           where t.def.category == ThingCategory.Item && (t.def != partList[c].thing || t.def.stackLimit == 1)
+                                           select t));
                 if (!list.NullOrEmpty())
                 {
-                    if (throwMessages)
-                    {
+                    if (throwMessages) 
                         Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityThing".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                    }
                     return false;
                 }
             }
             if (Props.noBuildings && AffectedCells(target, parent.pawn.Map).Any(c => c.GetFirstBuilding(map) != null))
             {
-                if (throwMessages)
-                {
+                if (throwMessages) 
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "AbilityOccupiedCells".Translate(), target.ToTargetInfo(parent.pawn.Map), MessageTypeDefOf.RejectInput, historical: false);
-                }
                 return false;
             }
             return true;
