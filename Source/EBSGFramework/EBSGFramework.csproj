@@ -134,6 +134,7 @@
     <Compile Include="Genes\Gene_AgingXenotype.cs" />
     <Compile Include="Genes\Gene_EvolvingGene.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_FlipGenderPeriodically.cs" />
+    <Compile Include="Hediffs\CompProperties\HediffCompProperties_GainMemoryOnKill.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GenderByAge.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_GiveOtherHediffPeriodically.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_StageSetter.cs" />
     <Compile Include="Hediffs\Comps\Explosive\HediffComp_ExplosionBase.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_FlipGenderPeriodically.cs" />
+    <Compile Include="Hediffs\Comps\HediffComp_GainMemoryOnKill.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GenderByAge.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveHediffToKiller.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_GiveOtherHediffPeriodically.cs" />
