@@ -15,20 +15,22 @@ namespace EBSGFramework
             if ((Props.targetThing != null || Props.targetCategory != null) && target.TargetIsPawn(out Pawn targetPawn) && targetPawn.inventory != null)
             {
                 var generate = Props.targetThing ?? Props.targetCategory?.DescendantThingDefs.Except(Props.excludeTargetCategory).RandomElement();
-                AddItemToInventory(targetPawn, generate, Props.targetStuffing, Props.targetCount);
+                AddItemToInventory(targetPawn, generate, Props.targetStuffing, Props.targetQuality, Props.targetCount);
             }
 
             if ((Props.casterThing != null || Props.casterCategory != null) && parent.pawn.inventory != null)
             {
                 var generate = Props.casterThing ?? Props.casterCategory.DescendantThingDefs.Except(Props.excludeCasterCategory).RandomElement();
-                AddItemToInventory(parent.pawn, generate, Props.casterStuffing, Props.casterCount);
+                AddItemToInventory(parent.pawn, generate, Props.casterStuffing, Props.casterQuality, Props.casterCount);
             }
         }
 
-        private void AddItemToInventory(Pawn pawn, ThingDef thing, ThingDef stuff, int count)
+        private void AddItemToInventory(Pawn pawn, ThingDef thing, ThingDef stuff, QualityCategory quality, int count)
         {
             if (thing == null) return;
             Thing item = ThingMaker.MakeThing(thing, thing.MadeFromStuff ? stuff : null);
+            if (item == null) return;
+            item.TryGetComp<CompQuality>()?.SetQuality(quality, ArtGenerationContext.Colony);
             item.stackCount = count;
 
             if (Props.tryEquip && item is ThingWithComps compThing)

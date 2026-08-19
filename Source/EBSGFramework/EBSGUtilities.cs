@@ -347,7 +347,6 @@ namespace EBSGFramework
             if (compQuality != null)
             {
                 compQuality.SetQuality(item.quality, ArtGenerationContext.Colony);
-
                 if (creator != null)
                     QualityUtility.SendCraftNotification(thing, creator);
             }

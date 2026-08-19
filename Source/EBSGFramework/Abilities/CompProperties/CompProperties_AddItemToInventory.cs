@@ -15,6 +15,8 @@ namespace EBSGFramework
         public int targetCount = 1;
 
         public ThingDef targetStuffing;
+        
+        public QualityCategory targetQuality = QualityCategory.Normal;
 
         public ThingDef casterThing;
         
@@ -25,6 +27,8 @@ namespace EBSGFramework
         public int casterCount = 1;
 
         public ThingDef casterStuffing;
+        
+        public QualityCategory casterQuality = QualityCategory.Normal;
 
         public bool tryEquip = true;
 
