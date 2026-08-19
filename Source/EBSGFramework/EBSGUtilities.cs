@@ -334,7 +334,7 @@ namespace EBSGFramework
             return null;
         }
 
-        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null)
+        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null, bool sendCraft = false)
         {
             if (item == null) return null;
             if (!Rand.Chance(item.chance) || (item.requireLink && item.linkingHediff != null &&
@@ -347,7 +347,7 @@ namespace EBSGFramework
             if (compQuality != null)
             {
                 compQuality.SetQuality(item.quality, ArtGenerationContext.Colony);
-                if (creator != null)
+                if (sendCraft && creator != null)
                     QualityUtility.SendCraftNotification(thing, creator);
             }
 
