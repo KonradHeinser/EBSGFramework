@@ -17,7 +17,7 @@ namespace EBSGFramework
             get
             {
                 if (remainingCharges == null)
-                    remainingCharges = Props.maxCharges;
+                    remainingCharges = Props.initialCharges == -1 ? Props.maxCharges : Props.initialCharges;
                 return (int)remainingCharges;
             }
             set

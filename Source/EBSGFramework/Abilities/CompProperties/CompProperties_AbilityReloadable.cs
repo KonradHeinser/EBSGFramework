@@ -7,6 +7,8 @@ namespace EBSGFramework
     {
         public int maxCharges = 1;
 
+        public int initialCharges = -1;
+
         public ThingDef ammoDef;
 
         public int ammoPerCharge = 1;
