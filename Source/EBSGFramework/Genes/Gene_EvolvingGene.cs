@@ -48,8 +48,8 @@ namespace EBSGFramework
 
             foreach (var evo in Extension.geneticEvolutions)
             {
-                if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && 
-                    !Rand.Chance(evo.chancePerCheck)) continue;
+                if ((!postAdd || !evo.ignoreChanceDuringPostAdd) && !Rand.Chance(evo.chancePerCheck)) 
+                    continue;
 
                 if (!evo.validAges.ValidValue(pawn.ageTracker.AgeBiologicalYearsFloat))
                     continue;
@@ -71,9 +71,16 @@ namespace EBSGFramework
 
                 if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                     Messages.Message(evo.message.TranslateOrFormat(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
+                
+                if (evo.xenotypes?.NullOrEmpty() == false)
+                    pawn.AlterXenotype(evo.xenotypes, null, IntRange.Zero, evo.setXenotype, false);
 
                 if (evo.removeFirstGene)
-                    pawn.genes.RemoveGene(pawn.genes.GenesListForReading.FirstOrDefault(g => evo.hasAnyOfGene.Contains(g.def)));
+                {
+                    var g = pawn.GetFirstGeneFromList(evo.hasAnyOfGene);
+                    if (g != null)
+                        pawn.genes.RemoveGene(g);
+                }
 
                 if (evo.removeAllHasAllGene)
                     pawn.RemoveGenesFromPawn(evo.hasAllOfGene);
@@ -103,7 +110,7 @@ namespace EBSGFramework
                         var options = new List<GeneDef>(evo.hasNoneOfGene);
                         options.Shuffle();
                         var addList = new List<GeneDef>();
-                        var count = Mathf.Min(evo.addHasNoneCount, options.Count);
+                        var count = Mathf.Min(evo.addHasNoneCount, options.Count); // To make sure a modder can't mess things up and cause errors
                         for (int i = 0; i < count; i++)
                             addList.Add(options[i]);
                         pawn.AddGenesToPawn(xenogene, addList, null, this);
@@ -111,9 +118,9 @@ namespace EBSGFramework
                 }
                 
                 pawn.AddGenesToPawn(xenogene, null, evo.result, parent: this);
-
+                
                 evolutionsRemaining--;
-                if (evo.result == null || (evolutionsRemaining == 0 && Extension.keepEvolvingGene == evo.overrideKeep))
+                if ((evo.result == null && !evo.dontRemove) || (evolutionsRemaining == 0 && Extension.keepEvolvingGene == evo.overrideKeep))
                     pawn.genes.RemoveGene(this);
                 return;
             }

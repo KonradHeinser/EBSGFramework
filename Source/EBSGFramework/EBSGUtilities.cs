@@ -1590,6 +1590,21 @@ namespace EBSGFramework
         {
             return ModsConfig.BiotechActive && pawn.genes?.GenesListForReading.NullOrEmpty() == false;
         }
+
+        public static Gene GetFirstGeneFromList(this Pawn pawn, List<GeneDef> genes)
+        {
+            if (genes.NullOrEmpty())
+                return null;
+
+            foreach (var gene in genes)
+            {
+                var g = pawn.genes.GetGene(gene);
+                if (g != null)
+                    return g;
+            }
+            
+            return null;
+        }
         
         // HasAnyOfGene will return false when both lists are empty
         public static bool PawnHasAnyOfGenes(this Pawn pawn, out GeneDef firstMatch, List<GeneDef> geneDefs = null)

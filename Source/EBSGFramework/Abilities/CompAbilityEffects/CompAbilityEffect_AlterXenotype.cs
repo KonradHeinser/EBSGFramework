@@ -39,7 +39,7 @@ namespace EBSGFramework
                 {
                     if (Props.setXenotype)
                     {
-                        pawn.genes.Endogenes.RemoveWhere((arg) => arg.def.endogeneCategory != EndogeneCategory.HairColor && arg.def.endogeneCategory != EndogeneCategory.Melanin);
+                        pawn.genes.Endogenes.RemoveWhere(arg => arg.def.endogeneCategory != EndogeneCategory.HairColor && arg.def.endogeneCategory != EndogeneCategory.Melanin);
                         pawn.genes.ClearXenogenes();
                         if (!caster.genes.Endogenes.NullOrEmpty())
                             foreach (Gene gene in caster.genes.Endogenes)

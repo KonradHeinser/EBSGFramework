@@ -6,6 +6,12 @@ namespace EBSGFramework
     public class GeneticEvolution
     {
         public GeneDef result;
+        
+        public bool dontRemove = false; // Stops the removal due to result being empty. Other removal conditions can still take effect
+        
+        public List<RandomXenotype> xenotypes;
+        
+        public bool setXenotype = true; // Clears old xeno genes and replaces them with the xenotype's
 
         public bool skipIfCarrierHasResult = false;
 
