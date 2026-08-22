@@ -1877,7 +1877,7 @@ namespace EBSGFramework
             if (pawn.abilities?.AllAbilitiesForReading.NullOrEmpty() == false)
                 foreach (var ability in abilities)
                 {
-                    var a = pawn.abilities.GetAbility(ability);
+                    var a = pawn.abilities.GetAbility(ability, true);
                     if (a != null)
                         foundAbilities.Add(a);
                 }
@@ -1936,7 +1936,7 @@ namespace EBSGFramework
 
         public static void AlterXenotype(this Pawn pawn, List<RandomXenotype> xenotypes, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true)
         {
-            pawn.AlterXenotype(xenotypes.RandomElementByWeight((arg) => arg.weight).xenotype, filth, filthCount, setXenotype, sendMessage);
+            pawn.AlterXenotype(xenotypes.RandomElementByWeight(arg => arg.weight).xenotype, filth, filthCount, setXenotype, sendMessage);
         }
 
         public static void AlterXenotype(this Pawn pawn, XenotypeDef xenotype, ThingDef filth, IntRange filthCount, bool setXenotype = true, bool sendMessage = true, string message = "EBSG_XenotypeApplied")

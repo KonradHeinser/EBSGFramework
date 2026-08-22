@@ -14,7 +14,7 @@ namespace EBSGFramework
 
         public IntRange filthCount = new IntRange(4, 7);
 
-        public bool setXenotype = true; // Clears old xeno genes and replaces them with the xenotype's
+        public bool setXenotype = true; // Clears old xeno genes and replaces them with the xenotype's genes
 
         public bool sendMessage = true;
 

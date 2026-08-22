@@ -1,5 +1,7 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -70,6 +72,12 @@ namespace EBSGFramework
                 if (evo.message != null && (pawn.IsColonist || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony) && (pawn.MapHeld != null || pawn.GetCaravan() != null))
                     Messages.Message(evo.message.TranslateOrFormat(pawn.LabelShort, evo.result?.LabelCap, evo.result?.label), pawn, evo.messageType ?? MessageTypeDefOf.NeutralEvent);
 
+                if (evo.removeFirstGene)
+                    pawn.genes.RemoveGene(pawn.genes.GenesListForReading.FirstOrDefault(g => evo.hasAnyOfGene.Contains(g.def)));
+
+                if (evo.removeAllHasAllGene)
+                    pawn.RemoveGenesFromPawn(evo.hasAllOfGene);
+                
                 bool xenogene;
                 switch (evo.inheritable)
                 {
@@ -83,6 +91,25 @@ namespace EBSGFramework
                         xenogene = true; 
                         break;
                 }
+                
+                switch (evo.addHasNoneCount)
+                {
+                    case 0:
+                        break;
+                    case -1:
+                        pawn.AddGenesToPawn(xenogene, evo.hasNoneOfGene, null, this);
+                        break;
+                    default:
+                        var options = new List<GeneDef>(evo.hasNoneOfGene);
+                        options.Shuffle();
+                        var addList = new List<GeneDef>();
+                        var count = Mathf.Min(evo.addHasNoneCount, options.Count);
+                        for (int i = 0; i < count; i++)
+                            addList.Add(options[i]);
+                        pawn.AddGenesToPawn(xenogene, addList, null, this);
+                        break;
+                }
+                
                 pawn.AddGenesToPawn(xenogene, null, evo.result, parent: this);
 
                 evolutionsRemaining--;

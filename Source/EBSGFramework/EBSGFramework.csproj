@@ -154,6 +154,7 @@
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryFaction.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_TemporaryRelation.cs" />
+    <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByColonyWealth.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByEquipped.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByGender.cs" />
     <Compile Include="Hediffs\CompProperties\SeveritySetters\HediffCompProperties_SeverityByMap.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryIdeology.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_TemporaryRelation.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SetterBase.cs" />
+    <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByColonyWealth.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByEquipped.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByGender.cs" />
     <Compile Include="Hediffs\Comps\HediffSetters\HediffComp_SeverityByMap.cs" />

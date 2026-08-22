@@ -26,10 +26,16 @@ namespace EBSGFramework
         public List<HediffWithRange> hasNoneOfHediff;
 
         public List<GeneDef> hasAnyOfGene;
+        
+        public bool removeFirstGene = false;
 
         public List<GeneDef> hasAllOfGene;
+        
+        public bool removeAllHasAllGene = false;
 
         public List<GeneDef> hasNoneOfGene;
+
+        public int addHasNoneCount = 0;
 
         public FloatRange validAges = new FloatRange(0, 0);
 

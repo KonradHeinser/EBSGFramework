@@ -39,9 +39,9 @@
         <description>This is a test hediff</description>
         <everCurableByItem>false</everCurableByItem>
         <initialSeverity>0.001</initialSeverity>
-        <stages />
         <hediffClass>HediffWithComps</hediffClass>
         <scenarioCanAdd>false</scenarioCanAdd>
+        <stages />
     </HediffDef>
 </Defs>
 
