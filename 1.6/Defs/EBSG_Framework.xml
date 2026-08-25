@@ -15,14 +15,14 @@
         <armorCategory />
     </DamageDef>
 
-    <HediffDef>
+    <HediffDef ParentName="InjuryBase">
         <defName>EBSG_GeneticDamage</defName>
         <label>genetic damage</label>
-        <hediffClass>Hediff_Injury</hediffClass>
-        <labelNounPretty>{0} in the {1}</labelNounPretty>
-        <labelNoun>a geneticly damaged part</labelNoun>
+        <labelNoun>genetically damaged part</labelNoun>
         <description>The genetic code for this part was damaged, causing it to no longer function properly.</description>
         <defaultLabelColor>(0.7, 0.7, 0.7)</defaultLabelColor>
+        <displayWound>false</displayWound>
+        <tendable>false</tendable>
         <comps>
             <li Class="HediffCompProperties_GetsPermanent">
                 <permanentLabel>permanent genetic damage</permanentLabel>
