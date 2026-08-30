@@ -303,31 +303,20 @@ namespace EBSGFramework
 
         private bool IngestibleValidator(Pawn pawn, Thing item)
         {
-            if (!item.IngestibleNow || !pawn.CanReserve(item) && item.IsForbidden(pawn)) return false;
+            if (!item.IngestibleNow || !pawn.CanReserve(item) || item.IsForbidden(pawn)) return false;
 
             if (chemical != null)
             {
                 if (!item.def.IsDrug)
-                {
                     return false;
-                }
                 if (item.Spawned && (!pawn.CanReserve(item) || item.IsForbidden(pawn) || !item.IsSociallyProper(pawn)))
-                {
                     return false;
-                }
                 CompDrug compDrug = item.TryGetComp<CompDrug>();
-                if (compDrug == null || compDrug.Props.chemical == null || compDrug.Props.chemical != chemical)
-                {
+                if (compDrug?.Props.chemical != chemical)
                     return false;
-                }
-                if (pawn.drugs != null && !pawn.drugs.CurrentPolicy[item.def].allowedForAddiction && (!pawn.InMentalState || pawn.MentalStateDef.ignoreDrugPolicy))
-                {
-                    return false;
-                }
-                return true;
+                return pawn.drugs == null || pawn.drugs.CurrentPolicy[item.def].allowedForAddiction || (pawn.InMentalState && !pawn.MentalStateDef.ignoreDrugPolicy);
             }
-            if (LinkedGene.ValidIngest(item)) return true;
-            return false;
+            return LinkedGene.ValidIngest(item);
         }
 
     }

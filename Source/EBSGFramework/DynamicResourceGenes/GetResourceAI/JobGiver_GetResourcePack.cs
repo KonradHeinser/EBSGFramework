@@ -15,7 +15,7 @@ namespace EBSGFramework
             get
             {
                 if (cache == null)
-                    cache = Current.Game.GetComponent<EBSGCache_Component>();
+                    cache = Current.Game?.GetComponent<EBSGCache_Component>();
 
                 if (cache != null && cache.loaded)
                     return cache;
@@ -70,9 +70,7 @@ namespace EBSGFramework
                         if (resourcePack == null)
                         {
                             if (carriedThing != null && carriedThing.def == thing)
-                            {
                                 return cachedResourcePackResourceGain.Value;
-                            }
                             for (int i = 0; i < pawn.inventory.innerContainer.Count; i++)
                             {
                                 if (pawn.inventory.innerContainer[i].def == thing)
