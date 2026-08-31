@@ -23,19 +23,20 @@ namespace EBSGFramework
 
         public string GetLabel()
         {
-            if (Extension != null && Extension.dependencyLabel != null)
-            {
-                return Extension.dependencyLabel;
-            }
-            return chemical.label;
+            return Extension?.dependencyLabel ?? chemical.label;
         }
 
         public override bool ShouldRemove => LinkedGene?.Active != true;
 
         public float FirstNotableStageSeverity => Extension.minSatisfySeverity ?? def.stages[1].minSeverity - 0.1f;
 
+        public float FirstDangerousStageSeverity => def.stages.FirstOrDefault(s => s.capMods.Any(c => c.capacity == PawnCapacityDefOf.Consciousness && c.setMax <= 0.1f))?.minSeverity ?? def.maxSeverity - 0.1f;
+        
         public bool ShouldSatisfy => Severity >= FirstNotableStageSeverity;
 
+        // Stop caring about disliked food and drugs. Adds notable stage because we want to catch them before they pass out, and this spacing usually allows for that
+        public bool Desperate => ShouldSatisfy && Severity + FirstNotableStageSeverity >= FirstDangerousStageSeverity;
+        
         public Gene_Dependency LinkedGene
         {
             get
@@ -75,10 +76,8 @@ namespace EBSGFramework
         {
             get
             {
-                if (LinkedGene != null && cachedExtension == null)
-                {
+                if (LinkedGene != null && cachedExtension == null) 
                     cachedExtension = LinkedGene.def.GetModExtension<IDGExtension>();
-                }
                 return cachedExtension;
             }
         }
@@ -97,14 +96,11 @@ namespace EBSGFramework
                 string text = base.TipStringExtra;
                 if (LinkedGene != null && !def.comps.NullOrEmpty())
                 {
-                    if (!text.NullOrEmpty())
-                    {
+                    if (!text.NullOrEmpty()) 
                         text += "\n\n";
-                    }
-                    if (Extension != null && Extension.descriptionOverride != null)
-                    {
+
+                    if (Extension?.descriptionOverride != null)
                         text += Extension.descriptionOverride;
-                    }
                     else
                     {
                         float severityPerDay = 0;
@@ -131,22 +127,9 @@ namespace EBSGFramework
                                 if (stage.label != null) experienceLabel += stage.label;
                                 if (stage.overrideLabel != null) experienceLabel = stage.overrideLabel;
 
-                                if (!stage.capMods.NullOrEmpty())
+                                if (!stage.capMods.NullOrEmpty() && stage.capMods.Any(s => EBSGUtilities.LethalCapacities.Contains(s.capacity) && (s.setMax <= 0 || s.postFactor <= 0)))
                                 {
-                                    foreach (PawnCapacityModifier capMod in stage.capMods)
-                                    {
-                                        if (EBSGUtilities.LethalCapacities.Contains(capMod.capacity))
-                                        {
-                                            if (capMod.setMax <= 0 || capMod.postFactor <= 0)
-                                            {
-                                                deathStage = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (deathStage)
-                                {
+                                    deathStage = true;
                                     text += " " + "EBSG_DependencyNeedDurationDescriptionDeath".Translate(days, pawn.Named("PAWN")).Resolve();
                                     break;
                                 }
@@ -227,12 +210,6 @@ namespace EBSGFramework
                 if (thing != null)
                     return thing;
             }
-            else
-            {
-                Thing thing = GenClosest.ClosestThingReachable(pawn.PositionHeld, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, x => IngestibleValidator(pawn, x));
-                if (thing != null)
-                    return thing;
-            }
 
             if (Extension != null && pawn.MapHeld != null)
             {
@@ -264,8 +241,7 @@ namespace EBSGFramework
                 }
                 if (!Extension.validCategories.NullOrEmpty())
                 {
-                    List<Thing> things = pawn.MapHeld?.listerThings.AllThings.FindAll(t => t.IngestibleNow && 
-                                                                    !t.IsForbidden(pawn) && pawn.CanReserve(t) && CheckCategories(t));
+                    List<Thing> things = pawn.MapHeld?.listerThings.AllThings.FindAll(t => CheckCategories(t) && IngestibleValidator(pawn, t));
                     if (!things.NullOrEmpty())
                     {
                         Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.PositionHeld, pawn.MapHeld, things, PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, t => IngestibleValidator(pawn, t));

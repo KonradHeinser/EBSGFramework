@@ -98,8 +98,11 @@ namespace EBSGFramework
             }
         }
 
-        public bool ValidIngest(Thing thing)
+        public bool ValidIngest(Thing thing, bool currentlyConsuming = false)
         {
+            if (!thing.def.IsIngestible) 
+                return false;
+            
             if (def.chemical != null)
             {
                 if (thing.def.thingCategories.NullOrEmpty() || thing.def.thingCategories.Contains(ThingCategoryDefOf.Drugs))
@@ -108,6 +111,23 @@ namespace EBSGFramework
                     if (compDrug != null && compDrug.Props.chemical == def.chemical)
                         return true;
                 }
+            }
+
+            if (!currentlyConsuming)
+            {
+                if (!pawn.FoodIsSuitable(thing.def))
+                    return false;
+            
+                CompRottable compRottable = thing.TryGetComp<CompRottable>();
+                if (compRottable?.Stage == RotStage.Rotting || compRottable?.Stage == RotStage.Dessicated)
+                    return false;
+
+                if (pawn.foodRestriction?.CurrentFoodPolicy?.Allows(thing) != true && !thing.def.IsDrug)
+                    return false;
+
+                if (!LinkedHediff.Desperate && FoodUtility.ThoughtsFromIngesting(pawn, thing, thing.def)
+                        .Any(t => t.thought.stages[0].baseMoodEffect <= -10f || t.thought.durationDays > 1f))
+                        return false; // Allows for the consumption of most raw food since the mood debuff is usually overshadowed by the effects of the deficiency 
             }
 
             if (IDGExtension != null)
@@ -153,7 +173,7 @@ namespace EBSGFramework
 
         public override void Notify_IngestedThing(Thing thing, int numTaken)
         {
-            if (ValidIngest(thing))
+            if (ValidIngest(thing, true))
                 Reset();
         }
 

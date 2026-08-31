@@ -19,7 +19,7 @@
         <label>deliver dependency to prisoners</label>
         <giverClass>EBSGFramework.WorkGiver_Warden_DeliverDependency</giverClass>
         <workType>Warden</workType>
-        <verb>deliver TargetA for</verb>
+        <verb>deliver dependency item for</verb>
         <gerund>delivering TargetA for</gerund>
         <priorityInType>72</priorityInType>
         <requiredCapacities>
@@ -32,7 +32,7 @@
         <label>administer dependency</label>
         <giverClass>EBSGFramework.Workgiver_AdministerDependency</giverClass>
         <workType>Doctor</workType>
-        <verb>administer TargetA to</verb>
+        <verb>satisfy dependency</verb>
         <gerund>administering TargetA to</gerund>
         <priorityInType>65</priorityInType>
         <requiredCapacities>
