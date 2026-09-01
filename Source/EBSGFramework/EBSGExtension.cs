@@ -31,6 +31,7 @@ namespace EBSGFramework
         public FloatRange? ageRange = null;
         public bool sameBioAndChrono = false;
         public bool chronicAgeRemoval = true;
+        public bool suppressNonGeneticTraits = false;
 
         public float maxAgeActive = -1f;
         public float removePastAge = -1f;

@@ -239,6 +239,7 @@
     <Compile Include="Things\Verb_RandomShot.cs" />
     <Compile Include="Things\WeaponTraitExtension.cs" />
     <Compile Include="Thoughts\EBSGThoughtExtension.cs" />
+    <Compile Include="Thoughts\MentalState_AggressiveSummon.cs" />
     <Compile Include="Thoughts\ThoughtWorker_HediffSeverity.cs" />
     <Compile Include="Thoughts\ThoughtWorker_WealthExpectations.cs" />
     <Compile Include="Thoughts\Thought_Situational_HediffSeverity.cs" />
@@ -614,7 +615,6 @@
     <Compile Include="Hediffs\Comps\HediffComp_SpawnPawnKindOnRemoval.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_SpawnPawnKind.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilitySpawnPawnKind.cs" />
-    <Compile Include="MentalState_AggressiveSummon.cs" />
     <Compile Include="Hediffs\CompProperties\HediffCompProperties_PreventDeathNotifications.cs" />
     <Compile Include="Hediffs\Comps\HediffComp_PreventDeathNotifications.cs" />
   </ItemGroup>

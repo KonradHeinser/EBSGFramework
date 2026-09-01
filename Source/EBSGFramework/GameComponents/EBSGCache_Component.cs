@@ -48,6 +48,8 @@ namespace EBSGFramework
         public List<GeneDef> noEquipment = new List<GeneDef>();
         public List<GeneDef> noApparel = new List<GeneDef>();
         public List<GeneDef> noWeapon = new List<GeneDef>();
+        
+        public List<GeneDef> suppressNonGeneticTraits = new List<GeneDef>();
 
         public RestrictType GloballyRestrictedEquipment(Pawn pawn, Thing thing, out string source)
         {
@@ -366,6 +368,8 @@ namespace EBSGFramework
             ageBasedHeads = new List<GeneDef>();
             ageBasedBodies = new List<GeneDef>();
 
+            suppressNonGeneticTraits = new List<GeneDef>();
+
             dynamicResourceGenes = new List<GeneDef>();
             noEquipment = new List<GeneDef>();
             noApparel = new List<GeneDef>();
@@ -427,6 +431,9 @@ namespace EBSGFramework
 
                     if (extension.propagateEvent != null)
                         propagateEvents[gene] = extension.propagateEvent;
+                    
+                    if (extension.suppressNonGeneticTraits)
+                        suppressNonGeneticTraits.Add(gene);
                 }
 
                 if (gene.HasModExtension<EquipRestrictExtension>())

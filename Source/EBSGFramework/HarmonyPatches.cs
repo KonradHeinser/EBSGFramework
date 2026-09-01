@@ -88,7 +88,9 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
             harmony.Patch(AccessTools.Method(typeof(TransportersArrivalActionUtility), "AnyPotentialCaravanOwner"),
                 postfix: new HarmonyMethod(patchType, nameof(AnyNonDownedColonistPostfix)));
-
+            harmony.Patch(AccessTools.Method(typeof(TraitSet), nameof(TraitSet.RecalculateSuppression)),
+                postfix: new HarmonyMethod(patchType, nameof(RecalculateSuppressionPostfix)));
+            
             // Stuff From Athena
             harmony.Patch(AccessTools.Method(typeof(Projectile), "Impact"),
                 prefix: new HarmonyMethod(patchType, nameof(ProjectileImpactPrefix)));
@@ -1371,6 +1373,31 @@ namespace EBSGFramework
             if (!__result && pods.Count() == 1 && pods.First() is CompTransporter transporter && transporter.parent is Building_LaunchAbilityPod)
                 __result = true;
         }
+
+        public static void RecalculateSuppressionPostfix(List<Trait> ___allTraits, Pawn ___pawn)
+        {
+            // If the pawn doesn't have genes or traits, get out of here
+            if (!ModsConfig.BiotechActive || ___pawn.genes?.GenesListForReading.NullOrEmpty() != false || ___allTraits.NullOrEmpty())
+                return;
+
+            // Only need to continue if one of the traits is active and not caused by a gene
+            var geneTraits = ___allTraits.Where(t => !t.suppressedByTrait && t.suppressedByGene == null && t.sourceGene == null);
+            if (geneTraits.EnumerableNullOrEmpty())
+                return;
+            
+            if (Cache == null) // When generating initial characters, we need to go through all their genes to check if they have the extension, and if the extension has the bool set to True
+                SuppressTraits(___pawn.genes.GenesListForReading.FirstOrDefault(g => g.def.GetModExtension<EBSGExtension>()?.suppressNonGeneticTraits == true), geneTraits);
+            else if (Cache.suppressNonGeneticTraits.Any())
+                SuppressTraits(___pawn.genes.GenesListForReading.FirstOrDefault(g => Cache.suppressNonGeneticTraits.Contains(g.def)), geneTraits);
+        }
+
+        private static void SuppressTraits(Gene cause, IEnumerable<Trait> traits)
+        {
+            if (cause == null) return;
+
+            foreach (var trait in traits)
+                trait.suppressedByGene = cause;
+        }
         
         public static void ProjectileImpactPrefix(Projectile __instance)
         {
@@ -2096,9 +2123,8 @@ namespace EBSGFramework
                 var bodyPartGroupDef = result[0].WeaponBodyPartGroup;
                 var hediffDef = result[0].WeaponLinkedHediff;
 
-                foreach (var t in traits)
+                foreach (var extension in traits.Select(t => t.GetModExtension<WeaponTraitExtension>()))
                 {
-                    var extension = t.GetModExtension<WeaponTraitExtension>();
                     if (extension.meleeDamageDefOverride != null)
                     {
                         var dmg = new DamageInfo(result.First())
