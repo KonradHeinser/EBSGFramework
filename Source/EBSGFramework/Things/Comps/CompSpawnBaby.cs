@@ -194,7 +194,13 @@ namespace EBSGFramework
                                 pawn.genes.hybrid = true;
                                 pawn.genes.xenotypeName = "Hybrid".Translate();
                             }
-
+                            else if (!Genes.NullOrEmpty()) // If we generated genes, then we should be supplying something
+                            {
+                                if (mother?.genes?.Xenotype != null)
+                                    pawn.genes.SetXenotypeDirect(mother.genes.Xenotype);
+                                else if (father?.genes?.Xenotype != null)
+                                    pawn.genes.SetXenotypeDirect(father.genes.Xenotype);
+                            }
                             break;
                         }
                     }
