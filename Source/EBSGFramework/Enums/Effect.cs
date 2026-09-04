@@ -1,10 +1,12 @@
 ﻿namespace EBSGFramework
 {
-    public enum StatEffect
+    public enum Effect
     {
         Multiply,
         Divide,
         OneMinusMultiply,
-        OneMinusDivide
+        OneMinusDivide,
+        Add,
+        Subtract
     }
 }

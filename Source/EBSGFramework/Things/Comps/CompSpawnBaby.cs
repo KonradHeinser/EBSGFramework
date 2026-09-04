@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -37,7 +38,16 @@ namespace EBSGFramework
                             genes = PregnancyUtility.GetInheritedGenes(null, mother);
                             break;
                         default:
-                            genes = PregnancyUtility.GetInheritedGenes(father, mother);
+                            if (mother?.genes == null && father?.genes == null)
+                                genes = new List<GeneDef>();
+                            
+                            if (father?.genes == null)
+                                genes = mother?.genes?.Endogenes.Select(g => g.def).ToList();
+                            else if (mother?.genes == null)
+                                genes = father?.genes?.Endogenes.Select(g => g.def).ToList();
+                            else
+                                genes = PregnancyUtility.GetInheritedGenes(father, mother);
+                            
                             break;
                     }
                 }
@@ -98,168 +108,190 @@ namespace EBSGFramework
                 ticksLeft -= delta;
 
                 if (ticksLeft <= 0)
-                {
-                    Map map = parent.MapHeld;
-                    Caravan caravan = null;
-                    if (map == null && parent is Pawn carrier) caravan = carrier.GetCaravan();
-                    if (map == null && caravan == null) return;
-
-                    float fixedAge = 0f;
-
-                    switch (Props.developmentalStage)
-                    {
-                        case DevelopmentalStage.Adult:
-                            fixedAge = 18f;
-                            break;
-                        case DevelopmentalStage.Child:
-                            fixedAge = 8f;
-                            break;
-                        case DevelopmentalStage.None:
-                            return;
-                        case DevelopmentalStage.Newborn:
-                        case DevelopmentalStage.Baby:
-                        default:
-                            break;
-                    }
-
-                    int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
-                    List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
-
-                    if (spawnLeft != -1)
-                    {
-                        if (numberToSpawn > spawnLeft)
-                            numberToSpawn = spawnLeft;
-                        spawnLeft -= numberToSpawn;
-                    }
-
-                    numberToSpawn *= parent.stackCount;
-                    for (int i = 0; i < numberToSpawn; i++)
-                    {
-                        // If the faction is somehow null, the child will default to joining the player
-                        PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
-                            faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, forceNoGear: true, fixedBiologicalAge: fixedAge,
-                            fixedChronologicalAge: fixedAge, forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: Props.developmentalStage)
-                        {
-                            DontGivePreArrivalPathway = true,
-                        };
-
-                        if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = Genes;
-                        else request.ForcedXenogenes = Genes;
-
-                        Pawn pawn = PawnGenerator.GeneratePawn(request);
-
-                        if (Props.staticXenotype == null && (mother != null || father != null))
-                            switch (Props.xenotypeSource)
-                            {
-                                case XenoSource.Mother when mother != null:
-                                    pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                                    pawn.genes.iconDef = mother.genes.iconDef;
-                                    break;
-                                case XenoSource.Father when father != null:
-                                    pawn.genes.xenotypeName = father.genes.xenotypeName;
-                                    pawn.genes.iconDef = father.genes.iconDef;
-                                    break;
-                                default:
-                                {
-                                    if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
-                                    {
-                                        pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                                        pawn.genes.iconDef = mother.genes.iconDef;
-                                    }
-                                    if (TryGetInheritedXenotype(mother, father, out var xenotype))
-                                    {
-                                        pawn.genes?.SetXenotypeDirect(xenotype);
-                                    }
-                                    else if (ShouldByHybrid(mother, father))
-                                    {
-                                        pawn.genes.hybrid = true;
-                                        pawn.genes.xenotypeName = "Hybrid".Translate();
-                                    }
-
-                                    break;
-                                }
-                            }
-
-                        if (map != null)
-                        {
-                            IntVec3? intVec;
-
-                            if (Props.deleteOnFinalSpawn && numberToSpawn == 1 && spawnLeft == 0)
-                                intVec = parent.Position;
-                            else if (parent.InteractionCell.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
-                            {
-                                intVec = parent.InteractionCell;
-                                alreadyUsedSpots.Add(parent.InteractionCell);
-                            }
-                            else intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, map, 1, delegate (IntVec3 cell)
-                            {
-                                if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
-                                if (cell != parent.InteractionCell)
-                                {
-                                    Building building = map.edificeGrid[cell];
-                                    if (building == null)
-                                    {
-                                        alreadyUsedSpots.Add(cell);
-                                        return true;
-                                    }
-
-                                    if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
-                                    return building.def?.IsBed != true;
-                                }
-                                return false;
-                            });
-                            if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
-
-                            if (pawn.RaceProps.IsFlesh)
-                            {
-                                if (mother != null)
-                                    pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-                                if (father != null)
-                                    pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
-                            }
-
-                            if (pawn.playerSettings != null && mother?.playerSettings != null)
-                                pawn.playerSettings.AreaRestrictionInPawnCurrentMap = mother.playerSettings.AreaRestrictionInPawnCurrentMap;
-
-                            // It is unlikely that this will fail since it should be a spawned thing spitting the pawn out
-                            if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent, intVec))
-                                Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
-                        }
-                        else caravan.AddPawn(pawn, true);
-
-                        if (Props.bornThought)
-                        {
-                            mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
-                            father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
-                        }
-
-                        if (Props.sendLetters && faction == Faction.OfPlayer)
-                        {
-                            pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
-                            ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, Props.letterLabelNote.TranslateOrFormat()),
-                                "EBSG_CompSpawnPawnText".Translate(parent.Label), LetterDefOf.BabyBirth, pawn);
-                            birthLetter.Start();
-                            Find.LetterStack.ReceiveLetter(birthLetter);
-                        }
-
-                        pawn.caller?.DoCall();
-                    }
-
-                    if (spawnLeft == 0 && Props.deleteOnFinalSpawn)
-                        parent.Destroy();
-                    else if (spawnLeft > 0)
-                        ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
-                }
+                    SpawnPawns();
             }
+        }
+
+        public void SpawnPawns(Map previousMap = null)
+        {
+            Map map = previousMap ?? parent.MapHeld;
+            Caravan caravan = null;
+            if (map == null && parent is Pawn carrier) caravan = carrier.GetCaravan();
+            if (map == null && caravan == null) return;
+
+            float fixedAge = 0f;
+
+            switch (Props.developmentalStage)
+            {
+                case DevelopmentalStage.Adult:
+                    fixedAge = 18f;
+                    break;
+                case DevelopmentalStage.Child:
+                    fixedAge = 8f;
+                    break;
+                case DevelopmentalStage.None:
+                    return;
+                case DevelopmentalStage.Newborn:
+                case DevelopmentalStage.Baby:
+                default:
+                    break;
+            }
+
+            int numberToSpawn = Props.spawnPerCompletion.RandomInRange;
+            List<IntVec3> alreadyUsedSpots = new List<IntVec3>();
+
+            if (Props.maxTotalSpawn == 1)
+                spawnLeft = 0;
+            else if (spawnLeft != -1)
+            {
+                if (numberToSpawn > spawnLeft)
+                    numberToSpawn = spawnLeft;
+                spawnLeft -= numberToSpawn;
+            }
+
+            if (previousMap == null)
+                numberToSpawn *= parent.stackCount;
+            
+            for (int i = 0; i < numberToSpawn; i++)
+            {
+                // If the faction is somehow null, the child will default to joining the player
+                PawnGenerationRequest request = new PawnGenerationRequest(Props.staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
+                    faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, forceNoGear: true, fixedBiologicalAge: fixedAge,
+                    fixedChronologicalAge: fixedAge, forcedXenotype: Props.staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: Props.developmentalStage)
+                {
+                    DontGivePreArrivalPathway = true,
+                };
+
+                if (Props.staticXenotype == null || Props.staticXenotype.inheritable) request.ForcedEndogenes = Genes;
+                else request.ForcedXenogenes = Genes;
+
+                Pawn pawn = PawnGenerator.GeneratePawn(request);
+
+                if (Props.staticXenotype == null && (mother != null || father != null))
+                    switch (Props.xenotypeSource)
+                    {
+                        case XenoSource.Mother when mother != null:
+                            pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                            pawn.genes.iconDef = mother.genes.iconDef;
+                            break;
+                        case XenoSource.Father when father != null:
+                            pawn.genes.xenotypeName = father.genes.xenotypeName;
+                            pawn.genes.iconDef = father.genes.iconDef;
+                            break;
+                        default:
+                        {
+                            if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
+                            {
+                                pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                pawn.genes.iconDef = mother.genes.iconDef;
+                            }
+                            if (TryGetInheritedXenotype(mother, father, out var xenotype))
+                            {
+                                pawn.genes?.SetXenotypeDirect(xenotype);
+                            }
+                            else if (ShouldByHybrid(mother, father))
+                            {
+                                pawn.genes.hybrid = true;
+                                pawn.genes.xenotypeName = "Hybrid".Translate();
+                            }
+
+                            break;
+                        }
+                    }
+                
+                if (map != null)
+                {
+                    IntVec3? intVec;
+                    
+                    if (Props.deleteOnFinalSpawn && spawnLeft == 0)
+                        intVec = parent.PositionHeld;
+                    else if (parent.InteractionCell.Walkable(map) && (alreadyUsedSpots.NullOrEmpty() || !alreadyUsedSpots.Contains(parent.InteractionCell)))
+                    {
+                        intVec = parent.InteractionCell;
+                        alreadyUsedSpots.Add(parent.InteractionCell);
+                    }
+                    else
+                        intVec = CellFinder.RandomClosewalkCellNear(parent.InteractionCell, map, 1, delegate(IntVec3 cell)
+                        {
+                            if (!alreadyUsedSpots.NullOrEmpty() && alreadyUsedSpots.Contains(cell)) return false;
+                            if (cell != parent.InteractionCell)
+                            {
+                                Building building = map.edificeGrid[cell];
+                                if (building == null)
+                                {
+                                    alreadyUsedSpots.Add(cell);
+                                    return true;
+                                }
+
+                                if (building.def?.IsBed != true) alreadyUsedSpots.Add(cell);
+                                return building.def?.IsBed != true;
+                            }
+
+                            return false;
+                        });
+                    if (intVec == null || !intVec.Value.IsValid) continue;
+                    
+                    if (Props.filthOnCompletion != null) FilthMaker.TryMakeFilth(intVec.Value, map, ThingDefOf.Filth_AmnioticFluid, Props.filthPerSpawn.RandomInRange);
+
+                    if (pawn.RaceProps.IsFlesh)
+                    {
+                        if (mother != null)
+                            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
+                        if (father != null)
+                            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
+                    }
+
+                    if (pawn.playerSettings != null && mother?.playerSettings != null)
+                        pawn.playerSettings.AreaRestrictionInPawnCurrentMap = mother.playerSettings.AreaRestrictionInPawnCurrentMap;
+
+                    // It is unlikely that this will fail since it should be a spawned thing spitting the pawn out
+                    if (previousMap != null)
+                        GenSpawn.Spawn(pawn, intVec.Value, map);
+                    else if (!PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent, intVec))
+                        Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
+                }
+                else caravan?.AddPawn(pawn, true);
+
+                if (Props.bornThought)
+                {
+                    mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
+                    father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherBabyBornThought ?? ThoughtDefOf.BabyBorn, pawn);
+                }
+
+                if (Props.sendLetters && faction == Faction.OfPlayer)
+                {
+                    pawn.babyNamingDeadline = Find.TickManager.TicksGame + 60000;
+                    ChoiceLetter_BabyBirth birthLetter = (ChoiceLetter_BabyBirth)LetterMaker.MakeLetter("EBSG_CompSpawnPawn".Translate(pawn.Label, Props.letterLabelNote.TranslateOrFormat()),
+                        "EBSG_CompSpawnPawnText".Translate(parent.Label), LetterDefOf.BabyBirth, pawn);
+                    birthLetter.Start();
+                    Find.LetterStack.ReceiveLetter(birthLetter);
+                }
+
+                pawn.caller?.DoCall();
+            }
+
+            if (spawnLeft == 0 && Props.deleteOnFinalSpawn)
+            {
+                if (previousMap != null)
+                    parent.Destroy();
+            }
+            else if (spawnLeft > 0)
+                ticksLeft += Props.completionTicks.RandomInRange; // Resets timer with the stored time reducing the next iteration
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
-            if (Props.miscarriageThought && spawnLeft > 0)
-            {
-                mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherMiscarriageThought ?? ThoughtDefOf.Miscarried);
-                father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherMiscarriageThought ?? ThoughtDefOf.PartnerMiscarried);
+            if (spawnLeft > 0)
+            { 
+                if (parent is Plant plant && mode == DestroyMode.KillFinalizeLeavingsOnly && plant?.def?.plant?.Harvestable == true)
+                    SpawnPawns(previousMap);
+            
+                if (Props.miscarriageThought)
+                {
+                    mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherMiscarriageThought ?? ThoughtDefOf.Miscarried);
+                    father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherMiscarriageThought ?? ThoughtDefOf.PartnerMiscarried);
+                }
             }
         }
 
