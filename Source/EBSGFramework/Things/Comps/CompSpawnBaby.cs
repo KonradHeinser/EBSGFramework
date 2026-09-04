@@ -185,10 +185,8 @@ namespace EBSGFramework
                                 pawn.genes.xenotypeName = mother.genes.xenotypeName;
                                 pawn.genes.iconDef = mother.genes.iconDef;
                             }
-                            if (TryGetInheritedXenotype(mother, father, out var xenotype))
-                            {
+                            else if (TryGetInheritedXenotype(mother, father, out var xenotype))
                                 pawn.genes?.SetXenotypeDirect(xenotype);
-                            }
                             else if (ShouldByHybrid(mother, father))
                             {
                                 pawn.genes.hybrid = true;
