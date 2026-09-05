@@ -16,11 +16,11 @@ namespace EBSGFramework
                 var effect = Props.mentalStateEffects.FirstOrDefault(e => (e.mentalState == null && e.mentalStates.NullOrEmpty()) ||
                                                     (e.mentalState != null && state == e.mentalState) ||
                                                     (!e.mentalStates.NullOrEmpty() && e.mentalStates.Contains(state)));
-                if (effect != null)
+                if (effect != null && (effect.addSeverityPerHour || effect.mentalSeverity >= 0))
                 {
                     if (effect.addSeverityPerHour)
                         parent.Severity += effect.mentalSeverity * ticksToNextCheck / 2500f;
-                    else if (effect.mentalSeverity >= 0)
+                    else
                         parent.Severity = effect.mentalSeverity;
                     return;
                 }
