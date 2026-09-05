@@ -19,7 +19,7 @@ namespace EBSGFramework
                 if (effect != null)
                 {
                     if (effect.addSeverityPerHour)
-                        parent.Severity += effect.mentalSeverity * 2500f / ticksToNextCheck;
+                        parent.Severity += effect.mentalSeverity * ticksToNextCheck / 2500f;
                     else
                         parent.Severity = effect.mentalSeverity;
                     return;
@@ -29,19 +29,19 @@ namespace EBSGFramework
             if (Pawn.GetCurrentTarget() != null)
             {
                 if (Props.addSeverityPerHour)
-                    parent.Severity += Props.fightingSeverity * 2500f / ticksToNextCheck;
+                    parent.Severity += Props.fightingSeverity * ticksToNextCheck / 2500f;
                 else if (Props.fightingSeverity >= 0)
                     parent.Severity = Props.fightingSeverity;
             }
             else if (Pawn.Drafted)
             {
                 if (Props.addSeverityPerHour)
-                    parent.Severity += Props.draftedSeverity * 2500f / ticksToNextCheck;
+                    parent.Severity += Props.draftedSeverity * ticksToNextCheck / 2500f;
                 else if (Props.draftedSeverity >= 0)
                     parent.Severity = Props.draftedSeverity;
             }
             else if (Props.addSeverityPerHour)
-                parent.Severity += Props.defaultSeverity * 2500f / ticksToNextCheck;
+                parent.Severity += Props.defaultSeverity * ticksToNextCheck / 2500f;
             else if (Props.defaultSeverity >= 0)
                 parent.Severity = Props.defaultSeverity;
         }
