@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Abilities\Building_LaunchAbilityPod.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeFaction.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeGender.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeIdeology.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ChangeTraits.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DamageOverTime.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyCorpse.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DuplicatePawn.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_HostileGiveHediff.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_InterruptOnDamaged.cs" />
@@ -59,12 +61,14 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_SpawnHumanlike.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_ToggleHediff.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeFaction.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeGender.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeIdeology.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityChangeTraits.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDamageOverTime.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDealDamage.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyFilth.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityDuplicatePawn.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityLaunchProjectileBurst.cs" />

@@ -101,7 +101,7 @@ namespace EBSGFramework
                             foreach (ThingWithComps thing in equipment)
                                 if (equipRestrict.forbiddenEquipments.Contains(thing.def))
                                     if (pawn.Position.IsValid)
-                                        pawn.equipment.TryDropEquipment(thing, out var droppedEquip, pawn.Position);
+                                        pawn.equipment.TryDropEquipment(thing, out _, pawn.Position);
                                     else
                                         pawn.equipment.DestroyEquipment(thing);
                         }
@@ -131,7 +131,7 @@ namespace EBSGFramework
                             foreach (ThingWithComps thing in equipment)
                                 if (!CheckEquipLists(equipRestrict.limitedToWeapons, equipRestrict.limitedToEquipments, thing.def))
                                     if (pawn.Position.IsValid)
-                                        pawn.equipment.TryDropEquipment(thing, out var droppedEquip, pawn.Position);
+                                        pawn.equipment.TryDropEquipment(thing, out _, pawn.Position);
                                     else
                                         pawn.equipment.DestroyEquipment(thing);
                         }

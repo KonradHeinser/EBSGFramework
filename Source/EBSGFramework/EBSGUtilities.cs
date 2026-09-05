@@ -122,9 +122,9 @@ namespace EBSGFramework
             return null;
         }
 
-        public static void ChangeGender(this Pawn pawn, Gender gender, BeardDef beard = null)
+        public static bool ChangeGender(this Pawn pawn, Gender gender, BeardDef beard = null, bool keepName = false)
         {
-            if (gender == pawn.gender || gender == Gender.None || !pawn.RaceProps.hasGenders) return;
+            if (gender == pawn.gender || gender == Gender.None || !pawn.RaceProps.hasGenders) return false;
             pawn.gender = gender;
             if (pawn.style != null)
                 if (!pawn.style.CanWantBeard)
@@ -132,7 +132,7 @@ namespace EBSGFramework
                 else if (beard != null)
                     pawn.style.beardDef = beard;
             if (pawn.GetFixedBodyType() == null && pawn.story?.bodyType != null)
-                    switch (pawn.gender)
+                    switch (gender)
                     {
                         case Gender.Female:
                             if (pawn.story.bodyType == BodyTypeDefOf.Male)
@@ -151,8 +151,22 @@ namespace EBSGFramework
                             break;
                     }
 
-            if (PawnBioAndNameGenerator.GeneratePawnName(pawn, NameStyle.Full, null, false, pawn.genes.Xenotype) is NameTriple newName)
+            if (!keepName && PawnBioAndNameGenerator.GeneratePawnName(pawn, NameStyle.Full, null, false, pawn.genes.Xenotype) is NameTriple newName)
                 pawn.Name = new NameTriple(newName.First, newName.Nick, (pawn.Name as NameTriple)?.Last);
+            return true;
+        }
+        
+        public static bool CheckGender(this Pawn pawn, Gender? gender, bool keepName = false)
+        {
+            switch (gender)
+            {
+                case null:
+                    return false;
+                case Gender.None:
+                    return pawn.ChangeGender(pawn.gender == Gender.Male ? Gender.Female : Gender.Male, null, keepName);
+                default:
+                    return gender != pawn.gender && pawn.ChangeGender(gender.Value, null, keepName);
+            }
         }
 
         public static void CheckGender(this Pawn pawn, List<GenderByAge> genderByAges, BeardDef beard = null)

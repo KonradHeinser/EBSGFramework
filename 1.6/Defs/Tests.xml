@@ -19,7 +19,7 @@
     <AbilityDef Name="EBSG_TestSelfCastBase" ParentName="EBSG_TestAbilityBase" Abstract="True">
         <targetRequired>False</targetRequired>
         <verbProperties>
-            <range>0.9</range>
+            <range>-1</range>
             <targetParams>
                 <canTargetSelf>True</canTargetSelf>
             </targetParams>
