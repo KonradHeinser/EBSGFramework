@@ -9,7 +9,9 @@ namespace EBSGFramework
 
         public float draftedSeverity = 2;
 
-        public float fightingSeverity = 2; // This handles autoattacking without being drafted
+        public float fightingSeverity = 2; // This handles auto attacking without being drafted
+        
+        public bool addSeverityPerHour;
 
         public List<MentalStateEffect> mentalStateEffects;
 

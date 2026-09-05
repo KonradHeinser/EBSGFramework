@@ -11,30 +11,38 @@ namespace EBSGFramework
             base.SetSeverity();
             ticksToNextCheck = 120;
             if (Pawn.InMentalState && !Props.mentalStateEffects.NullOrEmpty())
-                foreach (MentalStateEffect mentalStateEffect in Props.mentalStateEffects)
+            {
+                var state = Pawn.MentalStateDef;
+                var effect = Props.mentalStateEffects.FirstOrDefault(e => (e.mentalState == null && e.mentalStates.NullOrEmpty()) ||
+                                                    (e.mentalState != null && state == e.mentalState) ||
+                                                    (!e.mentalStates.NullOrEmpty() && e.mentalStates.Contains(state)));
+                if (effect != null)
                 {
-                    if (mentalStateEffect.mentalState == null && mentalStateEffect.mentalStates.NullOrEmpty())
-                    {
-                        parent.Severity = mentalStateEffect.mentalSeverity;
-                        return;
-                    }
-                    if (mentalStateEffect.mentalState != null && Pawn.MentalStateDef == mentalStateEffect.mentalState)
-                    {
-                        parent.Severity = mentalStateEffect.mentalSeverity;
-                        return;
-                    }
-                    if (!mentalStateEffect.mentalStates.NullOrEmpty() && mentalStateEffect.mentalStates.Contains(Pawn.MentalStateDef))
-                    {
-                        parent.Severity = mentalStateEffect.mentalSeverity;
-                        return;
-                    }
+                    if (effect.addSeverityPerHour)
+                        parent.Severity += effect.mentalSeverity * 2500f / ticksToNextCheck;
+                    else
+                        parent.Severity = effect.mentalSeverity;
+                    return;
                 }
+            }
 
-            if (Pawn.GetCurrentTarget() != null) 
-                parent.Severity = Props.fightingSeverity;
-            else if (Pawn.Drafted) 
-                parent.Severity = Props.draftedSeverity;
-            else 
+            if (Pawn.GetCurrentTarget() != null)
+            {
+                if (Props.addSeverityPerHour)
+                    parent.Severity += Props.fightingSeverity * 2500f / ticksToNextCheck;
+                else if (Props.fightingSeverity >= 0)
+                    parent.Severity = Props.fightingSeverity;
+            }
+            else if (Pawn.Drafted)
+            {
+                if (Props.addSeverityPerHour)
+                    parent.Severity += Props.draftedSeverity * 2500f / ticksToNextCheck;
+                else if (Props.draftedSeverity >= 0)
+                    parent.Severity = Props.draftedSeverity;
+            }
+            else if (Props.addSeverityPerHour)
+                parent.Severity += Props.defaultSeverity * 2500f / ticksToNextCheck;
+            else if (Props.defaultSeverity >= 0)
                 parent.Severity = Props.defaultSeverity;
         }
     }
