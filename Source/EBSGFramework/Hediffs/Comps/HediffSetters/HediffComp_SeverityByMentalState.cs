@@ -20,7 +20,7 @@ namespace EBSGFramework
                 {
                     if (effect.addSeverityPerHour)
                         parent.Severity += effect.mentalSeverity * ticksToNextCheck / 2500f;
-                    else
+                    else if (effect.mentalSeverity >= 0)
                         parent.Severity = effect.mentalSeverity;
                     return;
                 }
