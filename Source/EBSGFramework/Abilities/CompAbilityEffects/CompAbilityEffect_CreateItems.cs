@@ -35,31 +35,16 @@ namespace EBSGFramework
                 if (babyComp != null)
                 {
                     Pawn mother = null;
-                    Pawn father = null;
 
                     if (Props.linkingHediff != null && parent.pawn.HasHediff(Props.linkingHediff))
                     {
                         parent.pawn.health.hediffSet.TryGetHediff(Props.linkingHediff, out Hediff hediff);
                         if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
-                            if (partner.gender == Gender.Male)
-                            {
-                                mother = parent.pawn;
-                                father = partner;
-                            }
-                            else
-                            {
-                                mother = partner;
-                                father = parent.pawn;
-                            }
-                    }
-                    else
-                    {
-                        if (parent.pawn.gender == Gender.Male) father = parent.pawn;
-                        else mother = parent.pawn;
+                            mother = partner;
                     }
 
                     babyComp.mother = mother;
-                    babyComp.father = father;
+                    babyComp.father = parent.pawn;
                     babyComp.faction = parent.pawn.Faction;
                 }
 

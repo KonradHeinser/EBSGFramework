@@ -31,20 +31,20 @@ namespace EBSGFramework
                         genes = Props.staticXenotype.genes;
                     else switch (Props.xenotypeSource)
                     {
-                        case XenoSource.Father when father != null:
-                            genes = PregnancyUtility.GetInheritedGenes(father, null);
+                        case XenoSource.Father when father?.genes != null:
+                            genes = father?.genes?.Endogenes.Select(g => g.def).ToList();
                             break;
-                        case XenoSource.Mother when mother != null:
-                            genes = PregnancyUtility.GetInheritedGenes(null, mother);
+                        case XenoSource.Mother when mother?.genes != null:
+                            genes = mother?.genes?.Endogenes.Select(g => g.def).ToList();
                             break;
                         default:
                             if (mother?.genes == null && father?.genes == null)
                                 genes = new List<GeneDef>();
                             
                             if (father?.genes == null)
-                                genes = mother?.genes?.Endogenes.Select(g => g.def).ToList();
+                                genes = mother?.genes?.Endogenes?.Select(g => g.def)?.ToList();
                             else if (mother?.genes == null)
-                                genes = father?.genes?.Endogenes.Select(g => g.def).ToList();
+                                genes = father?.genes?.Endogenes?.Select(g => g.def)?.ToList();
                             else
                                 genes = PregnancyUtility.GetInheritedGenes(father, mother);
                             
@@ -79,7 +79,7 @@ namespace EBSGFramework
             {
                 if (parent.Faction?.IsPlayer == true)
                     Messages.Message(parent.LabelShortCap + " : " + "RuinedByTemperature".Translate(), MessageTypeDefOf.NegativeEvent);
-                if (Props.deleteOnFinalSpawn)
+                if (Props.deleteOnFinalSpawn && !parent.Destroyed)
                     parent.Destroy();
                 else
                     spawnLeft = 0;
@@ -174,12 +174,32 @@ namespace EBSGFramework
                     switch (Props.xenotypeSource)
                     {
                         case XenoSource.Mother when mother?.genes != null:
-                            pawn.genes.xenotypeName = mother.genes.xenotypeName;
-                            pawn.genes.iconDef = mother.genes.iconDef;
+                            if (mother.genes.UniqueXenotype)
+                            {
+                                pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                pawn.genes.iconDef = mother.genes.iconDef;
+                            }
+                            else
+                                pawn.genes.SetXenotypeDirect(mother.genes.Xenotype);
                             break;
+                        case XenoSource.Mother when father?.genes != null:
                         case XenoSource.Father when father?.genes != null:
-                            pawn.genes.xenotypeName = father.genes.xenotypeName;
-                            pawn.genes.iconDef = father.genes.iconDef;
+                            if (father.genes.UniqueXenotype)
+                            {
+                                pawn.genes.xenotypeName = father.genes.xenotypeName;
+                                pawn.genes.iconDef = father.genes.iconDef;
+                            }
+                            else
+                                pawn.genes.SetXenotypeDirect(father.genes.Xenotype);
+                            break;
+                        case XenoSource.Father when mother?.genes != null:
+                            if (mother.genes.UniqueXenotype)
+                            {
+                                pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                pawn.genes.iconDef = mother.genes.iconDef;
+                            }
+                            else
+                                pawn.genes.SetXenotypeDirect(mother.genes.Xenotype);
                             break;
                         default:
                         {
@@ -197,10 +217,22 @@ namespace EBSGFramework
                             }
                             else if (!Genes.NullOrEmpty()) // If we generated genes, then we should be supplying something
                             {
-                                if (mother?.genes?.Xenotype != null)
-                                    pawn.genes.SetXenotypeDirect(mother.genes.Xenotype);
-                                else if (father?.genes?.Xenotype != null)
-                                    pawn.genes.SetXenotypeDirect(father.genes.Xenotype);
+                                if (mother?.genes != null)
+                                    if (mother.genes.UniqueXenotype)
+                                    {
+                                        pawn.genes.xenotypeName = mother.genes.xenotypeName;
+                                        pawn.genes.iconDef = mother.genes.iconDef;
+                                    }
+                                    else
+                                        pawn.genes.SetXenotypeDirect(mother.genes.Xenotype);
+                                else if (father?.genes != null)
+                                    if (father.genes.UniqueXenotype)
+                                    {
+                                        pawn.genes.xenotypeName = father.genes.xenotypeName;
+                                        pawn.genes.iconDef = father.genes.iconDef;
+                                    }
+                                    else
+                                        pawn.genes.SetXenotypeDirect(father.genes.Xenotype);
                             }
                             break;
                         }
@@ -279,7 +311,7 @@ namespace EBSGFramework
 
             if (spawnLeft == 0 && Props.deleteOnFinalSpawn)
             {
-                if (previousMap != null)
+                if (previousMap == null)
                     parent.Destroy();
             }
             else if (spawnLeft > 0)
@@ -310,6 +342,9 @@ namespace EBSGFramework
             Scribe_References.Look(ref faction, "faction");
             Scribe_Values.Look(ref ticksLeft, "ticksLeft", 250);
             Scribe_Values.Look(ref spawnLeft, "spawnLeft", 1);
+            if (genes == null)
+                genes = new List<GeneDef>();
+            Scribe_Collections.Look(ref genes, "genes", LookMode.Reference);
         }
 
         // Private methods from the pregnancy utility
