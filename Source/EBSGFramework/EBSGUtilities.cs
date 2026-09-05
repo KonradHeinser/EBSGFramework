@@ -334,7 +334,7 @@ namespace EBSGFramework
             return null;
         }
 
-        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null, bool sendCraft = false)
+        public static Thing CreateThingCreationItem(ThingCreationItem item, Pawn creator = null, bool sendCraft = false, Pawn other = null)
         {
             if (item == null) return null;
             if (!Rand.Chance(item.chance) || (item.requireLink && item.linkingHediff != null &&
@@ -357,20 +357,28 @@ namespace EBSGFramework
                 Pawn mother = null;
                 Pawn father = null;
 
-                if (item.linkingHediff != null && creator.HasHediff(item.linkingHediff))
+                if (item.linkingHediff != null)
                 {
-                    creator.health.hediffSet.TryGetHediff(item.linkingHediff, out var hediff);
-                    if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
-                        if (partner.gender == Gender.Male)
-                        {
-                            mother = creator;
-                            father = partner;
-                        }
-                        else
-                        {
-                            mother = partner;
-                            father = creator;
-                        }
+                    if (creator.HasHediff(item.linkingHediff))
+                    {
+                        creator.health.hediffSet.TryGetHediff(item.linkingHediff, out var hediff);
+                        if (hediff is HediffWithTarget linkingHediff && linkingHediff.target is Pawn partner)
+                            if (partner.gender == Gender.Male)
+                            {
+                                mother = creator;
+                                father = partner;
+                            }
+                            else
+                            {
+                                mother = partner;
+                                father = creator;
+                            }
+                    }
+                    else if (other != null)
+                    {
+                        mother = creator;
+                        father = other;
+                    }
                 }
                 else
                 {

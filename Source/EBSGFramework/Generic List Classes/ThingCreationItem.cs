@@ -30,7 +30,7 @@ namespace EBSGFramework
         public float maxSeverity = 999f;
 
         public float weight = 1f;
-
+        
         public ThingDef Thing => thing ?? category?.DescendantThingDefs.Except(excludeCategory).RandomElement();
     }
 }

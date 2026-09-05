@@ -52,6 +52,9 @@ namespace EBSGFramework
                     }
                 }
 
+                if (genes?.Contains(GeneDefOf.Inbred) == true && mother?.QuickHasGene(GeneDefOf.Inbred) != true && father?.QuickHasGene(GeneDefOf.Inbred) != true) 
+                    genes.Remove(GeneDefOf.Inbred);
+                
                 return genes;
             }
         }
@@ -170,24 +173,24 @@ namespace EBSGFramework
                 if (Props.staticXenotype == null && (mother != null || father != null))
                     switch (Props.xenotypeSource)
                     {
-                        case XenoSource.Mother when mother != null:
+                        case XenoSource.Mother when mother?.genes != null:
                             pawn.genes.xenotypeName = mother.genes.xenotypeName;
                             pawn.genes.iconDef = mother.genes.iconDef;
                             break;
-                        case XenoSource.Father when father != null:
+                        case XenoSource.Father when father?.genes != null:
                             pawn.genes.xenotypeName = father.genes.xenotypeName;
                             pawn.genes.iconDef = father.genes.iconDef;
                             break;
                         default:
                         {
-                            if (GeneUtility.SameHeritableXenotype(mother, father) && mother?.genes?.UniqueXenotype == true)
+                            if (GeneUtility.SameHeritableXenotype(mother, father))
                             {
                                 pawn.genes.xenotypeName = mother.genes.xenotypeName;
                                 pawn.genes.iconDef = mother.genes.iconDef;
                             }
                             else if (TryGetInheritedXenotype(mother, father, out var xenotype))
                                 pawn.genes?.SetXenotypeDirect(xenotype);
-                            else if (ShouldByHybrid(mother, father))
+                            else if (ShouldBeHybrid(mother, father))
                             {
                                 pawn.genes.hybrid = true;
                                 pawn.genes.xenotypeName = "Hybrid".Translate();
@@ -322,24 +325,22 @@ namespace EBSGFramework
             if (father != null)
                 tmpLastNames.Add(PawnNamingUtility.GetLastName(father));
 
-            if (tmpLastNames.Count == 0)
-                return null;
-
-            return tmpLastNames.RandomElement();
+            return tmpLastNames.Count == 0 ? null : tmpLastNames.RandomElement();
         }
 
         public static bool TryGetInheritedXenotype(Pawn mother, Pawn father, out XenotypeDef xenotype)
         {
-            bool flag = mother?.genes != null;
-            bool flag2 = father?.genes != null;
-            if ((flag && flag2 && mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable && mother.genes.Xenotype == father.genes.Xenotype) 
-                || (flag && !flag2 && mother.genes.Xenotype.inheritable))
-            {
-                xenotype = mother.genes.Xenotype;
-                return true;
-            }
+            bool flag = father?.genes != null;
 
-            if (flag2 && !flag && father.genes.Xenotype.inheritable)
+            if (mother?.genes != null)
+            {
+                if (mother.genes.Xenotype?.inheritable == true && (!flag || mother.genes.Xenotype == father.genes.Xenotype))
+                {
+                    xenotype = mother.genes.Xenotype;
+                    return true;
+                }
+            }
+            else if (flag && father.genes.Xenotype?.inheritable == true)
             {
                 xenotype = father.genes.Xenotype;
                 return true;
@@ -348,24 +349,15 @@ namespace EBSGFramework
             return false;
         }
 
-        public static bool ShouldByHybrid(Pawn mother, Pawn father)
+        public static bool ShouldBeHybrid(Pawn mother, Pawn father)
         {
-            bool flag = mother?.genes != null;
-            bool flag2 = father?.genes != null;
-            if (flag && flag2)
-            {
-                if (mother.genes.hybrid && father.genes.hybrid)
-                    return true;
+            if (mother?.genes == null || father?.genes == null)
+                return false;
+            
+            if (mother?.genes.hybrid == true || father?.genes.hybrid == true)
+                return true;
 
-                if (mother.genes.Xenotype.inheritable && father.genes.Xenotype.inheritable)
-                    return true;
-
-                bool num = mother.genes.Xenotype.inheritable || mother.genes.hybrid;
-                bool flag3 = father.genes.Xenotype.inheritable || father.genes.hybrid;
-                if (num || flag3)
-                    return true;
-            }
-            return (flag && !flag2 && mother.genes.hybrid) || (flag2 && !flag && father.genes.hybrid);
+            return mother.genes?.Xenotype != father.genes?.Xenotype;
         }
     }
 }
