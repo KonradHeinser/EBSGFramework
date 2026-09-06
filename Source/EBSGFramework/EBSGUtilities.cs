@@ -113,12 +113,12 @@ namespace EBSGFramework
             }
         }
 
-        public static BodyTypeDef GetFixedBodyType(this Pawn pawn)
+        public static GeneticBodyType? GetFixedBodyType(this Pawn pawn)
         {
             if (pawn.DevelopmentalStage == DevelopmentalStage.Adult && pawn.genes != null)
                 foreach (var gene in pawn.genes.GenesListForReading)
                     if (gene.Active && gene.def.bodyType.HasValue)
-                        return gene.def.bodyType.Value.ToBodyType(pawn);
+                        return gene.def.bodyType.Value;
             return null;
         }
 
@@ -131,7 +131,9 @@ namespace EBSGFramework
                     pawn.style.beardDef = BeardDefOf.NoBeard;
                 else if (beard != null)
                     pawn.style.beardDef = beard;
-            if (pawn.GetFixedBodyType() == null && pawn.story?.bodyType != null)
+
+            var fixedBody = pawn.GetFixedBodyType();
+            if ((fixedBody == null || fixedBody == GeneticBodyType.Standard) && pawn.story?.bodyType != null)
                     switch (gender)
                     {
                         case Gender.Female:
