@@ -10,6 +10,12 @@ namespace EBSGFramework
         public bool checkEvolutionsPostAdd = false;
         public List<GeneticEvolution> geneticEvolutions;
         
+        // Random interaction stuff
+        public IntRange intervalRange = new IntRange(6000, 12000);
+        public InteractionDef interaction;
+        public ThoughtDef interactionThought;
+        public bool thoughtAboutCarrier = true;
+        
         public HistoryEventDef propagateEvent;
         public int maxEvolutions = 1;
         public bool keepEvolvingGene = false;

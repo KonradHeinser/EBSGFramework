@@ -18,7 +18,10 @@ namespace EBSGFramework
         public List<int> thresholds;
         public int waterTilesNeeded = 1; // Normally just stops after the first tile
 
+        public int maxOpinion = 0;
         public SimpleCurve curve = null;
         public HediffDef hediff = null;
+
+        public IntRange range;
     }
 }
