@@ -9,9 +9,9 @@ namespace EBSGFramework
         public int hpRestore = 0;
 
         public float maxHPPercentRestore = 0;
-
+        
         public bool uncode = false;
-
+        
         public bool untaint = false;
         
         public bool increaseQuality = false;
@@ -23,6 +23,20 @@ namespace EBSGFramework
         public QualityCategory minQuality = QualityCategory.Awful;
         
         public List<List<ThingDef>> stuffingChange = new List<List<ThingDef>>();
+        
+        public bool requireAny = false;
+        
+        public bool requireHitPoints = false;
+        
+        public bool requireBiocode = false;
+
+        public bool requireTaint = false;
+
+        public bool requireQuality = false;
+        
+        public bool requireStuffing = false;
+
+        public bool requireFinished = true;
         
         public CompProperties_AbilityAlterItem()
         {
