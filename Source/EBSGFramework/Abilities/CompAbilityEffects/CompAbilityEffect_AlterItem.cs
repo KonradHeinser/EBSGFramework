@@ -17,7 +17,7 @@ namespace EBSGFramework
                 if (t == null)
                     return false;
                 
-                if (Props.requireFinished && t is UnfinishedThing)
+                if (Props.requireFinished && (t is UnfinishedThing || t is Blueprint))
                     return false;
 
                 var flag = Props.requireAny; // This will become false in the event that any of the things the comp will try to do during Apply can happen
@@ -25,7 +25,7 @@ namespace EBSGFramework
                 if (Props.requireHitPoints && !t.def.useHitPoints)
                     return false;
                 
-                if (flag && t.def.useHitPoints && (Props.hpRestore != 0 || Props.maxHPPercentRestore != 0) && t.HitPoints < t.MaxHitPoints)
+                if (flag && t.def.useHitPoints && (Props.hpRestore != 0 || Props.maxHPPercentRestore != 0))
                     flag = false;
 
                 if (Props.requireStuffing && (t.Stuff == null || !CanReforge(t.Stuff)))
