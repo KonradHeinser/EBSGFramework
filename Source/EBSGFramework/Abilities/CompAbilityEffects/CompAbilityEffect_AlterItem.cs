@@ -25,7 +25,7 @@ namespace EBSGFramework
                 if (Props.requireHitPoints && !t.def.useHitPoints)
                     return false;
                 
-                if (flag && t.def.useHitPoints && (Props.hpRestore != 0 || Props.maxHPPercentRestore != 0))
+                if (flag && t.def.useHitPoints && (Props.hpRestore != 0 || Props.maxHPPercentRestore != 0) && t.HitPoints < t.MaxHitPoints)
                     flag = false;
 
                 if (Props.requireStuffing && (t.Stuff == null || !CanReforge(t.Stuff)))
