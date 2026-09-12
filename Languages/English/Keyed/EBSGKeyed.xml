@@ -151,7 +151,7 @@
     <EBSG_NeedLow>Low Need(s)</EBSG_NeedLow>
     <EBSG_NeedLowDescription>Low need(s): \n {0} \n\n At least one pawn has a dangerously low need. The method to fix this depends on the specific need in question.</EBSG_NeedLowDescription>
 
-        <!--Settings menu stuff-->
+    <!--Settings menu stuff-->
     <EBSG_SettingMenuLabel>EBSG Framework</EBSG_SettingMenuLabel> <!--This is the one used in the mod options list-->
     <EBSG_ModName>EBSG Framework</EBSG_ModName> <!--This is the one used in the settings themselves-->
     <EBSG_AgeLimitedAgeless>    Age Limited Ageless (Requires Biotech)</EBSG_AgeLimitedAgeless>
@@ -195,7 +195,7 @@
     <EAG_ModName>Expanded Archite Genes</EAG_ModName>
     <ArchitePsychicInfluencer>     Archite Psychic Influencer removes the Psychic Bond Torn mood.</ArchitePsychicInfluencer>
 
-        <!--Revival hediff comp-->
+    <!--Revival hediff comp-->
     <EBSG_LastLife>{PAWN_nameDef} is on their last life.</EBSG_LastLife>
     <EBSG_OneLifeStill>{PAWN_nameDef} still has an extra life.</EBSG_OneLifeStill> <!--This is used if the pawn is only capable of having one extra life-->
     <EBSG_OneLifeLeft>{PAWN_nameDef} has 1 extra life remaining.</EBSG_OneLifeLeft>
@@ -209,11 +209,11 @@
     <EBSG_ReviveFailOneChance>There is a {0} chance that this will fail to activate, causes the pawn to not revive on death.</EBSG_ReviveFailOneChance>
     <EBSG_ReviveFailChance>There is a {0} chance that this will fail to activate, which will cause it to consume additional lives until it passes or the pawn runs out of extra lives.</EBSG_ReviveFailChance>
 
-        <!--Teleportation-->
+    <!--Teleportation-->
     <AbilityHomeTeleport>Go to random area in home</AbilityHomeTeleport>
     <AbilityMapTeleport>Go to random area in map</AbilityMapTeleport>
 
-        <!--Item Creator-->
+    <!--Item Creator-->
     <AbilityWater>Must target an area without water.</AbilityWater>
     <AbilityNoWater>Must target an area filled with water.</AbilityNoWater>
     <AbilityPollution>Must target an area without pollution.</AbilityPollution>
@@ -223,7 +223,7 @@
     <AbilityThing>Must target an area that has nothing in it.</AbilityThing>
     <AbilityGameCondition>An existing map condition is obstructing the ability from working.</AbilityGameCondition>
 
-        <!--Ability Validator Stuff-->
+    <!--Ability Validator Stuff-->
     <AbilityNoTargetGeneOne>Target must have the {0} gene</AbilityNoTargetGeneOne>
     <AbilityNoTargetGene>Target is missing a required gene</AbilityNoTargetGene>
     <AbilityTargetGeneOne>Target has the {0} gene</AbilityTargetGeneOne>
@@ -295,6 +295,10 @@
     <AbilityCasterLowCheck>Caster's {0} is too low</AbilityCasterLowCheck>
     <AbilityCasterHighCheck>Caster's {0} is too high</AbilityCasterHighCheck>
     <AbilityCasterNeedsCheck>Caster's needs are not in the correct ranges</AbilityCasterNeedsCheck>
+    <AbilityCasterAgeAbove>Caster must be {0} or older</AbilityCasterAgeAbove>
+    <AbilityCasterAgeBelow>Caster must be {0} or younger</AbilityCasterAgeBelow>
+    <AbilityCasterAgeBetween>Caster must be between {0} and {1} years old</AbilityCasterAgeBetween>
+    <AbilityCasterAgeNotBetween>Caster cannot be between {0} and {1} years old</AbilityCasterAgeNotBetween>
 
     <AbilityTargetMustBePawn>Target must be a pawn</AbilityTargetMustBePawn>
 
@@ -302,20 +306,24 @@
     <AbilityTargetNonPlayer>Target must not be in your faction</AbilityTargetNonPlayer>
     <AbilityTargetHostile>Target must be hostile</AbilityTargetHostile>
     <AbilityTargetFactionNone>Target cannot be in a faction</AbilityTargetFactionNone>
+    <AbilityTargetAgeAbove>Target must be {0} or older</AbilityTargetAgeAbove>
+    <AbilityTargetAgeBelow>Target must be {0} or younger</AbilityTargetAgeBelow>
+    <AbilityTargetAgeBetween>Target must be between {0} and {1} years old</AbilityTargetAgeBetween>
+    <AbilityTargetAgeNotBetween>Target cannot be between {0} and {1} years old</AbilityTargetAgeNotBetween>
 
     <LayerMustBe>Must be {1} {0}</LayerMustBe>
     <LayerMustNotBe>Cannot be {1} {0}</LayerMustNotBe>
     <AbilityTargetMentalState>Not in valid mental state</AbilityTargetMentalState>
     <AbilityTargetMentalStateForbidden>Is in {0} mental state</AbilityTargetMentalStateForbidden>
 
-        <!--Ingestible Dependency Genes-->
+    <!--Ingestible Dependency Genes-->
     <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive.</EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->
     <EBSG_DependencyNeedDurationDescriptionFirst>After {1} days without {0}, {PAWN_pronoun} will experience {2}.</EBSG_DependencyNeedDurationDescriptionFirst> <!--The first iteration is the only one that provides the extra context-->
     <EBSG_DependencyNeedDurationDescription>After {0} days, {PAWN_pronoun} will experience {1}.</EBSG_DependencyNeedDurationDescription> <!--Every stage between the first one and death use this-->
     <EBSG_DependencyNeedDurationDescriptionDeath>After {0} days, {PAWN_pronoun} will die.</EBSG_DependencyNeedDurationDescriptionDeath> <!--When the code finds a death, this is the last thing that is recorded in the series-->
     <EBSG_LastIngestedDurationAgo>Last ingested {0} {1} ago.</EBSG_LastIngestedDurationAgo>
 
-        <!--Equip Restrict-->
+    <!--Equip Restrict-->
     <EBSG_GeneRestrictedEquipment_All>Missing at least one required gene.</EBSG_GeneRestrictedEquipment_All>
     <EBSG_GeneRestrictedEquipment_AnyOne>Has none of required genes.</EBSG_GeneRestrictedEquipment_AnyOne>
     <EBSG_GeneRestrictedEquipment_None>Has the {0} gene.</EBSG_GeneRestrictedEquipment_None>

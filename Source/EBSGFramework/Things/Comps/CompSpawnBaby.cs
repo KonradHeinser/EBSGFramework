@@ -94,7 +94,6 @@ namespace EBSGFramework
         public override void CompTickInterval(int delta)
         {
             base.CompTickInterval(delta);
-
             if (spawnLeft > 0 || spawnLeft == -1)
             {
                 if (parent.GetComp<CompRefuelable>()?.HasFuel == false)
@@ -104,7 +103,7 @@ namespace EBSGFramework
                 {
                     // Ensures plants and pawns are grown before they start creating new pawns
                     case Plant plant when plant.Growth < 1f:
-                    case Pawn c when !c.IsMechanical():
+                    case Pawn c when !c.IsMechanical() && !c.ageTracker.Adult:
                         return;
                 }
 
@@ -323,7 +322,7 @@ namespace EBSGFramework
             base.PostDestroy(mode, previousMap);
             if (spawnLeft > 0)
             { 
-                if (parent is Plant plant && mode == DestroyMode.KillFinalizeLeavingsOnly && plant?.def?.plant?.Harvestable == true)
+                if (parent is Plant plant && mode == DestroyMode.KillFinalizeLeavingsOnly && plant?.def?.plant?.Harvestable == true && plant.Growth == 1f)
                     SpawnPawns(previousMap);
             
                 if (Props.miscarriageThought)

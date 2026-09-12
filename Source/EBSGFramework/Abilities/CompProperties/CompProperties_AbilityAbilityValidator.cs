@@ -41,6 +41,8 @@ namespace EBSGFramework
         public List<FactionDef> forbiddenTargetFactions;
         public List<MentalStateDef> targetMentalStates = new List<MentalStateDef>();
         public CheckType targetMentalStateCheck = CheckType.Required;
+        public FloatRange targetAgeRange = new FloatRange(0);
+        public bool invertTargetAgeRange = false;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;
@@ -60,6 +62,8 @@ namespace EBSGFramework
         public List<FactionDef> validCasterFactions;
         public List<FactionDef> forbiddenCasterFactions;
         public List<StatCompare> statContest;
+        public FloatRange casterAgeRange = new FloatRange(0);
+        public bool invertCasterAgeRange = false;
         
         // % Light
         public FloatRange targetLightLevel = FloatRange.ZeroToOne;

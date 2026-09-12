@@ -622,6 +622,16 @@ namespace EBSGFramework
                 }
             }
 
+            if (Props.casterAgeRange.ValidValue(Caster.ageTracker?.AgeBiologicalYearsFloat ?? 0) == Props.invertCasterAgeRange)
+            {
+                var min = Props.casterAgeRange.min;
+                var max = Props.casterAgeRange.max;
+                explanation = min == max ?
+                    (Props.invertCasterAgeRange ? "AbilityCasterAgeBelow".Translate(min) : "AbilityCasterAgeAbove".Translate(min)) :
+                    (Props.invertCasterAgeRange ? "AbilityCasterAgeNotBetween".Translate(min, max) : "AbilityCasterAgeBetween".Translate(min, max));
+                return false;
+            }
+
             explanation = null;
             return true;
         }
@@ -1199,6 +1209,15 @@ namespace EBSGFramework
                         default:
                             break;
                     }
+                }
+                if (Props.targetAgeRange.ValidValue(pawn.ageTracker?.AgeBiologicalYearsFloat ?? 0) == Props.invertTargetAgeRange)
+                {
+                    var min = Props.targetAgeRange.min;
+                    var max = Props.targetAgeRange.max;
+                    explanation = min == max ?
+                        (Props.invertTargetAgeRange ? "AbilityTargetAgeBelow".Translate(min) : "AbilityTargetAgeAbove".Translate(min)) :
+                        (Props.invertTargetAgeRange ? "AbilityTargetAgeNotBetween".Translate(min, max) : "AbilityTargetAgeBetween".Translate(min, max));
+                    return false;
                 }
             }
             else
