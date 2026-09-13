@@ -6,12 +6,11 @@ namespace EBSGFramework
     {
         public CompProperties_Regenerating Props => (CompProperties_Regenerating)props;
 
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
-            if (parent.IsHashIntervalTick(Props.regenerationInterval) && parent.HitPoints < parent.MaxHitPoints)
-            {
+            base.CompTickInterval(delta);
+            if (parent.IsHashIntervalTick(Props.regenerationInterval, delta) && (parent.HitPoints < parent.MaxHitPoints || Props.regenerationAmount < 0)) 
                 parent.HitPoints += Props.regenerationAmount;
-            }
         }
     }
 }
