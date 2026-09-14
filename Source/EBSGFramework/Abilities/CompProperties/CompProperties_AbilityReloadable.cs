@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public int initialCharges = -1;
 
+        public int chargesPerUse = 1;
+
         public ThingDef ammoDef;
 
         public int ammoPerCharge = 1;

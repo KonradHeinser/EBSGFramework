@@ -27,9 +27,7 @@ namespace EBSGFramework
 
             yield return getNextIngredient;
             foreach (Toil item in ReloadAsMuchAsPossible(comp))
-            {
                 yield return item;
-            }
 
             yield return Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.A).FailOnSomeonePhysicallyInteracting(TargetIndex.A);
@@ -37,18 +35,14 @@ namespace EBSGFramework
             yield return Toils_Jump.JumpIf(getNextIngredient, () => !job.GetTargetQueue(TargetIndex.A).NullOrEmpty());
 
             foreach (Toil item2 in ReloadAsMuchAsPossible(comp))
-            {
                 yield return item2;
-            }
 
-            Toil toil = ToilMaker.MakeToil("MakeNewToils");
+            Toil toil = ToilMaker.MakeToil();
             toil.initAction = delegate
             {
                 Thing carriedThing = pawn.carryTracker.CarriedThing;
-                if (carriedThing != null && !carriedThing.Destroyed)
-                {
+                if (carriedThing != null && !carriedThing.Destroyed) 
                     pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out var _);
-                }
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return toil;
@@ -57,9 +51,10 @@ namespace EBSGFramework
         public IEnumerable<Toil> ReloadAsMuchAsPossible(CompAbilityEffect_Reloadable comp)
         {
             Toil done = Toils_General.Label();
-            yield return Toils_Jump.JumpIf(done, () => pawn.carryTracker.CarriedThing == null || pawn.carryTracker.CarriedThing.stackCount < comp.Props.ammoPerCharge);
+            yield return Toils_Jump.JumpIf(done, () => pawn.carryTracker.CarriedThing == null ||
+                    pawn.carryTracker.CarriedThing.def != comp.Props.ammoDef || pawn.carryTracker.CarriedThing.stackCount < comp.Props.ammoPerCharge);
             yield return Toils_General.Wait(comp.Props.reloadDuration).WithProgressBarToilDelay(TargetIndex.A);
-            Toil toil = ToilMaker.MakeToil("ReloadAsMuchAsPossible");
+            Toil toil = ToilMaker.MakeToil();
             toil.initAction = delegate
             {
                 Thing carriedThing = pawn.carryTracker.CarriedThing;

@@ -1928,26 +1928,19 @@ namespace EBSGFramework
         {
             var addedAbilities = new List<AbilityDef>();
 
-            if (ability != null)
+            if (ability != null && pawn.abilities.GetAbility(ability) == null)
             {
-                if (pawn.abilities.GetAbility(ability) == null)
-                {
-                    pawn.abilities.GainAbility(ability);
-                    addedAbilities.Add(ability);
-                }
+                pawn.abilities.GainAbility(ability);
+                addedAbilities.Add(ability);
             }
 
             if (!abilities.NullOrEmpty())
-            {
                 foreach (var abilityDef in abilities)
-                {
                     if (pawn.abilities.GetAbility(abilityDef) == null)
                     {
                         pawn.abilities.GainAbility(abilityDef);
                         addedAbilities.Add(abilityDef);
                     }
-                }
-            }
 
             return addedAbilities;
         }

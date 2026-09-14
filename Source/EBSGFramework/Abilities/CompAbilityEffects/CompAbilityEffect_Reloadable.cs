@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -34,7 +35,7 @@ namespace EBSGFramework
 
         public int ChargesNeeded => Props.maxCharges - RemainingCharges;
         
-        public override bool CanCast => RemainingCharges > 0;
+        public override bool CanCast => RemainingCharges >= Props.chargesPerUse;
         
         public override bool GizmoDisabled(out string reason)
         {
@@ -42,7 +43,7 @@ namespace EBSGFramework
             if (base.GizmoDisabled(out reason))
                 return true;
 
-            if (RemainingCharges <= 0)
+            if (RemainingCharges < Props.chargesPerUse)
             {
                 reason = Props.noChargesRemaining.TranslateOrFormat(Props.ammoDef?.label, parent.def.label);
                 return true;
@@ -51,22 +52,22 @@ namespace EBSGFramework
             return false;
         }
 
-        public override bool ShouldHideGizmo => Props.hideWhenEmpty && RemainingCharges <= 0;
+        public override bool ShouldHideGizmo => Props.hideWhenEmpty && RemainingCharges < Props.chargesPerUse;
 
         public override string ExtraTooltipPart()
         {
-            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges;
+            return $"{Props.remainingCharges.TranslateOrFormat()}: {Mathf.FloorToInt(RemainingCharges / Props.chargesPerUse)}";
         }
 
         public override string CompInspectStringExtra()
         {
-            return Props.remainingCharges.TranslateOrFormat() + ": " + RemainingCharges;
+            return $"{Props.remainingCharges.TranslateOrFormat()}: {Mathf.FloorToInt(RemainingCharges / Props.chargesPerUse)}";
         }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
-            RemainingCharges--;
+            RemainingCharges -= Props.chargesPerUse;
         }
 
         public override void PostExposeData()
