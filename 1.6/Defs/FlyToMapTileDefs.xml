@@ -36,8 +36,8 @@
         <label>flying pawn</label>
         <description>A pawn capable of moving themselves to various places in the world.</description>
         <graphicData>
-            <texPath>Things/Mote/SparkFlash</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Things/Mote/SparkThrown</texPath>
+            <graphicClass>Graphic_Mote</graphicClass>
             <shaderType>CutoutFlying</shaderType>
             <drawSize>0.1</drawSize>
         </graphicData>

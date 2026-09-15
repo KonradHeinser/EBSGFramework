@@ -39,7 +39,6 @@ namespace EBSGFramework
                 postfix: new HarmonyMethod(patchType, nameof(ApparelScoreGainPostFix)));
             harmony.Patch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)),
                 postfix: new HarmonyMethod(patchType, nameof(SecondaryLovinChanceFactorPostFix)));
-             
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),
                 prefix: new HarmonyMethod(patchType, nameof(TakeDamagePrefix)));
             harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.TakeDamage)),

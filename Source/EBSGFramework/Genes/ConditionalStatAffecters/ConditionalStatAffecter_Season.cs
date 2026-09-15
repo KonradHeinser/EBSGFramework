@@ -18,9 +18,7 @@ namespace EBSGFramework
         private string GetLabel()
         {
             if (label != null) return label.TranslateOrFormat();
-            if (seasons.Count == 1)
-                return "EBSG_SeasonOne".Translate(seasons.First().Label());
-            return "EBSG_Season".Translate();
+            return seasons.Count == 1 ? "EBSG_SeasonOne".Translate(seasons.First().Label()) : "EBSG_Season".Translate();
         }
 
         public override bool Applies(StatRequest req)
