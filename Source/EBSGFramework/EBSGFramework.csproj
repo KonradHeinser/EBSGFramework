@@ -53,6 +53,7 @@
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyFilth.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DestroyItem.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_DuplicatePawn.cs" />
+    <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveHediffUntilLimit.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_GiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_HostileGiveHediff.cs" />
     <Compile Include="Abilities\CompAbilityEffects\CompAbilityEffect_AlterItem.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyFilth.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDestroyItem.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityDuplicatePawn.cs" />
+    <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveHediffUntilLimit.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityGiveMentalStateWithSuccessChance.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityAlterItem.cs" />
     <Compile Include="Abilities\CompProperties\CompProperties_AbilityInterruptOnDamaged.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="Stats\StatPart_OverseerStatFactor.cs" />
     <Compile Include="Stats\StatPart_OverseerStatOffset.cs" />
     <Compile Include="Things\Building_FlexibleTrapReleaseEntity.cs" />
+    <Compile Include="Things\Building_PawnCrate.cs" />
     <Compile Include="Things\CompProperties\CompProperties_ShieldEquipment.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterGenes.cs" />
     <Compile Include="Things\CompProperties\CompProperties_UseEffectAlterXenotype.cs" />

@@ -12,15 +12,7 @@ namespace EBSGFramework
 
         private EBSGExtension extension;
 
-        public EBSGExtension Extension
-        {
-            get 
-            {
-                if (extension == null)
-                    extension = def.GetModExtension<EBSGExtension>();
-                return extension; 
-            }
-        }
+        public EBSGExtension Extension => extension ?? (extension = def.GetModExtension<EBSGExtension>());
 
         protected override void SpringSub(Pawn p)
         {

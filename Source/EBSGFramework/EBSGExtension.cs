@@ -171,6 +171,8 @@ namespace EBSGFramework
         public ThingDef filth;
 
         public PawnKindDef pawnKind;
+        public XenotypeDef xenotype;
+        public DevelopmentalStage developmentalStage = DevelopmentalStage.Adult;
         public IntRange countRange = IntRange.One;
         public SoundDef sound;
         public string message;
