@@ -29,7 +29,7 @@ namespace EBSGFramework
                     severity /= divisor == 0 ? 0.0001f : divisor;
                 }
                 severity = Mathf.Clamp(severity, 0, Max);
-                
+                severity = Props.severityRangeLimits.ClampToRange(severity);
                 if (hediffs.Any())
                 {
                     var h = hediffs.First();
@@ -52,7 +52,7 @@ namespace EBSGFramework
                     severity /= divisor == 0 ? 0.0001f : divisor;
                 }
                 severity = Mathf.Clamp(severity, 0, Max);
-                
+                severity = Props.severityRangeLimits.ClampToRange(severity);
                 if (hediffs.Any())
                 {
                     var h = hediffs.First();
@@ -80,15 +80,42 @@ namespace EBSGFramework
             if (t)
             {
                 var hediffs = target.Pawn?.GetHediffFromParts(Props.hediff, new List<BodyPartDef> { Props.part });
-                if (hediffs?.Any() == true && hediffs.First().Severity >= Max)
-                    t = false;
+                if (hediffs?.Any() == true)
+                {
+                    var severity = Props.severity.RandomInRange;
+                    if (Props.factorStat != null)
+                        severity *= target.Pawn.StatOrOne(Props.factorStat);
+                    if (Props.divisorStat != null)
+                    {
+                        var divisor = target.Pawn.StatOrOne(Props.divisorStat);
+                        severity /= divisor == 0 ? 0.0001f : divisor;
+                    }
+                    severity = Mathf.Clamp(severity, 0, Max);
+                    severity = Props.severityRangeLimits.ClampToRange(severity);
+                    if (hediffs.First().Severity + severity >= Max)
+                        t = false;
+                }
             }
             
             if (s)
             {
                 var hediffs = Caster.GetHediffFromParts(Props.hediff, new List<BodyPartDef> { Props.part });
-                if (hediffs.Any() && hediffs.First().Severity >= Max)
-                    s = false;
+                
+                if (hediffs.Any())
+                {
+                    var severity = Props.severity.RandomInRange;
+                    if (Props.factorStat != null)
+                        severity *= Caster.StatOrOne(Props.factorStat);
+                    if (Props.divisorStat != null)
+                    {
+                        var divisor = Caster.StatOrOne(Props.divisorStat);
+                        severity /= divisor == 0 ? 0.0001f : divisor;
+                    }
+                    severity = Mathf.Clamp(severity, 0, Max);
+                    severity = Props.severityRangeLimits.ClampToRange(severity);
+                    if (hediffs.First().Severity + severity >= Max)
+                        s = false;
+                }
             }
 
             if (!t && !s)

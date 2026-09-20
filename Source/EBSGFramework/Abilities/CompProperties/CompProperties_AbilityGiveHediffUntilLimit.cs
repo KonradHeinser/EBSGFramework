@@ -13,6 +13,8 @@ namespace EBSGFramework
 
         public StatDef divisorStat;
         
+        public FloatRange severityRangeLimits = new FloatRange(0, float.MaxValue);
+        
         public float maxSeverity = 0;
         
         public BodyPartDef part;

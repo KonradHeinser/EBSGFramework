@@ -9,7 +9,7 @@ namespace EBSGFramework
         
         public override float SeverityChangePerDay()
         {
-            return Math.Clamp(base.SeverityChangePerDay() * Pawn.StatOrOne(Props.stat), Props.limits.min, Props.limits.max);
+            return Props.limits.ClampToRange(base.SeverityChangePerDay() * Pawn.StatOrOne(Props.stat));
         }
     }
 }

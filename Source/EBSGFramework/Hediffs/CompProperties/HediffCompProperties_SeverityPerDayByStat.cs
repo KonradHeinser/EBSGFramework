@@ -7,11 +7,11 @@ namespace EBSGFramework
     {
         public StatDef stat;
 
-        public FloatRange limits;
+        public FloatRange limits = new FloatRange(float.MinValue, float.MaxValue);
         
         public HediffCompProperties_SeverityPerDayByStat()
         {
             compClass = typeof(HediffComp_SeverityPerDayByStat);
-        }   
+        }
     }
 }
