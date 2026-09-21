@@ -71,11 +71,11 @@ namespace EBSGFramework
                 switch (intensity)
                 {
                     case MentalBreakIntensity.Minor:
-                        return Props.minorChance * chanceFactor;
+                        return Mathf.Min(Props.minorChance * chanceFactor, 1f);
                     case MentalBreakIntensity.Major:
-                        return Props.majorChance * chanceFactor;
+                        return Mathf.Min(Props.majorChance * chanceFactor, 1f);
                     case MentalBreakIntensity.Extreme:
-                        return Props.extremeChance * chanceFactor;
+                        return Mathf.Min(Props.extremeChance * chanceFactor, 1f);
                     default:
                         return 0f;
                 }
