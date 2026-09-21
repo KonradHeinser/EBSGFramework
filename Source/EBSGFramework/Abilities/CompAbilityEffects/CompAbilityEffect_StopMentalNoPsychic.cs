@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -62,22 +63,19 @@ namespace EBSGFramework
                 {
                     if (!Props.exceptions.NullOrEmpty() && Props.exceptions.Contains(mentalStateDef)) return 0f;
                     List<MentalBreakDef> allDefsListForReading = DefDatabase<MentalBreakDef>.AllDefsListForReading;
-                    for (int i = 0; i < allDefsListForReading.Count; i++)
-                        if (allDefsListForReading[i].mentalState == mentalStateDef)
-                        {
-                            intensity = allDefsListForReading[i].intensity;
-                            break;
-                        }
+                    intensity = allDefsListForReading.FirstOrDefault(m => m.mentalState == mentalStateDef)?.intensity ?? MentalBreakIntensity.None;
                 }
+                
+                var chanceFactor = Props.changeFactor != null ? Mathf.Max(pawn.StatOrOne(Props.changeFactor), 0) : 1f;
 
                 switch (intensity)
                 {
                     case MentalBreakIntensity.Minor:
-                        return Props.minorChance;
+                        return Props.minorChance * chanceFactor;
                     case MentalBreakIntensity.Major:
-                        return Props.majorChance;
+                        return Props.majorChance * chanceFactor;
                     case MentalBreakIntensity.Extreme:
-                        return Props.extremeChance;
+                        return Props.extremeChance * chanceFactor;
                     default:
                         return 0f;
                 }
@@ -91,7 +89,7 @@ namespace EBSGFramework
             {
                 float successChance = SuccessChance(target, out _);
                 if (successChance > 0)
-                    return "EBSG_StopBreak".Translate(successChance * 100);
+                    return "EBSG_StopBreak".Translate(Mathf.Round(successChance * 100));
             }
             return null;
         }
