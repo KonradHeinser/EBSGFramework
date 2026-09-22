@@ -7,10 +7,6 @@ namespace EBSGFramework
     {
         public HediffDef hediff;
 
-        public float minSeverity = 0f;
-
-        public float maxSeverity = 99999f;
-
         public FloatRange range = new FloatRange(0, 99999);
 
         public FloatRange defaultRange = new FloatRange(0, 99999);
