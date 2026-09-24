@@ -31,6 +31,7 @@ namespace EBSGFramework
         public static ThingDef EBSG_PawnLeaving;
         public static ThingDef EBSG_PawnLanding;
         public static WorldObjectDef EBSG_PawnFlying;
+        public static PawnKindDef EBSG_BlankColonist;
 
         public static EBSGRecorder EBSG_Recorder;
 

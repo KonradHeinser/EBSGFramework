@@ -24,7 +24,7 @@ namespace EBSGFramework
                     Messages.Message(Extension.message.TranslateOrFormat(LabelCap, Label, LabelShort, count.ToString()),
                         new LookTargets(PositionHeld, MapHeld), MessageTypeDefOf.NegativeEvent);
                 
-                PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction,
+                PawnGenerationRequest request = new PawnGenerationRequest(PawnToSpawn, Faction, forceGenerateNewPawn: true,
                     fixedBiologicalAge: Extension?.bioAge.RandomInRange ?? 0, 
                     fixedChronologicalAge: Extension?.chronoAge.RandomInRange ?? 0);
                 

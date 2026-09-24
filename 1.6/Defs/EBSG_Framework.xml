@@ -80,6 +80,20 @@
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 
+    <PawnKindDef ParentName="BasePlayerPawnKind">
+        <defName>EBSG_BlankColonist</defName>
+        <label>colonist</label>
+        <defaultFactionDef>PlayerColony</defaultFactionDef>
+        <chemicalAddictionChance>0</chemicalAddictionChance>
+        <humanPregnancyChance>0</humanPregnancyChance>
+        <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
+        <apparelMoney>0</apparelMoney>
+        <backstoryCryptosleepCommonality>0</backstoryCryptosleepCommonality>
+        <techHediffsChance>0</techHediffsChance>
+        <techHediffsMoney>0</techHediffsMoney>
+        <initialResistanceRange>13~21</initialResistanceRange>
+    </PawnKindDef>
+
     <ThinkTreeDef>
         <defName>DRG_PackRetrieval</defName>
         <insertTag>Humanlike_PostDuty</insertTag>

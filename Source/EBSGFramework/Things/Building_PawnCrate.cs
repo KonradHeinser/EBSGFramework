@@ -19,9 +19,9 @@ namespace EBSGFramework
             base.SpawnSetup(map, respawningAfterLoad);
             if (!setup)
             {
-                var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(Extension?.pawnKind ?? PawnKindDefOf.Colonist, 
-                    forcedXenotype: Extension?.xenotype ?? XenotypeDefOf.Baseliner, 
-                    developmentalStages: (Extension?.developmentalStage ?? DevelopmentalStage.Adult)));
+                var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(Extension?.pawnKind ?? EBSGDefOf.EBSG_BlankColonist, 
+                    forceGenerateNewPawn: true, forcedXenotype: Extension?.xenotype ?? XenotypeDefOf.Baseliner, 
+                    developmentalStages: Extension?.developmentalStage ?? DevelopmentalStage.Adult));
                 if (pawn != null)
                 {
                     innerContainer.TryAddOrTransfer(pawn);

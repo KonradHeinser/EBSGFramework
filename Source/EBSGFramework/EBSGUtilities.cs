@@ -1336,7 +1336,7 @@ namespace EBSGFramework
             if (hediff == null)
                 return false;
             
-            // Check if there's actually supposed to be an other pawn
+            // Check if there's actually supposed to be another pawn
             if (other == null || !typeof(HediffWithTarget).IsAssignableFrom(hediff.hediffClass))
                 return pawn.HasHediff(hediff, out result);
 
@@ -1645,16 +1645,11 @@ namespace EBSGFramework
             var check = tracker.GenesListForReading.Where(g => g.Active && !g.Overridden).ToList();
             if (check.NullOrEmpty())
                 return false;
-            
+
             if (!geneDefs.NullOrEmpty())
-                foreach (var gene in check)
-                    if (geneDefs.Contains(gene.def))
-                    {
-                        firstMatch = gene.def;
-                        return true;
-                    }
+                firstMatch = geneDefs.FirstOrDefault(g => check.Any(c => c.def == g));
             
-            return false;
+            return firstMatch != null;
         }
 
         public static bool GetSpecifiedGenesFromPawn(this Pawn pawn, List<GeneDef> genes, out List<Gene> matches)
@@ -1707,7 +1702,7 @@ namespace EBSGFramework
         {
             if (tracker?.GenesListForReading.NullOrEmpty() != false) 
                 return false;
-            
+
             return geneDefs.NullOrEmpty() || geneDefs.All(tracker.HasActiveGene);
         }
 
@@ -1719,29 +1714,24 @@ namespace EBSGFramework
             if (pawn.genes == null) 
                 return false;
 
-            if (!geneDefs.NullOrEmpty())
-                foreach (var gene in geneDefs)
-                    if (!pawn.HasRelatedGene(gene))
-                    {
-                        failOn = gene;
-                        return false;
-                    }
+            if (geneDefs?.Any() == true)
+                failOn = geneDefs.FirstOrDefault(g => !pawn.HasRelatedGene(g));
 
-            return true;
+            return failOn == null;
         }
 
         public static int RemoveTraits(this Pawn pawn, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
         {
             var count = 0;
             
-            if (!traitDefs.NullOrEmpty())
+            if (traitDefs?.Any() == true)
                 foreach (var t in traitDefs.Select(t => pawn.story.traits.GetTrait(t)).Where(t => t != null))
                 {
                     count++;
                     pawn.story.traits.RemoveTrait(t);
                 }
 
-            if (!traits.NullOrEmpty())
+            if (traits?.Any() == true)
                 foreach (var t in traits.Select(t => pawn.story.traits.GetTrait(t.def, t.degree)).Where(t => t != null))
                 {
                     count++;
@@ -1756,7 +1746,7 @@ namespace EBSGFramework
         {
             var results = new List<Trait>();
             
-            if (!traitDefs.NullOrEmpty())
+            if (traitDefs?.Any() == true)
                 foreach (var trait in traitDefs.Where(t => !pawn.story.traits.HasTrait(t)))
                 {
                     var newTrait = new Trait(trait, trait.degreeDatas[0].degree, true);
@@ -1764,7 +1754,7 @@ namespace EBSGFramework
                     pawn.story.traits.GainTrait(newTrait);
                 }
 
-            if (!traits.NullOrEmpty())
+            if (traits?.Any() == true)
                 foreach (var trait in traits.Where(t => !pawn.story.traits.HasTrait(t.def, t.degree)))
                 {
                     var newTrait = new Trait(trait.def, trait.degree, true);
@@ -1783,10 +1773,7 @@ namespace EBSGFramework
             if (traitDefs?.All(t => pawn.story.traits.HasTrait(t)) == false)
                 return false;
 
-            if (traits?.All(t => pawn.story.traits.HasTrait(t.def, t.degree)) == false)
-                return false;
-                
-            return true;
+            return traits?.All(t => pawn.story.traits.HasTrait(t.def, t.degree)) != false;
         }
         
         public static bool PawnHasAnyOfTraits(this Pawn pawn, out Trait first, List<TraitDef> traitDefs = null, List<TraitDegree> traits = null)
@@ -1801,7 +1788,7 @@ namespace EBSGFramework
             if (tracker?.traits?.allTraits.NullOrEmpty() != false || (traits.NullOrEmpty() && traitDefs.NullOrEmpty()))
                 return false;
             
-            if (!traitDefs.NullOrEmpty())
+            if (traitDefs?.Any() == true)
                 foreach (var t in traitDefs)
                 {
                     first = tracker.traits.GetTrait(t);
@@ -1809,7 +1796,7 @@ namespace EBSGFramework
                         return true;
                 }
             
-            if (!traits.NullOrEmpty())
+            if (traits?.Any() == true)
                 foreach (var t in traits)
                 {
                     first = tracker.traits.GetTrait(t.def, t.degree);
@@ -1832,7 +1819,7 @@ namespace EBSGFramework
             if (tracker?.traits?.allTraits.NullOrEmpty() != false || traits.NullOrEmpty())
                 return false;
             
-            if (!traits.NullOrEmpty())
+            if (traits?.Any() == true)
                 foreach (var t in traits)
                 {
                     first = t.degree.HasValue ? tracker.traits.GetTrait(t.def, t.degree.Value) : tracker.traits.GetTrait(t.def);
@@ -1857,11 +1844,7 @@ namespace EBSGFramework
             {
                 return true;
             }
-            if (!pawn.SpawnedOrAnyParentSpawned && !pawn.IsCaravanMember() && !PawnUtility.IsTravelingInTransportPodWorldObject(pawn))
-            {
-                return true;
-            }
-            return false;
+            return !pawn.SpawnedOrAnyParentSpawned && !pawn.IsCaravanMember() && !PawnUtility.IsTravelingInTransportPodWorldObject(pawn);
         }
 
         public static void RemoveGenesFromPawn(this Pawn pawn, List<GeneDef> genes = null, GeneDef gene = null)
@@ -2022,7 +2005,7 @@ namespace EBSGFramework
             var reverseInheritance = false;
 
             // Select a geneSet to be added
-            if (!geneSets.NullOrEmpty())
+            if (geneSets?.Any() == true)
             {
                 var totalWeight = geneSets.Sum(xenoGeneSet => xenoGeneSet.weightOfGeneSet);
 
@@ -2041,7 +2024,7 @@ namespace EBSGFramework
 
             if (reverseInheritance) inheritGenes = !inheritGenes;
 
-            if (!geneSets.NullOrEmpty())
+            if (geneSets?.Any() == true)
                 if (removeGenesFromOtherLists)
                     foreach (var xenoGeneSet in geneSets) // For each list
                         pawn.RemoveGenesFromPawn(xenoGeneSet.geneSet);
@@ -2392,9 +2375,10 @@ namespace EBSGFramework
             }
             
             // If the faction is somehow null, the child will default to joining the player
-            var request = new PawnGenerationRequest(staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? PawnKindDefOf.Colonist,
-                faction ?? Faction.OfPlayer, fixedLastName: RandomLastName(mother, father), allowDowned: true, forceNoIdeo: true, fixedBiologicalAge: fixedAge,
-                fixedChronologicalAge: fixedAge, forcedXenotype: staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage, forceNoGear:noGear)
+            var request = new PawnGenerationRequest(staticPawnKind ?? mother?.kindDef ?? father?.kindDef ?? EBSGDefOf.EBSG_BlankColonist,
+                faction ?? Faction.OfPlayer, forceGenerateNewPawn: true, fixedLastName: RandomLastName(mother, father), allowDowned: true, 
+                forceNoIdeo: true, fixedBiologicalAge: fixedAge, fixedChronologicalAge: fixedAge, 
+                forcedXenotype: staticXenotype ?? XenotypeDefOf.Baseliner, developmentalStages: developmentalStage, forceNoGear:noGear)
             {
                 DontGivePreArrivalPathway = true
             };
