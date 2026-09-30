@@ -281,6 +281,9 @@ namespace EBSGFramework
         {
             if (!item.IngestibleNow || !pawn.CanReserve(item) || item.IsForbidden(pawn)) return false;
 
+            if (item.ParentHolder is Pawn_InventoryTracker inv && inv.pawn?.CurJob?.AnyTargetIs(item) == true)
+                return false;
+            
             if (chemical != null)
             {
                 if (!item.def.IsDrug)

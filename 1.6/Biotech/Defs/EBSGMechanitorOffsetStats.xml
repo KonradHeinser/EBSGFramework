@@ -4,6 +4,7 @@
     <StatDef Name="EBSG_MechanitorOffsetStatBase" ParentName="EBSG_OffsetingStat" Abstract="True">
         <category>Mechanitor</category>
         <displayPriorityInCategory>5000</displayPriorityInCategory>
+        <neverDisabled>True</neverDisabled>
     </StatDef>
 
     <StatDef ParentName="EBSG_MechanitorOffsetStatBase">

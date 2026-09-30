@@ -5,6 +5,7 @@
         <everCurableByItem>false</everCurableByItem>
         <initialSeverity>0.01</initialSeverity>
         <minSeverity>0.01</minSeverity>
+        <maxSeverity>12</maxSeverity>
         <stages>
             <li />
             <li>

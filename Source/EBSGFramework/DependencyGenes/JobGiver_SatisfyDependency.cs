@@ -58,10 +58,8 @@ namespace EBSGFramework
                     {
                         DrugPolicyEntry drugPolicyEntry = pawn.drugs.CurrentPolicy[thing.def];
                         int num = pawn.inventory.innerContainer.TotalStackCountOfDef(thing.def) - IngestJob.count;
-                        if (drugPolicyEntry.allowScheduled && num <= 0)
-                        {
+                        if (drugPolicyEntry.allowScheduled && num <= 0) 
                             IngestJob.takeExtraIngestibles = drugPolicyEntry.takeToInventory;
-                        }
                     }
                     return IngestJob;
                 }
