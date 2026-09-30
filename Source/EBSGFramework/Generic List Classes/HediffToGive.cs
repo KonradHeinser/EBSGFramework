@@ -28,5 +28,7 @@ namespace EBSGFramework
         public bool psychic = false;
 
         public float chance = 1f;
+
+        public SuccessChance successChance;
     }
 }

@@ -9,6 +9,8 @@ namespace EBSGFramework
 
         public EndOn endOn = EndOn.End;
 
+        public SuccessChance successChance;
+
         public CompProperties_AbilityGiveMultipleHediffs()
         {
             compClass = typeof(CompAbilityEffect_GiveMultipleHediffs);

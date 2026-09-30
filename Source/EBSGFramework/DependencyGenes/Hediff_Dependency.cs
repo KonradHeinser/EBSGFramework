@@ -279,9 +279,10 @@ namespace EBSGFramework
 
         private bool IngestibleValidator(Pawn pawn, Thing item)
         {
-            if (!item.IngestibleNow || !pawn.CanReserve(item) || item.IsForbidden(pawn)) return false;
+            if (item.Destroyed || !item.IngestibleNow || !pawn.CanReserve(item) || item.IsForbidden(pawn)) return false;
 
-            if (item.ParentHolder is Pawn_InventoryTracker inv && inv.pawn?.CurJob?.AnyTargetIs(item) == true)
+            if (item.ParentHolder is Pawn_InventoryTracker inv && 
+                (inv.pawn?.CurJob?.AnyTargetIs(item) == true || !pawn.CanReach(inv.pawn, PathEndMode.ClosestTouch, Danger.Deadly)))
                 return false;
             
             if (chemical != null)

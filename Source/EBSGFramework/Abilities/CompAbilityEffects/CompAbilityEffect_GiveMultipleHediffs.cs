@@ -11,6 +11,10 @@ namespace EBSGFramework
         {
             base.Apply(target, dest);
             var t = target.Pawn;
+            
+            if (Props.successChance?.Success(parent.pawn, t) == false)
+                return;
+            
             Props.hediffsToGive?.GiveHediffs(parent.pawn, t, GetDurationSeconds(parent.pawn).SecondsToTicks(),
                 t != null ? GetDurationSeconds(target.Pawn).SecondsToTicks() : -1, Props.psychic, Props.endOn);
         }
