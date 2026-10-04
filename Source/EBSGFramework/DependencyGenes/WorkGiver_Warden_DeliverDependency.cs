@@ -33,7 +33,7 @@ namespace EBSGFramework
                 return null;
 
             Pawn p = t as Pawn;
-            if (p?.Position.IsInPrisonCell(p.Map) != true)
+            if (p?.PositionHeld.IsInPrisonCell(p.MapHeld) != true)
                 return null;
             if (WardenFeedUtility.ShouldBeFed(p)) 
                 return null;
@@ -50,7 +50,7 @@ namespace EBSGFramework
                 {
                     Job job = JobMaker.MakeJob(JobDefOf.DeliverFood, thing, p);
                     job.count = 1;
-                    job.targetC = RCellFinder.SpotToChewStandingNear(p, thing);
+                    job.targetC = p.Spawned ? RCellFinder.SpotToChewStandingNear(p, thing) : p.PositionHeld;
                     return job;
                 }
             }
