@@ -38,7 +38,7 @@ namespace EBSGFramework
 
             Pawn prisoner = (Pawn)t;
             ResourceGene resourceGene = prisoner.genes?.GetFirstGeneOfType<ResourceGene>(); // Checks if there's even a resource gene present
-            if (resourceGene == null || !ShouldTakeCareOfPrisoner(pawn, prisoner) || !prisoner.guest.CanBeBroughtFood || !prisoner.Position.IsInPrisonCell(prisoner.Map) || WardenFeedUtility.ShouldBeFed(prisoner))
+            if (resourceGene == null || !ShouldTakeCareOfPrisoner(pawn, prisoner) || !prisoner.guest.CanBeBroughtFood || !prisoner.PositionHeld.IsInPrisonCell(prisoner.MapHeld) || WardenFeedUtility.ShouldBeFed(prisoner))
             {
                 // Checks all global reasons to not feed the prisoner resource packs. If there's no global reason, then there's no reason to find a local reason
                 return null;
@@ -47,14 +47,14 @@ namespace EBSGFramework
             foreach (Gene gene in prisoner.genes?.GenesListForReading)
                 if (gene.def.HasModExtension<DRGExtension>() && gene.def.GetModExtension<DRGExtension>().isMainGene) resourcesPresent.Add((ResourceGene)gene);
 
-            foreach (ResourceGene gene in resourcesPresent) // Go through all of the present resources to find any that need resupply
+            foreach (ResourceGene gene in resourcesPresent) // Go through all the present resources to find any that need resupply
             {
                 if (!gene.resourcePacksAllowed || !gene.ShouldConsumeResourceNow()) return null; // Check if consumption is even needed
                 DRGExtension extension = gene.def.GetModExtension<DRGExtension>();
                 if (extension.resourcePacks.NullOrEmpty() || ResourcePackAlreadyAvailableFor(prisoner, extension.resourcePacks)) return null; // Check if there's already a resouce pack
                 foreach (ThingDef thingDef in extension.resourcePacks)
                 {
-                    Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, pack => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
+                    Thing thing = GenClosest.ClosestThingReachable(pawn.PositionHeld, pawn.MapHeld, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, pack => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
                     if (thing == null) continue; // If the individual item doesn't exist, try the next one
                     if (thing.HasComp<Comp_DRGConsumable>())
                     {
@@ -67,7 +67,7 @@ namespace EBSGFramework
                     {
                         Job job = JobMaker.MakeJob(JobDefOf.DeliverFood, thing, prisoner);
                         job.count = 1;
-                        job.targetC = RCellFinder.SpotToChewStandingNear(prisoner, thing);
+                        job.targetC = prisoner.Spawned ? RCellFinder.SpotToChewStandingNear(prisoner, thing) : prisoner.PositionHeld;
                         return job;
                     }
                 }
