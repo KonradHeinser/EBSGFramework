@@ -102,7 +102,7 @@ namespace EBSGFramework
                 switch (parent)
                 {
                     // Ensures plants and pawns are grown before they start creating new pawns
-                    case Plant plant when plant.Growth < 1f:
+                    case Plant plant when plant.Growth < 0.95f:
                     case Pawn c when !c.IsMechanical() && !c.ageTracker.Adult:
                         return;
                 }
