@@ -156,7 +156,14 @@ namespace EBSGFramework
                 return;
             }
 
+            ThingWithComps remaining = null;
+            var position = parent.PositionHeld;
+            var map = parent.MapHeld;
+            if (parent.stackCount > 1) 
+                remaining = parent.SplitOff(parent.stackCount - 1) as ThingWithComps;
             OwnerComp.InstallModule(parent);
+            if (remaining != null)
+                GenSpawn.Spawn(remaining, position, map);
         }
 
         public override AcceptanceReport CanBeUsedBy(Pawn p)
@@ -169,7 +176,7 @@ namespace EBSGFramework
                 foreach (var hediff in p.health.hediffSet.hediffs)
                     if (hediff is HediffWithComps hediffWithComps)
                         foreach (var comp in hediffWithComps.comps)
-                            if (comp is HediffComp_Modular compModular)
+                            if (comp is HediffComp_Modular)
                             {
                                 if (Props.prerequisites?.ValidPawn(p, hediff.Part) == false)
                                     break;

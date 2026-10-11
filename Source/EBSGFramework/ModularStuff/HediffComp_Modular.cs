@@ -155,12 +155,10 @@ namespace EBSGFramework
             var options = new List<FloatMenuOption>();
             ejectableModules = true;
             var validOptions = 0;
-            
             if (moduleHolder.Count > 0)
                 foreach (var module in moduleHolder)
                 {
                     var comp = module.TryGetComp<CompUseEffect_HediffModule>();
-
                     if (!comp.Props.ejectable)
                     {
                         options.Add(new FloatMenuOption($"{"EBSG_CannotEject".Translate()} {module.LabelCap} ({comp.GetSlot.slotName.TranslateOrFormat()})", null));
@@ -175,13 +173,12 @@ namespace EBSGFramework
                 options.Add(new FloatMenuOption("No ejectable modules", null));
                 ejectableModules = false;
             }
-
             ejectAction = new Command_Action
             {
                 defaultLabel = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap}"),
                 defaultDesc = ($"{"EBSG_EjectModuleFrom".Translate()} {parent.LabelCap} {(parent.Part != null ? $" ({parent.Part.LabelCap})" : "")}"),
                 icon = cachedEjectTex,
-                action = delegate ()
+                action = delegate
                 {
                     Find.WindowStack.Add(new FloatMenu(options));
                 }
