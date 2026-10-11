@@ -323,10 +323,9 @@ namespace EBSGFramework
             base.PostDestroy(mode, previousMap);
             if (spawnLeft > 0)
             { 
-                if (parent is Plant plant && mode == DestroyMode.KillFinalizeLeavingsOnly && plant?.def?.plant?.Harvestable == true && plant.Growth == 1f)
+                if (parent is Plant plant && mode == DestroyMode.KillFinalizeLeavingsOnly && plant.Growth >= 1f)
                     SpawnPawns(previousMap);
-            
-                if (Props.miscarriageThought)
+                else if (Props.miscarriageThought)
                 {
                     mother?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.motherMiscarriageThought ?? ThoughtDefOf.Miscarried);
                     father?.needs?.mood?.thoughts?.memories?.TryGainMemory(Props.fatherMiscarriageThought ?? ThoughtDefOf.PartnerMiscarried);
