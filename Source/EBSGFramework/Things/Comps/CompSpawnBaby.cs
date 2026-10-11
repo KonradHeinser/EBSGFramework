@@ -151,7 +151,7 @@ namespace EBSGFramework
                 spawnLeft -= numberToSpawn;
             }
 
-            if (previousMap == null)
+            if (parent.stackCount > 0)
                 numberToSpawn *= parent.stackCount;
             
             for (int i = 0; i < numberToSpawn; i++)
