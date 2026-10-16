@@ -164,7 +164,7 @@ namespace EBSGFramework
         public ThingDef relatedThing;
         public JobDef relatedJob;
         public float maxStorage = 10f;
-        public float staticUsePerDay = -1f;
+        public float staticUsePerDay = -1f; 
 
         public HediffToParts endHediff;
         public HediffToParts mechEndHediff;

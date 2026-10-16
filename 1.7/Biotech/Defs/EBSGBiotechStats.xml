@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_PawnGestationSpeed</defName>
+        <label>pregnancy speed</label>
+        <description>Changes how quickly a pawn's pregnancy progresses. The higher this value, the less time a pregnancy lasts. A pregnancy speed of 1 is normal speed, while a speed of 10 would cause the pregnancy to progress 10 times faster.</description>
+        <showDevelopmentalStageFilter>Adult</showDevelopmentalStageFilter>
+        <displayPriorityInCategory>2201</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_GrowthPointRate</defName>
+        <label>growth point rate</label>
+        <description>Multiplies how quickly this pawn gains growth points. The higher this multiplier is, the greater the effects of things like growth vats and high learning values.</description>
+        <minValue>0</minValue>
+        <showDevelopmentalStageFilter>Child</showDevelopmentalStageFilter>
+        <displayPriorityInCategory>3600</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_OffsetingStat">
+        <defName>EBSG_HemogenMaxOffset</defName>
+        <label>maximum hemogen offset</label>
+        <description>An offset on maximum hemogen, with a value of 200% allowing pawns to store 300 hemogen instead of 100. This is added before the maximum hemogen multiplier takes effect.</description>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_HemogenMaxFactor</defName>
+        <label>maximum hemogen multiplier</label>
+        <description>A multiplier on maximum hemogen, with a value of 200% allowing pawns to store 200 hemogen instead of 100. This also multiplies the maximum hemogen offset when applicable.</description>
+        <minValue>0</minValue>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestRiseRate</defName>
+        <label>deathrest rise rate</label>
+        <description>Changes the rate that a pawn's deathrest need recovers. The higher this value, faster it goes. This should stack with deathrest efficiency.</description>
+        <displayPriorityInCategory>3999</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestFallRate</defName>
+        <label>deathrest fall rate</label>
+        <description>Changes the rate that a pawn requires deathrest. The higher this value, the more often they need to deathrest.</description>
+        <displayPriorityInCategory>3400</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_DeathrestEfficiency</defName>
+        <label>deathrest efficiency</label>
+        <description>Changes the rate that a pawn progresses through deathrest. Higher values mean the minimum time a pawn needs to deathrest to avoid a debuff is decreased.</description>
+        <displayPriorityInCategory>3401</displayPriorityInCategory>
+    </StatDef>
+
+    <StatDef ParentName="EBSG_FactoringStat">
+        <defName>EBSG_KillThirstRate</defName>
+        <label>kill satiety rate</label>
+        <description>Alters how long it takes for a pawn to reach peak murderous tendencies. The higher this is, the more often the pawn must kill pawns to remain happy.</description>
+        <displayPriorityInCategory>3402</displayPriorityInCategory>
+    </StatDef>
+
+
+</Defs>

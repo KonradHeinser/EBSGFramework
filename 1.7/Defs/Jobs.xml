@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <JobDef>
+        <defName>EBSG_RelaxInWater</defName>
+        <driverClass>EBSGFramework.JobDriver_RelaxInWater</driverClass>
+        <reportString>relaxing in water.</reportString>
+        <joyDuration>4000</joyDuration>
+        <joyKind>Meditative</joyKind>
+    </JobDef>
+
+    <JoyGiverDef>
+        <defName>EBSG_RelaxInWater</defName>
+        <giverClass>EBSGFramework.JoyGiver_RelaxInWater</giverClass>
+        <baseChance>1</baseChance>
+        <jobDef>EBSG_RelaxInWater</jobDef>
+        <joyKind>Meditative</joyKind>
+        <requiresEnjoyOutdoors>false</requiresEnjoyOutdoors>
+        <modExtensions>
+            <li Class="EBSGFramework.EBSGExtension">
+                <relatedGenes />
+            </li>
+        </modExtensions>
+    </JoyGiverDef>
+
+    <JobDef>
+        <defName>EBSG_GathererJob</defName>
+        <driverClass>EBSGFramework.JobDriver_Gatherer</driverClass>
+        <reportString>Finding things near TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+</Defs>
