@@ -21,6 +21,8 @@ namespace EBSGFramework
         public float extremeChance = 0.25f;
 
         public StatDef changeFactor;
+        
+        public StatDef chanceFactor;
 
         public CompProperties_AbilityStopMentalNoPsychic()
         {

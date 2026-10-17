@@ -67,6 +67,7 @@ namespace EBSGFramework
                 }
                 
                 var chanceFactor = Props.changeFactor != null ? Mathf.Max(pawn.StatOrOne(Props.changeFactor), 0) : 1f;
+                chanceFactor *= Props.chanceFactor != null ? Mathf.Max(pawn.StatOrOne(Props.chanceFactor), 0) : 1f;
 
                 switch (intensity)
                 {

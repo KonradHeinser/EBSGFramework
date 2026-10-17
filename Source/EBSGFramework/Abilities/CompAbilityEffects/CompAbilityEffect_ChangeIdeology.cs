@@ -1,5 +1,4 @@
-﻿using System;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace EBSGFramework
@@ -32,6 +31,17 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoIdeologyPossible".Translate(), target.ToTargetInfo(Find.CurrentMap), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            
+            Ideo ideo = Props.factionOfIdeo != null ? 
+                Find.FactionManager.FirstFactionOfDef(Props.factionOfIdeo)?.ideos?.PrimaryIdeo :
+                parent.pawn.Ideo; // Otherwise, we can use the caster's
+
+            if (ideo == null || target.Pawn.Ideo == ideo)
+            {
+                if (throwMessages)
+                    Messages.Message("CannotUseAbility".Translate(parent.def.label) + ": " + "EBSG_NoIdeologyTarget".Translate(), target.ToTargetInfo(Find.CurrentMap), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
