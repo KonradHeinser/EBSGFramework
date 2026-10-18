@@ -11,27 +11,24 @@ namespace EBSGFramework
 
         public override Graphic GraphicFor(Pawn pawn)
         {
-            if (props is PawnRenderNodeProperties_EBSG { altFurColor: not null } EBSGProps)
-                return GraphicDatabase.Get<Graphic_Multi>(pawn.story.furDef.GetFurBodyGraphicPath(pawn), ShaderDatabase.CutoutComplex, Vector2.one, ColorFor(pawn), ColorFromType(pawn, EBSGProps.altFurColor.Value) ?? ColorFor(pawn));
+            if (props is PawnRenderNodeProperties_EBSG { altColorType: not null } EBSGProps)
+                return GraphicDatabase.Get<Graphic_Multi>(pawn.story.furDef.GetFurBodyGraphicPath(pawn), ShaderDatabase.CutoutComplex, Vector2.one, ColorFor(pawn), ColorFromType(pawn, EBSGProps.altColorType.Value, EBSGProps.altColor));
             return base.GraphicFor(pawn);
         }
 
         public override Color ColorFor(Pawn pawn)
         {
-            return ColorFromType(pawn, props.colorType) ?? props.color ?? Color.magenta;
+            return ColorFromType(pawn, props.colorType);
         }
 
-        private Color? ColorFromType(Pawn pawn, PawnRenderNodeProperties.AttachmentColorType type)
+        private Color ColorFromType(Pawn pawn, PawnRenderNodeProperties.AttachmentColorType type, Color? altColor = null)
         {
-            switch (type)
+            return type switch
             {
-                case PawnRenderNodeProperties.AttachmentColorType.Hair:
-                    return pawn.story.HairColor;
-                case PawnRenderNodeProperties.AttachmentColorType.Skin:
-                    return pawn.story.SkinColor;
-                default:
-                    return null;
-            }
+                PawnRenderNodeProperties.AttachmentColorType.Hair => pawn.story.HairColor,
+                PawnRenderNodeProperties.AttachmentColorType.Skin => pawn.story.SkinColor,
+                _ => altColor ?? props.color ?? Color.magenta
+            };
         }
     }
 }

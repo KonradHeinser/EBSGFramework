@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace EBSGFramework
@@ -39,7 +40,9 @@ namespace EBSGFramework
 
         public List<AgeBodyLink> ageGraphics;
 
-        public AttachmentColorType? altFurColor = null;
+        public AttachmentColorType? altColorType = null;
+
+        public Color? altColor = null;
 
         private FloatRange ages;
 
