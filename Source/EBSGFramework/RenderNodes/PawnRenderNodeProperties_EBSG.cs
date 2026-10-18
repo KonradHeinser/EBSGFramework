@@ -39,6 +39,8 @@ namespace EBSGFramework
 
         public List<AgeBodyLink> ageGraphics;
 
+        public AttachmentColorType? altFurColor = null;
+
         private FloatRange ages;
 
         private bool checkedAges;
