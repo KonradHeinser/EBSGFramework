@@ -67,7 +67,7 @@ namespace EBSGFramework
                     caster.AddHediffToPart(caster.health.hediffSet.GetBodyPartRecord(part), hediff, s, s, false, target);
             }
 
-            if (affectTarget && target != null)
+            if (affectTarget && target != null && (!affectSelf || target != caster))
             {
                 var hediffs = target.GetHediffFromParts(hediff, new List<BodyPartDef> { part });
                 var s = Severity(target);
