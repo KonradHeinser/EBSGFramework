@@ -1,13 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{1C15B537-0A69-4ED9-952B-5435016FA4F7}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <AssemblyTitle>EBSGFramework</AssemblyTitle>
     <Deterministic>false</Deterministic>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <FileVersion>1.0.*</FileVersion>
     <ConsolePause>false</ConsolePause>
+    <Nullable>disable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -17,6 +20,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>../../1.7/Assemblies/</OutputPath>
     <WarningLevel>2</WarningLevel>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <None Include="obj\Debug\EBSGFramework.csproj.AssemblyReference.cache" />
@@ -27,7 +31,7 @@
     <None Include=".vs\EBSGFramework\xs\UserPrefs.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4566" />
-    <PackageReference Include="Lib.Harmony.Ref" Version="3.0.0-rc.2" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4984-unstable" />
+    <PackageReference Include="Lib.Harmony.Ref" Version="3.0.0-rc.3" />
   </ItemGroup>
 </Project>
