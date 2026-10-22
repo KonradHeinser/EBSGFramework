@@ -27,6 +27,8 @@ namespace EBSGFramework
 
         public bool linkMandatory = true;
 
+        public bool onlyWhileSpawned = false;
+
         public HediffCompProperties_GiveOtherHediffPeriodically()
         {
             compClass = typeof(HediffComp_GiveOtherHediffPeriodically);

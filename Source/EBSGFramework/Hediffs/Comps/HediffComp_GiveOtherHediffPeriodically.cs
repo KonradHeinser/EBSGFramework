@@ -6,8 +6,7 @@ namespace EBSGFramework
     public class HediffComp_GiveOtherHediffPeriodically : HediffComp
     {
         public HediffCompProperties_GiveOtherHediffPeriodically Props => (HediffCompProperties_GiveOtherHediffPeriodically)props;
-
-
+        
         private float SeverityChange
         {
             get
@@ -35,7 +34,7 @@ namespace EBSGFramework
         {
             base.CompPostTick(ref severityAdjustment);
 
-            if (Pawn.IsHashIntervalTick(Props.interval) &&
+            if (Pawn.IsHashIntervalTick(Props.interval) && (!Props.onlyWhileSpawned || Pawn.Spawned) &&
                 EBSGUtilities.WithinSeverityRanges(parent.Severity, Props.validSeverities) &&
                 Rand.Chance(Props.chance))
             {
