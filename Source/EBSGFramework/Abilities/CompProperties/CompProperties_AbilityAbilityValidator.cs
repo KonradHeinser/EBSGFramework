@@ -43,6 +43,7 @@ namespace EBSGFramework
         public CheckType targetMentalStateCheck = CheckType.Required;
         public FloatRange targetAgeRange = new FloatRange(0);
         public bool invertTargetAgeRange = false;
+        public bool targetAsleepOrDowned = false;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;

@@ -232,6 +232,7 @@
     <AbilityTargetXenotype>Target is a {0}</AbilityTargetXenotype>
     <AbilityTargetXenotypeOne>Target is not a {0}</AbilityTargetXenotypeOne>
     <AbilityPawnKind>Target is not a valid pawn kind</AbilityPawnKind>
+    <AbilityCantApplyAwake>{0_labelShort} is awake.</AbilityCantApplyAwake>
 
     <AbilityNoTargetHediffOne>Target must have the {0} hediff</AbilityNoTargetHediffOne>
     <AbilityNoTargetHediff>Target is missing a required hediff</AbilityNoTargetHediff>

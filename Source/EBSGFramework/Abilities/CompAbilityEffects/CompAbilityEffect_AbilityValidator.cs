@@ -1027,6 +1027,11 @@ namespace EBSGFramework
         {
             if (target.TargetIsPawn(out var pawn))
             {
+                if (Props.targetAsleepOrDowned && pawn.Awake())
+                {
+                    explanation = "AbilityCantApplyAwake".Translate(pawn);
+                    return false;
+                }
                 if (!Props.targetCapLimiters.NullOrEmpty())
                 {
                     foreach (var capCheck in Props.targetCapLimiters)
@@ -1281,6 +1286,12 @@ namespace EBSGFramework
                             explanation = "AbilityTargetMustBePawn".Translate();
                             return false;
                         }
+                }
+
+                if (Props.targetAsleepOrDowned)
+                {
+                    explanation = "AbilityTargetMustBePawn".Translate();
+                    return false;
                 }
             }
 
