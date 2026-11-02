@@ -189,8 +189,23 @@ namespace EBSGFramework
             return casterLayerExplanation == null;
         }
 
-        
-        
+        private bool CheckResearchPrerequisites(out string researchExplanation)
+        {
+            researchExplanation = null;
+            if (!Props.requiredResearchProjects.NullOrEmpty())
+            {
+                foreach (var researchProject in Props.requiredResearchProjects)
+                {
+                    if (!researchProject.IsFinished)
+                    {
+                        researchExplanation = "AbilityRequiresResearch".Translate(researchProject.label);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
             if (!base.Valid(target, throwMessages)) return false;
@@ -233,6 +248,12 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            if (!CheckResearchPrerequisites(out var targetResearchExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(BaseExplanation + targetResearchExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
@@ -298,6 +319,11 @@ namespace EBSGFramework
                 if (!CheckCasterLayer(out var casterLayerExplanation))
                 {
                     reason = casterLayerExplanation;
+                    return true;
+                }
+                if (!CheckResearchPrerequisites(out var researchExplanation))
+                {
+                    reason = researchExplanation;
                     return true;
                 }
             }
