@@ -65,7 +65,11 @@ namespace EBSGFramework
         public List<StatCompare> statContest;
         public FloatRange casterAgeRange = new FloatRange(0);
         public bool invertCasterAgeRange = false;
-        
+
+
+        // Research Project Requirements
+        public List<ResearchProjectDef> requiredResearchProjects;
+
         // % Light
         public FloatRange targetLightLevel = FloatRange.ZeroToOne;
         public bool invertTargetLight = false;
