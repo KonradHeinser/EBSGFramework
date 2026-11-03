@@ -56,6 +56,8 @@ namespace EBSGFramework
         public List<TraitDegree> casterHasNoneOfTraits;
 
         // Caster Faction Requirements
+        public List<FactionDef> validCasterFactions;
+        public List<FactionDef> forbiddenCasterFactions;
         public List<ResearchProjectDef> requiredResearchProjects;
 
         // Caster Pawn Checks
@@ -63,8 +65,6 @@ namespace EBSGFramework
         public List<SkillLevel> casterSkillLimiters;
         public List<StatCheck> casterStatLimiters;
         public List<NeedLevel> casterNeedLevels;
-        public List<FactionDef> validCasterFactions;
-        public List<FactionDef> forbiddenCasterFactions;
         public List<StatCompare> statContest;
         public FloatRange casterAgeRange = new FloatRange(0);
         public bool invertCasterAgeRange = false;
