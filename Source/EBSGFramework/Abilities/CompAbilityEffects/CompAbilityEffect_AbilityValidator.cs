@@ -162,7 +162,15 @@ namespace EBSGFramework
                     Messages.Message(BaseExplanation + hourExplanation, Caster, MessageTypeDefOf.RejectInput, false);
                 return false;
             }
-
+            
+            // Caster Faction Check
+            if (!CheckResearchPrerequisites(out var researchExplanation))
+            {
+                if (throwMessages)
+                    Messages.Message(BaseExplanation + researchExplanation, Caster, MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            
             return true;
         }
         
@@ -194,13 +202,14 @@ namespace EBSGFramework
             researchExplanation = null;
             if (!Props.requiredResearchProjects.NullOrEmpty())
             {
-                foreach (var researchProject in Props.requiredResearchProjects)
+                if (Caster.Faction?.IsPlayer != true) // Those not in the player faction assume they have all the techs of their faction's tech level
+                    return (int)(Caster.Faction == null ? TechLevel.Animal : Caster.Faction.def.techLevel) >= Props.requiredResearchProjects.Max(r => (int)r.techLevel);
+                
+                var failedOn = Props.requiredResearchProjects.FirstOrDefault(r => !r.IsFinished);
+                if (failedOn != null)
                 {
-                    if (!researchProject.IsFinished)
-                    {
-                        researchExplanation = "AbilityRequiresResearch".Translate(researchProject.label);
-                        return false;
-                    }
+                    researchExplanation = "AbilityRequiresResearch".Translate(failedOn.LabelCap);
+                    return false;
                 }
             }
             return true;
@@ -248,12 +257,6 @@ namespace EBSGFramework
             {
                 if (throwMessages)
                     Messages.Message(BaseExplanation + targetExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
-                return false;
-            }
-            if (!CheckResearchPrerequisites(out var targetResearchExplanation))
-            {
-                if (throwMessages)
-                    Messages.Message(BaseExplanation + targetResearchExplanation, target.ToTargetInfo(Caster.MapHeld), MessageTypeDefOf.RejectInput, false);
                 return false;
             }
 
@@ -315,7 +318,6 @@ namespace EBSGFramework
                     reason = casterExplanation;
                     return true;
                 }
-
                 if (!CheckCasterLayer(out var casterLayerExplanation))
                 {
                     reason = casterLayerExplanation;

@@ -317,8 +317,7 @@
     <LayerMustNotBe>Cannot be {1} {0}</LayerMustNotBe>
     <AbilityTargetMentalState>Not in valid mental state</AbilityTargetMentalState>
     <AbilityTargetMentalStateForbidden>Is in {0} mental state</AbilityTargetMentalStateForbidden>
-
-	  <AbilityRequiresResearch>Ability requires research: {0}</AbilityRequiresResearch>
+    <AbilityRequiresResearch>Must research {0}</AbilityRequiresResearch>
 	
     <!--Ingestible Dependency Genes-->
     <EBSG_DependencyNeedDurationDescriptionBase>{PAWN_nameDef} needs to ingest {0} on a regular basis to survive.</EBSG_DependencyNeedDurationDescriptionBase> <!--This is split into three parts to make it as dynamic as possible-->
