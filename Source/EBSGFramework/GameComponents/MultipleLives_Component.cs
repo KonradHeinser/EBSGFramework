@@ -115,7 +115,7 @@ namespace EBSGFramework
                                     ResurrectPawn(pawn);
                                     purgeList.Add(pawn);
                                 }
-                                if (!pawn.IsForbidden(Faction.OfPlayer) && multipleLivesComp.Props.indestructibleWhileResurrecting && multipleLivesComp.Props.alwaysForbiddenWhileResurrecting && (pawn.Faction == null || !pawn.Faction.IsPlayer))
+                                if (!pawn.IsForbidden(Faction.OfPlayer) && multipleLivesComp.Props.indestructibleWhileResurrecting && multipleLivesComp.Props.alwaysForbiddenWhileResurrecting && pawn.Faction?.IsPlayer != true)
                                     pawn.SetForbidden(true, false);
                             }
                         }
@@ -237,7 +237,7 @@ namespace EBSGFramework
 
             if (pawn.InnerPawn.Dead && multipleLivesComp != null)
             {
-                if (pawn.InnerPawn.Faction.IsPlayer)
+                if (pawn.InnerPawn.Faction?.IsPlayer == true)
                 {
                     if (multipleLivesComp.Props.revivalSuccessMessage != null)
                         Messages.Message(multipleLivesComp.Props.revivalSuccessMessage.TranslateOrFormat(pawn.InnerPawn.LabelShortCap, multipleLivesComp.livesLeft.ToString()),
@@ -278,7 +278,7 @@ namespace EBSGFramework
                         var caravans = Find.World.worldObjects.Caravans.Where(c => c.Tile == pawn.Tile && c.AllThings.Contains(pawn));
                         if (!caravans.TryRandomElement(out var car))
                             caravan = car;
-                        else
+                        else if (pawn.Faction != null)
                         {
                             // If no caravan was found that way, see if there happens to be any caravan on the tile in the pawn's faction
                             caravans = Find.World.worldObjects.Caravans.Where(c => c.Tile == pawn.Tile && c.Faction == pawn.Faction);
@@ -286,7 +286,7 @@ namespace EBSGFramework
                         }
                         pawn.InnerPawn.TryToRevivePawn();
                         if (caravan != null) caravan.AddPawn(pawn.InnerPawn, false);
-                        else if (pawn.Faction.IsPlayer)
+                        else if (pawn.Faction?.IsPlayer == true)
                         {
                             List<Pawn> pawns = new List<Pawn> { pawn.InnerPawn };
                             CaravanMaker.MakeCaravan(pawns, pawn.Faction, multipleLivesComp.deathTile, false); // Creates caravan on death tile if all else fails
