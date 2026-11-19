@@ -32,6 +32,7 @@ namespace EBSGFramework
 
         public HediffDef alternativePregnancyHediff;
         public List<HediffToParts> hediffsToApply;
+        public List<HediffDef> hediffsToRemove; // Removed by hediff adders post-remove
         public bool vanishingGene = false;
         public FloatRange expectedAges;
         public FloatRange? ageRange = null;

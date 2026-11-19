@@ -33,8 +33,10 @@ namespace EBSGFramework
         public static void HediffRemoving(Pawn pawn, Gene gene)
         {
             var extension = gene.def.GetModExtension<EBSGExtension>();
-            if (extension != null && !extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
+            if (extension == null) return;
+            if (!extension.vanishingGene && !extension.hediffsToApply.NullOrEmpty())
                 pawn.RemoveHediffsFromParts(extension.hediffsToApply);
+            pawn.RemoveHediffs(null, extension.hediffsToRemove);
         }
     }
 }
