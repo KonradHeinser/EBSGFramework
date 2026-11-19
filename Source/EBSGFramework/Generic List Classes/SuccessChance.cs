@@ -20,7 +20,7 @@ namespace EBSGFramework
         public SimpleCurve casterSkillCurve;
         
         public Effect casterSkillEffect = Effect.Multiply;
-
+        
         public StatDef targetStatChance;
 
         public Effect targetStatEffect = Effect.Divide;
@@ -30,6 +30,8 @@ namespace EBSGFramework
         public SimpleCurve targetSkillCurve;
         
         public Effect targetSkillEffect = Effect.Multiply;
+        
+        public List<HediffToGive> hediffsOnFail;
 
         public string successMessage = null;
 
@@ -99,6 +101,7 @@ namespace EBSGFramework
             {
                 if (failureMessage != null && caster.Faction.IsPlayer)
                     Messages.Message(failureMessage.TranslateOrFormat(caster.LabelShortCap, target.LabelShortCap), MessageTypeDefOf.NegativeEvent);
+                hediffsOnFail?.GiveHediffs(caster, target as Pawn);
                 return false;
             }
 

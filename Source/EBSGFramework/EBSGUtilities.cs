@@ -831,7 +831,7 @@ namespace EBSGFramework
             foreach (var hediff in hediffs)
             {
                 if (!hediff.successChance?.Success(caster, target) ?? !Rand.Chance(hediff.chance))
-                    if (endOn == EndOn.Fail || endOn == EndOn.FailIgnorePsychic)
+                    if (endOn is EndOn.Fail or EndOn.FailIgnorePsychic)
                         break;
                     else
                         continue;
