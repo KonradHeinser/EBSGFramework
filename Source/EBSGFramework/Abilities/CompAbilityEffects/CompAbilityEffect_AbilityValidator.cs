@@ -1252,6 +1252,22 @@ namespace EBSGFramework
                         (Props.invertTargetAgeRange ? "AbilityTargetAgeNotBetween".Translate(min, max) : "AbilityTargetAgeBetween".Translate(min, max));
                     return false;
                 }
+                
+                if (Props.targetHasParts.Any())
+                {
+                    var nonMissingParts = pawn.health.hediffSet.GetNotMissingParts().Select(p => p.def).ToList();
+                    foreach (var part in Props.targetHasParts)
+                    {
+                        var tp = part.FirstOrDefault(nonMissingParts.Contains);
+                        if (tp == null)
+                        {
+                            explanation = part.Count == 1 ? "EBSG_Missing".Translate(part.First().label) : "CannotWearBecauseOfMissingBodyParts".Translate();
+                            return false;
+                        }
+
+                        nonMissingParts.Remove(tp); // To allow for checks like "has both arms"
+                    }
+                }
             }
             else
             {
@@ -1316,7 +1332,7 @@ namespace EBSGFramework
                         }
                 }
 
-                if (Props.targetAsleepOrDowned)
+                if (Props.targetAsleepOrDowned || Props.targetHasParts.Any())
                 {
                     explanation = "AbilityTargetMustBePawn".Translate();
                     return false;

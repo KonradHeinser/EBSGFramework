@@ -44,6 +44,7 @@ namespace EBSGFramework
         public FloatRange targetAgeRange = new FloatRange(0);
         public bool invertTargetAgeRange = false;
         public bool targetAsleepOrDowned = false;
+        public List<List<BodyPartDef>> targetHasParts;
 
         // Caster Hediffs
         public List<HediffDef> casterHasAnyOfHediffs;
