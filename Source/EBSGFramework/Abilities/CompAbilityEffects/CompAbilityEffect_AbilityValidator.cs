@@ -1253,7 +1253,7 @@ namespace EBSGFramework
                     return false;
                 }
                 
-                if (Props.targetHasParts.Any())
+                if (!Props.targetHasParts.NullOrEmpty())
                 {
                     var nonMissingParts = pawn.health.hediffSet.GetNotMissingParts().Select(p => p.def).ToList();
                     foreach (var part in Props.targetHasParts)
