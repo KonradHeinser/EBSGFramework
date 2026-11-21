@@ -1332,7 +1332,7 @@ namespace EBSGFramework
                         }
                 }
 
-                if (Props.targetAsleepOrDowned || Props.targetHasParts.Any())
+                if (Props.targetAsleepOrDowned || !Props.targetHasParts.NullOrEmpty())
                 {
                     explanation = "AbilityTargetMustBePawn".Translate();
                     return false;
