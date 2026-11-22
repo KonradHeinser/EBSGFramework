@@ -18,5 +18,10 @@ namespace EBSGFramework
             Props.hediffsToGive?.GiveHediffs(parent.pawn, t, GetDurationSeconds(parent.pawn).SecondsToTicks(),
                 t != null ? GetDurationSeconds(target.Pawn).SecondsToTicks() : -1, Props.psychic, Props.endOn);
         }
+        
+        public override string ExtraLabelMouseAttachment(LocalTargetInfo target)
+        {
+            return Props.successChance?.ExtraLabelMouseAttachment(parent.pawn, target);
+        }
     }
 }
