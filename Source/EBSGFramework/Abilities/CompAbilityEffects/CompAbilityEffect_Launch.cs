@@ -162,7 +162,6 @@ namespace EBSGFramework
                     if (transport is FlyingPawn flyingPawn)
                         flyingPawn.pawn = parent.pawn;
                     ActiveTransporterInfo podInfo = new ActiveTransporterInfo();
-                    podInfo.innerContainer.TryAddRangeOrTransfer(caravan.AllThings);
                     podInfo.innerContainer.TryAddRangeOrTransfer(caravan.pawns);
                     podInfo.openDelay = 10;
                     podInfo.sentTransporterDef = Props.pawnTransporter ?? EBSGDefOf.EBSG_FlightPod;
